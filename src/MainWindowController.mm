@@ -13,6 +13,7 @@
 #import "ProjectPanel.h"
 #import "PreferencesWindowController.h"
 #import "IncrementalSearchBar.h"
+#import "CommandPalettePanel.h"
 #import <objc/runtime.h>
 
 // ── Private helper for the Windows… dialog ───────────────────────────────────
@@ -253,8 +254,9 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     SidePanelHost     *_sidePanelHost;
     DocumentListPanel *_docListPanel;
     ClipboardHistoryPanel *_clipboardPanel;
-    FunctionListPanel *_funcListPanel;
-    DocumentMapPanel  *_docMapPanel;
+    FunctionListPanel     *_funcListPanel;
+    DocumentMapPanel      *_docMapPanel;
+    CommandPalettePanel   *_commandPalette;
 
     // Second editor view — horizontal (top/bottom)
     NSSplitView   *_hSplitView;
@@ -1141,6 +1143,15 @@ static NSString *nppMacrosPath(void) {
     if (!open) [_clipboardPanel startMonitoring];
     else       [_clipboardPanel stopMonitoring];
     [self _setPanelVisible:_clipboardPanel title:@"Clipboard History" show:!open];
+}
+
+- (void)showCommandPalette:(id)sender {
+    if (!_commandPalette) _commandPalette = [[CommandPalettePanel alloc] init];
+    if (_commandPalette.isVisible) {
+        [_commandPalette orderOut:nil];
+    } else {
+        [_commandPalette showOverWindow:self.window];
+    }
 }
 
 - (void)showDocumentMap:(id)sender {
