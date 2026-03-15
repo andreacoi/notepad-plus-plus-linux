@@ -27,7 +27,14 @@ static const CGFloat kRowH    = 50;
 
     NSArray<NSDictionary *> *_allCommands;
     NSArray<NSDictionary *> *_filtered;
+
+    id _escMonitor;   // local event monitor for Escape
 }
+
+// Borderless windows can't become key by default — override so the
+// search field actually receives keyboard input.
+- (BOOL)canBecomeKeyWindow  { return YES; }
+- (BOOL)canBecomeMainWindow { return NO;  }
 
 - (instancetype)init {
     self = [super initWithContentRect:NSMakeRect(0, 0, kPanelW, kPanelH)
@@ -191,9 +198,26 @@ static const CGFloat kRowH    = 50;
     [window addChildWindow:self ordered:NSWindowAbove];
     [self makeKeyAndOrderFront:nil];
     [self makeFirstResponder:_searchField];
+
+    // Local monitor: catch Escape even if the text field swallows it
+    if (!_escMonitor) {
+        __weak typeof(self) wSelf = self;
+        _escMonitor = [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskKeyDown
+                                                            handler:^NSEvent *(NSEvent *e) {
+            if (e.keyCode == 53 && wSelf.isVisible) {   // 53 = Escape
+                [wSelf _dismiss];
+                return nil;  // consume the event
+            }
+            return e;
+        }];
+    }
 }
 
 - (void)_dismiss {
+    if (_escMonitor) {
+        [NSEvent removeMonitor:_escMonitor];
+        _escMonitor = nil;
+    }
     if (self.parentWindow)
         [self.parentWindow removeChildWindow:self];
     [self orderOut:nil];
