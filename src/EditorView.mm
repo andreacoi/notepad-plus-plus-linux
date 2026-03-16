@@ -695,6 +695,20 @@ static NSColor *nppColorFromHex(NSString *hex) {
         : [NSColor colorWithWhite:bgBrightness + 0.08 alpha:1.0];
     [sci message:SCI_SETCARETLINEBACK wParam:sciColor(caretLineBg)];
 
+    // Fold margin column background = editor background
+    [sci message:SCI_SETFOLDMARGINCOLOUR   wParam:1 lParam:sciColor(bg)];
+    [sci message:SCI_SETFOLDMARGINHICOLOUR wParam:1 lParam:sciColor(bg)];
+    NSColor *foldBack = bgBrightness > 0.5
+        ? [NSColor colorWithWhite:0.82 alpha:1.0]
+        : [NSColor colorWithWhite:bgBrightness + 0.22 alpha:1.0];
+    NSColor *foldFore = bgBrightness > 0.5
+        ? [NSColor blackColor]
+        : [NSColor colorWithWhite:0.80 alpha:1.0];
+    for (int mn = SC_MARKNUM_FOLDEREND; mn <= SC_MARKNUM_FOLDEROPEN; mn++) {
+        [sci setColorProperty:SCI_MARKERSETFORE parameter:mn value:foldFore];
+        [sci setColorProperty:SCI_MARKERSETBACK parameter:mn value:foldBack];
+    }
+
     // Re-apply language colors with the new theme palette
     if (_currentLanguage.length) [self applyLexerColors:_currentLanguage];
 }
@@ -793,15 +807,21 @@ static NSColor *nppColorFromHex(NSString *hex) {
     [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERMIDTAIL lParam:SC_MARK_TCORNERCURVE];
     [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERTAIL    lParam:SC_MARK_LCORNERCURVE];
     [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERSUB     lParam:SC_MARK_VLINE];
-    // Normal colours: black symbol outline, light-grey background
-    NSColor *foldBack = [NSColor colorWithWhite:0.82 alpha:1.0];
+    // Fold margin column background = editor background (dark themes need this to avoid
+    // a jarring light-grey strip next to a dark editor area)
+    [sci message:SCI_SETFOLDMARGINCOLOUR   wParam:1 lParam:sciColor(bg)];
+    [sci message:SCI_SETFOLDMARGINHICOLOUR wParam:1 lParam:sciColor(bg)];
+    // Marker colours: adapt to theme brightness
+    NSColor *foldBack = bgBrightness > 0.5
+        ? [NSColor colorWithWhite:0.82 alpha:1.0]
+        : [NSColor colorWithWhite:bgBrightness + 0.22 alpha:1.0];
+    NSColor *foldFore = bgBrightness > 0.5
+        ? [NSColor blackColor]
+        : [NSColor colorWithWhite:0.80 alpha:1.0];
     NSColor *foldRed  = [NSColor colorWithRed:0.80 green:0.0 blue:0.0 alpha:1.0];
     for (int mn = SC_MARKNUM_FOLDEREND; mn <= SC_MARKNUM_FOLDEROPEN; mn++) {
-        [sci setColorProperty:SCI_MARKERSETFORE          parameter:mn value:[NSColor blackColor]];
+        [sci setColorProperty:SCI_MARKERSETFORE          parameter:mn value:foldFore];
         [sci setColorProperty:SCI_MARKERSETBACK          parameter:mn value:foldBack];
-        // backSelected: colour used when this fold block is "selected" (highlighted).
-        // SCI_MARKERENABLEHIGHLIGHT makes Scintilla automatically highlight the fold
-        // block the caret is in, using backSelected for the connecting lines and symbol fills.
         [sci setColorProperty:SCI_MARKERSETBACKSELECTED  parameter:mn value:foldRed];
     }
     // Enable fold-block highlighting: fold markers in the enclosing block turn red.
