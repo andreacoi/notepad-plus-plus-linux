@@ -1,5 +1,6 @@
 #import "EditorView.h"
 #import "PreferencesWindowController.h"
+#import "StyleConfiguratorWindowController.h"
 #import "GitHelper.h"
 #import "Scintilla.h"
 #import "ScintillaMessages.h"
@@ -657,16 +658,13 @@ static NSColor *nppColorFromHex(NSString *hex) {
 }
 
 - (void)applyThemeColors {
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    NSString *fgHex   = [ud stringForKey:kPrefStyleFg]   ?: @"#000000";
-    NSString *bgHex   = [ud stringForKey:kPrefStyleBg]   ?: @"#FFFFFF";
-    NSString *fontName = [ud stringForKey:kPrefStyleFontName] ?: @"Menlo";
-    NSInteger fontSize = [ud integerForKey:kPrefStyleFontSize];
-    if (fontSize <= 0) fontSize = 11;
+    NPPStyleStore *store = [NPPStyleStore sharedStore];
+    NSString *fontName = store.globalFontName;
+    NSInteger fontSize = store.globalFontSize;
 
     ScintillaView *sci = _scintillaView;
-    NSColor *fg = nppColorFromHex(fgHex);
-    NSColor *bg = nppColorFromHex(bgHex);
+    NSColor *fg = store.globalFg;
+    NSColor *bg = store.globalBg;
 
     const char *fontNameUTF8 = fontName.UTF8String;
     [sci message:SCI_STYLESETFONT wParam:STYLE_DEFAULT lParam:(sptr_t)fontNameUTF8];
@@ -704,16 +702,14 @@ static NSColor *nppColorFromHex(NSString *hex) {
 - (void)applyDefaultTheme {
     ScintillaView *sci = _scintillaView;
 
-    // 1. Set ALL STYLE_DEFAULT properties first (reads from user defaults / theme)
-    // Initial call: use kPrefStyle* defaults; propagation happens inside applyThemeColors
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    NSString *fontName = [ud stringForKey:kPrefStyleFontName] ?: @"Menlo";
-    NSInteger fontSize = [ud integerForKey:kPrefStyleFontSize];
-    if (fontSize <= 0) fontSize = 11;
+    // 1. Set ALL STYLE_DEFAULT properties first (reads from style store)
+    NPPStyleStore *storeD = [NPPStyleStore sharedStore];
+    NSString *fontName = storeD.globalFontName;
+    NSInteger fontSize = storeD.globalFontSize;
     [sci message:SCI_STYLESETFONT wParam:STYLE_DEFAULT lParam:(sptr_t)fontName.UTF8String];
     [sci message:SCI_STYLESETSIZEFRACTIONAL wParam:STYLE_DEFAULT lParam:(sptr_t)(fontSize * 100)];
-    NSColor *fg = nppColorFromHex([ud stringForKey:kPrefStyleFg] ?: @"#000000");
-    NSColor *bg = nppColorFromHex([ud stringForKey:kPrefStyleBg] ?: @"#FFFFFF");
+    NSColor *fg = storeD.globalFg;
+    NSColor *bg = storeD.globalBg;
     [sci setColorProperty:SCI_STYLESETFORE parameter:STYLE_DEFAULT value:fg];
     [sci setColorProperty:SCI_STYLESETBACK parameter:STYLE_DEFAULT value:bg];
 
@@ -980,89 +976,30 @@ static const int kGitGutterMargin   = 4;  // margin index for git gutter
 - (void)applyLexerColors:(NSString *)lang {
     if (!lang.length) return;
     ScintillaView *sci = _scintillaView;
-    lang = lang.lowercaseString;
 
-    // Read theme colors from user defaults (set by Style Configurator)
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    NSColor *cComment = nppColorFromHex([ud stringForKey:kPrefStyleComment] ?: @"#008000");
-    NSColor *cKeyword = nppColorFromHex([ud stringForKey:kPrefStyleKeyword] ?: @"#0000FF");
-    NSColor *cString  = nppColorFromHex([ud stringForKey:kPrefStyleString]  ?: @"#A31515");
-    NSColor *cNumber  = nppColorFromHex([ud stringForKey:kPrefStyleNumber]  ?: @"#098658");
-    NSColor *cPreproc = nppColorFromHex([ud stringForKey:kPrefStylePreproc] ?: @"#800080");
+    // Map EditorView language names to NPP style-store lexer IDs
+    NSString *lid = lang.lowercaseString;
+    if ([lid isEqualToString:@"c"] || [lid isEqualToString:@"objc"]) lid = @"cpp";
+    else if ([lid isEqualToString:@"javascript"] || [lid isEqualToString:@"typescript"] ||
+             [lid isEqualToString:@"swift"])                          lid = @"cpp";
 
-    // Helper: set foreground color for a list of style numbers
-    auto fore = [&](std::initializer_list<int> styles, NSColor *c) {
-        for (int s : styles)
-            [sci setColorProperty:SCI_STYLESETFORE parameter:s value:c];
-    };
-    auto bold = [&](int style) {
-        [sci message:SCI_STYLESETBOLD wParam:style lParam:1];
-    };
+    NPPStyleStore *store = [NPPStyleStore sharedStore];
+    NSArray<NPPStyleEntry *> *styles = [store stylesForLexer:lid];
+    if (!styles.count) return;
 
-    if ([lang isEqualToString:@"c"]   || [lang isEqualToString:@"cpp"] ||
-        [lang isEqualToString:@"objc"]|| [lang isEqualToString:@"javascript"] ||
-        [lang isEqualToString:@"typescript"] || [lang isEqualToString:@"swift"]) {
-        fore({SCE_C_COMMENT, SCE_C_COMMENTLINE, SCE_C_COMMENTDOC,
-              SCE_C_COMMENTLINEDOC, SCE_C_COMMENTDOCKEYWORD}, cComment);
-        fore({SCE_C_WORD, SCE_C_WORD2}, cKeyword);
-        bold(SCE_C_WORD);
-        fore({SCE_C_STRING, SCE_C_CHARACTER, SCE_C_VERBATIM, SCE_C_STRINGRAW}, cString);
-        fore({SCE_C_NUMBER}, cNumber);
-        fore({SCE_C_PREPROCESSOR}, cPreproc);
-
-    } else if ([lang isEqualToString:@"python"]) {
-        fore({SCE_P_COMMENTLINE, SCE_P_COMMENTBLOCK}, cComment);
-        fore({SCE_P_WORD}, cKeyword); bold(SCE_P_WORD);
-        fore({SCE_P_WORD2}, cPreproc); // builtins in purple
-        fore({SCE_P_STRING, SCE_P_CHARACTER, SCE_P_TRIPLE, SCE_P_TRIPLEDOUBLE,
-              SCE_P_FSTRING, SCE_P_FCHARACTER, SCE_P_FTRIPLE, SCE_P_FTRIPLEDOUBLE}, cString);
-        fore({SCE_P_NUMBER}, cNumber);
-        fore({SCE_P_CLASSNAME}, [NSColor colorWithRed:0.10 green:0.10 blue:0.60 alpha:1]);
-        fore({SCE_P_DEFNAME},   [NSColor colorWithRed:0.40 green:0.10 blue:0.60 alpha:1]);
-        fore({SCE_P_DECORATOR}, cPreproc);
-
-    } else if ([lang isEqualToString:@"html"] || [lang isEqualToString:@"xml"]) {
-        fore({SCE_H_TAG, SCE_H_TAGUNKNOWN, SCE_H_TAGEND, SCE_H_XMLSTART, SCE_H_XMLEND},
-             [NSColor colorWithRed:0.50 green:0.00 blue:0.00 alpha:1]); // dark red tags
-        fore({SCE_H_ATTRIBUTE, SCE_H_ATTRIBUTEUNKNOWN},
-             [NSColor colorWithRed:1.00 green:0.27 blue:0.00 alpha:1]); // orange attributes
-        fore({SCE_H_DOUBLESTRING, SCE_H_SINGLESTRING}, cString);
-        fore({SCE_H_COMMENT}, cComment);
-        fore({SCE_H_ENTITY}, cPreproc);
-        fore({SCE_H_NUMBER}, cNumber);
-
-    } else if ([lang isEqualToString:@"css"]) {
-        fore({SCE_CSS_TAG}, [NSColor colorWithRed:0.50 green:0.00 blue:0.00 alpha:1]);
-        fore({SCE_CSS_CLASS, SCE_CSS_ID, SCE_CSS_PSEUDOCLASS, SCE_CSS_PSEUDOELEMENT},
-             cPreproc);
-        fore({SCE_CSS_IDENTIFIER, SCE_CSS_IDENTIFIER2, SCE_CSS_IDENTIFIER3},
-             [NSColor colorWithRed:0.60 green:0.00 blue:0.00 alpha:1]);
-        fore({SCE_CSS_VALUE}, cNumber);
-        fore({SCE_CSS_COMMENT}, cComment);
-        fore({SCE_CSS_DOUBLESTRING, SCE_CSS_SINGLESTRING}, cString);
-        fore({SCE_CSS_IMPORTANT}, [NSColor redColor]);
-
-    } else if ([lang isEqualToString:@"sql"]) {
-        fore({SCE_SQL_COMMENT, SCE_SQL_COMMENTLINE, SCE_SQL_COMMENTDOC,
-              SCE_SQL_COMMENTLINEDOC}, cComment);
-        fore({SCE_SQL_WORD}, cKeyword); bold(SCE_SQL_WORD);
-        fore({SCE_SQL_WORD2}, cPreproc);
-        fore({SCE_SQL_STRING, SCE_SQL_CHARACTER}, cString);
-        fore({SCE_SQL_NUMBER}, cNumber);
-
-    } else if ([lang isEqualToString:@"bash"]) {
-        fore({SCE_SH_COMMENTLINE}, cComment);
-        fore({SCE_SH_WORD}, cKeyword); bold(SCE_SH_WORD);
-        fore({SCE_SH_STRING, SCE_SH_CHARACTER}, cString);
-        fore({SCE_SH_NUMBER}, cNumber);
-        fore({SCE_SH_SCALAR, SCE_SH_PARAM}, cPreproc);
-
-    } else if ([lang isEqualToString:@"lua"]) {
-        fore({SCE_LUA_COMMENT, SCE_LUA_COMMENTLINE, SCE_LUA_COMMENTDOC}, cComment);
-        fore({SCE_LUA_WORD}, cKeyword); bold(SCE_LUA_WORD);
-        fore({SCE_LUA_STRING, SCE_LUA_CHARACTER, SCE_LUA_LITERALSTRING}, cString);
-        fore({SCE_LUA_NUMBER}, cNumber);
-        fore({SCE_LUA_PREPROCESSOR}, cPreproc);
+    for (NPPStyleEntry *e in styles) {
+        int sid = e.styleID;
+        if (e.fgColor)
+            [sci setColorProperty:SCI_STYLESETFORE parameter:sid value:e.fgColor];
+        if (e.bgColor)
+            [sci setColorProperty:SCI_STYLESETBACK parameter:sid value:e.bgColor];
+        if (e.fontName.length > 0)
+            [sci message:SCI_STYLESETFONT wParam:sid lParam:(sptr_t)e.fontName.UTF8String];
+        if (e.fontSize > 0)
+            [sci message:SCI_STYLESETSIZEFRACTIONAL wParam:sid lParam:(sptr_t)(e.fontSize * 100)];
+        [sci message:SCI_STYLESETBOLD      wParam:sid lParam:e.bold      ? 1 : 0];
+        [sci message:SCI_STYLESETITALIC    wParam:sid lParam:e.italic    ? 1 : 0];
+        [sci message:SCI_STYLESETUNDERLINE wParam:sid lParam:e.underline ? 1 : 0];
     }
 }
 

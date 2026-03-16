@@ -132,6 +132,12 @@ add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
         "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/npp.icns"
     COMMENT "Copying app icon into bundle")
 
+add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/resources/stylers.model.xml"
+        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/stylers.model.xml"
+    COMMENT "Copying stylers.model.xml into bundle")
+
 set_target_properties(NotepadPlusPlusMac PROPERTIES
     MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/resources/Info.plist"
     MACOSX_BUNDLE_BUNDLE_NAME "Notepad++"
