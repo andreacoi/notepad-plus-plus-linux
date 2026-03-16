@@ -108,6 +108,7 @@ static NSToolbarItemIdentifier const kTBStopRecord  = @"TB_StopRecord";
 static NSToolbarItemIdentifier const kTBPlayRecord  = @"TB_PlayRecord";
 static NSToolbarItemIdentifier const kTBPlayRecordM = @"TB_PlayRecordM";
 static NSToolbarItemIdentifier const kTBSep         = @"TB_Sep";
+static NSToolbarItemIdentifier const kTBTabControls = @"TB_TabControls"; // +  ▾  × right-aligned
 // Grouped toolbar items — each group becomes a single NSToolbarItem with tight icon packing
 static NSToolbarItemIdentifier const kTBGroup1 = @"TB_G1"; // file ops
 static NSToolbarItemIdentifier const kTBGroup2 = @"TB_G2"; // clipboard
@@ -374,7 +375,9 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
              kTBGroup5, kTBSep,
              kTBGroup6, kTBSep,
              kTBGroup7, kTBSep,
-             kTBGroup8];
+             kTBGroup8,
+             NSToolbarFlexibleSpaceItemIdentifier,
+             kTBTabControls];
 }
 
 - (NSArray<NSToolbarItemIdentifier> *)toolbarAllowedItemIdentifiers:(NSToolbar *)tb {
@@ -393,6 +396,9 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
         sep.maxSize = NSMakeSize(8, 19);
         return sep;
     }
+
+    if ([ident isEqualToString:kTBTabControls])
+        return [self makeTabControlsToolbarItem];
 
     NSArray *idents = toolbarGroupMap()[ident];
     if (idents) return [self makeGroupToolbarItem:ident identifiers:idents];
@@ -432,6 +438,103 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     item.minSize = NSMakeSize(totalW, kBtnSize);
     item.maxSize = NSMakeSize(totalW, kBtnSize);
     return item;
+}
+
+// Builds the right-aligned +  ▾  × tab-control group.
+- (NSToolbarItem *)makeTabControlsToolbarItem {
+    static const CGFloat kW = 20.0, kH = 19.0, kSpc = 1.0;
+    CGFloat totalW = 3 * kW + 2 * kSpc;
+
+    NSView *groupView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, totalW, kH)];
+
+    struct { NSString *title; NSString *tip; SEL action; } btns[3] = {
+        { @"+", @"New Tab",         @selector(_tabControlNew:)   },
+        { @"▾", @"Tab List",        @selector(_tabControlList:)  },
+        { @"×", @"Close Active Tab",@selector(_tabControlClose:) },
+    };
+
+    for (int i = 0; i < 3; i++) {
+        CGFloat x = i * (kW + kSpc);
+        NSButton *btn = [[NSButton alloc] initWithFrame:NSMakeRect(x, 0, kW, kH)];
+        [btn setBordered:NO];
+        btn.buttonType = NSButtonTypeMomentaryChange;
+        btn.title      = btns[i].title;
+        btn.font       = [NSFont systemFontOfSize:13 weight:NSFontWeightMedium];
+        btn.toolTip    = btns[i].tip;
+        btn.action     = btns[i].action;
+        btn.target     = self;
+        [groupView addSubview:btn];
+    }
+
+    NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:kTBTabControls];
+    item.view    = groupView;
+    item.minSize = NSMakeSize(totalW, kH);
+    item.maxSize = NSMakeSize(totalW, kH);
+    return item;
+}
+
+// ── Tab-control toolbar actions ───────────────────────────────────────────────
+
+- (void)_tabControlNew:(id)sender {
+    [_activeTabManager addNewTab];
+    [self.window makeFirstResponder:[_activeTabManager currentEditor].scintillaView];
+}
+
+- (void)_tabControlList:(id)sender {
+    NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
+    // Collect tabs from all three tab managers, prefixing group headers when
+    // more than one manager has tabs.
+    NSArray<TabManager *> *managers = @[_tabManager, _subTabManagerH, _subTabManagerV];
+    NSArray<NSString *>   *labels   = @[@"Main", @"Bottom", @"Right"];
+
+    BOOL multiGroup = NO;
+    for (TabManager *tm in managers)
+        if (tm.allEditors.count > 0) multiGroup = !multiGroup ? YES : (multiGroup = YES);
+    // Only show group headers when more than one group has tabs
+    NSUInteger groupsWithTabs = 0;
+    for (TabManager *tm in managers) if (tm.allEditors.count) groupsWithTabs++;
+
+    for (NSUInteger g = 0; g < managers.count; g++) {
+        TabManager *tm = managers[g];
+        if (!tm.allEditors.count) continue;
+        if (groupsWithTabs > 1) {
+            NSMenuItem *hdr = [[NSMenuItem alloc] initWithTitle:labels[g] action:nil keyEquivalent:@""];
+            hdr.enabled = NO;
+            [menu addItem:hdr];
+        }
+        for (EditorView *ed in tm.allEditors) {
+            NSString *name = ed.displayName ?: @"Untitled";
+            NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:name action:@selector(_tabControlListSelect:) keyEquivalent:@""];
+            mi.target = self;
+            mi.representedObject = @{ @"editor": ed, @"manager": tm };
+            if (ed == tm.currentEditor) mi.state = NSControlStateValueOn;
+            [menu addItem:mi];
+        }
+        if (groupsWithTabs > 1 && g < managers.count - 1)
+            [menu addItem:[NSMenuItem separatorItem]];
+    }
+
+    // Pop up directly below the ▾ button
+    NSButton *btn = (NSButton *)sender;
+    NSPoint origin = NSMakePoint(0, -2);
+    [menu popUpMenuPositioningItem:nil atLocation:origin inView:btn];
+}
+
+- (void)_tabControlListSelect:(NSMenuItem *)sender {
+    NSDictionary *info  = sender.representedObject;
+    TabManager   *tm    = info[@"manager"];
+    EditorView   *ed    = info[@"editor"];
+    NSArray      *all   = tm.allEditors;
+    NSInteger     idx   = [all indexOfObject:ed];
+    if (idx != NSNotFound) {
+        _activeTabManager = tm;
+        [tm selectTabAtIndex:idx];
+        [self.window makeFirstResponder:ed.scintillaView];
+    }
+}
+
+- (void)_tabControlClose:(id)sender {
+    [_activeTabManager closeCurrentTab];
 }
 
 #pragma mark - Content View Layout
@@ -2410,6 +2513,19 @@ static NSString *nppMacrosPath(void) {
     if (sv == _editorSplitView) return sub == _sidePanelHost;
     if (sv == _hSplitView)      return sub == _subEditorContainerH;
     if (sv == _vSplitView)      return sub == _subEditorContainerV;
+    return NO;
+}
+
+// Hide (and disable) the divider whenever the adjacent collapsible pane is
+// fully collapsed — prevents the user from accidentally grabbing the invisible
+// NSSplitView divider when trying to resize the window from its right edge.
+- (BOOL)splitView:(NSSplitView *)sv shouldHideDividerAtIndex:(NSInteger)idx {
+    if (sv == _editorSplitView && idx == 0)
+        return [sv isSubviewCollapsed:_sidePanelHost];
+    if (sv == _hSplitView && idx == 0)
+        return [sv isSubviewCollapsed:_subEditorContainerH];
+    if (sv == _vSplitView && idx == 0)
+        return [sv isSubviewCollapsed:_subEditorContainerV];
     return NO;
 }
 
