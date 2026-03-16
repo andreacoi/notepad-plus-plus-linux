@@ -287,7 +287,7 @@ static const CGFloat kFormHeight = 178.0;
     NSStringCompareOptions cmpOpts = matchCase ? 0 : NSCaseInsensitiveSearch;
 
     while ((rel = [en nextObject])) {
-        if ([_searchQueue.operations.firstObject isCancelled]) break;
+        if (_searchQueue.operations.count > 0 && [_searchQueue.operations.firstObject isCancelled]) break;
 
         NSString *name = rel.lastPathComponent;
         BOOL pass = (preds.count == 0);
@@ -368,6 +368,7 @@ static const CGFloat kFormHeight = 178.0;
 // ── Double-click → open file, go to line, highlight match ────────────────────
 
 - (void)outlineDoubleClicked:(id)sender {
+    if (_outlineView.clickedRow < 0) return;
     id item = [_outlineView itemAtRow:_outlineView.clickedRow];
     if ([item isKindOfClass:[FIFLineNode class]]) {
         FIFLineNode *node = item;

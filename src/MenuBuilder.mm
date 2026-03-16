@@ -24,6 +24,14 @@ static NSMenuItem *withSubmenu(NSString *title, NSMenu *sub) {
 
 static void addSep(NSMenu *m) { [m addItem:[NSMenuItem separatorItem]]; }
 
+// Helper for function-key / arrow-key shortcuts (keyEquivalent must be the Unicode char).
+static NSMenuItem *itemFn(NSString *title, SEL sel, unichar fnKey, NSEventModifierFlags mod) {
+    NSString *key = [NSString stringWithFormat:@"%C", fnKey];
+    NSMenuItem *i = [[NSMenuItem alloc] initWithTitle:title action:sel keyEquivalent:key];
+    i.keyEquivalentModifierMask = mod;
+    return i;
+}
+
 static NSMenuItem *itemTag(NSString *title, SEL sel, NSInteger tag) {
     NSMenuItem *i = item(title, sel, @"");
     i.tag = tag;
@@ -215,10 +223,10 @@ static NSMenu *buildLanguageMenu() {
     addSep(fileMenu);
     [fileMenu addItem:item(@"Save",          @selector(saveDocument:),    @"s")];
     [fileMenu addItem:itemMod(@"Save As…",   @selector(saveDocumentAs:),  @"s",
-                              NSEventModifierFlagCommand | NSEventModifierFlagShift)];
+                              NSEventModifierFlagCommand | NSEventModifierFlagOption)];
     [fileMenu addItem:item(@"Save a Copy As…", @selector(saveDocumentCopyAs:), @"")];
     [fileMenu addItem:itemMod(@"Save All",   @selector(saveAllDocuments:),@"s",
-                              NSEventModifierFlagCommand | NSEventModifierFlagOption)];
+                              NSEventModifierFlagCommand | NSEventModifierFlagShift)];
     [fileMenu addItem:item(@"Rename…", @selector(renameDocument:), @"")];
     addSep(fileMenu);
     [fileMenu addItem:item(@"Close",         @selector(closeCurrentTab:), @"w")];
@@ -306,8 +314,10 @@ static NSMenu *buildLanguageMenu() {
                               NSEventModifierFlagCommand)];
     [lineMenu addItem:itemMod(@"Delete Line",    @selector(deleteLine:),    @"k",
                               NSEventModifierFlagCommand | NSEventModifierFlagShift)];
-    [lineMenu addItem:item(@"Move Line Up",       @selector(moveLineUp:),   @"")];
-    [lineMenu addItem:item(@"Move Line Down",     @selector(moveLineDown:), @"")];
+    [lineMenu addItem:itemFn(@"Move Line Up",   @selector(moveLineUp:),   NSUpArrowFunctionKey,
+                             NSEventModifierFlagControl | NSEventModifierFlagShift)];
+    [lineMenu addItem:itemFn(@"Move Line Down", @selector(moveLineDown:), NSDownArrowFunctionKey,
+                             NSEventModifierFlagControl | NSEventModifierFlagShift)];
     addSep(lineMenu);
     [lineMenu addItem:item(@"Split Lines", @selector(splitLines:), @"")];
     [lineMenu addItem:item(@"Join Lines", @selector(joinLines:), @"")];
@@ -498,9 +508,11 @@ static NSMenu *buildLanguageMenu() {
     [searchMenu addItem:withSubmenu(@"Copy Styled Text", copyStyledMenu)];
 
     NSMenu *bmMenu = submenu(@"Bookmark");
-    [bmMenu addItem:item(@"Toggle Bookmark",     @selector(toggleBookmark:),    @"")];
-    [bmMenu addItem:item(@"Next Bookmark",        @selector(nextBookmark:),      @"")];
-    [bmMenu addItem:item(@"Previous Bookmark",    @selector(previousBookmark:),  @"")];
+    [bmMenu addItem:itemFn(@"Toggle Bookmark",   @selector(toggleBookmark:),   NSF2FunctionKey,
+                            NSEventModifierFlagCommand)];
+    [bmMenu addItem:itemFn(@"Next Bookmark",     @selector(nextBookmark:),     NSF2FunctionKey, 0)];
+    [bmMenu addItem:itemFn(@"Previous Bookmark", @selector(previousBookmark:), NSF2FunctionKey,
+                            NSEventModifierFlagShift)];
     [bmMenu addItem:item(@"Clear All Bookmarks",  @selector(clearAllBookmarks:), @"")];
     addSep(bmMenu);
     [bmMenu addItem:item(@"Cut Bookmarked Lines",                 @selector(cutBookmarkedLines:),      @"")];
@@ -605,10 +617,13 @@ static NSMenu *buildLanguageMenu() {
     [projMenu addItem:item(@"Project Panel 3", @selector(showProjectPanel3:), @"")];
     [viewMenu addItem:withSubmenu(@"Project Panels", projMenu)];
 
-    [viewMenu addItem:item(@"Folder as Workspace", @selector(showFolderAsWorkspace:), @"")];
+    [viewMenu addItem:item(@"Folder Tree",          @selector(showFolderTreePanel:),    @"")];
     [viewMenu addItem:item(@"Document Map",         @selector(showDocumentMap:),        @"")];
     [viewMenu addItem:item(@"Document List",        @selector(showDocumentList:),       @"")];
     [viewMenu addItem:item(@"Function List",        @selector(showFunctionList:),       @"")];
+    [viewMenu addItem:item(@"Git",                  @selector(showGitPanel:),           @"")];
+    addSep(viewMenu);
+    [viewMenu addItem:item(@"Spell Check",          @selector(toggleSpellCheck:),       @"")];
     addSep(viewMenu);
 
     [viewMenu addItem:item(@"Synchronize Vertical Scrolling",   @selector(toggleSyncVerticalScrolling:),   @"")];
@@ -714,9 +729,11 @@ static NSMenu *buildLanguageMenu() {
     NSMenu *macroMenu = submenu(@"Macro");
     macroItem.submenu = macroMenu;
 
-    [macroMenu addItem:item(@"Start Recording",  @selector(toggleMacroRecording:), @"")];
-    [macroMenu addItem:item(@"Stop Recording",   @selector(toggleMacroRecording:), @"")];
-    [macroMenu addItem:itemMod(@"Playback",       @selector(runMacro:), @"p",
+    [macroMenu addItem:itemMod(@"Start Recording", @selector(toggleMacroRecording:), @"r",
+                               NSEventModifierFlagCommand | NSEventModifierFlagShift)];
+    [macroMenu addItem:itemMod(@"Stop Recording",  @selector(toggleMacroRecording:), @"r",
+                               NSEventModifierFlagCommand | NSEventModifierFlagShift)];
+    [macroMenu addItem:itemMod(@"Playback",        @selector(runMacro:), @"m",
                                NSEventModifierFlagCommand | NSEventModifierFlagShift)];
     [macroMenu addItem:item(@"Save Current Recorded Macro…", @selector(saveCurrentMacro:), @"")];
     addSep(macroMenu);

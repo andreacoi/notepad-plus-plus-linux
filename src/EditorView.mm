@@ -1,5 +1,6 @@
 #import "EditorView.h"
 #import "PreferencesWindowController.h"
+#import "GitHelper.h"
 #import "Scintilla.h"
 #import "ScintillaMessages.h"
 #include "SciLexer.h"
@@ -78,10 +79,14 @@ static inline NSStringEncoding nppEnc(CFStringEncoding cf) {
     return CFStringConvertEncodingToNSStringEncoding(cf);
 }
 
+// Files larger than this get a warning + large-file mode (no syntax, no undo).
+static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
+
 @implementation EditorView {
     BOOL    _isModified;
     NSStringEncoding _fileEncoding;
     BOOL    _hasBOM;
+    BOOL    _largeFileMode;
     BOOL    _wordWrapEnabled;
     BOOL    _isRecordingMacro;
     NSMutableArray<NSDictionary *> *_macroActions;
@@ -98,6 +103,14 @@ static inline NSStringEncoding nppEnc(CFStringEncoding cf) {
     NSOperationQueue  *_presenterQueue;
     BOOL               _externalChangePending;
     BOOL               _monitoringMode;   // tail -f: auto-reload silently
+
+    // Spell check
+    BOOL               _spellCheckEnabled;
+    NSTimer           *_spellTimer;
+    NSInteger          _spellTag;
+
+    // Git gutter state
+    BOOL               _gitGutterEnabled;
 }
 
 - (instancetype)initWithFrame:(NSRect)frame {
@@ -108,6 +121,7 @@ static inline NSStringEncoding nppEnc(CFStringEncoding cf) {
         _untitledIndex = ++_untitledCounter;
         _lastBracePos = INVALID_POSITION;
         _lastMatchPos = INVALID_POSITION;
+        _spellTag = [NSSpellChecker uniqueSpellDocumentTag];
         [self setup];
     }
     return self;
@@ -159,7 +173,38 @@ static inline NSStringEncoding nppEnc(CFStringEncoding cf) {
 #pragma mark - File I/O
 
 - (BOOL)loadFileAtPath:(NSString *)path error:(NSError **)error {
-    NSData *rawData = [NSData dataWithContentsOfFile:path options:0 error:error];
+    // ── Large-file guard ──────────────────────────────────────────────────────
+    NSUInteger fileSize = 0;
+    NSDictionary *attrs = [[NSFileManager defaultManager]
+                           attributesOfItemAtPath:path error:nil];
+    if (attrs) fileSize = (NSUInteger)[attrs[NSFileSize] unsignedLongLongValue];
+
+    BOOL large = (fileSize > kLargeFileThreshold);
+    if (large) {
+        NSString *sizeMB = [NSString stringWithFormat:@"%.0f MB",
+                            fileSize / (1024.0 * 1024.0)];
+        NSAlert *alert = [[NSAlert alloc] init];
+        alert.messageText = @"Large File Warning";
+        alert.informativeText = [NSString stringWithFormat:
+            @"This file is %@. Opening it will disable syntax highlighting "
+            @"and undo history to keep the app responsive.\n\n"
+            @"Do you want to continue?", sizeMB];
+        [alert addButtonWithTitle:@"Open Anyway"];
+        [alert addButtonWithTitle:@"Cancel"];
+        alert.alertStyle = NSAlertStyleWarning;
+        if ([alert runModal] != NSAlertFirstButtonReturn) {
+            if (error) *error = [NSError errorWithDomain:NSCocoaErrorDomain
+                                                    code:NSUserCancelledError
+                                                userInfo:nil];
+            return NO;
+        }
+    }
+
+    // Use memory-mapped I/O for large files — OS pages in only what's needed.
+    NSDataReadingOptions readOpts = large ? NSDataReadingMappedIfSafe : 0;
+    NSData *rawData = [NSData dataWithContentsOfFile:path
+                                             options:readOpts
+                                               error:error];
     if (!rawData) return NO;
 
     NSStringEncoding enc = NSUTF8StringEncoding;
@@ -230,9 +275,19 @@ static inline NSStringEncoding nppEnc(CFStringEncoding cf) {
     _isModified = NO;
     _backupFilePath = nil; // buffer loaded from disk — no backup needed
 
+    _largeFileMode = large;
+
     NSString *ext = path.pathExtension.lowercaseString;
     NSString *lang = extensionLanguageMap()[ext] ?: @"";
-    [self setLanguage:lang];
+    if (large) {
+        // Disable syntax highlighting and undo for large files to stay responsive.
+        [self setLanguage:@""];
+        [_scintillaView message:SCI_SETUNDOCOLLECTION wParam:0 lParam:0];
+    } else {
+        [self setLanguage:lang];
+        // Re-enable undo in case this tab was previously in large-file mode.
+        [_scintillaView message:SCI_SETUNDOCOLLECTION wParam:1 lParam:0];
+    }
 
     [_scintillaView message:SCI_GOTOPOS wParam:0];
     [_scintillaView message:SCI_EMPTYUNDOBUFFER];
@@ -300,6 +355,8 @@ static inline NSStringEncoding nppEnc(CFStringEncoding cf) {
             [[NSFileManager defaultManager] removeItemAtPath:_backupFilePath error:nil];
             _backupFilePath = nil;
         }
+        // Update git gutter after save
+        [self updateGitDiffMarkers];
     }
     return ok;
 }
@@ -780,6 +837,23 @@ static NSColor *nppColorFromHex(NSString *hex) {
         [sci message:SCI_INDICSETUNDER wParam:(uptr_t)kMarkInds[i] lParam:1]; // draw under text
     }
 
+    // ── Spell-check indicator (slot 17, INDIC_SQUIGGLE, red) ─────────────────
+    [sci message:SCI_INDICSETSTYLE wParam:kSpellIndicator lParam:INDIC_SQUIGGLE];
+    [sci message:SCI_INDICSETFORE  wParam:kSpellIndicator lParam:0x0000FF]; // red (BGR)
+
+    // ── Git gutter markers (margin 4, 4px, slots 6-8) ────────────────────────
+    [sci message:SCI_MARKERDEFINE  wParam:kGitMarkerAdded    lParam:SC_MARK_LEFTRECT];
+    [sci message:SCI_MARKERSETBACK wParam:kGitMarkerAdded    lParam:0x44CC2E]; // green BGR
+    [sci message:SCI_MARKERDEFINE  wParam:kGitMarkerModified lParam:SC_MARK_LEFTRECT];
+    [sci message:SCI_MARKERSETBACK wParam:kGitMarkerModified lParam:0x12C3F3]; // orange BGR
+    [sci message:SCI_MARKERDEFINE  wParam:kGitMarkerDeleted  lParam:SC_MARK_ARROWDOWN];
+    [sci message:SCI_MARKERSETBACK wParam:kGitMarkerDeleted  lParam:0x3C74E7]; // red BGR
+    [sci message:SCI_SETMARGINTYPEN  wParam:kGitGutterMargin lParam:SC_MARGIN_SYMBOL];
+    [sci message:SCI_SETMARGINMASKN  wParam:kGitGutterMargin
+           lParam:(1 << kGitMarkerAdded) | (1 << kGitMarkerModified) | (1 << kGitMarkerDeleted)];
+    [sci message:SCI_SETMARGINWIDTHN wParam:kGitGutterMargin lParam:4];
+    [sci message:SCI_SETMARGINSENSITIVEN wParam:kGitGutterMargin lParam:0];
+
     // Apply user preferences (tab width, line numbers, wrap, etc.)
     [self applyPreferencesFromDefaults];
 }
@@ -890,6 +964,16 @@ static const sptr_t  kMarkColors[5]  = {
 static const unsigned int kSCI_IndicatorNext     = 2432;
 static const unsigned int kSCI_IndicatorPrevious = 2433;
 static const unsigned int kSCI_IndicatorEnd      = 2552;
+
+// Spell-check indicator (slot 17, INDIC_SQUIGGLE red)
+static const int kSpellIndicator = 17;
+
+// Git gutter marker slots — must be 0-19 (0-24 are user-definable, but 21-24
+// are used by change-history and 25-31 are reserved for fold markers).
+static const int kGitMarkerAdded    = 6;
+static const int kGitMarkerModified = 7;
+static const int kGitMarkerDeleted  = 8;
+static const int kGitGutterMargin   = 4;  // margin index for git gutter
 
 #pragma mark - Lexer Colors
 
@@ -1764,6 +1848,7 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
         case SCN_UPDATEUI:
             [self updateBraceHighlight];
             [self updateSmartHighlight];
+            if (_spellCheckEnabled) [self _scheduleSpellCheck];
             [[NSNotificationCenter defaultCenter]
                 postNotificationName:EditorViewCursorDidMoveNotification
                               object:self];
@@ -3150,6 +3235,168 @@ static const unsigned int kSCI_GetBidirectional = 2708;
     }
     [rtf appendString:@"}"];
     return [rtf copy];
+}
+
+#pragma mark - Spell Check
+
+- (BOOL)spellCheckEnabled { return _spellCheckEnabled; }
+
+- (void)setSpellCheckEnabled:(BOOL)enabled {
+    _spellCheckEnabled = enabled;
+    if (enabled) [self runSpellCheck];
+    else         [self clearSpellCheck];
+}
+
+- (void)clearSpellCheck {
+    [_spellTimer invalidate];
+    _spellTimer = nil;
+    ScintillaView *sci = _scintillaView;
+    intptr_t len = [sci message:SCI_GETLENGTH];
+    [sci message:SCI_SETINDICATORCURRENT wParam:kSpellIndicator];
+    [sci message:SCI_INDICATORCLEARRANGE wParam:0 lParam:len];
+}
+
+- (void)runSpellCheck {
+    if (!_spellCheckEnabled) return;
+    ScintillaView *sci = _scintillaView;
+    intptr_t docLen = [sci message:SCI_GETLENGTH];
+    char *buf = (char *)calloc((size_t)docLen + 1, 1);
+    if (!buf) return;
+    [sci message:SCI_GETTEXT wParam:(uptr_t)(docLen + 1) lParam:(sptr_t)buf];
+    NSString *text = [NSString stringWithUTF8String:buf] ?: @"";
+    free(buf);
+
+    // Clear existing spell marks
+    [sci message:SCI_SETINDICATORCURRENT wParam:kSpellIndicator];
+    [sci message:SCI_INDICATORCLEARRANGE wParam:0 lParam:docLen];
+
+    if (!text.length) return;
+
+    NSSpellChecker *checker = [NSSpellChecker sharedSpellChecker];
+    NSArray<NSTextCheckingResult *> *results =
+        [checker checkString:text
+                       range:NSMakeRange(0, text.length)
+                       types:NSTextCheckingTypeSpelling
+                     options:nil
+     inSpellDocumentWithTag:_spellTag
+                 orthography:nil
+                   wordCount:nil];
+
+    for (NSTextCheckingResult *r in results) {
+        // Convert NSString char range to UTF-8 byte range for Scintilla
+        NSRange charRange = r.range;
+        NSRange utf8BeforeRange = NSMakeRange(0, charRange.location);
+        NSString *before = [text substringWithRange:utf8BeforeRange];
+        NSString *word   = [text substringWithRange:charRange];
+        NSUInteger byteStart = [before lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+        NSUInteger byteLen   = [word   lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+        if (byteLen == 0) continue;
+        [sci message:SCI_INDICATORFILLRANGE wParam:byteStart lParam:(sptr_t)byteLen];
+    }
+}
+
+- (void)_spellTimerFired:(NSTimer *)timer {
+    _spellTimer = nil;
+    [self runSpellCheck];
+}
+
+- (void)_scheduleSpellCheck {
+    if (!_spellCheckEnabled) return;
+    [_spellTimer invalidate];
+    _spellTimer = [NSTimer scheduledTimerWithTimeInterval:1.5
+                                                   target:self
+                                                 selector:@selector(_spellTimerFired:)
+                                                 userInfo:nil
+                                                  repeats:NO];
+}
+
+#pragma mark - Git Gutter
+
+- (void)clearGitDiffMarkers {
+    ScintillaView *sci = _scintillaView;
+    [sci message:SCI_MARKERDELETEALL wParam:(uptr_t)kGitMarkerAdded];
+    [sci message:SCI_MARKERDELETEALL wParam:(uptr_t)kGitMarkerModified];
+    [sci message:SCI_MARKERDELETEALL wParam:(uptr_t)kGitMarkerDeleted];
+}
+
+- (void)updateGitDiffMarkers {
+    if (!_filePath) { [self clearGitDiffMarkers]; return; }
+    NSString *fp = [_filePath copy];
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0), ^{
+        NSString *root = [GitHelper gitRootForPath:fp];
+        if (!root) {
+            dispatch_async(dispatch_get_main_queue(), ^{ [weakSelf clearGitDiffMarkers]; });
+            return;
+        }
+        NSString *diff = [GitHelper diffForFile:fp root:root];
+        // Parse hunk headers: @@ -old,count +new,count @@
+        // Build sets of new-file line numbers (1-based) for each marker type.
+        NSMutableSet<NSNumber *> *addedLines    = [NSMutableSet set];
+        NSMutableSet<NSNumber *> *modifiedLines = [NSMutableSet set];
+        NSMutableSet<NSNumber *> *deletedLines  = [NSMutableSet set];
+        if (diff.length) {
+            NSArray<NSString *> *lines = [diff componentsSeparatedByString:@"\n"];
+            NSInteger newLine = 0; // tracks current new-file line number
+            NSInteger hunkNewStart = 0;
+            NSInteger hunkOldStart = 0;
+            for (NSString *line in lines) {
+                if ([line hasPrefix:@"@@"]) {
+                    // @@ -old_start,old_count +new_start,new_count @@
+                    NSRegularExpression *re = [NSRegularExpression
+                        regularExpressionWithPattern:@"\\+([0-9]+)"
+                                             options:0 error:nil];
+                    NSRegularExpression *reOld = [NSRegularExpression
+                        regularExpressionWithPattern:@"-([0-9]+)"
+                                             options:0 error:nil];
+                    NSTextCheckingResult *mNew = [re firstMatchInString:line options:0
+                                                                  range:NSMakeRange(0, line.length)];
+                    NSTextCheckingResult *mOld = [reOld firstMatchInString:line options:0
+                                                                     range:NSMakeRange(0, line.length)];
+                    if (mNew) hunkNewStart = [[line substringWithRange:[mNew rangeAtIndex:1]] integerValue];
+                    if (mOld) hunkOldStart = [[line substringWithRange:[mOld rangeAtIndex:1]] integerValue];
+                    newLine = hunkNewStart - 1; // will be incremented on first context/add line
+                    (void)hunkOldStart;
+                } else if ([line hasPrefix:@"+"]) {
+                    newLine++;
+                    [addedLines addObject:@(newLine)];
+                } else if ([line hasPrefix:@"-"]) {
+                    // Deleted line: mark the line before it in the new file
+                    NSInteger markLine = MAX(1, newLine);
+                    [deletedLines addObject:@(markLine)];
+                } else if (![line hasPrefix:@"\\"]) {
+                    // Context line (not "\ No newline at end of file")
+                    newLine++;
+                }
+            }
+            // Lines that appear in both added and deleted sets are modifications
+            NSMutableSet<NSNumber *> *both = [addedLines mutableCopy];
+            [both intersectSet:deletedLines];
+            for (NSNumber *n in both) {
+                [addedLines removeObject:n];
+                [deletedLines removeObject:n];
+                [modifiedLines addObject:n];
+            }
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            __strong typeof(weakSelf) self = weakSelf;
+            if (!self) return;
+            [self clearGitDiffMarkers];
+            ScintillaView *sci = self->_scintillaView;
+            for (NSNumber *n in addedLines) {
+                NSInteger line0 = n.integerValue - 1; // Scintilla is 0-based
+                [sci message:SCI_MARKERADD wParam:(uptr_t)line0 lParam:kGitMarkerAdded];
+            }
+            for (NSNumber *n in modifiedLines) {
+                NSInteger line0 = n.integerValue - 1;
+                [sci message:SCI_MARKERADD wParam:(uptr_t)line0 lParam:kGitMarkerModified];
+            }
+            for (NSNumber *n in deletedLines) {
+                NSInteger line0 = MAX(0, n.integerValue - 1);
+                [sci message:SCI_MARKERADD wParam:(uptr_t)line0 lParam:kGitMarkerDeleted];
+            }
+        });
+    });
 }
 
 @end

@@ -12,6 +12,7 @@ NSString *const kPrefEncoding           = @"encoding";      // 0=UTF-8 1=Latin-1
 NSString *const kPrefAutoBackup         = @"autoBackup";
 NSString *const kPrefBackupInterval     = @"backupInterval"; // seconds
 NSString *const kPrefZoomLevel          = @"zoomLevel";
+NSString *const kPrefSpellCheck         = @"spellCheck";
 
 // Theme / Style Configurator keys
 NSString *const kPrefThemePreset        = @"themePreset";

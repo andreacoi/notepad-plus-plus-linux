@@ -87,6 +87,9 @@ set(APP_SRCS
     src/StyleConfiguratorWindowController.mm
     src/IncrementalSearchBar.mm
     src/CommandPalettePanel.mm
+    src/GitHelper.mm
+    src/GitPanel.mm
+    src/FolderTreePanel.mm
 )
 
 set(APP_HEADERS
@@ -109,6 +112,9 @@ set(APP_HEADERS
     src/StyleConfiguratorWindowController.h
     src/IncrementalSearchBar.h
     src/CommandPalettePanel.h
+    src/GitHelper.h
+    src/GitPanel.h
+    src/FolderTreePanel.h
 )
 
 add_executable(NotepadPlusPlusMac MACOSX_BUNDLE ${APP_SRCS} ${APP_HEADERS})

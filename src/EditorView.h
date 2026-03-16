@@ -279,6 +279,17 @@ extern NSNotificationName const EditorViewCursorDidMoveNotification;
 - (void)base64URLSafeEncode:(id)sender;
 - (void)base64URLSafeDecode:(id)sender;
 
+// ── Spell check ───────────────────────────────────────────────────────────────
+@property (nonatomic) BOOL spellCheckEnabled;
+- (void)runSpellCheck;
+- (void)clearSpellCheck;
+
+// ── Git gutter diff markers ───────────────────────────────────────────────────
+/// Async: runs git diff, marks added/modified/deleted lines in the gutter.
+- (void)updateGitDiffMarkers;
+/// Clear all git gutter markers.
+- (void)clearGitDiffMarkers;
+
 // ── Export ────────────────────────────────────────────────────────────────────
 /// Generate plain-text-in-HTML string (UTF-8, escaped) for current content.
 - (nullable NSString *)generateHTML;

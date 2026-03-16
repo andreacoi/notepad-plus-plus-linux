@@ -36,6 +36,10 @@ static const CGFloat kRowH    = 50;
 - (BOOL)canBecomeKeyWindow  { return YES; }
 - (BOOL)canBecomeMainWindow { return NO;  }
 
+- (void)dealloc {
+    if (_escMonitor) [NSEvent removeMonitor:_escMonitor];
+}
+
 - (instancetype)init {
     self = [super initWithContentRect:NSMakeRect(0, 0, kPanelW, kPanelH)
                             styleMask:NSWindowStyleMaskBorderless

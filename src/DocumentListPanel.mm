@@ -87,6 +87,7 @@
 - (nullable NSView *)tableView:(NSTableView *)tableView
             viewForTableColumn:(nullable NSTableColumn *)tableColumn
                            row:(NSInteger)row {
+    if (row < 0 || row >= (NSInteger)_items.count) return nil;
     EditorView *ed = _items[row];
     NSString *display = ed.isModified
         ? [NSString stringWithFormat:@"• %@", ed.displayName]

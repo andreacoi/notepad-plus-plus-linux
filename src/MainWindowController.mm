@@ -14,6 +14,9 @@
 #import "PreferencesWindowController.h"
 #import "IncrementalSearchBar.h"
 #import "CommandPalettePanel.h"
+#import "GitHelper.h"
+#import "GitPanel.h"
+#import "FolderTreePanel.h"
 #import <objc/runtime.h>
 
 // ── Private helper for the Windows… dialog ───────────────────────────────────
@@ -237,7 +240,8 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
 @interface MainWindowController ()
     <TabManagerDelegate, NSWindowDelegate,
      NSToolbarDelegate, FindReplacePanelDelegate, NSUserInterfaceValidations,
-     NSSplitViewDelegate, IncrementalSearchBarDelegate>
+     NSSplitViewDelegate, IncrementalSearchBarDelegate,
+     FolderTreePanelDelegate, GitPanelDelegate>
 @end
 
 @implementation MainWindowController {
@@ -246,6 +250,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     NSView           *_statusBar;
     NSTextField      *_statusLeft;
     NSTextField      *_statusRight;
+    NSTextField      *_gitBranchLabel;
     NSLayoutConstraint *_findPanelHeightConstraint;
     NSTimer          *_autoSaveTimer;
 
@@ -257,6 +262,8 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     FunctionListPanel     *_funcListPanel;
     DocumentMapPanel      *_docMapPanel;
     CommandPalettePanel   *_commandPalette;
+    NSView                *_folderTreePanel;   // FolderTreePanel
+    NSView                *_gitPanel;          // GitPanel
 
     // Second editor view — horizontal (top/bottom)
     NSSplitView   *_hSplitView;
@@ -554,8 +561,12 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
 
     _statusLeft  = [self makeStatusLabel:NSTextAlignmentLeft];
     _statusRight = [self makeStatusLabel:NSTextAlignmentRight];
+    // Git branch label: right-aligned, muted gray, before _statusRight
+    _gitBranchLabel = [self makeStatusLabel:NSTextAlignmentRight];
+    _gitBranchLabel.textColor = [NSColor secondaryLabelColor];
     [_statusBar addSubview:_statusLeft];
     [_statusBar addSubview:_statusRight];
+    [_statusBar addSubview:_gitBranchLabel];
 
     [NSLayoutConstraint activateConstraints:@[
         [sep.topAnchor constraintEqualToAnchor:_statusBar.topAnchor],
@@ -568,6 +579,8 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
         [_statusRight.trailingAnchor constraintEqualToAnchor:_statusBar.trailingAnchor constant:-8],
         [_statusRight.centerYAnchor constraintEqualToAnchor:_statusBar.centerYAnchor constant:1],
         [_statusRight.leadingAnchor constraintGreaterThanOrEqualToAnchor:_statusBar.centerXAnchor],
+        [_gitBranchLabel.trailingAnchor constraintEqualToAnchor:_statusRight.leadingAnchor constant:-16],
+        [_gitBranchLabel.centerYAnchor constraintEqualToAnchor:_statusBar.centerYAnchor constant:1],
     ]];
 
     // ── Horizontal (left/right) split: views | side panels ────────────────────
@@ -1169,7 +1182,65 @@ static NSString *nppMacrosPath(void) {
 }
 
 - (void)showFolderAsWorkspace:(id)sender {
-    // Phase 2 stub
+    // Phase 2 stub — superseded by showFolderTreePanel:
+    [self showFolderTreePanel:sender];
+}
+
+- (void)showFolderTreePanel:(id)sender {
+    if (!_folderTreePanel) {
+        FolderTreePanel *ftp = [[FolderTreePanel alloc] init];
+        ftp.delegate = self;
+        _folderTreePanel = ftp;
+    }
+    BOOL open = [_sidePanelHost hasPanel:_folderTreePanel];
+    if (!open) {
+        NSString *path = [self currentEditor].filePath;
+        [(FolderTreePanel *)_folderTreePanel setActiveFileURL:
+            path ? [NSURL fileURLWithPath:path] : [NSURL fileURLWithPath:NSHomeDirectory()]];
+    }
+    [self _setPanelVisible:_folderTreePanel title:@"Folder Tree" show:!open];
+}
+
+- (void)showGitPanel:(id)sender {
+    if (!_gitPanel) {
+        GitPanel *gp = [[GitPanel alloc] init];
+        gp.delegate = self;
+        _gitPanel = gp;
+    }
+    BOOL open = [_sidePanelHost hasPanel:_gitPanel];
+    if (!open) [self _updateGitPanelForPath:[self currentEditor].filePath];
+    [self _setPanelVisible:_gitPanel title:@"Git" show:!open];
+}
+
+- (void)_updateGitPanelForPath:(NSString *)filePath {
+    if (!_gitPanel) return;
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0), ^{
+        // Try file path first, fall back to working directory
+        NSString *root = nil;
+        if (filePath.length) root = [GitHelper gitRootForPath:filePath];
+        if (!root) root = [GitHelper gitRootForPath:
+                           [NSFileManager defaultManager].currentDirectoryPath];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [(GitPanel *)self->_gitPanel setRepoRoot:root];
+            [(GitPanel *)self->_gitPanel refresh];
+        });
+    });
+}
+
+- (void)toggleSpellCheck:(id)sender {
+    EditorView *ed = [self currentEditor];
+    ed.spellCheckEnabled = !ed.spellCheckEnabled;
+}
+
+- (void)_updateGitBranch:(NSString *)filePath {
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0), ^{
+        NSString *root   = filePath ? [GitHelper gitRootForPath:filePath] : nil;
+        NSString *branch = root ? [GitHelper currentBranchAtRoot:root] : nil;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self->_gitBranchLabel.stringValue =
+                branch ? [@"\u2387 " stringByAppendingString:branch] : @"";
+        });
+    });
 }
 
 - (void)showProjectPanel1:(id)sender {
@@ -1540,6 +1611,12 @@ static NSString *nppMacrosPath(void) {
 
     if (action == @selector(closeAllButPinned:))
         return _activeTabManager.allEditors.count > 0;
+
+    // Spell check checkmark
+    if (action == @selector(toggleSpellCheck:)) {
+        [(NSMenuItem *)item setState:ed.spellCheckEnabled ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil;
+    }
 
     return YES;
 }
@@ -2047,6 +2124,18 @@ static NSString *nppMacrosPath(void) {
         [ed findNext:matchText matchCase:matchCase wholeWord:NO wrap:NO];
 }
 
+#pragma mark - FolderTreePanelDelegate
+
+- (void)folderTreePanel:(FolderTreePanel *)panel openFileAtURL:(NSURL *)url {
+    [self openFileAtPath:url.path];
+}
+
+#pragma mark - GitPanelDelegate
+
+- (void)gitPanel:(GitPanel *)panel openFileAtPath:(NSString *)path {
+    [self openFileAtPath:path];
+}
+
 #pragma mark - View menu actions
 
 - (void)toggleWordWrap:(id)sender {
@@ -2326,7 +2415,8 @@ static NSString *nppMacrosPath(void) {
 
 - (CGFloat)splitView:(NSSplitView *)sv constrainMinCoordinate:(CGFloat)p ofSubviewAt:(NSInteger)i {
     if (sv == _hSplitView || sv == _vSplitView) return p + 100;
-    return p + 200;   // editor always at least 200pt
+    if (sv == _editorSplitView) return p + 200;
+    return p + 200;
 }
 
 - (CGFloat)splitView:(NSSplitView *)sv constrainMaxCoordinate:(CGFloat)p ofSubviewAt:(NSInteger)i {
@@ -2345,6 +2435,16 @@ static NSString *nppMacrosPath(void) {
         [_funcListPanel loadEditor:editor];
     if (_docMapPanel && [_sidePanelHost hasPanel:_docMapPanel])
         [_docMapPanel setTrackedEditor:editor];
+    if (_folderTreePanel && [_sidePanelHost hasPanel:_folderTreePanel]) {
+        NSString *path = editor.filePath;
+        [(FolderTreePanel *)_folderTreePanel setActiveFileURL:
+            path ? [NSURL fileURLWithPath:path] : [NSURL fileURLWithPath:NSHomeDirectory()]];
+    }
+    if (_gitPanel && [_sidePanelHost hasPanel:_gitPanel]) {
+        [self _updateGitPanelForPath:editor.filePath];
+    }
+    [self _updateGitBranch:editor.filePath];
+    [editor updateGitDiffMarkers];
 }
 
 - (void)tabManager:(id)tabManager didCloseEditor:(EditorView *)editor {

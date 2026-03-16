@@ -14,6 +14,7 @@ extern NSString *const kPrefEncoding;
 extern NSString *const kPrefAutoBackup;
 extern NSString *const kPrefBackupInterval;
 extern NSString *const kPrefZoomLevel;
+extern NSString *const kPrefSpellCheck;   // BOOL, default NO
 
 // Theme / Style Configurator keys (hex color strings "#RRGGBB")
 extern NSString *const kPrefThemePreset;    // preset name or "Custom"
