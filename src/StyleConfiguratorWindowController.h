@@ -39,6 +39,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Ordered list of all lexers (Global Styles first, then alphabetical).
 @property (readonly, nonatomic) NSArray<NPPLexer *> *allLexers;
 
+/// Name of the currently active theme (updated on preview and commit).
+@property (nonatomic, copy) NSString *activeThemeName;
+
 /// Names of all available themes: "Default (stylers.xml)" + bundled theme files.
 @property (readonly, nonatomic) NSArray<NSString *> *availableThemeNames;
 

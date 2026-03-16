@@ -448,6 +448,7 @@ static NSString *modelLexerID(NSString *themeID) {
     NSMutableArray<NPPLexer *>  *_workingLexers;
     // Snapshot taken when window opens — restored on Cancel
     NSArray<NPPLexer *>         *_cancelBackup;
+    NSString                    *_cancelTheme;
     // Currently displayed styles
     NSArray<NPPStyleEntry *>    *_currentStyles;
     int                          _selectedStyleID;
@@ -776,6 +777,7 @@ static NSString *modelLexerID(NSString *themeID) {
     [_langPopup selectItemAtIndex:newIdx];
     [self _selectLangAtIndex:newIdx];
     // Live preview — immediately apply to all editors
+    [NPPStyleStore sharedStore].activeThemeName = _workingTheme ?: kDefaultThemeName;
     [[NPPStyleStore sharedStore] previewLexers:_workingLexers];
 }
 
@@ -834,6 +836,7 @@ static NSString *modelLexerID(NSString *themeID) {
 - (void)_cancel:(id)sender {
     // Restore state that was active when window was opened
     if (_cancelBackup) {
+        [NPPStyleStore sharedStore].activeThemeName = _cancelTheme ?: kDefaultThemeName;
         [[NPPStyleStore sharedStore] previewLexers:_cancelBackup];
     }
     [self.window close];
@@ -912,6 +915,7 @@ static NSString *modelLexerID(NSString *themeID) {
     NSMutableArray *backup = [NSMutableArray new];
     for (NPPLexer *lex in store.allLexers) [backup addObject:[lex copy]];
     _cancelBackup = [backup copy];
+    _cancelTheme  = store.activeThemeName ?: kDefaultThemeName;
 
     // Populate theme popup
     [self _populateThemePopup];

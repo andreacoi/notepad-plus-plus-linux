@@ -13,6 +13,23 @@ NSNotificationName const EditorViewCursorDidMoveNotification = @"EditorViewCurso
 namespace Scintilla { struct ILexer5; }
 extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
 
+/// Returns YES if the named theme belongs to the explicit "dark fold margin" list.
+/// These themes get fold-margin bg = editor bg; all others get #f2f2f2.
+static BOOL foldMarginUsesEditorBg(NSString *themeName) {
+    static NSSet<NSString *> *s;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        s = [NSSet setWithArray:@[
+            @"Bespin", @"Black board", @"Choco", @"DansLeRuSH-Dark",
+            @"DarkModeDefault", @"Deep Black", @"HotFudgeSundae", @"Mono Industrial",
+            @"Monokai", @"MossyLawn", @"Obsidian", @"Plastic Code Wrap",
+            @"Ruby Blue", @"Solarized", @"Twilight", @"Vibrant Ink",
+            @"vim Dark Blue", @"Zenburn"
+        ]];
+    });
+    return themeName && [s containsObject:themeName];
+}
+
 // Language name → Lexilla lexer name
 static NSDictionary<NSString *, NSString *> *languageLexerNameMap() {
     static NSDictionary *map;
@@ -695,18 +712,23 @@ static NSColor *nppColorFromHex(NSString *hex) {
         : [NSColor colorWithWhite:bgBrightness + 0.08 alpha:1.0];
     [sci message:SCI_SETCARETLINEBACK wParam:sciColor(caretLineBg)];
 
-    // Fold margin column background = editor background
-    [sci message:SCI_SETFOLDMARGINCOLOUR   wParam:1 lParam:sciColor(bg)];
-    [sci message:SCI_SETFOLDMARGINHICOLOUR wParam:1 lParam:sciColor(bg)];
-    NSColor *foldBack = bgBrightness > 0.5
-        ? [NSColor colorWithWhite:0.82 alpha:1.0]
-        : [NSColor colorWithWhite:bgBrightness + 0.22 alpha:1.0];
-    NSColor *foldFore = bgBrightness > 0.5
-        ? [NSColor blackColor]
-        : [NSColor colorWithWhite:0.80 alpha:1.0];
+    // Fold margin column background:
+    //   • Listed dark themes → editor bg; all others → #f2f2f2
+    BOOL darkFold = foldMarginUsesEditorBg([[NPPStyleStore sharedStore] activeThemeName]);
+    NSColor *foldMarginBg = darkFold
+        ? bg
+        : [NSColor colorWithRed:0.949 green:0.949 blue:0.949 alpha:1.0];
+    [sci message:SCI_SETFOLDMARGINCOLOUR   wParam:1 lParam:sciColor(foldMarginBg)];
+    [sci message:SCI_SETFOLDMARGINHICOLOUR wParam:1 lParam:sciColor(foldMarginBg)];
+    NSColor *foldBack2 = darkFold
+        ? [NSColor colorWithWhite:bgBrightness + 0.22 alpha:1.0]
+        : [NSColor colorWithWhite:0.82 alpha:1.0];
+    NSColor *foldFore2 = darkFold
+        ? [NSColor colorWithWhite:0.80 alpha:1.0]
+        : [NSColor blackColor];
     for (int mn = SC_MARKNUM_FOLDEREND; mn <= SC_MARKNUM_FOLDEROPEN; mn++) {
-        [sci setColorProperty:SCI_MARKERSETFORE parameter:mn value:foldFore];
-        [sci setColorProperty:SCI_MARKERSETBACK parameter:mn value:foldBack];
+        [sci setColorProperty:SCI_MARKERSETFORE parameter:mn value:foldFore2];
+        [sci setColorProperty:SCI_MARKERSETBACK parameter:mn value:foldBack2];
     }
 
     // Re-apply language colors with the new theme palette
@@ -807,17 +829,22 @@ static NSColor *nppColorFromHex(NSString *hex) {
     [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERMIDTAIL lParam:SC_MARK_TCORNERCURVE];
     [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERTAIL    lParam:SC_MARK_LCORNERCURVE];
     [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERSUB     lParam:SC_MARK_VLINE];
-    // Fold margin column background = editor background (dark themes need this to avoid
-    // a jarring light-grey strip next to a dark editor area)
-    [sci message:SCI_SETFOLDMARGINCOLOUR   wParam:1 lParam:sciColor(bg)];
-    [sci message:SCI_SETFOLDMARGINHICOLOUR wParam:1 lParam:sciColor(bg)];
-    // Marker colours: adapt to theme brightness
-    NSColor *foldBack = bgBrightness > 0.5
-        ? [NSColor colorWithWhite:0.82 alpha:1.0]
-        : [NSColor colorWithWhite:bgBrightness + 0.22 alpha:1.0];
-    NSColor *foldFore = bgBrightness > 0.5
-        ? [NSColor blackColor]
-        : [NSColor colorWithWhite:0.80 alpha:1.0];
+    // Fold margin column background:
+    //   • Listed dark themes → editor bg (Default Style background)
+    //   • All other themes   → #f2f2f2
+    BOOL darkFold = foldMarginUsesEditorBg([[NPPStyleStore sharedStore] activeThemeName]);
+    NSColor *foldMarginBg = darkFold
+        ? bg
+        : [NSColor colorWithRed:0.949 green:0.949 blue:0.949 alpha:1.0];
+    [sci message:SCI_SETFOLDMARGINCOLOUR   wParam:1 lParam:sciColor(foldMarginBg)];
+    [sci message:SCI_SETFOLDMARGINHICOLOUR wParam:1 lParam:sciColor(foldMarginBg)];
+    // Marker (+/−) colours: adapt to the margin background
+    NSColor *foldBack = darkFold
+        ? [NSColor colorWithWhite:bgBrightness + 0.22 alpha:1.0]
+        : [NSColor colorWithWhite:0.82 alpha:1.0];
+    NSColor *foldFore = darkFold
+        ? [NSColor colorWithWhite:0.80 alpha:1.0]
+        : [NSColor blackColor];
     NSColor *foldRed  = [NSColor colorWithRed:0.80 green:0.0 blue:0.0 alpha:1.0];
     for (int mn = SC_MARKNUM_FOLDEREND; mn <= SC_MARKNUM_FOLDEROPEN; mn++) {
         [sci setColorProperty:SCI_MARKERSETFORE          parameter:mn value:foldFore];
