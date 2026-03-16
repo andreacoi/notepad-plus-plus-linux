@@ -14,7 +14,7 @@ namespace Scintilla { struct ILexer5; }
 extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
 
 /// Returns YES if the named theme belongs to the explicit "dark fold margin" list.
-/// These themes get fold-margin bg = editor bg; all others get #f2f2f2.
+/// These themes get fold-margin bg = Default Style background; all others get #f2f2f2.
 static BOOL foldMarginUsesEditorBg(NSString *themeName) {
     static NSSet<NSString *> *s;
     static dispatch_once_t once;
@@ -28,6 +28,36 @@ static BOOL foldMarginUsesEditorBg(NSString *themeName) {
         ]];
     });
     return themeName && [s containsObject:themeName];
+}
+
+/// Read the Default Style bgColor hex directly from the theme XML and return as a
+/// Scintilla BGR integer.  Bypasses NSColor entirely to avoid color-space shifts.
+/// Returns -1 if the theme XML or bgColor attribute is not found.
+static sptr_t foldMarginBGRForTheme(NSString *themeName) {
+    static NSString *const kDefault = @"Default (stylers.xml)";
+    NSURL *url;
+    if (!themeName || [themeName isEqualToString:kDefault]) {
+        url = [[NSBundle mainBundle] URLForResource:@"stylers.model" withExtension:@"xml"];
+    } else {
+        url = [[NSBundle mainBundle] URLForResource:themeName
+                                     withExtension:@"xml"
+                                      subdirectory:@"themes"];
+    }
+    if (!url) return -1;
+    NSData *data = [NSData dataWithContentsOfURL:url];
+    if (!data) return -1;
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:0 error:nil];
+    if (!doc) return -1;
+    NSArray<NSXMLElement *> *nodes =
+        [doc nodesForXPath:@"//GlobalStyles/WidgetStyle[@name='Default Style']" error:nil];
+    NSString *bgHex = [[nodes.firstObject attributeForName:@"bgColor"] stringValue];
+    if (bgHex.length < 6) return -1;
+    unsigned int rgb = 0;
+    [[NSScanner scannerWithString:bgHex] scanHexInt:&rgb];
+    uint8_t r = (rgb >> 16) & 0xFF;
+    uint8_t g = (rgb >>  8) & 0xFF;
+    uint8_t b =  rgb        & 0xFF;
+    return ((sptr_t)b << 16) | ((sptr_t)g << 8) | r;  // BGR for Scintilla
 }
 
 // Language name → Lexilla lexer name
@@ -713,13 +743,14 @@ static NSColor *nppColorFromHex(NSString *hex) {
     [sci message:SCI_SETCARETLINEBACK wParam:sciColor(caretLineBg)];
 
     // Fold margin column background:
-    //   • Listed dark themes → editor bg; all others → #f2f2f2
-    BOOL darkFold = foldMarginUsesEditorBg([[NPPStyleStore sharedStore] activeThemeName]);
-    NSColor *foldMarginBg = darkFold
-        ? bg
-        : [NSColor colorWithRed:0.949 green:0.949 blue:0.949 alpha:1.0];
-    [sci message:SCI_SETFOLDMARGINCOLOUR   wParam:1 lParam:sciColor(foldMarginBg)];
-    [sci message:SCI_SETFOLDMARGINHICOLOUR wParam:1 lParam:sciColor(foldMarginBg)];
+    //   • Listed dark themes → Default Style bg read directly from XML (exact hex, no color-space shift)
+    //   • All other themes   → #f2f2f2
+    NSString *activeThem = [[NPPStyleStore sharedStore] activeThemeName];
+    BOOL darkFold = foldMarginUsesEditorBg(activeThem);
+    sptr_t foldBGR = darkFold ? foldMarginBGRForTheme(activeThem) : -1;
+    sptr_t foldMarginBGR2 = (foldBGR >= 0) ? foldBGR : 0xF2F2F2;
+    [sci message:SCI_SETFOLDMARGINCOLOUR   wParam:1 lParam:foldMarginBGR2];
+    [sci message:SCI_SETFOLDMARGINHICOLOUR wParam:1 lParam:foldMarginBGR2];
     NSColor *foldBack2 = darkFold
         ? [NSColor colorWithWhite:bgBrightness + 0.22 alpha:1.0]
         : [NSColor colorWithWhite:0.82 alpha:1.0];
@@ -830,14 +861,14 @@ static NSColor *nppColorFromHex(NSString *hex) {
     [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERTAIL    lParam:SC_MARK_LCORNERCURVE];
     [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERSUB     lParam:SC_MARK_VLINE];
     // Fold margin column background:
-    //   • Listed dark themes → editor bg (Default Style background)
+    //   • Listed dark themes → Default Style bg read directly from XML (exact hex, no color-space shift)
     //   • All other themes   → #f2f2f2
-    BOOL darkFold = foldMarginUsesEditorBg([[NPPStyleStore sharedStore] activeThemeName]);
-    NSColor *foldMarginBg = darkFold
-        ? bg
-        : [NSColor colorWithRed:0.949 green:0.949 blue:0.949 alpha:1.0];
-    [sci message:SCI_SETFOLDMARGINCOLOUR   wParam:1 lParam:sciColor(foldMarginBg)];
-    [sci message:SCI_SETFOLDMARGINHICOLOUR wParam:1 lParam:sciColor(foldMarginBg)];
+    NSString *activeThm = [[NPPStyleStore sharedStore] activeThemeName];
+    BOOL darkFold = foldMarginUsesEditorBg(activeThm);
+    sptr_t foldBGR = darkFold ? foldMarginBGRForTheme(activeThm) : -1;
+    sptr_t foldMarginBGR = (foldBGR >= 0) ? foldBGR : 0xF2F2F2;
+    [sci message:SCI_SETFOLDMARGINCOLOUR   wParam:1 lParam:foldMarginBGR];
+    [sci message:SCI_SETFOLDMARGINHICOLOUR wParam:1 lParam:foldMarginBGR];
     // Marker (+/−) colours: adapt to the margin background
     NSColor *foldBack = darkFold
         ? [NSColor colorWithWhite:bgBrightness + 0.22 alpha:1.0]
