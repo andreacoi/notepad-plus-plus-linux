@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy)     NSString            *fontName;  // @"" = inherit
 @property (nonatomic)           int                  fontSize;  // 0 = inherit
 @property (nonatomic)           BOOL                 bold, italic, underline;
+@property (nonatomic)           BOOL                 fontStyleExplicit; // fontStyle attr was set in XML
 @end
 
 /// All styles for a single language/lexer.
@@ -25,8 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 // ── Style store (singleton) ───────────────────────────────────────────────────
 
-/// Shared style store.  Reads defaults from bundled stylers.model.xml; stores
-/// user overrides in NSUserDefaults key "NPPStyleOverrides".
 @interface NPPStyleStore : NSObject
 
 + (NPPStyleStore *)sharedStore;
@@ -34,31 +33,41 @@ NS_ASSUME_NONNULL_BEGIN
 /// Parse the bundled XML and apply any saved overrides.  Call once at launch.
 - (void)loadFromDefaults;
 
-/// Return all style entries for a lexer (resolved = XML default + user override).
-/// Mapping: "c"/"objc" are aliased to "cpp"; unknown IDs return nil.
+/// Return all style entries for a lexer (resolved = theme + user override).
 - (nullable NSArray<NPPStyleEntry *> *)stylesForLexer:(NSString *)lexerID;
 
 /// Ordered list of all lexers (Global Styles first, then alphabetical).
 @property (readonly, nonatomic) NSArray<NPPLexer *> *allLexers;
 
-/// Convenience: global "Default Style" resolved properties for STYLE_DEFAULT.
+/// Names of all available themes: "Default (stylers.xml)" + bundled theme files.
+@property (readonly, nonatomic) NSArray<NSString *> *availableThemeNames;
+
+/// Convenience: global "Default Style" resolved properties.
 @property (readonly, nonatomic) NSColor  *globalFg;
 @property (readonly, nonatomic) NSColor  *globalBg;
 @property (readonly, nonatomic) NSString *globalFontName;
 @property (readonly, nonatomic) int       globalFontSize;
 
-/// Called by StyleConfiguratorWindowController on "Save & Close".
-/// Replaces in-memory lexers with `lexers`, persists, and posts NPPPreferencesChanged.
-- (void)commitLexers:(NSArray<NPPLexer *> *)lexers;
+/// Load a fresh set of lexers for the given theme name (Default or XML file name).
+/// Returns a fully-merged array (model defaults + theme overrides).
+- (NSArray<NPPLexer *> *)lexersForTheme:(NSString *)themeName;
+
+/// Update in-memory state + notify EditorViews (no NSUserDefaults write).
+- (void)previewLexers:(NSArray<NPPLexer *> *)lexers;
+
+/// Persist to NSUserDefaults + notify EditorViews.
+- (void)commitLexers:(NSArray<NPPLexer *> *)lexers themeName:(NSString *)themeName;
 
 @end
 
 // ── Window controller ─────────────────────────────────────────────────────────
 
-/// Modeless Style Configurator window — matches Windows Notepad++ layout.
 @interface StyleConfiguratorWindowController : NSWindowController
 
 + (instancetype)sharedController;
+
+/// Show the configurator and optionally trigger an import sheet.
+- (void)importTheme:(id)sender;
 
 @end
 

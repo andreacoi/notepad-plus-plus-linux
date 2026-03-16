@@ -138,6 +138,12 @@ add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
         "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/stylers.model.xml"
     COMMENT "Copying stylers.model.xml into bundle")
 
+add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/resources/themes"
+        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/themes"
+    COMMENT "Copying theme XML files into bundle")
+
 set_target_properties(NotepadPlusPlusMac PROPERTIES
     MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/resources/Info.plist"
     MACOSX_BUNDLE_BUNDLE_NAME "Notepad++"
