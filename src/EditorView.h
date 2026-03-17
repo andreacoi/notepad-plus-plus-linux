@@ -53,6 +53,13 @@ extern NSNotificationName const EditorViewCursorDidMoveNotification;
 // YES when monitoring mode (tail -f) is active — file changes silently auto-reload.
 @property (nonatomic) BOOL monitoringMode;
 
+// Set to YES before writing the file ourselves so presentedItemDidChange ignores the notification.
+@property (nonatomic) BOOL savingSuppressed;
+
+/// Must be called when a tab is permanently closed (not evicted to another split).
+/// Unregisters the file presenter so the EditorView can be deallocated.
+- (void)prepareForClose;
+
 /// Copy all text content from another editor (for untitled tab cloning).
 - (void)loadContentFromEditor:(EditorView *)source;
 
@@ -114,12 +121,16 @@ extern NSNotificationName const EditorViewCursorDidMoveNotification;
 - (void)splitLines:(id)sender;
 
 // ── Comment/Uncomment ─────────────────────────────────────────────────────────
+- (void)addSingleLineComment:(id)sender;
+- (void)removeSingleLineComment:(id)sender;
 - (void)addBlockComment:(id)sender;
 - (void)removeBlockComment:(id)sender;
 
 // ── Multi-select ──────────────────────────────────────────────────────────────
 - (void)beginEndSelect:(id)sender;
 - (void)beginEndSelectColumnMode:(id)sender;
+/// YES when the first click of Begin/End Select has been pressed (awaiting second click).
+@property (nonatomic, readonly) BOOL beginSelectActive;
 - (void)multiSelectAllInCurrentDocument:(id)sender;
 - (void)multiSelectNextInCurrentDocument:(id)sender;
 - (void)undoLatestMultiSelect:(id)sender;
@@ -242,8 +253,12 @@ extern NSNotificationName const EditorViewCursorDidMoveNotification;
 - (void)hexToAscii:(id)sender;
 
 // ── Auto-Completion (explicit menu triggers) ─────────────────────────────────
+- (void)triggerFunctionCompletion:(id)sender;
 - (void)triggerWordCompletion:(id)sender;
 - (void)triggerFunctionParametersHint:(id)sender;
+- (void)showFunctionParametersPreviousHint:(id)sender;
+- (void)showFunctionParametersNextHint:(id)sender;
+- (void)triggerPathCompletion:(id)sender;
 - (void)finishOrSelectAutocompleteItem:(id)sender;
 
 // ── Hashes ────────────────────────────────────────────────────────────────────

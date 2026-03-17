@@ -151,6 +151,7 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     NSOperationQueue  *_presenterQueue;
     BOOL               _externalChangePending;
     BOOL               _monitoringMode;   // tail -f: auto-reload silently
+    BOOL               _savingSuppressed; // YES while we are writing the file ourselves
 
     // Spell check
     BOOL               _spellCheckEnabled;
@@ -206,6 +207,20 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     if (_presentedItemURL) [NSFileCoordinator removeFilePresenter:self];
 }
+
+- (void)prepareForClose {
+    // NSFileCoordinator holds a strong reference to registered file presenters,
+    // preventing dealloc. Explicitly unregister here when a tab is permanently closed.
+    if (_presentedItemURL) {
+        [NSFileCoordinator removeFilePresenter:self];
+        _presentedItemURL = nil;
+    }
+    [_spellTimer invalidate];
+    _spellTimer = nil;
+}
+
+- (BOOL)savingSuppressed { return _savingSuppressed; }
+- (void)setSavingSuppressed:(BOOL)v { _savingSuppressed = v; }
 
 #pragma mark - Content copy
 
@@ -357,6 +372,8 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
 }
 
 - (BOOL)saveToPath:(NSString *)path error:(NSError **)error {
+    // Suppress the file-presenter "changed on disk" alert for our own write.
+    _savingSuppressed = YES;
     NSString *content = _scintillaView.string;
     BOOL ok = NO;
 
@@ -406,6 +423,10 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
         // Update git gutter after save
         [self updateGitDiffMarkers];
     }
+    // Clear suppression flag after a short delay so the async NSFilePresenter notification
+    // (which fires after the write completes) is ignored, then resume monitoring.
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)),
+                   dispatch_get_main_queue(), ^{ self->_savingSuppressed = NO; });
     return ok;
 }
 
@@ -481,6 +502,7 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
 
 - (void)presentedItemDidChange {
     dispatch_async(dispatch_get_main_queue(), ^{
+        if (self->_savingSuppressed) return;    // Our own write — ignore
         if (self->_externalChangePending) return;
         if (!self->_filePath) return;
         self->_externalChangePending = YES;
@@ -1175,6 +1197,80 @@ static const int kGitGutterMargin   = 4;  // margin index for git gutter
     [sci message:SCI_ENDUNDOACTION];
 }
 
+// Returns the single-line comment prefix for the current language.
+- (NSString *)_lineCommentPrefix {
+    NSDictionary *commentMap = @{
+        @"python":@"#", @"bash":@"#", @"ruby":@"#", @"perl":@"#",
+        @"r":@"#", @"yaml":@"#", @"makefile":@"#", @"cmake":@"#", @"toml":@"#",
+        @"sql":@"--", @"lua":@"--", @"haskell":@"--",
+    };
+    NSString *mapped = commentMap[_currentLanguage.lowercaseString];
+    return mapped ?: @"//";
+}
+
+- (void)addSingleLineComment:(id)sender {
+    NSString *prefix = [self _lineCommentPrefix];
+    ScintillaView *sci = _scintillaView;
+    sptr_t selStart = [sci message:SCI_GETSELECTIONSTART];
+    sptr_t selEnd   = [sci message:SCI_GETSELECTIONEND];
+    NSInteger firstLine = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selStart];
+    NSInteger lastLine  = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selEnd];
+    if (selEnd > selStart &&
+        [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)lastLine] == selEnd) lastLine--;
+
+    [sci message:SCI_BEGINUNDOACTION];
+    for (NSInteger ln = firstLine; ln <= lastLine; ln++) {
+        sptr_t len = [sci message:SCI_LINELENGTH wParam:(uptr_t)ln];
+        if (len <= 0) continue;
+        char *buf = (char *)malloc((size_t)len + 1);
+        if (!buf) continue;
+        [sci message:SCI_GETLINE wParam:(uptr_t)ln lParam:(sptr_t)buf];
+        buf[len] = '\0';
+        NSInteger i = 0;
+        while (i < len && (buf[i]==' ' || buf[i]=='\t')) i++;
+        if (i >= len || buf[i]=='\r' || buf[i]=='\n') { free(buf); continue; }
+        sptr_t lineStart = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)ln];
+        sptr_t insertPos = lineStart + i;
+        NSString *ins = [prefix stringByAppendingString:@" "];
+        [sci message:SCI_INSERTTEXT wParam:(uptr_t)insertPos lParam:(sptr_t)ins.UTF8String];
+        free(buf);
+    }
+    [sci message:SCI_ENDUNDOACTION];
+}
+
+- (void)removeSingleLineComment:(id)sender {
+    NSString *prefix = [self _lineCommentPrefix];
+    ScintillaView *sci = _scintillaView;
+    sptr_t selStart = [sci message:SCI_GETSELECTIONSTART];
+    sptr_t selEnd   = [sci message:SCI_GETSELECTIONEND];
+    NSInteger firstLine = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selStart];
+    NSInteger lastLine  = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selEnd];
+    if (selEnd > selStart &&
+        [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)lastLine] == selEnd) lastLine--;
+
+    [sci message:SCI_BEGINUNDOACTION];
+    for (NSInteger ln = firstLine; ln <= lastLine; ln++) {
+        sptr_t len = [sci message:SCI_LINELENGTH wParam:(uptr_t)ln];
+        if (len <= 0) continue;
+        char *buf = (char *)malloc((size_t)len + 1);
+        if (!buf) continue;
+        [sci message:SCI_GETLINE wParam:(uptr_t)ln lParam:(sptr_t)buf];
+        buf[len] = '\0';
+        NSInteger i = 0;
+        while (i < len && (buf[i]==' ' || buf[i]=='\t')) i++;
+        if (i >= len || buf[i]=='\r' || buf[i]=='\n') { free(buf); continue; }
+        if (strncmp(buf + i, prefix.UTF8String, prefix.length) == 0) {
+            sptr_t lineStart = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)ln];
+            sptr_t removeStart = lineStart + i;
+            NSInteger removeLen = (NSInteger)prefix.length;
+            if (i + removeLen < len && buf[i + removeLen] == ' ') removeLen++;
+            [sci message:SCI_DELETERANGE wParam:(uptr_t)removeStart lParam:removeLen];
+        }
+        free(buf);
+    }
+    [sci message:SCI_ENDUNDOACTION];
+}
+
 #pragma mark - Block Comment
 
 - (void)toggleBlockComment:(id)sender {
@@ -1304,6 +1400,8 @@ static const unsigned int kSCI_GetSelectionNCaret        = 2577;
 static const unsigned int kSCI_DropSelectionN            = 2671;
 static const unsigned int kSCI_SetRectSelCaret           = 2588;
 static const unsigned int kSCI_SetRectSelAnchor          = 2590;
+
+- (BOOL)beginSelectActive { return _beginSelectActive; }
 
 - (void)beginEndSelect:(id)sender {
     ScintillaView *sci = _scintillaView;
@@ -2836,6 +2934,106 @@ static const unsigned int kSCI_GetBidirectional = 2708;
     if (!funcName.length) { NSBeep(); return; }
     NSString *tip = [NSString stringWithFormat:@"%@( ... )", funcName];
     [sci message:SCI_CALLTIPSHOW wParam:(uptr_t)nameStart lParam:(sptr_t)tip.UTF8String];
+}
+
+- (void)triggerFunctionCompletion:(id)sender {
+    // Show autocomplete using words already in the document (approximates function-name completion).
+    // A full implementation would load per-language API files; this provides useful behaviour without them.
+    [self triggerWordCompletion:sender];
+}
+
+- (void)showFunctionParametersPreviousHint:(id)sender {
+    // Navigate to the previous enclosing function call and show its calltip.
+    ScintillaView *sci = _scintillaView;
+    if ([sci message:SCI_CALLTIPACTIVE]) [sci message:SCI_CALLTIPCANCEL];
+    sptr_t pos = [sci message:SCI_GETCURRENTPOS];
+    int depth = 0;
+    sptr_t scan = pos - 1;
+    while (scan > 0) {
+        char ch = (char)[sci message:SCI_GETCHARAT wParam:(uptr_t)scan];
+        if (ch == ')') { depth++; scan--; continue; }
+        if (ch == '(' && depth > 0) { depth--; scan--; continue; }
+        if (ch == '(') {
+            // Found enclosing '(' — move cursor just inside and show calltip
+            [sci message:SCI_GOTOPOS wParam:(uptr_t)(scan + 1)];
+            [self triggerFunctionParametersHint:sender];
+            return;
+        }
+        scan--;
+    }
+    NSBeep();
+}
+
+- (void)showFunctionParametersNextHint:(id)sender {
+    // Navigate forward to the next function call '(' and show its calltip.
+    ScintillaView *sci = _scintillaView;
+    if ([sci message:SCI_CALLTIPACTIVE]) [sci message:SCI_CALLTIPCANCEL];
+    sptr_t pos = [sci message:SCI_GETCURRENTPOS];
+    sptr_t len = [sci message:SCI_GETLENGTH];
+    sptr_t scan = pos;
+    while (scan < len) {
+        char ch = (char)[sci message:SCI_GETCHARAT wParam:(uptr_t)scan];
+        if (ch == '(') {
+            [sci message:SCI_GOTOPOS wParam:(uptr_t)(scan + 1)];
+            [self triggerFunctionParametersHint:sender];
+            return;
+        }
+        scan++;
+    }
+    NSBeep();
+}
+
+- (void)triggerPathCompletion:(id)sender {
+    // Complete a filesystem path at the cursor using NSFileManager.
+    ScintillaView *sci = _scintillaView;
+    sptr_t pos = [sci message:SCI_GETCURRENTPOS];
+    sptr_t lineNum   = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)pos];
+    sptr_t lineStart = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)lineNum];
+    sptr_t lineLen   = pos - lineStart;
+    if (lineLen <= 0) { NSBeep(); return; }
+
+    char *lineBuf = (char *)malloc((size_t)lineLen + 1);
+    if (!lineBuf) { NSBeep(); return; }
+    Sci_TextRangeFull tr = { {(Sci_Position)lineStart, (Sci_Position)pos}, lineBuf };
+    [sci message:SCI_GETTEXTRANGEFULL wParam:0 lParam:(sptr_t)&tr];
+    lineBuf[lineLen] = '\0';
+    NSString *lineText = [NSString stringWithUTF8String:lineBuf] ?: @"";
+    free(lineBuf);
+
+    // Find start of path: last whitespace, quote, comma, equals, or open-paren
+    NSCharacterSet *delimiters = [NSCharacterSet characterSetWithCharactersInString:@" \t\"'=,;("];
+    NSRange delimRange = [lineText rangeOfCharacterFromSet:delimiters options:NSBackwardsSearch];
+    NSString *pathPrefix = (delimRange.location == NSNotFound)
+        ? lineText
+        : [lineText substringFromIndex:delimRange.location + 1];
+    if (!pathPrefix.length || pathPrefix.length > 1024) { NSBeep(); return; }
+
+    NSString *dir, *filePrefix;
+    if ([pathPrefix hasSuffix:@"/"]) {
+        dir        = pathPrefix;
+        filePrefix = @"";
+    } else {
+        dir        = [pathPrefix stringByDeletingLastPathComponent];
+        filePrefix = [pathPrefix lastPathComponent];
+        if (!dir.length) dir = @".";
+    }
+
+    NSArray<NSString *> *contents = [[NSFileManager defaultManager]
+        contentsOfDirectoryAtPath:dir error:nil];
+    if (!contents.count) { NSBeep(); return; }
+
+    NSMutableArray<NSString *> *matches = [NSMutableArray array];
+    for (NSString *name in contents) {
+        if (filePrefix.length && ![name.lowercaseString hasPrefix:filePrefix.lowercaseString]) continue;
+        BOOL isDir = NO;
+        [[NSFileManager defaultManager] fileExistsAtPath:[dir stringByAppendingPathComponent:name]
+                                             isDirectory:&isDir];
+        [matches addObject:isDir ? [name stringByAppendingString:@"/"] : name];
+    }
+    if (!matches.count) { NSBeep(); return; }
+    [matches sortUsingSelector:@selector(caseInsensitiveCompare:)];
+    NSString *wordList = [matches componentsJoinedByString:@" "];
+    [sci message:SCI_AUTOCSHOW wParam:(uptr_t)filePrefix.length lParam:(sptr_t)wordList.UTF8String];
 }
 
 - (void)finishOrSelectAutocompleteItem:(id)sender {

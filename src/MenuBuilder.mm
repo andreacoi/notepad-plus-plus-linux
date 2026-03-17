@@ -188,9 +188,7 @@ static NSMenu *buildLanguageMenu() {
     [main addItem:appItem];
     NSMenu *appMenu = submenu(@"App");
     appItem.submenu = appMenu;
-    [appMenu addItemWithTitle:@"About Notepad++" action:@selector(orderFrontStandardAboutPanel:) keyEquivalent:@""];
-    addSep(appMenu);
-    [appMenu addItem:item(@"Preferences…", @selector(showPreferences:), @",")];
+    [appMenu addItemWithTitle:@"About Notepad++ for MacOS" action:@selector(orderFrontStandardAboutPanel:) keyEquivalent:@""];
     addSep(appMenu);
     [appMenu addItemWithTitle:@"Hide Notepad++" action:@selector(hide:) keyEquivalent:@"h"];
     NSMenuItem *hideOthers = [appMenu addItemWithTitle:@"Hide Others" action:@selector(hideOtherApplications:) keyEquivalent:@"h"];
@@ -264,8 +262,16 @@ static NSMenu *buildLanguageMenu() {
     [editMenu addItem:item(@"Paste",      @selector(paste:),     @"v")];
     [editMenu addItem:item(@"Delete",     @selector(delete:),    @"")];
     [editMenu addItem:item(@"Select All", @selector(selectAll:), @"a")];
-    [editMenu addItem:item(@"Begin/End Select",               @selector(beginEndSelect:),           @"")];
-    [editMenu addItem:item(@"Begin/End Select in Column Mode", @selector(beginEndSelectColumnMode:),  @"")];
+    {
+        NSMenuItem *it = item(@"Begin/End Select", @selector(beginEndSelect:), @"b");
+        it.keyEquivalentModifierMask = NSEventModifierFlagCommand | NSEventModifierFlagShift;
+        [editMenu addItem:it];
+    }
+    {
+        NSMenuItem *it = item(@"Begin/End Select in Column Mode", @selector(beginEndSelectColumnMode:), @"b");
+        it.keyEquivalentModifierMask = NSEventModifierFlagOption | NSEventModifierFlagShift;
+        [editMenu addItem:it];
+    }
     addSep(editMenu);
 
     // Insert submenu
@@ -347,20 +353,23 @@ static NSMenu *buildLanguageMenu() {
 
     // Comment/Uncomment submenu
     NSMenu *commentMenu = submenu(@"Comment/Uncomment");
-    [commentMenu addItem:itemMod(@"Toggle Line Comment",  @selector(toggleLineComment:),  @"/",
-                                 NSEventModifierFlagCommand)];
-    [commentMenu addItem:itemMod(@"Toggle Block Comment", @selector(toggleBlockComment:), @"/",
-                                 NSEventModifierFlagCommand | NSEventModifierFlagShift)];
-    [commentMenu addItem:item(@"Add Block Comment",    @selector(addBlockComment:),    @"")];
-    [commentMenu addItem:item(@"Remove Block Comment", @selector(removeBlockComment:), @"")];
+    [commentMenu addItem:itemMod(@"Toggle Single Line Comment", @selector(toggleLineComment:),       @"q", NSEventModifierFlagControl)];
+    [commentMenu addItem:itemMod(@"Single Line Comment",        @selector(addSingleLineComment:),    @"k", NSEventModifierFlagControl)];
+    [commentMenu addItem:itemMod(@"Single Line Uncomment",      @selector(removeSingleLineComment:), @"k", NSEventModifierFlagControl | NSEventModifierFlagShift)];
+    [commentMenu addItem:itemMod(@"Block Comment",              @selector(addBlockComment:),         @"q", NSEventModifierFlagControl | NSEventModifierFlagShift)];
+    [commentMenu addItem:item(@"Block Uncomment",               @selector(removeBlockComment:),      @"")];
     [editMenu addItem:withSubmenu(@"Comment/Uncomment", commentMenu)];
 
     // Auto-Completion submenu
     NSMenu *acMenu = submenu(@"Auto-Completion");
-    [acMenu addItem:item(@"Word Completion",                    @selector(triggerWordCompletion:),          @"")];
-    [acMenu addItem:item(@"Function Parameters Hint",           @selector(triggerFunctionParametersHint:),  @"")];
+    [acMenu addItem:itemMod(@"Function Completion",              @selector(triggerFunctionCompletion:),          @" ", NSEventModifierFlagControl)];
+    [acMenu addItem:itemMod(@"Word Completion",                  @selector(triggerWordCompletion:),              @"\r", NSEventModifierFlagControl)];
+    [acMenu addItem:itemMod(@"Function Parameters Hint",         @selector(triggerFunctionParametersHint:),      @" ", NSEventModifierFlagControl | NSEventModifierFlagShift)];
+    [acMenu addItem:itemFn(@"Function Parameters Previous Hint", @selector(showFunctionParametersPreviousHint:), NSUpArrowFunctionKey,   NSEventModifierFlagOption)];
+    [acMenu addItem:itemFn(@"Function Parameters Next Hint",     @selector(showFunctionParametersNextHint:),     NSDownArrowFunctionKey, NSEventModifierFlagOption)];
+    [acMenu addItem:itemMod(@"Path Completion",                  @selector(triggerPathCompletion:),              @" ", NSEventModifierFlagControl | NSEventModifierFlagOption)];
     addSep(acMenu);
-    [acMenu addItem:item(@"Finish or Select Autocomplete Item", @selector(finishOrSelectAutocompleteItem:), @"")];
+    [acMenu addItem:item(@"Finish or Select Autocomplete Item",  @selector(finishOrSelectAutocompleteItem:),     @"")];
     [editMenu addItem:withSubmenu(@"Auto-Completion", acMenu)];
 
     // EOL Conversion submenu
@@ -617,7 +626,7 @@ static NSMenu *buildLanguageMenu() {
     [projMenu addItem:item(@"Project Panel 3", @selector(showProjectPanel3:), @"")];
     [viewMenu addItem:withSubmenu(@"Project Panels", projMenu)];
 
-    [viewMenu addItem:item(@"Folder Tree",          @selector(showFolderTreePanel:),    @"")];
+    // "Folder Tree" panel is now accessed via File > Open Folder as Workspace
     [viewMenu addItem:item(@"Document Map",         @selector(showDocumentMap:),        @"")];
     [viewMenu addItem:item(@"Document List",        @selector(showDocumentList:),       @"")];
     [viewMenu addItem:item(@"Function List",        @selector(showFunctionList:),       @"")];
@@ -838,7 +847,7 @@ static NSMenu *buildLanguageMenu() {
     [helpMenu addItem:item(@"Set Updater Proxy…", @selector(showUpdaterProxyStub:), @"")];
     addSep(helpMenu);
     [helpMenu addItem:item(@"Debug Info…", @selector(showDebugInfo:), @"")];
-    [helpMenu addItemWithTitle:@"About Notepad++"
+    [helpMenu addItemWithTitle:@"About Notepad++ for MacOS"
                         action:@selector(orderFrontStandardAboutPanel:)
                  keyEquivalent:@""];
 }
