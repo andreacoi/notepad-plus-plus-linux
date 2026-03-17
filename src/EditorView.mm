@@ -151,6 +151,7 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     NSOperationQueue  *_presenterQueue;
     BOOL               _externalChangePending;
     BOOL               _monitoringMode;   // tail -f: auto-reload silently
+    BOOL               _ownWritePending;  // YES while our own write notification is expected
 
     // Spell check
     BOOL               _spellCheckEnabled;
@@ -394,23 +395,17 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     }
     [out appendData:body];
 
-    // Use NSFileCoordinator so the NSFilePresenter infrastructure knows this write
-    // is our own and does NOT call presentedItemDidChange on us (per Apple QA1809).
-    __block BOOL ok = NO;
-    __block NSError *writeError = nil;
-    NSError *coordError = nil;
+    // Mark that the next presentedItemDidChange notification is from our own write.
+    // NSFilePresenter uses FSEvents which can delay notification delivery by several
+    // seconds — so we can't use a fixed timer to clear this flag. Instead, the flag
+    // is cleared inside presentedItemDidChange itself when the notification arrives.
+    _ownWritePending = YES;
 
-    NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:self];
-    NSURL *url = [NSURL fileURLWithPath:path];
-    [coordinator coordinateWritingItemAtURL:url
-                                    options:NSFileCoordinatorWritingForReplacing
-                                      error:&coordError
-                                 byAccessor:^(NSURL *newURL) {
-        ok = [out writeToURL:newURL options:NSDataWritingAtomic error:&writeError];
-    }];
-
+    BOOL ok = [out writeToFile:path atomically:YES];
     if (!ok) {
-        if (error) *error = writeError ?: coordError;
+        _ownWritePending = NO;
+        if (error) *error = [NSError errorWithDomain:NSCocoaErrorDomain
+                                               code:NSFileWriteUnknownError userInfo:nil];
         return NO;
     }
 
@@ -497,6 +492,13 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
 
 - (void)presentedItemDidChange {
     dispatch_async(dispatch_get_main_queue(), ^{
+        // If this notification is from our own write, consume and ignore it.
+        // We reset the flag here (not on a timer) because FSEvents can delay
+        // delivery by several seconds, making a fixed timeout unreliable.
+        if (self->_ownWritePending) {
+            self->_ownWritePending = NO;
+            return;
+        }
         if (self->_externalChangePending) return;
         if (!self->_filePath) return;
         self->_externalChangePending = YES;
