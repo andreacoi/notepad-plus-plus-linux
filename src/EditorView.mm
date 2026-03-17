@@ -146,12 +146,11 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     sptr_t _beginSelectPos;
     BOOL   _beginSelectActive;
 
-    // File change monitoring (NSFilePresenter)
-    NSURL             *_presentedItemURL;
-    NSOperationQueue  *_presenterQueue;
+    // External file-change monitoring (polling — avoids FSEvents timing issues)
+    NSTimer           *_fileMonitorTimer;
+    NSDate            *_lastKnownModDate; // mtime recorded after each load/save
     BOOL               _externalChangePending;
     BOOL               _monitoringMode;   // tail -f: auto-reload silently
-    BOOL               _ownWritePending;  // YES while our own write notification is expected
 
     // Spell check
     BOOL               _spellCheckEnabled;
@@ -194,10 +193,6 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
 
     [self applyDefaultTheme];
 
-    _presenterQueue = [[NSOperationQueue alloc] init];
-    _presenterQueue.maxConcurrentOperationCount = 1;
-    _presenterQueue.name = @"EditorView.FilePresenter";
-
     [[NSNotificationCenter defaultCenter]
         addObserver:self selector:@selector(_preferencesChanged:)
                name:@"NPPPreferencesChanged" object:nil];
@@ -205,16 +200,13 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    if (_presentedItemURL) [NSFileCoordinator removeFilePresenter:self];
+    [_fileMonitorTimer invalidate];
 }
 
 - (void)prepareForClose {
     // NSFileCoordinator holds a strong reference to registered file presenters,
-    // preventing dealloc. Explicitly unregister here when a tab is permanently closed.
-    if (_presentedItemURL) {
-        [NSFileCoordinator removeFilePresenter:self];
-        _presentedItemURL = nil;
-    }
+    [_fileMonitorTimer invalidate];
+    _fileMonitorTimer = nil;
     [_spellTimer invalidate];
     _spellTimer = nil;
 }
@@ -322,12 +314,6 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
         return NO;
     }
 
-    // Update file presenter registration when path changes
-    NSURL *newURL = [NSURL fileURLWithPath:path];
-    if (_presentedItemURL && ![_presentedItemURL isEqual:newURL]) {
-        [NSFileCoordinator removeFilePresenter:self];
-        _presentedItemURL = nil;
-    }
 
     [_scintillaView setString:content];
     _filePath = [path copy];
@@ -356,11 +342,17 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     // without this every line would show as orange immediately after file open.
     [_scintillaView message:SCI_SETSAVEPOINT];
 
-    // Register as file presenter for external-change detection
-    if (!_presentedItemURL) {
-        _presentedItemURL = newURL;
-        [NSFileCoordinator addFilePresenter:self];
-    }
+    // Record mtime now so the polling timer won't treat our own load as a change.
+    _lastKnownModDate = [[NSFileManager defaultManager]
+                         attributesOfItemAtPath:path error:nil][NSFileModificationDate];
+
+    // Start (or restart) 1-second polling for external changes.
+    [_fileMonitorTimer invalidate];
+    _fileMonitorTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                         target:self
+                                                       selector:@selector(_pollExternalChange:)
+                                                       userInfo:nil
+                                                        repeats:YES];
     return YES;
 }
 
@@ -395,15 +387,8 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     }
     [out appendData:body];
 
-    // Mark that the next presentedItemDidChange notification is from our own write.
-    // NSFilePresenter uses FSEvents which can delay notification delivery by several
-    // seconds — so we can't use a fixed timer to clear this flag. Instead, the flag
-    // is cleared inside presentedItemDidChange itself when the notification arrives.
-    _ownWritePending = YES;
-
     BOOL ok = [out writeToFile:path atomically:YES];
     if (!ok) {
-        _ownWritePending = NO;
         if (error) *error = [NSError errorWithDomain:NSCocoaErrorDomain
                                                code:NSFileWriteUnknownError userInfo:nil];
         return NO;
@@ -416,22 +401,18 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
         [[NSFileManager defaultManager] removeItemAtPath:_backupFilePath error:nil];
         _backupFilePath = nil;
     }
+    // Record the mtime we just wrote so the polling timer won't mistake our own
+    // write for an external change (this is what the old _savingSuppressed flag tried
+    // to do, but FSEvents notification timing made it unreliable).
+    _lastKnownModDate = [[NSFileManager defaultManager]
+                         attributesOfItemAtPath:path error:nil][NSFileModificationDate];
     [self updateGitDiffMarkers];
     return YES;
 }
 
-/// Custom setter: re-register file presenter when path changes.
 - (void)setFilePath:(NSString *)filePath {
     if ([_filePath isEqualToString:filePath]) return;
-    if (_presentedItemURL) {
-        [NSFileCoordinator removeFilePresenter:self];
-        _presentedItemURL = nil;
-    }
     _filePath = [filePath copy];
-    if (_filePath) {
-        _presentedItemURL = [NSURL fileURLWithPath:_filePath];
-        [NSFileCoordinator addFilePresenter:self];
-    }
 }
 
 - (NSInteger)untitledIndex { return _untitledIndex; }
@@ -482,55 +463,54 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     return nil;
 }
 
-#pragma mark - NSFilePresenter
-
-- (NSURL *)presentedItemURL { return _presentedItemURL; }
-- (NSOperationQueue *)presentedItemOperationQueue { return _presenterQueue; }
+#pragma mark - External file-change monitoring (polling)
 
 - (BOOL)monitoringMode { return _monitoringMode; }
 - (void)setMonitoringMode:(BOOL)v { _monitoringMode = v; }
 
-- (void)presentedItemDidChange {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // If this notification is from our own write, consume and ignore it.
-        // We reset the flag here (not on a timer) because FSEvents can delay
-        // delivery by several seconds, making a fixed timeout unreliable.
-        if (self->_ownWritePending) {
-            self->_ownWritePending = NO;
-            return;
-        }
-        if (self->_externalChangePending) return;
-        if (!self->_filePath) return;
-        self->_externalChangePending = YES;
+/// Called every second by _fileMonitorTimer.
+/// Compares the file's current mtime against _lastKnownModDate.
+/// Because we update _lastKnownModDate immediately after every load and save,
+/// our own writes never appear as "external" changes — no FSEvents timing issues.
+- (void)_pollExternalChange:(NSTimer *)timer {
+    if (!_filePath || _externalChangePending) return;
 
-        if (self->_monitoringMode) {
-            // Silent auto-reload in monitoring mode (tail -f behaviour)
-            NSError *err;
-            [self loadFileAtPath:self->_filePath error:&err];
-            self->_externalChangePending = NO;
-            return;
-        }
+    NSDate *mtime = [[NSFileManager defaultManager]
+                     attributesOfItemAtPath:_filePath error:nil][NSFileModificationDate];
+    if (!mtime) return;
 
-        NSAlert *alert = [[NSAlert alloc] init];
-        alert.messageText = [NSString stringWithFormat:@"\"%@\" changed on disk",
-                             self->_filePath.lastPathComponent];
-        if (!self->_isModified) {
-            alert.informativeText = @"This file was modified by another program.";
-            [alert addButtonWithTitle:@"Reload"];
-            [alert addButtonWithTitle:@"Ignore"];
-        } else {
-            alert.informativeText = @"This file was modified by another program. "
-                                    @"Reloading will discard your unsaved changes.";
-            [alert addButtonWithTitle:@"Reload"];
-            [alert addButtonWithTitle:@"Keep My Version"];
-        }
+    // No change if mtime matches what we last recorded.
+    if (_lastKnownModDate && [mtime compare:_lastKnownModDate] != NSOrderedDescending) return;
 
-        if ([alert runModal] == NSAlertFirstButtonReturn) {
-            NSError *err;
-            [self loadFileAtPath:self->_filePath error:&err];
-        }
-        self->_externalChangePending = NO;
-    });
+    _lastKnownModDate = mtime;
+    _externalChangePending = YES;
+
+    if (_monitoringMode) {
+        NSError *err;
+        [self loadFileAtPath:_filePath error:&err];
+        _externalChangePending = NO;
+        return;
+    }
+
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText = [NSString stringWithFormat:@"\"%@\" changed on disk",
+                         _filePath.lastPathComponent];
+    if (!_isModified) {
+        alert.informativeText = @"This file was modified by another program.";
+        [alert addButtonWithTitle:@"Reload"];
+        [alert addButtonWithTitle:@"Ignore"];
+    } else {
+        alert.informativeText = @"This file was modified by another program. "
+                                @"Reloading will discard your unsaved changes.";
+        [alert addButtonWithTitle:@"Reload"];
+        [alert addButtonWithTitle:@"Keep My Version"];
+    }
+
+    if ([alert runModal] == NSAlertFirstButtonReturn) {
+        NSError *err;
+        [self loadFileAtPath:_filePath error:&err];
+    }
+    _externalChangePending = NO;
 }
 
 #pragma mark - Language / Lexer

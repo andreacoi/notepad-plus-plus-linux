@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSNotificationName const EditorViewCursorDidMoveNotification;
 
 /// Wraps ScintillaView and provides Notepad++-style editor functionality.
-@interface EditorView : NSView <ScintillaNotificationProtocol, NSFilePresenter>
+@interface EditorView : NSView <ScintillaNotificationProtocol>
 
 @property (nonatomic, readonly) ScintillaView *scintillaView;
 @property (nonatomic, copy, nullable) NSString *filePath;
