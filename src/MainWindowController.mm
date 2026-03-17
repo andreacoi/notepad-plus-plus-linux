@@ -178,6 +178,74 @@ static NSImage *nppToolbarIcon(NSString *fileName) {
 
 @end
 
+// ── Show-All-Characters + dropdown arrow: unified hover group ─────────────────
+// Plain image button — no hover border of its own; parent group handles hover.
+@interface _FlatImgButton : NSButton @end
+@implementation _FlatImgButton
+- (void)drawRect:(NSRect)dirtyRect {
+    if (self.image)
+        [self.image drawInRect:NSInsetRect(self.bounds, 1, 1)
+                      fromRect:NSZeroRect
+                     operation:NSCompositingOperationSourceOver
+                      fraction:1.0
+                respectFlipped:YES
+                         hints:nil];
+}
+@end
+
+// Dropdown arrow button — draws ▾ precisely centered; no hover border.
+@interface _DropArrowButton : NSButton @end
+@implementation _DropArrowButton
+- (void)drawRect:(NSRect)dirtyRect {
+    static NSDictionary *attrs;
+    if (!attrs)
+        attrs = @{ NSFontAttributeName:            [NSFont systemFontOfSize:11],
+                   NSForegroundColorAttributeName: NSColor.labelColor };
+    NSString *glyph = @"▾";
+    NSSize sz  = [glyph sizeWithAttributes:attrs];
+    NSPoint pt = NSMakePoint(floor(NSMidX(self.bounds) - sz.width  / 2.0),
+                             floor(NSMidY(self.bounds) - sz.height / 2.0));
+    [glyph drawAtPoint:pt withAttributes:attrs];
+}
+@end
+
+// Container view: shows unified blue highlight (#e5f3ff / #d0eaff border)
+// when the cursor is anywhere over the button+arrow group.
+@interface _AllCharsHoverGroup : NSView { BOOL _hovering; }
+@end
+@implementation _AllCharsHoverGroup
+- (instancetype)initWithFrame:(NSRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        NSTrackingArea *ta = [[NSTrackingArea alloc]
+            initWithRect:NSZeroRect
+                 options:(NSTrackingMouseEnteredAndExited |
+                          NSTrackingActiveInActiveApp     |
+                          NSTrackingInVisibleRect)
+                   owner:self userInfo:nil];
+        [self addTrackingArea:ta];
+    }
+    return self;
+}
+- (void)mouseEntered:(NSEvent *)e { _hovering = YES;  [self setNeedsDisplay:YES]; }
+- (void)mouseExited:(NSEvent *)e  { _hovering = NO;   [self setNeedsDisplay:YES]; }
+- (void)drawRect:(NSRect)dirty {
+    if (_hovering) {
+        NSColor *bg  = [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+        NSColor *bdr = [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0];
+        NSBezierPath *p = [NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:2 yRadius:2];
+        [bg setFill];
+        [p fill];
+        NSBezierPath *q = [NSBezierPath bezierPathWithRoundedRect:NSInsetRect(self.bounds, 0.5, 0.5)
+                                                          xRadius:2 yRadius:2];
+        q.lineWidth = 1.0;
+        [bdr setStroke];
+        [q stroke];
+    }
+    [super drawRect:dirty];
+}
+@end
+
 // ── Thin vertical | separator between toolbar groups ─────────────────────────
 @interface NppSeparatorView : NSView @end
 @implementation NppSeparatorView
@@ -444,50 +512,54 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     return item;
 }
 
-// Group 6: Word Wrap button + All Characters button + dropdown arrow.
+// Group 6: Word Wrap button | [Show All Characters + dropdown arrow (hover group)]
 - (NSToolbarItem *)makeAllCharsGroupToolbarItem {
-    static const CGFloat kBtnSize = 19.0;
-    static const CGFloat kDropW   = 32.0;   // 4× the original 8pt
-    static const CGFloat kGap     = 1.0;
-    CGFloat totalW = kBtnSize + kGap + kBtnSize + kDropW;
+    static const CGFloat kBtnSize  = 19.0;
+    static const CGFloat kDropW    = 22.0;  // 30% smaller than previous 32pt
+    static const CGFloat kGap      = 1.0;
+    CGFloat hoverW  = kBtnSize + kDropW;    // chars button + arrow, no inner gap
+    CGFloat totalW  = kBtnSize + kGap + hoverW;
 
-    NSView *groupView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, totalW, kBtnSize)];
+    NSView *outer = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, totalW, kBtnSize)];
 
-    // Word Wrap button
+    // Word Wrap — stands alone with its own hover border
     NppToolbarButton *wrapBtn = [[NppToolbarButton alloc]
         initWithFrame:NSMakeRect(0, 0, kBtnSize, kBtnSize)];
     wrapBtn.image   = nppToolbarIcon(@"wrap");
     wrapBtn.action  = @selector(toggleWordWrap:);
     wrapBtn.target  = self;
     wrapBtn.toolTip = @"Toggle Word Wrap";
-    [groupView addSubview:wrapBtn];
+    [outer addSubview:wrapBtn];
 
-    CGFloat x = kBtnSize + kGap;
+    // Hover group: All Characters button + dropdown arrow share one highlight
+    _AllCharsHoverGroup *hoverGroup = [[_AllCharsHoverGroup alloc]
+        initWithFrame:NSMakeRect(kBtnSize + kGap, 0, hoverW, kBtnSize)];
 
-    // All Characters main button (click = toggle all)
-    NppToolbarButton *charsBtn = [[NppToolbarButton alloc]
-        initWithFrame:NSMakeRect(x, 0, kBtnSize, kBtnSize)];
+    _FlatImgButton *charsBtn = [[_FlatImgButton alloc]
+        initWithFrame:NSMakeRect(0, 0, kBtnSize, kBtnSize)];
+    [charsBtn setBordered:NO];
+    [charsBtn setButtonType:NSButtonTypeMomentaryChange];
+    [charsBtn setImageScaling:NSImageScaleProportionallyUpOrDown];
     charsBtn.image   = nppToolbarIcon(@"allChars");
     charsBtn.action  = @selector(toggleShowAllChars:);
     charsBtn.target  = self;
     charsBtn.toolTip = @"Show All Characters";
-    [groupView addSubview:charsBtn];
-    x += kBtnSize;
+    [hoverGroup addSubview:charsBtn];
 
-    // Dropdown arrow button (click = show per-character-type menu)
-    NSButton *dropBtn = [[NSButton alloc]
-        initWithFrame:NSMakeRect(x, 0, kDropW, kBtnSize)];
+    _DropArrowButton *dropBtn = [[_DropArrowButton alloc]
+        initWithFrame:NSMakeRect(kBtnSize, 0, kDropW, kBtnSize)];
     [dropBtn setBordered:NO];
     dropBtn.buttonType = NSButtonTypeMomentaryChange;
-    dropBtn.title      = @"▾";
-    dropBtn.font       = [NSFont systemFontOfSize:32];
+    dropBtn.title      = @"";   // drawn manually in drawRect:
     dropBtn.toolTip    = @"Show Characters Options";
     dropBtn.action     = @selector(_showAllCharsDropdown:);
     dropBtn.target     = self;
-    [groupView addSubview:dropBtn];
+    [hoverGroup addSubview:dropBtn];
+
+    [outer addSubview:hoverGroup];
 
     NSToolbarItem *it = [[NSToolbarItem alloc] initWithItemIdentifier:kTBGroup6];
-    it.view    = groupView;
+    it.view    = outer;
     it.minSize = NSMakeSize(totalW, kBtnSize);
     it.maxSize = NSMakeSize(totalW, kBtnSize);
     return it;
