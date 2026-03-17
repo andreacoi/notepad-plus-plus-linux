@@ -45,4 +45,12 @@
                                                                withObject:sender];
 }
 
+- (void)showAboutPanel:(id)sender {
+    [NSApp orderFrontStandardAboutPanelWithOptions:@{
+        @"ApplicationName":    @"Notepad++ for Mac",
+        @"Version":            @"1.0.0",
+        @"ApplicationVersion": @"1.0.0",
+    }];
+}
+
 @end

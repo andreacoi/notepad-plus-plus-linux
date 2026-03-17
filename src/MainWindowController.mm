@@ -444,10 +444,10 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     return item;
 }
 
-// Group 6: Word Wrap button + All Characters button + small dropdown arrow.
+// Group 6: Word Wrap button + All Characters button + dropdown arrow.
 - (NSToolbarItem *)makeAllCharsGroupToolbarItem {
     static const CGFloat kBtnSize = 19.0;
-    static const CGFloat kDropW   = 8.0;
+    static const CGFloat kDropW   = 32.0;   // 4× the original 8pt
     static const CGFloat kGap     = 1.0;
     CGFloat totalW = kBtnSize + kGap + kBtnSize + kDropW;
 
@@ -480,7 +480,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     [dropBtn setBordered:NO];
     dropBtn.buttonType = NSButtonTypeMomentaryChange;
     dropBtn.title      = @"▾";
-    dropBtn.font       = [NSFont systemFontOfSize:8];
+    dropBtn.font       = [NSFont systemFontOfSize:32];
     dropBtn.toolTip    = @"Show Characters Options";
     dropBtn.action     = @selector(_showAllCharsDropdown:);
     dropBtn.target     = self;

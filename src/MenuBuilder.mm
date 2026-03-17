@@ -188,7 +188,7 @@ static NSMenu *buildLanguageMenu() {
     [main addItem:appItem];
     NSMenu *appMenu = submenu(@"App");
     appItem.submenu = appMenu;
-    [appMenu addItemWithTitle:@"About Notepad++ for MacOS" action:@selector(orderFrontStandardAboutPanel:) keyEquivalent:@""];
+    [appMenu addItemWithTitle:@"About Notepad++" action:@selector(showAboutPanel:) keyEquivalent:@""];
     addSep(appMenu);
     [appMenu addItemWithTitle:@"Hide Notepad++" action:@selector(hide:) keyEquivalent:@"h"];
     NSMenuItem *hideOthers = [appMenu addItemWithTitle:@"Hide Others" action:@selector(hideOtherApplications:) keyEquivalent:@"h"];
@@ -852,8 +852,8 @@ static NSMenu *buildLanguageMenu() {
     [helpMenu addItem:item(@"Set Updater Proxy…", @selector(showUpdaterProxyStub:), @"")];
     addSep(helpMenu);
     [helpMenu addItem:item(@"Debug Info…", @selector(showDebugInfo:), @"")];
-    [helpMenu addItemWithTitle:@"About Notepad++ for MacOS"
-                        action:@selector(orderFrontStandardAboutPanel:)
+    [helpMenu addItemWithTitle:@"About Notepad++"
+                        action:@selector(showAboutPanel:)
                  keyEquivalent:@""];
 }
 
