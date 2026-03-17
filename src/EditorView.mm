@@ -1543,6 +1543,24 @@ static const unsigned int kSCI_SetRectSelAnchor          = 2590;
 
 #pragma mark - Blank / EOL Cleanup
 
+/// Returns the first and last line numbers to process.
+/// When text is selected, returns only lines in the selection; otherwise returns the whole document.
+- (void)_selectionLineRange:(sptr_t *)outFirst last:(sptr_t *)outLast {
+    ScintillaView *sci = _scintillaView;
+    sptr_t selStart = [sci message:SCI_GETSELECTIONSTART];
+    sptr_t selEnd   = [sci message:SCI_GETSELECTIONEND];
+    if (selStart == selEnd) {
+        *outFirst = 0;
+        *outLast  = [sci message:SCI_GETLINECOUNT] - 1;
+    } else {
+        *outFirst = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selStart];
+        *outLast  = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selEnd];
+        // Don't include a line that is only selected by the anchor sitting at its start
+        if ([sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)*outLast] == selEnd)
+            (*outLast)--;
+    }
+}
+
 - (void)removeUnnecessaryBlankAndEOL:(id)sender {
     [self trimTrailingWhitespace:sender];
     // Remove trailing blank lines at end of document
@@ -2173,10 +2191,11 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
 
 - (void)trimTrailingWhitespace:(id)sender {
     ScintillaView *sci = _scintillaView;
-    sptr_t lineCount = [sci message:SCI_GETLINECOUNT];
+    sptr_t firstLine, lastLine;
+    [self _selectionLineRange:&firstLine last:&lastLine];
     [sci message:SCI_BEGINUNDOACTION];
     NSCharacterSet *ws = [NSCharacterSet whitespaceCharacterSet];
-    for (sptr_t ln = 0; ln < lineCount; ln++) {
+    for (sptr_t ln = firstLine; ln <= lastLine; ln++) {
         sptr_t start = [sci message:SCI_POSITIONFROMLINE   wParam:(uptr_t)ln];
         sptr_t end   = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)ln];
         sptr_t len   = end - start;
@@ -2510,9 +2529,10 @@ static const unsigned int kSCI_GetBidirectional = 2708;
 
 - (void)trimLeadingSpaces:(id)sender {
     ScintillaView *sci = _scintillaView;
-    sptr_t lineCount = [sci message:SCI_GETLINECOUNT];
+    sptr_t firstLine, lastLine;
+    [self _selectionLineRange:&firstLine last:&lastLine];
     [sci message:SCI_BEGINUNDOACTION];
-    for (sptr_t ln = lineCount - 1; ln >= 0; ln--) {
+    for (sptr_t ln = lastLine; ln >= firstLine; ln--) {
         NSString *orig = [self _lineTextAt:ln];
         NSString *trimmed = [orig stringByReplacingOccurrencesOfString:@"^[\\t ]+"
                                                             withString:@""
@@ -2525,9 +2545,10 @@ static const unsigned int kSCI_GetBidirectional = 2708;
 
 - (void)trimLeadingAndTrailingSpaces:(id)sender {
     ScintillaView *sci = _scintillaView;
-    sptr_t lineCount = [sci message:SCI_GETLINECOUNT];
+    sptr_t firstLine, lastLine;
+    [self _selectionLineRange:&firstLine last:&lastLine];
     [sci message:SCI_BEGINUNDOACTION];
-    for (sptr_t ln = lineCount - 1; ln >= 0; ln--) {
+    for (sptr_t ln = lastLine; ln >= firstLine; ln--) {
         NSString *orig = [self _lineTextAt:ln];
         NSString *trimmed = [orig stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         if (![trimmed isEqualToString:orig]) [self _setLineText:trimmed atLine:ln];
@@ -2538,16 +2559,29 @@ static const unsigned int kSCI_GetBidirectional = 2708;
 - (void)eolToSpace:(id)sender {
     // Replace all line endings with a single space (same as NPP's "EOL to Space")
     ScintillaView *sci = _scintillaView;
-    [sci message:SCI_TARGETWHOLEDOCUMENT];
+    sptr_t selStart = [sci message:SCI_GETSELECTIONSTART];
+    sptr_t selEnd   = [sci message:SCI_GETSELECTIONEND];
+    if (selStart == selEnd) {
+        [sci message:SCI_TARGETWHOLEDOCUMENT];
+    } else {
+        [sci message:SCI_SETTARGETSTART wParam:(uptr_t)selStart];
+        [sci message:SCI_SETTARGETEND   wParam:(uptr_t)selEnd];
+    }
     [sci message:SCI_LINESJOIN];
+}
+
+- (void)trimBothAndEOLToSpace:(id)sender {
+    [self trimLeadingAndTrailingSpaces:sender];
+    [self eolToSpace:sender];
 }
 
 - (void)removeBlankLines:(id)sender {
     ScintillaView *sci = _scintillaView;
-    sptr_t lineCount = [sci message:SCI_GETLINECOUNT];
+    sptr_t firstLine, lastLine;
+    [self _selectionLineRange:&firstLine last:&lastLine];
     [sci message:SCI_BEGINUNDOACTION];
     // Iterate bottom-up so deletions don't invalidate indices
-    for (sptr_t ln = lineCount - 1; ln >= 0; ln--) {
+    for (sptr_t ln = lastLine; ln >= firstLine; ln--) {
         NSString *text = [self _lineTextAt:ln];
         NSString *stripped = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         if (stripped.length == 0) {
@@ -2567,10 +2601,11 @@ static const unsigned int kSCI_GetBidirectional = 2708;
 
 - (void)mergeBlankLines:(id)sender {
     ScintillaView *sci = _scintillaView;
-    sptr_t lineCount = [sci message:SCI_GETLINECOUNT];
+    sptr_t firstLine, lastLine;
+    [self _selectionLineRange:&firstLine last:&lastLine];
     [sci message:SCI_BEGINUNDOACTION];
     // Go bottom-up; delete blank line if the previous line is also blank
-    for (sptr_t ln = lineCount - 1; ln >= 1; ln--) {
+    for (sptr_t ln = lastLine; ln >= MAX(firstLine, 1); ln--) {
         NSString *cur  = [self _lineTextAt:ln];
         NSString *prev = [self _lineTextAt:ln - 1];
         BOOL curBlank  = [[cur  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] == 0;
@@ -2594,10 +2629,11 @@ static const unsigned int kSCI_GetBidirectional = 2708;
     ScintillaView *sci = _scintillaView;
     sptr_t tabWidth = [sci message:SCI_GETTABWIDTH];
     if (tabWidth <= 0) tabWidth = 4;
-    sptr_t lineCount = [sci message:SCI_GETLINECOUNT];
+    sptr_t firstLine, lastLine;
+    [self _selectionLineRange:&firstLine last:&lastLine];
     NSString *spaces = [@"" stringByPaddingToLength:(NSUInteger)tabWidth withString:@" " startingAtIndex:0];
     [sci message:SCI_BEGINUNDOACTION];
-    for (sptr_t ln = lineCount - 1; ln >= 0; ln--) {
+    for (sptr_t ln = lastLine; ln >= firstLine; ln--) {
         NSString *orig = [self _lineTextAt:ln];
         if (![orig containsString:@"\t"]) continue;
         NSString *replaced = [orig stringByReplacingOccurrencesOfString:@"\t" withString:spaces];
@@ -2610,9 +2646,10 @@ static const unsigned int kSCI_GetBidirectional = 2708;
     ScintillaView *sci = _scintillaView;
     sptr_t tabWidth = [sci message:SCI_GETTABWIDTH];
     if (tabWidth <= 0) tabWidth = 4;
-    sptr_t lineCount = [sci message:SCI_GETLINECOUNT];
+    sptr_t firstLine, lastLine;
+    [self _selectionLineRange:&firstLine last:&lastLine];
     [sci message:SCI_BEGINUNDOACTION];
-    for (sptr_t ln = lineCount - 1; ln >= 0; ln--) {
+    for (sptr_t ln = lastLine; ln >= firstLine; ln--) {
         NSString *orig = [self _lineTextAt:ln];
         // Count leading spaces
         NSUInteger i = 0;
@@ -2633,11 +2670,12 @@ static const unsigned int kSCI_GetBidirectional = 2708;
     ScintillaView *sci = _scintillaView;
     sptr_t tabWidth = [sci message:SCI_GETTABWIDTH];
     if (tabWidth <= 0) tabWidth = 4;
-    sptr_t lineCount = [sci message:SCI_GETLINECOUNT];
+    sptr_t firstLine, lastLine;
+    [self _selectionLineRange:&firstLine last:&lastLine];
     NSString *tabStr = @"\t";
     NSString *spaceGroup = [@"" stringByPaddingToLength:(NSUInteger)tabWidth withString:@" " startingAtIndex:0];
     [sci message:SCI_BEGINUNDOACTION];
-    for (sptr_t ln = lineCount - 1; ln >= 0; ln--) {
+    for (sptr_t ln = lastLine; ln >= firstLine; ln--) {
         NSString *orig = [self _lineTextAt:ln];
         NSString *replaced = [orig stringByReplacingOccurrencesOfString:spaceGroup withString:tabStr];
         if (![replaced isEqualToString:orig]) [self _setLineText:replaced atLine:ln];

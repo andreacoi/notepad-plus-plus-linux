@@ -379,20 +379,21 @@ static NSMenu *buildLanguageMenu() {
     [eolMenu addItem:item(@"Old Mac (CR)",    @selector(setEOLCR:),   @"")];
     [editMenu addItem:withSubmenu(@"EOL Conversion", eolMenu)];
 
-    // Blank Operations submenu
+    // Blank Operations submenu (operations scope to selection when text is selected)
     NSMenu *blankMenu = submenu(@"Blank Operations");
-    [blankMenu addItem:item(@"Trim Trailing Whitespace",         @selector(trimTrailingWhitespace:),       @"")];
-    [blankMenu addItem:item(@"Trim Leading Spaces",              @selector(trimLeadingSpaces:),            @"")];
-    [blankMenu addItem:item(@"Trim Leading and Trailing Spaces", @selector(trimLeadingAndTrailingSpaces:), @"")];
+    [blankMenu addItem:item(@"Trim Trailing Space",              @selector(trimTrailingWhitespace:),       @"")];
+    [blankMenu addItem:item(@"Trim Leading Space",               @selector(trimLeadingSpaces:),            @"")];
+    [blankMenu addItem:item(@"Trim Leading and Trailing Space",  @selector(trimLeadingAndTrailingSpaces:), @"")];
     [blankMenu addItem:item(@"EOL to Space",                     @selector(eolToSpace:),                   @"")];
+    [blankMenu addItem:item(@"Trim Both and EOL to Space",       @selector(trimBothAndEOLToSpace:),        @"")];
+    addSep(blankMenu);
+    [blankMenu addItem:item(@"TAB to Space",                     @selector(tabsToSpaces:),                 @"")];
+    [blankMenu addItem:item(@"Space to TAB (All)",               @selector(spacesToTabsAll:),              @"")];
+    [blankMenu addItem:item(@"Space to TAB (Leading)",           @selector(spacesToTabsLeading:),          @"")];
     addSep(blankMenu);
     [blankMenu addItem:item(@"Remove Unnecessary Blank and EOL", @selector(removeUnnecessaryBlankAndEOL:), @"")];
-    [blankMenu addItem:item(@"Merge Blank Lines",                @selector(mergeBlankLines:),              @"")];
     [blankMenu addItem:item(@"Remove Blank Lines",               @selector(removeBlankLines:),             @"")];
-    addSep(blankMenu);
-    [blankMenu addItem:item(@"Spaces to Tabs (Leading)",         @selector(spacesToTabsLeading:),          @"")];
-    [blankMenu addItem:item(@"Spaces to Tabs (All)",             @selector(spacesToTabsAll:),              @"")];
-    [blankMenu addItem:item(@"Tabs to Spaces",                   @selector(tabsToSpaces:),                 @"")];
+    [blankMenu addItem:item(@"Merge Blank Lines",                @selector(mergeBlankLines:),              @"")];
     [editMenu addItem:withSubmenu(@"Blank Operations", blankMenu)];
 
     // Paste Special submenu
@@ -406,9 +407,13 @@ static NSMenu *buildLanguageMenu() {
 
     // On Selection submenu
     NSMenu *onSelMenu = submenu(@"On Selection");
-    [onSelMenu addItem:item(@"Open File",              @selector(openSelectionAsFile:),      @"")];
-    [onSelMenu addItem:item(@"Open File in Default Viewer", @selector(openSelectionInDefaultViewer:), @"")];
-    [onSelMenu addItem:item(@"Search on Internet",     @selector(searchSelectionOnInternet:), @"")];
+    [onSelMenu addItem:item(@"Open File",                        @selector(openSelectionAsFile:),          @"")];
+    [onSelMenu addItem:item(@"Open Containing Folder in Finder", @selector(openContainingFolderInFinder:), @"")];
+    addSep(onSelMenu);
+    [onSelMenu addItem:item(@"Redact Selection \u25A0 (Shift: \u2022)", @selector(redactSelection:), @"")];
+    addSep(onSelMenu);
+    [onSelMenu addItem:item(@"Search on Internet",               @selector(searchSelectionOnInternet:),   @"")];
+    [onSelMenu addItem:item(@"Change Search Engine…",            @selector(changeSearchEngine:),          @"")];
     [editMenu addItem:withSubmenu(@"On Selection", onSelMenu)];
     addSep(editMenu);
 

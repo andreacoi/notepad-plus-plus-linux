@@ -227,6 +227,7 @@ extern NSNotificationName const EditorViewCursorDidMoveNotification;
 - (void)trimLeadingSpaces:(id)sender;
 - (void)trimLeadingAndTrailingSpaces:(id)sender;
 - (void)eolToSpace:(id)sender;
+- (void)trimBothAndEOLToSpace:(id)sender;
 - (void)removeBlankLines:(id)sender;
 - (void)mergeBlankLines:(id)sender;
 - (void)spacesToTabsLeading:(id)sender;

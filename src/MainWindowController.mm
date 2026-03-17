@@ -1969,6 +1969,7 @@ static NSString *nppMacrosPath(void) {
 - (void)trimLeadingSpaces:(id)sender           { [[self currentEditor] trimLeadingSpaces:sender]; }
 - (void)trimLeadingAndTrailingSpaces:(id)sender{ [[self currentEditor] trimLeadingAndTrailingSpaces:sender]; }
 - (void)eolToSpace:(id)sender                  { [[self currentEditor] eolToSpace:sender]; }
+- (void)trimBothAndEOLToSpace:(id)sender       { [[self currentEditor] trimBothAndEOLToSpace:sender]; }
 - (void)removeBlankLines:(id)sender            { [[self currentEditor] removeBlankLines:sender]; }
 - (void)mergeBlankLines:(id)sender             { [[self currentEditor] mergeBlankLines:sender]; }
 - (void)spacesToTabsLeading:(id)sender         { [[self currentEditor] spacesToTabsLeading:sender]; }
@@ -2088,19 +2089,36 @@ static NSString *nppMacrosPath(void) {
     NSPasteboard *pb = [NSPasteboard generalPasteboard];
     NSString *html = [pb stringForType:NSPasteboardTypeHTML];
     if (!html.length) { NSBeep(); return; }
-    // Strip HTML tags
-    NSError *regErr;
-    NSRegularExpression *rx = [NSRegularExpression regularExpressionWithPattern:@"<[^>]+>"
-                                                                         options:0 error:&regErr];
-    NSString *plain = [rx stringByReplacingMatchesInString:html options:0
-                                                     range:NSMakeRange(0, html.length)
-                                              withTemplate:@""];
-    plain = [plain stringByReplacingOccurrencesOfString:@"&lt;"   withString:@"<"];
-    plain = [plain stringByReplacingOccurrencesOfString:@"&gt;"   withString:@">"];
-    plain = [plain stringByReplacingOccurrencesOfString:@"&amp;"  withString:@"&"];
-    plain = [plain stringByReplacingOccurrencesOfString:@"&nbsp;" withString:@" "];
-    plain = [plain stringByReplacingOccurrencesOfString:@"&quot;" withString:@"\""];
-    [ed.scintillaView message:SCI_REPLACESEL wParam:0 lParam:(sptr_t)plain.UTF8String];
+
+    // Build a CF_HTML-compatible header (matches the Windows Notepad++ "Paste HTML Content" format).
+    // Byte offsets are 10-digit, zero-padded. The header length is constant once sourceURL is known.
+    NSURL *pbURL = [NSURL URLFromPasteboard:pb];
+    NSString *sourceURL = pbURL ? pbURL.absoluteString : @"";
+
+    NSString *fragStart = @"<!--StartFragment-->";
+    NSString *fragEnd   = @"<!--EndFragment-->";
+    NSString *body      = [NSString stringWithFormat:@"%@%@%@", fragStart, html, fragEnd];
+
+    // Use placeholder offsets of the same digit-width to measure header size
+    NSString *placeholder = @"0000000000";
+    NSString *templateHdr = [NSString stringWithFormat:
+        @"Version:0.9\r\nStartHTML:%@\r\nEndHTML:%@\r\nStartFragment:%@\r\nEndFragment:%@\r\nSourceURL:%@\r\n",
+        placeholder, placeholder, placeholder, placeholder, sourceURL];
+    NSUInteger hdrBytes  = [templateHdr lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+    NSUInteger bodyBytes = [body lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+    NSUInteger fragStartBytes = [fragStart lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+    NSUInteger fragEndBytes   = [fragEnd   lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+
+    NSString *header = [NSString stringWithFormat:
+        @"Version:0.9\r\nStartHTML:%010lu\r\nEndHTML:%010lu\r\nStartFragment:%010lu\r\nEndFragment:%010lu\r\nSourceURL:%@\r\n",
+        (unsigned long)hdrBytes,
+        (unsigned long)(hdrBytes + bodyBytes),
+        (unsigned long)(hdrBytes + fragStartBytes),
+        (unsigned long)(hdrBytes + bodyBytes - fragEndBytes),
+        sourceURL];
+
+    NSString *fullText = [header stringByAppendingString:body];
+    [ed.scintillaView message:SCI_REPLACESEL wParam:0 lParam:(sptr_t)fullText.UTF8String];
 }
 
 - (void)pasteRTFContent:(id)sender {
@@ -2946,13 +2964,67 @@ static NSString *nppMacrosPath(void) {
     [[NSWorkspace sharedWorkspace] openFile:path];
 }
 
+- (void)openContainingFolderInFinder:(id)sender {
+    NSString *sel = [[[self currentEditor] selectedText]
+                     stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (!sel.length) return;
+    BOOL isDir = NO;
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if ([fm fileExistsAtPath:sel isDirectory:&isDir]) {
+        if (isDir)
+            [[NSWorkspace sharedWorkspace] selectFile:nil inFileViewerRootedAtPath:sel];
+        else
+            [[NSWorkspace sharedWorkspace] selectFile:sel inFileViewerRootedAtPath:[sel stringByDeletingLastPathComponent]];
+    } else {
+        NSBeep();
+    }
+}
+
+- (void)redactSelection:(id)sender {
+    EditorView *ed = [self currentEditor];
+    if (!ed) return;
+    NSString *sel = [ed selectedText];
+    if (!sel.length) { NSBeep(); return; }
+    NSEventModifierFlags mods = [NSEvent modifierFlags];
+    unichar replChar = (mods & NSEventModifierFlagShift) ? 0x2022 : 0x25A0;  // • or ■
+    NSMutableString *replacement = [NSMutableString stringWithCapacity:sel.length];
+    for (NSUInteger i = 0; i < sel.length; i++) {
+        unichar c = [sel characterAtIndex:i];
+        if (c == '\n' || c == '\r') [replacement appendFormat:@"%C", c];
+        else [replacement appendFormat:@"%C", replChar];
+    }
+    [ed.scintillaView message:SCI_REPLACESEL wParam:0 lParam:(sptr_t)replacement.UTF8String];
+}
+
 - (void)searchSelectionOnInternet:(id)sender {
     NSString *sel = [[self currentEditor] selectedText];
     if (!sel) return;
     NSString *encoded = [sel stringByAddingPercentEncodingWithAllowedCharacters:
                          [NSCharacterSet URLQueryAllowedCharacterSet]];
-    [[NSWorkspace sharedWorkspace]
-     openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.google.com/search?q=%@", encoded]]];
+    NSString *baseURL = [[NSUserDefaults standardUserDefaults] stringForKey:@"kPrefSearchEngineURL"]
+                        ?: @"https://www.google.com/search?q=";
+    NSURL *url = [NSURL URLWithString:[baseURL stringByAppendingString:encoded]];
+    if (url) [[NSWorkspace sharedWorkspace] openURL:url];
+}
+
+- (void)changeSearchEngine:(id)sender {
+    NSString *current = [[NSUserDefaults standardUserDefaults] stringForKey:@"kPrefSearchEngineURL"]
+                        ?: @"https://www.google.com/search?q=";
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText     = @"Change Search Engine";
+    alert.informativeText = @"Enter the search URL. Use %s as the query placeholder (or append the query at the end):";
+    [alert addButtonWithTitle:@"OK"];
+    [alert addButtonWithTitle:@"Cancel"];
+    NSTextField *tf = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 380, 22)];
+    tf.stringValue = current;
+    alert.accessoryView = tf;
+    [alert layout];
+    [tf selectText:nil];
+    if ([alert runModal] == NSAlertFirstButtonReturn) {
+        NSString *url = [tf stringValue];
+        if (url.length > 0)
+            [[NSUserDefaults standardUserDefaults] setObject:url forKey:@"kPrefSearchEngineURL"];
+    }
 }
 
 #pragma mark - Tools: Hash
