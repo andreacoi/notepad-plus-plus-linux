@@ -151,7 +151,6 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     NSOperationQueue  *_presenterQueue;
     BOOL               _externalChangePending;
     BOOL               _monitoringMode;   // tail -f: auto-reload silently
-    BOOL               _savingSuppressed; // YES while we are writing the file ourselves
 
     // Spell check
     BOOL               _spellCheckEnabled;
@@ -219,8 +218,6 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     _spellTimer = nil;
 }
 
-- (BOOL)savingSuppressed { return _savingSuppressed; }
-- (void)setSavingSuppressed:(BOOL)v { _savingSuppressed = v; }
 
 #pragma mark - Content copy
 
@@ -372,15 +369,11 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
 }
 
 - (BOOL)saveToPath:(NSString *)path error:(NSError **)error {
-    // Suppress the file-presenter "changed on disk" alert for our own write.
-    _savingSuppressed = YES;
     NSString *content = _scintillaView.string;
-    BOOL ok = NO;
 
+    // Build the byte payload (BOM + encoded content).
+    NSMutableData *out = [NSMutableData data];
     if (_hasBOM) {
-        // Write BOM bytes then encoded content
-        NSData *body = [content dataUsingEncoding:_fileEncoding allowLossyConversion:YES];
-        NSMutableData *out = [NSMutableData data];
         if (_fileEncoding == NSUTF8StringEncoding) {
             const uint8_t bom[] = {0xEF, 0xBB, 0xBF};
             [out appendBytes:bom length:3];
@@ -391,43 +384,45 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
             const uint8_t bom[] = {0xFF, 0xFE};
             [out appendBytes:bom length:2];
         }
-        if (body) [out appendData:body];
-        ok = [out writeToFile:path atomically:YES];
-        if (!ok && error)
-            *error = [NSError errorWithDomain:NSCocoaErrorDomain
-                                         code:NSFileWriteUnknownError userInfo:nil];
-    } else {
-        NSData *body = [content dataUsingEncoding:_fileEncoding allowLossyConversion:YES];
-        if (body) {
-            ok = [body writeToFile:path atomically:YES];
-            if (!ok && error)
-                *error = [NSError errorWithDomain:NSCocoaErrorDomain
-                                             code:NSFileWriteUnknownError userInfo:nil];
-        } else {
-            if (error) *error = [NSError errorWithDomain:NSCocoaErrorDomain
-                                                    code:NSFileWriteInapplicableStringEncodingError
-                                                userInfo:nil];
-        }
+    }
+    NSData *body = [content dataUsingEncoding:_fileEncoding allowLossyConversion:YES];
+    if (!body) {
+        if (error) *error = [NSError errorWithDomain:NSCocoaErrorDomain
+                                               code:NSFileWriteInapplicableStringEncodingError
+                                           userInfo:nil];
+        return NO;
+    }
+    [out appendData:body];
+
+    // Use NSFileCoordinator so the NSFilePresenter infrastructure knows this write
+    // is our own and does NOT call presentedItemDidChange on us (per Apple QA1809).
+    __block BOOL ok = NO;
+    __block NSError *writeError = nil;
+    NSError *coordError = nil;
+
+    NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:self];
+    NSURL *url = [NSURL fileURLWithPath:path];
+    [coordinator coordinateWritingItemAtURL:url
+                                    options:NSFileCoordinatorWritingForReplacing
+                                      error:&coordError
+                                 byAccessor:^(NSURL *newURL) {
+        ok = [out writeToURL:newURL options:NSDataWritingAtomic error:&writeError];
+    }];
+
+    if (!ok) {
+        if (error) *error = writeError ?: coordError;
+        return NO;
     }
 
-    if (ok) {
-        _filePath = [path copy];
-        _isModified = NO;
-        // New save baseline: clear orange change markers on lines now matching disk.
-        [_scintillaView message:SCI_SETSAVEPOINT];
-        // Buffer is now clean — delete backup file (NPP Buffer.cpp:1367-1381)
-        if (_backupFilePath) {
-            [[NSFileManager defaultManager] removeItemAtPath:_backupFilePath error:nil];
-            _backupFilePath = nil;
-        }
-        // Update git gutter after save
-        [self updateGitDiffMarkers];
+    _filePath = [path copy];
+    _isModified = NO;
+    [_scintillaView message:SCI_SETSAVEPOINT];
+    if (_backupFilePath) {
+        [[NSFileManager defaultManager] removeItemAtPath:_backupFilePath error:nil];
+        _backupFilePath = nil;
     }
-    // Clear suppression flag after a short delay so the async NSFilePresenter notification
-    // (which fires after the write completes) is ignored, then resume monitoring.
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)),
-                   dispatch_get_main_queue(), ^{ self->_savingSuppressed = NO; });
-    return ok;
+    [self updateGitDiffMarkers];
+    return YES;
 }
 
 /// Custom setter: re-register file presenter when path changes.
@@ -502,7 +497,6 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
 
 - (void)presentedItemDidChange {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (self->_savingSuppressed) return;    // Our own write — ignore
         if (self->_externalChangePending) return;
         if (!self->_filePath) return;
         self->_externalChangePending = YES;
@@ -3163,15 +3157,61 @@ static const unsigned int kSCI_GetBidirectional = 2708;
 // ─────────────────────────────────────────────────────────────────────────────
 #pragma mark - Column Editor
 
+- (NSInteger)columnEditorLineCount {
+    ScintillaView *sci = _scintillaView;
+    sptr_t selStart = [sci message:SCI_GETSELECTIONSTART];
+    sptr_t selEnd   = [sci message:SCI_GETSELECTIONEND];
+    sptr_t line1 = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selStart];
+    sptr_t line2 = (selStart == selEnd)
+        ? [sci message:SCI_GETLINECOUNT] - 1
+        : [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selEnd];
+    return (NSInteger)MAX(1, line2 - line1 + 1);
+}
+
+- (void)columnInsertStrings:(NSArray<NSString *> *)strings {
+    if (!strings.count) return;
+    ScintillaView *sci = _scintillaView;
+    sptr_t selStart = [sci message:SCI_GETSELECTIONSTART];
+    sptr_t selEnd   = [sci message:SCI_GETSELECTIONEND];
+    sptr_t line1    = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selStart];
+    sptr_t line2    = (selStart == selEnd)
+        ? [sci message:SCI_GETLINECOUNT] - 1
+        : [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selEnd];
+    sptr_t col      = [sci message:SCI_GETCOLUMN wParam:(uptr_t)selStart];
+
+    [sci message:SCI_BEGINUNDOACTION];
+    for (sptr_t ln = line2; ln >= line1; ln--) {
+        NSInteger strIdx = (NSInteger)(ln - line1);
+        if (strIdx >= (NSInteger)strings.count) strIdx = (NSInteger)strings.count - 1;
+        NSString *text   = strings[strIdx];
+        const char *utf8 = text.UTF8String;
+        if (!utf8) continue;
+        sptr_t pos       = [sci message:SCI_FINDCOLUMN    wParam:(uptr_t)ln lParam:col];
+        sptr_t lineEnd   = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)ln];
+        sptr_t actualCol = [sci message:SCI_GETCOLUMN wParam:(uptr_t)pos];
+        if (actualCol < col && pos >= lineEnd) {
+            NSMutableString *pad = [NSMutableString string];
+            for (sptr_t sp = actualCol; sp < col; sp++) [pad appendString:@" "];
+            [sci message:SCI_INSERTTEXT wParam:(uptr_t)pos lParam:(sptr_t)pad.UTF8String];
+            pos += (sptr_t)pad.length;
+        }
+        [sci message:SCI_INSERTTEXT wParam:(uptr_t)pos lParam:(sptr_t)utf8];
+    }
+    [sci message:SCI_ENDUNDOACTION];
+}
+
 /// Column insert: insert `text` at the caret column on every line of the current
-/// rectangular (or multi-line stream) selection.
+/// rectangular (or multi-line stream) selection (or to end of document if nothing selected).
 - (void)columnInsertText:(NSString *)text {
     if (!text.length) return;
     ScintillaView *sci = _scintillaView;
     sptr_t selStart = [sci message:SCI_GETSELECTIONSTART];
     sptr_t selEnd   = [sci message:SCI_GETSELECTIONEND];
     sptr_t line1    = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selStart];
-    sptr_t line2    = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selEnd];
+    // When nothing is selected, extend to end of document
+    sptr_t line2    = (selStart == selEnd)
+        ? [sci message:SCI_GETLINECOUNT] - 1
+        : [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selEnd];
     // Column to insert at = column of the anchor (start of selection)
     sptr_t col = [sci message:SCI_GETCOLUMN wParam:(uptr_t)selStart];
 
@@ -3179,13 +3219,12 @@ static const unsigned int kSCI_GetBidirectional = 2708;
     [sci message:SCI_BEGINUNDOACTION];
     // Insert from bottom to top so earlier positions aren't shifted
     for (sptr_t ln = line2; ln >= line1; ln--) {
-        sptr_t lineLen = [sci message:SCI_LINELENGTH wParam:(uptr_t)ln];
         // SCI_FINDCOLUMN returns the closest position for this column (handles tabs)
         sptr_t pos = [sci message:SCI_FINDCOLUMN wParam:(uptr_t)ln lParam:col];
         sptr_t lineEnd = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)ln];
         // Pad with spaces if line is shorter than the target column
         sptr_t actualCol = [sci message:SCI_GETCOLUMN wParam:(uptr_t)pos];
-        if (actualCol < col && pos >= lineEnd && lineLen > 0) {
+        if (actualCol < col && pos >= lineEnd) {
             NSMutableString *pad = [NSMutableString string];
             for (sptr_t sp = actualCol; sp < col; sp++) [pad appendString:@" "];
             [sci message:SCI_INSERTTEXT wParam:(uptr_t)pos lParam:(sptr_t)pad.UTF8String];

@@ -53,8 +53,6 @@ extern NSNotificationName const EditorViewCursorDidMoveNotification;
 // YES when monitoring mode (tail -f) is active — file changes silently auto-reload.
 @property (nonatomic) BOOL monitoringMode;
 
-// Set to YES before writing the file ourselves so presentedItemDidChange ignores the notification.
-@property (nonatomic) BOOL savingSuppressed;
 
 /// Must be called when a tab is permanently closed (not evicted to another split).
 /// Unregisters the file presenter so the EditorView can be deallocated.
@@ -313,11 +311,17 @@ extern NSNotificationName const EditorViewCursorDidMoveNotification;
 - (nullable NSString *)generateRTF;
 
 // ── Column editor ─────────────────────────────────────────────────────────────
-/// Insert text at the caret column of every line in the selection.
+/// Returns the number of lines the column editor will affect:
+/// selected lines if text is selected, or lines from cursor to end of doc otherwise.
+- (NSInteger)columnEditorLineCount;
+/// Insert text at the caret column of every line in the selection (or to end of doc if no selection).
 - (void)columnInsertText:(NSString *)text;
 /// Insert sequential numbers starting at startVal, stepping by step, using
 /// printf format string fmt (e.g. "%d", "%04X"). One number per selected line.
 - (void)columnInsertNumbersFrom:(long long)startVal step:(long long)step format:(NSString *)fmt;
+/// Insert one pre-formatted string per line (index 0 = first selected/affected line).
+/// If the array is shorter than the line count, the last element is repeated.
+- (void)columnInsertStrings:(NSArray<NSString *> *)strings;
 
 @end
 
