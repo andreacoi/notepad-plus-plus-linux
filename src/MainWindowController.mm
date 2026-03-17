@@ -2941,7 +2941,22 @@ static NSString *nppMacrosPath(void) {
 
 #pragma mark - Edit: Column Mode / Character Panel / Brace Select
 
-- (void)columnMode:(id)sender          { [[self currentEditor] columnMode:sender]; }
+- (void)columnMode:(id)sender {
+    // Show the informational tip dialog (same as Windows NPP "Column Mode…" menu item)
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText = @"Column Mode Tip";
+    alert.informativeText =
+        @"There are 3 ways to switch to column-select mode:\n\n"
+         "1. (Keyboard and Mouse)  Hold Option while left-click dragging\n\n"
+         "2. (Keyboard only)  Hold Option+Shift while using arrow keys\n\n"
+         "3. (Keyboard or Mouse)\n"
+         "   Put caret at desired start of column block position, then\n"
+         "   execute \u201cBegin/End Select in Column Mode\u201d command;\n"
+         "   Move caret to desired end of column block position, then\n"
+         "   execute \u201cBegin/End Select in Column Mode\u201d command again";
+    [alert addButtonWithTitle:@"OK"];
+    [alert beginSheetModalForWindow:self.window completionHandler:nil];
+}
 - (void)selectAllInBraces:(id)sender   { [[self currentEditor] selectAllInBraces:sender]; }
 - (void)characterPanel:(id)sender      { [NSApp orderFrontCharacterPalette:sender]; }
 
