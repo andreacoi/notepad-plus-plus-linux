@@ -400,6 +400,10 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     if ([ident isEqualToString:kTBTabControls])
         return [self makeTabControlsToolbarItem];
 
+    // Group 6 gets special handling: Word Wrap + All Chars button + dropdown arrow.
+    if ([ident isEqualToString:kTBGroup6])
+        return [self makeAllCharsGroupToolbarItem];
+
     NSArray *idents = toolbarGroupMap()[ident];
     if (idents) return [self makeGroupToolbarItem:ident identifiers:idents];
     return nil;
@@ -438,6 +442,55 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     item.minSize = NSMakeSize(totalW, kBtnSize);
     item.maxSize = NSMakeSize(totalW, kBtnSize);
     return item;
+}
+
+// Group 6: Word Wrap button + All Characters button + small dropdown arrow.
+- (NSToolbarItem *)makeAllCharsGroupToolbarItem {
+    static const CGFloat kBtnSize = 19.0;
+    static const CGFloat kDropW   = 8.0;
+    static const CGFloat kGap     = 1.0;
+    CGFloat totalW = kBtnSize + kGap + kBtnSize + kDropW;
+
+    NSView *groupView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, totalW, kBtnSize)];
+
+    // Word Wrap button
+    NppToolbarButton *wrapBtn = [[NppToolbarButton alloc]
+        initWithFrame:NSMakeRect(0, 0, kBtnSize, kBtnSize)];
+    wrapBtn.image   = nppToolbarIcon(@"wrap");
+    wrapBtn.action  = @selector(toggleWordWrap:);
+    wrapBtn.target  = self;
+    wrapBtn.toolTip = @"Toggle Word Wrap";
+    [groupView addSubview:wrapBtn];
+
+    CGFloat x = kBtnSize + kGap;
+
+    // All Characters main button (click = toggle all)
+    NppToolbarButton *charsBtn = [[NppToolbarButton alloc]
+        initWithFrame:NSMakeRect(x, 0, kBtnSize, kBtnSize)];
+    charsBtn.image   = nppToolbarIcon(@"allChars");
+    charsBtn.action  = @selector(toggleShowAllChars:);
+    charsBtn.target  = self;
+    charsBtn.toolTip = @"Show All Characters";
+    [groupView addSubview:charsBtn];
+    x += kBtnSize;
+
+    // Dropdown arrow button (click = show per-character-type menu)
+    NSButton *dropBtn = [[NSButton alloc]
+        initWithFrame:NSMakeRect(x, 0, kDropW, kBtnSize)];
+    [dropBtn setBordered:NO];
+    dropBtn.buttonType = NSButtonTypeMomentaryChange;
+    dropBtn.title      = @"▾";
+    dropBtn.font       = [NSFont systemFontOfSize:8];
+    dropBtn.toolTip    = @"Show Characters Options";
+    dropBtn.action     = @selector(_showAllCharsDropdown:);
+    dropBtn.target     = self;
+    [groupView addSubview:dropBtn];
+
+    NSToolbarItem *it = [[NSToolbarItem alloc] initWithItemIdentifier:kTBGroup6];
+    it.view    = groupView;
+    it.minSize = NSMakeSize(totalW, kBtnSize);
+    it.maxSize = NSMakeSize(totalW, kBtnSize);
+    return it;
 }
 
 // Builds the right-aligned +  ▾  × tab-control group.
@@ -1301,7 +1354,7 @@ static NSString *nppMacrosPath(void) {
         [(FolderTreePanel *)_folderTreePanel setActiveFileURL:
             path ? [NSURL fileURLWithPath:path] : [NSURL fileURLWithPath:NSHomeDirectory()]];
     }
-    [self _setPanelVisible:_folderTreePanel title:@"Folder Tree" show:!open];
+    [self _setPanelVisible:_folderTreePanel title:@"Folder as Workspace" show:!open];
 }
 
 - (void)showGitPanel:(id)sender {
@@ -1721,6 +1774,47 @@ static NSString *nppMacrosPath(void) {
         return ed != nil;
     }
 
+    // Begin/End Select: checkmark when active; disable the other mode while one is active
+    if (action == @selector(beginEndSelect:)) {
+        BOOL active = ed.beginSelectActive;
+        [(NSMenuItem *)item setState:active ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil;
+    }
+    if (action == @selector(beginEndSelectColumnMode:)) {
+        BOOL active = ed.beginSelectActive;
+        [(NSMenuItem *)item setState:active ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil;
+    }
+
+    // EOL Conversion: checkmark on active mode; disable (dim) the currently-active mode
+    if (action == @selector(setEOLCRLF:)) {
+        sptr_t mode = ed ? [ed.scintillaView message:SCI_GETEOLMODE] : -1;
+        [(NSMenuItem *)item setState:mode == SC_EOL_CRLF ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil && mode != SC_EOL_CRLF;
+    }
+    if (action == @selector(setEOLLF:)) {
+        sptr_t mode = ed ? [ed.scintillaView message:SCI_GETEOLMODE] : -1;
+        [(NSMenuItem *)item setState:mode == SC_EOL_LF ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil && mode != SC_EOL_LF;
+    }
+    if (action == @selector(setEOLCR:)) {
+        sptr_t mode = ed ? [ed.scintillaView message:SCI_GETEOLMODE] : -1;
+        [(NSMenuItem *)item setState:mode == SC_EOL_CR ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil && mode != SC_EOL_CR;
+    }
+
+    // View > Show White Space / EOL: checkmark reflecting current state
+    if (action == @selector(showWhiteSpaceAndTab:)) {
+        BOOL shown = ed && ([ed.scintillaView message:SCI_GETVIEWWS] == SCWS_VISIBLEALWAYS);
+        [(NSMenuItem *)item setState:shown ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil;
+    }
+    if (action == @selector(showEndOfLine:)) {
+        BOOL shown = ed && ([ed.scintillaView message:SCI_GETVIEWEOL] != 0);
+        [(NSMenuItem *)item setState:shown ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil;
+    }
+
     return YES;
 }
 
@@ -1953,8 +2047,12 @@ static NSString *nppMacrosPath(void) {
     NSUInteger perms = [[attrs objectForKey:NSFilePosixPermissions] unsignedShortValue];
     BOOL isReadOnly = !(perms & S_IWUSR);
     NSUInteger newPerms = isReadOnly ? (perms | S_IWUSR) : (perms & ~(S_IWUSR | S_IWGRP | S_IWOTH));
+    // Suppress the "file changed on disk" alert — attribute change is our own action.
+    ed.savingSuppressed = YES;
     [[NSFileManager defaultManager] setAttributes:@{NSFilePosixPermissions: @(newPerms)}
                                      ofItemAtPath:path error:nil];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)),
+                   dispatch_get_main_queue(), ^{ ed.savingSuppressed = NO; });
 }
 
 // ── Multi-select (forwarded to current editor) ────────────────────────────────
@@ -2233,6 +2331,10 @@ static NSString *nppMacrosPath(void) {
     [self openFileAtPath:url.path];
 }
 
+- (void)folderTreePanelDidRequestClose:(FolderTreePanel *)panel {
+    [self _setPanelVisible:_folderTreePanel title:@"Folder as Workspace" show:NO];
+}
+
 #pragma mark - GitPanelDelegate
 
 - (void)gitPanel:(GitPanel *)panel openFileAtPath:(NSString *)path {
@@ -2271,10 +2373,44 @@ static NSString *nppMacrosPath(void) {
 }
 
 - (void)toggleShowAllChars:(id)sender {
-    _showAllChars = !_showAllChars;
-    int flags = _showAllChars ? (SCWS_VISIBLEALWAYS) : SCWS_INVISIBLE;
     ScintillaView *sci = [self currentEditor].scintillaView;
-    [sci message:SCI_SETVIEWWS wParam:flags];
+    if (!sci) return;
+    // Derive current state from Scintilla (not a stale BOOL ivar) so it works correctly on tab switch.
+    BOOL wsOn  = ([sci message:SCI_GETVIEWWS] == SCWS_VISIBLEALWAYS);
+    BOOL eolOn = ([sci message:SCI_GETVIEWEOL] != 0);
+    BOOL allOn = wsOn && eolOn;
+    [sci message:SCI_SETVIEWWS  wParam:(allOn ? SCWS_INVISIBLE : SCWS_VISIBLEALWAYS)];
+    [sci message:SCI_SETVIEWEOL wParam:(allOn ? 0 : 1)];
+    _showAllChars = !allOn;
+}
+
+// Shows the dropdown menu for the All-Characters toolbar button (▾ arrow).
+- (void)_showAllCharsDropdown:(NSButton *)btn {
+    NSMenu *menu = [self _buildAllCharsMenu];
+    [menu popUpMenuPositioningItem:nil
+                       atLocation:NSMakePoint(0, btn.frame.size.height)
+                           inView:btn];
+}
+
+- (NSMenu *)_buildAllCharsMenu {
+    EditorView *ed = [self currentEditor];
+    BOOL wsOn  = ed && ([ed.scintillaView message:SCI_GETVIEWWS] == SCWS_VISIBLEALWAYS);
+    BOOL eolOn = ed && ([ed.scintillaView message:SCI_GETVIEWEOL] != 0);
+    BOOL allOn = wsOn && eolOn;
+
+    NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
+    auto addIt = ^(NSString *title, SEL sel, BOOL on) {
+        NSMenuItem *it = [[NSMenuItem alloc] initWithTitle:title action:sel keyEquivalent:@""];
+        it.target = nil;  // first responder chain
+        it.state  = on ? NSControlStateValueOn : NSControlStateValueOff;
+        [menu addItem:it];
+    };
+    addIt(@"Show Space and Tab",                   @selector(showWhiteSpaceAndTab:), wsOn);
+    addIt(@"Show End of Line",                     @selector(showEndOfLine:),        eolOn);
+    addIt(@"Show Non-Printing Characters",         @selector(showWhiteSpaceAndTab:), wsOn);
+    addIt(@"Show Control Characters & Unicode EOL",@selector(showEndOfLine:),        eolOn);
+    addIt(@"Show All Characters",                  @selector(toggleShowAllChars:),   allOn);
+    return menu;
 }
 
 - (void)toggleIndentGuides:(id)sender {
@@ -2949,10 +3085,16 @@ static NSString *nppMacrosPath(void) {
 }
 
 - (void)openFolderAsWorkspace:(id)sender {
-    NSString *path = [self currentEditor].filePath;
-    NSString *dir  = path.length ? path.stringByDeletingLastPathComponent : NSHomeDirectory();
-    [[NSWorkspace sharedWorkspace] selectFile:path
-                     inFileViewerRootedAtPath:dir];
+    // Ensure panel exists
+    if (!_folderTreePanel) {
+        FolderTreePanel *ftp = [[FolderTreePanel alloc] init];
+        ftp.delegate = self;
+        _folderTreePanel = ftp;
+    }
+    // Show the panel, then let user pick the root folder
+    if (![_sidePanelHost hasPanel:_folderTreePanel])
+        [self _setPanelVisible:_folderTreePanel title:@"Folder as Workspace" show:YES];
+    [(FolderTreePanel *)_folderTreePanel chooseRootFolder];
 }
 
 - (void)openSelectedFileInNewInstance:(id)sender {
