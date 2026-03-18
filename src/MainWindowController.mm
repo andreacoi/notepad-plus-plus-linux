@@ -124,7 +124,9 @@ static NSImage *nppToolbarIcon(NSString *fileName) {
     NSString *path = [[[NSBundle mainBundle] resourcePath]
         stringByAppendingPathComponent:
             [NSString stringWithFormat:@"icons/standard/toolbar/%@.png", fileName]];
-    return [[NSImage alloc] initWithContentsOfFile:path];
+    NSImage *img = [[NSImage alloc] initWithContentsOfFile:path];
+    img.cacheMode = NSImageCacheNever;   // always read fresh from disk
+    return img;
 }
 
 // ── Compact flat toolbar button (16×16 pt, 1-px rounded hover border) ───────
@@ -157,6 +159,18 @@ static NSImage *nppToolbarIcon(NSString *fileName) {
 - (void)mouseExited:(NSEvent *)event  { _hovering = NO;   [self setNeedsDisplay:YES]; }
 
 - (void)drawRect:(NSRect)dirtyRect {
+    BOOL pressed = self.isHighlighted;
+    if (pressed || _hovering) {
+        NSColor *bg  = pressed
+            ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
+            : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+        NSColor *bdr = [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0];
+        NSBezierPath *fill = [NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:2.0 yRadius:2.0];
+        [bg setFill]; [fill fill];
+        NSBezierPath *border = [NSBezierPath bezierPathWithRoundedRect:NSInsetRect(self.bounds, 0.5, 0.5)
+                                                               xRadius:2.0 yRadius:2.0];
+        border.lineWidth = 1.0; [bdr setStroke]; [border stroke];
+    }
     if (self.image) {
         [self.image drawInRect:NSInsetRect(self.bounds, 1, 1)
                       fromRect:NSZeroRect
@@ -164,15 +178,6 @@ static NSImage *nppToolbarIcon(NSString *fileName) {
                       fraction:1.0
                 respectFlipped:YES
                          hints:nil];
-    }
-    if (_hovering) {
-        [[NSColor colorWithWhite:0.25 alpha:0.85] set];
-        NSBezierPath *path = [NSBezierPath
-            bezierPathWithRoundedRect:NSInsetRect(self.bounds, 0.5, 0.5)
-                              xRadius:2.0
-                              yRadius:2.0];
-        path.lineWidth = 1.0;
-        [path stroke];
     }
 }
 
@@ -183,6 +188,11 @@ static NSImage *nppToolbarIcon(NSString *fileName) {
 @interface _FlatImgButton : NSButton @end
 @implementation _FlatImgButton
 - (void)drawRect:(NSRect)dirtyRect {
+    if (self.isHighlighted) {
+        NSColor *bg = [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0];
+        NSBezierPath *p = [NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:2.0 yRadius:2.0];
+        [bg setFill]; [p fill];
+    }
     if (self.image)
         [self.image drawInRect:NSInsetRect(self.bounds, 1, 1)
                       fromRect:NSZeroRect
@@ -197,9 +207,14 @@ static NSImage *nppToolbarIcon(NSString *fileName) {
 @interface _DropArrowButton : NSButton @end
 @implementation _DropArrowButton
 - (void)drawRect:(NSRect)dirtyRect {
+    if (self.isHighlighted) {
+        NSColor *bg = [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0];
+        NSBezierPath *p = [NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:2.0 yRadius:2.0];
+        [bg setFill]; [p fill];
+    }
     static NSDictionary *attrs;
     if (!attrs)
-        attrs = @{ NSFontAttributeName:            [NSFont systemFontOfSize:11],
+        attrs = @{ NSFontAttributeName:            [NSFont systemFontOfSize:14],
                    NSForegroundColorAttributeName: NSColor.labelColor };
     NSString *glyph = @"▾";
     NSSize sz  = [glyph sizeWithAttributes:attrs];
@@ -458,10 +473,10 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     // Dark-grey group separator
     if ([ident isEqualToString:kTBSep]) {
         NSToolbarItem *sep = [[NSToolbarItem alloc] initWithItemIdentifier:ident];
-        NppSeparatorView *v = [[NppSeparatorView alloc] initWithFrame:NSMakeRect(0, 0, 8, 19)];
+        NppSeparatorView *v = [[NppSeparatorView alloc] initWithFrame:NSMakeRect(0, 0, 8, 17)];
         sep.view    = v;
-        sep.minSize = NSMakeSize(8, 19);
-        sep.maxSize = NSMakeSize(8, 19);
+        sep.minSize = NSMakeSize(8, 17);
+        sep.maxSize = NSMakeSize(8, 17);
         return sep;
     }
 
@@ -479,7 +494,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
 
 // Pack a set of buttons into a single NSToolbarItem view with 1pt spacing.
 - (NSToolbarItem *)makeGroupToolbarItem:(NSString *)ident identifiers:(NSArray *)idents {
-    static const CGFloat kBtnSize = 19.0;
+    static const CGFloat kBtnSize = 17.0;
     static const CGFloat kSpacing =  1.0;
     NSInteger n = (NSInteger)idents.count;
     CGFloat totalW = n * kBtnSize + (n - 1) * kSpacing;
@@ -514,10 +529,11 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
 
 // Group 6: Word Wrap button | [Show All Characters + dropdown arrow (hover group)]
 - (NSToolbarItem *)makeAllCharsGroupToolbarItem {
-    static const CGFloat kBtnSize  = 19.0;
-    static const CGFloat kDropW    = 22.0;  // 30% smaller than previous 32pt
+    static const CGFloat kBtnSize  = 17.0;
+    static const CGFloat kDropW    = 29.0;
     static const CGFloat kGap      = 1.0;
-    CGFloat hoverW  = kBtnSize + kDropW;    // chars button + arrow, no inner gap
+    static const CGFloat kInnerGap = 2.0;   // gap between chars button and dropdown arrow
+    CGFloat hoverW  = kBtnSize + kInnerGap + kDropW;
     CGFloat totalW  = kBtnSize + kGap + hoverW;
 
     NSView *outer = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, totalW, kBtnSize)];
@@ -547,7 +563,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     [hoverGroup addSubview:charsBtn];
 
     _DropArrowButton *dropBtn = [[_DropArrowButton alloc]
-        initWithFrame:NSMakeRect(kBtnSize, 0, kDropW, kBtnSize)];
+        initWithFrame:NSMakeRect(kBtnSize + kInnerGap, 0, kDropW, kBtnSize)];
     [dropBtn setBordered:NO];
     dropBtn.buttonType = NSButtonTypeMomentaryChange;
     dropBtn.title      = @"";   // drawn manually in drawRect:
@@ -567,7 +583,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
 
 // Builds the right-aligned +  ▾  × tab-control group.
 - (NSToolbarItem *)makeTabControlsToolbarItem {
-    static const CGFloat kW = 20.0, kH = 19.0, kSpc = 1.0;
+    static const CGFloat kW = 20.0, kH = 17.0, kSpc = 1.0;
     CGFloat totalW = 3 * kW + 2 * kSpc;
 
     NSView *groupView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, totalW, kH)];

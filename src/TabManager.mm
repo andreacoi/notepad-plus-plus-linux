@@ -228,6 +228,9 @@
     NSInteger idx = [_editors indexOfObject:editor];
     if (idx == NSNotFound) return;
 
+    // Unregister file presenter so the EditorView can be deallocated.
+    // (NSFileCoordinator holds a strong ref to registered presenters.)
+    [editor prepareForClose];
     [editor removeFromSuperview];
     [_editors removeObjectAtIndex:idx];
     [_tabBar removeTabAtIndex:idx];

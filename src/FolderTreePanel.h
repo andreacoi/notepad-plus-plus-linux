@@ -6,6 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol FolderTreePanelDelegate <NSObject>
 - (void)folderTreePanel:(FolderTreePanel *)panel openFileAtURL:(NSURL *)url;
+- (void)folderTreePanelDidRequestClose:(FolderTreePanel *)panel;
 @end
 
 /// Side panel showing a file-system folder tree.
@@ -16,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Called on tab switch; ignored when the panel is locked.
 - (void)setActiveFileURL:(NSURL *)fileURL;
+
+/// Opens an NSOpenPanel to let the user choose a root folder.
+- (void)chooseRootFolder;
 
 @end
 
