@@ -442,7 +442,10 @@ static NSMenu *buildLanguageMenu() {
     [roMenu addItem:item(@"Toggle Read-Only",        @selector(toggleReadOnly:),  @"")];
     [roMenu addItem:item(@"Clear Read-Only Flag", @selector(clearReadOnlyFlag:), @"")];
     [editMenu addItem:withSubmenu(@"Read-Only in Notepad++", roMenu)];
-    [editMenu addItem:item(@"Read-Only Attribute (macOS)", @selector(toggleReadOnlyAttribute:), @"")];
+    NSMenu *lockedMenu = submenu(@"Locked Attribute (macOS)");
+    [lockedMenu addItem:item(@"Lock",   @selector(lockFileAttribute:),   @"")];
+    [lockedMenu addItem:item(@"Unlock", @selector(unlockFileAttribute:), @"")];
+    [editMenu addItem:withSubmenu(@"Locked Attribute (macOS)", lockedMenu)];
 
     // ── Search ────────────────────────────────────────────────────────────────
     NSMenuItem *searchItem = [[NSMenuItem alloc] init];

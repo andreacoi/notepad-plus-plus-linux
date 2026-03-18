@@ -181,6 +181,14 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     _scintillaView.delegate = self;
     [self addSubview:_scintillaView];
 
+    // Use legacy-style scrollers (shows arrows) and auto-hide when content fits.
+    [self _applyLegacyScrollerStyle];
+
+    // Re-apply if the system scroller-style preference changes.
+    [[NSNotificationCenter defaultCenter]
+        addObserver:self selector:@selector(_scrollerStyleChanged:)
+               name:NSPreferredScrollerStyleDidChangeNotification object:nil];
+
     // The drag registration is on SCIContentView (the inner view), not ScintillaView itself.
     // Strip NSPasteboardTypeFileURL and NSFilenamesPboardType from it so file drops
     // bubble up to the NppDropView container which handles opening the files.
@@ -760,6 +768,9 @@ static NSColor *nppColorFromHex(NSString *hex) {
         [sci setColorProperty:SCI_MARKERSETBACK parameter:mn value:foldBack2];
     }
 
+    // Whitespace symbols color — re-assert after SCI_STYLECLEARALL clears all styles.
+    [sci message:SCI_SETWHITESPACEFORE wParam:1 lParam:0x0000FF]; // red (BGR)
+
     // Re-apply language colors with the new theme palette
     if (_currentLanguage.length) [self applyLexerColors:_currentLanguage];
 }
@@ -925,6 +936,14 @@ static NSColor *nppColorFromHex(NSString *hex) {
            lParam:(1 << kGitMarkerAdded) | (1 << kGitMarkerModified) | (1 << kGitMarkerDeleted)];
     [sci message:SCI_SETMARGINWIDTHN wParam:kGitGutterMargin lParam:4];
     [sci message:SCI_SETMARGINSENSITIVEN wParam:kGitGutterMargin lParam:0];
+
+    // Whitespace symbols (spaces/tabs) always rendered in red when made visible.
+    // Setting this once here makes it persist for the lifetime of the editor,
+    // including for newly typed characters — matching Windows NPP behavior.
+    [sci message:SCI_SETWHITESPACEFORE wParam:1 lParam:0x0000FF]; // red (BGR)
+
+    // Cache layout of the visible page for better performance on long lines.
+    [sci message:SCI_SETLAYOUTCACHE wParam:SC_CACHE_PAGE];
 
     // Apply user preferences (tab width, line numbers, wrap, etc.)
     [self applyPreferencesFromDefaults];
@@ -1930,6 +1949,12 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
         case SCN_MODIFIED:
             if (notification->modificationType & (SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT)) {
                 _isModified = YES;
+                // When whitespace display is active, newly inserted characters may not
+                // get their whitespace symbols drawn by Scintilla's incremental update.
+                // Queuing a full redraw ensures tab arrows / space dots appear immediately.
+                if ([_scintillaView message:SCI_GETVIEWWS] != SCWS_INVISIBLE) {
+                    [_scintillaView setNeedsDisplay:YES];
+                }
             }
             break;
         case SCN_CHARADDED:
@@ -2214,11 +2239,30 @@ static const unsigned int kSCI_GetBidirectional = 2708;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+#pragma mark - Scroller style helpers
+
+- (void)_applyLegacyScrollerStyle {
+    _scintillaView.scrollView.scrollerStyle = NSScrollerStyleLegacy;
+    _scintillaView.scrollView.autohidesScrollers = YES;
+}
+
+- (void)viewDidMoveToWindow {
+    [super viewDidMoveToWindow];
+    // The system may reset scrollerStyle when the view enters a window.
+    if (self.window) [self _applyLegacyScrollerStyle];
+}
+
+- (void)_scrollerStyleChanged:(NSNotification *)note {
+    [self _applyLegacyScrollerStyle];
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 #pragma mark - View Toggles
 
 - (void)showWhiteSpaceAndTab:(id)sender {
     ScintillaView *sci = _scintillaView;
     sptr_t current = [sci message:SCI_GETVIEWWS];
+    // Color is already set persistently (red BGR) in applyDefaultTheme.
     [sci message:SCI_SETVIEWWS wParam:(current == SCWS_INVISIBLE ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE)];
 }
 
@@ -2607,13 +2651,25 @@ static const unsigned int kSCI_GetBidirectional = 2708;
     if (tabWidth <= 0) tabWidth = 4;
     sptr_t firstLine, lastLine;
     [self _selectionLineRange:&firstLine last:&lastLine];
-    NSString *spaces = [@"" stringByPaddingToLength:(NSUInteger)tabWidth withString:@" " startingAtIndex:0];
     [sci message:SCI_BEGINUNDOACTION];
     for (sptr_t ln = lastLine; ln >= firstLine; ln--) {
         NSString *orig = [self _lineTextAt:ln];
         if (![orig containsString:@"\t"]) continue;
-        NSString *replaced = [orig stringByReplacingOccurrencesOfString:@"\t" withString:spaces];
-        if (![replaced isEqualToString:orig]) [self _setLineText:replaced atLine:ln];
+        // Column-aware expansion: each tab expands to reach the next tab stop.
+        NSMutableString *result = [NSMutableString stringWithCapacity:orig.length * 2];
+        NSInteger col = 0;
+        for (NSUInteger i = 0; i < orig.length; i++) {
+            unichar c = [orig characterAtIndex:i];
+            if (c == '\t') {
+                NSInteger spaces = tabWidth - (col % tabWidth);
+                for (NSInteger s = 0; s < spaces; s++) [result appendString:@" "];
+                col += spaces;
+            } else {
+                [result appendFormat:@"%C", c];
+                col++;
+            }
+        }
+        if (![result isEqualToString:orig]) [self _setLineText:result atLine:ln];
     }
     [sci message:SCI_ENDUNDOACTION];
 }

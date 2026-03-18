@@ -38,7 +38,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
 + (void)load {
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{
         kPrefTabWidth:           @4,
-        kPrefUseTabs:            @NO,
+        kPrefUseTabs:            @YES,
         kPrefAutoIndent:         @YES,
         kPrefShowLineNumbers:    @YES,
         kPrefWordWrap:           @NO,
@@ -60,6 +60,18 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         kPrefStyleFontName:      @"Menlo",
         kPrefStyleFontSize:      @11,
     }];
+    // Force-upgrade any stale @NO value stored by earlier builds.
+    // registerDefaults: only fills in missing keys, so previously-stored @NO
+    // would silently override the new default. Remove the key so the
+    // registered default (@YES) takes effect — users can still change it via Prefs.
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    if (![ud objectForKey:kPrefUseTabs]) {
+        // Key absent — registered default will be used, nothing to do.
+    } else if ([ud objectForKey:@"_useTabsDefaultApplied"] == nil) {
+        // First run after default change: override stored value and mark done.
+        [ud setBool:YES forKey:kPrefUseTabs];
+        [ud setBool:YES forKey:@"_useTabsDefaultApplied"];
+    }
 }
 
 + (instancetype)sharedController {
@@ -91,7 +103,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
 - (void)registerDefaults {
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{
         kPrefTabWidth:           @4,
-        kPrefUseTabs:            @NO,
+        kPrefUseTabs:            @YES,
         kPrefAutoIndent:         @YES,
         kPrefShowLineNumbers:    @YES,
         kPrefWordWrap:           @NO,

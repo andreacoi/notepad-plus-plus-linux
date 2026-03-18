@@ -3,6 +3,7 @@
 static const NSUInteger kMaxHistory = 30;
 
 @implementation ClipboardHistoryPanel {
+    NSView             *_titleBar;
     NSTableView        *_tableView;
     NSMutableArray<NSString *> *_history;
     NSTimer            *_timer;
@@ -24,6 +25,56 @@ static const NSUInteger kMaxHistory = 30;
 }
 
 - (void)_buildLayout {
+    // ── Title bar ──────────────────────────────────────────────────────────────
+    _titleBar = [[NSView alloc] init];
+    _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
+    _titleBar.wantsLayer = YES;
+    _titleBar.layer.backgroundColor = [NSColor controlBackgroundColor].CGColor;
+    [self addSubview:_titleBar];
+
+    NSTextField *titleLabel = [NSTextField labelWithString:@"Clipboard History"];
+    titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    titleLabel.font = [NSFont systemFontOfSize:12 weight:NSFontWeightMedium];
+    titleLabel.textColor = [NSColor labelColor];
+    titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    [_titleBar addSubview:titleLabel];
+
+    NSButton *closeBtn = [NSButton buttonWithTitle:@"✕" target:self action:@selector(_closePanel:)];
+    closeBtn.translatesAutoresizingMaskIntoConstraints = NO;
+    closeBtn.bezelStyle = NSBezelStyleInline;
+    closeBtn.bordered = NO;
+    closeBtn.font = [NSFont systemFontOfSize:11];
+    [_titleBar addSubview:closeBtn];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [_titleBar.topAnchor     constraintEqualToAnchor:self.topAnchor],
+        [_titleBar.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+        [_titleBar.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+        [_titleBar.heightAnchor  constraintEqualToConstant:28],
+
+        [titleLabel.leadingAnchor  constraintEqualToAnchor:_titleBar.leadingAnchor constant:8],
+        [titleLabel.centerYAnchor  constraintEqualToAnchor:_titleBar.centerYAnchor],
+        [titleLabel.trailingAnchor constraintLessThanOrEqualToAnchor:closeBtn.leadingAnchor constant:-4],
+
+        [closeBtn.trailingAnchor constraintEqualToAnchor:_titleBar.trailingAnchor constant:-6],
+        [closeBtn.centerYAnchor  constraintEqualToAnchor:_titleBar.centerYAnchor],
+        [closeBtn.widthAnchor    constraintEqualToConstant:20],
+        [closeBtn.heightAnchor   constraintEqualToConstant:20],
+    ]];
+
+    // ── Separator below title ──────────────────────────────────────────────────
+    NSBox *sep = [[NSBox alloc] init];
+    sep.boxType = NSBoxSeparator;
+    sep.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:sep];
+    [NSLayoutConstraint activateConstraints:@[
+        [sep.topAnchor     constraintEqualToAnchor:_titleBar.bottomAnchor],
+        [sep.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
+        [sep.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+        [sep.heightAnchor  constraintEqualToConstant:1],
+    ]];
+
+    // ── Table ──────────────────────────────────────────────────────────────────
     NSScrollView *scroll = [[NSScrollView alloc] init];
     scroll.translatesAutoresizingMaskIntoConstraints = NO;
     scroll.hasVerticalScroller = YES;
@@ -46,25 +97,16 @@ static const NSUInteger kMaxHistory = 30;
     scroll.documentView = _tableView;
     [self addSubview:scroll];
 
-    NSButton *clearBtn = [NSButton buttonWithTitle:@"Clear All"
-                                            target:self
-                                            action:@selector(_clearAll:)];
-    clearBtn.translatesAutoresizingMaskIntoConstraints = NO;
-    clearBtn.bezelStyle = NSBezelStyleRounded;
-    [self addSubview:clearBtn];
-
     [NSLayoutConstraint activateConstraints:@[
-        [scroll.topAnchor constraintEqualToAnchor:self.topAnchor],
-        [scroll.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+        [scroll.topAnchor    constraintEqualToAnchor:sep.bottomAnchor],
+        [scroll.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
         [scroll.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [scroll.bottomAnchor constraintEqualToAnchor:clearBtn.topAnchor constant:-2],
-
-        [clearBtn.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:4],
-        [clearBtn.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-4],
-        [clearBtn.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-4],
-        [clearBtn.heightAnchor constraintEqualToConstant:22],
+        [scroll.bottomAnchor   constraintEqualToAnchor:self.bottomAnchor],
     ]];
-    // Row click disabled — paste interaction removed to prevent crash
+}
+
+- (void)_closePanel:(id)sender {
+    [_delegate clipboardHistoryPanelDidRequestClose:self];
 }
 
 // ── Public API ────────────────────────────────────────────────────────────────
@@ -103,9 +145,27 @@ static const NSUInteger kMaxHistory = 30;
     [_tableView reloadData];
 }
 
-- (void)_clearAll:(id)sender {
-    [_history removeAllObjects];
-    [_tableView reloadData];
+// ── Copy support ──────────────────────────────────────────────────────────────
+
+/// NSTableView calls this for each selected row when the user presses Cmd+C.
+/// Returning a writer here lets NSTableView handle copy: internally, preventing
+/// the action from propagating up the responder chain and crashing.
+- (id<NSPasteboardWriting>)tableView:(NSTableView *)tableView
+              pasteboardWriterForRow:(NSInteger)row {
+    if (row < 0 || row >= (NSInteger)_history.count) return nil;
+    NSPasteboardItem *item = [[NSPasteboardItem alloc] init];
+    [item setString:_history[row] forType:NSPasteboardTypeString];
+    return item;
+}
+
+/// Fallback: if copy: bubbles up from the table without being handled, copy the
+/// full (non-truncated) text of the selected entry to the general pasteboard.
+- (void)copy:(id)sender {
+    NSInteger row = _tableView.selectedRow;
+    if (row < 0 || row >= (NSInteger)_history.count) return;
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    [pb clearContents];
+    [pb setString:_history[row] forType:NSPasteboardTypeString];
 }
 
 // ── NSTableViewDataSource ─────────────────────────────────────────────────────

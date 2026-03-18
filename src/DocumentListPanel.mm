@@ -1,8 +1,10 @@
 #import "DocumentListPanel.h"
 #import "EditorView.h"
+#import "StyleConfiguratorWindowController.h"
 
 @implementation DocumentListPanel {
     TabManager   *_tabManager;
+    NSScrollView *_scrollView;
     NSTableView  *_tableView;
     NSArray<EditorView *> *_items;
 }
@@ -18,7 +20,58 @@
 }
 
 - (void)_buildLayout {
-    NSScrollView *scroll = [[NSScrollView alloc] init];
+    // ── Title bar ─────────────────────────────────────────────────────────────
+    NSView *titleBar = [[NSView alloc] init];
+    titleBar.translatesAutoresizingMaskIntoConstraints = NO;
+    titleBar.wantsLayer = YES;
+    titleBar.layer.backgroundColor = [NSColor controlBackgroundColor].CGColor;
+    [self addSubview:titleBar];
+
+    NSTextField *titleLabel = [NSTextField labelWithString:@"Document List"];
+    titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    titleLabel.font = [NSFont boldSystemFontOfSize:11];
+    titleLabel.textColor = [NSColor labelColor];
+    titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    [titleBar addSubview:titleLabel];
+
+    NSButton *closeBtn = [NSButton buttonWithTitle:@"✕" target:self action:@selector(_closePanel:)];
+    closeBtn.translatesAutoresizingMaskIntoConstraints = NO;
+    closeBtn.bezelStyle = NSBezelStyleInline;
+    closeBtn.bordered = NO;
+    closeBtn.font = [NSFont systemFontOfSize:11];
+    [titleBar addSubview:closeBtn];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [titleBar.topAnchor      constraintEqualToAnchor:self.topAnchor],
+        [titleBar.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
+        [titleBar.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+        [titleBar.heightAnchor   constraintEqualToConstant:26],
+
+        [titleLabel.leadingAnchor  constraintEqualToAnchor:titleBar.leadingAnchor constant:6],
+        [titleLabel.centerYAnchor  constraintEqualToAnchor:titleBar.centerYAnchor],
+        [titleLabel.trailingAnchor constraintLessThanOrEqualToAnchor:closeBtn.leadingAnchor constant:-4],
+
+        [closeBtn.trailingAnchor constraintEqualToAnchor:titleBar.trailingAnchor constant:-6],
+        [closeBtn.centerYAnchor  constraintEqualToAnchor:titleBar.centerYAnchor],
+        [closeBtn.widthAnchor    constraintEqualToConstant:20],
+        [closeBtn.heightAnchor   constraintEqualToConstant:20],
+    ]];
+
+    // ── Separator ─────────────────────────────────────────────────────────────
+    NSBox *sep = [[NSBox alloc] init];
+    sep.boxType = NSBoxSeparator;
+    sep.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:sep];
+    [NSLayoutConstraint activateConstraints:@[
+        [sep.topAnchor      constraintEqualToAnchor:titleBar.bottomAnchor],
+        [sep.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
+        [sep.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+        [sep.heightAnchor   constraintEqualToConstant:1],
+    ]];
+
+    // ── Table ─────────────────────────────────────────────────────────────────
+    _scrollView = [[NSScrollView alloc] init];
+    NSScrollView *scroll = _scrollView;
     scroll.translatesAutoresizingMaskIntoConstraints = NO;
     scroll.hasVerticalScroller = YES;
     scroll.hasHorizontalScroller = NO;
@@ -42,22 +95,40 @@
     [self addSubview:scroll];
 
     [NSLayoutConstraint activateConstraints:@[
-        [scroll.topAnchor constraintEqualToAnchor:self.topAnchor],
-        [scroll.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+        [scroll.topAnchor      constraintEqualToAnchor:sep.bottomAnchor],
+        [scroll.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
         [scroll.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [scroll.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
+        [scroll.bottomAnchor   constraintEqualToAnchor:self.bottomAnchor],
     ]];
 
-    // Single-click to select
     _tableView.target = self;
     _tableView.action = @selector(_rowClicked:);
+
+    [self _applyTheme];
+    [[NSNotificationCenter defaultCenter]
+        addObserver:self selector:@selector(_themeChanged:)
+               name:@"NPPPreferencesChanged" object:nil];
+}
+
+- (void)_applyTheme {
+    NSColor *bg = [[NPPStyleStore sharedStore] globalBg];
+    _scrollView.backgroundColor = bg;
+    _tableView.backgroundColor  = bg;
+    [_tableView reloadData];   // refresh cell text colors
+}
+
+- (void)_themeChanged:(NSNotification *)note {
+    [self _applyTheme];
+}
+
+- (void)_closePanel:(id)sender {
+    [_delegate documentListPanelDidRequestClose:self];
 }
 
 - (void)reloadData {
     NSInteger prevSel = _tableView.selectedRow;
     _items = [_tabManager.allEditors copy];
 
-    // Determine which row corresponds to the current editor
     NSInteger currentIdx = NSNotFound;
     EditorView *current = _tabManager.currentEditor;
     for (NSUInteger i = 0; i < _items.count; i++) {
@@ -71,7 +142,6 @@
                 byExtendingSelection:NO];
         [_tableView scrollRowToVisible:currentIdx];
     } else if (prevSel >= 0) {
-        // clear stale selection
         [_tableView deselectAll:nil];
     }
 }
@@ -103,6 +173,7 @@
         cell.font = [NSFont systemFontOfSize:12];
     }
     cell.stringValue = display;
+    cell.textColor = [[NPPStyleStore sharedStore] globalFg];
     return cell;
 }
 

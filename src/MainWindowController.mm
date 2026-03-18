@@ -325,7 +325,9 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     <TabManagerDelegate, NSWindowDelegate,
      NSToolbarDelegate, FindReplacePanelDelegate, NSUserInterfaceValidations,
      NSSplitViewDelegate, IncrementalSearchBarDelegate,
-     FolderTreePanelDelegate, GitPanelDelegate>
+     FolderTreePanelDelegate, GitPanelDelegate,
+     ClipboardHistoryPanelDelegate, DocumentMapPanelDelegate,
+     DocumentListPanelDelegate>
 @end
 
 @implementation MainWindowController {
@@ -1394,19 +1396,33 @@ static NSString *nppMacrosPath(void) {
 }
 
 - (void)showDocumentList:(id)sender {
-    if (!_docListPanel)
+    if (!_docListPanel) {
         _docListPanel = [[DocumentListPanel alloc] initWithTabManager:_tabManager];
+        _docListPanel.delegate = self;
+    }
     BOOL open = [_sidePanelHost hasPanel:_docListPanel];
     if (!open) [_docListPanel reloadData];
     [self _setPanelVisible:_docListPanel title:@"Document List" show:!open];
 }
 
+- (void)documentListPanelDidRequestClose:(DocumentListPanel *)panel {
+    [self _setPanelVisible:panel title:@"Document List" show:NO];
+}
+
 - (void)showClipboardHistory:(id)sender {
-    if (!_clipboardPanel) _clipboardPanel = [[ClipboardHistoryPanel alloc] init];
+    if (!_clipboardPanel) {
+        _clipboardPanel = [[ClipboardHistoryPanel alloc] init];
+        _clipboardPanel.delegate = self;
+    }
     BOOL open = [_sidePanelHost hasPanel:_clipboardPanel];
     if (!open) [_clipboardPanel startMonitoring];
     else       [_clipboardPanel stopMonitoring];
     [self _setPanelVisible:_clipboardPanel title:@"Clipboard History" show:!open];
+}
+
+- (void)clipboardHistoryPanelDidRequestClose:(ClipboardHistoryPanel *)panel {
+    [_clipboardPanel stopMonitoring];
+    [self _setPanelVisible:_clipboardPanel title:@"Clipboard History" show:NO];
 }
 
 - (void)showCommandPalette:(id)sender {
@@ -1419,10 +1435,17 @@ static NSString *nppMacrosPath(void) {
 }
 
 - (void)showDocumentMap:(id)sender {
-    if (!_docMapPanel) _docMapPanel = [[DocumentMapPanel alloc] init];
+    if (!_docMapPanel) {
+        _docMapPanel = [[DocumentMapPanel alloc] init];
+        _docMapPanel.delegate = self;
+    }
     BOOL open = [_sidePanelHost hasPanel:_docMapPanel];
     if (!open) [_docMapPanel setTrackedEditor:[self currentEditor]];
     [self _setPanelVisible:_docMapPanel title:@"Document Map" show:!open];
+}
+
+- (void)documentMapPanelDidRequestClose:(DocumentMapPanel *)panel {
+    [self _setPanelVisible:_docMapPanel title:@"Document Map" show:NO];
 }
 
 - (void)showFunctionList:(id)sender {
@@ -2134,18 +2157,18 @@ static NSString *nppMacrosPath(void) {
 - (void)selectAndFindNext:(id)sender       { [[self currentEditor] selectAndFindNext:sender]; }
 - (void)selectAndFindPrevious:(id)sender   { [[self currentEditor] selectAndFindPrevious:sender]; }
 
-- (void)toggleReadOnlyAttribute:(id)sender {
+- (void)lockFileAttribute:(id)sender {
     EditorView *ed = [self currentEditor];
     if (!ed || !ed.filePath) return;
-    NSString *path = ed.filePath;
-    NSError *err;
-    NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:&err];
-    if (!attrs) return;
-    NSUInteger perms = [[attrs objectForKey:NSFilePosixPermissions] unsignedShortValue];
-    BOOL isReadOnly = !(perms & S_IWUSR);
-    NSUInteger newPerms = isReadOnly ? (perms | S_IWUSR) : (perms & ~(S_IWUSR | S_IWGRP | S_IWOTH));
-    [[NSFileManager defaultManager] setAttributes:@{NSFilePosixPermissions: @(newPerms)}
-                                     ofItemAtPath:path error:nil];
+    [[NSFileManager defaultManager] setAttributes:@{NSFileImmutable: @YES}
+                                     ofItemAtPath:ed.filePath error:nil];
+}
+
+- (void)unlockFileAttribute:(id)sender {
+    EditorView *ed = [self currentEditor];
+    if (!ed || !ed.filePath) return;
+    [[NSFileManager defaultManager] setAttributes:@{NSFileImmutable: @NO}
+                                     ofItemAtPath:ed.filePath error:nil];
 }
 
 // ── Multi-select (forwarded to current editor) ────────────────────────────────
@@ -2181,36 +2204,18 @@ static NSString *nppMacrosPath(void) {
     NSPasteboard *pb = [NSPasteboard generalPasteboard];
     NSString *html = [pb stringForType:NSPasteboardTypeHTML];
     if (!html.length) { NSBeep(); return; }
-
-    // Build a CF_HTML-compatible header (matches the Windows Notepad++ "Paste HTML Content" format).
-    // Byte offsets are 10-digit, zero-padded. The header length is constant once sourceURL is known.
-    NSURL *pbURL = [NSURL URLFromPasteboard:pb];
-    NSString *sourceURL = pbURL ? pbURL.absoluteString : @"";
-
-    NSString *fragStart = @"<!--StartFragment-->";
-    NSString *fragEnd   = @"<!--EndFragment-->";
-    NSString *body      = [NSString stringWithFormat:@"%@%@%@", fragStart, html, fragEnd];
-
-    // Use placeholder offsets of the same digit-width to measure header size
-    NSString *placeholder = @"0000000000";
-    NSString *templateHdr = [NSString stringWithFormat:
-        @"Version:0.9\r\nStartHTML:%@\r\nEndHTML:%@\r\nStartFragment:%@\r\nEndFragment:%@\r\nSourceURL:%@\r\n",
-        placeholder, placeholder, placeholder, placeholder, sourceURL];
-    NSUInteger hdrBytes  = [templateHdr lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
-    NSUInteger bodyBytes = [body lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
-    NSUInteger fragStartBytes = [fragStart lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
-    NSUInteger fragEndBytes   = [fragEnd   lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
-
-    NSString *header = [NSString stringWithFormat:
-        @"Version:0.9\r\nStartHTML:%010lu\r\nEndHTML:%010lu\r\nStartFragment:%010lu\r\nEndFragment:%010lu\r\nSourceURL:%@\r\n",
-        (unsigned long)hdrBytes,
-        (unsigned long)(hdrBytes + bodyBytes),
-        (unsigned long)(hdrBytes + fragStartBytes),
-        (unsigned long)(hdrBytes + bodyBytes - fragEndBytes),
-        sourceURL];
-
-    NSString *fullText = [header stringByAppendingString:body];
-    [ed.scintillaView message:SCI_REPLACESEL wParam:0 lParam:(sptr_t)fullText.UTF8String];
+    // Convert HTML to plain text using NSAttributedString so that block elements
+    // (<p>, <br>, <div>, etc.) become real newline characters rather than being
+    // collapsed into a single line.
+    NSData *htmlData = [html dataUsingEncoding:NSUTF8StringEncoding];
+    NSAttributedString *attrStr = [[NSAttributedString alloc]
+        initWithData:htmlData
+        options:@{NSDocumentTypeDocumentAttribute:       NSHTMLTextDocumentType,
+                  NSCharacterEncodingDocumentAttribute:  @(NSUTF8StringEncoding)}
+        documentAttributes:nil error:nil];
+    NSString *plain = attrStr.string ?: html;
+    if (!plain.length) { NSBeep(); return; }
+    [ed.scintillaView message:SCI_REPLACESEL wParam:0 lParam:(sptr_t)plain.UTF8String];
 }
 
 - (void)pasteRTFContent:(id)sender {
