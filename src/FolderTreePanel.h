@@ -7,18 +7,20 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol FolderTreePanelDelegate <NSObject>
 - (void)folderTreePanel:(FolderTreePanel *)panel openFileAtURL:(NSURL *)url;
 - (void)folderTreePanelDidRequestClose:(FolderTreePanel *)panel;
+/// Called when user selects "Find in Files" from the context menu.
+- (void)folderTreePanel:(FolderTreePanel *)panel findInFilesAtPath:(NSString *)path;
 @end
 
-/// Side panel showing a file-system folder tree.
-/// Automatically follows the active tab's parent folder unless locked.
+/// Side panel showing a multi-root file-system tree (Folder as Workspace).
+/// Supports adding/removing root folders, context menus, persistent state.
 @interface FolderTreePanel : NSView <NSOutlineViewDataSource, NSOutlineViewDelegate>
 
 @property (nonatomic, weak, nullable) id<FolderTreePanelDelegate> delegate;
 
-/// Called on tab switch; ignored when the panel is locked.
+/// Store active file URL so Locate Current File can find it in the tree.
 - (void)setActiveFileURL:(NSURL *)fileURL;
 
-/// Opens an NSOpenPanel to let the user choose a root folder.
+/// Opens an NSOpenPanel to add a root folder to the workspace.
 - (void)chooseRootFolder;
 
 @end

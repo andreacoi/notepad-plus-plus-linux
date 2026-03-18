@@ -15,6 +15,16 @@
     [self.mainWindowController showWindow:nil];
 }
 
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
+    // Route Cmd+Q through the window close path so saveSession (and save prompts) run.
+    NSWindow *win = self.mainWindowController.window;
+    if (win && win.isVisible) {
+        [win performClose:sender];
+        return NSTerminateCancel;   // window-close will re-terminate via lastWindowClosed
+    }
+    return NSTerminateNow;
+}
+
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
     return YES;
 }

@@ -415,6 +415,11 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     return self;
 }
 
+- (void)_restorePanelStates {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"FolderTreePanelVisible"])
+        [self showFolderTreePanel:nil];
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -875,11 +880,13 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
         [_statusBar.heightAnchor constraintEqualToConstant:22],
     ]];
 
-    // Collapse secondary views and side panel initially
+    // Collapse secondary views and side panel initially, then restore saved panel state
     dispatch_async(dispatch_get_main_queue(), ^{
         [self->_vSplitView   setPosition:MAX(NSWidth(self->_vSplitView.frame),   9999) ofDividerAtIndex:0];
         [self->_hSplitView   setPosition:MAX(NSHeight(self->_hSplitView.frame),  9999) ofDividerAtIndex:0];
         [self->_editorSplitView setPosition:MAX(NSWidth(self->_editorSplitView.frame), 9999) ofDividerAtIndex:0];
+        // Restore after collapsing so the restore wins
+        [self _restorePanelStates];
     });
 
     // Restore previous session; open an untitled tab only on first launch
@@ -1443,6 +1450,7 @@ static NSString *nppMacrosPath(void) {
             path ? [NSURL fileURLWithPath:path] : [NSURL fileURLWithPath:NSHomeDirectory()]];
     }
     [self _setPanelVisible:_folderTreePanel title:@"Folder as Workspace" show:!open];
+    [[NSUserDefaults standardUserDefaults] setBool:!open forKey:@"FolderTreePanelVisible"];
 }
 
 - (void)showGitPanel:(id)sender {
@@ -2435,6 +2443,14 @@ static NSString *nppMacrosPath(void) {
 
 - (void)folderTreePanelDidRequestClose:(FolderTreePanel *)panel {
     [self _setPanelVisible:_folderTreePanel title:@"Folder as Workspace" show:NO];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"FolderTreePanelVisible"];
+}
+
+- (void)folderTreePanel:(FolderTreePanel *)panel findInFilesAtPath:(NSString *)path {
+    FindInFilesPanel *fif = [FindInFilesPanel sharedPanel];
+    fif.delegate        = self;
+    fif.searchDirectory = path;
+    [fif showWindow:nil];
 }
 
 #pragma mark - GitPanelDelegate

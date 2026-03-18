@@ -58,6 +58,9 @@ static const CGFloat kFormHeight = 178.0;
     // Background search
     NSOperationQueue *_searchQueue;
     BOOL             _searching;
+
+    // Prefilled directory (set via searchDirectory property before showWindow:)
+    NSString        *_searchDirectory;
 }
 
 + (instancetype)sharedPanel {
@@ -65,6 +68,16 @@ static const CGFloat kFormHeight = 178.0;
     static dispatch_once_t once;
     dispatch_once(&once, ^{ shared = [[self alloc] init]; });
     return shared;
+}
+
+- (void)setSearchDirectory:(NSString *)searchDirectory {
+    _searchDirectory = [searchDirectory copy];
+    if (_dirField && searchDirectory.length)
+        _dirField.stringValue = searchDirectory;
+}
+
+- (NSString *)searchDirectory {
+    return _searchDirectory ?: (_dirField ? _dirField.stringValue : nil);
 }
 
 - (instancetype)init {

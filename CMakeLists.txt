@@ -127,10 +127,15 @@ add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
     COMMENT "Syncing icons into app bundle")
 
 add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    # Force-copy so an updated icns is always written (copy_if_different can miss timestamp ties)
+    COMMAND ${CMAKE_COMMAND} -E copy
         "${CMAKE_SOURCE_DIR}/resources/npp.icns"
         "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/npp.icns"
-    COMMENT "Copying app icon into bundle")
+    # Touch the bundle so macOS knows the icon changed, then re-register with LaunchServices
+    COMMAND touch "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>"
+    COMMAND /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister
+            -f "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>"
+    COMMENT "Copying app icon and refreshing macOS icon cache")
 
 add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different

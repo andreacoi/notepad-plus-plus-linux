@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak, nullable) id<FindInFilesPanelDelegate> delegate;
 
+/// Pre-fill the directory field before showing the panel.
+@property (nonatomic, copy) NSString *searchDirectory;
+
 + (instancetype)sharedPanel;
 
 @end

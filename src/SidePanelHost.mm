@@ -2,8 +2,14 @@
 
 @implementation SidePanelHost {
     NSSegmentedControl *_segControl;
+    NSBox              *_sep;
     NSView             *_contentArea;
     NSMutableArray     *_panels; // array of @{ @"view": NSView*, @"title": NSString* }
+
+    // Layout constraints toggled when header is shown/hidden
+    NSLayoutConstraint *_segHeightConstraint;
+    NSLayoutConstraint *_contentTopFromSep;   // active when header visible (2+ panels)
+    NSLayoutConstraint *_contentTopFromSelf;  // active when header hidden  (0-1 panels)
 }
 
 - (instancetype)initWithFrame:(NSRect)frameRect {
@@ -28,30 +34,42 @@
     _segControl.action = @selector(_segmentChanged:);
     [self addSubview:_segControl];
 
-    NSBox *sep = [[NSBox alloc] init];
-    sep.boxType = NSBoxSeparator;
-    sep.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:sep];
+    _sep = [[NSBox alloc] init];
+    _sep.boxType = NSBoxSeparator;
+    _sep.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:_sep];
 
     _contentArea = [[NSView alloc] init];
     _contentArea.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:_contentArea];
 
+    // Two mutually-exclusive constraints for the content area's top edge.
+    _contentTopFromSep  = [_contentArea.topAnchor constraintEqualToAnchor:_sep.bottomAnchor];
+    _contentTopFromSelf = [_contentArea.topAnchor constraintEqualToAnchor:self.topAnchor];
+    _segHeightConstraint = [_segControl.heightAnchor constraintEqualToConstant:22];
+
+    // Initial state: header hidden (no panels yet)
+    _segControl.hidden = YES;
+    _sep.hidden        = YES;
+    _segHeightConstraint.constant = 0;
+    _contentTopFromSelf.active = YES;   // content fills from top
+    _contentTopFromSep.active  = NO;
+
     [NSLayoutConstraint activateConstraints:@[
-        [_segControl.topAnchor constraintEqualToAnchor:self.topAnchor constant:2],
-        [_segControl.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:4],
+        [_segControl.topAnchor     constraintEqualToAnchor:self.topAnchor constant:2],
+        [_segControl.leadingAnchor constraintEqualToAnchor:self.leadingAnchor  constant:4],
         [_segControl.trailingAnchor constraintLessThanOrEqualToAnchor:self.trailingAnchor constant:-4],
-        [_segControl.heightAnchor constraintEqualToConstant:22],
+        _segHeightConstraint,
 
-        [sep.topAnchor constraintEqualToAnchor:_segControl.bottomAnchor constant:2],
-        [sep.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-        [sep.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [sep.heightAnchor constraintEqualToConstant:1],
+        [_sep.topAnchor     constraintEqualToAnchor:_segControl.bottomAnchor constant:2],
+        [_sep.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
+        [_sep.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+        [_sep.heightAnchor  constraintEqualToConstant:1],
 
-        [_contentArea.topAnchor constraintEqualToAnchor:sep.bottomAnchor],
-        [_contentArea.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+        _contentTopFromSelf,   // active by default
+        [_contentArea.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
         [_contentArea.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [_contentArea.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
+        [_contentArea.bottomAnchor   constraintEqualToAnchor:self.bottomAnchor],
     ]];
 }
 
@@ -68,8 +86,8 @@
     panel.hidden = YES;
     [_contentArea addSubview:panel];
     [NSLayoutConstraint activateConstraints:@[
-        [panel.topAnchor constraintEqualToAnchor:_contentArea.topAnchor],
-        [panel.leadingAnchor constraintEqualToAnchor:_contentArea.leadingAnchor],
+        [panel.topAnchor    constraintEqualToAnchor:_contentArea.topAnchor],
+        [panel.leadingAnchor  constraintEqualToAnchor:_contentArea.leadingAnchor],
         [panel.trailingAnchor constraintEqualToAnchor:_contentArea.trailingAnchor],
         [panel.bottomAnchor constraintEqualToAnchor:_contentArea.bottomAnchor],
     ]];
@@ -113,15 +131,22 @@
 
 - (void)_rebuildSegments {
     [_segControl setSegmentCount:(NSInteger)_panels.count];
-    for (NSInteger i = 0; i < (NSInteger)_panels.count; i++) {
+    for (NSInteger i = 0; i < (NSInteger)_panels.count; i++)
         [_segControl setLabel:_panels[i][@"title"] forSegment:i];
-    }
+
+    // Only show the segment switcher when 2+ panels are present;
+    // a single panel provides its own title bar.
+    BOOL showHeader = (_panels.count > 1);
+    _segControl.hidden = !showHeader;
+    _sep.hidden        = !showHeader;
+    _segHeightConstraint.constant = showHeader ? 22.0 : 0.0;
+    _contentTopFromSep.active  =  showHeader;
+    _contentTopFromSelf.active = !showHeader;
 }
 
 - (void)_showPanelAtIndex:(NSInteger)idx {
-    for (NSInteger i = 0; i < (NSInteger)_panels.count; i++) {
+    for (NSInteger i = 0; i < (NSInteger)_panels.count; i++)
         ((NSView *)_panels[i][@"view"]).hidden = (i != idx);
-    }
 }
 
 - (void)_segmentChanged:(id)sender {
