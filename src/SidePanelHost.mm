@@ -42,6 +42,11 @@
     }
     [_panels addObject:panel];
     [_stack addArrangedSubview:panel];
+    // Force panel to fill the full stack width regardless of alignment mode.
+    [NSLayoutConstraint activateConstraints:@[
+        [panel.leadingAnchor  constraintEqualToAnchor:_stack.leadingAnchor],
+        [panel.trailingAnchor constraintEqualToAnchor:_stack.trailingAnchor],
+    ]];
 }
 
 - (void)hidePanel:(NSView *)panel {

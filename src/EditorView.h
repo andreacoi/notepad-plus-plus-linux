@@ -304,6 +304,17 @@ extern NSNotificationName const EditorViewCursorDidMoveNotification;
 /// Clear all git gutter markers.
 - (void)clearGitDiffMarkers;
 
+// ── Git diff line highlights (pink background) ────────────────────────────────
+/// Async: runs git diff, highlights changed lines with a pink background indicator.
+- (void)applyGitDiffHighlights;
+/// Clear all pink diff highlights.
+- (void)clearGitDiffHighlights;
+
+// ── Character insertion (ASCII Codes Panel) ───────────────────────────────────
+/// Insert str at the current cursor position, replacing any selection.
+/// str is interpreted as Unicode (e.g. converted from Windows-1252).
+- (void)insertCharacterString:(NSString *)str;
+
 // ── Export ────────────────────────────────────────────────────────────────────
 /// Generate plain-text-in-HTML string (UTF-8, escaped) for current content.
 - (nullable NSString *)generateHTML;

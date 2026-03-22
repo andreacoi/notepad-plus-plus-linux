@@ -924,6 +924,13 @@ static NSColor *nppColorFromHex(NSString *hex) {
     [sci message:SCI_INDICSETSTYLE wParam:kSpellIndicator lParam:INDIC_SQUIGGLE];
     [sci message:SCI_INDICSETFORE  wParam:kSpellIndicator lParam:0x0000FF]; // red (BGR)
 
+    // ── Git diff line-highlight indicator (slot 18, INDIC_FULLBOX, pink) ─────
+    [sci message:SCI_INDICSETSTYLE       wParam:kGitDiffIndicator lParam:INDIC_FULLBOX];
+    [sci message:SCI_INDICSETFORE        wParam:kGitDiffIndicator lParam:0xB469FF]; // hot pink BGR (#FF69B4)
+    [sci message:SCI_INDICSETALPHA       wParam:kGitDiffIndicator lParam:55];
+    [sci message:SCI_INDICSETOUTLINEALPHA wParam:kGitDiffIndicator lParam:55];
+    [sci message:SCI_INDICSETUNDER       wParam:kGitDiffIndicator lParam:1]; // draw under text
+
     // ── Git gutter markers (margin 4, 4px, slots 6-8) ────────────────────────
     [sci message:SCI_MARKERDEFINE  wParam:kGitMarkerAdded    lParam:SC_MARK_LEFTRECT];
     [sci message:SCI_MARKERSETBACK wParam:kGitMarkerAdded    lParam:0x44CC2E]; // green BGR
@@ -1058,6 +1065,9 @@ static const unsigned int kSCI_IndicatorEnd      = 2552;
 
 // Spell-check indicator (slot 17, INDIC_SQUIGGLE red)
 static const int kSpellIndicator = 17;
+
+// Git diff line-highlight indicator (slot 18, INDIC_FULLBOX, pink)
+static const int kGitDiffIndicator = 18;
 
 // Git gutter marker slots — must be 0-19 (0-24 are user-definable, but 21-24
 // are used by change-history and 25-31 are reserved for fold markers).
@@ -1895,51 +1905,23 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
         }
     }
 
-    // Word completion: trigger at 3+ chars
-    if (isalnum(ch) || ch == '_') {
-        [self updateAutoComplete];
-    } else {
-        [sci message:SCI_AUTOCCANCEL];
+    // Word completion: trigger on word characters when auto-complete is enabled
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    if ([ud boolForKey:kPrefAutoCompleteEnable]) {
+        if (isalnum(ch) || ch == '_') {
+            [self updateAutoComplete];
+        } else {
+            [sci message:SCI_AUTOCCANCEL];
+        }
     }
 }
 
 - (void)updateAutoComplete {
-    ScintillaView *sci = _scintillaView;
-    sptr_t pos       = [sci message:SCI_GETCURRENTPOS];
-    sptr_t wordStart = [sci message:SCI_WORDSTARTPOSITION wParam:(uptr_t)pos lParam:1];
-    NSInteger prefixLen = pos - wordStart;
-    if (prefixLen < 3) { [sci message:SCI_AUTOCCANCEL]; return; }
-
-    NSString *docText = sci.string;
-    if (!docText || docText.length > 300000) { [sci message:SCI_AUTOCCANCEL]; return; }
-    if (wordStart < 0 || wordStart + prefixLen > (sptr_t)docText.length) {
-        [sci message:SCI_AUTOCCANCEL]; return;
-    }
-
-    NSString *prefix = [docText substringWithRange:NSMakeRange((NSUInteger)wordStart,
-                                                                (NSUInteger)prefixLen)];
-
-    // Collect unique words from document that start with the prefix
-    NSMutableCharacterSet *wordCS = [[NSCharacterSet alphanumericCharacterSet] mutableCopy];
-    [wordCS addCharactersInString:@"_"];
-    NSCharacterSet *splitCS = wordCS.invertedSet;
-
-    NSMutableSet<NSString *> *wordSet = [NSMutableSet set];
-    NSArray<NSString *> *tokens = [docText componentsSeparatedByCharactersInSet:splitCS];
-    NSUInteger plen = (NSUInteger)prefixLen;
-    for (NSString *word in tokens) {
-        if (word.length > plen && [word hasPrefix:prefix]) {
-            [wordSet addObject:word];
-        }
-    }
-    [wordSet removeObject:prefix]; // don't suggest the prefix itself
-
-    if (!wordSet.count) { [sci message:SCI_AUTOCCANCEL]; return; }
-
-    NSArray<NSString *> *sorted = [[wordSet allObjects]
-        sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-    NSString *wordList = [sorted componentsJoinedByString:@" "];
-    [sci message:SCI_AUTOCSHOW wParam:(uptr_t)prefixLen lParam:(sptr_t)wordList.UTF8String];
+    // Honour configurable minimum-character threshold (default 1, matching NPP Windows)
+    NSInteger minChars = [[NSUserDefaults standardUserDefaults]
+                          integerForKey:kPrefAutoCompleteMinChars];
+    if (minChars < 1) minChars = 1;
+    [self _showWordCompletionWithMinPrefix:minChars beepOnEmpty:NO];
 }
 
 #pragma mark - ScintillaNotificationProtocol
@@ -2020,6 +2002,20 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
     [_scintillaView message:SCI_BEGINUNDOACTION];
     [_scintillaView message:SCI_REPLACESEL wParam:0 lParam:(sptr_t)str.UTF8String];
     [_scintillaView message:SCI_ENDUNDOACTION];
+}
+
+// ── Character insertion (ASCII Codes Panel) ───────────────────────────────────
+
+- (void)insertCharacterString:(NSString *)str {
+    if (!str.length) return;
+    ScintillaView *sci = _scintillaView;
+    // Use NSData so null bytes and multi-byte UTF-8 sequences are handled correctly.
+    NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
+    if (!data.length) return;
+    [sci message:SCI_REPLACESEL wParam:0 lParam:(sptr_t)""];  // clear selection
+    [sci message:SCI_ADDTEXT wParam:(uptr_t)data.length lParam:(sptr_t)data.bytes];
+    // Return keyboard focus to the editor so the user can keep typing.
+    [sci.window makeFirstResponder:sci];
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2958,29 +2954,56 @@ static const unsigned int kSCI_GetBidirectional = 2708;
 #pragma mark - Auto-Completion Actions
 
 - (void)triggerWordCompletion:(id)sender {
-    // Force-trigger the document-word autocomplete (same as updateAutoComplete but min prefix = 1)
+    // Manual Ctrl+Enter: force word completion even when auto-complete is off; min prefix = 1
+    [self _showWordCompletionWithMinPrefix:1 beepOnEmpty:YES];
+}
+
+- (void)_showWordCompletionWithMinPrefix:(NSInteger)minPrefix beepOnEmpty:(BOOL)beep {
     ScintillaView *sci = _scintillaView;
     sptr_t pos       = [sci message:SCI_GETCURRENTPOS];
     sptr_t wordStart = [sci message:SCI_WORDSTARTPOSITION wParam:(uptr_t)pos lParam:1];
     NSInteger prefixLen = pos - wordStart;
-    if (prefixLen < 1) { NSBeep(); return; }
+    if (prefixLen < minPrefix) { if (beep) NSBeep(); [sci message:SCI_AUTOCCANCEL]; return; }
 
-    NSString *docText = sci.string;
-    if (!docText || docText.length > 300000) { NSBeep(); return; }
-    NSString *prefix = [docText substringWithRange:NSMakeRange((NSUInteger)wordStart,
+    static const NSInteger kScanWindow = 500000;
+    sptr_t docLen    = [sci message:SCI_GETLENGTH];
+    sptr_t scanStart = MAX(0, wordStart - kScanWindow);
+    sptr_t scanEnd   = MIN(docLen, pos + kScanWindow);
+    sptr_t scanLen   = scanEnd - scanStart;
+    if (scanLen <= 0 || wordStart < scanStart) { if (beep) NSBeep(); return; }
+
+    char *buf = (char *)malloc((size_t)scanLen + 1);
+    if (!buf) { if (beep) NSBeep(); return; }
+    Sci_TextRangeFull tr = { {(Sci_Position)scanStart, (Sci_Position)scanEnd}, buf };
+    [sci message:SCI_GETTEXTRANGEFULL wParam:0 lParam:(sptr_t)&tr];
+    buf[scanLen] = '\0';
+    NSString *scanText = [[NSString alloc] initWithBytesNoCopy:buf
+                                                        length:(NSUInteger)scanLen
+                                                      encoding:NSUTF8StringEncoding
+                                                  freeWhenDone:YES];
+    if (!scanText) { free(buf); if (beep) NSBeep(); return; }
+
+    NSUInteger prefixOffset = (NSUInteger)(wordStart - scanStart);
+    if (prefixOffset + (NSUInteger)prefixLen > scanText.length) {
+        if (beep) NSBeep(); return;
+    }
+    NSString *prefix = [scanText substringWithRange:NSMakeRange(prefixOffset,
                                                                 (NSUInteger)prefixLen)];
+
     NSMutableCharacterSet *wordCS = [[NSCharacterSet alphanumericCharacterSet] mutableCopy];
     [wordCS addCharactersInString:@"_"];
     NSMutableSet<NSString *> *wordSet = [NSMutableSet set];
-    for (NSString *word in [docText componentsSeparatedByCharactersInSet:wordCS.invertedSet]) {
+    for (NSString *word in [scanText componentsSeparatedByCharactersInSet:wordCS.invertedSet]) {
         if (word.length > (NSUInteger)prefixLen && [word hasPrefix:prefix])
             [wordSet addObject:word];
     }
     [wordSet removeObject:prefix];
-    if (!wordSet.count) { NSBeep(); return; }
-    NSString *wordList = [[wordSet.allObjects
-        sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)]
-        componentsJoinedByString:@" "];
+    if (!wordSet.count) { if (beep) NSBeep(); return; }
+
+    NSArray<NSString *> *sorted = [wordSet.allObjects
+        sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+    [sci message:SCI_AUTOCSETSEPARATOR wParam:' '];
+    NSString *wordList = [sorted componentsJoinedByString:@" "];
     [sci message:SCI_AUTOCSHOW wParam:(uptr_t)prefixLen lParam:(sptr_t)wordList.UTF8String];
 }
 
@@ -3076,7 +3099,7 @@ static const unsigned int kSCI_GetBidirectional = 2708;
     NSString *pathPrefix = (delimRange.location == NSNotFound)
         ? lineText
         : [lineText substringFromIndex:delimRange.location + 1];
-    if (!pathPrefix.length || pathPrefix.length > 1024) { NSBeep(); return; }
+    if (!pathPrefix.length || pathPrefix.length > 4096) { NSBeep(); return; }
 
     NSString *dir, *filePrefix;
     if ([pathPrefix hasSuffix:@"/"]) {
@@ -3088,22 +3111,38 @@ static const unsigned int kSCI_GetBidirectional = 2708;
         if (!dir.length) dir = @".";
     }
 
-    NSArray<NSString *> *contents = [[NSFileManager defaultManager]
-        contentsOfDirectoryAtPath:dir error:nil];
+    // Expand tilde (~) — NSFileManager requires real paths, not shell shortcuts
+    NSString *resolvedDir = [dir stringByExpandingTildeInPath];
+
+    // For relative paths, resolve against the open file's directory (or home if untitled)
+    if (![resolvedDir hasPrefix:@"/"]) {
+        NSString *base = _filePath
+            ? [_filePath stringByDeletingLastPathComponent]
+            : NSHomeDirectory();
+        resolvedDir = [base stringByAppendingPathComponent:resolvedDir];
+    }
+
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSArray<NSString *> *contents = [fm contentsOfDirectoryAtPath:resolvedDir error:nil];
     if (!contents.count) { NSBeep(); return; }
 
     NSMutableArray<NSString *> *matches = [NSMutableArray array];
+    NSString *lcPrefix = filePrefix.lowercaseString;
     for (NSString *name in contents) {
-        if (filePrefix.length && ![name.lowercaseString hasPrefix:filePrefix.lowercaseString]) continue;
+        if (filePrefix.length && ![name.lowercaseString hasPrefix:lcPrefix]) continue;
         BOOL isDir = NO;
-        [[NSFileManager defaultManager] fileExistsAtPath:[dir stringByAppendingPathComponent:name]
-                                             isDirectory:&isDir];
+        [fm fileExistsAtPath:[resolvedDir stringByAppendingPathComponent:name] isDirectory:&isDir];
         [matches addObject:isDir ? [name stringByAppendingString:@"/"] : name];
     }
     if (!matches.count) { NSBeep(); return; }
     [matches sortUsingSelector:@selector(caseInsensitiveCompare:)];
-    NSString *wordList = [matches componentsJoinedByString:@" "];
-    [sci message:SCI_AUTOCSHOW wParam:(uptr_t)filePrefix.length lParam:(sptr_t)wordList.UTF8String];
+
+    // Use '\n' as separator so filenames containing spaces work correctly.
+    // wParam = UTF-8 byte length of already-typed prefix (Scintilla positions are byte-based).
+    [sci message:SCI_AUTOCSETSEPARATOR wParam:'\n'];
+    NSString *wordList = [matches componentsJoinedByString:@"\n"];
+    NSUInteger prefixBytes = [filePrefix lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+    [sci message:SCI_AUTOCSHOW wParam:(uptr_t)prefixBytes lParam:(sptr_t)wordList.UTF8String];
 }
 
 - (void)finishOrSelectAutocompleteItem:(id)sender {
@@ -3645,6 +3684,65 @@ static const unsigned int kSCI_GetBidirectional = 2708;
     [sci message:SCI_MARKERDELETEALL wParam:(uptr_t)kGitMarkerAdded];
     [sci message:SCI_MARKERDELETEALL wParam:(uptr_t)kGitMarkerModified];
     [sci message:SCI_MARKERDELETEALL wParam:(uptr_t)kGitMarkerDeleted];
+}
+
+// ── Git diff line highlights (pink) ──────────────────────────────────────────
+
+- (void)clearGitDiffHighlights {
+    ScintillaView *sci = _scintillaView;
+    intptr_t len = [sci message:SCI_GETLENGTH];
+    [sci message:SCI_SETINDICATORCURRENT wParam:kGitDiffIndicator];
+    [sci message:SCI_INDICATORCLEARRANGE wParam:0 lParam:len];
+}
+
+- (void)applyGitDiffHighlights {
+    [self clearGitDiffHighlights];
+    if (!_filePath) return;
+    NSString *fp = [_filePath copy];
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0), ^{
+        NSString *root = [GitHelper gitRootForPath:fp];
+        if (!root) return;
+        NSString *diff = [GitHelper diffForFile:fp root:root];
+        if (!diff.length) return;
+
+        // Collect all new-file line numbers that have a '+' line (1-based)
+        NSMutableArray<NSNumber *> *changedLines = [NSMutableArray array];
+        NSArray<NSString *> *lines = [diff componentsSeparatedByString:@"\n"];
+        NSInteger newLine = 0;
+        for (NSString *line in lines) {
+            if ([line hasPrefix:@"@@"]) {
+                NSRegularExpression *re = [NSRegularExpression
+                    regularExpressionWithPattern:@"\\+([0-9]+)" options:0 error:nil];
+                NSTextCheckingResult *m = [re firstMatchInString:line options:0
+                                                           range:NSMakeRange(0, line.length)];
+                if (m) newLine = [[line substringWithRange:[m rangeAtIndex:1]] integerValue] - 1;
+            } else if ([line hasPrefix:@"+++"]) {
+                // skip file header
+            } else if ([line hasPrefix:@"+"]) {
+                newLine++;
+                [changedLines addObject:@(newLine - 1)]; // convert to 0-based
+            } else if (![line hasPrefix:@"-"] && ![line hasPrefix:@"\\"]) {
+                if (newLine > 0) newLine++;
+            }
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            __strong typeof(weakSelf) self = weakSelf;
+            if (!self) return;
+            [self clearGitDiffHighlights];
+            ScintillaView *sci = self->_scintillaView;
+            [sci message:SCI_SETINDICATORCURRENT wParam:kGitDiffIndicator];
+            for (NSNumber *n in changedLines) {
+                NSInteger line0 = n.integerValue;
+                if (line0 < 0) continue;
+                intptr_t start = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)line0];
+                intptr_t end   = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)line0];
+                if (end > start)
+                    [sci message:SCI_INDICATORFILLRANGE wParam:(uptr_t)start lParam:end - start];
+            }
+        });
+    });
 }
 
 - (void)updateGitDiffMarkers {

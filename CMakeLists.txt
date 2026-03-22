@@ -90,6 +90,7 @@ set(APP_SRCS
     src/GitHelper.mm
     src/GitPanel.mm
     src/FolderTreePanel.mm
+    src/CharacterPanel.mm
 )
 
 set(APP_HEADERS
@@ -115,6 +116,7 @@ set(APP_HEADERS
     src/GitHelper.h
     src/GitPanel.h
     src/FolderTreePanel.h
+    src/CharacterPanel.h
 )
 
 add_executable(NotepadPlusPlusMac MACOSX_BUNDLE ${APP_SRCS} ${APP_HEADERS})

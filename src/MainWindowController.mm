@@ -17,6 +17,7 @@
 #import "GitHelper.h"
 #import "GitPanel.h"
 #import "FolderTreePanel.h"
+#import "CharacterPanel.h"
 #import <objc/runtime.h>
 
 // ── Private helper for the Windows… dialog ───────────────────────────────────
@@ -327,7 +328,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
      NSSplitViewDelegate, IncrementalSearchBarDelegate,
      FolderTreePanelDelegate, GitPanelDelegate,
      ClipboardHistoryPanelDelegate, DocumentMapPanelDelegate,
-     DocumentListPanelDelegate>
+     DocumentListPanelDelegate, CharacterPanelDelegate>
 @end
 
 @implementation MainWindowController {
@@ -350,6 +351,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     CommandPalettePanel   *_commandPalette;
     NSView                *_folderTreePanel;   // FolderTreePanel
     NSView                *_gitPanel;          // GitPanel
+    CharacterPanel        *_charPanel;
 
     // Second editor view — horizontal (top/bottom)
     NSSplitView   *_hSplitView;
@@ -1484,7 +1486,7 @@ static NSString *nppMacrosPath(void) {
     }
     BOOL open = [_sidePanelHost hasPanel:_gitPanel];
     if (!open) [self _updateGitPanelForPath:[self currentEditor].filePath];
-    [self _setPanelVisible:_gitPanel title:@"Git" show:!open];
+    [self _setPanelVisible:_gitPanel title:@"Source Control" show:!open];
 }
 
 - (void)_updateGitPanelForPath:(NSString *)filePath {
@@ -2464,6 +2466,15 @@ static NSString *nppMacrosPath(void) {
     [self openFileAtPath:path];
 }
 
+- (void)gitPanel:(GitPanel *)panel diffFileAtPath:(NSString *)path {
+    [self openFileAtPath:path];
+    [[self currentEditor] applyGitDiffHighlights];
+}
+
+- (void)gitPanelDidRequestClose:(GitPanel *)panel {
+    [self _setPanelVisible:_gitPanel title:@"Source Control" show:NO];
+}
+
 #pragma mark - View menu actions
 
 - (void)toggleWordWrap:(id)sender {
@@ -3063,7 +3074,24 @@ static NSString *nppMacrosPath(void) {
     [alert beginSheetModalForWindow:self.window completionHandler:nil];
 }
 - (void)selectAllInBraces:(id)sender   { [[self currentEditor] selectAllInBraces:sender]; }
-- (void)characterPanel:(id)sender      { [NSApp orderFrontCharacterPalette:sender]; }
+- (void)characterPanel:(id)sender {
+    if (!_charPanel) {
+        _charPanel = [[CharacterPanel alloc] init];
+        _charPanel.delegate = self;
+    }
+    BOOL open = [_sidePanelHost hasPanel:_charPanel];
+    [self _setPanelVisible:_charPanel title:@"ASCII Codes Insertion Panel" show:!open];
+}
+
+#pragma mark - CharacterPanelDelegate
+
+- (void)characterPanel:(CharacterPanel *)panel insertString:(NSString *)str {
+    [[self currentEditor] insertCharacterString:str];
+}
+
+- (void)characterPanelDidRequestClose:(CharacterPanel *)panel {
+    [self _setPanelVisible:_charPanel title:@"ASCII Codes Insertion Panel" show:NO];
+}
 
 #pragma mark - Edit: On Selection
 

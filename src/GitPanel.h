@@ -6,6 +6,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol GitPanelDelegate <NSObject>
 - (void)gitPanel:(GitPanel *)panel openFileAtPath:(NSString *)path;
+- (void)gitPanel:(GitPanel *)panel diffFileAtPath:(NSString *)path;
+- (void)gitPanelDidRequestClose:(GitPanel *)panel;
 @end
 
 /// Side panel showing git status, with stage/unstage/commit controls.

@@ -13,6 +13,8 @@ NSString *const kPrefAutoBackup         = @"autoBackup";
 NSString *const kPrefBackupInterval     = @"backupInterval"; // seconds
 NSString *const kPrefZoomLevel          = @"zoomLevel";
 NSString *const kPrefSpellCheck         = @"spellCheck";
+NSString *const kPrefAutoCompleteEnable  = @"autoCompleteEnable";
+NSString *const kPrefAutoCompleteMinChars = @"autoCompleteMinChars";
 
 // Theme / Style Configurator keys
 NSString *const kPrefThemePreset        = @"themePreset";
@@ -59,6 +61,8 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         kPrefStylePreproc:       @"#800080",
         kPrefStyleFontName:      @"Menlo",
         kPrefStyleFontSize:      @11,
+        kPrefAutoCompleteEnable:   @YES,
+        kPrefAutoCompleteMinChars: @1,
     }];
     // Force-upgrade any stale @NO value stored by earlier builds.
     // registerDefaults: only fills in missing keys, so previously-stored @NO

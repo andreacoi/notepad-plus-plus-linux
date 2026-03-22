@@ -367,7 +367,7 @@ static NSMenu *buildLanguageMenu() {
     [acMenu addItem:itemMod(@"Function Parameters Hint",         @selector(triggerFunctionParametersHint:),      @" ", NSEventModifierFlagControl | NSEventModifierFlagShift)];
     [acMenu addItem:itemFn(@"Function Parameters Previous Hint", @selector(showFunctionParametersPreviousHint:), NSUpArrowFunctionKey,   NSEventModifierFlagOption)];
     [acMenu addItem:itemFn(@"Function Parameters Next Hint",     @selector(showFunctionParametersNextHint:),     NSDownArrowFunctionKey, NSEventModifierFlagOption)];
-    [acMenu addItem:itemMod(@"Path Completion",                  @selector(triggerPathCompletion:),              @" ", NSEventModifierFlagControl | NSEventModifierFlagOption)];
+    [acMenu addItem:itemMod(@"Path Completion",                  @selector(triggerPathCompletion:),              @"p", NSEventModifierFlagControl | NSEventModifierFlagShift)];
     addSep(acMenu);
     [acMenu addItem:item(@"Finish or Select Autocomplete Item",  @selector(finishOrSelectAutocompleteItem:),     @"")];
     [editMenu addItem:withSubmenu(@"Auto-Completion", acMenu)];
