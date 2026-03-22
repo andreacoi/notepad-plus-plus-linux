@@ -1,6 +1,9 @@
 # Build output
 build/
 
+# Temporary working files
+tmp/
+
 # macOS
 .DS_Store
 .DS_Store?
