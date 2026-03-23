@@ -1,4 +1,5 @@
 #import "PreferencesWindowController.h"
+#import "NppLocalizer.h"
 
 // ── NSUserDefaults keys (mirrors NPP settings) ────────────────────────────────
 NSString *const kPrefTabWidth           = @"tabWidth";
@@ -34,7 +35,8 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
 @end
 
 @implementation PreferencesWindowController {
-    NSTabView *_tabs;
+    NSTabView   *_tabs;
+    NSPopUpButton *_languagePopup;  // General tab — language selector
 }
 
 + (void)load {
@@ -50,6 +52,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         kPrefAutoBackup:         @YES,
         kPrefBackupInterval:     @60,
         kPrefZoomLevel:          @0,
+        kPrefLanguage:           @"english",
         // Default (light) theme colors
         kPrefThemePreset:        @"Default",
         kPrefStyleFg:            @"#000000",
@@ -125,6 +128,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     _tabs = [[NSTabView alloc] initWithFrame:NSMakeRect(10, 50, 540, 340)];
     _tabs.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 
+    [_tabs addTabViewItem:[self buildGeneralTab]];
     [_tabs addTabViewItem:[self buildEditorTab]];
     [_tabs addTabViewItem:[self buildNewDocTab]];
     [_tabs addTabViewItem:[self buildBackupTab]];
@@ -136,6 +140,68 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     close.keyEquivalent = @"\033";
     close.frame = NSMakeRect(450, 12, 90, 28);
     [root addSubview:close];
+}
+
+// ── General tab ───────────────────────────────────────────────────────────────
+
+- (NSTabViewItem *)buildGeneralTab {
+    NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier:@"general"];
+    item.label = @"General";
+    NSView *v = [[NSView alloc] init];
+    CGFloat y = 270;
+
+    // ── Localization section ──────────────────────────────────────────────────
+    NSTextField *sectionLabel = [NSTextField labelWithString:@"Localization"];
+    sectionLabel.font = [NSFont boldSystemFontOfSize:NSFont.systemFontSize];
+    sectionLabel.frame = NSMakeRect(20, y, 200, 20);
+    [v addSubview:sectionLabel];
+    y -= 30;
+
+    NSTextField *langLabel = [NSTextField labelWithString:@"Language:"];
+    langLabel.frame = NSMakeRect(20, y, 90, 20);
+    [v addSubview:langLabel];
+
+    _languagePopup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(120, y - 2, 250, 26)
+                                               pullsDown:NO];
+    _languagePopup.tag = 400;
+    _languagePopup.target = self;
+    _languagePopup.action = @selector(prefChanged:);
+    [self _rebuildLanguagePopup];
+    [v addSubview:_languagePopup];
+    y -= 36;
+
+    NSTextField *hint = [NSTextField wrappingLabelWithString:
+        @"Additional language files (.xml) can be placed in:\n"
+         "~/Library/Application Support/Notepad++/nativeLang/"];
+    hint.font = [NSFont systemFontOfSize:NSFont.smallSystemFontSize];
+    hint.textColor = NSColor.secondaryLabelColor;
+    hint.frame = NSMakeRect(20, y - 16, 500, 44);
+    [v addSubview:hint];
+
+    item.view = v;
+    return item;
+}
+
+/// Populate _languagePopup from all available language names, selecting the
+/// currently active language.
+- (void)_rebuildLanguagePopup {
+    if (!_languagePopup) return;
+
+    NSDictionary<NSString *, NSString *> *langMap = [NppLocalizer availableLanguagesMap];
+    NSArray<NSString *> *names = [[langMap allKeys]
+        sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+
+    [_languagePopup removeAllItems];
+    [_languagePopup addItemsWithTitles:names];
+
+    // Select the current language.
+    NSString *currentFile = [NppLocalizer shared].currentLanguageFile;
+    for (NSString *name in names) {
+        if ([langMap[name].lowercaseString isEqualToString:currentFile.lowercaseString]) {
+            [_languagePopup selectItemWithTitle:name];
+            break;
+        }
+    }
 }
 
 // ── Editor tab ────────────────────────────────────────────────────────────────
@@ -305,6 +371,20 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         case 201: [ud setInteger:[(NSPopUpButton *)sender indexOfSelectedItem] forKey:kPrefEncoding]; break;
         case 300: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefAutoBackup]; break;
         case 301: [ud setInteger:[(NSTextField *)sender integerValue] forKey:kPrefBackupInterval]; break;
+        case 400: {
+            // Language / localization change.
+            NSPopUpButton *popup = (NSPopUpButton *)sender;
+            NSString *selectedName = popup.selectedItem.title;
+            if (selectedName.length > 0) {
+                NSDictionary *langMap = [NppLocalizer availableLanguagesMap];
+                NSString *stem = langMap[selectedName];
+                if (stem) {
+                    [[NppLocalizer shared] loadLanguageNamed:stem];
+                    // NppLocalizer saves kPrefLanguage and posts NPPLocalizationChanged.
+                }
+            }
+            return; // NppLocalizer already posts NPPPreferencesChanged via NPPLocalizationChanged
+        }
     }
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"NPPPreferencesChanged" object:nil];

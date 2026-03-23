@@ -1,4 +1,5 @@
 #import "FindReplacePanel.h"
+#import "NppLocalizer.h"
 
 static const CGFloat kFindOnlyHeight   = 44.0;
 static const CGFloat kFindReplaceHeight = 80.0;
@@ -6,6 +7,7 @@ static const CGFloat kHiddenHeight     =  0.0;
 
 @implementation FindReplacePanel {
     // Row 1 — Find
+    NSTextField    *_findLabel;     // "Find:" — kept for retranslation
     NSTextField    *_findField;
     NSButton       *_matchCaseBtn;
     NSButton       *_wholeWordBtn;
@@ -16,6 +18,7 @@ static const CGFloat kHiddenHeight     =  0.0;
 
     // Row 2 — Replace (hidden in find-only mode)
     NSView         *_replaceRow;
+    NSTextField    *_replaceLabel;  // "Replace:" — kept for retranslation
     NSTextField    *_replaceField;
     NSButton       *_replaceBtn;
     NSButton       *_replaceAllBtn;
@@ -47,14 +50,26 @@ static const CGFloat kHiddenHeight     =  0.0;
         _panelVisible = NO;
         _replaceVisible = NO;
         _replaceRow.hidden = YES;
+
+        // Retranslate when the user switches the app language.
+        [[NSNotificationCenter defaultCenter]
+            addObserver:self
+               selector:@selector(_localizationChanged:)
+                   name:NPPLocalizationChanged
+                 object:nil];
     }
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Build UI
 
 - (void)buildFindRow {
-    NSTextField *label = [self makeLabel:@"Find:"];
+    _findLabel = [self makeLabel:@"Find:"];
+    NSTextField *label = _findLabel;
 
     _findField = [NSTextField textFieldWithString:@""];
     _findField.placeholderString = @"Search…";
@@ -106,7 +121,8 @@ static const CGFloat kHiddenHeight     =  0.0;
     _replaceRow.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:_replaceRow];
 
-    NSTextField *label = [self makeLabel:@"Replace:"];
+    _replaceLabel = [self makeLabel:@"Replace:"];
+    NSTextField *label = _replaceLabel;
     [_replaceRow addSubview:label];
 
     _replaceField = [NSTextField textFieldWithString:@""];
@@ -214,6 +230,27 @@ static const CGFloat kHiddenHeight     =  0.0;
 }
 
 - (void)optionChanged:(id)sender {}
+
+#pragma mark - Localization
+
+- (void)_localizationChanged:(NSNotification *)note {
+    [self retranslateUI];
+}
+
+/// Update all visible strings to the current language.
+- (void)retranslateUI {
+    NppLocalizer *loc = [NppLocalizer shared];
+    _findLabel.stringValue    = [loc translate:@"Find:"];
+    _replaceLabel.stringValue = [loc translate:@"Replace:"];
+    _matchCaseBtn.title       = [loc translate:@"Match Case"];
+    _wholeWordBtn.title       = [loc translate:@"Whole Word"];
+    _wrapBtn.title            = [loc translate:@"Wrap"];
+    _findPrevBtn.toolTip      = [loc translate:@"Find Previous"];
+    _findNextBtn.toolTip      = [loc translate:@"Find Next"];
+    _closeBtn.toolTip         = [loc translate:@"Close"];
+    _replaceBtn.title         = [loc translate:@"Replace"];
+    _replaceAllBtn.title      = [loc translate:@"Replace All"];
+}
 
 #pragma mark - Key handling: Enter = find next, Shift+Enter = find prev, Esc = close
 

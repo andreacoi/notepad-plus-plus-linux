@@ -68,6 +68,7 @@ target_include_directories(lexilla PUBLIC
 # -----------------------------------------------------------------------------
 set(APP_SRCS
     src/main.mm
+    src/NppLocalizer.mm
     src/AppDelegate.mm
     src/MainWindowController.mm
     src/EditorView.mm
@@ -94,6 +95,7 @@ set(APP_SRCS
 )
 
 set(APP_HEADERS
+    src/NppLocalizer.h
     src/AppDelegate.h
     src/MainWindowController.h
     src/EditorView.h
@@ -150,6 +152,17 @@ add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
         "${CMAKE_SOURCE_DIR}/resources/themes"
         "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/themes"
     COMMENT "Copying theme XML files into bundle")
+
+# Bundle nativeLang XML files (Windows NPP format, unmodified).
+# These live in resources/nativeLang/ inside this repo.
+# Users can also drop additional XML files into
+#   ~/Library/Application Support/Notepad++/nativeLang/
+# to add languages without touching the app bundle.
+add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/resources/nativeLang"
+        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/nativeLang"
+    COMMENT "Copying nativeLang XML files into bundle")
 
 set_target_properties(NotepadPlusPlusMac PROPERTIES
     MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/resources/Info.plist"
