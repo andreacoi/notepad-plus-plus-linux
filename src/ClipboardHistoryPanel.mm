@@ -1,9 +1,11 @@
 #import "ClipboardHistoryPanel.h"
+#import "NppLocalizer.h"
 
 static const NSUInteger kMaxHistory = 30;
 
 @implementation ClipboardHistoryPanel {
     NSView             *_titleBar;
+    NSTextField        *_titleLabel;
     NSTableView        *_tableView;
     NSMutableArray<NSString *> *_history;
     NSTimer            *_timer;
@@ -16,8 +18,16 @@ static const NSUInteger kMaxHistory = 30;
         _history = [NSMutableArray array];
         _lastChangeCount = [NSPasteboard generalPasteboard].changeCount;
         [self _buildLayout];
+        [self retranslateUI];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_locChanged:)
+                                                     name:NPPLocalizationChanged object:nil];
     }
     return self;
+}
+
+- (void)_locChanged:(NSNotification *)n { [self retranslateUI]; }
+- (void)retranslateUI {
+    _titleLabel.stringValue = [[NppLocalizer shared] translate:@"Clipboard History"];
 }
 
 - (instancetype)init {
@@ -32,7 +42,8 @@ static const NSUInteger kMaxHistory = 30;
     _titleBar.layer.backgroundColor = [NSColor controlBackgroundColor].CGColor;
     [self addSubview:_titleBar];
 
-    NSTextField *titleLabel = [NSTextField labelWithString:@"Clipboard History"];
+    _titleLabel = [NSTextField labelWithString:@"Clipboard History"];
+    NSTextField *titleLabel = _titleLabel;
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     titleLabel.font = [NSFont systemFontOfSize:12 weight:NSFontWeightMedium];
     titleLabel.textColor = [NSColor labelColor];

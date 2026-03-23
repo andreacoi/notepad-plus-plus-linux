@@ -186,6 +186,26 @@ static NSString *normalizeForLookup(NSString *s) {
         // (normalizeForLookup already strips trailing parens, so both map to the same key.)
     }
 
+    // Also index every dialog item name (stripped of accelerators) directly,
+    // so panel code can call translate:@"Match case" and get the right result.
+    // We do this as a second pass using just the english name as key.
+    for (NSString *key in englishRaw) {
+        if (![key hasPrefix:@"dlg:"] && ![key hasPrefix:@"dlgattr:"] &&
+            ![key hasPrefix:@"tabbar:"]) continue;
+        NSString *englishVal    = englishRaw[key];
+        NSString *translatedVal = targetRaw[key];
+        if (!translatedVal) continue;
+        NSString *displayTranslated = stripAccelerators(translatedVal);
+        displayTranslated = [displayTranslated
+            stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if (displayTranslated.length == 0) continue;
+        // Index by the english title (normalized) as an additional lookup key.
+        NSString *normalized = normalizeForLookup(englishVal);
+        if (normalized.length > 0 && !tmap[normalized]) {
+            tmap[normalized] = displayTranslated;
+        }
+    }
+
     // Platform-specific aliases: macOS uses slightly different wording for a
     // handful of items.  Add these so the translation still applies.
     [self _addPlatformAliasesTo:tmap englishRaw:englishRaw targetRaw:targetRaw];
@@ -208,11 +228,14 @@ static NSString *normalizeForLookup(NSString *s) {
     if (!mainMenu) return;
 
     for (NSMenuItem *topItem in mainMenu.itemArray) {
-        // Translate the top-level menu title (File, Edit, Search, …).
         // Skip the Application menu (index 0, title == app name).
         if (topItem == mainMenu.itemArray.firstObject) continue;
+
+        // On macOS the menu bar text comes from submenu.title, not item.title.
+        // Translate both to cover all cases.
         [self _translateMenuItem:topItem];
         if (topItem.hasSubmenu) {
+            [self _translateSubmenuTitle:topItem.submenu];
             [self _translateMenu:topItem.submenu];
         }
     }
@@ -289,6 +312,63 @@ static NSString *normalizeForLookup(NSString *s) {
 // ---------------------------------------------------------------------------
 #pragma mark - Private: XML parsing
 // ---------------------------------------------------------------------------
+
+/// Recursively parse a <Dialog> element and its named sub-sections.
+/// `parentName` is non-nil for nested elements (e.g. "Preference" when parsing <Global>).
+- (void)_parseDialogElement:(NSXMLElement *)dlg
+                 parentName:(nullable NSString *)parentName
+                       into:(NSMutableDictionary *)result {
+    NSString *dlgName = parentName
+        ? [NSString stringWithFormat:@"%@_%@", parentName, dlg.name]
+        : dlg.name;
+
+    // Attributes: title, titleFind, titleReplace, …
+    for (NSXMLNode *attr in dlg.attributes) {
+        NSString *val = attr.stringValue;
+        if (val.length == 0) continue;
+        result[[NSString stringWithFormat:@"dlgattr:%@:%@", dlgName, attr.name]] = val;
+    }
+
+    for (NSXMLNode *childNode in dlg.children) {
+        if (![childNode isKindOfClass:[NSXMLElement class]]) continue;
+        NSXMLElement *child = (NSXMLElement *)childNode;
+
+        if ([child.name isEqualToString:@"Item"]) {
+            // <Item id="..." name="..."/>
+            NSString *idStr = [[child attributeForName:@"id"]   stringValue];
+            NSString *name  = [[child attributeForName:@"name"] stringValue];
+            if (idStr.length && name.length)
+                result[[NSString stringWithFormat:@"dlg:%@:%@", dlgName, idStr]] = name;
+
+        } else if ([child.name isEqualToString:@"SubDialog"]) {
+            // <SubDialog> (StyleConfig) — items inside
+            for (NSXMLElement *sub in [child elementsForName:@"Item"]) {
+                NSString *idStr = [[sub attributeForName:@"id"]   stringValue];
+                NSString *name  = [[sub attributeForName:@"name"] stringValue];
+                if (idStr.length && name.length)
+                    result[[NSString stringWithFormat:@"dlg:%@_sub:%@", dlgName, idStr]] = name;
+            }
+
+        } else if ([child.name isEqualToString:@"Menu"]) {
+            // Inline <Menu> (Find dialog context buttons)
+            for (NSXMLElement *mi in [child elementsForName:@"Item"]) {
+                NSString *idStr = [[mi attributeForName:@"id"]   stringValue];
+                NSString *name  = [[mi attributeForName:@"name"] stringValue];
+                if (idStr.length && name.length)
+                    result[[NSString stringWithFormat:@"dlg:%@_menu:%@", dlgName, idStr]] = name;
+            }
+
+        } else {
+            // Named sub-section, e.g. <Global title="General"> inside <Preference>.
+            // Check if it looks like a sub-section (has a title attribute or Item children).
+            NSString *subTitle = [[child attributeForName:@"title"] stringValue];
+            NSArray  *subItems = [child elementsForName:@"Item"];
+            if (subTitle.length || subItems.count > 0) {
+                [self _parseDialogElement:child parentName:dlgName into:result];
+            }
+        }
+    }
+}
 
 /// Returns a flat dictionary keyed by namespaced IDs:
 ///   "cmd:<id>"           — Menu/Main/Commands items
@@ -367,34 +447,11 @@ static NSString *normalizeForLookup(NSString *s) {
     }
 
     // Dialog — all <Item> name attributes and element title attributes.
+    // We parse the top-level dialog children, plus one level of nesting for
+    // compound dialogs like <Preference> which contains <Global>, <NewDoc>, etc.
     NSArray *dialogs = [nativeLang nodesForXPath:@"Dialog/*" error:nil];
     for (NSXMLElement *dlg in dialogs) {
-        NSString *dlgName = dlg.name;
-
-        // Dialog-level text attributes: title, titleFind, titleReplace, …
-        for (NSXMLNode *attr in dlg.attributes) {
-            NSString *val = attr.stringValue;
-            if (val.length == 0) continue;
-            result[[NSString stringWithFormat:@"dlgattr:%@:%@", dlgName, attr.name]] = val;
-        }
-
-        // Dialog item <Item id="..." name="..."/>
-        for (NSXMLElement *child in [dlg elementsForName:@"Item"]) {
-            NSString *idStr = [[child attributeForName:@"id"]   stringValue];
-            NSString *name  = [[child attributeForName:@"name"] stringValue];
-            if (idStr.length && name.length)
-                result[[NSString stringWithFormat:@"dlg:%@:%@", dlgName, idStr]] = name;
-        }
-
-        // Handle nested <SubDialog> (StyleConfig has one).
-        for (NSXMLElement *sub in [dlg elementsForName:@"SubDialog"]) {
-            for (NSXMLElement *child in [sub elementsForName:@"Item"]) {
-                NSString *idStr = [[child attributeForName:@"id"]   stringValue];
-                NSString *name  = [[child attributeForName:@"name"] stringValue];
-                if (idStr.length && name.length)
-                    result[[NSString stringWithFormat:@"dlg:%@_sub:%@", dlgName, idStr]] = name;
-            }
-        }
+        [self _parseDialogElement:dlg parentName:nil into:result];
     }
 
     // MiscStrings — <element-name value="..."/>
@@ -509,6 +566,56 @@ static NSString *normalizeForLookup(NSString *s) {
         @"generate from files…":           @"cmd:48502",
         @"generate from selection into clipboard": @"cmd:48503",
 
+        // FindReplacePanel / IncrementalSearchBar — macOS labels vs Windows XML wording
+        @"whole word":                     @"dlg:Find:1603",   // "Match whole word only"
+        @"wrap":                           @"dlg:Find:1606",   // "Wrap around"
+        @"replace:":                       @"dlg:Find:1611",   // "Replace with:"
+        @"find previous":                  @"cmd:43010",
+        @"find next":                      @"cmd:43002",
+        @"replace all":                    @"dlg:Find:1609",
+        @"replace":                        @"dlg:Find:1608",
+        @"match case":                     @"dlg:IncrementalFind:1685",
+
+        // FindInFilesPanel
+        @"find in files":                  @"cmd:43013",
+        @"directory:":                     @"dlg:Find:1655",   // "Directory:"
+        @"filter:":                        @"dlg:Find:1654",   // "Filters:"
+        @"match case":                     @"dlg:IncrementalFind:1685",
+
+        // ColumnEditor
+        @"column / multi-selection editor": @"dlgattr:ColumnEditor:title",
+        @"initial number:":                @"dlg:ColumnEditor:2024",
+        @"increase by:":                   @"dlg:ColumnEditor:2025",
+        @"repeat:":                        @"dlg:ColumnEditor:2026",
+        @"leading:":                       @"dlg:ColumnEditor:2027",
+        @"text to insert":                 @"dlg:ColumnEditor:2023",
+        @"number to insert":               @"dlg:ColumnEditor:2030",
+
+        // StyleConfigurator
+        @"style configurator":             @"dlgattr:StyleConfig:title",
+        @"select theme:":                  @"dlg:StyleConfig:2306",
+        @"cancel":                         @"dlg:StyleConfig:2",
+        @"save && close":                  @"dlg:StyleConfig:2301",
+        @"bold":                           @"dlg:StyleConfig_sub:2204",
+        @"italic":                         @"dlg:StyleConfig_sub:2205",
+        @"underline":                      @"dlg:StyleConfig_sub:2218",
+        @"font name:":                     @"dlg:StyleConfig_sub:2208",
+        @"font size:":                     @"dlg:StyleConfig_sub:2209",
+        @"foreground colour":              @"dlg:StyleConfig_sub:2206",
+        @"background colour":              @"dlg:StyleConfig_sub:2207",
+
+        // GoToLine dialog
+        @"go to…":                         @"dlgattr:GoToLine:title",
+        @"line":                           @"dlg:GoToLine:2007",
+        @"offset":                         @"dlg:GoToLine:2008",
+        @"go":                             @"dlg:GoToLine:1",
+
+        // Preferences window & tabs
+        @"preferences":                    @"dlgattr:Preference:title",
+        @"general":                        @"dlgattr:Preference_Global:title",
+        @"new document":                   @"dlgattr:Preference_NewDoc:title",
+        @"backup":                         @"dlgattr:Preference_Backup:title",
+
         // Window menu
         @"sort by":                        @"submenu:window-sortby",
         @"file name a to z":               @"cmd:11002",
@@ -543,8 +650,35 @@ static NSString *normalizeForLookup(NSString *s) {
         if (item.isSeparatorItem) continue;
         [self _translateMenuItem:item];
         if (item.hasSubmenu) {
+            [self _translateSubmenuTitle:item.submenu];
             [self _translateMenu:item.submenu];
         }
+    }
+}
+
+/// Translate an NSMenu's title (the text shown in the menu bar and submenu headers).
+/// Uses the same original-title caching as _translateMenuItem: but via a separate
+/// associated-object key so item.title and submenu.title don't interfere.
+static const char kOriginalSubmenuTitleKey = 0;
+
+- (void)_translateSubmenuTitle:(NSMenu *)menu {
+    if (menu.title.length == 0) return;
+
+    NSString *stored = objc_getAssociatedObject(menu, &kOriginalSubmenuTitleKey);
+    NSString *englishTitle = stored ?: menu.title;
+
+    NSString *key = normalizeForLookup(englishTitle);
+    NSString *translated = self.translationMap[key];
+
+    if (translated.length > 0) {
+        if (!stored) {
+            objc_setAssociatedObject(menu, &kOriginalSubmenuTitleKey,
+                                     menu.title,
+                                     OBJC_ASSOCIATION_COPY_NONATOMIC);
+        }
+        menu.title = translated;
+    } else if (stored) {
+        menu.title = stored;
     }
 }
 

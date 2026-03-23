@@ -1,4 +1,5 @@
 #import "CharacterPanel.h"
+#import "NppLocalizer.h"
 #import "StyleConfiguratorWindowController.h"   // NPPStyleStore
 
 // ── HTML data helpers (ported from asciiListView.cpp) ─────────────────────────
@@ -150,6 +151,7 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
 @implementation CharacterPanel {
     NSScrollView *_scrollView;
     NSTableView  *_tableView;
+    NSTextField  *_titleLabel;
     // _rows[v] = @[dec, hex, charDisplay, htmlName, htmlDecimal, htmlHex]
     NSArray<NSArray<NSString *> *> *_rows;
     // UTF-8 strings to insert when clicking the Character column
@@ -163,8 +165,27 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
     if (self) {
         [self _buildData];
         [self _buildLayout];
+        [self retranslateUI];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_locChanged:)
+                                                     name:NPPLocalizationChanged object:nil];
     }
     return self;
+}
+
+- (void)dealloc { [[NSNotificationCenter defaultCenter] removeObserver:self]; }
+- (void)_locChanged:(NSNotification *)n { [self retranslateUI]; }
+- (void)retranslateUI {
+    NppLocalizer *loc = [NppLocalizer shared];
+    _titleLabel.stringValue = [loc translate:@"Character Panel"];
+    for (NSTableColumn *col in _tableView.tableColumns) {
+        NSString *ident = col.identifier;
+        if ([ident isEqualToString:kColVal])  col.title = [loc translate:@"Value"];
+        else if ([ident isEqualToString:kColHex])  col.title = [loc translate:@"Hex"];
+        else if ([ident isEqualToString:kColChar]) col.title = [loc translate:@"Character"];
+        else if ([ident isEqualToString:kColName]) col.title = [loc translate:@"HTML Name"];
+        else if ([ident isEqualToString:kColDec])  col.title = [loc translate:@"HTML Decimal"];
+        else if ([ident isEqualToString:kColXHex]) col.title = [loc translate:@"HTML Hexadecimal"];
+    }
 }
 
 // ── Data model ────────────────────────────────────────────────────────────────
@@ -218,7 +239,8 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
     titleBar.layer.backgroundColor = [NSColor controlBackgroundColor].CGColor;
     [self addSubview:titleBar];
 
-    NSTextField *titleLabel = [NSTextField labelWithString:@"ASCII Codes Insertion Panel"];
+    _titleLabel = [NSTextField labelWithString:@"ASCII Codes Insertion Panel"];
+    NSTextField *titleLabel = _titleLabel;
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     titleLabel.font = [NSFont boldSystemFontOfSize:11];
     titleLabel.textColor = [NSColor labelColor];

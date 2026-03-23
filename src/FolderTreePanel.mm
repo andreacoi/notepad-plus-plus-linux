@@ -1,4 +1,5 @@
 #import "FolderTreePanel.h"
+#import "NppLocalizer.h"
 #import "StyleConfiguratorWindowController.h"
 
 // ── Tree item model ───────────────────────────────────────────────────────────
@@ -47,6 +48,7 @@ static NSString * const kTreeviewSubdir     = @"icons/standard/panels/treeview";
 
     // Title bar
     NSView                    *_titleBar;
+    NSTextField               *_titleLabel;
     NSButton                  *_unfoldAllButton;
     NSButton                  *_foldAllButton;
     NSButton                  *_locateButton;
@@ -67,6 +69,9 @@ static NSString * const kTreeviewSubdir     = @"icons/standard/panels/treeview";
         [self _buildUI];
         [self _applyTheme];
         [self _restoreRoots];
+        [self retranslateUI];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_locChanged:)
+                                                     name:NPPLocalizationChanged object:nil];
     }
     return self;
 }
@@ -77,6 +82,16 @@ static NSString * const kTreeviewSubdir     = @"icons/standard/panels/treeview";
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)_locChanged:(NSNotification *)n { [self retranslateUI]; }
+- (void)retranslateUI {
+    NppLocalizer *loc = [NppLocalizer shared];
+    _titleLabel.stringValue      = [loc translate:@"Folder as Workspace"];
+    _unfoldAllButton.toolTip     = [loc translate:@"Expand All"];
+    _foldAllButton.toolTip       = [loc translate:@"Fold All"];
+    _locateButton.toolTip        = [loc translate:@"Locate Current File"];
+    _closeButton.toolTip         = [loc translate:@"Close"];
 }
 
 // ── UI Construction ───────────────────────────────────────────────────────────
@@ -112,7 +127,8 @@ static NSButton *_panelBtn(NSString *iconName, NSString *subdir, NSString *tip, 
     _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
     NSView *titleBar = _titleBar;
 
-    NSTextField *titleLabel = [NSTextField labelWithString:@"Folder as Workspace"];
+    _titleLabel = [NSTextField labelWithString:@"Folder as Workspace"];
+    NSTextField *titleLabel = _titleLabel;
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     titleLabel.font = [NSFont boldSystemFontOfSize:11];
 

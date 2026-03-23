@@ -103,8 +103,25 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     if (self) {
         [self registerDefaults];
         [self buildUI];
+        [self retranslateUI];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_locChanged:)
+                                                     name:NPPLocalizationChanged object:nil];
     }
     return self;
+}
+
+- (void)_locChanged:(NSNotification *)n {
+    [self retranslateUI];
+    [self _rebuildLanguagePopup];
+}
+- (void)retranslateUI {
+    NppLocalizer *loc = [NppLocalizer shared];
+    self.window.title = [loc translate:@"Preferences"];
+    // Tab labels
+    NSArray *tabKeys = @[@"General", @"Editor", @"New Document", @"Backup"];
+    for (NSUInteger i = 0; i < tabKeys.count && i < _tabs.numberOfTabViewItems; i++) {
+        [_tabs tabViewItemAtIndex:i].label = [loc translate:tabKeys[i]];
+    }
 }
 
 - (void)registerDefaults {

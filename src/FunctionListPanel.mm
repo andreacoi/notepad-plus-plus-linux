@@ -1,4 +1,5 @@
 #import "FunctionListPanel.h"
+#import "NppLocalizer.h"
 #import "Scintilla.h"
 #import "ScintillaMessages.h"
 
@@ -15,8 +16,17 @@
     if (self) {
         _items = [NSMutableArray array];
         [self buildUI];
+        [self retranslateUI];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_locChanged:)
+                                                     name:NPPLocalizationChanged object:nil];
     }
     return self;
+}
+
+- (void)dealloc { [[NSNotificationCenter defaultCenter] removeObserver:self]; }
+- (void)_locChanged:(NSNotification *)n { [self retranslateUI]; }
+- (void)retranslateUI {
+    _emptyLabel.stringValue = [[NppLocalizer shared] translate:@"No functions found"];
 }
 
 - (instancetype)init {

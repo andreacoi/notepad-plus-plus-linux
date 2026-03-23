@@ -1,5 +1,6 @@
 #import "GitPanel.h"
 #import "GitHelper.h"
+#import "NppLocalizer.h"
 #import "StyleConfiguratorWindowController.h"
 
 // ── Status item model ─────────────────────────────────────────────────────────
@@ -59,6 +60,10 @@ static NSString * const kLastRepoRootKey = @"GitPanelLastRepoRoot";
         [[NSNotificationCenter defaultCenter]
             addObserver:self selector:@selector(_themeChanged:)
                    name:@"NPPPreferencesChanged" object:nil];
+        [[NSNotificationCenter defaultCenter]
+            addObserver:self selector:@selector(_locChanged:)
+                   name:NPPLocalizationChanged object:nil];
+        [self retranslateUI];
         // Restore last repo
         NSString *saved = [[NSUserDefaults standardUserDefaults] stringForKey:kLastRepoRootKey];
         if (saved) {
@@ -78,6 +83,17 @@ static NSString * const kLastRepoRootKey = @"GitPanelLastRepoRoot";
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)_locChanged:(NSNotification *)n { [self retranslateUI]; }
+- (void)retranslateUI {
+    NppLocalizer *loc = [NppLocalizer shared];
+    _titleLabel.stringValue = [loc translate:@"Source Control"];
+    _refreshButton.toolTip  = [loc translate:@"Refresh"];
+    _closeButton.toolTip    = [loc translate:@"Close"];
+    _stageAllButton.title   = [loc translate:@"Stage All"];
+    _unstageAllButton.title = [loc translate:@"Unstage All"];
+    _commitButton.title     = [loc translate:@"Commit"];
 }
 
 - (void)_loadBulletImage {

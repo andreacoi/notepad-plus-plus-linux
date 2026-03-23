@@ -1,4 +1,5 @@
 #import "DocumentMapPanel.h"
+#import "NppLocalizer.h"
 #import "ScintillaView.h"
 #import "Scintilla.h"
 #import "ScintillaMessages.h"
@@ -48,6 +49,7 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
 // ─────────────────────────────────────────────────────────────────────────────
 @implementation DocumentMapPanel {
     NSView             *_titleBar;
+    NSTextField        *_titleLabel;
     ScintillaView      *_mapSci;
     _DMViewportOverlay *_overlay;
     __weak EditorView  *_trackedEditor;
@@ -67,8 +69,17 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
         [[NSNotificationCenter defaultCenter]
             addObserver:self selector:@selector(_prefsChanged:)
                    name:@"NPPPreferencesChanged" object:nil];
+        [[NSNotificationCenter defaultCenter]
+            addObserver:self selector:@selector(_locChanged:)
+                   name:NPPLocalizationChanged object:nil];
+        [self retranslateUI];
     }
     return self;
+}
+
+- (void)_locChanged:(NSNotification *)n { [self retranslateUI]; }
+- (void)retranslateUI {
+    _titleLabel.stringValue = [[NppLocalizer shared] translate:@"Document Map"];
 }
 - (instancetype)init { return [self initWithFrame:NSZeroRect]; }
 - (void)dealloc {
@@ -85,7 +96,8 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
     _titleBar.layer.backgroundColor = [NSColor controlBackgroundColor].CGColor;
     [self addSubview:_titleBar];
 
-    NSTextField *lbl = [NSTextField labelWithString:@"Document Map"];
+    _titleLabel = [NSTextField labelWithString:@"Document Map"];
+    NSTextField *lbl = _titleLabel;
     lbl.translatesAutoresizingMaskIntoConstraints = NO;
     lbl.font = [NSFont boldSystemFontOfSize:11];
     lbl.textColor = [NSColor labelColor];

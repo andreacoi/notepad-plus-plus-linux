@@ -1,5 +1,6 @@
 #import "DocumentListPanel.h"
 #import "EditorView.h"
+#import "NppLocalizer.h"
 #import "StyleConfiguratorWindowController.h"
 
 @implementation DocumentListPanel {
@@ -7,6 +8,7 @@
     NSScrollView *_scrollView;
     NSTableView  *_tableView;
     NSArray<EditorView *> *_items;
+    NSTextField  *_titleLabel;
 }
 
 - (instancetype)initWithTabManager:(TabManager *)tabManager {
@@ -15,8 +17,17 @@
         _tabManager = tabManager;
         _items = @[];
         [self _buildLayout];
+        [self retranslateUI];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_locChanged:)
+                                                     name:NPPLocalizationChanged object:nil];
     }
     return self;
+}
+
+- (void)dealloc { [[NSNotificationCenter defaultCenter] removeObserver:self]; }
+- (void)_locChanged:(NSNotification *)n { [self retranslateUI]; }
+- (void)retranslateUI {
+    _titleLabel.stringValue = [[NppLocalizer shared] translate:@"Document List"];
 }
 
 - (void)_buildLayout {
@@ -27,7 +38,8 @@
     titleBar.layer.backgroundColor = [NSColor controlBackgroundColor].CGColor;
     [self addSubview:titleBar];
 
-    NSTextField *titleLabel = [NSTextField labelWithString:@"Document List"];
+    _titleLabel = [NSTextField labelWithString:@"Document List"];
+    NSTextField *titleLabel = _titleLabel;
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     titleLabel.font = [NSFont boldSystemFontOfSize:11];
     titleLabel.textColor = [NSColor labelColor];

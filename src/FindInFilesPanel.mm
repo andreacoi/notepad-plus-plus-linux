@@ -1,4 +1,5 @@
 #import "FindInFilesPanel.h"
+#import "NppLocalizer.h"
 
 // ── Result model ──────────────────────────────────────────────────────────────
 
@@ -41,6 +42,9 @@ static const CGFloat kFormHeight = 178.0;
 
 @implementation FindInFilesPanel {
     // Search controls
+    NSTextField     *_searchLabel;
+    NSTextField     *_dirLabel;
+    NSTextField     *_filterLabel;
     NSTextField     *_searchField;
     NSTextField     *_dirField;
     NSTextField     *_filterField;
@@ -97,8 +101,29 @@ static const CGFloat kFormHeight = 178.0;
         _searchQueue = [[NSOperationQueue alloc] init];
         _searchQueue.maxConcurrentOperationCount = 1;
         [self buildUI];
+        [self retranslateUI];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_locChanged:)
+                                                     name:NPPLocalizationChanged object:nil];
     }
     return self;
+}
+
+- (void)dealloc { [[NSNotificationCenter defaultCenter] removeObserver:self]; }
+- (void)_locChanged:(NSNotification *)n { [self retranslateUI]; }
+- (void)retranslateUI {
+    NppLocalizer *loc = [NppLocalizer shared];
+    self.window.title           = [loc translate:@"Find in Files"];
+    _searchLabel.stringValue    = [loc translate:@"Search:"];
+    _dirLabel.stringValue       = [loc translate:@"Directory:"];
+    _filterLabel.stringValue    = [loc translate:@"Filter:"];
+    _matchCaseBox.title         = [loc translate:@"Match case"];
+    _wholeWordBox.title         = [loc translate:@"Whole word"];
+    _searchBtn.title            = [loc translate:@"Search"];
+    _stopBtn.title              = [loc translate:@"Stop"];
+    for (NSTableColumn *c in _outlineView.tableColumns) {
+        if ([c.identifier isEqualToString:@"result"]) c.title = [loc translate:@"Results"];
+        else if ([c.identifier isEqualToString:@"line"]) c.title = [loc translate:@"Line"];
+    }
 }
 
 // ── UI construction ───────────────────────────────────────────────────────────
@@ -161,13 +186,15 @@ static const CGFloat kFormHeight = 178.0;
     CGFloat y = kFormHeight - 30;   // Search row
 
     // Search
-    [form addSubview:[self labelIn:form at:NSMakeRect(10, y+4, 65, 18) text:@"Search:"]];
+    _searchLabel = [self labelIn:form at:NSMakeRect(10, y+4, 65, 18) text:@"Search:"];
+    [form addSubview:_searchLabel];
     _searchField = [self fieldIn:form frame:NSMakeRect(80, y, winW - 90, 22)
                      placeholder:@"Text to search for"];
     y -= 30;
 
     // Directory
-    [form addSubview:[self labelIn:form at:NSMakeRect(10, y+4, 65, 18) text:@"Directory:"]];
+    _dirLabel = [self labelIn:form at:NSMakeRect(10, y+4, 65, 18) text:@"Directory:"];
+    [form addSubview:_dirLabel];
     _dirField = [self fieldIn:form frame:NSMakeRect(80, y, winW - 140, 22) placeholder:@""];
     _dirField.stringValue = NSHomeDirectory();
 
@@ -178,7 +205,8 @@ static const CGFloat kFormHeight = 178.0;
     y -= 30;
 
     // Filter
-    [form addSubview:[self labelIn:form at:NSMakeRect(10, y+4, 65, 18) text:@"Filter:"]];
+    _filterLabel = [self labelIn:form at:NSMakeRect(10, y+4, 65, 18) text:@"Filter:"];
+    [form addSubview:_filterLabel];
     _filterField = [self fieldIn:form frame:NSMakeRect(80, y, 200, 22) placeholder:@"*.txt, *.cpp, …"];
     _filterField.stringValue = @"*.*";
     y -= 28;

@@ -1,8 +1,10 @@
 #import "IncrementalSearchBar.h"
+#import "NppLocalizer.h"
 
 static const CGFloat kBarHeight = 36.0;
 
 @implementation IncrementalSearchBar {
+    NSTextField *_findLabel;
     NSTextField *_searchField;
     NSButton    *_prevBtn, *_nextBtn, *_closeBtn;
     NSButton    *_matchCaseBtn;
@@ -23,7 +25,8 @@ static const CGFloat kBarHeight = 36.0;
     [self addSubview:sep];
 
     // "Find:" label
-    NSTextField *label = [NSTextField labelWithString:@"Find:"];
+    _findLabel = [NSTextField labelWithString:@"Find:"];
+    NSTextField *label = _findLabel;
     label.font = [NSFont systemFontOfSize:12];
     label.textColor = [NSColor secondaryLabelColor];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -82,7 +85,28 @@ static const CGFloat kBarHeight = 36.0;
         [sep.heightAnchor constraintEqualToConstant:1],
         [label.centerYAnchor constraintEqualToAnchor:self.centerYAnchor],
     ]];
+
+    [self retranslateUI];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(_localizationChanged:)
+                                                 name:NPPLocalizationChanged
+                                               object:nil];
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)_localizationChanged:(NSNotification *)note { [self retranslateUI]; }
+
+- (void)retranslateUI {
+    NppLocalizer *loc = [NppLocalizer shared];
+    _findLabel.stringValue   = [loc translate:@"Find:"];
+    _matchCaseBtn.title      = [loc translate:@"Match Case"];
+    _prevBtn.toolTip         = [loc translate:@"Find Previous"];
+    _nextBtn.toolTip         = [loc translate:@"Find Next"];
+    _closeBtn.toolTip        = [loc translate:@"Close"];
 }
 
 - (CGFloat)preferredHeight { return kBarHeight; }
