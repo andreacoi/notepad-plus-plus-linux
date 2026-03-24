@@ -17,7 +17,7 @@ static const CGFloat kCloseSize    = 14.0;
 static const CGFloat kArrowBtnW    = 14.0;  // width of each scroll-arrow button
 
 // ── Colors ────────────────────────────────────────────────────────────────────
-static NSColor *tabBarBgColor()    { return [NSColor colorWithWhite:0.73 alpha:1]; }
+static NSColor *tabBarBgColor()    { return [NSColor colorWithRed:0xF0/255.0 green:0xF0/255.0 blue:0xF0/255.0 alpha:1]; }
 static NSColor *inactiveTabColor() { return [NSColor colorWithWhite:0.80 alpha:1]; }
 static NSColor *activeTabColor()   { return [NSColor colorWithWhite:1.00 alpha:1]; }
 static NSColor *hoverTabColor()    { return [NSColor colorWithWhite:0.87 alpha:1]; }

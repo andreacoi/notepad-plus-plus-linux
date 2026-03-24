@@ -97,28 +97,43 @@ static NSToolbarItemIdentifier const kTBFind        = @"TB_Find";
 static NSToolbarItemIdentifier const kTBFindRep     = @"TB_FindRep";
 static NSToolbarItemIdentifier const kTBZoomIn      = @"TB_ZoomIn";
 static NSToolbarItemIdentifier const kTBZoomOut     = @"TB_ZoomOut";
+static NSToolbarItemIdentifier const kTBSyncV       = @"TB_SyncV";
+static NSToolbarItemIdentifier const kTBSyncH       = @"TB_SyncH";
 static NSToolbarItemIdentifier const kTBWrap        = @"TB_Wrap";
 static NSToolbarItemIdentifier const kTBAllChars    = @"TB_AllChars";
+static NSToolbarItemIdentifier const kTBIndentGuide = @"TB_IndentGuide";
 static NSToolbarItemIdentifier const kTBUDL         = @"TB_UDL";
 static NSToolbarItemIdentifier const kTBDocMap      = @"TB_DocMap";
 static NSToolbarItemIdentifier const kTBDocList     = @"TB_DocList";
 static NSToolbarItemIdentifier const kTBFuncList    = @"TB_FuncList";
 static NSToolbarItemIdentifier const kTBFileBrowser = @"TB_FileBrowser";
+static NSToolbarItemIdentifier const kTBMonitor     = @"TB_Monitor";
 static NSToolbarItemIdentifier const kTBStartRecord = @"TB_StartRecord";
 static NSToolbarItemIdentifier const kTBStopRecord  = @"TB_StopRecord";
 static NSToolbarItemIdentifier const kTBPlayRecord  = @"TB_PlayRecord";
 static NSToolbarItemIdentifier const kTBPlayRecordM = @"TB_PlayRecordM";
-static NSToolbarItemIdentifier const kTBSep         = @"TB_Sep";
+static NSToolbarItemIdentifier const kTBSaveRecord  = @"TB_SaveRecord";
+static NSToolbarItemIdentifier const kTBSep1 = @"TB_Sep1";
+static NSToolbarItemIdentifier const kTBSep2 = @"TB_Sep2";
+static NSToolbarItemIdentifier const kTBSep3 = @"TB_Sep3";
+static NSToolbarItemIdentifier const kTBSep4 = @"TB_Sep4";
+static NSToolbarItemIdentifier const kTBSep5 = @"TB_Sep5";
+static NSToolbarItemIdentifier const kTBSep6 = @"TB_Sep6";
+static NSToolbarItemIdentifier const kTBSep7 = @"TB_Sep7";
+static NSToolbarItemIdentifier const kTBSep8 = @"TB_Sep8";
+static NSToolbarItemIdentifier const kTBSep9 = @"TB_Sep9";
 static NSToolbarItemIdentifier const kTBTabControls = @"TB_TabControls"; // +  ▾  × right-aligned
 // Grouped toolbar items — each group becomes a single NSToolbarItem with tight icon packing
-static NSToolbarItemIdentifier const kTBGroup1 = @"TB_G1"; // file ops
-static NSToolbarItemIdentifier const kTBGroup2 = @"TB_G2"; // clipboard
-static NSToolbarItemIdentifier const kTBGroup3 = @"TB_G3"; // undo/redo
-static NSToolbarItemIdentifier const kTBGroup4 = @"TB_G4"; // find
-static NSToolbarItemIdentifier const kTBGroup5 = @"TB_G5"; // zoom
-static NSToolbarItemIdentifier const kTBGroup6 = @"TB_G6"; // view toggles
-static NSToolbarItemIdentifier const kTBGroup7 = @"TB_G7"; // panels
-static NSToolbarItemIdentifier const kTBGroup8 = @"TB_G8"; // macro
+static NSToolbarItemIdentifier const kTBGroup1  = @"TB_G1";  // file ops
+static NSToolbarItemIdentifier const kTBGroup2  = @"TB_G2";  // clipboard
+static NSToolbarItemIdentifier const kTBGroup3  = @"TB_G3";  // undo/redo
+static NSToolbarItemIdentifier const kTBGroup4  = @"TB_G4";  // find
+static NSToolbarItemIdentifier const kTBGroup5  = @"TB_G5";  // zoom
+static NSToolbarItemIdentifier const kTBGroup6  = @"TB_G6";  // scroll sync
+static NSToolbarItemIdentifier const kTBGroup7  = @"TB_G7";  // view toggles (wrap, allchars, indent)
+static NSToolbarItemIdentifier const kTBGroup8  = @"TB_G8";  // panels
+static NSToolbarItemIdentifier const kTBGroup9  = @"TB_G9";  // monitoring
+static NSToolbarItemIdentifier const kTBGroup10 = @"TB_G10"; // macro
 
 // Load a toolbar icon from Resources/icons/standard/toolbar/{fileName}.png.
 static NSImage *nppToolbarIcon(NSString *fileName) {
@@ -177,6 +192,55 @@ static NSImage *nppToolbarIcon(NSString *fileName) {
                       fromRect:NSZeroRect
                      operation:NSCompositingOperationSourceOver
                       fraction:1.0
+                respectFlipped:YES
+                         hints:nil];
+    }
+}
+
+@end
+
+// ── Toggle toolbar button: on/off with blue highlight or desaturation ────────
+@interface NppToggleToolbarButton : NppToolbarButton
+@property (nonatomic) BOOL toggledOn;
+@property (nonatomic) BOOL useBlueHighlight; // YES = panel style (blue bg), NO = desaturate when off
+@end
+
+@implementation NppToggleToolbarButton
+
+- (void)drawRect:(NSRect)dirtyRect {
+    BOOL pressed = self.isHighlighted;
+
+    // Active-toggle: persistent blueish background (panel style)
+    if (self.toggledOn && self.useBlueHighlight) {
+        NSColor *bg  = [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:0.65];
+        NSColor *bdr = [NSColor colorWithRed:0x80/255.0 green:0xC0/255.0 blue:0xFF/255.0 alpha:0.80];
+        NSBezierPath *fill = [NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:2 yRadius:2];
+        [bg setFill]; [fill fill];
+        NSBezierPath *border = [NSBezierPath bezierPathWithRoundedRect:NSInsetRect(self.bounds, 0.5, 0.5)
+                                                               xRadius:2 yRadius:2];
+        border.lineWidth = 1.0; [bdr setStroke]; [border stroke];
+    } else if (pressed || _hovering) {
+        NSColor *bg  = pressed
+            ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
+            : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+        NSColor *bdr = [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0];
+        NSBezierPath *fill = [NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:2 yRadius:2];
+        [bg setFill]; [fill fill];
+        NSBezierPath *border = [NSBezierPath bezierPathWithRoundedRect:NSInsetRect(self.bounds, 0.5, 0.5)
+                                                               xRadius:2 yRadius:2];
+        border.lineWidth = 1.0; [bdr setStroke]; [border stroke];
+    }
+
+    // Desaturation style: OFF = greyed out (alpha 0.30), ON = normal
+    CGFloat alpha = 1.0;
+    if (!self.useBlueHighlight && !self.toggledOn) alpha = 0.30;
+    if (!self.isEnabled) alpha = 0.25;
+
+    if (self.image) {
+        [self.image drawInRect:NSInsetRect(self.bounds, 1, 1)
+                      fromRect:NSZeroRect
+                     operation:NSCompositingOperationSourceOver
+                      fraction:alpha
                 respectFlipped:YES
                          hints:nil];
     }
@@ -263,12 +327,25 @@ static NSImage *nppToolbarIcon(NSString *fileName) {
 @end
 
 // ── Thin vertical | separator between toolbar groups ─────────────────────────
+// 1 logical pixel wide (#b9b9b9), 80% of icon height, vertically centered.
 @interface NppSeparatorView : NSView @end
 @implementation NppSeparatorView
 - (void)drawRect:(NSRect)dirtyRect {
-    [[NSColor colorWithWhite:0.30 alpha:0.90] set];
-    NSRect line = NSMakeRect(floor(NSMidX(self.bounds)) - 0.5, 3, 1, self.bounds.size.height - 6);
-    NSRectFill(line);
+    CGFloat h     = self.bounds.size.height;
+    CGFloat lineH = floor(h * 0.80);
+    CGFloat y     = floor((h - lineH) / 2.0);
+    CGFloat x     = floor(NSMidX(self.bounds));
+    [[NSColor colorWithRed:0xB9/255.0 green:0xB9/255.0 blue:0xB9/255.0 alpha:1.0] set];
+    NSRectFill(NSMakeRect(x, y, 1, lineH));
+}
+@end
+
+// 1px horizontal line view (#cacaca), used above the tab bar.
+@interface _ToolbarBorderLine : NSView @end
+@implementation _ToolbarBorderLine
+- (void)drawRect:(NSRect)dirtyRect {
+    [[NSColor colorWithRed:0xCA/255.0 green:0xCA/255.0 blue:0xCA/255.0 alpha:1.0] set];
+    NSRectFill(self.bounds);
 }
 @end
 
@@ -291,34 +368,50 @@ static NSArray<NSArray *> *toolbarDescriptors() {
         @[kTBUndo,        @"Undo",       @"Undo",                     @"undo",             @"undo:"],
         @[kTBRedo,        @"Redo",       @"Redo",                     @"redo",             @"redo:"],
         @[kTBFind,        @"Find",       @"Find",                     @"find",             @"showFindPanel:"],
-        @[kTBFindRep,     @"Replace",    @"Find and Replace",         @"findReplace",      @"showReplacePanel:"],
+        @[kTBFindRep,     @"Replace",    @"Replace",                  @"findReplace",      @"showReplacePanel:"],
         @[kTBZoomIn,      @"Zoom In",    @"Zoom In",                  @"zoomIn",           @"zoomIn:"],
         @[kTBZoomOut,     @"Zoom Out",   @"Zoom Out",                 @"zoomOut",          @"zoomOut:"],
+        @[kTBSyncV,       @"Sync V",     @"Synchronize Vertical Scrolling",   @"syncV",    @"toggleSyncVerticalScrolling:"],
+        @[kTBSyncH,       @"Sync H",     @"Synchronize Horizontal Scrolling", @"syncH",    @"toggleSyncHorizontalScrolling:"],
         @[kTBWrap,        @"Word Wrap",  @"Toggle Word Wrap",         @"wrap",             @"toggleWordWrap:"],
         @[kTBAllChars,    @"All Chars",  @"Show All Characters",      @"allChars",         @"toggleShowAllChars:"],
+        @[kTBIndentGuide, @"Indent",     @"Toggle Indent Guide",      @"indentGuide",      @"toggleIndentGuides:"],
         @[kTBUDL,         @"Language",   @"Define Your Language",     @"udl",              @"showDefineLanguage:"],
         @[kTBDocMap,      @"Doc Map",    @"Document Map",             @"docMap",           @"showDocumentMap:"],
         @[kTBDocList,     @"Doc List",   @"Document List",            @"docList",          @"showDocumentList:"],
         @[kTBFuncList,    @"Func List",  @"Function List",            @"funcList",         @"showFunctionList:"],
         @[kTBFileBrowser, @"Workspace",  @"Folder as Workspace",      @"fileBrowser",      @"showFolderAsWorkspace:"],
+        @[kTBMonitor,     @"Monitor",    @"Monitoring (tail -f)",     @"monitoring",       @"toggleMonitoring:"],
         @[kTBStartRecord, @"Record",     @"Start Recording",          @"startRecord",      @"startMacroRecording:"],
         @[kTBStopRecord,  @"Stop",       @"Stop Recording",           @"stopRecord",       @"stopMacroRecording:"],
         @[kTBPlayRecord,  @"Playback",   @"Run Macro",                @"playRecord",       @"runMacro:"],
         @[kTBPlayRecordM, @"Run ×N",     @"Run Macro Multiple Times", @"playRecord_m",     @"runMacroMultipleTimes:"],
+        @[kTBSaveRecord,  @"Save Mac",   @"Save Current Recorded Macro", @"saveRecord",    @"saveCurrentMacro:"],
     ];
 }
 
 // Maps group toolbar-item identifiers → ordered list of button identifiers within that group.
+// Toggle buttons — these identifiers get NppToggleToolbarButton with desaturation
+static NSSet *desatToggleIdents(void) {
+    return [NSSet setWithObjects:kTBSyncV, kTBSyncH, kTBIndentGuide, kTBMonitor, nil];
+}
+// Panel toggle buttons — these get NppToggleToolbarButton with blue highlight
+static NSSet *panelToggleIdents(void) {
+    return [NSSet setWithObjects:kTBUDL, kTBDocMap, kTBDocList, kTBFuncList, kTBFileBrowser, nil];
+}
+
 static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     return @{
-        kTBGroup1: @[kTBNew, kTBOpen, kTBSave, kTBSaveAll, kTBClose, kTBCloseAll, kTBPrint],
-        kTBGroup2: @[kTBCut, kTBCopy, kTBPaste],
-        kTBGroup3: @[kTBUndo, kTBRedo],
-        kTBGroup4: @[kTBFind, kTBFindRep],
-        kTBGroup5: @[kTBZoomIn, kTBZoomOut],
-        kTBGroup6: @[kTBWrap, kTBAllChars],
-        kTBGroup7: @[kTBUDL, kTBDocMap, kTBDocList, kTBFuncList, kTBFileBrowser],
-        kTBGroup8: @[kTBStartRecord, kTBStopRecord, kTBPlayRecord, kTBPlayRecordM],
+        kTBGroup1:  @[kTBNew, kTBOpen, kTBSave, kTBSaveAll, kTBClose, kTBCloseAll, kTBPrint],
+        kTBGroup2:  @[kTBCut, kTBCopy, kTBPaste],
+        kTBGroup3:  @[kTBUndo, kTBRedo],
+        kTBGroup4:  @[kTBFind, kTBFindRep],
+        kTBGroup5:  @[kTBZoomIn, kTBZoomOut],
+        kTBGroup6:  @[kTBSyncV, kTBSyncH],
+        // Group7 = view toggles — handled specially (includes AllChars dropdown)
+        kTBGroup8:  @[kTBUDL, kTBDocMap, kTBDocList, kTBFuncList, kTBFileBrowser],
+        kTBGroup9:  @[kTBMonitor],
+        kTBGroup10: @[kTBStartRecord, kTBStopRecord, kTBPlayRecord, kTBPlayRecordM, kTBSaveRecord],
     };
 }
 
@@ -378,6 +471,13 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     IncrementalSearchBar *_incSearchBar;
     NSLayoutConstraint   *_incSearchBarHeightConstraint;
 
+    // Toolbar toggle button references (for state refresh)
+    NppToggleToolbarButton *_tbSyncV, *_tbSyncH;
+    NppToggleToolbarButton *_tbIndentGuide;
+    NppToggleToolbarButton *_tbUDL, *_tbDocMap, *_tbDocList, *_tbFuncList, *_tbFileBrowser;
+    NppToggleToolbarButton *_tbMonitor;
+    NppToolbarButton *_tbStartRecord, *_tbStopRecord, *_tbPlayRecord, *_tbPlayRecordM, *_tbSaveRecord;
+
     // View display modes
     BOOL              _postItMode;
     NSWindowStyleMask _savedStyleMask;
@@ -402,6 +502,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     self = [super initWithWindow:window];
     if (self) {
         _showLineNumbers = [[NSUserDefaults standardUserDefaults] boolForKey:kPrefShowLineNumbers];
+        _showIndentGuides = YES; // indent guides on by default
         window.delegate = self;
         [self buildToolbar];
         [self buildContentView];
@@ -457,17 +558,20 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     if (@available(macOS 11.0, *)) {
         self.window.toolbarStyle = NSWindowToolbarStyleExpanded;
     }
+
 }
 
 - (NSArray<NSToolbarItemIdentifier> *)toolbarDefaultItemIdentifiers:(NSToolbar *)tb {
-    return @[kTBGroup1, kTBSep,
-             kTBGroup2, kTBSep,
-             kTBGroup3, kTBSep,
-             kTBGroup4, kTBSep,
-             kTBGroup5, kTBSep,
-             kTBGroup6, kTBSep,
-             kTBGroup7, kTBSep,
-             kTBGroup8,
+    return @[kTBGroup1,
+             kTBGroup2,
+             kTBGroup3,
+             kTBGroup4,
+             kTBGroup5,
+             kTBGroup6,   // scroll sync
+             kTBGroup7,   // view toggles (wrap, allchars, indent guide)
+             kTBGroup8,   // panels
+             kTBGroup9,   // monitoring
+             kTBGroup10,  // macro (no trailing separator)
              NSToolbarFlexibleSpaceItemIdentifier,
              kTBTabControls];
 }
@@ -479,37 +583,39 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
 - (NSToolbarItem *)toolbar:(NSToolbar *)tb
      itemForItemIdentifier:(NSToolbarItemIdentifier)ident
  willBeInsertedIntoToolbar:(BOOL)flag {
-    // Dark-grey group separator
-    if ([ident isEqualToString:kTBSep]) {
-        NSToolbarItem *sep = [[NSToolbarItem alloc] initWithItemIdentifier:ident];
-        NppSeparatorView *v = [[NppSeparatorView alloc] initWithFrame:NSMakeRect(0, 0, 8, 17)];
-        sep.view    = v;
-        sep.minSize = NSMakeSize(8, 17);
-        sep.maxSize = NSMakeSize(8, 17);
-        return sep;
-    }
-
     if ([ident isEqualToString:kTBTabControls])
         return [self makeTabControlsToolbarItem];
 
-    // Group 6 gets special handling: Word Wrap + All Chars button + dropdown arrow.
-    if ([ident isEqualToString:kTBGroup6])
-        return [self makeAllCharsGroupToolbarItem];
+    // Group 7 gets special handling: Word Wrap + All Chars button + dropdown arrow + Indent Guide.
+    if ([ident isEqualToString:kTBGroup7])
+        return [self makeViewTogglesGroupToolbarItem];
 
     NSArray *idents = toolbarGroupMap()[ident];
     if (idents) return [self makeGroupToolbarItem:ident identifiers:idents];
     return nil;
 }
 
+// Whether this group should have a trailing separator line.
+static BOOL groupHasTrailingSep(NSString *ident) {
+    return ![ident isEqualToString:kTBGroup10]; // all groups except the last macro group
+}
+
 // Pack a set of buttons into a single NSToolbarItem view with 1pt spacing.
 - (NSToolbarItem *)makeGroupToolbarItem:(NSString *)ident identifiers:(NSArray *)idents {
     static const CGFloat kBtnSize = 17.0;
     static const CGFloat kSpacing =  1.0;
+    static const CGFloat kSepPadL =  3.0; // padding left of separator
+    static const CGFloat kSepPadR = -4.0; // negative to compensate NSToolbar inter-item gap
+    BOOL hasSep = groupHasTrailingSep(ident);
     NSInteger n = (NSInteger)idents.count;
-    CGFloat totalW = n * kBtnSize + (n - 1) * kSpacing;
+    CGFloat buttonsW = n * kBtnSize + (n - 1) * kSpacing;
+    CGFloat totalW = buttonsW + (hasSep ? kSepPadL + 1 + kSepPadR : 0);
 
     NSMutableDictionary *descMap = [NSMutableDictionary dictionary];
     for (NSArray *desc in toolbarDescriptors()) descMap[desc[0]] = desc;
+
+    NSSet *desatSet = desatToggleIdents();
+    NSSet *panelSet = panelToggleIdents();
 
     NSView *groupView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, totalW, kBtnSize)];
     CGFloat x = 0;
@@ -518,15 +624,51 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
         if (desc) {
             NSImage *img = nppToolbarIcon(desc[3]);
             if (!img) img = [NSImage imageWithSystemSymbolName:@"doc" accessibilityDescription:desc[1]];
-            NppToolbarButton *btn = [[NppToolbarButton alloc]
-                initWithFrame:NSMakeRect(x, 0, kBtnSize, kBtnSize)];
+
+            BOOL isDesatToggle = [desatSet containsObject:btnIdent];
+            BOOL isPanelToggle = [panelSet containsObject:btnIdent];
+            NppToolbarButton *btn;
+
+            if (isDesatToggle || isPanelToggle) {
+                NppToggleToolbarButton *tb = [[NppToggleToolbarButton alloc]
+                    initWithFrame:NSMakeRect(x, 0, kBtnSize, kBtnSize)];
+                tb.useBlueHighlight = isPanelToggle;
+                tb.toggledOn = isDesatToggle ? NO : NO; // set in _refreshToolbarStates
+                btn = tb;
+            } else {
+                btn = [[NppToolbarButton alloc]
+                    initWithFrame:NSMakeRect(x, 0, kBtnSize, kBtnSize)];
+            }
             btn.image   = img;
             btn.action  = NSSelectorFromString(desc[4]);
             btn.target  = self;
             btn.toolTip = desc[2];
             [groupView addSubview:btn];
+
+            // Store references for toggle state refresh
+            if ([btnIdent isEqualToString:kTBSyncV])       _tbSyncV       = (NppToggleToolbarButton *)btn;
+            else if ([btnIdent isEqualToString:kTBSyncH])  _tbSyncH       = (NppToggleToolbarButton *)btn;
+            else if ([btnIdent isEqualToString:kTBMonitor]) _tbMonitor     = (NppToggleToolbarButton *)btn;
+            else if ([btnIdent isEqualToString:kTBUDL])     _tbUDL         = (NppToggleToolbarButton *)btn;
+            else if ([btnIdent isEqualToString:kTBDocMap])  _tbDocMap      = (NppToggleToolbarButton *)btn;
+            else if ([btnIdent isEqualToString:kTBDocList]) _tbDocList     = (NppToggleToolbarButton *)btn;
+            else if ([btnIdent isEqualToString:kTBFuncList])_tbFuncList    = (NppToggleToolbarButton *)btn;
+            else if ([btnIdent isEqualToString:kTBFileBrowser]) _tbFileBrowser = (NppToggleToolbarButton *)btn;
+            else if ([btnIdent isEqualToString:kTBStartRecord]) _tbStartRecord = btn;
+            else if ([btnIdent isEqualToString:kTBStopRecord])  _tbStopRecord  = btn;
+            else if ([btnIdent isEqualToString:kTBPlayRecord])  _tbPlayRecord  = btn;
+            else if ([btnIdent isEqualToString:kTBPlayRecordM]) _tbPlayRecordM = btn;
+            else if ([btnIdent isEqualToString:kTBSaveRecord])  _tbSaveRecord  = btn;
         }
         x += kBtnSize + kSpacing;
+    }
+
+    // Append trailing separator line inside the group view
+    if (hasSep) {
+        CGFloat sepX = buttonsW + kSepPadL;
+        NppSeparatorView *sv = [[NppSeparatorView alloc]
+            initWithFrame:NSMakeRect(sepX, 0, 1, kBtnSize)];
+        [groupView addSubview:sv];
     }
 
     NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:ident];
@@ -536,29 +678,34 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     return item;
 }
 
-// Group 6: Word Wrap button | [Show All Characters + dropdown arrow (hover group)]
-- (NSToolbarItem *)makeAllCharsGroupToolbarItem {
+// Group 7: Word Wrap | [Show All Characters + dropdown arrow] | Indent Guide
+- (NSToolbarItem *)makeViewTogglesGroupToolbarItem {
     static const CGFloat kBtnSize  = 17.0;
     static const CGFloat kDropW    = 29.0;
     static const CGFloat kGap      = 1.0;
     static const CGFloat kInnerGap = 2.0;   // gap between chars button and dropdown arrow
+    static const CGFloat kSepPadL = 3.0;
+    static const CGFloat kSepPadR = -4.0;
     CGFloat hoverW  = kBtnSize + kInnerGap + kDropW;
-    CGFloat totalW  = kBtnSize + kGap + hoverW;
+    CGFloat buttonsW = kBtnSize + kGap + hoverW + kGap + kBtnSize; // wrap + allchars group + indent
+    CGFloat totalW  = buttonsW + kSepPadL + 1 + kSepPadR; // + trailing separator
 
     NSView *outer = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, totalW, kBtnSize)];
+    CGFloat x = 0;
 
     // Word Wrap — stands alone with its own hover border
     NppToolbarButton *wrapBtn = [[NppToolbarButton alloc]
-        initWithFrame:NSMakeRect(0, 0, kBtnSize, kBtnSize)];
+        initWithFrame:NSMakeRect(x, 0, kBtnSize, kBtnSize)];
     wrapBtn.image   = nppToolbarIcon(@"wrap");
     wrapBtn.action  = @selector(toggleWordWrap:);
     wrapBtn.target  = self;
     wrapBtn.toolTip = @"Toggle Word Wrap";
     [outer addSubview:wrapBtn];
+    x += kBtnSize + kGap;
 
     // Hover group: All Characters button + dropdown arrow share one highlight
     _AllCharsHoverGroup *hoverGroup = [[_AllCharsHoverGroup alloc]
-        initWithFrame:NSMakeRect(kBtnSize + kGap, 0, hoverW, kBtnSize)];
+        initWithFrame:NSMakeRect(x, 0, hoverW, kBtnSize)];
 
     _FlatImgButton *charsBtn = [[_FlatImgButton alloc]
         initWithFrame:NSMakeRect(0, 0, kBtnSize, kBtnSize)];
@@ -582,8 +729,26 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     [hoverGroup addSubview:dropBtn];
 
     [outer addSubview:hoverGroup];
+    x += hoverW + kGap;
 
-    NSToolbarItem *it = [[NSToolbarItem alloc] initWithItemIdentifier:kTBGroup6];
+    // Indent Guide — toggle with desaturation
+    NppToggleToolbarButton *indentBtn = [[NppToggleToolbarButton alloc]
+        initWithFrame:NSMakeRect(x, 0, kBtnSize, kBtnSize)];
+    indentBtn.image   = nppToolbarIcon(@"indentGuide");
+    indentBtn.action  = @selector(toggleIndentGuides:);
+    indentBtn.target  = self;
+    indentBtn.toolTip = @"Toggle Indent Guide";
+    indentBtn.useBlueHighlight = NO;
+    indentBtn.toggledOn = _showIndentGuides;
+    [outer addSubview:indentBtn];
+    _tbIndentGuide = indentBtn;
+
+    // Trailing separator
+    NppSeparatorView *sv = [[NppSeparatorView alloc]
+        initWithFrame:NSMakeRect(buttonsW + kSepPadL, 0, 1, kBtnSize)];
+    [outer addSubview:sv];
+
+    NSToolbarItem *it = [[NSToolbarItem alloc] initWithItemIdentifier:kTBGroup7];
     it.view    = outer;
     it.minSize = NSMakeSize(totalW, kBtnSize);
     it.maxSize = NSMakeSize(totalW, kBtnSize);
@@ -621,6 +786,53 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     item.minSize = NSMakeSize(totalW, kH);
     item.maxSize = NSMakeSize(totalW, kH);
     return item;
+}
+
+// ── Toolbar toggle state refresh ──────────────────────────────────────────────
+
+- (void)_refreshToolbarStates {
+    // Scroll sync (desaturation)
+    _tbSyncV.toggledOn = _syncVerticalScrolling;
+    _tbSyncH.toggledOn = _syncHorizontalScrolling;
+    [_tbSyncV setNeedsDisplay:YES];
+    [_tbSyncH setNeedsDisplay:YES];
+
+    // Indent guide (desaturation)
+    _tbIndentGuide.toggledOn = _showIndentGuides;
+    [_tbIndentGuide setNeedsDisplay:YES];
+
+    // Panel toggles (blue highlight when panel is visible)
+    _tbDocMap.toggledOn      = _docMapPanel && [_sidePanelHost hasPanel:_docMapPanel];
+    _tbDocList.toggledOn     = _docListPanel && [_sidePanelHost hasPanel:_docListPanel];
+    _tbFuncList.toggledOn    = _funcListPanel && [_sidePanelHost hasPanel:(NSView *)_funcListPanel];
+    _tbFileBrowser.toggledOn = _folderTreePanel && [_sidePanelHost hasPanel:_folderTreePanel];
+    [_tbDocMap setNeedsDisplay:YES];
+    [_tbDocList setNeedsDisplay:YES];
+    [_tbFuncList setNeedsDisplay:YES];
+    [_tbFileBrowser setNeedsDisplay:YES];
+    // UDL doesn't toggle a panel — leave as-is
+
+    // Monitoring toggle
+    EditorView *ed = [self currentEditor];
+    BOOL hasFile = (ed.filePath.length > 0);
+    _tbMonitor.enabled   = hasFile;
+    _tbMonitor.toggledOn = hasFile && ed.monitoringMode;
+    [_tbMonitor setNeedsDisplay:YES];
+
+    // Macro buttons state
+    BOOL recording = ed.isRecordingMacro;
+    BOOL hasMacro  = (ed.macroActions.count > 0);
+    _tbStartRecord.enabled = !recording;
+    _tbStopRecord.enabled  = recording;
+    _tbPlayRecord.enabled  = !recording && hasMacro;
+    _tbPlayRecordM.enabled = !recording && hasMacro;
+    _tbSaveRecord.enabled  = !recording && hasMacro;
+    // Dim disabled macro buttons
+    _tbStartRecord.alphaValue = _tbStartRecord.isEnabled ? 1.0 : 0.30;
+    _tbStopRecord.alphaValue  = _tbStopRecord.isEnabled  ? 1.0 : 0.30;
+    _tbPlayRecord.alphaValue  = _tbPlayRecord.isEnabled  ? 1.0 : 0.30;
+    _tbPlayRecordM.alphaValue = _tbPlayRecordM.isEnabled ? 1.0 : 0.30;
+    _tbSaveRecord.alphaValue  = _tbSaveRecord.isEnabled  ? 1.0 : 0.30;
 }
 
 // ── Tab-control toolbar actions ───────────────────────────────────────────────
@@ -891,6 +1103,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
         [self->_editorSplitView setPosition:MAX(NSWidth(self->_editorSplitView.frame), 9999) ofDividerAtIndex:0];
         // Restore after collapsing so the restore wins
         [self _restorePanelStates];
+        [self _refreshToolbarStates];
     });
 
     // Restore previous session; open an untitled tab only on first launch
@@ -1275,10 +1488,12 @@ static NSString *nppMacrosPath(void) {
 
 - (void)startMacroRecording:(id)sender {
     [[self currentEditor] startMacroRecording];
+    [self _refreshToolbarStates];
 }
 
 - (void)stopMacroRecording:(id)sender {
     [[self currentEditor] stopMacroRecording];
+    [self _refreshToolbarStates];
 }
 
 - (void)runMacro:(id)sender {
@@ -1395,6 +1610,7 @@ static NSString *nppMacrosPath(void) {
             [_editorSplitView setPosition:NSWidth(_editorSplitView.frame)
                          ofDividerAtIndex:0];
     }
+    [self _refreshToolbarStates];
 }
 
 - (void)showDocumentList:(id)sender {
@@ -2401,6 +2617,7 @@ static NSString *nppMacrosPath(void) {
     EditorView *ed = [self currentEditor];
     if (!ed || !ed.filePath) return;
     ed.monitoringMode = !ed.monitoringMode;
+    [self _refreshToolbarStates];
 }
 
 #pragma mark - Not Yet Implemented
@@ -2551,6 +2768,7 @@ static NSString *nppMacrosPath(void) {
     _showIndentGuides = !_showIndentGuides;
     ScintillaView *sci = [self currentEditor].scintillaView;
     [sci message:SCI_SETINDENTATIONGUIDES wParam:_showIndentGuides ? SC_IV_LOOKBOTH : SC_IV_NONE];
+    [self _refreshToolbarStates];
 }
 
 - (void)toggleLineNumbers:(id)sender {
@@ -2563,10 +2781,12 @@ static NSString *nppMacrosPath(void) {
 
 - (void)toggleSyncVerticalScrolling:(id)sender {
     _syncVerticalScrolling = !_syncVerticalScrolling;
+    [self _refreshToolbarStates];
 }
 
 - (void)toggleSyncHorizontalScrolling:(id)sender {
     _syncHorizontalScrolling = !_syncHorizontalScrolling;
+    [self _refreshToolbarStates];
 }
 
 - (void)_propagateScrollFrom:(EditorView *)source {
@@ -2831,6 +3051,7 @@ static NSString *nppMacrosPath(void) {
     }
     [self _updateGitBranch:editor.filePath];
     [editor updateGitDiffMarkers];
+    [self _refreshToolbarStates];
 }
 
 - (void)tabManager:(id)tabManager didCloseEditor:(EditorView *)editor {
