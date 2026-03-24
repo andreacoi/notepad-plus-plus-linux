@@ -18,6 +18,7 @@
 #import "GitPanel.h"
 #import "FolderTreePanel.h"
 #import "CharacterPanel.h"
+#import "UserDefineLangManager.h"
 #import <objc/runtime.h>
 
 // ── Private helper for the Windows… dialog ───────────────────────────────────
@@ -511,6 +512,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
             addObserver:self selector:@selector(editorCursorMoved:)
                    name:EditorViewCursorDidMoveNotification object:nil];
         [self rebuildRecentFilesMenu];
+        [self rebuildUDLLanguageMenu];
         _autoSaveTimer = [NSTimer scheduledTimerWithTimeInterval:10.0
                                                           target:self
                                                         selector:@selector(autoSaveTick:)
@@ -1666,10 +1668,17 @@ static NSString *nppMacrosPath(void) {
 }
 
 - (void)showFunctionList:(id)sender {
-    if (!_funcListPanel) _funcListPanel = [[FunctionListPanel alloc] init];
+    if (!_funcListPanel) {
+        _funcListPanel = [[FunctionListPanel alloc] init];
+        _funcListPanel.delegate = (id<FunctionListPanelDelegate>)self;
+    }
     BOOL open = [_sidePanelHost hasPanel:_funcListPanel];
     if (!open) [_funcListPanel loadEditor:[self currentEditor]];
     [self _setPanelVisible:_funcListPanel title:@"Function List" show:!open];
+}
+
+- (void)functionListPanelDidRequestClose:(FunctionListPanel *)panel {
+    [self _setPanelVisible:panel title:@"Function List" show:NO];
 }
 
 - (void)showFolderAsWorkspace:(id)sender {
@@ -2937,6 +2946,66 @@ static NSString *nppMacrosPath(void) {
     NSString *lang = [sender representedObject] ?: @"";
     [[self currentEditor] setLanguage:lang];
     [self updateStatusBar];
+}
+
+/// Apply a User Defined Language from the Language menu.
+- (void)setUDLLanguageFromMenu:(id)sender {
+    NSString *udlName = [sender representedObject];
+    if (!udlName) return;
+    UserDefinedLang *udl = [[UserDefineLangManager shared] languageNamed:udlName];
+    if (!udl) return;
+    EditorView *ed = [self currentEditor];
+    if (!ed) return;
+    [[UserDefineLangManager shared] applyLanguage:udl toScintillaView:ed.scintillaView];
+    [self updateStatusBar];
+}
+
+/// Populate the Language menu with all loaded UDL names.
+/// Inserts them after the last separator in the Language menu
+/// (below the static Markdown preinstalled entries).
+- (void)rebuildUDLLanguageMenu {
+    // Find the Language menu
+    NSMenu *langMenu = nil;
+    for (NSMenuItem *topItem in [NSApp mainMenu].itemArray) {
+        if ([topItem.submenu.title isEqualToString:@"Language"]) {
+            langMenu = topItem.submenu;
+            break;
+        }
+    }
+    if (!langMenu) return;
+
+    // Remove any previously-added UDL items (tagged with 8800)
+    NSMutableArray *toRemove = [NSMutableArray array];
+    for (NSMenuItem *mi in langMenu.itemArray) {
+        if (mi.tag == 8800) [toRemove addObject:mi];
+    }
+    for (NSMenuItem *mi in toRemove) [langMenu removeItem:mi];
+
+    // Get all loaded UDLs, skip pre-installed ones (already static in menu)
+    NSArray<UserDefinedLang *> *udls = [UserDefineLangManager shared].allLanguages;
+
+    // Find insertion point: after the last separator
+    NSInteger insertIdx = -1;
+    for (NSInteger i = langMenu.itemArray.count - 1; i >= 0; i--) {
+        if (langMenu.itemArray[i].isSeparatorItem) {
+            insertIdx = i + 1;
+            break;
+        }
+    }
+    if (insertIdx < 0) insertIdx = langMenu.itemArray.count;
+
+    // Insert UDL items (skip pre-installed Markdown to avoid duplicates)
+    for (UserDefinedLang *udl in udls) {
+        if ([udl.name.lowercaseString containsString:@"preinstalled"]) continue;
+        NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:udl.name
+                                                    action:@selector(setUDLLanguageFromMenu:)
+                                             keyEquivalent:@""];
+        mi.target = self;
+        mi.representedObject = udl.name;
+        mi.tag = 8800;
+        [langMenu insertItem:mi atIndex:insertIdx];
+        insertIdx++;
+    }
 }
 
 #pragma mark - Tab navigation

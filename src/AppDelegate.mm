@@ -4,6 +4,7 @@
 #import "NppLocalizer.h"
 #import "PreferencesWindowController.h"
 #import "StyleConfiguratorWindowController.h"
+#import "UserDefineLangManager.h"
 
 @implementation AppDelegate
 
@@ -11,6 +12,9 @@
     // Disable the macOS press-and-hold accent picker so key repeat works in the editor.
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"ApplePressAndHoldEnabled"];
     [MenuBuilder buildMainMenu];
+
+    // Load User Defined Languages from bundled + user directories.
+    [[UserDefineLangManager shared] loadAll];
 
     // Apply the user's saved language to the freshly-built English menu.
     [[NppLocalizer shared] autoLoad];

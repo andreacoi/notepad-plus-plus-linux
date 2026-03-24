@@ -1,0 +1,60 @@
+#import <Cocoa/Cocoa.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
+/// Represents one User Defined Language loaded from XML.
+@interface UserDefinedLang : NSObject
+@property (nonatomic, copy)   NSString *name;          // display name
+@property (nonatomic, copy)   NSString *extensions;    // space-separated file extensions (no dot)
+@property (nonatomic)         BOOL caseIgnored;
+@property (nonatomic)         BOOL allowFoldOfComments;
+@property (nonatomic)         BOOL foldCompact;
+@property (nonatomic)         int  forcePureLC;        // 0/1/2
+@property (nonatomic)         int  decimalSeparator;   // 0=dot, 1=comma, 2=both
+@property (nonatomic, copy)   NSArray<NSNumber *> *isPrefix; // BOOL[8] for keywords 1-8
+@property (nonatomic, copy)   NSDictionary<NSString *, NSString *> *keywordLists; // name → keywords
+@property (nonatomic, copy)   NSArray<NSDictionary *> *styles; // [{name, fgColor, bgColor, fontStyle, ...}]
+@property (nonatomic, copy)   NSString *xmlPath;       // source file path
+@property (nonatomic)         BOOL isDarkModeTheme;
+@end
+
+/// Manages loading and access to User Defined Languages.
+/// Scans bundled + user directories for UDL XML files.
+@interface UserDefineLangManager : NSObject
+
++ (instancetype)shared;
+
+/// Load/reload all UDL files from bundled and user directories.
+- (void)loadAll;
+
+/// All loaded UDLs, sorted by name.
+@property (nonatomic, readonly) NSArray<UserDefinedLang *> *allLanguages;
+
+/// Find a UDL by name.
+- (nullable UserDefinedLang *)languageNamed:(NSString *)name;
+
+/// Find a UDL by file extension (without dot).
+- (nullable UserDefinedLang *)languageForExtension:(NSString *)ext;
+
+/// Import a UDL from a file (copies to user directory).
+- (nullable UserDefinedLang *)importFromPath:(NSString *)path;
+
+/// Export a UDL to a file.
+- (BOOL)exportLanguage:(UserDefinedLang *)lang toPath:(NSString *)path;
+
+/// Delete a UDL (removes from user directory).
+- (BOOL)deleteLanguage:(UserDefinedLang *)lang;
+
+/// Path to the user UDL directory (~/.notepad++/userDefineLangs/).
++ (NSString *)userUDLDirectory;
+
+/// Path to the bundled UDL directory (inside app bundle).
++ (NSString *)bundledUDLDirectory;
+
+/// Apply a UDL's keyword lists to a Scintilla view for syntax highlighting.
+/// This configures the "user" lexer (LexUser) with the UDL's definitions.
+- (void)applyLanguage:(UserDefinedLang *)lang toScintillaView:(id)sciView;
+
+@end
+
+NS_ASSUME_NONNULL_END

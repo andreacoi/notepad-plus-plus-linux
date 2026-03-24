@@ -166,11 +166,21 @@ static NSMenu *buildLanguageMenu() {
 
     addSep(m);
     NSMenu *udlMenu = submenu(@"User Defined Language");
+    [udlMenu addItem:item(@"Define your language…", @selector(showDefineLanguage:), @"")];
     [udlMenu addItem:item(@"Open User Defined Language Folder…", @selector(openUDLFolder:), @"")];
     [m addItem:withSubmenu(@"User Defined Language", udlMenu)];
-    [m addItem:langItem(@"Markdown (preinstalled)",          @"markdown")];
-    [m addItem:langItem(@"Markdown (preinstalled dark mode)", @"markdown")];
-    [m addItem:nyi(@"User-Defined")];
+    // Pre-installed Markdown UDLs — use UDL action (not built-in lexer)
+    NSMenuItem *mdItem = item(@"Markdown (preinstalled)", @selector(setUDLLanguageFromMenu:), @"");
+    mdItem.representedObject = @"Markdown (preinstalled)";
+    [m addItem:mdItem];
+    NSMenuItem *mdDmItem = item(@"Markdown (preinstalled dark mode)", @selector(setUDLLanguageFromMenu:), @"");
+    mdDmItem.representedObject = @"Markdown (preinstalled dark mode)";
+    [m addItem:mdDmItem];
+
+    // User UDLs are inserted dynamically after the separator by
+    // MainWindowController.rebuildUDLLanguageMenu.
+    addSep(m);
+    m.title = @"Language";
 
     return m;
 }

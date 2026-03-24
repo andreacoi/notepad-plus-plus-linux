@@ -47,9 +47,9 @@ file(GLOB LEX_SRCS
     "${LEX_ROOT}/lexers/*.cxx"
     "${LEX_ROOT}/lexlib/*.cxx"
 )
-# LexUser.cxx requires windows.h — exclude and replace with a macOS stub
+# LexUser.cxx: use the macOS-compatible copy (windows.h replaced with standard headers)
 list(FILTER LEX_SRCS EXCLUDE REGEX "LexUser\\.cxx$")
-list(APPEND LEX_SRCS "${CMAKE_SOURCE_DIR}/src/LexUserStub.cxx")
+list(APPEND LEX_SRCS "${CMAKE_SOURCE_DIR}/src/LexUser.cxx")
 
 add_library(lexilla STATIC ${LEX_SRCS})
 
@@ -92,6 +92,7 @@ set(APP_SRCS
     src/GitPanel.mm
     src/FolderTreePanel.mm
     src/CharacterPanel.mm
+    src/UserDefineLangManager.mm
 )
 
 set(APP_HEADERS
@@ -119,6 +120,7 @@ set(APP_HEADERS
     src/GitPanel.h
     src/FolderTreePanel.h
     src/CharacterPanel.h
+    src/UserDefineLangManager.h
 )
 
 add_executable(NotepadPlusPlusMac MACOSX_BUNDLE ${APP_SRCS} ${APP_HEADERS})
@@ -163,6 +165,20 @@ add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
         "${CMAKE_SOURCE_DIR}/resources/nativeLang"
         "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/nativeLang"
     COMMENT "Copying nativeLang XML files into bundle")
+
+# Function List parser definitions (XML, same format as Windows NPP)
+add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/resources/functionList"
+        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/functionList"
+    COMMENT "Copying function list parser XMLs into bundle")
+
+# Pre-installed User Defined Language files
+add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/resources/userDefineLangs"
+        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/userDefineLangs"
+    COMMENT "Copying pre-installed UDL files into bundle")
 
 set_target_properties(NotepadPlusPlusMac PROPERTIES
     MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/resources/Info.plist"
