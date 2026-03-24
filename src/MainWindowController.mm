@@ -558,7 +558,6 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     if (@available(macOS 11.0, *)) {
         self.window.toolbarStyle = NSWindowToolbarStyleExpanded;
     }
-
 }
 
 - (NSArray<NSToolbarItemIdentifier> *)toolbarDefaultItemIdentifiers:(NSToolbar *)tb {
