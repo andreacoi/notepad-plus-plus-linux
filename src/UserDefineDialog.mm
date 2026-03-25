@@ -276,11 +276,15 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
     [docBox.contentView addSubview:link];
     [c addSubview:docBox]; y += 58;
 
-    // Row 2 left: Default style
+    // Row 2 left: Default style — Styler button centered in the box
     NSBox *defBox = groupBox(@"Default style", lx, y, hw, 50);
     NSButton *defSb = stylerBtn(self, @selector(_stylerNYI:));
-    defSb.frame = NSMakeRect(hw/2 - 35, 8, 70, 22);
+    defSb.translatesAutoresizingMaskIntoConstraints = NO;
     [defBox.contentView addSubview:defSb];
+    [NSLayoutConstraint activateConstraints:@[
+        [defSb.centerXAnchor constraintEqualToAnchor:defBox.contentView.centerXAnchor],
+        [defSb.centerYAnchor constraintEqualToAnchor:defBox.contentView.centerYAnchor],
+    ]];
     [c addSubview:defBox]; y += 70;
 
     // Fold compact checkbox
