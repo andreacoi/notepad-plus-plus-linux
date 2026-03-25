@@ -563,6 +563,89 @@ static NSString *pluginBaseDir(void) {
             return 1;
         }
 
+        // ── Menu command dispatch ────────────────────────────────────
+        case NPPM_MENUCOMMAND: {
+            // lParam = IDM_* command ID
+            int idm = (int)lParam;
+            MainWindowController *mwc = _mwc;
+            if (!mwc) return 0;
+
+            SEL action = nil;
+            switch (idm) {
+                case 41001: action = @selector(newDocument:);    break; // IDM_FILE_NEW
+                case 41002: action = @selector(openDocument:);   break; // IDM_FILE_OPEN
+                case 41006: action = @selector(saveDocument:);   break; // IDM_FILE_SAVE
+                case 41003: action = @selector(closeCurrentTab:); break; // IDM_FILE_CLOSE
+                default:
+                    NSLog(@"[Plugins] Unhandled NPPM_MENUCOMMAND IDM=%d", idm);
+                    return 0;
+            }
+            if (action && [mwc respondsToSelector:action]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    // Use performSelector for action methods defined in .mm only
+                    #pragma clang diagnostic push
+                    #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                    [mwc performSelector:action withObject:nil];
+                    #pragma clang diagnostic pop
+                });
+                return 1;
+            }
+            return 0;
+        }
+
+        // ── Toolbar icon registration ───────────────────────────────
+        case NPPM_ADDTOOLBARICON_FORDARKMODE: {
+            // wParam = cmdID assigned to a FuncItem
+            int cmdID = (int)wParam;
+
+            // Find which plugin owns this cmdID and load its toolbar.png
+            std::string pluginDirName;
+            std::string pluginDisplayName;
+            for (auto &pi : _plugins) {
+                for (int i = 0; i < pi->nbFuncItems; i++) {
+                    if (pi->funcItems[i]._cmdID == cmdID) {
+                        pluginDirName = pi->moduleName;
+                        pluginDisplayName = pi->displayName;
+                        break;
+                    }
+                }
+                if (!pluginDirName.empty()) break;
+            }
+
+            if (pluginDirName.empty()) {
+                NSLog(@"[Plugins] ADDTOOLBARICON: no plugin owns cmdID %d", cmdID);
+                return 0;
+            }
+
+            NSString *iconPath = [NSString stringWithFormat:@"%@/%s/toolbar.png",
+                                  pluginBaseDir(), pluginDirName.c_str()];
+            NSImage *icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
+            if (!icon) {
+                NSLog(@"[Plugins] ADDTOOLBARICON: toolbar.png not found at %@", iconPath);
+                return 0;
+            }
+            icon.size = NSMakeSize(16, 16);
+
+            MainWindowController *mwc = _mwc;
+            if (mwc) {
+                NSString *tooltip = [NSString stringWithUTF8String:pluginDisplayName.c_str()];
+                // Find the FuncItem name for a more specific tooltip
+                for (auto &pi : _plugins) {
+                    for (int i = 0; i < pi->nbFuncItems; i++) {
+                        if (pi->funcItems[i]._cmdID == cmdID) {
+                            tooltip = [NSString stringWithFormat:@"%s",
+                                       pi->funcItems[i]._itemName];
+                            break;
+                        }
+                    }
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [mwc addPluginToolbarIcon:icon tooltip:tooltip cmdID:cmdID];
+                });
+            }
+            return 1;
+        }
+
         // ── Stubs for messages plugins query but don't critically need ─
         case NPPM_GETWINDOWSVERSION:
             return 0;  // Not Windows
@@ -596,6 +679,112 @@ static NSString *pluginBaseDir(void) {
                         return 0;
                     }
                 }
+            }
+            return 0;
+        }
+
+        // ── RUNCOMMAND_USER submessages ─────────────────────────────
+        case NPPM_GETFULLCURRENTPATH: {
+            char *buf = (char *)lParam;
+            if (buf) {
+                MainWindowController *mwc = _mwc;
+                EditorView *ed = mwc ? [mwc currentEditor] : nil;
+                if (ed && ed.filePath) {
+                    strlcpy(buf, ed.filePath.UTF8String, 1024);
+                } else {
+                    buf[0] = '\0';
+                }
+            }
+            return 0;
+        }
+
+        case NPPM_GETCURRENTDIRECTORY: {
+            char *buf = (char *)lParam;
+            if (buf) {
+                MainWindowController *mwc = _mwc;
+                EditorView *ed = mwc ? [mwc currentEditor] : nil;
+                if (ed && ed.filePath) {
+                    NSString *dir = [ed.filePath stringByDeletingLastPathComponent];
+                    strlcpy(buf, dir.UTF8String, 1024);
+                } else {
+                    buf[0] = '\0';
+                }
+            }
+            return 0;
+        }
+
+        case NPPM_GETFILENAME: {
+            char *buf = (char *)lParam;
+            if (buf) {
+                MainWindowController *mwc = _mwc;
+                EditorView *ed = mwc ? [mwc currentEditor] : nil;
+                if (ed && ed.filePath) {
+                    NSString *name = [ed.filePath lastPathComponent];
+                    strlcpy(buf, name.UTF8String, 1024);
+                } else {
+                    buf[0] = '\0';
+                }
+            }
+            return 0;
+        }
+
+        case NPPM_GETNAMEPART: {
+            char *buf = (char *)lParam;
+            if (buf) {
+                MainWindowController *mwc = _mwc;
+                EditorView *ed = mwc ? [mwc currentEditor] : nil;
+                if (ed && ed.filePath) {
+                    NSString *name = [[ed.filePath lastPathComponent] stringByDeletingPathExtension];
+                    strlcpy(buf, name.UTF8String, 1024);
+                } else {
+                    buf[0] = '\0';
+                }
+            }
+            return 0;
+        }
+
+        case NPPM_GETEXTPART: {
+            char *buf = (char *)lParam;
+            if (buf) {
+                MainWindowController *mwc = _mwc;
+                EditorView *ed = mwc ? [mwc currentEditor] : nil;
+                if (ed && ed.filePath) {
+                    NSString *ext = [ed.filePath pathExtension];
+                    strlcpy(buf, ext.UTF8String, 1024);
+                } else {
+                    buf[0] = '\0';
+                }
+            }
+            return 0;
+        }
+
+        case NPPM_GETNPPDIRECTORY: {
+            char *buf = (char *)lParam;
+            if (buf) {
+                NSString *path = [[NSBundle mainBundle] bundlePath];
+                strlcpy(buf, path.UTF8String, 1024);
+            }
+            return 0;
+        }
+
+        case NPPM_GETCURRENTLINE: {
+            MainWindowController *mwc = _mwc;
+            EditorView *ed = mwc ? [mwc currentEditor] : nil;
+            if (ed && ed.scintillaView) {
+                return [ed.scintillaView message:SCI_LINEFROMPOSITION
+                                          wParam:[ed.scintillaView message:SCI_GETCURRENTPOS wParam:0 lParam:0]
+                                          lParam:0];
+            }
+            return 0;
+        }
+
+        case NPPM_GETCURRENTCOLUMN: {
+            MainWindowController *mwc = _mwc;
+            EditorView *ed = mwc ? [mwc currentEditor] : nil;
+            if (ed && ed.scintillaView) {
+                return [ed.scintillaView message:SCI_GETCOLUMN
+                                          wParam:[ed.scintillaView message:SCI_GETCURRENTPOS wParam:0 lParam:0]
+                                          lParam:0];
             }
             return 0;
         }

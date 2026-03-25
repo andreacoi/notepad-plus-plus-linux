@@ -13,6 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// The active editor in the currently focused pane (for plugin access).
 - (nullable EditorView *)currentEditor;
 
+/// Add a plugin-provided toolbar icon.  Called by NppPluginManager when a
+/// plugin sends NPPM_ADDTOOLBARICON_FORDARKMODE.
+- (void)addPluginToolbarIcon:(NSImage *)icon tooltip:(NSString *)tooltip cmdID:(int)cmdID;
+
 @end
 
 NS_ASSUME_NONNULL_END

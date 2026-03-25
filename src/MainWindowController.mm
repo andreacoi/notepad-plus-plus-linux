@@ -19,6 +19,7 @@
 #import "FolderTreePanel.h"
 #import "CharacterPanel.h"
 #import "PluginsAdminWindowController.h"
+#import "NppPluginManager.h"
 #import "UserDefineLangManager.h"
 #import "UserDefineDialog.h"
 #import <objc/runtime.h>
@@ -481,6 +482,9 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     NppToggleToolbarButton *_tbMonitor;
     NppToolbarButton *_tbStartRecord, *_tbStopRecord, *_tbPlayRecord, *_tbPlayRecordM, *_tbSaveRecord;
 
+    // Plugin toolbar icons: array of @{@"id": identifier, @"icon": NSImage, @"tooltip": NSString, @"cmdID": @(int)}
+    NSMutableArray<NSDictionary *> *_pluginToolbarItems;
+
     // View display modes
     BOOL              _postItMode;
     NSWindowStyleMask _savedStyleMask;
@@ -564,6 +568,66 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     }
 }
 
+- (void)addPluginToolbarIcon:(NSImage *)icon tooltip:(NSString *)tooltip cmdID:(int)cmdID {
+    if (!_pluginToolbarItems)
+        _pluginToolbarItems = [NSMutableArray array];
+
+    NSString *ident = [NSString stringWithFormat:@"TB_Plugin_%d", cmdID];
+
+    // Avoid duplicates
+    for (NSDictionary *pti in _pluginToolbarItems) {
+        if ([pti[@"id"] isEqualToString:ident]) return;
+    }
+
+    [_pluginToolbarItems addObject:@{
+        @"id":      ident,
+        @"icon":    icon,
+        @"tooltip": tooltip,
+        @"cmdID":   @(cmdID),
+    }];
+
+    // Insert before the flexible space (which is the second-to-last item)
+    NSToolbar *tb = self.window.toolbar;
+    NSInteger insertIdx = tb.items.count;
+    for (NSInteger i = 0; i < (NSInteger)tb.items.count; i++) {
+        if ([tb.items[i].itemIdentifier isEqualToString:NSToolbarFlexibleSpaceItemIdentifier]) {
+            insertIdx = i;
+            break;
+        }
+    }
+    [tb insertItemWithItemIdentifier:ident atIndex:insertIdx];
+}
+
+- (NSToolbarItem *)makePluginToolbarItem:(NSDictionary *)pti {
+    static const CGFloat kBtnSize = 17.0;
+
+    NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:pti[@"id"]];
+
+    NSButton *btn = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, kBtnSize, kBtnSize)];
+    btn.bordered = NO;
+    btn.bezelStyle = NSBezelStyleSmallSquare;
+    btn.image = pti[@"icon"];
+    btn.image.size = NSMakeSize(kBtnSize, kBtnSize);
+    btn.imageScaling = NSImageScaleProportionallyDown;
+    btn.toolTip = pti[@"tooltip"];
+    btn.tag = [pti[@"cmdID"] intValue];
+    btn.target = self;
+    btn.action = @selector(pluginToolbarAction:);
+
+    item.view = btn;
+    item.label = pti[@"tooltip"];
+    item.toolTip = pti[@"tooltip"];
+    item.minSize = NSMakeSize(kBtnSize, kBtnSize);
+    item.maxSize = NSMakeSize(kBtnSize, kBtnSize);
+
+    return item;
+}
+
+- (void)pluginToolbarAction:(id)sender {
+    int cmdID = (int)[sender tag];
+    [[NppPluginManager shared] runPluginCommandWithID:cmdID];
+}
+
 - (NSArray<NSToolbarItemIdentifier> *)toolbarDefaultItemIdentifiers:(NSToolbar *)tb {
     return @[kTBGroup1,
              kTBGroup2,
@@ -592,6 +656,13 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     // Group 7 gets special handling: Word Wrap + All Chars button + dropdown arrow + Indent Guide.
     if ([ident isEqualToString:kTBGroup7])
         return [self makeViewTogglesGroupToolbarItem];
+
+    // Plugin toolbar items
+    for (NSDictionary *pti in _pluginToolbarItems) {
+        if ([pti[@"id"] isEqualToString:ident]) {
+            return [self makePluginToolbarItem:pti];
+        }
+    }
 
     NSArray *idents = toolbarGroupMap()[ident];
     if (idents) return [self makeGroupToolbarItem:ident identifiers:idents];
