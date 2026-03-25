@@ -463,7 +463,7 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
 
 - (NSTabViewItem *)_tab4 {
     NSTabViewItem *t = [[NSTabViewItem alloc] initWithIdentifier:@"o"]; t.label = @"Operators & Delimiters";
-    CGFloat W = 700, hw = W/2 - 16, dH = 118;
+    CGFloat W = 700, hw = W/2 - 16, dH = 98;
     NSView *c = scrollableTab(t, 130 + 4 * (dH + 6) + 10);
     CGFloat y = 8;
 
@@ -483,17 +483,17 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
     // 8 delimiters in 2×4 grid
     // Each box: title row has Styler button, then Open/Escape/Close rows
     CGFloat dvH = dH - 20; // content height (box height minus title)
-    CGFloat fw = hw - 170;  // field width: fits inside box with label + margins
+    CGFloat fw = hw - 150;  // field width: fits inside box with label + margins
     for (int i = 0; i < 8; i++) {
         int col = i % 2, row = i / 2;
         CGFloat dx = 8 + col * (hw + 10);
-        CGFloat dy = y + row * (dH + 21);
+        CGFloat dy = y + row * (dH + 6);
         NSBox *dBox = groupBox([NSString stringWithFormat:@"Delimiter %d style", i+1], dx, dy, hw, dH);
         NSView *dv = dBox.contentView;
 
         // Styler button at top-right of content, above fields
         NSButton *dSb = stylerBtn(self, @selector(_stylerNYI:));
-        dSb.frame = NSMakeRect(hw - 80, 78, 66, 18);
+        dSb.frame = NSMakeRect(hw - 80, 58, 66, 18);
         [dv addSubview:dSb];
 
         // 3 field rows, top-down from below Styler
