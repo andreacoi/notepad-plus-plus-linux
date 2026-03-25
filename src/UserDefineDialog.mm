@@ -445,12 +445,12 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
 
     // Decimal separator box — below Range row, right column
     // ny is now at the Range field position; go below it
-    NSBox *decBox = groupBox(@"Decimal separator", rx, ny - 44 - 35, 200, 80);
+    NSBox *decBox = groupBox(@"Decimal separator", rx, ny - 44 - 35 + 50, 300, 44);
     _decDot = [NSButton radioButtonWithTitle:@"Dot" target:nil action:nil];
     _decComma = [NSButton radioButtonWithTitle:@"Comma" target:nil action:nil];
     _decBoth = [NSButton radioButtonWithTitle:@"Both" target:nil action:nil];
     _decDot.state = NSControlStateValueOn;
-    _decDot.frame = NSMakeRect(10, 38, 80, 16); _decComma.frame = NSMakeRect(10, 20, 80, 16); _decBoth.frame = NSMakeRect(10, 2, 80, 16);
+    _decDot.frame = NSMakeRect(8, 4, 60, 16); _decComma.frame = NSMakeRect(78, 4, 80, 16); _decBoth.frame = NSMakeRect(168, 4, 60, 16);
     [decBox.contentView addSubview:_decDot]; [decBox.contentView addSubview:_decComma]; [decBox.contentView addSubview:_decBoth];
     [nv addSubview:decBox];
 
@@ -486,13 +486,13 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
     for (int i = 0; i < 8; i++) {
         int col = i % 2, row = i / 2;
         CGFloat dx = 8 + col * (hw + 10);
-        CGFloat dy = y + row * (dH + 6);
+        CGFloat dy = y + row * (dH + 21);
         NSBox *dBox = groupBox([NSString stringWithFormat:@"Delimiter %d style", i+1], dx, dy, hw, dH);
         NSView *dv = dBox.contentView;
 
         // Styler button at top-right of content, above fields
         NSButton *dSb = stylerBtn(self, @selector(_stylerNYI:));
-        dSb.frame = NSMakeRect(hw - 90, dvH - 22, 66, 18);
+        dSb.frame = NSMakeRect(hw - 80, dvH - 22 + 23, 66, 18);
         [dv addSubview:dSb];
 
         // 3 field rows, top-down from below Styler
