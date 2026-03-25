@@ -274,7 +274,15 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
             }];
     link.attributedStringValue = linkStr;
     [docBox.contentView addSubview:link];
-    [c addSubview:docBox]; y += 58;
+    [c addSubview:docBox];
+
+    // Row 1 right: Folding in comment style (moved up to top)
+    NSScrollView *tfo, *tfm, *tfc;
+    NSBox *cf = groupBox(@"Folding in comment style", rx, y, hw, 240);
+    addFoldFields(cf, &tfo, &tfm, &tfc, self, @selector(_stylerNYI:));
+    _cfOpen = tfo; _cfMid = tfm; _cfClose = tfc;
+    [c addSubview:cf];
+    y += 58;
 
     // Row 2 left: Default style — Styler button centered in the box
     NSBox *defBox = groupBox(@"Default style", lx, y, hw, 50);
@@ -290,24 +298,17 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
     // Fold compact checkbox
     _foldCompactCheck = chk(@"Fold compact (fold empty lines too)");
     _foldCompactCheck.frame = NSMakeRect(16, y, 350, 18);
-    [c addSubview:_foldCompactCheck]; y += 28;
+    [c addSubview:_foldCompactCheck]; y += 128;
 
-    // Row 3: Folding in code 1 (left) + Folding in comment (right)
+    // Row 3: Folding in code 1 (left) + Folding in code 2 (right, moved from Row 4)
     NSScrollView *t1o, *t1m, *t1c;
     NSBox *c1 = groupBox(@"Folding in code 1 style", lx, y, hw, 240);
     addFoldFields(c1, &t1o, &t1m, &t1c, self, @selector(_stylerNYI:));
     _c1Open = t1o; _c1Mid = t1m; _c1Close = t1c;
     [c addSubview:c1];
 
-    NSScrollView *tfo, *tfm, *tfc;
-    NSBox *cf = groupBox(@"Folding in comment style", rx, y, hw, 240);
-    addFoldFields(cf, &tfo, &tfm, &tfc, self, @selector(_stylerNYI:));
-    _cfOpen = tfo; _cfMid = tfm; _cfClose = tfc;
-    [c addSubview:cf]; y += 250;
-
-    // Row 4: Folding in code 2 (left only)
     NSScrollView *t2o, *t2m, *t2c;
-    NSBox *c2 = groupBox(@"Folding in code 2 style (separators needed)", lx, y, hw, 240);
+    NSBox *c2 = groupBox(@"Folding in code 2 style (separators needed)", rx, y, hw, 240);
     addFoldFields(c2, &t2o, &t2m, &t2c, self, @selector(_stylerNYI:));
     _c2Open = t2o; _c2Mid = t2m; _c2Close = t2c;
     [c addSubview:c2];
