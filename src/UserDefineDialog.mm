@@ -341,7 +341,7 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
         _kwPfx[i] = chk(@"Prefix mode"); _kwPfx[i].frame = NSMakeRect(80, 2, 110, 18); [bv addSubview:_kwPfx[i]];
         // Keyword text area fills the rest above
         CGFloat aH = bvH - 28;
-        _kwArea[i] = MF(aH); _kwArea[i].frame = NSMakeRect(4, 26, bw, aH);
+        _kwArea[i] = MF(aH - 15); _kwArea[i].frame = NSMakeRect(4, 28, bw - 20, aH - 15);
         [bv addSubview:_kwArea[i]];
         [c addSubview:box];
     }
