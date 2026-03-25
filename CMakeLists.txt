@@ -94,6 +94,7 @@ set(APP_SRCS
     src/CharacterPanel.mm
     src/UserDefineLangManager.mm
     src/UserDefineDialog.mm
+    src/UDLStylerDialog.mm
 )
 
 set(APP_HEADERS
@@ -123,6 +124,7 @@ set(APP_HEADERS
     src/CharacterPanel.h
     src/UserDefineLangManager.h
     src/UserDefineDialog.h
+    src/UDLStylerDialog.h
 )
 
 add_executable(NotepadPlusPlusMac MACOSX_BUNDLE ${APP_SRCS} ${APP_HEADERS})

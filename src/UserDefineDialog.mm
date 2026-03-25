@@ -1,4 +1,5 @@
 #import "UserDefineDialog.h"
+#import "UDLStylerDialog.h"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -519,9 +520,74 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
 #pragma mark — Styler (placeholder)
 
 - (void)_stylerNYI:(id)sender {
-    NSAlert *a = [[NSAlert alloc] init]; a.messageText = @"Styler Dialog";
-    a.informativeText = @"The style editor (font, colors, nesting) will be available in the next update.";
-    [a runModal];
+    // Walk up to find the parent NSBox to determine which style this is
+    NSView *v = (NSView *)sender;
+    NSString *boxTitle = nil;
+    while (v) {
+        if ([v isKindOfClass:[NSBox class]]) { boxTitle = ((NSBox *)v).title; break; }
+        v = v.superview;
+    }
+
+    // Map box title to style name + nesting flag
+    NSString *styleName = nil;
+    BOOL enableNesting = NO;
+
+    if (!boxTitle) styleName = @"DEFAULT";
+    else if ([boxTitle containsString:@"Default"])     styleName = @"DEFAULT";
+    else if ([boxTitle containsString:@"code 1"])      styleName = @"FOLDER IN CODE1";
+    else if ([boxTitle containsString:@"code 2"])      styleName = @"FOLDER IN CODE2";
+    else if ([boxTitle containsString:@"comment"] && [boxTitle containsString:@"Folding"])
+                                                        styleName = @"FOLDER IN COMMENT";
+    else if ([boxTitle containsString:@"Comment line"]) { styleName = @"LINE COMMENTS"; enableNesting = YES; }
+    else if ([boxTitle containsString:@"Comment style"]) { styleName = @"COMMENTS"; enableNesting = YES; }
+    else if ([boxTitle containsString:@"Number"])       styleName = @"NUMBERS";
+    else if ([boxTitle containsString:@"Operators"])     styleName = @"OPERATORS";
+    else if ([boxTitle containsString:@"Delimiter 1"])  { styleName = @"DELIMITERS1"; enableNesting = YES; }
+    else if ([boxTitle containsString:@"Delimiter 2"])  { styleName = @"DELIMITERS2"; enableNesting = YES; }
+    else if ([boxTitle containsString:@"Delimiter 3"])  { styleName = @"DELIMITERS3"; enableNesting = YES; }
+    else if ([boxTitle containsString:@"Delimiter 4"])  { styleName = @"DELIMITERS4"; enableNesting = YES; }
+    else if ([boxTitle containsString:@"Delimiter 5"])  { styleName = @"DELIMITERS5"; enableNesting = YES; }
+    else if ([boxTitle containsString:@"Delimiter 6"])  { styleName = @"DELIMITERS6"; enableNesting = YES; }
+    else if ([boxTitle containsString:@"Delimiter 7"])  { styleName = @"DELIMITERS7"; enableNesting = YES; }
+    else if ([boxTitle containsString:@"Delimiter 8"])  { styleName = @"DELIMITERS8"; enableNesting = YES; }
+    else if ([boxTitle containsString:@"1st"])  styleName = @"KEYWORDS1";
+    else if ([boxTitle containsString:@"2nd"])  styleName = @"KEYWORDS2";
+    else if ([boxTitle containsString:@"3rd"])  styleName = @"KEYWORDS3";
+    else if ([boxTitle containsString:@"4th"])  styleName = @"KEYWORDS4";
+    else if ([boxTitle containsString:@"5th"])  styleName = @"KEYWORDS5";
+    else if ([boxTitle containsString:@"6th"])  styleName = @"KEYWORDS6";
+    else if ([boxTitle containsString:@"7th"])  styleName = @"KEYWORDS7";
+    else if ([boxTitle containsString:@"8th"])  styleName = @"KEYWORDS8";
+
+    if (!styleName) styleName = @"DEFAULT";
+
+    // If no language loaded, open with a default style
+    if (!_cur) {
+        NSMutableDictionary *ds = [@{@"name":styleName, @"fgColor":@"000000",
+                                      @"bgColor":@"FFFFFF", @"fontStyle":@"0"} mutableCopy];
+        [UDLStylerDialog runForStyle:ds enableNesting:enableNesting parentWindow:self.window];
+        return;
+    }
+
+    // Find the matching style dictionary and make it mutable
+    NSMutableArray *mutableStyles = [_cur.styles mutableCopy];
+    NSMutableDictionary *targetStyle = nil;
+    for (NSUInteger i = 0; i < mutableStyles.count; i++) {
+        if ([mutableStyles[i][@"name"] caseInsensitiveCompare:styleName] == NSOrderedSame) {
+            NSMutableDictionary *ms = [mutableStyles[i] mutableCopy];
+            mutableStyles[i] = ms;
+            _cur.styles = mutableStyles;
+            targetStyle = ms;
+            break;
+        }
+    }
+
+    if (!targetStyle) {
+        targetStyle = [@{@"name":styleName, @"fgColor":@"000000",
+                          @"bgColor":@"FFFFFF", @"fontStyle":@"0"} mutableCopy];
+    }
+
+    [UDLStylerDialog runForStyle:targetStyle enableNesting:enableNesting parentWindow:self.window];
 }
 
 #pragma mark — Comments / Delimiters decode & encode
