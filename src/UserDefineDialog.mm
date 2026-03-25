@@ -493,7 +493,7 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
 
         // Styler button at top-right of content, above fields
         NSButton *dSb = stylerBtn(self, @selector(_stylerNYI:));
-        dSb.frame = NSMakeRect(hw - 80, 58, 66, 18);
+        dSb.frame = NSMakeRect(hw - 80, 45, 66, 18);
         [dv addSubview:dSb];
 
         // 3 field rows, top-down from below Styler
