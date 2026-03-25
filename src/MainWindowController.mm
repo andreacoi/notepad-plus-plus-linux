@@ -19,6 +19,7 @@
 #import "FolderTreePanel.h"
 #import "CharacterPanel.h"
 #import "UserDefineLangManager.h"
+#import "UserDefineDialog.h"
 #import <objc/runtime.h>
 
 // ── Private helper for the Windows… dialog ───────────────────────────────────
@@ -1590,10 +1591,7 @@ static NSString *nppMacrosPath(void) {
 #pragma mark - Panel placeholder actions
 
 - (void)showDefineLanguage:(id)sender {
-    NSAlert *a = [[NSAlert alloc] init];
-    a.messageText = @"User Defined Language";
-    a.informativeText = @"The UDL editor is not yet implemented.";
-    [a runModal];
+    [[UserDefineDialog sharedController] showWithLanguage:nil];
 }
 
 #pragma mark - Side panel show/hide

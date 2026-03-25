@@ -93,6 +93,7 @@ set(APP_SRCS
     src/FolderTreePanel.mm
     src/CharacterPanel.mm
     src/UserDefineLangManager.mm
+    src/UserDefineDialog.mm
 )
 
 set(APP_HEADERS
@@ -121,6 +122,7 @@ set(APP_HEADERS
     src/FolderTreePanel.h
     src/CharacterPanel.h
     src/UserDefineLangManager.h
+    src/UserDefineDialog.h
 )
 
 add_executable(NotepadPlusPlusMac MACOSX_BUNDLE ${APP_SRCS} ${APP_HEADERS})
@@ -200,6 +202,7 @@ target_link_libraries(NotepadPlusPlusMac PRIVATE
     lexilla
     "-framework Cocoa"
     "-framework QuartzCore"
+    "-framework UniformTypeIdentifiers"
 )
 
 set_source_files_properties(${APP_SRCS} PROPERTIES

@@ -84,16 +84,23 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
 
 - (void)_loadFromFile:(NSString *)path {
     NSData *data = [NSData dataWithContentsOfFile:path];
-    if (!data) return;
+    if (!data) { NSLog(@"UDL: cannot read %@", path.lastPathComponent); return; }
 
     NSError *error;
+    // Try tidy XML first to handle files with minor encoding issues
     NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data
-                                                     options:NSXMLNodeOptionsNone
+                                                     options:NSXMLDocumentTidyXML
                                                        error:&error];
-    if (!doc) return;
+    if (!doc) {
+        NSLog(@"UDL: XML parse error in %@: %@", path.lastPathComponent, error.localizedDescription);
+        return;
+    }
 
-    // Find all <UserLang> elements (may be multiple in a container file)
+    // Find all <UserLang> elements — try direct children first, then XPath fallback
     NSArray *userLangs = [doc.rootElement elementsForName:@"UserLang"];
+    if (!userLangs.count) {
+        userLangs = [doc.rootElement nodesForXPath:@"//UserLang" error:nil];
+    }
     for (NSXMLElement *elem in userLangs) {
         UserDefinedLang *udl = [self _parseUserLangElement:elem path:path];
         if (udl) {
