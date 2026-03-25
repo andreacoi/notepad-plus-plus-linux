@@ -377,7 +377,7 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
     NSBox *clBox = groupBox(@"Comment line style", 8, y, hw, 220);
     NSView *clV = clBox.contentView; CGFloat cy = 200;
     cy -= 26;
-    NSButton *clSb = stylerBtn(self, @selector(_stylerNYI:)); clSb.frame = NSMakeRect(hw/2 - 35, cy, 70, 22); [clV addSubview:clSb];
+    NSButton *clSb = stylerBtn(self, @selector(_stylerNYI:)); clSb.frame = NSMakeRect(hw/2 - 35 + 123, cy, 70, 22); [clV addSubview:clSb];
     cy -= 16;
     NSTextField *clOL = L(@"Open:"); clOL.frame = NSMakeRect(4, cy, 100, 14); [clV addSubview:clOL];
     cy -= 36;
@@ -411,11 +411,12 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
     // Number style (full width) — top-down, explicit height (300 - 20 = 280)
     NSBox *numBox = groupBox(@"Number style", 8, y, W - 16, 300);
     NSView *nv = numBox.contentView; CGFloat nw = (W - 50) / 2;
-    CGFloat ny = 280;
+    CGFloat ny = 280 - 50;
     ny -= 26;
     // Styler button — right-aligned inside the Number box
-    NSButton *nSb = stylerBtn(self, @selector(_stylerNYI:)); nSb.frame = NSMakeRect(W - 110, ny, 70, 22); [nv addSubview:nSb];
+    NSButton *nSb = stylerBtn(self, @selector(_stylerNYI:)); nSb.frame = NSMakeRect(W - 95, ny + 50, 70, 22); [nv addSubview:nSb];
     ny -= 20;
+    ny += 22; // move fields up (net: 40 - 18 = 22)
 
     // Number fields: label and field on same row, label to the left of field
     // Each row = 38pt (32pt field + 6pt gap)
@@ -444,7 +445,7 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
 
     // Decimal separator box — below Range row, right column
     // ny is now at the Range field position; go below it
-    NSBox *decBox = groupBox(@"Decimal separator", rx, ny - 44, 200, 80);
+    NSBox *decBox = groupBox(@"Decimal separator", rx, ny - 44 - 35, 200, 80);
     _decDot = [NSButton radioButtonWithTitle:@"Dot" target:nil action:nil];
     _decComma = [NSButton radioButtonWithTitle:@"Comma" target:nil action:nil];
     _decBoth = [NSButton radioButtonWithTitle:@"Both" target:nil action:nil];
