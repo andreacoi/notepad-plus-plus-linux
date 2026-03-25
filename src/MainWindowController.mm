@@ -18,6 +18,7 @@
 #import "GitPanel.h"
 #import "FolderTreePanel.h"
 #import "CharacterPanel.h"
+#import "PluginsAdminWindowController.h"
 #import "UserDefineLangManager.h"
 #import "UserDefineDialog.h"
 #import <objc/runtime.h>
@@ -3819,10 +3820,7 @@ static NSString *nppMacrosPath(void) {
 #pragma mark - Plugins: Stubs
 
 - (void)showPluginsAdmin:(id)sender {
-    NSAlert *a = [[NSAlert alloc] init];
-    a.messageText    = @"Plugins Admin";
-    a.informativeText = @"Plugin management is not yet supported in this port.";
-    [a runModal];
+    [[PluginsAdminWindowController sharedController] showWindow:nil];
 }
 
 - (void)openPluginsFolder:(id)sender {

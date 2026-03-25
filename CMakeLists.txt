@@ -95,6 +95,8 @@ set(APP_SRCS
     src/UserDefineLangManager.mm
     src/UserDefineDialog.mm
     src/UDLStylerDialog.mm
+    src/NppPluginManager.mm
+    src/PluginsAdminWindowController.mm
 )
 
 set(APP_HEADERS
@@ -125,6 +127,9 @@ set(APP_HEADERS
     src/UserDefineLangManager.h
     src/UserDefineDialog.h
     src/UDLStylerDialog.h
+    src/NppPluginManager.h
+    src/NppPluginInterfaceMac.h
+    src/PluginsAdminWindowController.h
 )
 
 add_executable(NotepadPlusPlusMac MACOSX_BUNDLE ${APP_SRCS} ${APP_HEADERS})

@@ -870,4 +870,52 @@ static NSMenu *buildLanguageMenu() {
                  keyEquivalent:@""];
 }
 
++ (void)insertPluginMenuItems:(NSArray<NSMenuItem *> *)items {
+    if (items.count == 0) return;
+
+    // Find the Plugins menu — search by the showPluginsAdmin: action since
+    // the menu title may have been changed by the localizer.
+    NSMenu *mainMenu = [NSApp mainMenu];
+    NSMenu *pluginsMenu = nil;
+    for (NSMenuItem *mi in mainMenu.itemArray) {
+        if (!mi.hasSubmenu) continue;
+        NSMenu *sub = mi.submenu;
+        for (NSInteger j = 0; j < sub.numberOfItems; j++) {
+            if ([sub itemAtIndex:j].action == @selector(showPluginsAdmin:)) {
+                pluginsMenu = sub;
+                break;
+            }
+        }
+        if (pluginsMenu) break;
+    }
+    if (!pluginsMenu) {
+        NSLog(@"[MenuBuilder] Could not find Plugins menu — plugin menu items not inserted");
+        return;
+    }
+
+    // Find "Plugins Admin…" (or its localized equivalent) by action selector.
+    // Insert before the separator that precedes it.
+    NSInteger insertIndex = pluginsMenu.numberOfItems;
+    for (NSInteger i = 0; i < pluginsMenu.numberOfItems; i++) {
+        NSMenuItem *mi = [pluginsMenu itemAtIndex:i];
+        if (mi.action == @selector(showPluginsAdmin:)) {
+            // Step back past the separator that precedes "Plugins Admin…"
+            insertIndex = (i > 0 && [pluginsMenu itemAtIndex:i - 1].isSeparatorItem) ? i - 1 : i;
+            break;
+        }
+    }
+
+    // Add a separator before the dynamically loaded plugin items
+    [pluginsMenu insertItem:[NSMenuItem separatorItem] atIndex:insertIndex];
+    insertIndex++;
+
+    // Insert each plugin's submenu
+    for (NSMenuItem *pi in items) {
+        [pluginsMenu insertItem:pi atIndex:insertIndex];
+        insertIndex++;
+    }
+
+    NSLog(@"[MenuBuilder] Inserted %lu plugin menu item(s)", (unsigned long)items.count);
+}
+
 @end

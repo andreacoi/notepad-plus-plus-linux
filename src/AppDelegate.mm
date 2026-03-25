@@ -2,6 +2,7 @@
 #import "MainWindowController.h"
 #import "MenuBuilder.h"
 #import "NppLocalizer.h"
+#import "NppPluginManager.h"
 #import "PreferencesWindowController.h"
 #import "StyleConfiguratorWindowController.h"
 #import "UserDefineLangManager.h"
@@ -21,6 +22,19 @@
 
     self.mainWindowController = [[MainWindowController alloc] init];
     [self.mainWindowController showWindow:nil];
+
+    // ── Plugin system ────────────────────────────────────────────────────
+    NppPluginManager *pm = [NppPluginManager shared];
+    [pm setMainWindowController:self.mainWindowController];
+    [pm loadPlugins];
+
+    // Insert plugin menu items (after loadPlugins populates them)
+    if (pm.hasPlugins) {
+        [MenuBuilder insertPluginMenuItems:[pm pluginMenuItems]];
+    }
+
+    // Fire NPPN_READY + NPPN_TBMODIFICATION after UI is fully set up
+    [pm fireReady];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
@@ -31,6 +45,10 @@
         return NSTerminateCancel;   // window-close will re-terminate via lastWindowClosed
     }
     return NSTerminateNow;
+}
+
+- (void)applicationWillTerminate:(NSNotification *)notification {
+    [[NppPluginManager shared] shutdown];
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
