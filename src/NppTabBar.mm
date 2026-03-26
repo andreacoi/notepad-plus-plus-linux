@@ -190,12 +190,6 @@ static NSImage *toolbarIcon(NSString *name) {
         [NSGraphicsContext restoreGraphicsState];
     }
 
-    // ── 2px right divider: dark gray + white highlight ────────────────────────
-    [dividerGray() setFill];
-    NSRectFill(NSMakeRect(w - 2, 1, 1, h - 3));
-    [dividerWhite() setFill];
-    NSRectFill(NSMakeRect(w - 1, 1, 1, h - 3));
-
     // ── Floppy icon ───────────────────────────────────────────────────────────
     NSImage *icon = _isModified ? toolbarIcon(@"saveFileRed") : toolbarIcon(@"saveFile");
     if (icon) {
