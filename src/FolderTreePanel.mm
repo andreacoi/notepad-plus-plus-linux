@@ -1,6 +1,7 @@
 #import "FolderTreePanel.h"
 #import "NppLocalizer.h"
 #import "StyleConfiguratorWindowController.h"
+#import <objc/runtime.h>
 
 // ── Tree item model ───────────────────────────────────────────────────────────
 
@@ -35,6 +36,64 @@
 }
 @end
 
+// ── Panel button with toolbar-style hover/press highlighting ──────────────────
+
+@interface _FTPanelButton : NSButton {
+    BOOL _hovering;
+}
+@end
+
+@implementation _FTPanelButton
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        self.bordered = NO;
+        self.bezelStyle = NSBezelStyleSmallSquare;
+        [self setButtonType:NSButtonTypeMomentaryChange];
+        self.imageScaling = NSImageScaleProportionallyDown;
+        [self.widthAnchor  constraintEqualToConstant:22].active = YES;
+        [self.heightAnchor constraintEqualToConstant:22].active = YES;
+        NSTrackingArea *ta = [[NSTrackingArea alloc]
+            initWithRect:NSZeroRect
+                 options:(NSTrackingMouseEnteredAndExited |
+                          NSTrackingActiveInActiveApp |
+                          NSTrackingInVisibleRect)
+                   owner:self userInfo:nil];
+        [self addTrackingArea:ta];
+    }
+    return self;
+}
+
+- (void)mouseEntered:(NSEvent *)event { _hovering = YES;  [self setNeedsDisplay:YES]; }
+- (void)mouseExited:(NSEvent *)event  { _hovering = NO;   [self setNeedsDisplay:YES]; }
+
+- (void)drawRect:(NSRect)dirtyRect {
+    BOOL pressed = self.isHighlighted;
+    if (pressed || _hovering) {
+        NSColor *bg  = pressed
+            ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
+            : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+        NSColor *bdr = [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0];
+        NSBezierPath *fill = [NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:2 yRadius:2];
+        [bg setFill]; [fill fill];
+        NSBezierPath *border = [NSBezierPath bezierPathWithRoundedRect:NSInsetRect(self.bounds, 0.5, 0.5)
+                                                               xRadius:2 yRadius:2];
+        border.lineWidth = 1.0; [bdr setStroke]; [border stroke];
+    }
+    if (self.image) {
+        [self.image drawInRect:NSInsetRect(self.bounds, 3, 3)
+                      fromRect:NSZeroRect
+                     operation:NSCompositingOperationSourceOver
+                      fraction:1.0
+                respectFlipped:YES
+                         hints:nil];
+    }
+}
+
+@end
+
 // ── Constants ─────────────────────────────────────────────────────────────────
 
 static NSString * const kDefaultsRootsKey   = @"FolderTreePanelRoots";
@@ -49,6 +108,7 @@ static NSString * const kTreeviewSubdir     = @"icons/standard/panels/treeview";
     // Title bar
     NSView                    *_titleBar;
     NSTextField               *_titleLabel;
+    NSButton                  *_refreshButton;
     NSButton                  *_unfoldAllButton;
     NSButton                  *_foldAllButton;
     NSButton                  *_locateButton;
@@ -88,6 +148,7 @@ static NSString * const kTreeviewSubdir     = @"icons/standard/panels/treeview";
 - (void)retranslateUI {
     NppLocalizer *loc = [NppLocalizer shared];
     _titleLabel.stringValue      = [loc translate:@"Folder as Workspace"];
+    _refreshButton.toolTip       = [loc translate:@"Refresh"];
     _unfoldAllButton.toolTip     = [loc translate:@"Expand All"];
     _foldAllButton.toolTip       = [loc translate:@"Fold All"];
     _locateButton.toolTip        = [loc translate:@"Locate Current File"];
@@ -96,23 +157,17 @@ static NSString * const kTreeviewSubdir     = @"icons/standard/panels/treeview";
 
 // ── UI Construction ───────────────────────────────────────────────────────────
 
-static NSButton *_panelBtn(NSString *iconName, NSString *subdir, NSString *tip, id target, SEL action) {
-    NSButton *btn = [[NSButton alloc] init];
-    btn.translatesAutoresizingMaskIntoConstraints = NO;
-    btn.bezelStyle = NSBezelStyleSmallSquare;
-    btn.bordered   = NO;
-    btn.toolTip    = tip;
-    btn.target     = target;
-    btn.action     = action;
-    [btn.widthAnchor  constraintEqualToConstant:22].active = YES;
-    [btn.heightAnchor constraintEqualToConstant:22].active = YES;
+static _FTPanelButton *_panelBtn(NSString *iconName, NSString *subdir, NSString *tip, id target, SEL action) {
+    _FTPanelButton *btn = [[_FTPanelButton alloc] init];
+    btn.toolTip = tip;
+    btn.target  = target;
+    btn.action  = action;
     NSURL *url = [[NSBundle mainBundle] URLForResource:iconName withExtension:@"png"
                                           subdirectory:subdir];
     NSImage *img = url ? [[NSImage alloc] initWithContentsOfURL:url] : nil;
     if (img) {
         img.size = NSMakeSize(16, 16);
         btn.image = img;
-        btn.imageScaling = NSImageScaleProportionallyDown;
     } else {
         btn.title = @"?";
     }
@@ -132,6 +187,11 @@ static NSButton *_panelBtn(NSString *iconName, NSString *subdir, NSString *tip, 
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     titleLabel.font = [NSFont boldSystemFontOfSize:11];
 
+    _refreshButton   = _panelBtn(@"funclstReload",            kToolbarSubdir, @"Refresh",             self, @selector(_refreshAll:));
+    // Make refresh button 15% smaller than the other panel buttons
+    for (NSLayoutConstraint *c in _refreshButton.constraints)
+        if (c.firstAttribute == NSLayoutAttributeWidth || c.firstAttribute == NSLayoutAttributeHeight)
+            c.constant = 19;
     _unfoldAllButton = _panelBtn(@"fb_expand_all",          kToolbarSubdir, @"Expand All",         self, @selector(_unfoldAll:));
     _foldAllButton   = _panelBtn(@"fb_fold_all",            kToolbarSubdir, @"Fold All",            self, @selector(_foldAll:));
     _locateButton    = _panelBtn(@"fb_select_current_file", kToolbarSubdir, @"Locate Current File", self, @selector(_locateCurrent:));
@@ -148,18 +208,20 @@ static NSButton *_panelBtn(NSString *iconName, NSString *subdir, NSString *tip, 
     [_closeButton.widthAnchor  constraintEqualToConstant:20].active = YES;
     [_closeButton.heightAnchor constraintEqualToConstant:20].active = YES;
 
-    for (NSView *v in @[titleLabel, _unfoldAllButton, _foldAllButton, _locateButton, _closeButton])
+    for (NSView *v in @[titleLabel, _refreshButton, _unfoldAllButton, _foldAllButton, _locateButton, _closeButton])
         [titleBar addSubview:v];
 
     [NSLayoutConstraint activateConstraints:@[
         [titleBar.heightAnchor constraintEqualToConstant:26],
         [titleLabel.leadingAnchor    constraintEqualToAnchor:titleBar.leadingAnchor constant:6],
         [titleLabel.centerYAnchor   constraintEqualToAnchor:titleBar.centerYAnchor],
-        [titleLabel.trailingAnchor  constraintLessThanOrEqualToAnchor:_unfoldAllButton.leadingAnchor constant:-4],
+        [titleLabel.trailingAnchor  constraintLessThanOrEqualToAnchor:_refreshButton.leadingAnchor constant:-4],
+        [_refreshButton.trailingAnchor   constraintEqualToAnchor:_unfoldAllButton.leadingAnchor constant:-2],
         [_unfoldAllButton.trailingAnchor constraintEqualToAnchor:_foldAllButton.leadingAnchor  constant:-2],
         [_foldAllButton.trailingAnchor   constraintEqualToAnchor:_locateButton.leadingAnchor   constant:-2],
         [_locateButton.trailingAnchor    constraintEqualToAnchor:_closeButton.leadingAnchor    constant:-4],
         [_closeButton.trailingAnchor     constraintEqualToAnchor:titleBar.trailingAnchor       constant:-4],
+        [_refreshButton.centerYAnchor    constraintEqualToAnchor:titleBar.centerYAnchor],
         [_unfoldAllButton.centerYAnchor  constraintEqualToAnchor:titleBar.centerYAnchor],
         [_foldAllButton.centerYAnchor    constraintEqualToAnchor:titleBar.centerYAnchor],
         [_locateButton.centerYAnchor     constraintEqualToAnchor:titleBar.centerYAnchor],
@@ -351,6 +413,13 @@ static NSButton *_panelBtn(NSString *iconName, NSString *subdir, NSString *tip, 
 
 // ── Actions ───────────────────────────────────────────────────────────────────
 
+- (void)_refreshAll:(id)sender {
+    // Clear cached children for all roots so they reload from disk
+    for (_FTItem *root in _roots)
+        root.children = [[self _loadChildrenOfURL:root.url] mutableCopy];
+    [_outlineView reloadData];
+}
+
 - (void)_unfoldAll:(id)sender {
     [_outlineView expandItem:nil expandChildren:YES];
 }
@@ -503,6 +572,18 @@ static NSButton *_panelBtn(NSString *iconName, NSString *subdir, NSString *tip, 
         fif.representedObject = ft;
         [menu addItem:fif];
 
+        // Rename (non-root directories only)
+        if (!ft.isRootFolder) {
+            [menu addItem:[NSMenuItem separatorItem]];
+            NSMenuItem *rename = [[NSMenuItem alloc] initWithTitle:@"Rename"
+                                                            action:@selector(_menuRename:) keyEquivalent:@""];
+            rename.target            = self;
+            rename.representedObject = ft;
+            [menu addItem:rename];
+        }
+
+        [menu addItem:[NSMenuItem separatorItem]];
+
         NSMenuItem *finder = [[NSMenuItem alloc] initWithTitle:@"Finder Here"
                                                         action:@selector(_menuFinderHere:) keyEquivalent:@""];
         finder.target            = self;
@@ -535,6 +616,15 @@ static NSButton *_panelBtn(NSString *iconName, NSString *subdir, NSString *tip, 
         copyName.target            = self;
         copyName.representedObject = ft;
         [menu addItem:copyName];
+
+        [menu addItem:[NSMenuItem separatorItem]];
+
+        NSMenuItem *rename = [[NSMenuItem alloc] initWithTitle:@"Rename"
+                                                        action:@selector(_menuRename:) keyEquivalent:@""];
+        rename.target            = self;
+        rename.representedObject = ft;
+        [menu addItem:rename];
+
         [menu addItem:[NSMenuItem separatorItem]];
 
         NSMenuItem *run = [[NSMenuItem alloc] initWithTitle:@"Run by System"
@@ -607,6 +697,91 @@ static NSButton *_panelBtn(NSString *iconName, NSString *subdir, NSString *tip, 
 - (void)_menuOpenFile:(NSMenuItem *)sender {
     _FTItem *ft = sender.representedObject;
     [_delegate folderTreePanel:self openFileAtURL:ft.url];
+}
+
+- (void)_menuRename:(NSMenuItem *)sender {
+    _FTItem *ft = sender.representedObject;
+    if (!ft) return;
+
+    NSInteger row = [_outlineView rowForItem:ft];
+    if (row < 0) return;
+
+    // Get the row rect in the outline view
+    NSRect rowRect = [_outlineView rectOfRow:row];
+    // Inset to roughly cover the text area (skip indent + icon)
+    CGFloat indent = [_outlineView levelForRow:row] * _outlineView.indentationPerLevel + 36;
+    NSRect editRect = NSMakeRect(rowRect.origin.x + indent, rowRect.origin.y + 1,
+                                  rowRect.size.width - indent - 4, rowRect.size.height - 2);
+
+    NSTextField *field = [[NSTextField alloc] initWithFrame:editRect];
+    field.stringValue = ft.url.lastPathComponent;
+    field.font = [NSFont systemFontOfSize:12];
+    field.bordered = YES;
+    field.bezeled = YES;
+    field.bezelStyle = NSTextFieldSquareBezel;
+    field.editable = YES;
+    field.focusRingType = NSFocusRingTypeExterior;
+    field.tag = row;
+
+    // Use a completion handler block stored via associated object
+    __weak FolderTreePanel *weakSelf = self;
+    __weak NSTextField *weakField = field;
+    field.target = self;
+    field.action = @selector(_renameFieldCommitted:);
+
+    // Store the item being renamed
+    objc_setAssociatedObject(field, "ftItem", ft, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+    [_outlineView addSubview:field];
+    [field selectText:nil];
+    // Select just the name part (not extension) for files
+    if (!ft.isDirectory) {
+        NSString *name = ft.url.lastPathComponent;
+        NSString *ext = ft.url.pathExtension;
+        if (ext.length > 0) {
+            NSText *editor = [field.window fieldEditor:YES forObject:field];
+            NSRange nameRange = NSMakeRange(0, name.length - ext.length - 1);
+            [editor setSelectedRange:nameRange];
+        }
+    }
+}
+
+- (void)_renameFieldCommitted:(NSTextField *)field {
+    _FTItem *ft = objc_getAssociatedObject(field, "ftItem");
+    NSString *newName = field.stringValue;
+    [field removeFromSuperview];
+
+    if (!ft || newName.length == 0) return;
+
+    NSString *oldName = ft.url.lastPathComponent;
+    if ([newName isEqualToString:oldName]) return;
+
+    NSURL *parentURL = ft.url.URLByDeletingLastPathComponent;
+    NSURL *newURL = [parentURL URLByAppendingPathComponent:newName];
+
+    NSError *error = nil;
+    if (![[NSFileManager defaultManager] moveItemAtURL:ft.url toURL:newURL error:&error]) {
+        @autoreleasepool {
+            NSAlert *a = [[NSAlert alloc] init];
+            a.messageText = @"Rename Failed";
+            a.informativeText = error.localizedDescription;
+            a.alertStyle = NSAlertStyleWarning;
+            [a runModal];
+        }
+        return;
+    }
+
+    // Update the item's URL and refresh the tree
+    ft.url = newURL;
+    // Reload parent's children to reflect the new name and sort order
+    _FTItem *parent = [_outlineView parentForItem:ft];
+    if (parent) {
+        parent.children = [[self _loadChildrenOfURL:parent.url] mutableCopy];
+    } else if (ft.isRootFolder) {
+        // Root folder renamed — update and save
+        [self _saveRoots];
+    }
+    [_outlineView reloadData];
 }
 
 - (void)_menuRunBySystem:(NSMenuItem *)sender {

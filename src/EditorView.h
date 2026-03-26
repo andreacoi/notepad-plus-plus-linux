@@ -53,6 +53,10 @@ extern NSNotificationName const EditorViewCursorDidMoveNotification;
 // YES when monitoring mode (tail -f) is active — file changes silently auto-reload.
 @property (nonatomic) BOOL monitoringMode;
 
+// YES when displaying file content as a hex dump (read-only).
+@property (nonatomic, readonly) BOOL hexViewMode;
+- (void)toggleHexView:(id)sender;
+
 
 /// Must be called when a tab is permanently closed (not evicted to another split).
 /// Unregisters the file presenter so the EditorView can be deallocated.

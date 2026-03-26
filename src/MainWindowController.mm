@@ -2148,6 +2148,11 @@ static NSString *nppMacrosPath(void) {
         [(NSMenuItem *)item setState:(hasFile && ed.monitoringMode) ? NSControlStateValueOn : NSControlStateValueOff];
         return hasFile;
     }
+    // Hex View checkmark
+    if (action == @selector(toggleHexView:)) {
+        [(NSMenuItem *)item setState:(ed && ed.hexViewMode) ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil;
+    }
     if (action == @selector(showSummary:))       return ed != nil;
     if (action == @selector(focusOnAnotherView:)) return (vHasTabs || hHasTabs);
     if (action == @selector(setTextDirectionRTL:) ||
@@ -2696,6 +2701,14 @@ static NSString *nppMacrosPath(void) {
     if (!ed || !ed.filePath) return;
     ed.monitoringMode = !ed.monitoringMode;
     [self _refreshToolbarStates];
+}
+
+// ── Hex View ─────────────────────────────────────────────────────────────────
+
+- (void)toggleHexView:(id)sender {
+    EditorView *ed = [self currentEditor];
+    if (!ed) return;
+    [ed toggleHexView:sender];
 }
 
 #pragma mark - Not Yet Implemented

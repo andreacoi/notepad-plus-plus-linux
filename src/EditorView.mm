@@ -159,6 +159,11 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
 
     // Git gutter state
     BOOL               _gitGutterEnabled;
+
+    // Hex view
+    BOOL               _hexViewMode;
+    NSData            *_hexRawData;       // original file bytes (kept while hex view is active)
+    NSString          *_hexSavedLanguage; // language to restore when leaving hex view
 }
 
 - (instancetype)initWithFrame:(NSRect)frame {
@@ -289,41 +294,54 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
         textData = [rawData subdataWithRange:NSMakeRange(2, len - 2)];
     }
 
-    NSString *content = nil;
-    if (hasBOM) {
-        content = [[NSString alloc] initWithData:textData encoding:enc];
-    } else {
-        // Try UTF-8 first, then Windows-1252, then Latin-1
-        content = [[NSString alloc] initWithData:rawData encoding:NSUTF8StringEncoding];
-        if (content) {
+    // ── Convert to UTF-8 bytes for Scintilla ─────────────────────────────────
+    // We must avoid [ScintillaView setString:] because it calls SCI_SETTEXT
+    // which uses strlen() and truncates at the first null byte.
+    // Instead, convert to UTF-8 NSData and use SCI_ADDTEXT with explicit length.
+
+    NSData *utf8Data = nil;
+
+    if (hasBOM && enc != NSUTF8StringEncoding) {
+        // BOM-detected UTF-16: convert to UTF-8 via NSString
+        NSString *content = [[NSString alloc] initWithData:textData encoding:enc];
+        if (content)
+            utf8Data = [content dataUsingEncoding:NSUTF8StringEncoding];
+    }
+
+    if (!utf8Data) {
+        // Try UTF-8 first (most common case) — use raw bytes directly
+        NSString *probe = [[NSString alloc] initWithData:rawData encoding:NSUTF8StringEncoding];
+        if (probe) {
             enc = NSUTF8StringEncoding;
+            utf8Data = hasBOM ? textData : rawData;  // already UTF-8
         } else {
+            // Try Windows-1252, then Latin-1
             NSStringEncoding win1252 = nppEnc(kCFStringEncodingWindowsLatin1);
-            content = [[NSString alloc] initWithData:rawData encoding:win1252];
+            NSString *content = [[NSString alloc] initWithData:rawData encoding:win1252];
             if (content) {
                 enc = win1252;
+                utf8Data = [content dataUsingEncoding:NSUTF8StringEncoding];
             } else {
                 content = [[NSString alloc] initWithData:rawData encoding:NSISOLatin1StringEncoding];
-                if (!content) {
-                    if (error) *error = [NSError errorWithDomain:NSCocoaErrorDomain
-                                                            code:NSFileReadInapplicableStringEncodingError
-                                                        userInfo:nil];
-                    return NO;
+                if (content) {
+                    enc = NSISOLatin1StringEncoding;
+                    utf8Data = [content dataUsingEncoding:NSUTF8StringEncoding];
                 }
-                enc = NSISOLatin1StringEncoding;
             }
         }
     }
 
-    if (!content) {
-        if (error) *error = [NSError errorWithDomain:NSCocoaErrorDomain
-                                                code:NSFileReadInapplicableStringEncodingError
-                                            userInfo:nil];
-        return NO;
+    if (!utf8Data) {
+        // Last resort: load raw bytes as-is (binary file)
+        enc = NSISOLatin1StringEncoding;
+        utf8Data = rawData;
     }
 
-
-    [_scintillaView setString:content];
+    // Load into Scintilla using SCI_ADDTEXT with explicit length — binary safe
+    [_scintillaView message:SCI_CLEARALL wParam:0 lParam:0];
+    [_scintillaView message:SCI_ADDTEXT
+                     wParam:(uptr_t)utf8Data.length
+                     lParam:(sptr_t)utf8Data.bytes];
     _filePath = [path copy];
     _fileEncoding = enc;
     _hasBOM = hasBOM;
@@ -475,6 +493,113 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
 
 - (BOOL)monitoringMode { return _monitoringMode; }
 - (void)setMonitoringMode:(BOOL)v { _monitoringMode = v; }
+
+- (BOOL)hexViewMode { return _hexViewMode; }
+
+// ── Hex View ─────────────────────────────────────────────────────────────────
+
+/// Format raw bytes as a standard hex dump:
+///   OFFSET   HH HH HH HH HH HH HH HH  HH HH HH HH HH HH HH HH  |ASCII...........|
+static NSData *_formatHexDump(NSData *data) {
+    const uint8_t *bytes = (const uint8_t *)data.bytes;
+    NSUInteger len = data.length;
+    // Pre-allocate: each 16-byte row produces ~78 chars + newline
+    NSMutableData *out = [NSMutableData dataWithCapacity:(len / 16 + 1) * 80];
+
+    for (NSUInteger offset = 0; offset < len; offset += 16) {
+        char line[128];
+        int pos = 0;
+
+        // Offset (8 hex digits)
+        pos += snprintf(line + pos, sizeof(line) - pos, "%08lX  ", (unsigned long)offset);
+
+        // Hex bytes: two groups of 8, separated by extra space
+        for (int i = 0; i < 16; i++) {
+            if (i == 8) line[pos++] = ' ';  // extra space between groups
+            if (offset + i < len)
+                pos += snprintf(line + pos, sizeof(line) - pos, "%02X ", bytes[offset + i]);
+            else
+                pos += snprintf(line + pos, sizeof(line) - pos, "   ");
+        }
+
+        // ASCII column
+        line[pos++] = ' ';
+        line[pos++] = '|';
+        for (int i = 0; i < 16; i++) {
+            if (offset + i < len) {
+                uint8_t c = bytes[offset + i];
+                line[pos++] = (c >= 0x20 && c <= 0x7E) ? (char)c : '.';
+            } else {
+                line[pos++] = ' ';
+            }
+        }
+        line[pos++] = '|';
+        line[pos++] = '\n';
+
+        [out appendBytes:line length:pos];
+    }
+    return out;
+}
+
+- (void)toggleHexView:(id)sender {
+    if (_hexViewMode) {
+        // ── Exit hex view: reload original file ──────────────────────────────
+        _hexViewMode = NO;
+        _hexRawData = nil;
+        [_scintillaView message:SCI_SETREADONLY wParam:0 lParam:0];
+
+        if (_filePath) {
+            NSError *err = nil;
+            [self loadFileAtPath:_filePath error:&err];
+        }
+        if (_hexSavedLanguage)
+            [self setLanguage:_hexSavedLanguage];
+        _hexSavedLanguage = nil;
+    } else {
+        // ── Enter hex view ───────────────────────────────────────────────────
+        // Read raw bytes from disk (or use current editor content for untitled)
+        NSData *rawData = nil;
+        if (_filePath) {
+            rawData = [NSData dataWithContentsOfFile:_filePath];
+        }
+        if (!rawData) {
+            // Untitled or missing file: grab current content from Scintilla
+            sptr_t len = [_scintillaView message:SCI_GETLENGTH wParam:0 lParam:0];
+            if (len > 0) {
+                char *buf = (char *)malloc(len);
+                [_scintillaView message:SCI_GETTEXT wParam:len + 1 lParam:(sptr_t)buf];
+                rawData = [NSData dataWithBytesNoCopy:buf length:len freeWhenDone:YES];
+            } else {
+                rawData = [NSData data];
+            }
+        }
+
+        _hexRawData = rawData;
+        _hexSavedLanguage = [_currentLanguage copy];
+        _hexViewMode = YES;
+
+        // Format as hex dump
+        NSData *hexDump = _formatHexDump(rawData);
+
+        // Load formatted hex into Scintilla
+        [_scintillaView message:SCI_SETREADONLY wParam:0 lParam:0];
+        [_scintillaView message:SCI_CLEARALL wParam:0 lParam:0];
+        [_scintillaView message:SCI_ADDTEXT
+                         wParam:(uptr_t)hexDump.length
+                         lParam:(sptr_t)hexDump.bytes];
+
+        // Set monospace font and plain text mode for clean hex display
+        [self setLanguage:@""];
+        const char *monoFont = "Menlo";
+        [_scintillaView message:SCI_STYLESETFONT wParam:STYLE_DEFAULT lParam:(sptr_t)monoFont];
+        [_scintillaView message:SCI_STYLESETSIZE wParam:STYLE_DEFAULT lParam:12];
+        [_scintillaView message:SCI_STYLECLEARALL wParam:0 lParam:0];
+
+        // Make read-only
+        [_scintillaView message:SCI_SETREADONLY wParam:1 lParam:0];
+        [_scintillaView message:SCI_GOTOPOS wParam:0 lParam:0];
+    }
+}
 
 /// Called every second by _fileMonitorTimer.
 /// Compares the file's current mtime against _lastKnownModDate.
