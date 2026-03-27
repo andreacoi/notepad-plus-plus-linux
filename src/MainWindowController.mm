@@ -816,7 +816,7 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     indentBtn.action  = @selector(toggleIndentGuides:);
     indentBtn.target  = self;
     indentBtn.toolTip = @"Toggle Indent Guide";
-    indentBtn.useBlueHighlight = NO;
+    indentBtn.useBlueHighlight = YES;
     indentBtn.toggledOn = _showIndentGuides;
     [outer addSubview:indentBtn];
     _tbIndentGuide = indentBtn;
@@ -2277,6 +2277,35 @@ static NSString *nppMacrosPath(void) {
         return ed != nil;
     }
 
+    // Encoding menu: checkmark on the active encoding (radio-style)
+    {
+        NSString *encName = ed.encodingName ?: @"";
+        NSDictionary *encMap = @{
+            NSStringFromSelector(@selector(setEncodingANSI:)):        @"Windows-1252",
+            NSStringFromSelector(@selector(setEncodingUTF8:)):        @"UTF-8",
+            NSStringFromSelector(@selector(setEncodingUTF8BOM:)):     @"UTF-8 BOM",
+            NSStringFromSelector(@selector(setEncodingUTF16BEBOM:)):  @"UTF-16 BE BOM",
+            NSStringFromSelector(@selector(setEncodingUTF16LEBOM:)):  @"UTF-16 LE BOM",
+            NSStringFromSelector(@selector(setEncodingLatin1:)):      @"Latin-1",
+            NSStringFromSelector(@selector(setEncodingLatin9:)):      @"Latin-9",
+            NSStringFromSelector(@selector(setEncodingWindows1252:)): @"Windows-1252",
+            NSStringFromSelector(@selector(setEncodingWindows1250:)): @"Windows-1250",
+            NSStringFromSelector(@selector(setEncodingWindows1251:)): @"Windows-1251",
+            NSStringFromSelector(@selector(setEncodingWindows1253:)): @"Windows-1253",
+            NSStringFromSelector(@selector(setEncodingWindows1257:)): @"Windows-1257",
+            NSStringFromSelector(@selector(setEncodingWindows1254:)): @"Windows-1254",
+            NSStringFromSelector(@selector(setEncodingBig5:)):        @"Big5",
+            NSStringFromSelector(@selector(setEncodingGB2312:)):      @"GB2312",
+            NSStringFromSelector(@selector(setEncodingShiftJIS:)):    @"Shift-JIS",
+            NSStringFromSelector(@selector(setEncodingEUCKR:)):       @"EUC-KR",
+        };
+        NSString *match = encMap[NSStringFromSelector(action)];
+        if (match) {
+            [(NSMenuItem *)item setState:[encName isEqualToString:match] ? NSControlStateValueOn : NSControlStateValueOff];
+            return ed != nil;
+        }
+    }
+
     return YES;
 }
 
@@ -3026,23 +3055,37 @@ static NSString *nppMacrosPath(void) {
 
 #pragma mark - Encoding menu actions
 
-// Shared helpers
+// Set Encoding: reload file from disk re-interpreting with new encoding (like Windows NPP)
 - (void)_setCurrentEditorEncoding:(NSStringEncoding)enc hasBOM:(BOOL)bom {
     EditorView *ed = [self currentEditor];
     if (!ed) return;
-    [ed setFileEncoding:enc hasBOM:bom];
+
+    if (ed.filePath) {
+        // Warn about losing undo history
+        if (ed.isModified) {
+            NSAlert *a = [[NSAlert alloc] init];
+            a.messageText = @"Encoding Change";
+            a.informativeText = @"The file has unsaved changes. Reloading with the new encoding will discard them. Continue?";
+            [a addButtonWithTitle:@"Reload"];
+            [a addButtonWithTitle:@"Cancel"];
+            a.alertStyle = NSAlertStyleWarning;
+            if ([a runModal] != NSAlertFirstButtonReturn) return;
+        }
+        NSError *err = nil;
+        if (![ed reloadWithEncoding:enc hasBOM:bom error:&err] && err)
+            [[NSAlert alertWithError:err] runModal];
+    } else {
+        // No file on disk — just change metadata
+        [ed setFileEncoding:enc hasBOM:bom];
+    }
     [self updateStatusBar];
 }
 
+// Convert To: re-encode content in memory (user saves manually)
 - (void)_convertCurrentEditorToEncoding:(NSStringEncoding)enc hasBOM:(BOOL)bom {
     EditorView *ed = [self currentEditor];
     if (!ed) return;
-    [ed setFileEncoding:enc hasBOM:bom];
-    if (ed.filePath) {
-        NSError *err = nil;
-        if (![ed saveError:&err] && err)
-            [[NSAlert alertWithError:err] runModal];
-    }
+    [ed convertContentToEncoding:enc hasBOM:bom];
     [self updateStatusBar];
 }
 

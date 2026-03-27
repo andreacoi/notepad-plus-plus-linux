@@ -80,6 +80,14 @@ extern NSNotificationName const EditorViewCursorDidMoveNotification;
 /// Change the save encoding without reloading content; marks buffer as modified.
 - (void)setFileEncoding:(NSStringEncoding)enc hasBOM:(BOOL)bom;
 
+/// Reload the file from disk, re-interpreting bytes with the given encoding.
+/// For files on disk only. Returns NO if reload fails.
+- (BOOL)reloadWithEncoding:(NSStringEncoding)enc hasBOM:(BOOL)bom error:(NSError **)error;
+
+/// Re-encode the current in-memory content to a new encoding (Convert To).
+/// Does NOT save to disk — user must save manually.
+- (void)convertContentToEncoding:(NSStringEncoding)enc hasBOM:(BOOL)bom;
+
 /// Apply current theme colors (fg/bg/token colors) from NSUserDefaults to this editor.
 /// Call after changing kPrefStyle* keys to refresh a live editor.
 - (void)applyThemeColors;

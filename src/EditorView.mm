@@ -787,6 +787,80 @@ static NSData *_formatHexDump(NSData *data) {
     _isModified = YES;
 }
 
+- (BOOL)reloadWithEncoding:(NSStringEncoding)enc hasBOM:(BOOL)bom error:(NSError **)error {
+    if (!_filePath) return NO;
+
+    NSData *rawData = [NSData dataWithContentsOfFile:_filePath options:0 error:error];
+    if (!rawData) return NO;
+
+    NSData *textData = rawData;
+    // Strip BOM bytes if present
+    const uint8_t *b = (const uint8_t *)rawData.bytes;
+    NSUInteger len = rawData.length;
+    if (bom) {
+        if (enc == NSUTF8StringEncoding && len >= 3 && b[0]==0xEF && b[1]==0xBB && b[2]==0xBF)
+            textData = [rawData subdataWithRange:NSMakeRange(3, len - 3)];
+        else if (enc == NSUTF16LittleEndianStringEncoding && len >= 2 && b[0]==0xFF && b[1]==0xFE)
+            textData = [rawData subdataWithRange:NSMakeRange(2, len - 2)];
+        else if (enc == NSUTF16BigEndianStringEncoding && len >= 2 && b[0]==0xFE && b[1]==0xFF)
+            textData = [rawData subdataWithRange:NSMakeRange(2, len - 2)];
+    }
+
+    // Convert to UTF-8 for Scintilla
+    NSData *utf8Data = nil;
+    if (enc == NSUTF8StringEncoding) {
+        utf8Data = textData;
+    } else {
+        NSString *content = [[NSString alloc] initWithData:textData encoding:enc];
+        if (content)
+            utf8Data = [content dataUsingEncoding:NSUTF8StringEncoding];
+    }
+    if (!utf8Data) {
+        // Encoding failed — try raw
+        utf8Data = textData;
+    }
+
+    // Load into Scintilla
+    [_scintillaView message:SCI_SETREADONLY wParam:0 lParam:0];
+    [_scintillaView message:SCI_CLEARALL wParam:0 lParam:0];
+    [_scintillaView message:SCI_ADDTEXT wParam:(uptr_t)utf8Data.length lParam:(sptr_t)utf8Data.bytes];
+    [_scintillaView message:SCI_GOTOPOS wParam:0 lParam:0];
+    [_scintillaView message:SCI_EMPTYUNDOBUFFER];
+    [_scintillaView message:SCI_SETSAVEPOINT];
+
+    _fileEncoding = enc;
+    _hasBOM = bom;
+    _isModified = NO;
+    return YES;
+}
+
+- (void)convertContentToEncoding:(NSStringEncoding)enc hasBOM:(BOOL)bom {
+    // Get current text from Scintilla
+    NSString *content = _scintillaView.string;
+    if (!content) return;
+
+    // Re-encode: convert current text to the target encoding, then back to UTF-8
+    // This simulates what Windows NPP does (cut → change encoding → paste)
+    NSData *encoded = [content dataUsingEncoding:enc allowLossyConversion:YES];
+    if (!encoded) return;
+
+    // Convert back to UTF-8 for Scintilla display
+    NSString *reencoded = [[NSString alloc] initWithData:encoded encoding:enc];
+    if (!reencoded) reencoded = content; // fallback
+
+    NSData *utf8Data = [reencoded dataUsingEncoding:NSUTF8StringEncoding];
+    if (!utf8Data) return;
+
+    [_scintillaView message:SCI_SETREADONLY wParam:0 lParam:0];
+    [_scintillaView message:SCI_CLEARALL wParam:0 lParam:0];
+    [_scintillaView message:SCI_ADDTEXT wParam:(uptr_t)utf8Data.length lParam:(sptr_t)utf8Data.bytes];
+    [_scintillaView message:SCI_GOTOPOS wParam:0 lParam:0];
+
+    _fileEncoding = enc;
+    _hasBOM = bom;
+    _isModified = YES;
+}
+
 - (NSString *)eolName {
     sptr_t mode = [_scintillaView message:SCI_GETEOLMODE];
     switch (mode) {
