@@ -8,6 +8,7 @@
 #include <CommonCrypto/CommonDigest.h>
 
 NSNotificationName const EditorViewCursorDidMoveNotification = @"EditorViewCursorDidMoveNotification";
+NSNotificationName const EditorViewDidScrollNotification = @"EditorViewDidScrollNotification";
 
 // Forward-declare Lexilla's CreateLexer (statically linked)
 namespace Scintilla { struct ILexer5; }

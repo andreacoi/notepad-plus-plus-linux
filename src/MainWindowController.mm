@@ -470,6 +470,11 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     // Scroll synchronization
     BOOL _syncVerticalScrolling;
     BOOL _syncHorizontalScrolling;
+    intptr_t _syncColumnDelta;  // column offset between views when sync was enabled
+    intptr_t _syncLineDelta;    // line offset between views when sync was enabled
+    NSTimer *_scrollSyncTimer;
+    sptr_t   _lastPrimaryXOffset, _lastSecondaryXOffset;
+    sptr_t   _lastPrimaryLine, _lastSecondaryLine;
 
     // Incremental search bar
     IncrementalSearchBar *_incSearchBar;
@@ -518,6 +523,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
         [[NSNotificationCenter defaultCenter]
             addObserver:self selector:@selector(editorCursorMoved:)
                    name:EditorViewCursorDidMoveNotification object:nil];
+        // (scroll sync uses a timer, not notifications)
         [self rebuildRecentFilesMenu];
         [self rebuildUDLLanguageMenu];
         _autoSaveTimer = [NSTimer scheduledTimerWithTimeInterval:10.0
@@ -3012,35 +3018,124 @@ static NSString *nppMacrosPath(void) {
 
 - (void)toggleSyncVerticalScrolling:(id)sender {
     _syncVerticalScrolling = !_syncVerticalScrolling;
+    [self _updateScrollSyncTimer];
     [self _refreshToolbarStates];
 }
 
 - (void)toggleSyncHorizontalScrolling:(id)sender {
     _syncHorizontalScrolling = !_syncHorizontalScrolling;
+    [self _updateScrollSyncTimer];
     [self _refreshToolbarStates];
 }
 
-- (void)_propagateScrollFrom:(EditorView *)source {
-    if (!_syncVerticalScrolling && !_syncHorizontalScrolling) return;
-    static BOOL syncing = NO;
-    if (syncing) return;
-    syncing = YES;
-    ScintillaView *src = source.scintillaView;
-    sptr_t firstLine = [src message:SCI_GETFIRSTVISIBLELINE];
-    sptr_t xOffset   = [src message:SCI_GETXOFFSET];
-    NSMutableArray *all = [NSMutableArray arrayWithArray:_tabManager.allEditors];
-    [all addObjectsFromArray:_subTabManagerV.allEditors];
-    [all addObjectsFromArray:_subTabManagerH.allEditors];
-    for (EditorView *ed in all) {
-        if (ed == source) continue;
-        ScintillaView *sci = ed.scintillaView;
-        if (_syncVerticalScrolling)
-            [sci message:SCI_SETFIRSTVISIBLELINE wParam:(uptr_t)firstLine];
-        if (_syncHorizontalScrolling)
-            [sci message:SCI_SETXOFFSET wParam:(uptr_t)xOffset];
+- (void)_updateScrollSyncTimer {
+    BOOL needsTimer = _syncVerticalScrolling || _syncHorizontalScrolling;
+
+    if (needsTimer && !_scrollSyncTimer) {
+        // Capture current deltas between views
+        EditorView *primary = _tabManager.currentEditor;
+        EditorView *secondary = nil;
+        if (_subTabManagerV.allEditors.count > 0)
+            secondary = _subTabManagerV.currentEditor;
+        else if (_subTabManagerH.allEditors.count > 0)
+            secondary = _subTabManagerH.currentEditor;
+
+        if (primary && secondary) {
+            _lastPrimaryLine   = [primary.scintillaView message:SCI_GETFIRSTVISIBLELINE];
+            _lastSecondaryLine = [secondary.scintillaView message:SCI_GETFIRSTVISIBLELINE];
+            _syncLineDelta = _lastPrimaryLine - _lastSecondaryLine;
+
+            sptr_t charW = [primary.scintillaView message:SCI_TEXTWIDTH wParam:STYLE_DEFAULT lParam:(sptr_t)"P"];
+            if (charW < 1) charW = 1;
+            _lastPrimaryXOffset  = [primary.scintillaView message:SCI_GETXOFFSET];
+            _lastSecondaryXOffset = [secondary.scintillaView message:SCI_GETXOFFSET];
+            _syncColumnDelta = (_lastPrimaryXOffset / charW) - (_lastSecondaryXOffset / charW);
+        }
+
+        _scrollSyncTimer = [NSTimer timerWithTimeInterval:1.0/60.0
+                                                       target:self
+                                                     selector:@selector(_pollScrollSync:)
+                                                     userInfo:nil
+                                                      repeats:YES];
+        // Schedule in CommonModes so it fires during scrollbar thumb dragging
+        [[NSRunLoop currentRunLoop] addTimer:_scrollSyncTimer forMode:NSRunLoopCommonModes];
+    } else if (!needsTimer && _scrollSyncTimer) {
+        [_scrollSyncTimer invalidate];
+        _scrollSyncTimer = nil;
     }
-    syncing = NO;
 }
+
+- (void)_pollScrollSync:(NSTimer *)t {
+    EditorView *primary = _tabManager.currentEditor;
+    EditorView *secondary = nil;
+    if (_subTabManagerV.allEditors.count > 0)
+        secondary = _subTabManagerV.currentEditor;
+    else if (_subTabManagerH.allEditors.count > 0)
+        secondary = _subTabManagerH.currentEditor;
+    if (!primary || !secondary) return;
+
+    ScintillaView *priSci = primary.scintillaView;
+    ScintillaView *secSci = secondary.scintillaView;
+
+    sptr_t priLine = [priSci message:SCI_GETFIRSTVISIBLELINE];
+    sptr_t secLine = [secSci message:SCI_GETFIRSTVISIBLELINE];
+    sptr_t priX    = [priSci message:SCI_GETXOFFSET];
+    sptr_t secX    = [secSci message:SCI_GETXOFFSET];
+
+    // Detect which view the user scrolled by comparing to last known values
+    BOOL priLineChanged = (priLine != _lastPrimaryLine);
+    BOOL secLineChanged = (secLine != _lastSecondaryLine);
+    BOOL priXChanged    = (priX != _lastPrimaryXOffset);
+    BOOL secXChanged    = (secX != _lastSecondaryXOffset);
+
+    // Determine source: whichever view changed. If both changed, prefer primary.
+    BOOL primaryIsSource = NO, secondaryIsSource = NO;
+    if (priLineChanged || priXChanged) primaryIsSource = YES;
+    if (secLineChanged || secXChanged) secondaryIsSource = YES;
+    // If both changed (from the last sync propagation), neither is the user source — skip
+    if (primaryIsSource && secondaryIsSource) {
+        _lastPrimaryLine = priLine; _lastSecondaryLine = secLine;
+        _lastPrimaryXOffset = priX; _lastSecondaryXOffset = secX;
+        return;
+    }
+    if (!primaryIsSource && !secondaryIsSource) return;
+
+    ScintillaView *src = primaryIsSource ? priSci : secSci;
+    ScintillaView *dst = primaryIsSource ? secSci : priSci;
+
+    intptr_t scrollLines = 0, scrollCols = 0;
+
+    if (_syncVerticalScrolling) {
+        sptr_t srcLine = [src message:SCI_GETFIRSTVISIBLELINE];
+        sptr_t dstLine = [dst message:SCI_GETFIRSTVISIBLELINE];
+        if (primaryIsSource)
+            scrollLines = srcLine - _syncLineDelta - dstLine;
+        else
+            scrollLines = srcLine + _syncLineDelta - dstLine;
+    }
+
+    if (_syncHorizontalScrolling) {
+        sptr_t charW = [src message:SCI_TEXTWIDTH wParam:STYLE_DEFAULT lParam:(sptr_t)"P"];
+        if (charW < 1) charW = 1;
+        sptr_t srcCol = [src message:SCI_GETXOFFSET] / charW;
+        sptr_t dstCol = [dst message:SCI_GETXOFFSET] / charW;
+        if (primaryIsSource)
+            scrollCols = srcCol - _syncColumnDelta - dstCol;
+        else
+            scrollCols = srcCol + _syncColumnDelta - dstCol;
+    }
+
+    if (scrollLines != 0 || scrollCols != 0)
+        [dst message:SCI_LINESCROLL wParam:(uptr_t)scrollCols lParam:scrollLines];
+
+    // Update all last-known values AFTER scrolling the target
+    _lastPrimaryLine      = [priSci message:SCI_GETFIRSTVISIBLELINE];
+    _lastSecondaryLine    = [secSci message:SCI_GETFIRSTVISIBLELINE];
+    _lastPrimaryXOffset   = [priSci message:SCI_GETXOFFSET];
+    _lastSecondaryXOffset = [secSci message:SCI_GETXOFFSET];
+}
+
+// Scroll sync is handled entirely by _pollScrollSync: timer — no notification-based propagation needed.
 
 #pragma mark - Edit: Auto-Completion forwarders
 
@@ -3372,7 +3467,6 @@ static NSString *nppMacrosPath(void) {
         [self updateStatusBar];
         [self refreshCurrentTab];
     }
-    [self _propagateScrollFrom:ed];
 }
 
 #pragma mark - File: Reload / Reveal / Copy / Rename / Trash
