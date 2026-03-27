@@ -487,6 +487,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
 
     // View display modes
     BOOL              _postItMode;
+    BOOL              _postItSavedToolbarVisible;
     NSWindowStyleMask _savedStyleMask;
     NSColor          *_savedBgColor;
     BOOL              _distractionFreeMode;
@@ -2132,6 +2133,11 @@ static NSString *nppMacrosPath(void) {
     if (action == @selector(resetView:))
         return vHasTabs || hHasTabs;
 
+    // Always on Top checkmark
+    if (action == @selector(toggleAlwaysOnTop:)) {
+        [(NSMenuItem *)item setState:(self.window.level == NSFloatingWindowLevel) ? NSControlStateValueOn : NSControlStateValueOff];
+        return YES;
+    }
     // Post-It checkmark
     if (action == @selector(togglePostItMode:)) {
         [(NSMenuItem *)item setState:_postItMode ? NSControlStateValueOn : NSControlStateValueOff];
@@ -2604,19 +2610,46 @@ static NSString *nppMacrosPath(void) {
 
     if (_postItMode) {
         _savedStyleMask = w.styleMask;
-        _savedBgColor   = w.backgroundColor;
+        _savedBgColor = w.backgroundColor;
+        _postItSavedToolbarVisible = w.toolbar.isVisible;
+
+        // Fully remove toolbar, tab bar, status bar
+        w.toolbar = nil;
+        _tabManager.tabBar.hidden = YES;
+        _statusBar.hidden = YES;
+
+        // Go borderless, resize to content rect
+        NSRect contentRect = [w contentRectForFrameRect:w.frame];
         w.styleMask = NSWindowStyleMaskBorderless | NSWindowStyleMaskResizable;
+        [w setFrame:contentRect display:YES];
+
+        // Yellow border around the window to indicate Post-It mode
+        w.contentView.wantsLayer = YES;
+        w.contentView.layer.borderWidth = 3.0;
+        w.contentView.layer.borderColor = [NSColor colorWithRed:1.0 green:0.85 blue:0.3 alpha:1.0].CGColor;
+
         w.level = NSFloatingWindowLevel;
-        w.backgroundColor = [NSColor colorWithRed:1.0 green:0.97 blue:0.75 alpha:0.95];
-        w.opaque = NO;
         w.movableByWindowBackground = YES;
         w.hasShadow = YES;
     } else {
+        // Remove yellow border
+        w.contentView.layer.borderWidth = 0;
+        w.contentView.layer.borderColor = nil;
+
+        // Restore titled style, grow window for title bar
+        NSRect contentRect = w.frame;
         w.styleMask = _savedStyleMask;
+        [self buildToolbar];
+        [w.toolbar setVisible:_postItSavedToolbarVisible];
+        NSRect newFrame = [w frameRectForContentRect:contentRect];
+        [w setFrame:newFrame display:YES];
+
         w.level = NSNormalWindowLevel;
         w.backgroundColor = _savedBgColor ?: [NSColor windowBackgroundColor];
-        w.opaque = YES;
         w.movableByWindowBackground = NO;
+
+        _tabManager.tabBar.hidden = NO;
+        _statusBar.hidden = NO;
     }
 }
 

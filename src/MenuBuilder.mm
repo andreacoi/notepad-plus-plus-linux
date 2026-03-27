@@ -564,7 +564,7 @@ static NSMenu *buildLanguageMenu() {
     [viewMenu addItem:item(@"Always on Top", @selector(toggleAlwaysOnTop:), @"")];
     [viewMenu addItem:itemMod(@"Toggle Full Screen Mode", @selector(toggleFullScreen:), @"f",
                               NSEventModifierFlagCommand | NSEventModifierFlagControl)];
-    [viewMenu addItem:item(@"Post-It",              @selector(togglePostItMode:),         @"")];
+    [viewMenu addItem:itemFn(@"Post-It",             @selector(togglePostItMode:),         NSF12FunctionKey, 0)];
     [viewMenu addItem:item(@"Distraction Free Mode", @selector(toggleDistractionFreeMode:), @"")];
     addSep(viewMenu);
 
