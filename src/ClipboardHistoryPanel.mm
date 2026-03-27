@@ -1,11 +1,13 @@
 #import "ClipboardHistoryPanel.h"
 #import "NppLocalizer.h"
+#import "StyleConfiguratorWindowController.h"
 
 static const NSUInteger kMaxHistory = 30;
 
 @implementation ClipboardHistoryPanel {
     NSView             *_titleBar;
     NSTextField        *_titleLabel;
+    NSScrollView       *_scrollView;
     NSTableView        *_tableView;
     NSMutableArray<NSString *> *_history;
     NSTimer            *_timer;
@@ -19,8 +21,11 @@ static const NSUInteger kMaxHistory = 30;
         _lastChangeCount = [NSPasteboard generalPasteboard].changeCount;
         [self _buildLayout];
         [self retranslateUI];
+        [self _applyTheme];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_locChanged:)
                                                      name:NPPLocalizationChanged object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_themeChanged:)
+                                                     name:@"NPPPreferencesChanged" object:nil];
     }
     return self;
 }
@@ -86,7 +91,8 @@ static const NSUInteger kMaxHistory = 30;
     ]];
 
     // ── Table ──────────────────────────────────────────────────────────────────
-    NSScrollView *scroll = [[NSScrollView alloc] init];
+    _scrollView = [[NSScrollView alloc] init];
+    NSScrollView *scroll = _scrollView;
     scroll.translatesAutoresizingMaskIntoConstraints = NO;
     scroll.hasVerticalScroller = YES;
     scroll.hasHorizontalScroller = NO;
@@ -114,6 +120,18 @@ static const NSUInteger kMaxHistory = 30;
         [scroll.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
         [scroll.bottomAnchor   constraintEqualToAnchor:self.bottomAnchor],
     ]];
+}
+
+- (void)_applyTheme {
+    NPPStyleStore *store = [NPPStyleStore sharedStore];
+    NSColor *bg = [store globalBg];
+    _scrollView.backgroundColor = bg;
+    _tableView.backgroundColor  = bg;
+    [_tableView reloadData];
+}
+
+- (void)_themeChanged:(NSNotification *)note {
+    [self _applyTheme];
 }
 
 - (void)_closePanel:(id)sender {
@@ -206,8 +224,13 @@ static const NSUInteger kMaxHistory = 30;
         cell.editable = NO;
         cell.bordered = NO;
         cell.drawsBackground = NO;
-        cell.font = [NSFont systemFontOfSize:12];
     }
+    NPPStyleStore *store = [NPPStyleStore sharedStore];
+    NSString *fontName = [store globalFontName];
+    int fontSize = [store globalFontSize];
+    cell.font = [NSFont fontWithName:fontName size:fontSize ?: 12];
+    if (!cell.font) cell.font = [NSFont systemFontOfSize:fontSize ?: 12];
+    cell.textColor = [store globalFg];
     cell.stringValue = display;
     return cell;
 }
