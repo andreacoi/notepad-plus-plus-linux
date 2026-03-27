@@ -401,7 +401,7 @@ static NSSet *desatToggleIdents(void) {
 }
 // Panel toggle buttons — these get NppToggleToolbarButton with blue highlight
 static NSSet *panelToggleIdents(void) {
-    return [NSSet setWithObjects:kTBUDL, kTBDocMap, kTBDocList, kTBFuncList, kTBFileBrowser, nil];
+    return [NSSet setWithObjects:kTBWrap, kTBUDL, kTBDocMap, kTBDocList, kTBFuncList, kTBFileBrowser, nil];
 }
 
 static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
@@ -477,7 +477,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
 
     // Toolbar toggle button references (for state refresh)
     NppToggleToolbarButton *_tbSyncV, *_tbSyncH;
-    NppToggleToolbarButton *_tbIndentGuide;
+    NppToggleToolbarButton *_tbWrap, *_tbIndentGuide;
     NppToggleToolbarButton *_tbUDL, *_tbDocMap, *_tbDocList, *_tbFuncList, *_tbFileBrowser;
     NppToggleToolbarButton *_tbMonitor;
     NppToolbarButton *_tbStartRecord, *_tbStopRecord, *_tbPlayRecord, *_tbPlayRecordM, *_tbSaveRecord;
@@ -721,7 +721,8 @@ static BOOL groupHasTrailingSep(NSString *ident) {
             [groupView addSubview:btn];
 
             // Store references for toggle state refresh
-            if ([btnIdent isEqualToString:kTBSyncV])       _tbSyncV       = (NppToggleToolbarButton *)btn;
+            if ([btnIdent isEqualToString:kTBWrap])        _tbWrap        = (NppToggleToolbarButton *)btn;
+            else if ([btnIdent isEqualToString:kTBSyncV])       _tbSyncV       = (NppToggleToolbarButton *)btn;
             else if ([btnIdent isEqualToString:kTBSyncH])  _tbSyncH       = (NppToggleToolbarButton *)btn;
             else if ([btnIdent isEqualToString:kTBMonitor]) _tbMonitor     = (NppToggleToolbarButton *)btn;
             else if ([btnIdent isEqualToString:kTBUDL])     _tbUDL         = (NppToggleToolbarButton *)btn;
@@ -768,14 +769,16 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     NSView *outer = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, totalW, kBtnSize)];
     CGFloat x = 0;
 
-    // Word Wrap — stands alone with its own hover border
-    NppToolbarButton *wrapBtn = [[NppToolbarButton alloc]
+    // Word Wrap — toggle with blue highlight
+    NppToggleToolbarButton *wrapBtn = [[NppToggleToolbarButton alloc]
         initWithFrame:NSMakeRect(x, 0, kBtnSize, kBtnSize)];
     wrapBtn.image   = nppToolbarIcon(@"wrap");
     wrapBtn.action  = @selector(toggleWordWrap:);
     wrapBtn.target  = self;
     wrapBtn.toolTip = @"Toggle Word Wrap";
+    wrapBtn.useBlueHighlight = YES;
     [outer addSubview:wrapBtn];
+    _tbWrap = wrapBtn;
     x += kBtnSize + kGap;
 
     // Hover group: All Characters button + dropdown arrow share one highlight
@@ -875,6 +878,11 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     // Indent guide (desaturation)
     _tbIndentGuide.toggledOn = _showIndentGuides;
     [_tbIndentGuide setNeedsDisplay:YES];
+
+    // Word Wrap (blue highlight)
+    EditorView *wrapEd = [self currentEditor];
+    _tbWrap.toggledOn = wrapEd && wrapEd.wordWrapEnabled;
+    [_tbWrap setNeedsDisplay:YES];
 
     // Panel toggles (blue highlight when panel is visible)
     _tbDocMap.toggledOn      = _docMapPanel && [_sidePanelHost hasPanel:_docMapPanel];
@@ -2240,6 +2248,34 @@ static NSString *nppMacrosPath(void) {
         [(NSMenuItem *)item setState:shown ? NSControlStateValueOn : NSControlStateValueOff];
         return ed != nil;
     }
+    if (action == @selector(toggleShowAllChars:)) {
+        BOOL wsOn  = ed && ([ed.scintillaView message:SCI_GETVIEWWS] == SCWS_VISIBLEALWAYS);
+        BOOL eolOn = ed && ([ed.scintillaView message:SCI_GETVIEWEOL] != 0);
+        [(NSMenuItem *)item setState:(wsOn && eolOn) ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil;
+    }
+    if (action == @selector(toggleIndentGuides:)) {
+        [(NSMenuItem *)item setState:_showIndentGuides ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil;
+    }
+    if (action == @selector(toggleLineNumbers:)) {
+        [(NSMenuItem *)item setState:_showLineNumbers ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil;
+    }
+    if (action == @selector(toggleWrapSymbol:)) {
+        BOOL on = ed && ([ed.scintillaView message:SCI_GETWRAPVISUALFLAGS] != 0);
+        [(NSMenuItem *)item setState:on ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil;
+    }
+    if (action == @selector(toggleHideLineMarks:)) {
+        BOOL hidden = ed && ([ed.scintillaView message:SCI_GETMARGINWIDTHN wParam:1] == 0);
+        [(NSMenuItem *)item setState:hidden ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil;
+    }
+    if (action == @selector(toggleWordWrap:)) {
+        [(NSMenuItem *)item setState:(ed && ed.wordWrapEnabled) ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil;
+    }
 
     return YES;
 }
@@ -2482,8 +2518,17 @@ static NSString *nppMacrosPath(void) {
 
 - (void)beginEndSelect:(id)sender         { [[self currentEditor] beginEndSelect:sender]; }
 - (void)beginEndSelectColumnMode:(id)sender { [[self currentEditor] beginEndSelectColumnMode:sender]; }
-- (void)multiSelectAllInCurrentDocument:(id)sender   { [[self currentEditor] multiSelectAllInCurrentDocument:sender]; }
-- (void)multiSelectNextInCurrentDocument:(id)sender  { [[self currentEditor] multiSelectNextInCurrentDocument:sender]; }
+// Multi-Select All (4 variants)
+- (void)multiSelectAllIgnoreCaseIgnoreWord:(id)sender { [[self currentEditor] multiSelectAllIgnoreCaseIgnoreWord:sender]; }
+- (void)multiSelectAllMatchCaseOnly:(id)sender        { [[self currentEditor] multiSelectAllMatchCaseOnly:sender]; }
+- (void)multiSelectAllWholeWordOnly:(id)sender        { [[self currentEditor] multiSelectAllWholeWordOnly:sender]; }
+- (void)multiSelectAllMatchCaseWholeWord:(id)sender   { [[self currentEditor] multiSelectAllMatchCaseWholeWord:sender]; }
+// Multi-Select Next (4 variants)
+- (void)multiSelectNextIgnoreCaseIgnoreWord:(id)sender { [[self currentEditor] multiSelectNextIgnoreCaseIgnoreWord:sender]; }
+- (void)multiSelectNextMatchCaseOnly:(id)sender        { [[self currentEditor] multiSelectNextMatchCaseOnly:sender]; }
+- (void)multiSelectNextWholeWordOnly:(id)sender        { [[self currentEditor] multiSelectNextWholeWordOnly:sender]; }
+- (void)multiSelectNextMatchCaseWholeWord:(id)sender   { [[self currentEditor] multiSelectNextMatchCaseWholeWord:sender]; }
+
 - (void)undoLatestMultiSelect:(id)sender             { [[self currentEditor] undoLatestMultiSelect:sender]; }
 - (void)skipCurrentAndGoToNextMultiSelect:(id)sender { [[self currentEditor] skipCurrentAndGoToNextMultiSelect:sender]; }
 
@@ -2509,20 +2554,52 @@ static NSString *nppMacrosPath(void) {
     EditorView *ed = [self currentEditor];
     if (!ed) return;
     NSPasteboard *pb = [NSPasteboard generalPasteboard];
-    NSString *html = [pb stringForType:NSPasteboardTypeHTML];
+
+    // Get content — prefer plain text (the actual visible text the user copied),
+    // fall back to HTML clipboard type. This matches Windows NPP behavior where
+    // CF_HTML contains what the user sees, not the browser's internal wrapper.
+    NSString *html = [pb stringForType:NSPasteboardTypeString];
+    if (!html.length) {
+        html = [pb stringForType:NSPasteboardTypeHTML];
+    }
     if (!html.length) { NSBeep(); return; }
-    // Convert HTML to plain text using NSAttributedString so that block elements
-    // (<p>, <br>, <div>, etc.) become real newline characters rather than being
-    // collapsed into a single line.
-    NSData *htmlData = [html dataUsingEncoding:NSUTF8StringEncoding];
-    NSAttributedString *attrStr = [[NSAttributedString alloc]
-        initWithData:htmlData
-        options:@{NSDocumentTypeDocumentAttribute:       NSHTMLTextDocumentType,
-                  NSCharacterEncodingDocumentAttribute:  @(NSUTF8StringEncoding)}
-        documentAttributes:nil error:nil];
-    NSString *plain = attrStr.string ?: html;
-    if (!plain.length) { NSBeep(); return; }
-    [ed.scintillaView message:SCI_REPLACESEL wParam:0 lParam:(sptr_t)plain.UTF8String];
+
+    // Try to get source URL (Chrome uses a custom type)
+    NSString *sourceURL = @"";
+    NSString *urlStr = [pb stringForType:@"org.chromium.source-url"];
+    if (!urlStr) urlStr = [pb stringForType:@"public.url"];
+    if (!urlStr) urlStr = [pb stringForType:NSPasteboardTypeURL];
+    if (urlStr.length) sourceURL = urlStr;
+
+    // Build CF_HTML / "HTML Format" header (matches Windows clipboard format)
+    NSString *headerTemplate = @"Version:0.9\r\n"
+        @"StartHTML:%010lu\r\n"
+        @"EndHTML:%010lu\r\n"
+        @"StartFragment:%010lu\r\n"
+        @"EndFragment:%010lu\r\n";
+
+    NSString *sourceURLLine = sourceURL.length
+        ? [NSString stringWithFormat:@"SourceURL:%@\r\n", sourceURL]
+        : @"";
+
+    // Measure header byte length with dummy offsets
+    NSString *dummyHeader = [NSString stringWithFormat:headerTemplate,
+                             (unsigned long)0, (unsigned long)0, (unsigned long)0, (unsigned long)0];
+    dummyHeader = [dummyHeader stringByAppendingString:sourceURLLine];
+
+    NSUInteger headerLen = [dummyHeader dataUsingEncoding:NSUTF8StringEncoding].length;
+    NSUInteger htmlLen = [html dataUsingEncoding:NSUTF8StringEncoding].length;
+
+    unsigned long startHTML = headerLen;
+    unsigned long endHTML = headerLen + htmlLen;
+
+    // Rebuild header with real offsets
+    NSString *header = [NSString stringWithFormat:headerTemplate,
+                        startHTML, endHTML, startHTML, endHTML];
+    header = [header stringByAppendingString:sourceURLLine];
+
+    NSString *result = [header stringByAppendingString:html];
+    [ed.scintillaView message:SCI_REPLACESEL wParam:0 lParam:(sptr_t)result.UTF8String];
 }
 
 - (void)pasteRTFContent:(id)sender {
@@ -2822,6 +2899,7 @@ static NSString *nppMacrosPath(void) {
     EditorView *ed = [self currentEditor];
     if (!ed) return;
     ed.wordWrapEnabled = !ed.wordWrapEnabled;
+    [self _refreshToolbarStates];
 }
 
 - (void)zoomIn:(id)sender {
@@ -3500,36 +3578,82 @@ static NSString *nppMacrosPath(void) {
 
 #pragma mark - Edit: On Selection
 
-- (void)openSelectionAsFile:(id)sender {
+/// Resolve selected text to a file path — tries absolute, then relative to current file's directory.
+- (nullable NSString *)_resolveSelectedPath {
     NSString *sel = [[[self currentEditor] selectedText]
                      stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (!sel) return;
-    if ([[NSFileManager defaultManager] fileExistsAtPath:sel])
-        [self openFileAtPath:sel];
+    if (!sel.length) return nil;
+
+    // Strip surrounding quotes if present (common in #include "file.h")
+    if ((sel.length >= 2) &&
+        (([sel hasPrefix:@"\""] && [sel hasSuffix:@"\""]) ||
+         ([sel hasPrefix:@"'"]  && [sel hasSuffix:@"'"])  ||
+         ([sel hasPrefix:@"<"]  && [sel hasSuffix:@">"]))) {
+        sel = [sel substringWithRange:NSMakeRange(1, sel.length - 2)];
+    }
+
+    NSFileManager *fm = [NSFileManager defaultManager];
+
+    // Try as absolute path
+    if ([sel isAbsolutePath] && [fm fileExistsAtPath:sel])
+        return sel;
+
+    // Try relative to the current file's directory
+    EditorView *ed = [self currentEditor];
+    if (ed.filePath) {
+        NSString *dir = [ed.filePath stringByDeletingLastPathComponent];
+        NSString *resolved = [dir stringByAppendingPathComponent:sel];
+        resolved = [resolved stringByStandardizingPath];
+        if ([fm fileExistsAtPath:resolved])
+            return resolved;
+    }
+
+    // Try home directory expansion (~/...)
+    NSString *expanded = [sel stringByExpandingTildeInPath];
+    if (![expanded isEqualToString:sel] && [fm fileExistsAtPath:expanded])
+        return expanded;
+
+    // Last resort: try as-is (handles relative to cwd)
+    if ([fm fileExistsAtPath:sel])
+        return sel;
+
+    return nil;
+}
+
+- (void)openSelectionAsFile:(id)sender {
+    NSString *path = [self _resolveSelectedPath];
+    if (path) {
+        BOOL isDir = NO;
+        [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir];
+        if (!isDir)
+            [self openFileAtPath:path];
+        else
+            NSBeep();
+    } else {
+        NSBeep();
+    }
 }
 
 - (void)openSelectionInDefaultViewer:(id)sender {
-    NSString *sel = [[[self currentEditor] selectedText]
-                     stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (!sel.length) return;
-    NSString *path = sel;
-    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) return;
-    [[NSWorkspace sharedWorkspace] openFile:path];
+    NSString *path = [self _resolveSelectedPath];
+    if (!path) { NSBeep(); return; }
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL fileURLWithPath:path]];
 }
 
 - (void)openContainingFolderInFinder:(id)sender {
-    NSString *sel = [[[self currentEditor] selectedText]
-                     stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (!sel.length) return;
+    NSString *path = [self _resolveSelectedPath];
+    if (!path) { NSBeep(); return; }
+
     BOOL isDir = NO;
-    NSFileManager *fm = [NSFileManager defaultManager];
-    if ([fm fileExistsAtPath:sel isDirectory:&isDir]) {
-        if (isDir)
-            [[NSWorkspace sharedWorkspace] selectFile:nil inFileViewerRootedAtPath:sel];
-        else
-            [[NSWorkspace sharedWorkspace] selectFile:sel inFileViewerRootedAtPath:[sel stringByDeletingLastPathComponent]];
+    [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir];
+    if (isDir) {
+        // Selected text is a directory — open the folder containing it in Finder
+        [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:
+            @[[NSURL fileURLWithPath:path]]];
     } else {
-        NSBeep();
+        // Selected text is a file — open its containing folder and select it
+        [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:
+            @[[NSURL fileURLWithPath:path]]];
     }
 }
 
@@ -3920,19 +4044,6 @@ static NSString *nppMacrosPath(void) {
 - (void)previousSearchResult:(id)sender     { /* navigated via FindInFilesPanel row selection */ }
 
 #pragma mark - Multi-select in all opened documents
-
-- (void)multiSelectAllInAllDocuments:(id)sender {
-    NSString *sel = [[self currentEditor] selectedText];
-    if (!sel.length) return;
-    for (TabManager *tm in @[_tabManager, _subTabManagerH, _subTabManagerV]) {
-        for (EditorView *ed in tm.allEditors)
-            [ed multiSelectAllInCurrentDocument:sender];
-    }
-}
-
-- (void)multiSelectNextInAllDocuments:(id)sender {
-    [[self currentEditor] multiSelectNextInCurrentDocument:sender];
-}
 
 #pragma mark - Plugins: Stubs
 

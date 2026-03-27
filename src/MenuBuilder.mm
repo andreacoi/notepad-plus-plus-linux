@@ -427,16 +427,21 @@ static NSMenu *buildLanguageMenu() {
     [editMenu addItem:withSubmenu(@"On Selection", onSelMenu)];
     addSep(editMenu);
 
-    // Multi-select
-    NSMenu *msAllMenu = submenu(@"Multi-select All");
-    [msAllMenu addItem:item(@"In All Opened Documents",  @selector(multiSelectAllInAllDocuments:),     @"")];
-    [msAllMenu addItem:item(@"In Current Document Only", @selector(multiSelectAllInCurrentDocument:),  @"")];
-    [editMenu addItem:withSubmenu(@"Multi-select All", msAllMenu)];
+    // Multi-select All
+    NSMenu *msAllMenu = submenu(@"Multi-Select All");
+    [msAllMenu addItem:item(@"Ignore Case & Whole Word",  @selector(multiSelectAllIgnoreCaseIgnoreWord:),  @"")];
+    [msAllMenu addItem:item(@"Match Case Only",           @selector(multiSelectAllMatchCaseOnly:),         @"")];
+    [msAllMenu addItem:item(@"Whole Word Only",           @selector(multiSelectAllWholeWordOnly:),         @"")];
+    [msAllMenu addItem:item(@"Match Case & Whole Word",   @selector(multiSelectAllMatchCaseWholeWord:),   @"")];
+    [editMenu addItem:withSubmenu(@"Multi-Select All", msAllMenu)];
 
-    NSMenu *msNextMenu = submenu(@"Multi-select Next");
-    [msNextMenu addItem:item(@"In All Opened Documents",  @selector(multiSelectNextInAllDocuments:),    @"")];
-    [msNextMenu addItem:item(@"In Current Document Only", @selector(multiSelectNextInCurrentDocument:), @"")];
-    [editMenu addItem:withSubmenu(@"Multi-select Next", msNextMenu)];
+    // Multi-select Next
+    NSMenu *msNextMenu = submenu(@"Multi-Select Next");
+    [msNextMenu addItem:item(@"Ignore Case & Whole Word", @selector(multiSelectNextIgnoreCaseIgnoreWord:), @"")];
+    [msNextMenu addItem:item(@"Match Case Only",          @selector(multiSelectNextMatchCaseOnly:),        @"")];
+    [msNextMenu addItem:item(@"Whole Word Only",          @selector(multiSelectNextWholeWordOnly:),        @"")];
+    [msNextMenu addItem:item(@"Match Case & Whole Word",  @selector(multiSelectNextMatchCaseWholeWord:),  @"")];
+    [editMenu addItem:withSubmenu(@"Multi-Select Next", msNextMenu)];
 
     [editMenu addItem:item(@"Undo the Latest Added Multi-Select",       @selector(undoLatestMultiSelect:),             @"")];
     [editMenu addItem:item(@"Skip Current & Go to Next Multi-select",   @selector(skipCurrentAndGoToNextMultiSelect:), @"")];

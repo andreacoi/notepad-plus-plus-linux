@@ -133,8 +133,18 @@ extern NSNotificationName const EditorViewCursorDidMoveNotification;
 - (void)beginEndSelectColumnMode:(id)sender;
 /// YES when the first click of Begin/End Select has been pressed (awaiting second click).
 @property (nonatomic, readonly) BOOL beginSelectActive;
-- (void)multiSelectAllInCurrentDocument:(id)sender;
-- (void)multiSelectNextInCurrentDocument:(id)sender;
+// Multi-Select All (4 variants)
+- (void)multiSelectAllIgnoreCaseIgnoreWord:(id)sender;
+- (void)multiSelectAllMatchCaseOnly:(id)sender;
+- (void)multiSelectAllWholeWordOnly:(id)sender;
+- (void)multiSelectAllMatchCaseWholeWord:(id)sender;
+
+// Multi-Select Next (4 variants)
+- (void)multiSelectNextIgnoreCaseIgnoreWord:(id)sender;
+- (void)multiSelectNextMatchCaseOnly:(id)sender;
+- (void)multiSelectNextWholeWordOnly:(id)sender;
+- (void)multiSelectNextMatchCaseWholeWord:(id)sender;
+
 - (void)undoLatestMultiSelect:(id)sender;
 - (void)skipCurrentAndGoToNextMultiSelect:(id)sender;
 

@@ -489,6 +489,35 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     return nil;
 }
 
+#pragma mark - Menu validation (checkmarks for toggle items)
+
+- (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)item {
+    SEL action = item.action;
+
+    if (action == @selector(showWhiteSpaceAndTab:)) {
+        BOOL on = ([_scintillaView message:SCI_GETVIEWWS] == SCWS_VISIBLEALWAYS);
+        [(NSMenuItem *)item setState:on ? NSControlStateValueOn : NSControlStateValueOff];
+        return YES;
+    }
+    if (action == @selector(showEndOfLine:)) {
+        BOOL on = ([_scintillaView message:SCI_GETVIEWEOL] != 0);
+        [(NSMenuItem *)item setState:on ? NSControlStateValueOn : NSControlStateValueOff];
+        return YES;
+    }
+    if (action == @selector(toggleWrapSymbol:)) {
+        BOOL on = ([_scintillaView message:SCI_GETWRAPVISUALFLAGS] != 0);
+        [(NSMenuItem *)item setState:on ? NSControlStateValueOn : NSControlStateValueOff];
+        return YES;
+    }
+    if (action == @selector(toggleHideLineMarks:)) {
+        BOOL on = ([_scintillaView message:SCI_GETMARGINWIDTHN wParam:1] == 0);
+        [(NSMenuItem *)item setState:on ? NSControlStateValueOn : NSControlStateValueOff];
+        return YES;
+    }
+
+    return YES;
+}
+
 #pragma mark - External file-change monitoring (polling)
 
 - (BOOL)monitoringMode { return _monitoringMode; }
@@ -1652,23 +1681,46 @@ static const unsigned int kSCI_SetRectSelAnchor          = 2590;
     return [text substringWithRange:NSMakeRange((NSUInteger)selStart, len)];
 }
 
-- (void)multiSelectAllInCurrentDocument:(id)sender {
+// ── Multi-Select helpers ─────────────────────────────────────────────────────
+
+/// Check if character at pos is a word character (alphanumeric or underscore)
+- (BOOL)_isWordCharAtPos:(sptr_t)pos inText:(NSString *)text {
+    if (pos < 0 || (NSUInteger)pos >= text.length) return NO;
+    unichar c = [text characterAtIndex:(NSUInteger)pos];
+    return [[NSCharacterSet alphanumericCharacterSet] characterIsMember:c] || c == '_';
+}
+
+/// Check if match at range is a whole word (not part of a larger word)
+- (BOOL)_isWholeWord:(NSRange)range inText:(NSString *)text {
+    if (range.location > 0 && [self _isWordCharAtPos:(sptr_t)(range.location - 1) inText:text])
+        return NO;
+    NSUInteger end = range.location + range.length;
+    if (end < text.length && [self _isWordCharAtPos:(sptr_t)end inText:text])
+        return NO;
+    return YES;
+}
+
+- (void)_multiSelectAll_matchCase:(BOOL)matchCase wholeWord:(BOOL)wholeWord {
     NSString *word = [self _currentSelectionOrWord];
     if (!word.length) return;
     ScintillaView *sci = _scintillaView;
     NSString *text = sci.string;
     [self _enableMultiSelect];
+
+    NSStringCompareOptions opts = matchCase ? NSLiteralSearch : NSCaseInsensitiveSearch;
     BOOL first = YES;
     NSRange search = NSMakeRange(0, text.length);
     NSRange found;
-    while ((found = [text rangeOfString:word options:NSLiteralSearch range:search]).location != NSNotFound) {
-        uptr_t caret  = (uptr_t)(found.location + found.length);
-        sptr_t anchor = (sptr_t)found.location;
-        if (first) {
-            [sci message:SCI_SETSEL wParam:caret lParam:anchor];
-            first = NO;
-        } else {
-            [sci message:kSCI_AddSelection wParam:caret lParam:anchor];
+    while ((found = [text rangeOfString:word options:opts range:search]).location != NSNotFound) {
+        if (!wholeWord || [self _isWholeWord:found inText:text]) {
+            uptr_t caret  = (uptr_t)(found.location + found.length);
+            sptr_t anchor = (sptr_t)found.location;
+            if (first) {
+                [sci message:SCI_SETSEL wParam:caret lParam:anchor];
+                first = NO;
+            } else {
+                [sci message:kSCI_AddSelection wParam:caret lParam:anchor];
+            }
         }
         NSUInteger next = found.location + 1;
         if (next >= text.length) break;
@@ -1676,15 +1728,22 @@ static const unsigned int kSCI_SetRectSelAnchor          = 2590;
     }
 }
 
-- (void)multiSelectNextInCurrentDocument:(id)sender {
+- (void)_multiSelectNext_matchCase:(BOOL)matchCase wholeWord:(BOOL)wholeWord {
     ScintillaView *sci = _scintillaView;
+    NSString *word = [self _currentSelectionOrWord];
+    if (!word.length) return;
+
+    // If nothing was selected, select the word under caret first
     sptr_t selStart = [sci message:SCI_GETSELECTIONSTART];
     sptr_t selEnd   = [sci message:SCI_GETSELECTIONEND];
-    if (selStart == selEnd) return;
+    if (selStart == selEnd) {
+        selStart = [sci message:SCI_WORDSTARTPOSITION wParam:(uptr_t)selStart lParam:1];
+        selEnd   = [sci message:SCI_WORDENDPOSITION   wParam:(uptr_t)selEnd   lParam:1];
+        [sci message:SCI_SETSEL wParam:(uptr_t)selEnd lParam:selStart];
+    }
+
     NSString *text = sci.string;
-    NSUInteger wordLen = (NSUInteger)(selEnd - selStart);
-    if ((NSUInteger)selStart + wordLen > text.length) return;
-    NSString *word = [text substringWithRange:NSMakeRange((NSUInteger)selStart, wordLen)];
+    NSStringCompareOptions opts = matchCase ? NSLiteralSearch : NSCaseInsensitiveSearch;
 
     // Find the furthest caret position across all current selections
     NSInteger n = [sci message:kSCI_GetSelections];
@@ -1694,17 +1753,46 @@ static const unsigned int kSCI_SetRectSelAnchor          = 2590;
         if (c > searchFrom) searchFrom = c;
     }
 
+    // Search forward from last selection, then wrap
     NSRange search = NSMakeRange((NSUInteger)searchFrom, text.length - (NSUInteger)searchFrom);
-    NSRange found = [text rangeOfString:word options:NSLiteralSearch range:search];
-    if (found.location == NSNotFound)
-        found = [text rangeOfString:word options:NSLiteralSearch]; // wrap
-    if (found.location == NSNotFound) return;
-
-    [self _enableMultiSelect];
-    [sci message:kSCI_AddSelection
-          wParam:(uptr_t)(found.location + found.length)
-           lParam:(sptr_t)found.location];
+    BOOL wrapped = NO;
+    while (YES) {
+        NSRange found = [text rangeOfString:word options:opts range:search];
+        if (found.location == NSNotFound) {
+            if (wrapped) return;
+            wrapped = YES;
+            search = NSMakeRange(0, text.length);
+            continue;
+        }
+        if (!wholeWord || [self _isWholeWord:found inText:text]) {
+            [self _enableMultiSelect];
+            [sci message:kSCI_AddSelection
+                  wParam:(uptr_t)(found.location + found.length)
+                   lParam:(sptr_t)found.location];
+            return;
+        }
+        NSUInteger next = found.location + 1;
+        if (next >= text.length) {
+            if (wrapped) return;
+            wrapped = YES;
+            search = NSMakeRange(0, text.length);
+        } else {
+            search = NSMakeRange(next, text.length - next);
+        }
+    }
 }
+
+// Multi-Select All — 4 variants
+- (void)multiSelectAllIgnoreCaseIgnoreWord:(id)sender  { [self _multiSelectAll_matchCase:NO  wholeWord:NO];  }
+- (void)multiSelectAllMatchCaseOnly:(id)sender         { [self _multiSelectAll_matchCase:YES wholeWord:NO];  }
+- (void)multiSelectAllWholeWordOnly:(id)sender         { [self _multiSelectAll_matchCase:NO  wholeWord:YES]; }
+- (void)multiSelectAllMatchCaseWholeWord:(id)sender    { [self _multiSelectAll_matchCase:YES wholeWord:YES]; }
+
+// Multi-Select Next — 4 variants
+- (void)multiSelectNextIgnoreCaseIgnoreWord:(id)sender { [self _multiSelectNext_matchCase:NO  wholeWord:NO];  }
+- (void)multiSelectNextMatchCaseOnly:(id)sender        { [self _multiSelectNext_matchCase:YES wholeWord:NO];  }
+- (void)multiSelectNextWholeWordOnly:(id)sender        { [self _multiSelectNext_matchCase:NO  wholeWord:YES]; }
+- (void)multiSelectNextMatchCaseWholeWord:(id)sender   { [self _multiSelectNext_matchCase:YES wholeWord:YES]; }
 
 - (void)undoLatestMultiSelect:(id)sender {
     ScintillaView *sci = _scintillaView;
@@ -1730,7 +1818,7 @@ static const unsigned int kSCI_SetRectSelAnchor          = 2590;
         [sci message:kSCI_SetMainSelection wParam:0];
     }
 
-    // Find next occurrence after old mainEnd
+    // Find next occurrence after old mainEnd (case-sensitive, no whole-word)
     NSRange search = NSMakeRange((NSUInteger)mainEnd, text.length - (NSUInteger)mainEnd);
     NSRange found = [text rangeOfString:word options:NSLiteralSearch range:search];
     if (found.location == NSNotFound)
