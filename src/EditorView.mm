@@ -1099,7 +1099,7 @@ static NSColor *nppColorFromHex(NSString *hex) {
         };
         [sci message:SCI_RGBAIMAGESETWIDTH  wParam:14 lParam:0];
         [sci message:SCI_RGBAIMAGESETHEIGHT wParam:14 lParam:0];
-        [sci message:SCI_RGBAIMAGESETSCALE  wParam:180 lParam:0];
+        [sci message:SCI_RGBAIMAGESETSCALE  wParam:190 lParam:0];
         [sci message:SCI_MARKERDEFINERGBAIMAGE wParam:kBookmarkMarker lParam:(sptr_t)bookmark14];
     }
 
