@@ -2858,6 +2858,11 @@ static NSString *nppMacrosPath(void) {
 
 #pragma mark - Not Yet Implemented
 
+/// Hide the primary tab bar (for -notabbar CLI flag).
+- (void)_hideTabBarForCLI {
+    _tabManager.tabBar.hidden = YES;
+}
+
 - (void)notYetImplemented:(id)sender {
     NSString *title = [(NSMenuItem *)sender title];
     NSAlert *a = [[NSAlert alloc] init];

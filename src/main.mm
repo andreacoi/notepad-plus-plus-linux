@@ -1,10 +1,63 @@
 #import <Cocoa/Cocoa.h>
 #import "AppDelegate.h"
+#import "NppCommandLineParams.h"
+
+static void printHelp(const char *progName) {
+    fprintf(stdout,
+        "Usage:\n\n"
+        "  %s [options] [filePath ...]\n\n"
+        "Options:\n"
+        "  --help                       This help message\n"
+        "  -multiInst                   Launch another Notepad++ instance\n"
+        "  -noPlugin                    Launch without loading any plugin\n"
+        "  -lLanguage                   Open file with syntax highlighting of choice\n"
+        "  -udl=\"My UDL Name\"           Open file applying User Defined Language\n"
+        "  -LlangCode                   Apply indicated localization\n"
+        "  -nLineNumber                 Scroll to indicated line on filePath\n"
+        "  -cColumnNumber               Scroll to indicated column on filePath\n"
+        "  -pPosition                   Scroll to indicated byte position on filePath\n"
+        "  -xLeftPos                    Move window to indicated X position\n"
+        "  -yTopPos                     Move window to indicated Y position\n"
+        "  -monitor                     Open file with monitoring (tail -f) enabled\n"
+        "  -nosession                   Launch without loading previous session\n"
+        "  -notabbar                    Launch without tab bar\n"
+        "  -ro                          Make filePath read-only\n"
+        "  -fullReadOnly                Open all files read-only (toggling allowed)\n"
+        "  -fullReadOnlySavingForbidden Open all files read-only (saving disabled)\n"
+        "  -alwaysOnTop                 Make window always on top\n"
+        "  -openSession                 Open a session file (filePath must be a session)\n"
+        "  -r                           Open files recursively (if filePath has wildcard)\n"
+        "  -openFoldersAsWorkspace      Open folder(s) as workspace\n"
+        "  -titleAdd=\"string\"           Add string to title bar\n"
+        "  -settingsDir=\"path\"          Override default settings directory\n"
+        "  -quickPrint                  Print file and quit\n"
+        "  -loadingTime                 Display loading time\n\n"
+        "  filePath                     File or folder to open (absolute or relative)\n\n"
+        "Examples:\n"
+        "  %s -n42 -lcpp main.cpp\n"
+        "  %s -nosession -alwaysOnTop notes.txt\n"
+        "  open NotepadPlusPlusMac.app --args -n10 file.txt\n",
+        progName, progName, progName);
+}
 
 int main(int argc, const char *argv[]) {
     @autoreleasepool {
+        // Parse command line arguments before NSApplication starts
+        NppCommandLineParams *cliParams = [[NppCommandLineParams alloc] initWithArgc:argc argv:argv];
+
+        // --help: print usage to stdout and exit immediately (no GUI)
+        if (cliParams.showHelp) {
+            printHelp(argv[0]);
+            return 0;
+        }
+
+        // -loadingTime: record start time
+        NSDate *launchStart = cliParams.showLoadingTime ? [NSDate date] : nil;
+
         NSApplication *app = [NSApplication sharedApplication];
         AppDelegate *delegate = [[AppDelegate alloc] init];
+        delegate.cliParams = cliParams;
+        delegate.launchStart = launchStart;
         app.delegate = delegate;
         [app run];
     }

@@ -13,6 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// The active editor in the currently focused pane (for plugin access).
 - (nullable EditorView *)currentEditor;
 
+/// Load a session file (plist format with tabs array).
+- (void)loadSessionFromPath:(NSString *)path;
+
+/// Restore the last session from ~/.notepad++/session.plist.
+- (BOOL)restoreLastSession;
+
 /// Add a plugin-provided toolbar icon.  Called by NppPluginManager when a
 /// plugin sends NPPM_ADDTOOLBARICON_FORDARKMODE.
 - (void)addPluginToolbarIcon:(NSImage *)icon tooltip:(NSString *)tooltip cmdID:(int)cmdID;
