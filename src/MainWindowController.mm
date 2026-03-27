@@ -4217,12 +4217,80 @@ static NSString *nppMacrosPath(void) {
 }
 
 - (void)showCLIHelp:(id)sender {
-    NSAlert *a = [[NSAlert alloc] init];
-    a.messageText     = @"Command Line Arguments";
-    a.informativeText = @"NotepadPlusPlusMac accepts file paths as arguments:\n\n"
-                        @"  NotepadPlusPlusMac file1.txt file2.cpp …\n\n"
-                        @"No additional CLI flags are currently supported.";
-    [a runModal];
+    NSPanel *panel = [[NSPanel alloc]
+        initWithContentRect:NSMakeRect(0, 0, 620, 520)
+                  styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
+                    backing:NSBackingStoreBuffered
+                      defer:NO];
+    panel.title = @"Command Line Arguments";
+    [panel center];
+
+    NSScrollView *scroll = [[NSScrollView alloc] initWithFrame:NSMakeRect(15, 45, 590, 460)];
+    scroll.hasVerticalScroller = YES;
+    scroll.autohidesScrollers = YES;
+
+    NSTextView *tv = [[NSTextView alloc] initWithFrame:NSMakeRect(0, 0, 570, 460)];
+    tv.editable = NO;
+    tv.font = [NSFont fontWithName:@"Menlo" size:11];
+    tv.string =
+        @"Usage:\n\n"
+        @"notepad++ [--help] [-multiInst] [-noPlugin] [-lLanguage] [-udl=\"My UDL Name\"]\n"
+        @"[-LlangCode] [-nLineNumber] [-cColumnNumber] [-pPosition] [-xLeftPos] [-yTopPos]\n"
+        @"[-monitor] [-nosession] [-notabbar] [-loadingTime] [-alwaysOnTop]\n"
+        @"[-ro] [-fullReadOnly] [-fullReadOnlySavingForbidden] [-openSession] [-r]\n"
+        @"[-qn=\"Easter egg name\" | -qt=\"a text to display.\" | -qf=\"/path/quote.txt\"]\n"
+        @"[-qSpeed1|2|3] [-quickPrint] [-settingsDir=\"/your settings dir/\"]\n"
+        @"[-openFoldersAsWorkspace] [-titleAdd=\"additional title bar text\"]\n"
+        @"[filePath]\n\n"
+        @"--help: This help message\n"
+        @"-multiInst: Launch another Notepad++ instance\n"
+        @"-noPlugin: Launch Notepad++ without loading any plugin\n"
+        @"-l: Open file or Ghost type with syntax highlighting of choice\n"
+        @"-udl=\"My UDL Name\": Open file by applying User Defined Language\n"
+        @"-L: Apply indicated localization, langCode is browser language code\n"
+        @"-n: Scroll to indicated line on filePath\n"
+        @"-c: Scroll to indicated column on filePath\n"
+        @"-p: Scroll to indicated position on filePath\n"
+        @"-x: Move Notepad++ to indicated left side position on the screen\n"
+        @"-y: Move Notepad++ to indicated top position on the screen\n"
+        @"-monitor: Open file with file monitoring enabled\n"
+        @"-nosession: Launch Notepad++ without previous session\n"
+        @"-notabbar: Launch Notepad++ without tab bar\n"
+        @"-ro: Make the filePath read-only\n"
+        @"-fullReadOnly: Open all files read-only by default, toggling the R/O off\n"
+        @"  and saving is allowed\n"
+        @"-fullReadOnlySavingForbidden: Open all files read-only by default,\n"
+        @"  toggling the R/O off and saving is disabled\n"
+        @"-loadingTime: Display Notepad++ loading time\n"
+        @"-alwaysOnTop: Make Notepad++ always on top\n"
+        @"-openSession: Open a session. filePath must be a session file\n"
+        @"-r: Open files recursively. This argument will be ignored if filePath\n"
+        @"  contains no wildcard character\n"
+        @"-qn=\"Easter egg name\": Ghost type easter egg via its name\n"
+        @"-qt=\"text to display.\": Ghost type the given text\n"
+        @"-qf=\"/path/quote.txt\": Ghost type a file content via the file path\n"
+        @"-qSpeed: Ghost typing speed. Value from 1 to 3 for slow, fast and fastest\n"
+        @"-quickPrint: Print the file given as argument then quit Notepad++\n"
+        @"-settingsDir=\"/your settings dir/\": Override the default settings dir\n"
+        @"-openFoldersAsWorkspace: Open filePath of folder(s) as workspace\n"
+        @"-titleAdd=\"string\": Add string to Notepad++ title bar\n"
+        @"filePath: File or folder name to open (absolute or relative path name)\n\n"
+        @"Note: On macOS, most CLI arguments are not yet implemented.\n"
+        @"Currently supported: filePath (open files via command line or Finder).";
+
+    scroll.documentView = tv;
+    [panel.contentView addSubview:scroll];
+
+    NSButton *btnOK = [[NSButton alloc] initWithFrame:NSMakeRect(265, 8, 90, 28)];
+    btnOK.title = @"OK";
+    btnOK.bezelStyle = NSBezelStyleRounded;
+    btnOK.keyEquivalent = @"\r";
+    btnOK.target = NSApp;
+    btnOK.action = @selector(stopModal);
+    [panel.contentView addSubview:btnOK];
+
+    [NSApp runModalForWindow:panel];
+    [panel orderOut:nil];
 }
 
 - (void)checkForUpdates:(id)sender {
@@ -4349,16 +4417,16 @@ static NSString *nppMacrosPath(void) {
 #pragma mark - Help / Debug
 
 - (void)openNppHome:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://notepad-plus-plus.org/"]];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://notepad-plus-plus-mac.org"]];
 }
 - (void)openNppProjectPage:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/notepad-plus-plus/notepad-plus-plus"]];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/orgs/nppmss/repositories"]];
 }
 - (void)openNppManual:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://npp-user-manual.org/"]];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://npp-user-manual.org"]];
 }
 - (void)openNppForum:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://community.notepad-plus-plus.org/"]];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://community.notepad-plus-plus.org"]];
 }
 
 - (void)showDebugInfo:(id)sender {
