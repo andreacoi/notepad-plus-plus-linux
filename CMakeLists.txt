@@ -192,6 +192,7 @@ add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
     COMMENT "Copying pre-installed UDL files into bundle")
 
 set_target_properties(NotepadPlusPlusMac PROPERTIES
+    OUTPUT_NAME "Notepad++"
     MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/resources/Info.plist"
     MACOSX_BUNDLE_BUNDLE_NAME "Notepad++"
     MACOSX_BUNDLE_GUI_IDENTIFIER "org.notepadplusplus.mac"
