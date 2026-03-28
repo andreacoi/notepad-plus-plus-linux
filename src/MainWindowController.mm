@@ -20,6 +20,7 @@
 #import "CharacterPanel.h"
 #import "PluginsAdminWindowController.h"
 #import "NppPluginManager.h"
+#import "ShortcutMapperWindowController.h"
 #import "UserDefineLangManager.h"
 #import "UserDefineDialog.h"
 #import <objc/runtime.h>
@@ -4537,10 +4538,8 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 }
 
 - (void)showShortcutMapper:(id)sender {
-    NSAlert *a = [[NSAlert alloc] init];
-    a.messageText     = @"Shortcut Mapper";
-    a.informativeText = @"Shortcut mapping is not yet supported in this port.";
-    [a runModal];
+    ShortcutMapperWindowController *mapper = [[ShortcutMapperWindowController alloc] init];
+    [mapper showWithTab:ShortcutMapperTabMainMenu];
 }
 
 - (void)editPopupContextMenu:(id)sender {
