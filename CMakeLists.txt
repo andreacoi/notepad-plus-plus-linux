@@ -191,8 +191,17 @@ add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
         "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/userDefineLangs"
     COMMENT "Copying pre-installed UDL files into bundle")
 
+# Localized display name so Dock shows "Notepad++" not "NotepadPlusPlus"
+add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/en.lproj"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/resources/en.lproj/InfoPlist.strings"
+        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/en.lproj/InfoPlist.strings"
+    COMMENT "Copying localized display name")
+
 set_target_properties(NotepadPlusPlusMac PROPERTIES
-    OUTPUT_NAME "Notepad++"
+    OUTPUT_NAME "NotepadPlusPlus"
     MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/resources/Info.plist"
     MACOSX_BUNDLE_BUNDLE_NAME "Notepad++"
     MACOSX_BUNDLE_GUI_IDENTIFIER "org.notepadplusplus.mac"
