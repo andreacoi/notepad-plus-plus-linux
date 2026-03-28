@@ -759,13 +759,14 @@ static NSMenu *buildLanguageMenu() {
 
     // ── Macro ─────────────────────────────────────────────────────────────────
     NSMenuItem *macroItem = [[NSMenuItem alloc] init];
+    macroItem.tag = 9900; // used by rebuildMacroMenu to find this menu
     [main addItem:macroItem];
     NSMenu *macroMenu = submenu(@"Macro");
     macroItem.submenu = macroMenu;
 
-    [macroMenu addItem:itemMod(@"Start Recording", @selector(toggleMacroRecording:), @"r",
+    [macroMenu addItem:itemMod(@"Start Recording", @selector(startMacroRecording:), @"r",
                                NSEventModifierFlagCommand | NSEventModifierFlagShift)];
-    [macroMenu addItem:itemMod(@"Stop Recording",  @selector(toggleMacroRecording:), @"r",
+    [macroMenu addItem:itemMod(@"Stop Recording",  @selector(stopMacroRecording:), @"r",
                                NSEventModifierFlagCommand | NSEventModifierFlagShift)];
     [macroMenu addItem:itemMod(@"Playback",        @selector(runMacro:), @"m",
                                NSEventModifierFlagCommand | NSEventModifierFlagShift)];
@@ -774,14 +775,14 @@ static NSMenu *buildLanguageMenu() {
     [macroMenu addItem:item(@"Run a Macro Multiple Times…", @selector(runMacroMultipleTimes:), @"")];
     addSep(macroMenu);
     [macroMenu addItem:item(@"Trim Trailing Space and Save", @selector(trimTrailingSpaceAndSave:), @"")];
-    addSep(macroMenu);
-    [macroMenu addItem:item(@"Modify Shortcut/Delete Macro…", @selector(showMacroManager:), @"")];
-    // ── Saved macros separator (tag 9901) — items appended by rebuildMacroMenu ──
+    // ── Saved macros appear here (tag 9901) — items appended by rebuildMacroMenu ──
     {
         NSMenuItem *savedSep = [NSMenuItem separatorItem];
         savedSep.tag = 9901;
         [macroMenu addItem:savedSep];
     }
+    addSep(macroMenu);
+    [macroMenu addItem:item(@"Modify Shortcut/Delete Macro…", @selector(showMacroManager:), @"")];
 
     // ── Run ───────────────────────────────────────────────────────────────────
     NSMenuItem *runItem = [[NSMenuItem alloc] init];

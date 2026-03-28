@@ -80,10 +80,28 @@ static NSString *nppBackupDir(void) {
 static NSString *nppSessionPath(void) {
     return [nppConfigDir() stringByAppendingPathComponent:@"session.plist"];
 }
+// Forward declarations for shortcuts.xml functions (defined after @implementation)
+static NSString *nppShortcutsPath(void);
+static NSArray<NSDictionary *> *loadMacrosFromShortcutsXML(void);
+static void saveMacrosToShortcutsXML(NSArray<NSDictionary *> *macros);
+
 static void ensureNppDirs(void) {
     NSFileManager *fm = [NSFileManager defaultManager];
     [fm createDirectoryAtPath:nppBackupDir()
   withIntermediateDirectories:YES attributes:nil error:nil];
+
+    // Create default shortcuts.xml with "Trim Trailing Space and Save" if none exists
+    NSString *shortcutsPath = nppShortcutsPath();
+    if (![fm fileExistsAtPath:shortcutsPath]) {
+        NSArray *defaultMacros = @[@{
+            @"name": @"Trim Trailing Space and Save",
+            @"actions": @[
+                @{@"type": @2, @"message": @0, @"wParam": @42024, @"lParam": @0, @"sParam": @""},
+                @{@"type": @2, @"message": @0, @"wParam": @41006, @"lParam": @0, @"sParam": @""},
+            ]
+        }];
+        saveMacrosToShortcutsXML(defaultMacros);
+    }
 }
 
 // Toolbar item identifiers
@@ -918,7 +936,7 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     _tbStartRecord.enabled = !recording;
     _tbStopRecord.enabled  = recording;
     _tbPlayRecord.enabled  = !recording && hasMacro;
-    _tbPlayRecordM.enabled = !recording && hasMacro;
+    _tbPlayRecordM.enabled = !recording;   // can run saved macros even without current recording
     _tbSaveRecord.enabled  = !recording && hasMacro;
     // Dim disabled macro buttons
     _tbStartRecord.alphaValue = _tbStartRecord.isEnabled ? 1.0 : 0.30;
@@ -1331,8 +1349,78 @@ static BOOL groupHasTrailingSep(NSString *ident) {
 
 #pragma mark - Session Load/Save (user-triggered)
 
-static NSString *nppMacrosPath(void) {
-    return [nppConfigDir() stringByAppendingPathComponent:@"macros.plist"];
+static NSString *nppShortcutsPath(void) {
+    return [nppConfigDir() stringByAppendingPathComponent:@"shortcuts.xml"];
+}
+
+// ── shortcuts.xml macro read/write (Windows-compatible format) ────────────────
+
+/// Load macros from shortcuts.xml. Returns array of @{@"name":..., @"actions":...}
+static NSArray<NSDictionary *> *loadMacrosFromShortcutsXML(void) {
+    NSString *path = nppShortcutsPath();
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    if (!data) return @[];
+
+    NSError *err = nil;
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:0 error:&err];
+    if (!doc) return @[];
+
+    NSArray *macroNodes = [doc nodesForXPath:@"//Macros/Macro" error:nil];
+    NSMutableArray *result = [NSMutableArray array];
+    for (NSXMLElement *macroEl in macroNodes) {
+        NSString *name = [[macroEl attributeForName:@"name"] stringValue] ?: @"Untitled";
+        NSMutableArray *actions = [NSMutableArray array];
+        for (NSXMLElement *actionEl in [macroEl elementsForName:@"Action"]) {
+            NSMutableDictionary *act = [NSMutableDictionary dictionary];
+            act[@"type"]    = @([[[actionEl attributeForName:@"type"] stringValue] intValue]);
+            act[@"message"] = @([[[actionEl attributeForName:@"message"] stringValue] intValue]);
+            act[@"wParam"]  = @([[[actionEl attributeForName:@"wParam"] stringValue] longLongValue]);
+            act[@"lParam"]  = @([[[actionEl attributeForName:@"lParam"] stringValue] longLongValue]);
+            act[@"sParam"]  = [[actionEl attributeForName:@"sParam"] stringValue] ?: @"";
+            [actions addObject:act];
+        }
+        [result addObject:@{@"name": name, @"actions": actions}];
+    }
+    return result;
+}
+
+/// Save macros to shortcuts.xml in Windows-compatible format.
+static void saveMacrosToShortcutsXML(NSArray<NSDictionary *> *macros) {
+    // Build XML: <NotepadPlus><Macros><Macro name="...">...</Macro></Macros></NotepadPlus>
+    NSXMLElement *root = [NSXMLElement elementWithName:@"NotepadPlus"];
+    NSXMLElement *macrosEl = [NSXMLElement elementWithName:@"Macros"];
+
+    for (NSDictionary *macro in macros) {
+        NSXMLElement *macroEl = [NSXMLElement elementWithName:@"Macro"];
+        [macroEl addAttribute:[NSXMLNode attributeWithName:@"name" stringValue:macro[@"name"]]];
+        [macroEl addAttribute:[NSXMLNode attributeWithName:@"Ctrl" stringValue:@"no"]];
+        [macroEl addAttribute:[NSXMLNode attributeWithName:@"Alt" stringValue:@"no"]];
+        [macroEl addAttribute:[NSXMLNode attributeWithName:@"Shift" stringValue:@"no"]];
+        [macroEl addAttribute:[NSXMLNode attributeWithName:@"Key" stringValue:@"0"]];
+
+        for (NSDictionary *act in macro[@"actions"]) {
+            NSXMLElement *actionEl = [NSXMLElement elementWithName:@"Action"];
+            [actionEl addAttribute:[NSXMLNode attributeWithName:@"type"
+                                                    stringValue:[NSString stringWithFormat:@"%d", [act[@"type"] intValue]]]];
+            [actionEl addAttribute:[NSXMLNode attributeWithName:@"message"
+                                                    stringValue:[NSString stringWithFormat:@"%d", [act[@"message"] intValue]]]];
+            [actionEl addAttribute:[NSXMLNode attributeWithName:@"wParam"
+                                                    stringValue:[NSString stringWithFormat:@"%lld", [act[@"wParam"] longLongValue]]]];
+            [actionEl addAttribute:[NSXMLNode attributeWithName:@"lParam"
+                                                    stringValue:[NSString stringWithFormat:@"%lld", [act[@"lParam"] longLongValue]]]];
+            [actionEl addAttribute:[NSXMLNode attributeWithName:@"sParam"
+                                                    stringValue:act[@"sParam"] ?: @""]];
+            [macroEl addChild:actionEl];
+        }
+        [macrosEl addChild:macroEl];
+    }
+    [root addChild:macrosEl];
+
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithRootElement:root];
+    doc.version = @"1.0";
+    doc.characterEncoding = @"UTF-8";
+    NSData *xmlData = [doc XMLDataWithOptions:NSXMLNodePrettyPrint];
+    [xmlData writeToFile:nppShortcutsPath() atomically:YES];
 }
 
 - (void)loadSessionFromPath:(NSString *)path {
@@ -1608,19 +1696,151 @@ static NSString *nppMacrosPath(void) {
 - (void)runMacroMultipleTimes:(id)sender {
     EditorView *ed = [self currentEditor];
     if (!ed) return;
-    NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = @"Run Macro Multiple Times";
-    [alert addButtonWithTitle:@"Run"];
-    [alert addButtonWithTitle:@"Cancel"];
-    NSTextField *input = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 80, 22)];
-    input.placeholderString = @"Times";
-    input.integerValue = 1;
-    alert.accessoryView = input;
-    [alert.window makeFirstResponder:input];
-    if ([alert runModal] == NSAlertFirstButtonReturn) {
-        NSInteger times = MAX(1, input.integerValue);
-        for (NSInteger i = 0; i < times; i++) [ed runMacro];
+
+    // Load saved macros for the dropdown
+    NSArray<NSDictionary *> *savedMacros = loadMacrosFromShortcutsXML();
+
+    // Build macro name list: "Current recorded macro" + saved macros
+    NSMutableArray<NSString *> *macroNames = [NSMutableArray array];
+    [macroNames addObject:@"Current recorded macro"];
+    for (NSDictionary *m in savedMacros)
+        [macroNames addObject:m[@"name"]];
+
+    // Build dialog
+    NSPanel *panel = [[NSPanel alloc]
+        initWithContentRect:NSMakeRect(0, 0, 340, 180)
+                  styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
+                    backing:NSBackingStoreBuffered defer:NO];
+    panel.title = @"Run a Macro Multiple Times";
+    [panel center];
+    NSView *cv = panel.contentView;
+
+    // "Macro to run" label
+    NSTextField *lbl = [NSTextField labelWithString:@"Macro to run"];
+    lbl.frame = NSMakeRect(110, 148, 120, 16);
+    lbl.alignment = NSTextAlignmentCenter;
+    [cv addSubview:lbl];
+
+    // Macro dropdown
+    NSPopUpButton *macroPopup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(20, 120, 300, 25) pullsDown:NO];
+    [macroPopup addItemsWithTitles:macroNames];
+    // Default to "Trim Trailing Space and Save" if it exists, else current recorded macro
+    for (NSUInteger i = 0; i < macroNames.count; i++) {
+        if ([macroNames[i] isEqualToString:@"Trim Trailing Space and Save"]) {
+            [macroPopup selectItemAtIndex:i];
+            break;
+        }
     }
+    [cv addSubview:macroPopup];
+
+    // "Run N times" radio + text field
+    NSButton *radioN = [NSButton radioButtonWithTitle:@"Run" target:nil action:nil];
+    radioN.frame = NSMakeRect(20, 85, 60, 20);
+    radioN.state = NSControlStateValueOn;
+    [cv addSubview:radioN];
+
+    NSTextField *timesField = [[NSTextField alloc] initWithFrame:NSMakeRect(85, 85, 50, 22)];
+    timesField.integerValue = 1;
+    [cv addSubview:timesField];
+
+    NSTextField *timesLabel = [NSTextField labelWithString:@"times"];
+    timesLabel.frame = NSMakeRect(140, 87, 40, 16);
+    [cv addSubview:timesLabel];
+
+    // "Run until end of file" radio
+    NSButton *radioEOF = [NSButton radioButtonWithTitle:@"Run until the end of file" target:nil action:nil];
+    radioEOF.frame = NSMakeRect(20, 58, 250, 20);
+    radioEOF.state = NSControlStateValueOff;
+    [cv addSubview:radioEOF];
+
+    // Link radio buttons
+    radioN.target = radioEOF; radioN.action = @selector(setState:);
+    radioEOF.target = radioN; radioEOF.action = @selector(setState:);
+    // Manual radio group behavior
+    __block NSButton *selectedRadio = radioN;
+    radioN.action = nil; radioEOF.action = nil;
+    radioN.target = nil; radioEOF.target = nil;
+
+    // Run / Cancel buttons
+    NSButton *btnRun = [[NSButton alloc] initWithFrame:NSMakeRect(130, 12, 85, 28)];
+    btnRun.title = @"Run";
+    btnRun.bezelStyle = NSBezelStyleRounded;
+    btnRun.keyEquivalent = @"\r";
+    btnRun.target = NSApp;
+    btnRun.action = @selector(stopModal);
+    [cv addSubview:btnRun];
+
+    NSButton *btnCancel = [[NSButton alloc] initWithFrame:NSMakeRect(223, 12, 85, 28)];
+    btnCancel.title = @"Cancel";
+    btnCancel.bezelStyle = NSBezelStyleRounded;
+    btnCancel.keyEquivalent = @"\033";
+    btnCancel.target = NSApp;
+    btnCancel.action = @selector(abortModal);
+    [cv addSubview:btnCancel];
+
+    NSModalResponse resp = [NSApp runModalForWindow:panel];
+    [panel orderOut:nil];
+    if (resp != NSModalResponseStop) return;
+
+    // Determine which macro to run
+    NSInteger selectedIdx = macroPopup.indexOfSelectedItem;
+    NSArray<NSDictionary *> *actionsToRun = nil;
+    if (selectedIdx == 0) {
+        // Current recorded macro
+        actionsToRun = ed.macroActions;
+    } else {
+        actionsToRun = savedMacros[selectedIdx - 1][@"actions"];
+    }
+    if (!actionsToRun.count) {
+        NSBeep(); return;
+    }
+
+    // Run N times or until EOF
+    BOOL runUntilEOF = (radioEOF.state == NSControlStateValueOn);
+    if (runUntilEOF) {
+        // Run until cursor stops advancing or goes past EOF
+        for (NSInteger iter = 0; iter < 100000; iter++) {
+            sptr_t posBefore = [ed.scintillaView message:SCI_GETCURRENTPOS];
+            sptr_t lastLine  = [ed.scintillaView message:SCI_GETLINECOUNT] - 1;
+            sptr_t curLine   = [ed.scintillaView message:SCI_LINEFROMPOSITION wParam:(uptr_t)posBefore];
+            [ed runMacroActions:actionsToRun];
+            sptr_t posAfter = [ed.scintillaView message:SCI_GETCURRENTPOS];
+            sptr_t curLineAfter = [ed.scintillaView message:SCI_LINEFROMPOSITION wParam:(uptr_t)posAfter];
+            if (posAfter == posBefore) break;        // no progress
+            if (curLineAfter > lastLine) break;      // past EOF
+            if (curLineAfter < curLine) break;        // moved backwards
+        }
+    } else {
+        NSInteger times = MAX(1, timesField.integerValue);
+        for (NSInteger i = 0; i < times; i++)
+            [ed runMacroActions:actionsToRun];
+    }
+}
+
+/// Convert recorded macro actions (msg/wp/lp/text keys) to shortcuts.xml format (type/message/wParam/lParam/sParam)
+static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary *> *recorded) {
+    NSMutableArray *xmlActions = [NSMutableArray array];
+    for (NSDictionary *act in recorded) {
+        int msg = [act[@"msg"] intValue];
+        long long wp = [act[@"wp"] longLongValue];
+        long long lp = [act[@"lp"] longLongValue];
+        NSString *text = act[@"text"];
+
+        NSMutableDictionary *xmlAct = [NSMutableDictionary dictionary];
+        xmlAct[@"message"] = @(msg);
+        xmlAct[@"wParam"]  = @(wp);
+        xmlAct[@"lParam"]  = @(lp);
+
+        if (text.length) {
+            xmlAct[@"type"]   = @1;  // mtUseSParameter
+            xmlAct[@"sParam"] = text;
+        } else {
+            xmlAct[@"type"]   = @0;  // mtUseLParameter
+            xmlAct[@"sParam"] = @"";
+        }
+        [xmlActions addObject:xmlAct];
+    }
+    return xmlActions;
 }
 
 - (void)saveCurrentMacro:(id)sender {
@@ -1630,28 +1850,107 @@ static NSString *nppMacrosPath(void) {
         NSAlert *a = [[NSAlert alloc] init];
         a.messageText = @"No Macro Recorded";
         a.informativeText = @"Record a macro first using Start Recording.";
+        a.icon = [[NSImage alloc] initWithContentsOfFile:
+            [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/plugins/Config/logo100px.png"]];
         [a runModal];
         return;
     }
-    NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = @"Save Current Recorded Macro";
-    [alert addButtonWithTitle:@"Save"];
-    [alert addButtonWithTitle:@"Cancel"];
-    NSTextField *input = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 200, 22)];
-    input.placeholderString = @"Macro name";
-    alert.accessoryView = input;
-    [alert.window makeFirstResponder:input];
-    if ([alert runModal] != NSAlertFirstButtonReturn) return;
-    NSString *name = [input.stringValue stringByTrimmingCharactersInSet:
+
+    // Build Shortcut dialog (matching Windows screenshot)
+    NSPanel *panel = [[NSPanel alloc]
+        initWithContentRect:NSMakeRect(0, 0, 340, 200)
+                  styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
+                    backing:NSBackingStoreBuffered defer:NO];
+    panel.title = @"Shortcut";
+    [panel center];
+    NSView *cv = panel.contentView;
+
+    // Name field
+    NSTextField *nameLbl = [NSTextField labelWithString:@"Name:"];
+    nameLbl.frame = NSMakeRect(20, 162, 50, 16);
+    [cv addSubview:nameLbl];
+
+    NSTextField *nameField = [[NSTextField alloc] initWithFrame:NSMakeRect(75, 158, 240, 24)];
+    nameField.placeholderString = @"Macro name";
+    [cv addSubview:nameField];
+
+    // Modifier checkboxes — macOS native symbols
+    NSButton *chkCmd = [NSButton checkboxWithTitle:@"\u2318 Command" target:nil action:nil];
+    chkCmd.frame = NSMakeRect(20, 125, 140, 20);
+    [cv addSubview:chkCmd];
+
+    NSButton *chkCtrl = [NSButton checkboxWithTitle:@"\u2303 Control" target:nil action:nil];
+    chkCtrl.frame = NSMakeRect(170, 125, 140, 20);
+    [cv addSubview:chkCtrl];
+
+    NSButton *chkOpt = [NSButton checkboxWithTitle:@"\u2325 Option" target:nil action:nil];
+    chkOpt.frame = NSMakeRect(20, 98, 140, 20);
+    [cv addSubview:chkOpt];
+
+    NSButton *chkShift = [NSButton checkboxWithTitle:@"\u21E7 Shift" target:nil action:nil];
+    chkShift.frame = NSMakeRect(170, 98, 100, 20);
+    [cv addSubview:chkShift];
+
+    NSTextField *plusKey = [NSTextField labelWithString:@"+"];
+    plusKey.frame = NSMakeRect(265, 100, 15, 16);
+    [cv addSubview:plusKey];
+
+    // Key dropdown
+    NSPopUpButton *keyPopup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(278, 96, 42, 25) pullsDown:NO];
+    [keyPopup addItemWithTitle:@"None"];
+    // Add letter keys A-Z
+    for (unichar c = 'A'; c <= 'Z'; c++)
+        [keyPopup addItemWithTitle:[NSString stringWithFormat:@"%c", c]];
+    // Add number keys 0-9
+    for (unichar c = '0'; c <= '9'; c++)
+        [keyPopup addItemWithTitle:[NSString stringWithFormat:@"%c", c]];
+    // Add function keys
+    for (int i = 1; i <= 12; i++)
+        [keyPopup addItemWithTitle:[NSString stringWithFormat:@"F%d", i]];
+    [cv addSubview:keyPopup];
+
+    // OK / Cancel
+    NSButton *btnOK = [[NSButton alloc] initWithFrame:NSMakeRect(120, 12, 90, 28)];
+    btnOK.title = @"OK";
+    btnOK.bezelStyle = NSBezelStyleRounded;
+    btnOK.keyEquivalent = @"\r";
+    btnOK.target = NSApp;
+    btnOK.action = @selector(stopModal);
+    [cv addSubview:btnOK];
+
+    NSButton *btnCancel = [[NSButton alloc] initWithFrame:NSMakeRect(220, 12, 90, 28)];
+    btnCancel.title = @"Cancel";
+    btnCancel.bezelStyle = NSBezelStyleRounded;
+    btnCancel.keyEquivalent = @"\033";
+    btnCancel.target = NSApp;
+    btnCancel.action = @selector(abortModal);
+    [cv addSubview:btnCancel];
+
+    NSModalResponse resp = [NSApp runModalForWindow:panel];
+    [panel orderOut:nil];
+    if (resp != NSModalResponseStop) return;
+
+    NSString *name = [nameField.stringValue stringByTrimmingCharactersInSet:
                       [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (!name.length) return;
 
+    // Convert recorded actions to shortcuts.xml format
+    NSArray *xmlActions = convertRecordedToXmlFormat(actions);
+
     ensureNppDirs();
-    NSMutableDictionary *macros = [([NSDictionary dictionaryWithContentsOfFile:nppMacrosPath()]
-                                    ?: @{}) mutableCopy];
-    macros[name] = actions;
-    [macros writeToFile:nppMacrosPath() atomically:YES];
+    NSMutableArray *allMacros = [loadMacrosFromShortcutsXML() mutableCopy];
+    [allMacros addObject:@{@"name": name, @"actions": xmlActions}];
+    saveMacrosToShortcutsXML(allMacros);
     [self rebuildMacroMenu];
+
+    // Clear the current recorded macro so Save button disables (Issue 1)
+    EditorView *edAfterSave = [self currentEditor];
+    if (edAfterSave) {
+        // The macro has been saved — clear the "current" recording
+        [edAfterSave startMacroRecording];
+        [edAfterSave stopMacroRecording];
+    }
+    [self _refreshToolbarStates];
 }
 
 - (void)runSavedMacro:(NSMenuItem *)sender {
@@ -1662,22 +1961,43 @@ static NSString *nppMacrosPath(void) {
 }
 
 - (void)rebuildMacroMenu {
-    NSMenuItem *macroItem = [[NSApp mainMenu] itemWithTitle:@"Macro"];
+    // Find macro menu by tag (survives localization)
+    NSMenuItem *macroItem = [[NSApp mainMenu] itemWithTag:9900];
+    if (!macroItem) macroItem = [[NSApp mainMenu] itemWithTitle:@"Macro"];
     NSMenu *macroMenu = macroItem.submenu;
-    // Saved macros appear after the separator tagged 9901
+    if (!macroMenu) return;
+
+    // Saved macros are inserted after separator tagged 9901
     NSMenuItem *sep = [macroMenu itemWithTag:9901];
     if (!sep) return;
     NSInteger sepIdx = [macroMenu indexOfItem:sep];
-    while (macroMenu.numberOfItems > sepIdx + 1)
-        [macroMenu removeItemAtIndex:(NSInteger)macroMenu.numberOfItems - 1];
 
-    NSDictionary *macros = [NSDictionary dictionaryWithContentsOfFile:nppMacrosPath()];
-    for (NSString *name in [[macros allKeys] sortedArrayUsingSelector:@selector(compare:)]) {
-        NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:name
+    // Remove old dynamically-added macro items (those between tag-9901 separator
+    // and the next separator or end of menu)
+    NSInteger removeFrom = sepIdx + 1;
+    while (removeFrom < macroMenu.numberOfItems) {
+        NSMenuItem *mi = [macroMenu itemAtIndex:removeFrom];
+        if (mi.isSeparatorItem) break;  // hit the separator before "Modify Shortcut"
+        [macroMenu removeItemAtIndex:removeFrom];
+    }
+
+    // Hide the separator if no saved macros will be added
+    NSArray<NSDictionary *> *macros = loadMacrosFromShortcutsXML();
+    NSMutableArray<NSDictionary *> *userMacros = [NSMutableArray array];
+    for (NSDictionary *macro in macros) {
+        if (![macro[@"name"] isEqualToString:@"Trim Trailing Space and Save"])
+            [userMacros addObject:macro];
+    }
+    sep.hidden = (userMacros.count == 0);
+
+    // Insert saved macros right after the separator
+    NSInteger insertIdx = sepIdx + 1;
+    for (NSDictionary *macro in userMacros) {
+        NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:macro[@"name"]
                                                       action:@selector(runSavedMacro:)
                                                keyEquivalent:@""];
-        item.representedObject = macros[name];
-        [macroMenu addItem:item];
+        item.representedObject = macro[@"actions"];
+        [macroMenu insertItem:item atIndex:insertIdx++];
     }
 }
 
@@ -2132,8 +2452,8 @@ static NSString *nppMacrosPath(void) {
 
     if (action == @selector(startMacroRecording:)) return ed && !recording;
     if (action == @selector(stopMacroRecording:))  return ed && recording;
-    if (action == @selector(runMacro:))             return ed && !recording;
-    if (action == @selector(runMacroMultipleTimes:)) return ed && !recording;
+    if (action == @selector(runMacro:))             return ed && !recording && ed.macroActions.count > 0;
+    if (action == @selector(runMacroMultipleTimes:)) return ed && !recording;  // can run saved macros
     if (action == @selector(saveCurrentMacro:))     return ed && !recording && ed.macroActions.count > 0;
     if (action == @selector(runSavedMacro:))        return ed && !recording;
     if (action == @selector(trimTrailingSpaceAndSave:)) return _tabManager.allEditors.count > 0;
@@ -4328,8 +4648,9 @@ static NSString *nppMacrosPath(void) {
 
 - (void)showMacroManager:(id)sender {
     // Build a list of saved macros and allow deletion.
-    NSDictionary *macros = [NSDictionary dictionaryWithContentsOfFile:nppMacrosPath()];
-    NSArray<NSString *> *names = macros ? [macros.allKeys sortedArrayUsingSelector:@selector(compare:)] : @[];
+    NSArray<NSDictionary *> *macroList = loadMacrosFromShortcutsXML();
+    NSMutableArray<NSString *> *names = [NSMutableArray array];
+    for (NSDictionary *m in macroList) [names addObject:m[@"name"]];
     if (!names.count) {
         NSAlert *a = [[NSAlert alloc] init];
         a.messageText = @"No Saved Macros";
@@ -4377,16 +4698,15 @@ static NSString *nppMacrosPath(void) {
     // Simple datasource
     NSMutableArray<NSString *> *mutableNames = [names mutableCopy];
     _NPPWindowsListHelper *helper = [[_NPPWindowsListHelper alloc] initWithRows:nil];
-    __block NSMutableArray<NSString *> *macroNames = mutableNames;
-    __block NSMutableDictionary *mutableMacros = [macros mutableCopy];
+    __block NSMutableArray<NSString *> *macroNames = [names mutableCopy];
+    __block NSMutableArray<NSDictionary *> *mutableMacroList = [macroList mutableCopy];
 
     helper.activateHandler = ^{
         NSInteger row = tv.selectedRow;
         if (row < 0 || row >= (NSInteger)macroNames.count) return;
-        NSString *name = macroNames[row];
-        [mutableMacros removeObjectForKey:name];
         [macroNames removeObjectAtIndex:row];
-        [mutableMacros writeToFile:nppMacrosPath() atomically:YES];
+        [mutableMacroList removeObjectAtIndex:row];
+        saveMacrosToShortcutsXML(mutableMacroList);
         [tv reloadData];
     };
 
@@ -4396,21 +4716,19 @@ static NSString *nppMacrosPath(void) {
 
     // Use a block-based datasource
     _NPPWindowsListHelper *ds = [[_NPPWindowsListHelper alloc] initWithRows:nil];
-    ds.rows = nil; // not used; override via blocks below
+    ds.rows = nil;
     objc_setAssociatedObject(panel, "ds",     ds,     OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     objc_setAssociatedObject(panel, "names",  macroNames, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    objc_setAssociatedObject(panel, "macros", mutableMacros, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(panel, "macros", mutableMacroList, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
-    // Simpler approach: just use NSAlert for delete confirmation
     __weak NSPanel *wPanel = panel;
     __weak typeof(self) wSelf = self;
     delBtn.target = [NSBlockOperation blockOperationWithBlock:^{
         NSInteger row = tv.selectedRow;
         if (row < 0 || row >= (NSInteger)macroNames.count) return;
-        NSString *name = macroNames[row];
-        [mutableMacros removeObjectForKey:name];
         [macroNames removeObjectAtIndex:row];
-        [mutableMacros writeToFile:nppMacrosPath() atomically:YES];
+        [mutableMacroList removeObjectAtIndex:row];
+        saveMacrosToShortcutsXML(mutableMacroList);
         [tv reloadData];
         [wSelf rebuildMacroMenu];
     }];

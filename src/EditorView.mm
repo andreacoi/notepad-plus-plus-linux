@@ -2204,14 +2204,50 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
     ScintillaView *sci = _scintillaView;
     [sci message:SCI_BEGINUNDOACTION];
     for (NSDictionary *action in actions) {
-        unsigned int msg = [action[@"msg"] unsignedIntValue];
-        uptr_t       wp  = (uptr_t)[action[@"wp"] unsignedLongLongValue];
-        NSString    *text = action[@"text"];
-        if (text) {
-            [sci message:msg wParam:wp lParam:(sptr_t)text.UTF8String];
+        // Support both recorded format (msg/wp/lp/text) and shortcuts.xml format (type/message/wParam/lParam/sParam)
+        BOOL isXmlFormat = (action[@"type"] != nil);
+
+        if (isXmlFormat) {
+            int type       = [action[@"type"] intValue];
+            int msg        = [action[@"message"] intValue];
+            long long wp   = [action[@"wParam"] longLongValue];
+            long long lp   = [action[@"lParam"] longLongValue];
+            NSString *sParam = action[@"sParam"];
+
+            if (type == 2) {
+                // Menu command: wParam = IDM_* command ID
+                // Map known Windows menu command IDs to macOS selectors
+                SEL menuAction = nil;
+                switch ((int)wp) {
+                    case 42024: menuAction = @selector(trimTrailingWhitespace:); break; // IDM_EDIT_TRIMTRAILING
+                    case 41006: menuAction = @selector(saveDocument:); break;           // IDM_FILE_SAVE
+                    case 41001: menuAction = @selector(newDocument:); break;            // IDM_FILE_NEW
+                    case 41002: menuAction = @selector(openDocument:); break;           // IDM_FILE_OPEN
+                    case 41003: menuAction = @selector(closeCurrentTab:); break;        // IDM_FILE_CLOSE
+                    case 41007: menuAction = @selector(saveAllDocuments:); break;       // IDM_FILE_SAVEALL
+                    default: break;
+                }
+                if (menuAction) {
+                    [NSApp sendAction:menuAction to:nil from:self];
+                }
+            } else if (type == 1 && sParam.length > 0) {
+                // String parameter (text insertion, search, etc.)
+                [sci message:(uint32_t)msg wParam:(uptr_t)wp lParam:(sptr_t)sParam.UTF8String];
+            } else {
+                // Numeric parameter
+                [sci message:(uint32_t)msg wParam:(uptr_t)wp lParam:(sptr_t)lp];
+            }
         } else {
-            sptr_t lp = (sptr_t)[action[@"lp"] longLongValue];
-            [sci message:msg wParam:wp lParam:lp];
+            // Recorded macro format
+            unsigned int msg = [action[@"msg"] unsignedIntValue];
+            uptr_t       wp  = (uptr_t)[action[@"wp"] unsignedLongLongValue];
+            NSString    *text = action[@"text"];
+            if (text) {
+                [sci message:msg wParam:wp lParam:(sptr_t)text.UTF8String];
+            } else {
+                sptr_t lp = (sptr_t)[action[@"lp"] longLongValue];
+                [sci message:msg wParam:wp lParam:lp];
+            }
         }
     }
     [sci message:SCI_ENDUNDOACTION];
@@ -2307,6 +2343,17 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
                 unsigned int msg = (unsigned int)notification->message;
                 uptr_t wp = notification->wParam;
                 sptr_t lp = notification->lParam;
+
+                // Normalize EOL: SCI_REPLACESEL with \n or \r → SCI_NEWLINE
+                // (matches Windows NPP behavior for cross-platform macro compatibility)
+                if (msg == SCI_REPLACESEL && lp) {
+                    const char *ch = (const char *)lp;
+                    if (ch[0] != '\0' && ch[1] == '\0' && (ch[0] == '\n' || ch[0] == '\r')) {
+                        [_macroActions addObject:@{@"msg": @(SCI_NEWLINE), @"wp": @0, @"lp": @0}];
+                        break;
+                    }
+                }
+
                 NSMutableDictionary *action = [NSMutableDictionary dictionaryWithDictionary:@{
                     @"msg": @(msg),
                     @"wp":  @(wp),
