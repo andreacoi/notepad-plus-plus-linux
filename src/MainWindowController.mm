@@ -23,6 +23,8 @@
 #import "UserDefineLangManager.h"
 #import "UserDefineDialog.h"
 #import <objc/runtime.h>
+#include <sys/sysctl.h>
+#include <sys/resource.h>
 
 // ── Private helper for the Windows… dialog ───────────────────────────────────
 @interface _NPPWindowsListHelper : NSObject <NSTableViewDataSource, NSTableViewDelegate>
@@ -514,6 +516,8 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
 
     self = [super initWithWindow:window];
     if (self) {
+        // Disable macOS automatic window state restoration — we use our own session system
+        window.restorable = NO;
         _showLineNumbers = [[NSUserDefaults standardUserDefaults] boolForKey:kPrefShowLineNumbers];
         _showIndentGuides = YES; // indent guides on by default
         window.delegate = self;
@@ -1195,8 +1199,8 @@ static BOOL groupHasTrailingSep(NSString *ident) {
         [self _refreshToolbarStates];
     });
 
-    // Restore previous session; open an untitled tab only on first launch
-    if (![self restoreLastSession]) [_tabManager addNewTab];
+    // Session restore is handled by AppDelegate (which checks CLI flags like -nosession).
+    // AppDelegate calls restoreLastSession or addNewTab as needed.
     [self rebuildMacroMenu];
     [self updateStatusBar];
 
@@ -1235,7 +1239,13 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     // External files: record their path only (no backup — they live on disk).
     // Untitled tabs: back up content to ~/.notepad++/backup/ (auto-save only for these).
     NSMutableArray *tabs = [NSMutableArray array];
+    NSMutableSet *savedPaths = [NSMutableSet set];  // prevent duplicate entries
     for (EditorView *ed in _tabManager.allEditors) {
+        // Skip duplicate file paths (same file open in multiple tabs shouldn't be saved twice)
+        if (ed.filePath) {
+            if ([savedPaths containsObject:ed.filePath]) continue;
+            [savedPaths addObject:ed.filePath];
+        }
         NSMutableDictionary *info = [NSMutableDictionary dictionary];
 
         if (!ed.filePath) {
@@ -1270,11 +1280,17 @@ static BOOL groupHasTrailingSep(NSString *ident) {
 
     NSFileManager *fm = [NSFileManager defaultManager];
     NSInteger opened = 0;
+    NSMutableSet *seenPaths = [NSMutableSet set];  // deduplication guard
 
     for (NSDictionary *info in tabs) {
         NSString *filePath   = info[@"filePath"];
         NSString *backupPath = info[@"backupFilePath"];
         NSString *lang       = info[@"language"];
+
+        // Skip duplicates (same filePath or same backupFilePath)
+        NSString *dedupeKey = filePath ?: backupPath ?: @"";
+        if (dedupeKey.length && [seenPaths containsObject:dedupeKey]) continue;
+        if (dedupeKey.length) [seenPaths addObject:dedupeKey];
 
         // Prefer backup (more recent snapshot) if it exists
         NSString *loadPath   = nil;
@@ -4434,15 +4450,262 @@ static NSString *nppMacrosPath(void) {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://community.notepad-plus-plus.org"]];
 }
 
+/// Helper: query sysctl string value
+static NSString *_sysctlString(const char *name) {
+    char buf[256] = {}; size_t sz = sizeof(buf);
+    if (sysctlbyname(name, buf, &sz, NULL, 0) == 0) return [NSString stringWithUTF8String:buf];
+    return @"unknown";
+}
+/// Helper: query sysctl integer value
+static int64_t _sysctlInt(const char *name) {
+    int64_t val = 0; size_t sz = sizeof(val);
+    sysctlbyname(name, &val, &sz, NULL, 0);
+    return val;
+}
+
+/// Build the debug info string (also used by Copy button).
+- (NSString *)_buildDebugInfoString {
+    NSMutableString *info = [NSMutableString string];
+    NSString *version = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ?: @"1.0.0";
+    NSString *buildNum = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"] ?: @"1";
+
+#if defined(__arm64__)
+    NSString *archStr = @"ARM 64-bit";
+#elif defined(__x86_64__)
+    NSString *archStr = @"64-bit";
+#else
+    NSString *archStr = @"unknown";
+#endif
+
+    // ── App Info ─────────────────────────────────────────────────────────
+    [info appendFormat:@"Notepad++ macOS v%@ (build %@)   (%@)\n", version, buildNum, archStr];
+    [info appendFormat:@"Build time: %s - %s\n", __DATE__, __TIME__];
+    [info appendFormat:@"Built with: Apple Clang %d.%d.%d\n",
+        __clang_major__, __clang_minor__, __clang_patchlevel__];
+    [info appendFormat:@"C++ Standard: %ld\n", (long)__cplusplus];
+    [info appendFormat:@"macOS Deployment Target: %s\n",
+        [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"LSMinimumSystemVersion"] UTF8String] ?: "11.0"];
+    [info appendString:@"Scintilla/Lexilla included: 5.6.0/5.4.7\n"];
+    [info appendFormat:@"Bundle ID: %@\n", [[NSBundle mainBundle] bundleIdentifier] ?: @"n/a"];
+    [info appendFormat:@"Path: %@\n", [[NSBundle mainBundle] executablePath]];
+    [info appendFormat:@"Bundle Path: %@\n", [[NSBundle mainBundle] bundlePath]];
+    [info appendFormat:@"Config Dir: %@/.notepad++\n", NSHomeDirectory()];
+
+    // ── Runtime ──────────────────────────────────────────────────────────
+    int translated = 0; size_t tsz = sizeof(translated);
+    BOOL rosetta = (sysctlbyname("sysctl.proc_translated", &translated, &tsz, NULL, 0) == 0 && translated == 1);
+    if (rosetta) [info appendString:@"Running under: Rosetta 2\n"];
+
+    [info appendFormat:@"Process ID: %d\n", getpid()];
+    [info appendFormat:@"Admin mode: %@\n", (geteuid() == 0) ? @"ON" : @"OFF"];
+    [info appendFormat:@"Sandbox: %@\n",
+        [[NSProcessInfo processInfo].environment objectForKey:@"APP_SANDBOX_CONTAINER_ID"] ? @"ON" : @"OFF"];
+
+    // ── User Settings ────────────────────────────────────────────────────
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    [info appendString:@"\n── Settings ──\n"];
+    [info appendFormat:@"Periodic Backup: %@\n", [ud boolForKey:@"kPrefAutoBackup"] ? @"ON" : @"OFF"];
+    [info appendFormat:@"Auto-Indent: %@\n", [ud boolForKey:@"kPrefAutoIndent"] ? @"ON" : @"OFF"];
+    [info appendFormat:@"Word Wrap: %@\n", [ud boolForKey:@"kPrefWordWrap"] ? @"ON" : @"OFF"];
+    [info appendFormat:@"Show Line Numbers: %@\n", [ud boolForKey:@"kPrefShowLineNumbers"] ? @"ON" : @"OFF"];
+    [info appendFormat:@"Tab Width: %ld\n", (long)[ud integerForKey:@"kPrefTabWidth"]];
+    [info appendFormat:@"Use Tabs: %@\n", [ud boolForKey:@"kPrefUseTabs"] ? @"ON" : @"OFF"];
+    [info appendFormat:@"Highlight Current Line: %@\n", [ud boolForKey:@"kPrefHighlightCurrentLine"] ? @"ON" : @"OFF"];
+    [info appendFormat:@"Zoom Level: %ld\n", (long)[ud integerForKey:@"kPrefZoomLevel"]];
+    [info appendFormat:@"EOL Type: %@\n", [ud stringForKey:@"kPrefEOLType"] ?: @"default"];
+    [info appendFormat:@"Encoding: %@\n", [ud stringForKey:@"kPrefEncoding"] ?: @"UTF-8"];
+    [info appendFormat:@"Theme Preset: %@\n", [ud stringForKey:@"kPrefThemePreset"] ?: @"default"];
+    [info appendFormat:@"Auto-Complete Enabled: %@\n", [ud boolForKey:@"kPrefAutoCompleteEnable"] ? @"ON" : @"OFF"];
+    [info appendFormat:@"Auto-Complete Min Chars: %ld\n", (long)[ud integerForKey:@"kPrefAutoCompleteMinChars"]];
+
+    // Session info
+    NSString *sessionPath = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/session.plist"];
+    BOOL hasSession = [[NSFileManager defaultManager] fileExistsAtPath:sessionPath];
+    [info appendFormat:@"Session file: %@\n", hasSession ? @"exists" : @"none"];
+    if (hasSession) {
+        NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:sessionPath error:nil];
+        NSDate *modDate = attrs[NSFileModificationDate];
+        if (modDate) [info appendFormat:@"Session last saved: %@\n", modDate];
+    }
+
+    // ── Appearance ───────────────────────────────────────────────────────
+    [info appendString:@"\n── Appearance ──\n"];
+    BOOL darkMode = NO;
+    if (@available(macOS 10.14, *)) {
+        NSAppearanceName name = [NSApp.effectiveAppearance
+            bestMatchFromAppearancesWithNames:@[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]];
+        darkMode = [name isEqualToString:NSAppearanceNameDarkAqua];
+    }
+    [info appendFormat:@"Dark Mode: %@\n", darkMode ? @"ON" : @"OFF"];
+    [info appendFormat:@"Appearance: %@\n", NSApp.effectiveAppearance.name];
+
+    // ── Display Info ─────────────────────────────────────────────────────
+    [info appendString:@"\n── Display Info ──\n"];
+    [info appendFormat:@"Visible monitors count: %ld\n", (long)[NSScreen screens].count];
+    for (NSUInteger i = 0; i < [NSScreen screens].count; i++) {
+        NSScreen *scr = [NSScreen screens][i];
+        CGFloat s = scr.backingScaleFactor;
+        NSRect f = scr.frame;
+        NSRect v = scr.visibleFrame;
+        [info appendFormat:@"    monitor %lu%@:\n", (unsigned long)i,
+            (scr == [NSScreen mainScreen]) ? @" (primary)" : @""];
+        [info appendFormat:@"        resolution: %.0fx%.0f (%.0fx%.0f logical)\n",
+            f.size.width * s, f.size.height * s, f.size.width, f.size.height];
+        [info appendFormat:@"        scaling: %.0f%% (%.1fx)\n", s * 100, s];
+        [info appendFormat:@"        visible area: %.0fx%.0f at (%.0f, %.0f)\n",
+            v.size.width, v.size.height, v.origin.x, v.origin.y];
+        [info appendFormat:@"        color space: %@\n", scr.colorSpace.localizedName ?: @"unknown"];
+    }
+
+    // ── Window Info ──────────────────────────────────────────────────────
+    [info appendString:@"\n── Window Info ──\n"];
+    NSWindow *w = self.window;
+    NSRect wf = w.frame;
+    [info appendFormat:@"Window frame: %.0f x %.0f at (%.0f, %.0f)\n",
+        wf.size.width, wf.size.height, wf.origin.x, wf.origin.y];
+    [info appendFormat:@"Window level: %ld%@\n", (long)w.level,
+        w.level == NSFloatingWindowLevel ? @" (always on top)" : @""];
+    [info appendFormat:@"Toolbar visible: %@\n", w.toolbar.isVisible ? @"YES" : @"NO"];
+    [info appendFormat:@"Tab bar visible: %@\n", _tabManager.tabBar.isHidden ? @"NO" : @"YES"];
+    [info appendFormat:@"Open tabs: %ld\n", (long)_tabManager.allEditors.count];
+
+    // Current editor info
+    EditorView *ed = [self currentEditor];
+    if (ed) {
+        [info appendString:@"\n── Current Editor ──\n"];
+        [info appendFormat:@"File: %@\n", ed.filePath ?: @"(untitled)"];
+        [info appendFormat:@"Language: %@\n", ed.currentLanguage.length ? ed.currentLanguage : @"Plain Text"];
+        [info appendFormat:@"Encoding: %@\n", ed.encodingName];
+        [info appendFormat:@"EOL: %@\n", ed.eolName];
+        [info appendFormat:@"Modified: %@\n", ed.isModified ? @"YES" : @"NO"];
+        [info appendFormat:@"Read-Only: %@\n",
+            [ed.scintillaView message:SCI_GETREADONLY] ? @"YES" : @"NO"];
+        [info appendFormat:@"Word Wrap: %@\n", ed.wordWrapEnabled ? @"ON" : @"OFF"];
+        [info appendFormat:@"Monitoring: %@\n", ed.monitoringMode ? @"ON" : @"OFF"];
+        [info appendFormat:@"Hex View: %@\n", ed.hexViewMode ? @"ON" : @"OFF"];
+        sptr_t docLen = [ed.scintillaView message:SCI_GETLENGTH];
+        [info appendFormat:@"Document length: %ld bytes\n", (long)docLen];
+        [info appendFormat:@"Line count: %ld\n", (long)ed.lineCount];
+        [info appendFormat:@"Cursor: Ln %ld, Col %ld\n", (long)ed.cursorLine, (long)ed.cursorColumn];
+        [info appendFormat:@"Zoom: %ld\n", (long)[ed.scintillaView message:SCI_GETZOOM]];
+        sptr_t lexer = [ed.scintillaView message:SCI_GETLEXER];
+        [info appendFormat:@"Scintilla Lexer ID: %ld\n", (long)lexer];
+        [info appendFormat:@"Undo actions: %@\n",
+            [ed.scintillaView message:SCI_CANUNDO] ? @"available" : @"none"];
+    }
+
+    // ── OS & Hardware ────────────────────────────────────────────────────
+    [info appendString:@"\n── OS & Hardware ──\n"];
+    NSOperatingSystemVersion osVer = [[NSProcessInfo processInfo] operatingSystemVersion];
+    [info appendFormat:@"OS: macOS %ld.%ld.%ld\n",
+        (long)osVer.majorVersion, (long)osVer.minorVersion, (long)osVer.patchVersion];
+    [info appendFormat:@"OS Build: %@\n", [[NSProcessInfo processInfo] operatingSystemVersionString]];
+    [info appendFormat:@"Kernel: %@\n", _sysctlString("kern.osrelease")];
+    [info appendFormat:@"Hardware Model: %@\n", _sysctlString("hw.model")];
+    [info appendFormat:@"CPU Brand: %@\n", _sysctlString("machdep.cpu.brand_string")];
+    [info appendFormat:@"CPU Cores: %lld (physical), %lld (logical)\n",
+        _sysctlInt("hw.physicalcpu"), _sysctlInt("hw.logicalcpu")];
+    [info appendFormat:@"Memory: %.1f GB\n", _sysctlInt("hw.memsize") / (1024.0 * 1024.0 * 1024.0)];
+    [info appendFormat:@"Page Size: %lld bytes\n", _sysctlInt("hw.pagesize")];
+
+    // Process memory usage
+    struct rusage usage;
+    if (getrusage(RUSAGE_SELF, &usage) == 0) {
+        [info appendFormat:@"Process Max RSS: %.1f MB\n", usage.ru_maxrss / (1024.0 * 1024.0)];
+    }
+
+    // ── Locale & Encoding ────────────────────────────────────────────────
+    [info appendString:@"\n── Locale & Encoding ──\n"];
+    [info appendFormat:@"Locale: %@\n", [[NSLocale currentLocale] localeIdentifier]];
+    [info appendFormat:@"Language: %@\n", [[NSLocale preferredLanguages] firstObject] ?: @"unknown"];
+    [info appendFormat:@"System Encoding: %@ (%lu)\n",
+        [NSString localizedNameOfStringEncoding:NSUTF8StringEncoding],
+        (unsigned long)NSUTF8StringEncoding];
+
+    // ── Plugins ──────────────────────────────────────────────────────────
+    [info appendString:@"\n── Plugins ──\n"];
+    NSString *pluginDir = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/plugins"];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSArray<NSString *> *pluginDirs = [fm contentsOfDirectoryAtPath:pluginDir error:nil];
+    NSInteger pluginCount = 0;
+    if (pluginDirs.count > 0) {
+        for (NSString *dirName in [pluginDirs sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)]) {
+            if ([dirName isEqualToString:@"Config"] || [dirName hasPrefix:@"."]) continue;
+            NSString *dylibPath = [NSString stringWithFormat:@"%@/%@/%@.dylib", pluginDir, dirName, dirName];
+            BOOL exists = [fm fileExistsAtPath:dylibPath];
+            if (exists) {
+                NSDictionary *attrs = [fm attributesOfItemAtPath:dylibPath error:nil];
+                NSNumber *fileSize = attrs[NSFileSize];
+                NSDate *modDate = attrs[NSFileModificationDate];
+                NSDateFormatter *df = [[NSDateFormatter alloc] init];
+                df.dateFormat = @"yyyy-MM-dd HH:mm";
+                [info appendFormat:@"    %@ (%@ KB, %@)\n", dirName,
+                    @(fileSize.longLongValue / 1024),
+                    modDate ? [df stringFromDate:modDate] : @"?"];
+                pluginCount++;
+            }
+        }
+    }
+    if (pluginCount == 0) {
+        [info appendString:@"    (none installed)\n"];
+    }
+    [info appendFormat:@"Total: %ld plugin(s)\n", (long)pluginCount];
+
+    // ── Config Files ─────────────────────────────────────────────────────
+    [info appendString:@"\n── Config Files ──\n"];
+    NSString *nppDir = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++"];
+    NSArray *configFiles = @[@"session.plist", @"macros.plist", @"plugins/Config/URLPlugin.json"];
+    for (NSString *relPath in configFiles) {
+        NSString *fullPath = [nppDir stringByAppendingPathComponent:relPath];
+        BOOL exists = [fm fileExistsAtPath:fullPath];
+        if (exists) {
+            NSDictionary *attrs = [fm attributesOfItemAtPath:fullPath error:nil];
+            [info appendFormat:@"    %@: %@ bytes\n", relPath, attrs[NSFileSize]];
+        } else {
+            [info appendFormat:@"    %@: (not found)\n", relPath];
+        }
+    }
+
+    // Backup files
+    NSString *backupDir = [nppDir stringByAppendingPathComponent:@"backup"];
+    NSArray *backups = [fm contentsOfDirectoryAtPath:backupDir error:nil];
+    [info appendFormat:@"    backup/ files: %ld\n", (long)(backups ? backups.count : 0)];
+
+    // UDL files
+    NSString *udlDir = [nppDir stringByAppendingPathComponent:@"userDefineLangs"];
+    NSArray *udls = [fm contentsOfDirectoryAtPath:udlDir error:nil];
+    [info appendFormat:@"    userDefineLangs/ files: %ld\n", (long)(udls ? udls.count : 0)];
+
+    return info;
+}
+
 - (void)showDebugInfo:(id)sender {
-    NSString *version = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ?: @"dev";
-    NSString *build   = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"] ?: @"?";
-    NSString *os      = [[NSProcessInfo processInfo] operatingSystemVersionString];
-    NSString *info    = [NSString stringWithFormat:@"Notepad++ for macOS\nVersion: %@ (build %@)\n%@", version, build, os];
+    NSString *info = [self _buildDebugInfoString];
+
+    // Use NSAlert instead of NSPanel — no modal locking issues
     NSAlert *a = [[NSAlert alloc] init];
     a.messageText = @"Debug Info";
-    a.informativeText = info;
-    [a runModal];
+    a.icon = [[NSImage alloc] initWithContentsOfFile:
+        [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/plugins/Config/logo100px.png"]];
+    [a addButtonWithTitle:@"Copy"];
+    [a addButtonWithTitle:@"OK"];
+
+    // Scrollable text view as accessory
+    NSScrollView *scroll = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 480, 320)];
+    scroll.hasVerticalScroller = YES;
+    scroll.autohidesScrollers = YES;
+    NSTextView *tv = [[NSTextView alloc] initWithFrame:NSMakeRect(0, 0, 460, 320)];
+    tv.editable = NO;
+    tv.font = [NSFont fontWithName:@"Menlo" size:11];
+    tv.string = info;
+    scroll.documentView = tv;
+    a.accessoryView = scroll;
+
+    NSModalResponse resp = [a runModal];
+    if (resp == NSAlertFirstButtonReturn) {
+        [[NSPasteboard generalPasteboard] clearContents];
+        [[NSPasteboard generalPasteboard] setString:info forType:NSPasteboardTypeString];
+    }
 }
 
 #pragma mark - NSWindowDelegate
@@ -4477,8 +4740,9 @@ static NSString *nppMacrosPath(void) {
 - (void)updateStatusBar {
     EditorView *ed = [self currentEditor];
     if (!ed) { _statusLeft.stringValue = _statusRight.stringValue = @""; return; }
-    _statusLeft.stringValue  = [NSString stringWithFormat:@"Ln %ld, Col %ld  |  Lines: %ld",
-                                 (long)ed.cursorLine, (long)ed.cursorColumn, (long)ed.lineCount];
+    sptr_t docLength = [ed.scintillaView message:SCI_GETLENGTH wParam:0 lParam:0];
+    _statusLeft.stringValue  = [NSString stringWithFormat:@"Ln %ld, Col %ld  |  Length: %ld  |  Lines: %ld",
+                                 (long)ed.cursorLine, (long)ed.cursorColumn, (long)docLength, (long)ed.lineCount];
     NSString *lang = ed.currentLanguage.length ? ed.currentLanguage : @"Plain Text";
     NSString *mode = ed.isOverwriteMode ? @"OVR" : @"INS";
     _statusRight.stringValue = [NSString stringWithFormat:@"%@  |  %@  |  %@  |  %@",

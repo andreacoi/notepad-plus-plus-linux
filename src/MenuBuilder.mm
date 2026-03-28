@@ -213,8 +213,9 @@ static NSMenu *buildLanguageMenu() {
     NSMenu *fileMenu = submenu(@"File");
     fileItem.submenu = fileMenu;
 
-    [fileMenu addItem:item(@"New",    @selector(newDocument:),  @"n")];
-    [fileMenu addItem:item(@"Open…",  @selector(openDocument:), @"o")];
+    [fileMenu addItem:item(@"New",        @selector(newDocument:),  @"n")];
+    [fileMenu addItem:item(@"New Window", @selector(openNewWindow:), @"N")];
+    [fileMenu addItem:item(@"Open…",     @selector(openDocument:), @"o")];
     NSMenuItem *recentItem = withSubmenu(@"Open Recent", submenu(@"Open Recent"));
     recentItem.tag = 1001;
     [fileMenu addItem:recentItem];
