@@ -774,12 +774,10 @@ static NSMenu *buildLanguageMenu() {
     addSep(macroMenu);
     [macroMenu addItem:item(@"Run a Macro Multiple Times…", @selector(runMacroMultipleTimes:), @"")];
     addSep(macroMenu);
-    [macroMenu addItem:item(@"Trim Trailing Space and Save", @selector(trimTrailingSpaceAndSave:), @"")];
-    // ── Saved macros appear here (tag 9901) — items appended by rebuildMacroMenu ──
     {
-        NSMenuItem *savedSep = [NSMenuItem separatorItem];
-        savedSep.tag = 9901;
-        [macroMenu addItem:savedSep];
+        NSMenuItem *trimItem = item(@"Trim Trailing Space and Save", @selector(trimTrailingSpaceAndSave:), @"");
+        trimItem.tag = 9901;  // marker: saved macros inserted after this item
+        [macroMenu addItem:trimItem];
     }
     addSep(macroMenu);
     [macroMenu addItem:item(@"Modify Shortcut/Delete Macro…", @selector(showShortcutMapperMacros:), @"")];

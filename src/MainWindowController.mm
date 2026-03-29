@@ -84,7 +84,8 @@ static NSString *nppSessionPath(void) {
 // Forward declarations for shortcuts.xml functions (defined after @implementation)
 static NSString *nppShortcutsPath(void);
 static NSArray<NSDictionary *> *loadMacrosFromShortcutsXML(void);
-static void saveMacrosToShortcutsXML(NSArray<NSDictionary *> *macros);
+static void addMacroToShortcutsXML(NSString *name, NSArray<NSDictionary *> *actions);
+static void removeMacroFromShortcutsXML(NSString *name);
 
 static void ensureNppDirs(void) {
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -1383,42 +1384,69 @@ static NSArray<NSDictionary *> *loadMacrosFromShortcutsXML(void) {
 }
 
 /// Save macros to shortcuts.xml in Windows-compatible format.
-static void saveMacrosToShortcutsXML(NSArray<NSDictionary *> *macros) {
-    // Build XML: <NotepadPlus><Macros><Macro name="...">...</Macro></Macros></NotepadPlus>
-    NSXMLElement *root = [NSXMLElement elementWithName:@"NotepadPlus"];
-    NSXMLElement *macrosEl = [NSXMLElement elementWithName:@"Macros"];
+/// Add a single macro to shortcuts.xml <Macros> section (in-place, preserves rest of file).
+static void addMacroToShortcutsXML(NSString *name, NSArray<NSDictionary *> *actions) {
+    NSString *path = nppShortcutsPath();
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    if (!data) return;
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:NSXMLNodePreserveAll error:nil];
+    if (!doc) return;
 
-    for (NSDictionary *macro in macros) {
-        NSXMLElement *macroEl = [NSXMLElement elementWithName:@"Macro"];
-        [macroEl addAttribute:[NSXMLNode attributeWithName:@"name" stringValue:macro[@"name"]]];
-        [macroEl addAttribute:[NSXMLNode attributeWithName:@"Ctrl" stringValue:@"no"]];
-        [macroEl addAttribute:[NSXMLNode attributeWithName:@"Alt" stringValue:@"no"]];
-        [macroEl addAttribute:[NSXMLNode attributeWithName:@"Shift" stringValue:@"no"]];
-        [macroEl addAttribute:[NSXMLNode attributeWithName:@"Key" stringValue:@"0"]];
+    NSXMLElement *root = doc.rootElement;
 
-        for (NSDictionary *act in macro[@"actions"]) {
-            NSXMLElement *actionEl = [NSXMLElement elementWithName:@"Action"];
-            [actionEl addAttribute:[NSXMLNode attributeWithName:@"type"
-                                                    stringValue:[NSString stringWithFormat:@"%d", [act[@"type"] intValue]]]];
-            [actionEl addAttribute:[NSXMLNode attributeWithName:@"message"
-                                                    stringValue:[NSString stringWithFormat:@"%d", [act[@"message"] intValue]]]];
-            [actionEl addAttribute:[NSXMLNode attributeWithName:@"wParam"
-                                                    stringValue:[NSString stringWithFormat:@"%lld", [act[@"wParam"] longLongValue]]]];
-            [actionEl addAttribute:[NSXMLNode attributeWithName:@"lParam"
-                                                    stringValue:[NSString stringWithFormat:@"%lld", [act[@"lParam"] longLongValue]]]];
-            [actionEl addAttribute:[NSXMLNode attributeWithName:@"sParam"
-                                                    stringValue:act[@"sParam"] ?: @""]];
-            [macroEl addChild:actionEl];
-        }
-        [macrosEl addChild:macroEl];
+    // Find or create the <Macros> element
+    NSArray *macrosNodes = [root elementsForName:@"Macros"];
+    NSXMLElement *macrosEl = macrosNodes.firstObject;
+    if (!macrosEl) {
+        macrosEl = [NSXMLElement elementWithName:@"Macros"];
+        [root addChild:macrosEl];
     }
-    [root addChild:macrosEl];
 
-    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithRootElement:root];
-    doc.version = @"1.0";
-    doc.characterEncoding = @"UTF-8";
-    NSData *xmlData = [doc XMLDataWithOptions:NSXMLNodePrettyPrint];
-    [xmlData writeToFile:nppShortcutsPath() atomically:YES];
+    // Build the new <Macro> element
+    NSXMLElement *macroEl = [NSXMLElement elementWithName:@"Macro"];
+    [macroEl addAttribute:[NSXMLNode attributeWithName:@"name" stringValue:name]];
+    [macroEl addAttribute:[NSXMLNode attributeWithName:@"Ctrl" stringValue:@"no"]];
+    [macroEl addAttribute:[NSXMLNode attributeWithName:@"Alt" stringValue:@"no"]];
+    [macroEl addAttribute:[NSXMLNode attributeWithName:@"Shift" stringValue:@"no"]];
+    [macroEl addAttribute:[NSXMLNode attributeWithName:@"Key" stringValue:@"0"]];
+
+    for (NSDictionary *act in actions) {
+        NSXMLElement *actionEl = [NSXMLElement elementWithName:@"Action"];
+        [actionEl addAttribute:[NSXMLNode attributeWithName:@"type"
+                                                stringValue:[NSString stringWithFormat:@"%d", [act[@"type"] intValue]]]];
+        [actionEl addAttribute:[NSXMLNode attributeWithName:@"message"
+                                                stringValue:[NSString stringWithFormat:@"%d", [act[@"message"] intValue]]]];
+        [actionEl addAttribute:[NSXMLNode attributeWithName:@"wParam"
+                                                stringValue:[NSString stringWithFormat:@"%lld", [act[@"wParam"] longLongValue]]]];
+        [actionEl addAttribute:[NSXMLNode attributeWithName:@"lParam"
+                                                stringValue:[NSString stringWithFormat:@"%lld", [act[@"lParam"] longLongValue]]]];
+        [actionEl addAttribute:[NSXMLNode attributeWithName:@"sParam"
+                                                stringValue:act[@"sParam"] ?: @""]];
+        [macroEl addChild:actionEl];
+    }
+    [macrosEl addChild:macroEl];
+
+    // Write back — preserves all other sections
+    NSData *xmlData = [doc XMLDataWithOptions:NSXMLNodePrettyPrint | NSXMLNodePreserveAll];
+    [xmlData writeToFile:path options:NSDataWritingAtomic error:nil];
+}
+
+/// Remove a macro by name from shortcuts.xml <Macros> section (in-place).
+static void removeMacroFromShortcutsXML(NSString *name) {
+    NSString *path = nppShortcutsPath();
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    if (!data) return;
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:NSXMLNodePreserveAll error:nil];
+    if (!doc) return;
+
+    for (NSXMLElement *el in [doc nodesForXPath:@"//Macros/Macro" error:nil]) {
+        if ([[[el attributeForName:@"name"] stringValue] isEqualToString:name]) {
+            [el detach];
+            break;
+        }
+    }
+    NSData *xmlData = [doc XMLDataWithOptions:NSXMLNodePrettyPrint | NSXMLNodePreserveAll];
+    [xmlData writeToFile:path options:NSDataWritingAtomic error:nil];
 }
 
 - (void)loadSessionFromPath:(NSString *)path {
@@ -1854,9 +1882,9 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         return;
     }
 
-    // Build Shortcut dialog (matching Windows screenshot)
+    // Build Shortcut dialog with conflict detection
     NSPanel *panel = [[NSPanel alloc]
-        initWithContentRect:NSMakeRect(0, 0, 340, 200)
+        initWithContentRect:NSMakeRect(0, 0, 400, 240)
                   styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
                     backing:NSBackingStoreBuffered defer:NO];
     panel.title = @"Shortcut";
@@ -1865,50 +1893,114 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
     // Name field
     NSTextField *nameLbl = [NSTextField labelWithString:@"Name:"];
-    nameLbl.frame = NSMakeRect(20, 162, 50, 16);
+    nameLbl.frame = NSMakeRect(20, 205, 50, 16);
     [cv addSubview:nameLbl];
 
-    NSTextField *nameField = [[NSTextField alloc] initWithFrame:NSMakeRect(75, 158, 240, 24)];
+    NSTextField *nameField = [[NSTextField alloc] initWithFrame:NSMakeRect(75, 201, 305, 24)];
     nameField.placeholderString = @"Macro name";
     [cv addSubview:nameField];
 
-    // Modifier checkboxes — macOS native symbols
+    // Modifier checkboxes
     NSButton *chkCmd = [NSButton checkboxWithTitle:@"\u2318 Command" target:nil action:nil];
-    chkCmd.frame = NSMakeRect(20, 125, 140, 20);
+    chkCmd.frame = NSMakeRect(20, 170, 140, 20);
     [cv addSubview:chkCmd];
 
     NSButton *chkCtrl = [NSButton checkboxWithTitle:@"\u2303 Control" target:nil action:nil];
-    chkCtrl.frame = NSMakeRect(170, 125, 140, 20);
+    chkCtrl.frame = NSMakeRect(170, 170, 140, 20);
     [cv addSubview:chkCtrl];
 
     NSButton *chkOpt = [NSButton checkboxWithTitle:@"\u2325 Option" target:nil action:nil];
-    chkOpt.frame = NSMakeRect(20, 98, 140, 20);
+    chkOpt.frame = NSMakeRect(20, 143, 140, 20);
     [cv addSubview:chkOpt];
 
     NSButton *chkShift = [NSButton checkboxWithTitle:@"\u21E7 Shift" target:nil action:nil];
-    chkShift.frame = NSMakeRect(170, 98, 100, 20);
+    chkShift.frame = NSMakeRect(170, 143, 100, 20);
     [cv addSubview:chkShift];
 
     NSTextField *plusKey = [NSTextField labelWithString:@"+"];
-    plusKey.frame = NSMakeRect(265, 100, 15, 16);
+    plusKey.frame = NSMakeRect(270, 145, 15, 16);
     [cv addSubview:plusKey];
 
-    // Key dropdown
-    NSPopUpButton *keyPopup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(278, 96, 42, 25) pullsDown:NO];
+    // Key dropdown — wide enough for longest key name
+    NSPopUpButton *keyPopup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(288, 141, 95, 25) pullsDown:NO];
     [keyPopup addItemWithTitle:@"None"];
-    // Add letter keys A-Z
     for (unichar c = 'A'; c <= 'Z'; c++)
         [keyPopup addItemWithTitle:[NSString stringWithFormat:@"%c", c]];
-    // Add number keys 0-9
     for (unichar c = '0'; c <= '9'; c++)
         [keyPopup addItemWithTitle:[NSString stringWithFormat:@"%c", c]];
-    // Add function keys
     for (int i = 1; i <= 12; i++)
         [keyPopup addItemWithTitle:[NSString stringWithFormat:@"F%d", i]];
     [cv addSubview:keyPopup];
 
+    // Conflict warning label (red text)
+    NSTextField *conflictLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 100, 360, 32)];
+    conflictLabel.editable = NO;
+    conflictLabel.bordered = NO;
+    conflictLabel.drawsBackground = NO;
+    conflictLabel.font = [NSFont systemFontOfSize:11];
+    conflictLabel.textColor = [NSColor secondaryLabelColor];
+    conflictLabel.stringValue = @"";
+    conflictLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    conflictLabel.maximumNumberOfLines = 2;
+    [cv addSubview:conflictLabel];
+
+    // Live conflict check — reuse ShortcutMapper's logic
+    void (^checkConflict)(void) = ^{
+        NSString *keyName = keyPopup.titleOfSelectedItem;
+        if ([keyName isEqualToString:@"None"]) { conflictLabel.stringValue = @""; return; }
+        NSUInteger keyCode = 0;
+        if (keyName.length == 1) keyCode = [keyName characterAtIndex:0];
+        else if ([keyName hasPrefix:@"F"]) keyCode = 111 + [keyName substringFromIndex:1].intValue;
+        if (keyCode == 0) { conflictLabel.stringValue = @""; return; }
+
+        // Walk all menus checking for conflicts
+        BOOL conflict = NO;
+        NSMutableString *msg = [NSMutableString string];
+        void (^checkMenu)(NSMenu *, NSString *) = ^(NSMenu *menu, NSString *cat) {};
+        __block void (^checkMenuBlock)(NSMenu *, NSString *);
+        checkMenuBlock = ^(NSMenu *menu, NSString *cat) {
+            for (NSMenuItem *mi in menu.itemArray) {
+                if (mi.submenu) { checkMenuBlock(mi.submenu, cat); continue; }
+                if (!mi.action || !mi.keyEquivalent.length) continue;
+                NSEventModifierFlags m = mi.keyEquivalentModifierMask;
+                BOOL mCmd = (m & NSEventModifierFlagCommand) != 0;
+                BOOL mCtrl = (m & NSEventModifierFlagControl) != 0;
+                BOOL mAlt = (m & NSEventModifierFlagOption) != 0;
+                BOOL mShift = (m & NSEventModifierFlagShift) != 0;
+                unichar mKey = [mi.keyEquivalent.uppercaseString characterAtIndex:0];
+                if (mKey >= 0xF704 && mKey <= 0xF70F) mKey = 112 + (mKey - 0xF704);
+                if (mKey == keyCode &&
+                    mCmd == (chkCmd.state == NSControlStateValueOn) &&
+                    mCtrl == (chkCtrl.state == NSControlStateValueOn) &&
+                    mAlt == (chkOpt.state == NSControlStateValueOn) &&
+                    mShift == (chkShift.state == NSControlStateValueOn)) {
+                    [msg appendFormat:@"Conflict: %@ (%@)", mi.title, cat];
+                }
+            }
+        };
+        NSMenu *mainMenu = [NSApp mainMenu];
+        for (NSMenuItem *topItem in mainMenu.itemArray) {
+            if (!topItem.submenu) continue;
+            checkMenuBlock(topItem.submenu, topItem.submenu.title ?: topItem.title);
+        }
+        if (msg.length) {
+            conflictLabel.textColor = [NSColor systemRedColor];
+            conflictLabel.stringValue = msg;
+        } else {
+            conflictLabel.textColor = [NSColor secondaryLabelColor];
+            conflictLabel.stringValue = @"No shortcut conflicts.";
+        }
+    };
+
+    for (NSButton *chk in @[chkCmd, chkCtrl, chkOpt, chkShift]) {
+        chk.target = [NSBlockOperation blockOperationWithBlock:checkConflict];
+        chk.action = @selector(main);
+    }
+    keyPopup.target = [NSBlockOperation blockOperationWithBlock:checkConflict];
+    keyPopup.action = @selector(main);
+
     // OK / Cancel
-    NSButton *btnOK = [[NSButton alloc] initWithFrame:NSMakeRect(120, 12, 90, 28)];
+    NSButton *btnOK = [[NSButton alloc] initWithFrame:NSMakeRect(195, 12, 90, 28)];
     btnOK.title = @"OK";
     btnOK.bezelStyle = NSBezelStyleRounded;
     btnOK.keyEquivalent = @"\r";
@@ -1916,7 +2008,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     btnOK.action = @selector(stopModal);
     [cv addSubview:btnOK];
 
-    NSButton *btnCancel = [[NSButton alloc] initWithFrame:NSMakeRect(220, 12, 90, 28)];
+    NSButton *btnCancel = [[NSButton alloc] initWithFrame:NSMakeRect(293, 12, 90, 28)];
     btnCancel.title = @"Cancel";
     btnCancel.bezelStyle = NSBezelStyleRounded;
     btnCancel.keyEquivalent = @"\033";
@@ -1936,9 +2028,8 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     NSArray *xmlActions = convertRecordedToXmlFormat(actions);
 
     ensureNppDirs();
-    NSMutableArray *allMacros = [loadMacrosFromShortcutsXML() mutableCopy];
-    [allMacros addObject:@{@"name": name, @"actions": xmlActions}];
-    saveMacrosToShortcutsXML(allMacros);
+    // Insert macro into shortcuts.xml in-place (preserves rest of file)
+    addMacroToShortcutsXML(name, xmlActions);
     [self rebuildMacroMenu];
 
     // Clear the current recorded macro so Save button disables (Issue 1)
@@ -1965,31 +2056,28 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     NSMenu *macroMenu = macroItem.submenu;
     if (!macroMenu) return;
 
-    // Saved macros are inserted after separator tagged 9901
-    NSMenuItem *sep = [macroMenu itemWithTag:9901];
-    if (!sep) return;
-    NSInteger sepIdx = [macroMenu indexOfItem:sep];
+    // Saved macros are inserted after "Trim Trailing Space and Save" (tagged 9901)
+    NSMenuItem *marker = [macroMenu itemWithTag:9901];
+    if (!marker) return;
+    NSInteger markerIdx = [macroMenu indexOfItem:marker];
 
-    // Remove old dynamically-added macro items (those between tag-9901 separator
-    // and the next separator or end of menu)
-    NSInteger removeFrom = sepIdx + 1;
+    // Remove old dynamically-added macro items (between marker and next separator)
+    NSInteger removeFrom = markerIdx + 1;
     while (removeFrom < macroMenu.numberOfItems) {
         NSMenuItem *mi = [macroMenu itemAtIndex:removeFrom];
-        if (mi.isSeparatorItem) break;  // hit the separator before "Modify Shortcut"
+        if (mi.isSeparatorItem) break;
         [macroMenu removeItemAtIndex:removeFrom];
     }
 
-    // Hide the separator if no saved macros will be added
     NSArray<NSDictionary *> *macros = loadMacrosFromShortcutsXML();
     NSMutableArray<NSDictionary *> *userMacros = [NSMutableArray array];
     for (NSDictionary *macro in macros) {
         if (![macro[@"name"] isEqualToString:@"Trim Trailing Space and Save"])
             [userMacros addObject:macro];
     }
-    sep.hidden = (userMacros.count == 0);
 
-    // Insert saved macros right after the separator
-    NSInteger insertIdx = sepIdx + 1;
+    // Insert saved macros right after the marker
+    NSInteger insertIdx = markerIdx + 1;
     for (NSDictionary *macro in userMacros) {
         NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:macro[@"name"]
                                                       action:@selector(runSavedMacro:)
@@ -4708,9 +4796,10 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     helper.activateHandler = ^{
         NSInteger row = tv.selectedRow;
         if (row < 0 || row >= (NSInteger)macroNames.count) return;
+        NSString *nameToDelete = macroNames[row];
         [macroNames removeObjectAtIndex:row];
         [mutableMacroList removeObjectAtIndex:row];
-        saveMacrosToShortcutsXML(mutableMacroList);
+        removeMacroFromShortcutsXML(nameToDelete);
         [tv reloadData];
     };
 
@@ -4730,9 +4819,10 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     delBtn.target = [NSBlockOperation blockOperationWithBlock:^{
         NSInteger row = tv.selectedRow;
         if (row < 0 || row >= (NSInteger)macroNames.count) return;
+        NSString *nameToDelete = macroNames[row];
         [macroNames removeObjectAtIndex:row];
         [mutableMacroList removeObjectAtIndex:row];
-        saveMacrosToShortcutsXML(mutableMacroList);
+        removeMacroFromShortcutsXML(nameToDelete);
         [tv reloadData];
         [wSelf rebuildMacroMenu];
     }];
