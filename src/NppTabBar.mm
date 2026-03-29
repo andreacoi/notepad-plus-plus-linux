@@ -23,6 +23,17 @@ static NSColor *activeTabColor()   { return [NSColor colorWithWhite:1.00 alpha:1
 static NSColor *hoverTabColor()    { return [NSColor colorWithWhite:0.87 alpha:1]; }
 // #fda640 — amber/orange accent on active tab top
 static NSColor *accentColor()      { return [NSColor colorWithRed:(253/255.0) green:(166/255.0) blue:(64/255.0) alpha:1]; }
+// Per-tab color palette (5 colors matching Windows NPP light-mode defaults)
+static NSColor *tabColorForId(NSInteger colorId) {
+    switch (colorId) {
+        case 0: return [NSColor colorWithRed:0xFC/255.0 green:0xE3/255.0 blue:0x86/255.0 alpha:1]; // Yellow
+        case 1: return [NSColor colorWithRed:0xA9/255.0 green:0xF0/255.0 blue:0x8C/255.0 alpha:1]; // Green
+        case 2: return [NSColor colorWithRed:0x7A/255.0 green:0xC9/255.0 blue:0xF5/255.0 alpha:1]; // Blue
+        case 3: return [NSColor colorWithRed:0xF5/255.0 green:0xB6/255.0 blue:0x7A/255.0 alpha:1]; // Orange
+        case 4: return [NSColor colorWithRed:0xF0/255.0 green:0x8C/255.0 blue:0xF0/255.0 alpha:1]; // Pink
+        default: return nil; // -1 = use default accent
+    }
+}
 static NSColor *tabBorderColor()   { return [NSColor colorWithWhite:0.58 alpha:1]; }
 static NSColor *dividerGray()      { return [NSColor colorWithWhite:0.55 alpha:1]; }
 static NSColor *dividerWhite()     { return [NSColor colorWithWhite:0.96 alpha:1]; }
@@ -123,6 +134,7 @@ static NSImage *toolbarIcon(NSString *name) {
 @property (nonatomic) BOOL isSelected;
 @property (nonatomic) BOOL isModified;
 @property (nonatomic) BOOL isPinned;
+@property (nonatomic) NSInteger colorId;  // -1 = default orange, 0–4 = color 1–5
 @property (nonatomic, weak) id target;
 @property (nonatomic) SEL selectAction;
 @property (nonatomic) SEL closeAction;
@@ -133,7 +145,7 @@ static NSImage *toolbarIcon(NSString *name) {
 
 - (instancetype)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
-    if (self) { self.wantsLayer = YES; }
+    if (self) { self.wantsLayer = YES; _colorId = -1; }
     return self;
 }
 
@@ -181,11 +193,14 @@ static NSImage *toolbarIcon(NSString *name) {
     tabPath.lineWidth = 0.5;
     [tabPath stroke];
 
-    // ── Active tab: #fda640 3px accent at top, clipped to shape ──────────────
-    if (_isSelected) {
+    // ── Accent stripe: 3px at top, clipped to tab shape ─────────────────────
+    // Active tab always shows a stripe (per-tab color or default orange).
+    // Inactive tabs with a color assigned also show the stripe.
+    NSColor *stripe = tabColorForId(_colorId) ?: accentColor();
+    if (_isSelected || _colorId >= 0) {
         [NSGraphicsContext saveGraphicsState];
         [tabPath addClip];
-        [accentColor() setFill];
+        [stripe setFill];
         NSRectFill(NSMakeRect(0, h - 3, w, 3));
         [NSGraphicsContext restoreGraphicsState];
     }
@@ -420,6 +435,27 @@ static NSImage *toolbarIcon(NSString *name) {
 - (BOOL)isTabPinnedAtIndex:(NSInteger)index {
     if (index < 0 || index >= (NSInteger)_items.count) return NO;
     return _items[index].isPinned;
+}
+
+- (void)swapTabAtIndex:(NSInteger)a withIndex:(NSInteger)b {
+    NSInteger count = (NSInteger)_items.count;
+    if (a < 0 || a >= count || b < 0 || b >= count || a == b) return;
+    [_items exchangeObjectAtIndex:(NSUInteger)a withObjectAtIndex:(NSUInteger)b];
+    // Re-assign tabIndex to match new positions
+    _items[a].tabIndex = a;
+    _items[b].tabIndex = b;
+    [self relayout];
+}
+
+- (void)setTabColorAtIndex:(NSInteger)index colorId:(NSInteger)colorId {
+    if (index < 0 || index >= (NSInteger)_items.count) return;
+    _items[index].colorId = colorId;
+    [_items[index] setNeedsDisplay:YES];
+}
+
+- (NSInteger)tabColorAtIndex:(NSInteger)index {
+    if (index < 0 || index >= (NSInteger)_items.count) return -1;
+    return _items[index].colorId;
 }
 
 #pragma mark - Tab item callbacks

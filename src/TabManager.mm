@@ -246,6 +246,26 @@
     [_delegate tabManager:self didCloseEditor:editor];
 }
 
+- (void)swapEditorAtIndex:(NSInteger)a withIndex:(NSInteger)b {
+    NSInteger count = (NSInteger)_editors.count;
+    if (a < 0 || a >= count || b < 0 || b >= count || a == b) return;
+
+    // Swap in the editors array
+    [_editors exchangeObjectAtIndex:(NSUInteger)a withObjectAtIndex:(NSUInteger)b];
+
+    // Swap in the tab bar
+    [_tabBar swapTabAtIndex:a withIndex:b];
+
+    // Selection follows the originally selected tab
+    if (_selectedIndex == a) {
+        _selectedIndex = b;
+        [_tabBar selectTabAtIndex:b];
+    } else if (_selectedIndex == b) {
+        _selectedIndex = a;
+        [_tabBar selectTabAtIndex:a];
+    }
+}
+
 - (void)reorderEditors:(NSArray<EditorView *> *)orderedEditors {
     if (orderedEditors.count != _editors.count) return;
 

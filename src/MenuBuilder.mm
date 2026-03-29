@@ -610,8 +610,69 @@ static NSMenu *buildLanguageMenu() {
     [viewMenu addItem:withSubmenu(@"Move/Clone Current Document", moveCloneMenu)];
 
     NSMenu *tabViewMenu = submenu(@"Tab");
-    [tabViewMenu addItem:item(@"Lock Tab", @selector(lockCurrentTab:),  @"")];
-    [tabViewMenu addItem:item(@"Wrap",     @selector(toggleTabBarWrap:), @"")];
+    // ── Tab switching (1st–9th) ──
+    [tabViewMenu addItem:item(@"1st Tab", @selector(selectTab1:), @"1")];
+    [tabViewMenu addItem:item(@"2nd Tab", @selector(selectTab2:), @"2")];
+    [tabViewMenu addItem:item(@"3rd Tab", @selector(selectTab3:), @"3")];
+    [tabViewMenu addItem:item(@"4th Tab", @selector(selectTab4:), @"4")];
+    [tabViewMenu addItem:item(@"5th Tab", @selector(selectTab5:), @"5")];
+    [tabViewMenu addItem:item(@"6th Tab", @selector(selectTab6:), @"6")];
+    [tabViewMenu addItem:item(@"7th Tab", @selector(selectTab7:), @"7")];
+    [tabViewMenu addItem:item(@"8th Tab", @selector(selectTab8:), @"8")];
+    [tabViewMenu addItem:item(@"9th Tab", @selector(selectTab9:), @"9")];
+    addSep(tabViewMenu);
+    // ── Navigation ──
+    [tabViewMenu addItem:item(@"First Tab",    @selector(selectFirstTab:),    @"")];
+    [tabViewMenu addItem:item(@"Last Tab",     @selector(selectLastTab:),     @"")];
+    {
+        unichar pgdn = NSPageDownFunctionKey;
+        unichar pgup = NSPageUpFunctionKey;
+        NSString *keyPgDn = [NSString stringWithCharacters:&pgdn length:1];
+        NSString *keyPgUp = [NSString stringWithCharacters:&pgup length:1];
+        [tabViewMenu addItem:itemMod(@"Next Tab",     @selector(selectNextTab:),     keyPgDn,
+                                     NSEventModifierFlagControl)];
+        [tabViewMenu addItem:itemMod(@"Previous Tab", @selector(selectPreviousTab:), keyPgUp,
+                                     NSEventModifierFlagControl)];
+        addSep(tabViewMenu);
+        // ── Tab movement ──
+        [tabViewMenu addItem:item(@"Move to Start",     @selector(moveTabToStart:),    @"")];
+        [tabViewMenu addItem:item(@"Move to End",       @selector(moveTabToEnd:),      @"")];
+        [tabViewMenu addItem:itemMod(@"Move Tab Forward",  @selector(moveTabForward:),  keyPgDn,
+                                     NSEventModifierFlagControl | NSEventModifierFlagShift)];
+        [tabViewMenu addItem:itemMod(@"Move Tab Backward", @selector(moveTabBackward:), keyPgUp,
+                                     NSEventModifierFlagControl | NSEventModifierFlagShift)];
+    }
+    addSep(tabViewMenu);
+    // ── Per-tab coloring ──
+    {
+        NSArray *colorNames = @[@"Apply Color 1", @"Apply Color 2", @"Apply Color 3",
+                                @"Apply Color 4", @"Apply Color 5"];
+        SEL colorSels[] = {@selector(applyTabColor1:), @selector(applyTabColor2:),
+                           @selector(applyTabColor3:), @selector(applyTabColor4:),
+                           @selector(applyTabColor5:)};
+        // Color swatch RGB values matching the tab palette
+        NSArray *swatchColors = @[
+            [NSColor colorWithRed:0xFC/255.0 green:0xE3/255.0 blue:0x86/255.0 alpha:1], // Yellow
+            [NSColor colorWithRed:0xA9/255.0 green:0xF0/255.0 blue:0x8C/255.0 alpha:1], // Green
+            [NSColor colorWithRed:0x7A/255.0 green:0xC9/255.0 blue:0xF5/255.0 alpha:1], // Blue
+            [NSColor colorWithRed:0xF5/255.0 green:0xB6/255.0 blue:0x7A/255.0 alpha:1], // Orange
+            [NSColor colorWithRed:0xF0/255.0 green:0x8C/255.0 blue:0xF0/255.0 alpha:1], // Pink
+        ];
+        for (int i = 0; i < 5; i++) {
+            NSMenuItem *ci = item(colorNames[i], colorSels[i], @"");
+            // Create a small colored square image as the menu item icon
+            NSImage *swatch = [[NSImage alloc] initWithSize:NSMakeSize(12, 12)];
+            [swatch lockFocus];
+            [swatchColors[i] setFill];
+            NSRectFill(NSMakeRect(1, 1, 10, 10));
+            [[NSColor grayColor] setStroke];
+            [NSBezierPath strokeRect:NSMakeRect(0.5, 0.5, 11, 11)];
+            [swatch unlockFocus];
+            ci.image = swatch;
+            [tabViewMenu addItem:ci];
+        }
+        [tabViewMenu addItem:item(@"Remove Color", @selector(removeTabColor:), @"")];
+    }
     [viewMenu addItem:withSubmenu(@"Tab", tabViewMenu)];
 
     [viewMenu addItem:item(@"Word Wrap",           @selector(toggleWordWrap:), @"")];

@@ -52,6 +52,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Select tab by index programmatically (fires delegate).
 - (void)selectTabAtIndex:(NSInteger)index;
 
+/// Swap two tabs by index. The selection follows the tab that was selected.
+- (void)swapEditorAtIndex:(NSInteger)a withIndex:(NSInteger)b;
+
 /// Reorder tabs to match the given sorted array (must contain same editors, same count).
 /// The previously active editor remains selected.
 - (void)reorderEditors:(NSArray<EditorView *> *)orderedEditors;

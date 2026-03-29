@@ -1279,6 +1279,12 @@ static BOOL groupHasTrailingSep(NSString *ident) {
 
         if (ed.currentLanguage.length) info[@"language"] = ed.currentLanguage;
         info[@"cursorLine"] = @(ed.cursorLine);
+        // Per-tab color (persist if assigned)
+        NSInteger edIdx = [_tabManager.allEditors indexOfObject:ed];
+        if (edIdx != NSNotFound) {
+            NSInteger cid = [_tabManager.tabBar tabColorAtIndex:edIdx];
+            if (cid >= 0) info[@"tabColorId"] = @(cid);
+        }
         [tabs addObject:info];
     }
 
@@ -1336,6 +1342,13 @@ static BOOL groupHasTrailingSep(NSString *ident) {
         }
         if (lang.length) [ed setLanguage:lang];
         [_tabManager refreshCurrentTabTitle];
+
+        // Restore per-tab color
+        NSNumber *colorNum = info[@"tabColorId"];
+        if (colorNum) {
+            NSInteger tabIdx = (NSInteger)_tabManager.allEditors.count - 1;
+            [_tabManager.tabBar setTabColorAtIndex:tabIdx colorId:colorNum.integerValue];
+        }
         opened++;
     }
 
@@ -3852,6 +3865,82 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     NSInteger prev  = (_activeTabManager.tabBar.selectedIndex - 1 + count) % count;
     [_activeTabManager selectTabAtIndex:prev];
 }
+
+- (void)_selectTabN:(NSInteger)n {
+    // Select Nth tab (0-based). If beyond count, select last tab (matches Windows NPP).
+    NSInteger count = _activeTabManager.tabBar.tabCount;
+    if (count == 0) return;
+    NSInteger idx = (n < count) ? n : (count - 1);
+    [_activeTabManager selectTabAtIndex:idx];
+}
+
+- (void)selectTab1:(id)sender { [self _selectTabN:0]; }
+- (void)selectTab2:(id)sender { [self _selectTabN:1]; }
+- (void)selectTab3:(id)sender { [self _selectTabN:2]; }
+- (void)selectTab4:(id)sender { [self _selectTabN:3]; }
+- (void)selectTab5:(id)sender { [self _selectTabN:4]; }
+- (void)selectTab6:(id)sender { [self _selectTabN:5]; }
+- (void)selectTab7:(id)sender { [self _selectTabN:6]; }
+- (void)selectTab8:(id)sender { [self _selectTabN:7]; }
+- (void)selectTab9:(id)sender { [self _selectTabN:8]; }
+
+- (void)selectFirstTab:(id)sender {
+    if (_activeTabManager.tabBar.tabCount > 0)
+        [_activeTabManager selectTabAtIndex:0];
+}
+
+- (void)selectLastTab:(id)sender {
+    NSInteger count = _activeTabManager.tabBar.tabCount;
+    if (count > 0)
+        [_activeTabManager selectTabAtIndex:count - 1];
+}
+
+#pragma mark - Tab movement
+
+- (void)moveTabForward:(id)sender {
+    NSInteger idx = _activeTabManager.tabBar.selectedIndex;
+    NSInteger count = _activeTabManager.tabBar.tabCount;
+    if (idx < 0 || idx >= count - 1) return; // already at end
+    [_activeTabManager swapEditorAtIndex:idx withIndex:idx + 1];
+}
+
+- (void)moveTabBackward:(id)sender {
+    NSInteger idx = _activeTabManager.tabBar.selectedIndex;
+    if (idx <= 0) return; // already at start
+    [_activeTabManager swapEditorAtIndex:idx withIndex:idx - 1];
+}
+
+- (void)moveTabToStart:(id)sender {
+    NSInteger idx = _activeTabManager.tabBar.selectedIndex;
+    while (idx > 0) {
+        [_activeTabManager swapEditorAtIndex:idx withIndex:idx - 1];
+        idx--;
+    }
+}
+
+- (void)moveTabToEnd:(id)sender {
+    NSInteger idx = _activeTabManager.tabBar.selectedIndex;
+    NSInteger count = _activeTabManager.tabBar.tabCount;
+    while (idx < count - 1) {
+        [_activeTabManager swapEditorAtIndex:idx withIndex:idx + 1];
+        idx++;
+    }
+}
+
+#pragma mark - Tab coloring
+
+- (void)_applyTabColor:(NSInteger)colorId {
+    NSInteger idx = _activeTabManager.tabBar.selectedIndex;
+    if (idx < 0) return;
+    [_activeTabManager.tabBar setTabColorAtIndex:idx colorId:colorId];
+}
+
+- (void)applyTabColor1:(id)sender { [self _applyTabColor:0]; }
+- (void)applyTabColor2:(id)sender { [self _applyTabColor:1]; }
+- (void)applyTabColor3:(id)sender { [self _applyTabColor:2]; }
+- (void)applyTabColor4:(id)sender { [self _applyTabColor:3]; }
+- (void)applyTabColor5:(id)sender { [self _applyTabColor:4]; }
+- (void)removeTabColor:(id)sender  { [self _applyTabColor:-1]; }
 
 #pragma mark - Find panel animation
 

@@ -26,6 +26,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns YES if the tab at index is pinned.
 - (BOOL)isTabPinnedAtIndex:(NSInteger)index;
 
+/// Swap two tab items by index (preserves all properties including pin and color).
+- (void)swapTabAtIndex:(NSInteger)a withIndex:(NSInteger)b;
+
+/// Set a per-tab color identifier (-1 = none/default orange, 0–4 = color 1–5).
+- (void)setTabColorAtIndex:(NSInteger)index colorId:(NSInteger)colorId;
+/// Returns the color identifier for the tab at index (-1 if none).
+- (NSInteger)tabColorAtIndex:(NSInteger)index;
+
 /// When YES tabs wrap to multiple rows instead of scrolling horizontally.
 @property (nonatomic) BOOL wrapMode;
 
