@@ -137,10 +137,13 @@
 // ── Intercept menu actions during recording ─────────────────────────────────
 
 - (BOOL)sendAction:(SEL)action to:(id)target from:(id)sender {
-    // Check if this is a recordable menu action during active recording
+    // Check if this is a recordable action during active recording.
+    // Accept both NSMenuItem (menu clicks) and NSToolbarItem (toolbar clicks).
+    BOOL fromUI = [sender isKindOfClass:[NSMenuItem class]] ||
+                  [sender isKindOfClass:[NSToolbarItem class]];
     BOOL shouldRecord = (_recordableSelectors &&
                          !self.playingBackMacro &&
-                         [sender isKindOfClass:[NSMenuItem class]] &&
+                         fromUI &&
                          [_recordableSelectors containsObject:NSStringFromSelector(action)]);
 
     EditorView *editor = shouldRecord ? [self _activeRecordingEditor] : nil;
