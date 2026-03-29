@@ -332,6 +332,10 @@ extern NSNotificationName const EditorViewCursorDidMoveNotification;
 /// Clear all pink diff highlights.
 - (void)clearGitDiffHighlights;
 
+// ── Scintilla key overrides ───────────────────────────────────────────────────
+/// Apply ScintillaKeys overrides from shortcuts.xml via SCI_ASSIGNCMDKEY.
+- (void)applyScintillaKeyOverrides;
+
 // ── Character insertion (ASCII Codes Panel) ───────────────────────────────────
 /// Insert str at the current cursor position, replacing any selection.
 /// str is interpreted as Unicode (e.g. converted from Windows-1252).

@@ -1255,6 +1255,108 @@ static NSColor *nppColorFromHex(NSString *hex) {
 
     // Apply user preferences (tab width, line numbers, wrap, etc.)
     [self applyPreferencesFromDefaults];
+
+    // Apply any ScintillaKeys overrides from shortcuts.xml
+    [self applyScintillaKeyOverrides];
+}
+
+// ── Scintilla key overrides ──────────────────────────────────────────────────
+
+/// Convert a Windows virtual key code (used in shortcuts.xml) to the key code
+/// that Scintilla Cocoa uses internally (from event.charactersIgnoringModifiers).
+static int vkToScintillaKey(int vk) {
+    // Navigation keys → SCK_* constants (match Scintilla's KeyTranslate output)
+    switch (vk) {
+        case 8:   return 8;    // SCK_BACK (Backspace)
+        case 9:   return 9;    // SCK_TAB
+        case 13:  return 13;   // SCK_RETURN
+        case 27:  return 7;    // SCK_ESCAPE
+        case 33:  return 306;  // SCK_PRIOR (Page Up)
+        case 34:  return 307;  // SCK_NEXT (Page Down)
+        case 35:  return 305;  // SCK_END
+        case 36:  return 304;  // SCK_HOME
+        case 37:  return 302;  // SCK_LEFT
+        case 38:  return 301;  // SCK_UP
+        case 39:  return 303;  // SCK_RIGHT
+        case 40:  return 300;  // SCK_DOWN
+        case 45:  return 309;  // SCK_INSERT
+        case 46:  return 308;  // SCK_DELETE
+        default:  break;
+    }
+    // Function keys: VK F1-F12 (112-123) → NSF*FunctionKey (0xF704-0xF70F)
+    // Scintilla Cocoa receives these Unicode values from charactersIgnoringModifiers
+    if (vk >= 112 && vk <= 123)
+        return 0xF704 + (vk - 112);
+    // OEM special characters: VK codes → actual ASCII from charactersIgnoringModifiers
+    switch (vk) {
+        case 186: return ';';   // VK_OEM_1
+        case 187: return '=';   // VK_OEM_PLUS
+        case 188: return ',';   // VK_OEM_COMMA
+        case 189: return '-';   // VK_OEM_MINUS
+        case 190: return '.';   // VK_OEM_PERIOD
+        case 191: return '/';   // VK_OEM_2
+        case 192: return '`';   // VK_OEM_3
+        case 219: return '[';   // VK_OEM_4
+        case 220: return '\\';  // VK_OEM_5
+        case 221: return ']';   // VK_OEM_6
+        case 222: return '\'';  // VK_OEM_7
+        default:  break;
+    }
+    // Uppercase letters → lowercase (Scintilla uses lowercase from charactersIgnoringModifiers)
+    if (vk >= 'A' && vk <= 'Z')
+        return vk + 32;
+    // Digits and others pass through
+    return vk;
+}
+
+- (void)applyScintillaKeyOverrides {
+    NSString *path = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/shortcuts.xml"];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    if (!data) return;
+
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:0 error:nil];
+    if (!doc) return;
+
+    NSArray *scintKeys = [doc nodesForXPath:@"//ScintillaKeys/ScintKey" error:nil];
+    if (!scintKeys.count) return;
+
+    ScintillaView *sci = _scintillaView;
+    NSInteger applied = 0;
+
+    for (NSXMLElement *sk in scintKeys) {
+        int sciID    = [[[sk attributeForName:@"ScintID"] stringValue] intValue];
+        int keyCode  = [[[sk attributeForName:@"Key"]     stringValue] intValue];
+        BOOL hasCtrl  = [[[sk attributeForName:@"Ctrl"]  stringValue] isEqualToString:@"yes"];
+        BOOL hasAlt   = [[[sk attributeForName:@"Alt"]   stringValue] isEqualToString:@"yes"];
+        BOOL hasShift = [[[sk attributeForName:@"Shift"] stringValue] isEqualToString:@"yes"];
+        BOOL hasCmd   = [[[sk attributeForName:@"Cmd"]   stringValue] isEqualToString:@"yes"];
+
+        // Backward compat: old files without Cmd attribute treat Ctrl as Command
+        if (!hasCmd && hasCtrl && ![sk attributeForName:@"Cmd"]) {
+            hasCmd = YES; hasCtrl = NO;
+        }
+
+        // On macOS Scintilla: Command → SCMOD_CTRL(2), Control → SCMOD_META(16)
+        int mods = 0;
+        if (hasCmd)   mods |= 2;   // SCMOD_CTRL (mapped from macOS Command)
+        if (hasCtrl)  mods |= 16;  // SCMOD_META (mapped from macOS Control)
+        if (hasAlt)   mods |= 4;   // SCMOD_ALT
+        if (hasShift) mods |= 1;   // SCMOD_SHIFT
+
+        int sckKey = vkToScintillaKey(keyCode);
+        sptr_t keyDef = sckKey | (mods << 16);
+
+        if (keyCode == 0) {
+            // Key=0 means "remove this binding" — clear it
+            [sci message:2071 wParam:(uptr_t)keyDef lParam:0]; // SCI_CLEARCMDKEY
+        } else {
+            [sci message:2070 wParam:(uptr_t)keyDef lParam:sciID]; // SCI_ASSIGNCMDKEY
+        }
+        applied++;
+    }
+
+    if (applied > 0)
+        NSLog(@"[EditorView] Applied %ld Scintilla key override(s)", (long)applied);
 }
 
 #pragma mark - Preferences

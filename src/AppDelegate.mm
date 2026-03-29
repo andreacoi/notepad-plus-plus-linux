@@ -287,29 +287,14 @@
     NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:0 error:nil];
     if (!doc) return;
 
-    NSArray *overrides = [doc nodesForXPath:@"//InternalCommands/Shortcut" error:nil];
-    if (!overrides.count) return;
-
-    for (NSXMLElement *sc in overrides) {
-        NSString *selectorName = [[sc attributeForName:@"id"] stringValue];
-        if (!selectorName.length) continue;
-
-        SEL sel = NSSelectorFromString(selectorName);
-        NSMenuItem *mi = [self _findMenuItemWithAction:sel inMenu:[NSApp mainMenu]];
-        if (!mi) {
-            NSLog(@"[Shortcuts] WARNING: menu item not found for selector '%@'", selectorName);
-            continue;
-        }
-        NSLog(@"[Shortcuts] Applying override for '%@' to menu item '%@' (current key='%@')",
-              selectorName, mi.title, mi.keyEquivalent);
-
+    // Helper block to apply a shortcut override to a menu item
+    void (^applyOverride)(NSXMLElement *, NSMenuItem *) = ^(NSXMLElement *sc, NSMenuItem *mi) {
         BOOL hasCtrl  = [[[sc attributeForName:@"Ctrl"]  stringValue] isEqualToString:@"yes"];
         BOOL hasAlt   = [[[sc attributeForName:@"Alt"]   stringValue] isEqualToString:@"yes"];
         BOOL hasShift = [[[sc attributeForName:@"Shift"] stringValue] isEqualToString:@"yes"];
         BOOL hasCmd   = [[[sc attributeForName:@"Cmd"]   stringValue] isEqualToString:@"yes"];
         NSUInteger keyCode = [[[sc attributeForName:@"Key"] stringValue] integerValue];
 
-        // Backward compat: if no Cmd attribute, treat Ctrl as Cmd (Windows convention)
         if (!hasCmd && hasCtrl && ![sc attributeForName:@"Cmd"]) {
             hasCmd = YES; hasCtrl = NO;
         }
@@ -325,21 +310,104 @@
             if (hasShift) mods |= NSEventModifierFlagShift;
 
             NSString *key = @"";
-            if (keyCode >= 'A' && keyCode <= 'Z') {
+            if (keyCode >= 'A' && keyCode <= 'Z')
                 key = [[NSString stringWithFormat:@"%c", (char)keyCode] lowercaseString];
-            } else if (keyCode >= '0' && keyCode <= '9') {
+            else if (keyCode >= '0' && keyCode <= '9')
                 key = [NSString stringWithFormat:@"%c", (char)keyCode];
-            } else if (keyCode >= 112 && keyCode <= 123) {
+            else if (keyCode >= 112 && keyCode <= 123) {
                 unichar fk = NSF1FunctionKey + (keyCode - 112);
                 key = [NSString stringWithCharacters:&fk length:1];
-            } else {
+            } else
                 key = [[NSString stringWithFormat:@"%c", (char)keyCode] lowercaseString];
-            }
+
             mi.keyEquivalent = key;
             mi.keyEquivalentModifierMask = mods;
         }
+    };
+
+    NSInteger totalApplied = 0;
+
+    // ── InternalCommands (main menu shortcuts) ──
+    for (NSXMLElement *sc in [doc nodesForXPath:@"//InternalCommands/Shortcut" error:nil]) {
+        NSString *selectorName = [[sc attributeForName:@"id"] stringValue];
+        if (!selectorName.length) continue;
+        SEL sel = NSSelectorFromString(selectorName);
+        NSMenuItem *mi = [self _findMenuItemWithAction:sel inMenu:[NSApp mainMenu]];
+        if (!mi) { NSLog(@"[Shortcuts] WARNING: not found '%@'", selectorName); continue; }
+        applyOverride(sc, mi);
+        totalApplied++;
     }
-    NSLog(@"[Shortcuts] Applied %lu shortcut override(s) from shortcuts.xml", (unsigned long)overrides.count);
+
+    // ── PluginCommands ──
+    for (NSXMLElement *pc in [doc nodesForXPath:@"//PluginCommands/PluginCommand" error:nil]) {
+        NSString *pluginName = [[pc attributeForName:@"moduleName"] stringValue];
+        NSInteger internalID = [[[pc attributeForName:@"internalID"] stringValue] integerValue];
+        // Find the plugin menu item by walking Plugins menu
+        NSMenu *mainMenu = [NSApp mainMenu];
+        for (NSMenuItem *topItem in mainMenu.itemArray) {
+            NSString *menuTitle = topItem.submenu.title ?: topItem.title;
+            if (![menuTitle isEqualToString:@"Plugins"]) continue;
+            for (NSMenuItem *pluginItem in topItem.submenu.itemArray) {
+                if (![pluginItem.title isEqualToString:pluginName]) continue;
+                if (!pluginItem.submenu) continue;
+                NSInteger cmdIdx = 0;
+                for (NSMenuItem *cmdItem in pluginItem.submenu.itemArray) {
+                    if (cmdItem.isSeparatorItem || !cmdItem.action) continue;
+                    if (cmdItem.tag == internalID || cmdIdx == internalID) {
+                        applyOverride(pc, cmdItem);
+                        totalApplied++;
+                        goto nextPlugin;
+                    }
+                    cmdIdx++;
+                }
+            }
+            break;
+        }
+        nextPlugin:;
+    }
+
+    // ── Macro shortcuts ──
+    for (NSXMLElement *mc in [doc nodesForXPath:@"//Macros/Macro" error:nil]) {
+        NSString *macroName = [[mc attributeForName:@"name"] stringValue];
+        NSUInteger keyCode = [[[mc attributeForName:@"Key"] stringValue] integerValue];
+        if (keyCode == 0) continue;
+        // Find macro menu item by title
+        NSMenu *mainMenu = [NSApp mainMenu];
+        for (NSMenuItem *topItem in mainMenu.itemArray) {
+            NSString *menuTitle = topItem.submenu.title ?: topItem.title;
+            if (![menuTitle isEqualToString:@"Macro"]) continue;
+            for (NSMenuItem *mi in topItem.submenu.itemArray) {
+                if ([mi.title isEqualToString:macroName]) {
+                    applyOverride(mc, mi);
+                    totalApplied++;
+                    break;
+                }
+            }
+            break;
+        }
+    }
+
+    // ── Run Commands (UserDefinedCommands) ──
+    for (NSXMLElement *rc in [doc nodesForXPath:@"//UserDefinedCommands/Command" error:nil]) {
+        NSString *cmdName = [[rc attributeForName:@"name"] stringValue];
+        NSUInteger keyCode = [[[rc attributeForName:@"Key"] stringValue] integerValue];
+        if (keyCode == 0 || !cmdName.length) continue;
+        NSMenu *mainMenu = [NSApp mainMenu];
+        for (NSMenuItem *topItem in mainMenu.itemArray) {
+            NSString *menuTitle = topItem.submenu.title ?: topItem.title;
+            if (![menuTitle isEqualToString:@"Run"]) continue;
+            for (NSMenuItem *mi in topItem.submenu.itemArray) {
+                if ([mi.title isEqualToString:cmdName]) {
+                    applyOverride(rc, mi);
+                    totalApplied++;
+                    break;
+                }
+            }
+            break;
+        }
+    }
+
+    NSLog(@"[Shortcuts] Applied %ld shortcut override(s) from shortcuts.xml", (long)totalApplied);
 }
 
 - (nullable NSMenuItem *)_findMenuItemWithAction:(SEL)action inMenu:(NSMenu *)menu {

@@ -84,7 +84,8 @@ static NSString *nppSessionPath(void) {
 // Forward declarations for shortcuts.xml functions (defined after @implementation)
 static NSString *nppShortcutsPath(void);
 static NSArray<NSDictionary *> *loadMacrosFromShortcutsXML(void);
-static void addMacroToShortcutsXML(NSString *name, NSArray<NSDictionary *> *actions);
+static void addMacroToShortcutsXML(NSString *name, NSArray<NSDictionary *> *actions,
+                                   BOOL ctrl, BOOL alt, BOOL shift, BOOL cmd, NSUInteger keyCode);
 static void removeMacroFromShortcutsXML(NSString *name);
 
 static void ensureNppDirs(void) {
@@ -1378,14 +1379,22 @@ static NSArray<NSDictionary *> *loadMacrosFromShortcutsXML(void) {
             act[@"sParam"]  = [[actionEl attributeForName:@"sParam"] stringValue] ?: @"";
             [actions addObject:act];
         }
-        [result addObject:@{@"name": name, @"actions": actions}];
+        NSString *ctrlVal  = [[macroEl attributeForName:@"Ctrl"]  stringValue] ?: @"no";
+        NSString *altVal   = [[macroEl attributeForName:@"Alt"]   stringValue] ?: @"no";
+        NSString *shiftVal = [[macroEl attributeForName:@"Shift"] stringValue] ?: @"no";
+        NSString *cmdVal   = [[macroEl attributeForName:@"Cmd"]   stringValue] ?: @"no";
+        NSString *keyVal   = [[macroEl attributeForName:@"Key"]   stringValue] ?: @"0";
+        [result addObject:@{@"name": name, @"actions": actions,
+                            @"Ctrl": ctrlVal, @"Alt": altVal, @"Shift": shiftVal,
+                            @"Cmd": cmdVal, @"Key": keyVal}];
     }
     return result;
 }
 
 /// Save macros to shortcuts.xml in Windows-compatible format.
 /// Add a single macro to shortcuts.xml <Macros> section (in-place, preserves rest of file).
-static void addMacroToShortcutsXML(NSString *name, NSArray<NSDictionary *> *actions) {
+static void addMacroToShortcutsXML(NSString *name, NSArray<NSDictionary *> *actions,
+                                   BOOL ctrl, BOOL alt, BOOL shift, BOOL cmd, NSUInteger keyCode) {
     NSString *path = nppShortcutsPath();
     NSData *data = [NSData dataWithContentsOfFile:path];
     if (!data) return;
@@ -1405,10 +1414,12 @@ static void addMacroToShortcutsXML(NSString *name, NSArray<NSDictionary *> *acti
     // Build the new <Macro> element
     NSXMLElement *macroEl = [NSXMLElement elementWithName:@"Macro"];
     [macroEl addAttribute:[NSXMLNode attributeWithName:@"name" stringValue:name]];
-    [macroEl addAttribute:[NSXMLNode attributeWithName:@"Ctrl" stringValue:@"no"]];
-    [macroEl addAttribute:[NSXMLNode attributeWithName:@"Alt" stringValue:@"no"]];
-    [macroEl addAttribute:[NSXMLNode attributeWithName:@"Shift" stringValue:@"no"]];
-    [macroEl addAttribute:[NSXMLNode attributeWithName:@"Key" stringValue:@"0"]];
+    [macroEl addAttribute:[NSXMLNode attributeWithName:@"Ctrl" stringValue:ctrl ? @"yes" : @"no"]];
+    [macroEl addAttribute:[NSXMLNode attributeWithName:@"Alt" stringValue:alt ? @"yes" : @"no"]];
+    [macroEl addAttribute:[NSXMLNode attributeWithName:@"Shift" stringValue:shift ? @"yes" : @"no"]];
+    [macroEl addAttribute:[NSXMLNode attributeWithName:@"Cmd" stringValue:cmd ? @"yes" : @"no"]];
+    [macroEl addAttribute:[NSXMLNode attributeWithName:@"Key"
+                                          stringValue:[NSString stringWithFormat:@"%lu", (unsigned long)keyCode]]];
 
     for (NSDictionary *act in actions) {
         NSXMLElement *actionEl = [NSXMLElement elementWithName:@"Action"];
@@ -2027,9 +2038,22 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     // Convert recorded actions to shortcuts.xml format
     NSArray *xmlActions = convertRecordedToXmlFormat(actions);
 
+    // Read shortcut from dialog controls
+    BOOL macroCmd   = (chkCmd.state == NSControlStateValueOn);
+    BOOL macroCtrl  = (chkCtrl.state == NSControlStateValueOn);
+    BOOL macroAlt   = (chkOpt.state == NSControlStateValueOn);
+    BOOL macroShift = (chkShift.state == NSControlStateValueOn);
+    NSUInteger macroKeyCode = 0;
+    NSString *keyName = keyPopup.titleOfSelectedItem;
+    if (keyName.length == 1) {
+        macroKeyCode = [keyName characterAtIndex:0]; // 'A'-'Z' or '0'-'9'
+    } else if ([keyName hasPrefix:@"F"]) {
+        macroKeyCode = 111 + [keyName substringFromIndex:1].intValue; // F1=112..F12=123
+    }
+
     ensureNppDirs();
     // Insert macro into shortcuts.xml in-place (preserves rest of file)
-    addMacroToShortcutsXML(name, xmlActions);
+    addMacroToShortcutsXML(name, xmlActions, macroCtrl, macroAlt, macroShift, macroCmd, macroKeyCode);
     [self rebuildMacroMenu];
 
     // Clear the current recorded macro so Save button disables (Issue 1)
@@ -2083,6 +2107,41 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
                                                       action:@selector(runSavedMacro:)
                                                keyEquivalent:@""];
         item.representedObject = macro[@"actions"];
+
+        // Apply shortcut from XML
+        NSUInteger keyCode = [macro[@"Key"] integerValue];
+        if (keyCode > 0) {
+            BOOL hasCtrl  = [macro[@"Ctrl"]  isEqualToString:@"yes"];
+            BOOL hasAlt   = [macro[@"Alt"]   isEqualToString:@"yes"];
+            BOOL hasShift = [macro[@"Shift"] isEqualToString:@"yes"];
+            BOOL hasCmd   = [macro[@"Cmd"]   isEqualToString:@"yes"];
+
+            // Backward compat: old files without Cmd attribute treat Ctrl as Command
+            if (!hasCmd && hasCtrl && !macro[@"Cmd"]) {
+                hasCmd = YES; hasCtrl = NO;
+            }
+
+            NSEventModifierFlags mods = 0;
+            if (hasCmd)   mods |= NSEventModifierFlagCommand;
+            if (hasCtrl)  mods |= NSEventModifierFlagControl;
+            if (hasAlt)   mods |= NSEventModifierFlagOption;
+            if (hasShift) mods |= NSEventModifierFlagShift;
+
+            NSString *key = @"";
+            if (keyCode >= 'A' && keyCode <= 'Z')
+                key = [[NSString stringWithFormat:@"%c", (char)keyCode] lowercaseString];
+            else if (keyCode >= '0' && keyCode <= '9')
+                key = [NSString stringWithFormat:@"%c", (char)keyCode];
+            else if (keyCode >= 112 && keyCode <= 123) {
+                unichar fk = NSF1FunctionKey + (keyCode - 112);
+                key = [NSString stringWithCharacters:&fk length:1];
+            } else
+                key = [[NSString stringWithFormat:@"%c", (char)keyCode] lowercaseString];
+
+            item.keyEquivalent = key;
+            item.keyEquivalentModifierMask = mods;
+        }
+
         [macroMenu insertItem:item atIndex:insertIdx++];
     }
 }

@@ -93,6 +93,23 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     return keys;
 }
 
+/// Returns the English popup name for a key code (matches allKeyNames).
++ (NSString *)popupNameForCode:(NSUInteger)code {
+    if (code >= 'A' && code <= 'Z') return [NSString stringWithFormat:@"%c", (char)code];
+    if (code >= '0' && code <= '9') return [NSString stringWithFormat:@"%c", (char)code];
+    if (code >= 112 && code <= 123) return [NSString stringWithFormat:@"F%lu", (unsigned long)(code - 111)];
+    if (code >= 0xF704 && code <= 0xF70F) return [NSString stringWithFormat:@"F%lu", (unsigned long)(code - 0xF704 + 1)];
+    NSDictionary *map = @{@8:@"Backspace", @9:@"Tab", @13:@"Enter", @27:@"Escape", @32:@"Space",
+        @33:@"Page Up", @34:@"Page Down", @35:@"End", @36:@"Home", @37:@"Left", @38:@"Up",
+        @39:@"Right", @40:@"Down", @45:@"Insert", @46:@"Delete",
+        @186:@";", @187:@"=", @188:@",", @189:@"-", @190:@".", @191:@"/",
+        @192:@"`", @219:@"[", @220:@"\\", @221:@"]", @222:@"'",
+        @0xF728:@"Delete", @0xF729:@"Home", @0xF72B:@"End",
+        @0xF72C:@"Page Up", @0xF72D:@"Page Down",
+        @0xF702:@"Left", @0xF703:@"Right", @0xF700:@"Up", @0xF701:@"Down"};
+    return map[@(code)] ?: @"None";
+}
+
 + (NSUInteger)keyCodeForName:(NSString *)name {
     if ([name isEqualToString:@"None"] || name.length == 0) return 0;
     if (name.length == 1) return [name characterAtIndex:0];
@@ -627,19 +644,53 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
         {"SCI_STUTTEREDPAGEDOWN",    2437, NO,  NO,  NO,  0},
         {"SCI_STUTTEREDPAGEDOWNEXTEND",2438,NO, NO,  NO,  0},
     };
+    // Read existing overrides from shortcuts.xml
+    NSString *path = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/shortcuts.xml"];
+    NSData *xmlData = [NSData dataWithContentsOfFile:path];
+    NSXMLDocument *xmlDoc = xmlData ? [[NSXMLDocument alloc] initWithData:xmlData options:0 error:nil] : nil;
+    NSArray *xmlScintKeys = xmlDoc ? [xmlDoc nodesForXPath:@"//ScintillaKeys/ScintKey" error:nil] : @[];
+    // Build a lookup: sciID → NSXMLElement
+    NSMutableDictionary<NSNumber *, NSXMLElement *> *overrides = [NSMutableDictionary dictionary];
+    for (NSXMLElement *sk in xmlScintKeys) {
+        int sciID = [[[sk attributeForName:@"ScintID"] stringValue] intValue];
+        overrides[@(sciID)] = sk;
+    }
+
     for (size_t i = 0; i < sizeof(defs)/sizeof(defs[0]); i++) {
         ShortcutEntry *e = [[ShortcutEntry alloc] init];
         e.name = [NSString stringWithUTF8String:defs[i].name];
         e.commandID = defs[i].sciID;
-        // Map Windows Ctrl to macOS Cmd
-        e.hasCmd   = defs[i].ctrl;
-        e.hasAlt   = defs[i].alt;
-        e.hasShift = defs[i].shift;
-        e.keyCode  = defs[i].key;
+
+        // Check if there's an override in shortcuts.xml
+        NSXMLElement *ovr = overrides[@(defs[i].sciID)];
+        if (ovr) {
+            BOOL hasCtrl  = [[[ovr attributeForName:@"Ctrl"]  stringValue] isEqualToString:@"yes"];
+            BOOL hasAlt   = [[[ovr attributeForName:@"Alt"]   stringValue] isEqualToString:@"yes"];
+            BOOL hasShift = [[[ovr attributeForName:@"Shift"] stringValue] isEqualToString:@"yes"];
+            BOOL hasCmd   = [[[ovr attributeForName:@"Cmd"]   stringValue] isEqualToString:@"yes"];
+            NSUInteger keyCode = [[[ovr attributeForName:@"Key"] stringValue] integerValue];
+            // Backward compat: old files without Cmd attribute treat Ctrl as Command
+            if (!hasCmd && hasCtrl && ![ovr attributeForName:@"Cmd"]) {
+                hasCmd = YES; hasCtrl = NO;
+            }
+            e.hasCmd   = hasCmd;
+            e.hasCtrl  = hasCtrl;
+            e.hasAlt   = hasAlt;
+            e.hasShift = hasShift;
+            e.keyCode  = keyCode;
+            e.isModified = YES; // mark so it gets re-saved
+        } else {
+            // Map Windows Ctrl to macOS Cmd (defaults)
+            e.hasCmd   = defs[i].ctrl;
+            e.hasAlt   = defs[i].alt;
+            e.hasShift = defs[i].shift;
+            e.keyCode  = defs[i].key;
+        }
         [e updateDisplay];
         [_scintillaEntries addObject:e];
     }
-    NSLog(@"[ShortcutMapper] Scintilla commands: %lu entries", (unsigned long)_scintillaEntries.count);
+    NSLog(@"[ShortcutMapper] Scintilla commands: %lu entries (%lu overrides from XML)",
+          (unsigned long)_scintillaEntries.count, (unsigned long)overrides.count);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -863,7 +914,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     NSPopUpButton *keyPopup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(288, 141, 95, 25) pullsDown:NO];
     [keyPopup addItemsWithTitles:[ShortcutEntry allKeyNames]];
     if (e.keyCode > 0) {
-        NSString *current = [ShortcutEntry keyNameForCode:e.keyCode];
+        NSString *current = [ShortcutEntry popupNameForCode:e.keyCode];
         [keyPopup selectItemWithTitle:current];
     }
     [cv addSubview:keyPopup];
@@ -1005,8 +1056,10 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
 - (void)_saveChanges {
     NSInteger modCount = 0;
 
-    // Apply Main Menu shortcut changes to live menu items
-    for (ShortcutEntry *e in _mainMenuEntries) {
+    // Apply shortcut changes to live menu items (all tabs)
+    NSArray *allEntries = [@[_mainMenuEntries ?: @[], _pluginEntries ?: @[], _runCmdEntries ?: @[]]
+                           valueForKeyPath:@"@unionOfArrays.self"];
+    for (ShortcutEntry *e in allEntries) {
         if (!e.isModified) continue;
         if (!e.selectorName) continue;
         SEL sel = NSSelectorFromString(e.selectorName);
@@ -1139,6 +1192,100 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
                                                        stringValue:[NSString stringWithFormat:@"%lu", (unsigned long)e.keyCode]]];
                 break;
             }
+        }
+    }
+
+    // ── Update PluginCommands in-place ──
+    {
+        NSArray *pcNodes = [root elementsForName:@"PluginCommands"];
+        NSXMLElement *pcEl = pcNodes.firstObject;
+        if (!pcEl) {
+            pcEl = [NSXMLElement elementWithName:@"PluginCommands"];
+            [root addChild:pcEl];
+        }
+        for (ShortcutEntry *e in _pluginEntries) {
+            if (!e.isModified) continue;
+            NSLog(@"[ShortcutMapper] Saving PluginCommand: %@ plugin=%@ key=%lu",
+                  e.name, e.pluginName, (unsigned long)e.keyCode);
+            // Remove existing entry for this plugin command if present
+            for (NSXMLElement *existing in [pcEl elementsForName:@"PluginCommand"]) {
+                NSString *mod = [[existing attributeForName:@"moduleName"] stringValue];
+                NSString *iid = [[existing attributeForName:@"internalID"] stringValue];
+                if ([mod isEqualToString:e.pluginName] &&
+                    [iid isEqualToString:[NSString stringWithFormat:@"%ld", (long)e.commandID]]) {
+                    [existing detach];
+                    break;
+                }
+            }
+            NSXMLElement *pc = [NSXMLElement elementWithName:@"PluginCommand"];
+            [pc addAttribute:[NSXMLNode attributeWithName:@"moduleName" stringValue:e.pluginName ?: @""]];
+            [pc addAttribute:[NSXMLNode attributeWithName:@"internalID"
+                                              stringValue:[NSString stringWithFormat:@"%ld", (long)e.commandID]]];
+            [pc addAttribute:[NSXMLNode attributeWithName:@"Ctrl" stringValue:e.hasCtrl ? @"yes" : @"no"]];
+            [pc addAttribute:[NSXMLNode attributeWithName:@"Alt" stringValue:e.hasAlt ? @"yes" : @"no"]];
+            [pc addAttribute:[NSXMLNode attributeWithName:@"Shift" stringValue:e.hasShift ? @"yes" : @"no"]];
+            [pc addAttribute:[NSXMLNode attributeWithName:@"Cmd" stringValue:e.hasCmd ? @"yes" : @"no"]];
+            [pc addAttribute:[NSXMLNode attributeWithName:@"Key"
+                                              stringValue:[NSString stringWithFormat:@"%lu", (unsigned long)e.keyCode]]];
+            [pcEl addChild:pc];
+        }
+    }
+
+    // ── Update UserDefinedCommands shortcuts in-place ──
+    {
+        NSArray *cmdNodes = [doc nodesForXPath:@"//UserDefinedCommands/Command" error:nil];
+        for (NSXMLElement *cmdEl in cmdNodes) {
+            NSString *cmdName = [[cmdEl attributeForName:@"name"] stringValue];
+            for (ShortcutEntry *e in _runCmdEntries) {
+                if ([e.name isEqualToString:cmdName] && e.isModified) {
+                    NSLog(@"[ShortcutMapper] Saving RunCommand shortcut: %@ key=%lu",
+                          e.name, (unsigned long)e.keyCode);
+                    [cmdEl removeAttributeForName:@"Ctrl"];
+                    [cmdEl removeAttributeForName:@"Alt"];
+                    [cmdEl removeAttributeForName:@"Shift"];
+                    [cmdEl removeAttributeForName:@"Key"];
+                    [cmdEl addAttribute:[NSXMLNode attributeWithName:@"Ctrl" stringValue:e.hasCtrl ? @"yes" : @"no"]];
+                    [cmdEl addAttribute:[NSXMLNode attributeWithName:@"Alt" stringValue:e.hasAlt ? @"yes" : @"no"]];
+                    [cmdEl addAttribute:[NSXMLNode attributeWithName:@"Shift" stringValue:e.hasShift ? @"yes" : @"no"]];
+                    [cmdEl addAttribute:[NSXMLNode attributeWithName:@"Cmd" stringValue:e.hasCmd ? @"yes" : @"no"]];
+                    [cmdEl addAttribute:[NSXMLNode attributeWithName:@"Key"
+                                                         stringValue:[NSString stringWithFormat:@"%lu", (unsigned long)e.keyCode]]];
+                    break;
+                }
+            }
+        }
+    }
+
+    // ── Update ScintillaKeys in-place ──
+    {
+        NSArray *skNodes = [root elementsForName:@"ScintillaKeys"];
+        NSXMLElement *skEl = skNodes.firstObject;
+        if (!skEl) {
+            skEl = [NSXMLElement elementWithName:@"ScintillaKeys"];
+            [root addChild:skEl];
+        }
+        for (ShortcutEntry *e in _scintillaEntries) {
+            if (!e.isModified) continue;
+            NSLog(@"[ShortcutMapper] Saving ScintillaKey: %@ sciID=%ld key=%lu",
+                  e.name, (long)e.commandID, (unsigned long)e.keyCode);
+            // Remove existing entry
+            for (NSXMLElement *existing in [skEl elementsForName:@"ScintKey"]) {
+                if ([[[existing attributeForName:@"ScintID"] stringValue] intValue] == (int)e.commandID) {
+                    [existing detach];
+                    break;
+                }
+            }
+            NSXMLElement *sk = [NSXMLElement elementWithName:@"ScintKey"];
+            [sk addAttribute:[NSXMLNode attributeWithName:@"ScintID"
+                                              stringValue:[NSString stringWithFormat:@"%ld", (long)e.commandID]]];
+            [sk addAttribute:[NSXMLNode attributeWithName:@"menuCmdID" stringValue:@"0"]];
+            [sk addAttribute:[NSXMLNode attributeWithName:@"Ctrl" stringValue:e.hasCtrl ? @"yes" : @"no"]];
+            [sk addAttribute:[NSXMLNode attributeWithName:@"Alt" stringValue:e.hasAlt ? @"yes" : @"no"]];
+            [sk addAttribute:[NSXMLNode attributeWithName:@"Shift" stringValue:e.hasShift ? @"yes" : @"no"]];
+            [sk addAttribute:[NSXMLNode attributeWithName:@"Cmd" stringValue:e.hasCmd ? @"yes" : @"no"]];
+            [sk addAttribute:[NSXMLNode attributeWithName:@"Key"
+                                              stringValue:[NSString stringWithFormat:@"%lu", (unsigned long)e.keyCode]]];
+            [skEl addChild:sk];
         }
     }
 
