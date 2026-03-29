@@ -782,7 +782,7 @@ static NSMenu *buildLanguageMenu() {
         [macroMenu addItem:savedSep];
     }
     addSep(macroMenu);
-    [macroMenu addItem:item(@"Modify Shortcut/Delete Macro…", @selector(showMacroManager:), @"")];
+    [macroMenu addItem:item(@"Modify Shortcut/Delete Macro…", @selector(showShortcutMapperMacros:), @"")];
 
     // ── Run ───────────────────────────────────────────────────────────────────
     NSMenuItem *runItem = [[NSMenuItem alloc] init];

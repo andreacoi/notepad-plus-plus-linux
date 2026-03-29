@@ -24,6 +24,9 @@
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"ApplePressAndHoldEnabled"];
     [MenuBuilder buildMainMenu];
 
+    // Apply saved shortcut overrides from shortcuts.xml <InternalCommands>
+    [self _loadShortcutOverrides];
+
     // Load User Defined Languages from bundled + user directories.
     [[UserDefineLangManager shared] loadAll];
 
@@ -271,6 +274,73 @@
 }
 
 // ── Preferences / About ─────────────────────────────────────────────────────
+
+/// Load shortcut overrides from shortcuts.xml <InternalCommands> and apply to live menu items.
+- (void)_loadShortcutOverrides {
+    NSString *path = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/shortcuts.xml"];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    if (!data) {
+        NSLog(@"[Shortcuts] No shortcuts.xml found at %@ — skipping overrides", path);
+        return;
+    }
+
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:0 error:nil];
+    if (!doc) return;
+
+    NSArray *overrides = [doc nodesForXPath:@"//InternalCommands/Shortcut" error:nil];
+    if (!overrides.count) return;
+
+    for (NSXMLElement *sc in overrides) {
+        NSString *selectorName = [[sc attributeForName:@"id"] stringValue];
+        if (!selectorName.length) continue;
+
+        SEL sel = NSSelectorFromString(selectorName);
+        NSMenuItem *mi = [self _findMenuItemWithAction:sel inMenu:[NSApp mainMenu]];
+        if (!mi) continue;
+
+        BOOL hasCtrl  = [[[sc attributeForName:@"Ctrl"]  stringValue] isEqualToString:@"yes"];
+        BOOL hasAlt   = [[[sc attributeForName:@"Alt"]   stringValue] isEqualToString:@"yes"];
+        BOOL hasShift = [[[sc attributeForName:@"Shift"] stringValue] isEqualToString:@"yes"];
+        NSUInteger keyCode = [[[sc attributeForName:@"Key"] stringValue] integerValue];
+
+        if (keyCode == 0) {
+            mi.keyEquivalent = @"";
+            mi.keyEquivalentModifierMask = 0;
+        } else {
+            NSEventModifierFlags mods = 0;
+            // Map Windows Ctrl → macOS Cmd
+            if (hasCtrl) mods |= NSEventModifierFlagCommand;
+            if (hasAlt)  mods |= NSEventModifierFlagOption;
+            if (hasShift) mods |= NSEventModifierFlagShift;
+
+            NSString *key = @"";
+            if (keyCode >= 'A' && keyCode <= 'Z') {
+                key = [[NSString stringWithFormat:@"%c", (char)keyCode] lowercaseString];
+            } else if (keyCode >= '0' && keyCode <= '9') {
+                key = [NSString stringWithFormat:@"%c", (char)keyCode];
+            } else if (keyCode >= 112 && keyCode <= 123) {
+                unichar fk = NSF1FunctionKey + (keyCode - 112);
+                key = [NSString stringWithCharacters:&fk length:1];
+            } else {
+                key = [[NSString stringWithFormat:@"%c", (char)keyCode] lowercaseString];
+            }
+            mi.keyEquivalent = key;
+            mi.keyEquivalentModifierMask = mods;
+        }
+    }
+    NSLog(@"[Shortcuts] Applied %lu shortcut override(s) from shortcuts.xml", (unsigned long)overrides.count);
+}
+
+- (nullable NSMenuItem *)_findMenuItemWithAction:(SEL)action inMenu:(NSMenu *)menu {
+    for (NSMenuItem *mi in menu.itemArray) {
+        if (mi.action == action) return mi;
+        if (mi.submenu) {
+            NSMenuItem *found = [self _findMenuItemWithAction:action inMenu:mi.submenu];
+            if (found) return found;
+        }
+    }
+    return nil;
+}
 
 - (void)openNewWindow:(id)sender {
     [self openNewWindow];

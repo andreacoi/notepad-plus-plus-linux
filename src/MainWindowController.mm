@@ -91,17 +91,14 @@ static void ensureNppDirs(void) {
     [fm createDirectoryAtPath:nppBackupDir()
   withIntermediateDirectories:YES attributes:nil error:nil];
 
-    // Create default shortcuts.xml with "Trim Trailing Space and Save" if none exists
+    // Copy default shortcuts.xml from app bundle if user copy doesn't exist
     NSString *shortcutsPath = nppShortcutsPath();
     if (![fm fileExistsAtPath:shortcutsPath]) {
-        NSArray *defaultMacros = @[@{
-            @"name": @"Trim Trailing Space and Save",
-            @"actions": @[
-                @{@"type": @2, @"message": @0, @"wParam": @42024, @"lParam": @0, @"sParam": @""},
-                @{@"type": @2, @"message": @0, @"wParam": @41006, @"lParam": @0, @"sParam": @""},
-            ]
-        }];
-        saveMacrosToShortcutsXML(defaultMacros);
+        NSString *bundleCopy = [[NSBundle mainBundle] pathForResource:@"shortcuts" ofType:@"xml"];
+        if (bundleCopy) {
+            [fm copyItemAtPath:bundleCopy toPath:shortcutsPath error:nil];
+            NSLog(@"[Shortcuts] Copied default shortcuts.xml from bundle");
+        }
     }
 }
 
@@ -4538,8 +4535,16 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 }
 
 - (void)showShortcutMapper:(id)sender {
-    ShortcutMapperWindowController *mapper = [[ShortcutMapperWindowController alloc] init];
+    // Retain the controller so it doesn't get deallocated while the window is open
+    static ShortcutMapperWindowController *mapper = nil;
+    mapper = [[ShortcutMapperWindowController alloc] init];
     [mapper showWithTab:ShortcutMapperTabMainMenu];
+}
+
+- (void)showShortcutMapperMacros:(id)sender {
+    static ShortcutMapperWindowController *mapper = nil;
+    mapper = [[ShortcutMapperWindowController alloc] init];
+    [mapper showWithTab:ShortcutMapperTabMacros];
 }
 
 - (void)editPopupContextMenu:(id)sender {

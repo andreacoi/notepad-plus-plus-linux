@@ -22,11 +22,12 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
 @implementation ShortcutEntry
 - (void)updateDisplay {
     if (_keyCode == 0) { _shortcutDisplay = @""; return; }
+    // macOS native symbol display: ⌃⌥⇧⌘ + key
     NSMutableString *s = [NSMutableString string];
-    if (_hasCmd)   [s appendString:@"Cmd+"];
-    if (_hasCtrl)  [s appendString:@"Ctrl+"];
-    if (_hasAlt)   [s appendString:@"Alt+"];
-    if (_hasShift) [s appendString:@"Shift+"];
+    if (_hasCtrl)  [s appendString:@"\u2303"];  // ⌃
+    if (_hasAlt)   [s appendString:@"\u2325"];  // ⌥
+    if (_hasShift) [s appendString:@"\u21E7"];  // ⇧
+    if (_hasCmd)   [s appendString:@"\u2318"];  // ⌘
     [s appendString:[ShortcutEntry keyNameForCode:_keyCode]];
     _shortcutDisplay = [s copy];
 }
@@ -34,23 +35,28 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
 + (NSString *)keyNameForCode:(NSUInteger)code {
     if (code >= 'A' && code <= 'Z') return [NSString stringWithFormat:@"%c", (char)code];
     if (code >= '0' && code <= '9') return [NSString stringWithFormat:@"%c", (char)code];
+    // Windows VK function key codes (112-123 = F1-F12)
     if (code >= 112 && code <= 123) return [NSString stringWithFormat:@"F%lu", (unsigned long)(code - 111)];
+    // macOS NSFunctionKey values (0xF704-0xF70F = F1-F12)
+    if (code >= 0xF704 && code <= 0xF70F) return [NSString stringWithFormat:@"F%lu", (unsigned long)(code - 0xF704 + 1)];
+    // macOS NSFunctionKey values (0xF710-0xF71B = F13-F24)
+    if (code >= 0xF710 && code <= 0xF71B) return [NSString stringWithFormat:@"F%lu", (unsigned long)(code - 0xF710 + 13)];
     switch (code) {
-        case 8:   return @"Backspace";
-        case 9:   return @"Tab";
-        case 13:  return @"Enter";
-        case 27:  return @"Escape";
-        case 32:  return @"Space";
-        case 33:  return @"Page Up";
-        case 34:  return @"Page Down";
-        case 35:  return @"End";
-        case 36:  return @"Home";
-        case 37:  return @"Left";
-        case 38:  return @"Up";
-        case 39:  return @"Right";
-        case 40:  return @"Down";
-        case 45:  return @"Insert";
-        case 46:  return @"Delete";
+        case 8:   return @"\u232B"; // ⌫ Backspace
+        case 9:   return @"\u21E5"; // ⇥ Tab
+        case 13:  return @"\u21A9"; // ↩ Enter
+        case 27:  return @"\u238B"; // ⎋ Escape
+        case 32:  return @"\u2423"; // ␣ Space
+        case 33:  return @"\u21DE"; // ⇞ Page Up
+        case 34:  return @"\u21DF"; // ⇟ Page Down
+        case 35:  return @"\u2198"; // ↘ End
+        case 36:  return @"\u2196"; // ↖ Home
+        case 37:  return @"\u2190"; // ← Left
+        case 38:  return @"\u2191"; // ↑ Up
+        case 39:  return @"\u2192"; // → Right
+        case 40:  return @"\u2193"; // ↓ Down
+        case 45:  return @"Ins";
+        case 46:  return @"\u2326"; // ⌦ Delete
         case 186: return @";";
         case 187: return @"=";
         case 188: return @",";
@@ -62,6 +68,16 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
         case 220: return @"\\";
         case 221: return @"]";
         case 222: return @"'";
+        // macOS special key unicodes
+        case 0xF728: return @"\u2326"; // ⌦ Forward Delete
+        case 0xF729: return @"\u2196"; // ↖ Home
+        case 0xF72B: return @"\u2198"; // ↘ End
+        case 0xF72C: return @"\u21DE"; // ⇞ Page Up
+        case 0xF72D: return @"\u21DF"; // ⇟ Page Down
+        case 0xF702: return @"\u2190"; // ← Left
+        case 0xF703: return @"\u2192"; // → Right
+        case 0xF700: return @"\u2191"; // ↑ Up
+        case 0xF701: return @"\u2193"; // ↓ Down
         default:  return [NSString stringWithFormat:@"0x%lX", (unsigned long)code];
     }
 }
@@ -94,11 +110,11 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
 // ShortcutMapperWindowController
 // ═══════════════════════════════════════════════════════════════════════════════
 
-@interface ShortcutMapperWindowController () <NSTableViewDataSource, NSTableViewDelegate, NSTabViewDelegate>
+@interface ShortcutMapperWindowController () <NSTableViewDataSource, NSTableViewDelegate, NSControlTextEditingDelegate, NSWindowDelegate>
 @end
 
 @implementation ShortcutMapperWindowController {
-    NSTabView       *_tabView;
+    NSSegmentedControl *_segControl;
     NSTableView     *_tableView;
     NSScrollView    *_scrollView;
     NSTextField     *_filterField;
@@ -115,6 +131,8 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     // Filtered view
     NSMutableArray<ShortcutEntry *> *_filteredEntries;
     ShortcutMapperTab _currentTab;
+    BOOL _saved;
+    BOOL _hasChanges;  // only save if user actually modified something
 }
 
 - (instancetype)init {
@@ -129,6 +147,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
 
     self = [super initWithWindow:win];
     if (self) {
+        win.delegate = self;
         [self _buildUI];
         [self _loadAllData];
         [self _switchToTab:ShortcutMapperTabMainMenu];
@@ -148,18 +167,16 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
 - (void)_buildUI {
     NSView *cv = self.window.contentView;
 
-    // Tab view (buttons only, no content — we manage the table separately)
-    _tabView = [[NSTabView alloc] initWithFrame:NSZeroRect];
-    _tabView.translatesAutoresizingMaskIntoConstraints = NO;
-    _tabView.tabViewType = NSTopTabsBezelBorder;
-    _tabView.delegate = self;
-    for (NSString *title in @[@"Main menu", @"Macros", @"Run commands", @"Plugin commands", @"Scintilla commands"]) {
-        NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier:title];
-        item.label = title;
-        item.view = [[NSView alloc] init]; // placeholder
-        [_tabView addTabViewItem:item];
-    }
-    [cv addSubview:_tabView];
+    // Segmented control for tabs (matching Windows tab bar appearance)
+    NSSegmentedControl *seg = [NSSegmentedControl segmentedControlWithLabels:
+        @[@"Main menu", @"Macros", @"Run commands", @"Plugin commands", @"Scintilla commands"]
+        trackingMode:NSSegmentSwitchTrackingSelectOne
+        target:self action:@selector(_tabSegmentChanged:)];
+    seg.translatesAutoresizingMaskIntoConstraints = NO;
+    seg.selectedSegment = 0;
+    seg.segmentStyle = NSSegmentStyleTexturedSquare;
+    [cv addSubview:seg];
+    _segControl = seg;
 
     // Table view inside scroll view
     _tableView = [[NSTableView alloc] init];
@@ -170,6 +187,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     _tableView.usesAlternatingRowBackgroundColors = YES;
     _tableView.target = self;
     _tableView.doubleAction = @selector(_modifyShortcut:);
+    _tableView.gridStyleMask = NSTableViewSolidHorizontalGridLineMask | NSTableViewSolidVerticalGridLineMask;
 
     // Row number column
     NSTableColumn *numCol = [[NSTableColumn alloc] initWithIdentifier:@"num"];
@@ -183,21 +201,25 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     nameCol.title = @"Name";
     nameCol.width = 350;
     nameCol.resizingMask = NSTableColumnAutoresizingMask;
+    [nameCol.headerCell setFont:[NSFont boldSystemFontOfSize:13]];
     [_tableView addTableColumn:nameCol];
 
     NSTableColumn *shortcutCol = [[NSTableColumn alloc] initWithIdentifier:@"shortcut"];
     shortcutCol.title = @"Shortcut";
     shortcutCol.width = 180;
+    [shortcutCol.headerCell setFont:[NSFont boldSystemFontOfSize:13]];
     [_tableView addTableColumn:shortcutCol];
 
     NSTableColumn *catCol = [[NSTableColumn alloc] initWithIdentifier:@"category"];
     catCol.title = @"Category";
-    catCol.width = 120;
+    catCol.width = 150;
+    [catCol.headerCell setFont:[NSFont boldSystemFontOfSize:13]];
     [_tableView addTableColumn:catCol];
 
     _scrollView = [[NSScrollView alloc] init];
     _scrollView.translatesAutoresizingMaskIntoConstraints = NO;
     _scrollView.hasVerticalScroller = YES;
+    _scrollView.borderType = NSBezelBorder;
     _scrollView.documentView = _tableView;
     [cv addSubview:_scrollView];
 
@@ -220,8 +242,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     _filterField = [[NSTextField alloc] init];
     _filterField.translatesAutoresizingMaskIntoConstraints = NO;
     _filterField.placeholderString = @"Type to filter...";
-    _filterField.target = self;
-    _filterField.action = @selector(_filterChanged:);
+    _filterField.delegate = (id<NSTextFieldDelegate>)self;
     [cv addSubview:_filterField];
 
     // Buttons
@@ -238,29 +259,27 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
 
     // Layout
     [NSLayoutConstraint activateConstraints:@[
-        [_tabView.topAnchor constraintEqualToAnchor:cv.topAnchor constant:8],
-        [_tabView.leadingAnchor constraintEqualToAnchor:cv.leadingAnchor constant:8],
-        [_tabView.trailingAnchor constraintEqualToAnchor:cv.trailingAnchor constant:-8],
-        [_tabView.heightAnchor constraintEqualToConstant:28],
+        [seg.topAnchor constraintEqualToAnchor:cv.topAnchor constant:10],
+        [seg.leadingAnchor constraintEqualToAnchor:cv.leadingAnchor constant:10],
 
-        [_scrollView.topAnchor constraintEqualToAnchor:_tabView.bottomAnchor constant:4],
-        [_scrollView.leadingAnchor constraintEqualToAnchor:cv.leadingAnchor constant:8],
-        [_scrollView.trailingAnchor constraintEqualToAnchor:cv.trailingAnchor constant:-8],
+        [_scrollView.topAnchor constraintEqualToAnchor:seg.bottomAnchor constant:6],
+        [_scrollView.leadingAnchor constraintEqualToAnchor:cv.leadingAnchor constant:10],
+        [_scrollView.trailingAnchor constraintEqualToAnchor:cv.trailingAnchor constant:-10],
         [_scrollView.bottomAnchor constraintEqualToAnchor:_conflictInfo.topAnchor constant:-8],
 
-        [_conflictInfo.leadingAnchor constraintEqualToAnchor:cv.leadingAnchor constant:8],
-        [_conflictInfo.trailingAnchor constraintEqualToAnchor:cv.trailingAnchor constant:-8],
+        [_conflictInfo.leadingAnchor constraintEqualToAnchor:cv.leadingAnchor constant:10],
+        [_conflictInfo.trailingAnchor constraintEqualToAnchor:cv.trailingAnchor constant:-10],
         [_conflictInfo.heightAnchor constraintEqualToConstant:40],
         [_conflictInfo.bottomAnchor constraintEqualToAnchor:filterLabel.topAnchor constant:-6],
 
-        [filterLabel.leadingAnchor constraintEqualToAnchor:cv.leadingAnchor constant:8],
+        [filterLabel.leadingAnchor constraintEqualToAnchor:cv.leadingAnchor constant:10],
         [filterLabel.centerYAnchor constraintEqualToAnchor:_filterField.centerYAnchor],
         [_filterField.leadingAnchor constraintEqualToAnchor:filterLabel.trailingAnchor constant:4],
-        [_filterField.trailingAnchor constraintEqualToAnchor:cv.trailingAnchor constant:-8],
+        [_filterField.trailingAnchor constraintEqualToAnchor:cv.trailingAnchor constant:-10],
         [_filterField.bottomAnchor constraintEqualToAnchor:_modifyBtn.topAnchor constant:-10],
         [_filterField.heightAnchor constraintEqualToConstant:22],
 
-        [_closeBtn.trailingAnchor constraintEqualToAnchor:cv.trailingAnchor constant:-8],
+        [_closeBtn.trailingAnchor constraintEqualToAnchor:cv.trailingAnchor constant:-10],
         [_closeBtn.bottomAnchor constraintEqualToAnchor:cv.bottomAnchor constant:-10],
         [_closeBtn.widthAnchor constraintEqualToConstant:80],
         [_deleteBtn.trailingAnchor constraintEqualToAnchor:_closeBtn.leadingAnchor constant:-8],
@@ -273,6 +292,10 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
         [_modifyBtn.bottomAnchor constraintEqualToAnchor:_closeBtn.bottomAnchor],
         [_modifyBtn.widthAnchor constraintEqualToConstant:80],
     ]];
+}
+
+- (void)_tabSegmentChanged:(NSSegmentedControl *)seg {
+    [self _switchToTab:(ShortcutMapperTab)seg.selectedSegment];
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -291,22 +314,84 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
 - (void)_loadMainMenuEntries {
     _mainMenuEntries = [NSMutableArray array];
     NSMenu *mainMenu = [NSApp mainMenu];
-    for (NSMenuItem *topItem in mainMenu.itemArray) {
-        NSString *category = topItem.title;
-        // Skip the Apple menu
-        if ([category isEqualToString:@"Apple"] || [category hasPrefix:@"\033"]) continue;
-        [self _walkMenu:topItem.submenu category:category];
+    NSLog(@"[ShortcutMapper] Main menu top-level items: %ld", (long)mainMenu.numberOfItems);
+
+    for (NSUInteger i = 0; i < mainMenu.itemArray.count; i++) {
+        NSMenuItem *topItem = mainMenu.itemArray[i];
+        // Skip the Apple/App menu (always index 0)
+        if (i == 0) continue;
+        if (!topItem.submenu) continue;
+
+        // The menu name is the submenu's title (topItem.title may return class name)
+        NSString *category = topItem.submenu.title;
+        if (!category.length) category = topItem.title;
+        if (!category.length || [category isEqualToString:@"NSMenuItem"]) category = @"Other";
+
+        @try {
+            // Force the submenu to populate
+            [topItem.submenu update];
+            NSUInteger before = _mainMenuEntries.count;
+            [self _walkMenu:topItem.submenu category:category];
+            NSLog(@"[ShortcutMapper]   %@ (%lu → %lu items, submenu has %ld items)",
+                  category, (unsigned long)before, (unsigned long)_mainMenuEntries.count,
+                  (long)topItem.submenu.numberOfItems);
+        } @catch (NSException *ex) {
+            NSLog(@"[ShortcutMapper] EXCEPTION walking %@: %@", category, ex);
+        }
     }
+    // Mark entries that have overrides in shortcuts.xml as isModified
+    // so they'll be preserved on save
+    NSString *scPath = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/shortcuts.xml"];
+    NSData *scData = [NSData dataWithContentsOfFile:scPath];
+    if (scData) {
+        NSXMLDocument *scDoc = [[NSXMLDocument alloc] initWithData:scData options:0 error:nil];
+        if (scDoc) {
+            NSArray *overrides = [scDoc nodesForXPath:@"//InternalCommands/Shortcut" error:nil];
+            NSMutableSet *overriddenSelectors = [NSMutableSet set];
+            for (NSXMLElement *sc in overrides) {
+                NSString *selId = [[sc attributeForName:@"id"] stringValue];
+                if (selId.length) [overriddenSelectors addObject:selId];
+            }
+            for (ShortcutEntry *e in _mainMenuEntries) {
+                if (e.selectorName && [overriddenSelectors containsObject:e.selectorName]) {
+                    e.isModified = YES;
+                }
+            }
+            NSLog(@"[ShortcutMapper] Marked %lu entries as having overrides", (unsigned long)overriddenSelectors.count);
+        }
+    }
+
+    NSLog(@"[ShortcutMapper] Main menu total: %lu entries", (unsigned long)_mainMenuEntries.count);
 }
 
 - (void)_walkMenu:(NSMenu *)menu category:(NSString *)category {
+    // Selectors to skip (dynamic/non-command items)
+    static NSSet *skipSelectors;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        skipSelectors = [NSSet setWithObjects:
+            @"openRecentFile:", @"runSavedMacro:", @"pluginMenuAction:",
+            @"pluginToolbarAction:", @"submenuAction:", @"_showAllCharsDropdown:",
+            @"orderFrontStandardAboutPanel:", @"hide:", @"hideOtherApplications:",
+            @"unhideAllApplications:", @"terminate:", @"performMiniaturize:",
+            @"performZoom:", @"toggleFullScreen:", @"arrangeInFront:",
+            nil];
+    });
+
     for (NSMenuItem *mi in menu.itemArray) {
         if (mi.isSeparatorItem) continue;
         if (mi.submenu) {
+            [mi.submenu update]; // force populate lazy submenus
             [self _walkMenu:mi.submenu category:category];
             continue;
         }
         if (!mi.action) continue;
+
+        // Skip dynamic/system items
+        NSString *selName = NSStringFromSelector(mi.action);
+        if ([skipSelectors containsObject:selName]) continue;
+        // Skip empty-titled items
+        if (mi.title.length == 0) continue;
 
         ShortcutEntry *e = [[ShortcutEntry alloc] init];
         e.name = mi.title;
@@ -361,26 +446,39 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
         [e updateDisplay];
         [_macroEntries addObject:e];
     }
+    NSLog(@"[ShortcutMapper] Macros: %lu entries", (unsigned long)_macroEntries.count);
 }
 
 - (void)_loadRunCommandEntries {
     _runCmdEntries = [NSMutableArray array];
+
+    // Load from shortcuts.xml <UserDefinedCommands> only (matches Windows behavior)
     NSString *path = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/shortcuts.xml"];
     NSData *data = [NSData dataWithContentsOfFile:path];
-    if (!data) return;
-    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:0 error:nil];
-    if (!doc) return;
-    for (NSXMLElement *el in [doc nodesForXPath:@"//UserDefinedCommands/Command" error:nil]) {
-        ShortcutEntry *e = [[ShortcutEntry alloc] init];
-        e.name = [[el attributeForName:@"name"] stringValue] ?: @"";
-        e.hasCtrl  = [[[el attributeForName:@"Ctrl"]  stringValue] isEqualToString:@"yes"];
-        e.hasAlt   = [[[el attributeForName:@"Alt"]   stringValue] isEqualToString:@"yes"];
-        e.hasShift = [[[el attributeForName:@"Shift"] stringValue] isEqualToString:@"yes"];
-        e.keyCode  = [[[el attributeForName:@"Key"]   stringValue] integerValue];
-        if (e.hasCtrl) { e.hasCmd = YES; e.hasCtrl = NO; }
-        [e updateDisplay];
-        [_runCmdEntries addObject:e];
+
+    // If no UserDefinedCommands exist in shortcuts.xml, create defaults
+    BOOL hasUserCmds = NO;
+    if (data) {
+        NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:0 error:nil];
+        if (doc) {
+            NSArray *cmds = [doc nodesForXPath:@"//UserDefinedCommands/Command" error:nil];
+            hasUserCmds = (cmds.count > 0);
+            for (NSXMLElement *el in cmds) {
+                ShortcutEntry *e = [[ShortcutEntry alloc] init];
+                e.name = [[el attributeForName:@"name"] stringValue] ?: @"";
+                e.hasCtrl  = [[[el attributeForName:@"Ctrl"]  stringValue] isEqualToString:@"yes"];
+                e.hasAlt   = [[[el attributeForName:@"Alt"]   stringValue] isEqualToString:@"yes"];
+                e.hasShift = [[[el attributeForName:@"Shift"] stringValue] isEqualToString:@"yes"];
+                e.keyCode  = [[[el attributeForName:@"Key"]   stringValue] integerValue];
+                if (e.hasCtrl) { e.hasCmd = YES; e.hasCtrl = NO; }
+                [e updateDisplay];
+                [_runCmdEntries addObject:e];
+            }
+        }
     }
+
+    // Default entries come from the bundled shortcuts.xml (copied to ~/.notepad++/ on first run)
+    NSLog(@"[ShortcutMapper] Run commands: %lu entries", (unsigned long)_runCmdEntries.count);
 }
 
 - (void)_loadPluginEntries {
@@ -388,20 +486,32 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     // Walk the Plugins menu to extract plugin commands
     NSMenu *mainMenu = [NSApp mainMenu];
     for (NSMenuItem *topItem in mainMenu.itemArray) {
-        if (![topItem.title isEqualToString:@"Plugins"]) continue;
+        NSString *menuTitle = topItem.submenu.title ?: topItem.title;
+        if (![menuTitle isEqualToString:@"Plugins"]) continue;
+        [topItem.submenu update];
         for (NSMenuItem *pluginItem in topItem.submenu.itemArray) {
+            if (pluginItem.isSeparatorItem) continue;
             if (!pluginItem.submenu) continue;
             NSString *plugName = pluginItem.title;
+            if (!plugName.length) continue;
+            [pluginItem.submenu update];
             for (NSMenuItem *cmdItem in pluginItem.submenu.itemArray) {
                 if (cmdItem.isSeparatorItem || !cmdItem.action) continue;
+                if (!cmdItem.title.length) continue;
+                // Skip separator-like items (some plugins use "-" as menu item title)
+                // Skip separator-like items (plugins use "-" as title for separators)
+                NSString *trimmed = [cmdItem.title stringByTrimmingCharactersInSet:
+                    [NSCharacterSet characterSetWithCharactersInString:@"- "]];
+                if (trimmed.length == 0) continue;
                 ShortcutEntry *e = [[ShortcutEntry alloc] init];
                 e.name = cmdItem.title;
                 e.pluginName = plugName;
                 e.commandID = cmdItem.tag;
+                e.selectorName = NSStringFromSelector(cmdItem.action);
                 // Extract key
                 NSString *key = cmdItem.keyEquivalent;
+                NSEventModifierFlags mods = cmdItem.keyEquivalentModifierMask;
                 if (key.length > 0 && [key characterAtIndex:0] > 32) {
-                    NSEventModifierFlags mods = cmdItem.keyEquivalentModifierMask;
                     e.hasCmd   = (mods & NSEventModifierFlagCommand) != 0;
                     e.hasCtrl  = (mods & NSEventModifierFlagControl) != 0;
                     e.hasAlt   = (mods & NSEventModifierFlagOption)  != 0;
@@ -414,6 +524,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
         }
         break;
     }
+    NSLog(@"[ShortcutMapper] Plugin commands: %lu entries", (unsigned long)_pluginEntries.count);
 }
 
 - (void)_loadScintillaEntries {
@@ -505,6 +616,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
         [e updateDisplay];
         [_scintillaEntries addObject:e];
     }
+    NSLog(@"[ShortcutMapper] Scintilla commands: %lu entries", (unsigned long)_scintillaEntries.count);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -513,7 +625,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
 
 - (void)_switchToTab:(ShortcutMapperTab)tab {
     _currentTab = tab;
-    [_tabView selectTabViewItemAtIndex:tab];
+    _segControl.selectedSegment = tab;
 
     // Show/hide Category column based on tab
     NSTableColumn *catCol = [_tableView tableColumnWithIdentifier:@"category"];
@@ -527,10 +639,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     [self _applyFilter];
 }
 
-- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem {
-    NSInteger idx = [tabView indexOfTabViewItem:tabViewItem];
-    [self _switchToTab:(ShortcutMapperTab)idx];
-}
+// Tab switching handled by _tabSegmentChanged:
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Filtering
@@ -571,6 +680,13 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     [self _applyFilter];
 }
 
+// Live filtering as user types (no need to hit Enter)
+- (void)controlTextDidChange:(NSNotification *)notification {
+    if (notification.object == _filterField) {
+        [self _applyFilter];
+    }
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // NSTableViewDataSource / Delegate
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -579,34 +695,39 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     return (NSInteger)_filteredEntries.count;
 }
 
-- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)col row:(NSInteger)row {
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     if (row < 0 || row >= (NSInteger)_filteredEntries.count) return nil;
     ShortcutEntry *e = _filteredEntries[row];
+    NSString *colID = tableColumn.identifier;
 
-    NSTextField *cell = [tableView makeViewWithIdentifier:col.identifier owner:nil];
+    // Determine text for this cell
+    NSString *text = @"";
+    if ([colID isEqualToString:@"num"])
+        text = [NSString stringWithFormat:@"%ld", (long)(row + 1)];
+    else if ([colID isEqualToString:@"name"])
+        text = e.name ?: @"";
+    else if ([colID isEqualToString:@"shortcut"])
+        text = e.shortcutDisplay ?: @"";
+    else if ([colID isEqualToString:@"category"])
+        text = (_currentTab == ShortcutMapperTabPluginCommands)
+            ? (e.pluginName ?: @"") : (e.category ?: @"");
+
+    // Use a single identifier for all cells (same as DocumentListPanel pattern)
+    NSTextField *cell = [tableView makeViewWithIdentifier:@"SCell" owner:nil];
     if (!cell) {
         cell = [[NSTextField alloc] init];
-        cell.identifier = col.identifier;
+        cell.identifier = @"SCell";
         cell.editable = NO;
         cell.bordered = NO;
         cell.drawsBackground = NO;
-        cell.font = [NSFont systemFontOfSize:12];
     }
-
-    if ([col.identifier isEqualToString:@"num"]) {
-        cell.stringValue = [NSString stringWithFormat:@"%ld", (long)(row + 1)];
-        cell.alignment = NSTextAlignmentRight;
+    cell.stringValue = text;
+    cell.font = [NSFont systemFontOfSize:12];
+    cell.textColor = [NSColor labelColor];
+    cell.alignment = [colID isEqualToString:@"num"] ? NSTextAlignmentRight : NSTextAlignmentLeft;
+    if ([colID isEqualToString:@"num"]) {
         cell.textColor = [NSColor secondaryLabelColor];
-    } else if ([col.identifier isEqualToString:@"name"]) {
-        cell.stringValue = e.name ?: @"";
-    } else if ([col.identifier isEqualToString:@"shortcut"]) {
-        cell.stringValue = e.shortcutDisplay ?: @"";
-        cell.font = [NSFont boldSystemFontOfSize:12];
-    } else if ([col.identifier isEqualToString:@"category"]) {
-        if (_currentTab == ShortcutMapperTabPluginCommands)
-            cell.stringValue = e.pluginName ?: @"";
-        else
-            cell.stringValue = e.category ?: @"";
+        cell.font = [NSFont systemFontOfSize:11];
     }
     return cell;
 }
@@ -742,6 +863,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     e.hasShift = (chkShift.state == NSControlStateValueOn);
     e.keyCode  = [ShortcutEntry keyCodeForName:keyPopup.titleOfSelectedItem];
     e.isModified = YES;
+    _hasChanges = YES;
     [e updateDisplay];
     [_tableView reloadData];
 
@@ -757,6 +879,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     e.hasCmd = e.hasCtrl = e.hasAlt = e.hasShift = NO;
     e.keyCode = 0;
     e.isModified = YES;
+    _hasChanges = YES;
     [e updateDisplay];
     [_tableView reloadData];
     _conflictInfo.stringValue = @"No shortcut conflicts for this item.";
@@ -777,13 +900,28 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
 
     NSMutableArray *source = [self _entriesForCurrentTab];
     [source removeObject:e];
+    _hasChanges = YES;
     [self _applyFilter];
 }
 
 - (void)_close:(id)sender {
-    // Save any modifications
-    [self _saveChanges];
+    [self _saveIfNeeded];
     [self.window close];
+}
+
+- (void)windowWillClose:(NSNotification *)notification {
+    [self _saveIfNeeded];
+}
+
+- (void)_saveIfNeeded {
+    if (_saved) { NSLog(@"[ShortcutMapper] _saveIfNeeded: already saved, skipping"); return; }
+    _saved = YES;
+    if (!_hasChanges) {
+        NSLog(@"[ShortcutMapper] _saveIfNeeded: no changes, skipping save");
+        return;
+    }
+    NSLog(@"[ShortcutMapper] _saveIfNeeded: saving now...");
+    [self _saveChanges];
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -791,19 +929,23 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
 // ═══════════════════════════════════════════════════════════════════════════════
 
 - (void)_saveChanges {
+    NSInteger modCount = 0;
+
     // Apply Main Menu shortcut changes to live menu items
     for (ShortcutEntry *e in _mainMenuEntries) {
         if (!e.isModified) continue;
         if (!e.selectorName) continue;
         SEL sel = NSSelectorFromString(e.selectorName);
-        // Find the menu item by selector
         NSMenuItem *mi = [self _findMenuItemWithAction:sel inMenu:[NSApp mainMenu]];
         if (!mi) continue;
         [self _applyShortcutEntry:e toMenuItem:mi];
+        modCount++;
     }
 
-    // Save macros back to shortcuts.xml
-    [self _saveMacrosAndRunCommands];
+    // Save ALL changes to shortcuts.xml
+    [self _saveToShortcutsXML];
+
+    NSLog(@"[ShortcutMapper] Saved %ld modified shortcuts", (long)modCount);
 
     // Post notification for other parts of the app
     [[NSNotificationCenter defaultCenter] postNotificationName:NPPShortcutsChangedNotification object:nil];
@@ -856,62 +998,87 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     return nil;
 }
 
-- (void)_saveMacrosAndRunCommands {
-    // Read existing shortcuts.xml and update Macros + UserDefinedCommands sections
+- (void)_saveToShortcutsXML {
     NSString *path = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/shortcuts.xml"];
 
-    NSXMLElement *root = [NSXMLElement elementWithName:@"NotepadPlus"];
-
-    // Macros
-    NSXMLElement *macrosEl = [NSXMLElement elementWithName:@"Macros"];
-    // Re-read actions from existing file since we only track name/shortcut in the mapper
+    // Read existing shortcuts.xml — modify in-place to preserve comments and structure
     NSData *existingData = [NSData dataWithContentsOfFile:path];
-    NSXMLDocument *existingDoc = existingData ? [[NSXMLDocument alloc] initWithData:existingData options:0 error:nil] : nil;
-    NSDictionary<NSString *, NSXMLElement *> *existingMacros = [NSMutableDictionary dictionary];
-    if (existingDoc) {
-        for (NSXMLElement *el in [existingDoc nodesForXPath:@"//Macros/Macro" error:nil])
-            ((NSMutableDictionary *)existingMacros)[[[el attributeForName:@"name"] stringValue]] = el;
+    if (!existingData) {
+        NSLog(@"[ShortcutMapper] ERROR: shortcuts.xml not found at %@", path);
+        return;
+    }
+    NSError *parseErr = nil;
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:existingData
+                                                     options:NSXMLNodePreserveAll
+                                                       error:&parseErr];
+    if (!doc) {
+        NSLog(@"[ShortcutMapper] ERROR parsing shortcuts.xml: %@", parseErr);
+        return;
     }
 
-    for (ShortcutEntry *e in _macroEntries) {
-        NSXMLElement *existing = existingMacros[e.name];
-        NSXMLElement *macroEl;
-        if (existing) {
-            macroEl = [existing copy];
-            // Update shortcut attributes
-            [macroEl removeAttributeForName:@"Ctrl"];
-            [macroEl removeAttributeForName:@"Alt"];
-            [macroEl removeAttributeForName:@"Shift"];
-            [macroEl removeAttributeForName:@"Key"];
-        } else {
-            macroEl = [NSXMLElement elementWithName:@"Macro"];
-            [macroEl addAttribute:[NSXMLNode attributeWithName:@"name" stringValue:e.name]];
+    NSXMLElement *root = doc.rootElement;
+
+    // ── Update InternalCommands in-place ──
+    // Remove existing InternalCommands element and replace with new one
+    NSArray *intCmdNodes = [root elementsForName:@"InternalCommands"];
+    for (NSXMLElement *old in intCmdNodes) {
+        [old detach];
+    }
+    NSXMLElement *intCmdsEl = [NSXMLElement elementWithName:@"InternalCommands"];
+    NSInteger intCmdCount = 0;
+    for (ShortcutEntry *e in _mainMenuEntries) {
+        if (!e.isModified) continue;
+        intCmdCount++;
+        NSLog(@"[ShortcutMapper] Saving InternalCommand: %@ sel=%@ key=%lu", e.name, e.selectorName, (unsigned long)e.keyCode);
+        NSXMLElement *sc = [NSXMLElement elementWithName:@"Shortcut"];
+        [sc addAttribute:[NSXMLNode attributeWithName:@"id" stringValue:e.selectorName ?: @""]];
+        [sc addAttribute:[NSXMLNode attributeWithName:@"Ctrl" stringValue:e.hasCmd ? @"yes" : @"no"]];
+        [sc addAttribute:[NSXMLNode attributeWithName:@"Alt" stringValue:e.hasAlt ? @"yes" : @"no"]];
+        [sc addAttribute:[NSXMLNode attributeWithName:@"Shift" stringValue:e.hasShift ? @"yes" : @"no"]];
+        [sc addAttribute:[NSXMLNode attributeWithName:@"Key"
+                                          stringValue:[NSString stringWithFormat:@"%lu", (unsigned long)e.keyCode]]];
+        [intCmdsEl addChild:sc];
+    }
+    // Insert InternalCommands as first child of root
+    if (root.childCount > 0)
+        [root insertChild:intCmdsEl atIndex:0];
+    else
+        [root addChild:intCmdsEl];
+    NSLog(@"[ShortcutMapper] InternalCommands: %ld entries saved", (long)intCmdCount);
+
+    // ── Update Macros in-place (only shortcut attributes, preserve Action children) ──
+    NSArray *macroNodes = [doc nodesForXPath:@"//Macros/Macro" error:nil];
+    for (NSXMLElement *macroEl in macroNodes) {
+        NSString *macroName = [[macroEl attributeForName:@"name"] stringValue];
+        for (ShortcutEntry *e in _macroEntries) {
+            if ([e.name isEqualToString:macroName] && e.isModified) {
+                [macroEl removeAttributeForName:@"Ctrl"];
+                [macroEl removeAttributeForName:@"Alt"];
+                [macroEl removeAttributeForName:@"Shift"];
+                [macroEl removeAttributeForName:@"Key"];
+                [macroEl addAttribute:[NSXMLNode attributeWithName:@"Ctrl" stringValue:e.hasCmd ? @"yes" : @"no"]];
+                [macroEl addAttribute:[NSXMLNode attributeWithName:@"Alt" stringValue:e.hasAlt ? @"yes" : @"no"]];
+                [macroEl addAttribute:[NSXMLNode attributeWithName:@"Shift" stringValue:e.hasShift ? @"yes" : @"no"]];
+                [macroEl addAttribute:[NSXMLNode attributeWithName:@"Key"
+                                                       stringValue:[NSString stringWithFormat:@"%lu", (unsigned long)e.keyCode]]];
+                break;
+            }
         }
-        // Map macOS Cmd back to Windows Ctrl for storage
-        [macroEl addAttribute:[NSXMLNode attributeWithName:@"Ctrl" stringValue:e.hasCmd ? @"yes" : @"no"]];
-        [macroEl addAttribute:[NSXMLNode attributeWithName:@"Alt" stringValue:e.hasAlt ? @"yes" : @"no"]];
-        [macroEl addAttribute:[NSXMLNode attributeWithName:@"Shift" stringValue:e.hasShift ? @"yes" : @"no"]];
-        [macroEl addAttribute:[NSXMLNode attributeWithName:@"Key"
-                                               stringValue:[NSString stringWithFormat:@"%lu", (unsigned long)e.keyCode]]];
-        [macrosEl addChild:macroEl];
     }
-    [root addChild:macrosEl];
 
-    // UserDefinedCommands
-    NSXMLElement *userCmdsEl = [NSXMLElement elementWithName:@"UserDefinedCommands"];
-    if (existingDoc) {
-        for (NSXMLElement *el in [existingDoc nodesForXPath:@"//UserDefinedCommands/Command" error:nil]) {
-            [userCmdsEl addChild:[el copy]];
-        }
+    // Write back — preserves comments and structure
+    NSData *xmlData = [doc XMLDataWithOptions:NSXMLNodePrettyPrint | NSXMLNodePreserveAll];
+    if (!xmlData) {
+        NSLog(@"[ShortcutMapper] ERROR: failed to generate XML data");
+        return;
     }
-    [root addChild:userCmdsEl];
-
-    // Write
-    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithRootElement:root];
-    doc.version = @"1.0";
-    doc.characterEncoding = @"UTF-8";
-    NSData *xmlData = [doc XMLDataWithOptions:NSXMLNodePrettyPrint];
-    [xmlData writeToFile:path atomically:YES];
+    NSError *writeErr = nil;
+    BOOL ok = [xmlData writeToFile:path options:NSDataWritingAtomic error:&writeErr];
+    if (ok) {
+        NSLog(@"[ShortcutMapper] Saved shortcuts.xml (%lu bytes) to %@", (unsigned long)xmlData.length, path);
+    } else {
+        NSLog(@"[ShortcutMapper] ERROR writing shortcuts.xml: %@", writeErr);
+    }
 }
 
 @end
