@@ -29,6 +29,7 @@
         @"toggleMacroRecording:",
         @"runMacro:",
         @"runMacroMultiple:",
+        @"runMacroMultipleTimes:",
         @"saveCurrentMacro:",
         @"runSavedMacro:",
 
@@ -54,10 +55,14 @@
         @"showUpdaterProxyStub:",
         @"showMacroManager:",
         @"editPopupContextMenu:",
-        @"showFindPanel:",
-        @"showReplacePanel:",
         @"toggleFindPanel:",
         @"toggleIncrementalSearch:",
+
+        // ── Panel show/toggle (UI-only, don't modify document) ──
+        @"showDocumentMap:",
+        @"showDocumentList:",
+        @"showFunctionList:",
+        @"showFolderAsWorkspace:",
 
         // ── View toggles / panels (UI-only, don't modify document) ──
         @"toggleToolbar:",
@@ -73,6 +78,20 @@
         @"toggleCharacterPanel:",
         @"toggleFolderTree:",
         @"toggleGitPanel:",
+        @"toggleSyncVerticalScrolling:",
+        @"toggleSyncHorizontalScrolling:",
+        @"toggleWordWrap:",
+        @"toggleShowAllChars:",
+        @"toggleIndentGuides:",
+        @"toggleLineNumbers:",
+
+        // ── Zoom (view-only, not document content) ──
+        @"zoomIn:",
+        @"zoomOut:",
+        @"zoomRestore:",
+        @"focusOnAnotherView:",
+        @"toggleFullScreen:",
+        @"toggleAlwaysOnTop:",
 
         // ── Split view management ──
         @"moveToOtherVerticalView:",

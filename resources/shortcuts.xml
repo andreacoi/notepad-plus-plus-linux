@@ -29,9 +29,10 @@
             <Action type="2" message="0" wParam="41006" lParam="0" sParam="" />
         </Macro>
         -->
-        <Macro name="Trim Trailing Space and Save" Ctrl="no" Alt="yes" Shift="yes" Key="83">
-            <Action type="2" message="0" wParam="42024" lParam="0" sParam="" />
-            <Action type="2" message="0" wParam="41006" lParam="0" sParam="" />
+        <Macro name="Trim Trailing Space and Save" Cmd="yes" Ctrl="yes" Alt="yes" Shift="no" Key="83">
+            <Action type="2" message="0" wParam="0" lParam="0" sParam="selectAll:" />
+            <Action type="2" message="0" wParam="0" lParam="0" sParam="trimTrailingWhitespace:" />
+            <Action type="2" message="0" wParam="0" lParam="0" sParam="saveDocument:" />
         </Macro>
     </Macros>
     <UserDefinedCommands>
