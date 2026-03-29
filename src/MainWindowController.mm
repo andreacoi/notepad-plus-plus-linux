@@ -1278,8 +1278,28 @@ static BOOL groupHasTrailingSep(NSString *ident) {
         }
 
         if (ed.currentLanguage.length) info[@"language"] = ed.currentLanguage;
-        info[@"cursorLine"] = @(ed.cursorLine);
-        // Per-tab color (persist if assigned)
+
+        // ── Cursor, selection, scroll state (matches Windows NPP session format) ──
+        ScintillaView *sci = ed.scintillaView;
+        info[@"startPos"]         = @([sci message:SCI_GETANCHOR]);
+        info[@"endPos"]           = @([sci message:SCI_GETCURRENTPOS]);
+        info[@"selMode"]          = @([sci message:SCI_GETSELECTIONMODE]);
+        info[@"firstVisibleLine"] = @([sci message:SCI_GETFIRSTVISIBLELINE]);
+        info[@"xOffset"]          = @([sci message:SCI_GETXOFFSET]);
+        info[@"scrollWidth"]      = @([sci message:SCI_GETSCROLLWIDTH]);
+
+        // ── Encoding ──
+        info[@"encodingName"] = ed.encodingName ?: @"UTF-8";
+        info[@"hasBOM"]       = @(ed.hasBOM);
+
+        // ── Read-only & RTL ──
+        if ([sci message:SCI_GETREADONLY])
+            info[@"userReadOnly"] = @YES;
+        sptr_t bidi = [sci message:2708]; // SCI_GETBIDIRECTIONAL
+        if (bidi == 2) // R2L
+            info[@"RTL"] = @YES;
+
+        // ── Per-tab color and pin state ──
         NSInteger edIdx = [_tabManager.allEditors indexOfObject:ed];
         if (edIdx != NSNotFound) {
             NSInteger cid = [_tabManager.tabBar tabColorAtIndex:edIdx];
@@ -1287,6 +1307,32 @@ static BOOL groupHasTrailingSep(NSString *ident) {
             if ([_tabManager.tabBar isTabPinnedAtIndex:edIdx])
                 info[@"pinned"] = @YES;
         }
+
+        // ── Bookmarks (line numbers with bookmark marker) ──
+        {
+            NSMutableArray *marks = [NSMutableArray array];
+            sptr_t line = 0;
+            while ((line = [sci message:SCI_MARKERNEXT wParam:(uptr_t)line lParam:(1 << 20)]) >= 0) {
+                [marks addObject:@(line)];
+                line++; // advance past this line
+            }
+            if (marks.count) info[@"bookmarks"] = marks;
+        }
+
+        // ── Fold state (contracted fold header lines) ──
+        {
+            NSMutableArray *folds = [NSMutableArray array];
+            sptr_t line = 0;
+            sptr_t lineCount = [sci message:SCI_GETLINECOUNT];
+            while (line < lineCount) {
+                line = [sci message:SCI_CONTRACTEDFOLDNEXT wParam:(uptr_t)line];
+                if (line < 0) break;
+                [folds addObject:@(line)];
+                line++;
+            }
+            if (folds.count) info[@"folds"] = folds;
+        }
+
         [tabs addObject:info];
     }
 
@@ -1345,13 +1391,64 @@ static BOOL groupHasTrailingSep(NSString *ident) {
         if (lang.length) [ed setLanguage:lang];
         [_tabManager refreshCurrentTabTitle];
 
-        // Restore per-tab color and pin state
+        // ── Restore cursor, selection, scroll state ──
+        ScintillaView *sci = ed.scintillaView;
+        NSNumber *startPos = info[@"startPos"];
+        NSNumber *endPos   = info[@"endPos"];
+        if (startPos && endPos) {
+            NSInteger selMode = [info[@"selMode"] integerValue];
+            if (selMode > 0)
+                [sci message:SCI_SETSELECTIONMODE wParam:(uptr_t)selMode];
+            [sci message:SCI_SETANCHOR     wParam:0 lParam:startPos.longLongValue];
+            [sci message:SCI_SETCURRENTPOS wParam:0 lParam:endPos.longLongValue];
+        }
+        NSNumber *scrollWidth = info[@"scrollWidth"];
+        if (scrollWidth && scrollWidth.longLongValue > 1)
+            [sci message:SCI_SETSCROLLWIDTH wParam:(uptr_t)scrollWidth.longLongValue];
+        NSNumber *xOffset = info[@"xOffset"];
+        if (xOffset)
+            [sci message:SCI_SETXOFFSET wParam:(uptr_t)xOffset.longLongValue];
+        NSNumber *firstVisLine = info[@"firstVisibleLine"];
+        if (firstVisLine)
+            [sci message:SCI_SETFIRSTVISIBLELINE wParam:(uptr_t)firstVisLine.longLongValue];
+
+        // ── Restore encoding ──
+        // (encoding is set during loadFileAtPath: based on BOM detection;
+        //  encodingName is informational — no override needed here)
+
+        // ── Restore read-only & RTL ──
+        if ([info[@"userReadOnly"] boolValue])
+            [sci message:SCI_SETREADONLY wParam:1];
+        if ([info[@"RTL"] boolValue])
+            [sci message:2709 wParam:2]; // SCI_SETBIDIRECTIONAL R2L
+
+        // ── Restore per-tab color and pin state ──
         NSInteger tabIdx = (NSInteger)_tabManager.allEditors.count - 1;
         NSNumber *colorNum = info[@"tabColorId"];
         if (colorNum)
             [_tabManager.tabBar setTabColorAtIndex:tabIdx colorId:colorNum.integerValue];
         if ([info[@"pinned"] boolValue])
             [_tabManager.tabBar pinTabAtIndex:tabIdx toggle:YES];
+
+        // ── Restore bookmarks ──
+        NSArray *bookmarks = info[@"bookmarks"];
+        for (NSNumber *bkLine in bookmarks)
+            [sci message:SCI_MARKERADD wParam:(uptr_t)bkLine.longLongValue lParam:20]; // kBookmarkMarker=20
+
+        // ── Restore fold state ──
+        NSArray *folds = info[@"folds"];
+        if (folds.count) {
+            // Ensure fold levels are computed before applying fold state
+            [sci message:SCI_COLOURISE wParam:0 lParam:-1];
+            for (NSNumber *foldLine in folds) {
+                sptr_t line = foldLine.longLongValue;
+                BOOL isHeader = ([sci message:SCI_GETFOLDLEVEL wParam:(uptr_t)line] & SC_FOLDLEVELHEADERFLAG) != 0;
+                BOOL isExpanded = [sci message:SCI_GETFOLDEXPANDED wParam:(uptr_t)line];
+                if (isHeader && isExpanded)
+                    [sci message:SCI_TOGGLEFOLD wParam:(uptr_t)line];
+            }
+        }
+
         opened++;
     }
 
