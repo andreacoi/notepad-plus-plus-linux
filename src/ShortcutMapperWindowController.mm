@@ -339,25 +339,37 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
             NSLog(@"[ShortcutMapper] EXCEPTION walking %@: %@", category, ex);
         }
     }
-    // Mark entries that have overrides in shortcuts.xml as isModified
-    // so they'll be preserved on save
+    // Mark entries that have overrides in shortcuts.xml and restore their shortcuts
+    // from the XML (macOS may silently clear duplicate keyEquivalents on live menu items)
     NSString *scPath = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/shortcuts.xml"];
     NSData *scData = [NSData dataWithContentsOfFile:scPath];
     if (scData) {
         NSXMLDocument *scDoc = [[NSXMLDocument alloc] initWithData:scData options:0 error:nil];
         if (scDoc) {
             NSArray *overrides = [scDoc nodesForXPath:@"//InternalCommands/Shortcut" error:nil];
-            NSMutableSet *overriddenSelectors = [NSMutableSet set];
+            NSMutableDictionary *overrideMap = [NSMutableDictionary dictionary]; // sel → NSXMLElement
             for (NSXMLElement *sc in overrides) {
                 NSString *selId = [[sc attributeForName:@"id"] stringValue];
-                if (selId.length) [overriddenSelectors addObject:selId];
+                if (selId.length) overrideMap[selId] = sc;
             }
             for (ShortcutEntry *e in _mainMenuEntries) {
-                if (e.selectorName && [overriddenSelectors containsObject:e.selectorName]) {
-                    e.isModified = YES;
+                NSXMLElement *sc = overrideMap[e.selectorName];
+                if (!sc) continue;
+                e.isModified = YES;
+                // Read shortcut from XML (not live menu — macOS may have cleared it)
+                e.hasCtrl  = [[[sc attributeForName:@"Ctrl"]  stringValue] isEqualToString:@"yes"];
+                e.hasAlt   = [[[sc attributeForName:@"Alt"]   stringValue] isEqualToString:@"yes"];
+                e.hasShift = [[[sc attributeForName:@"Shift"] stringValue] isEqualToString:@"yes"];
+                e.hasCmd   = [[[sc attributeForName:@"Cmd"]   stringValue] isEqualToString:@"yes"];
+                e.keyCode  = [[[sc attributeForName:@"Key"]   stringValue] integerValue];
+                // Backward compat: if no Cmd attribute, treat Ctrl as Cmd (Windows convention)
+                if (!e.hasCmd && e.hasCtrl && ![sc attributeForName:@"Cmd"]) {
+                    e.hasCmd = YES; e.hasCtrl = NO;
                 }
+                [e updateDisplay];
             }
-            NSLog(@"[ShortcutMapper] Marked %lu entries as having overrides", (unsigned long)overriddenSelectors.count);
+            NSLog(@"[ShortcutMapper] Marked %lu entries as having overrides (from shortcuts.xml)",
+                  (unsigned long)overrideMap.count);
         }
     }
 
@@ -423,6 +435,11 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
                 e.keyCode = c;
         }
         [e updateDisplay];
+        // Debug: log entries with overrides
+        if (e.keyCode > 0 || [e.selectorName isEqualToString:@"toggleIndentGuides:"])
+            NSLog(@"[ShortcutMapper] Entry: '%@' sel=%@ key='%@' keyCode=%lu mods=cmd:%d alt:%d shift:%d display='%@'",
+                  e.name, e.selectorName, mi.keyEquivalent, (unsigned long)e.keyCode,
+                  e.hasCmd, e.hasAlt, e.hasShift, e.shortcutDisplay);
         [_mainMenuEntries addObject:e];
     }
 }
@@ -440,9 +457,12 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
         e.hasCtrl  = [[[el attributeForName:@"Ctrl"]  stringValue] isEqualToString:@"yes"];
         e.hasAlt   = [[[el attributeForName:@"Alt"]   stringValue] isEqualToString:@"yes"];
         e.hasShift = [[[el attributeForName:@"Shift"] stringValue] isEqualToString:@"yes"];
+        e.hasCmd   = [[[el attributeForName:@"Cmd"]   stringValue] isEqualToString:@"yes"];
         e.keyCode  = [[[el attributeForName:@"Key"]   stringValue] integerValue];
-        // Map Windows Ctrl to macOS Cmd for display
-        if (e.hasCtrl) { e.hasCmd = YES; e.hasCtrl = NO; }
+        // Backward compat: if no Cmd attribute exists, treat Ctrl as Cmd (Windows convention)
+        if (!e.hasCmd && e.hasCtrl && ![el attributeForName:@"Cmd"]) {
+            e.hasCmd = YES; e.hasCtrl = NO;
+        }
         [e updateDisplay];
         [_macroEntries addObject:e];
     }
@@ -469,8 +489,11 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
                 e.hasCtrl  = [[[el attributeForName:@"Ctrl"]  stringValue] isEqualToString:@"yes"];
                 e.hasAlt   = [[[el attributeForName:@"Alt"]   stringValue] isEqualToString:@"yes"];
                 e.hasShift = [[[el attributeForName:@"Shift"] stringValue] isEqualToString:@"yes"];
+                e.hasCmd   = [[[el attributeForName:@"Cmd"]   stringValue] isEqualToString:@"yes"];
                 e.keyCode  = [[[el attributeForName:@"Key"]   stringValue] integerValue];
-                if (e.hasCtrl) { e.hasCmd = YES; e.hasCtrl = NO; }
+                if (!e.hasCmd && e.hasCtrl && ![el attributeForName:@"Cmd"]) {
+                    e.hasCmd = YES; e.hasCtrl = NO;
+                }
                 [e updateDisplay];
                 [_runCmdEntries addObject:e];
             }
@@ -744,7 +767,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
         return;
     }
     // Check for conflicts
-    NSString *conflicts = [self _findConflictsFor:e];
+    NSString *conflicts = [self _findConflictsFor:e excluding:nil];
     _conflictInfo.stringValue = conflicts.length ? conflicts : @"No shortcut conflicts for this item.";
 }
 
@@ -752,7 +775,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
 // Conflict Detection
 // ═══════════════════════════════════════════════════════════════════════════════
 
-- (NSString *)_findConflictsFor:(ShortcutEntry *)entry {
+- (NSString *)_findConflictsFor:(ShortcutEntry *)entry excluding:(ShortcutEntry * _Nullable)exclude {
     if (entry.keyCode == 0) return @"";
     NSMutableArray<NSString *> *conflicts = [NSMutableArray array];
 
@@ -769,7 +792,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
         NSArray<ShortcutEntry *> *entries = tabInfo[1];
         for (NSUInteger i = 0; i < entries.count; i++) {
             ShortcutEntry *other = entries[i];
-            if (other == entry) continue;
+            if (other == entry || other == exclude) continue;
             if (other.keyCode == 0) continue;
             if (other.keyCode == entry.keyCode &&
                 other.hasCmd == entry.hasCmd &&
@@ -793,48 +816,51 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     if (row < 0 || row >= (NSInteger)_filteredEntries.count) return;
     ShortcutEntry *e = _filteredEntries[row];
 
-    // Reuse the Shortcut dialog pattern
     NSPanel *panel = [[NSPanel alloc]
-        initWithContentRect:NSMakeRect(0, 0, 340, 200)
+        initWithContentRect:NSMakeRect(0, 0, 400, 240)
                   styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
                     backing:NSBackingStoreBuffered defer:NO];
     panel.title = @"Shortcut";
     [panel center];
     NSView *cv = panel.contentView;
 
+    // Name
     NSTextField *nameLbl = [NSTextField labelWithString:@"Name:"];
-    nameLbl.frame = NSMakeRect(20, 162, 50, 16);
+    nameLbl.frame = NSMakeRect(20, 205, 50, 16);
     [cv addSubview:nameLbl];
     NSTextField *nameVal = [NSTextField labelWithString:e.name];
-    nameVal.frame = NSMakeRect(75, 162, 240, 16);
+    nameVal.frame = NSMakeRect(75, 205, 305, 16);
     nameVal.font = [NSFont boldSystemFontOfSize:13];
+    nameVal.lineBreakMode = NSLineBreakByTruncatingTail;
     [cv addSubview:nameVal];
 
+    // Modifiers
     NSButton *chkCmd = [NSButton checkboxWithTitle:@"\u2318 Command" target:nil action:nil];
-    chkCmd.frame = NSMakeRect(20, 125, 140, 20);
+    chkCmd.frame = NSMakeRect(20, 170, 140, 20);
     chkCmd.state = e.hasCmd ? NSControlStateValueOn : NSControlStateValueOff;
     [cv addSubview:chkCmd];
 
     NSButton *chkCtrl = [NSButton checkboxWithTitle:@"\u2303 Control" target:nil action:nil];
-    chkCtrl.frame = NSMakeRect(170, 125, 140, 20);
+    chkCtrl.frame = NSMakeRect(170, 170, 140, 20);
     chkCtrl.state = e.hasCtrl ? NSControlStateValueOn : NSControlStateValueOff;
     [cv addSubview:chkCtrl];
 
     NSButton *chkOpt = [NSButton checkboxWithTitle:@"\u2325 Option" target:nil action:nil];
-    chkOpt.frame = NSMakeRect(20, 98, 140, 20);
+    chkOpt.frame = NSMakeRect(20, 143, 140, 20);
     chkOpt.state = e.hasAlt ? NSControlStateValueOn : NSControlStateValueOff;
     [cv addSubview:chkOpt];
 
     NSButton *chkShift = [NSButton checkboxWithTitle:@"\u21E7 Shift" target:nil action:nil];
-    chkShift.frame = NSMakeRect(170, 98, 100, 20);
+    chkShift.frame = NSMakeRect(170, 143, 100, 20);
     chkShift.state = e.hasShift ? NSControlStateValueOn : NSControlStateValueOff;
     [cv addSubview:chkShift];
 
     NSTextField *plusKey = [NSTextField labelWithString:@"+"];
-    plusKey.frame = NSMakeRect(265, 100, 15, 16);
+    plusKey.frame = NSMakeRect(270, 145, 15, 16);
     [cv addSubview:plusKey];
 
-    NSPopUpButton *keyPopup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(278, 96, 42, 25) pullsDown:NO];
+    // Key dropdown — wide enough for longest key name
+    NSPopUpButton *keyPopup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(288, 141, 95, 25) pullsDown:NO];
     [keyPopup addItemsWithTitles:[ShortcutEntry allKeyNames]];
     if (e.keyCode > 0) {
         NSString *current = [ShortcutEntry keyNameForCode:e.keyCode];
@@ -842,12 +868,60 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     }
     [cv addSubview:keyPopup];
 
-    NSButton *btnOK = [[NSButton alloc] initWithFrame:NSMakeRect(120, 12, 90, 28)];
+    // Conflict warning label (red text, updates live)
+    NSTextField *conflictLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 100, 360, 32)];
+    conflictLabel.editable = NO;
+    conflictLabel.bordered = NO;
+    conflictLabel.drawsBackground = NO;
+    conflictLabel.font = [NSFont systemFontOfSize:11];
+    conflictLabel.textColor = [NSColor systemRedColor];
+    conflictLabel.stringValue = @"";
+    conflictLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    conflictLabel.maximumNumberOfLines = 2;
+    [cv addSubview:conflictLabel];
+
+    // Live conflict check block
+    __weak ShortcutMapperWindowController *weakSelf = self;
+    void (^checkConflict)(void) = ^{
+        NSUInteger keyCode = [ShortcutEntry keyCodeForName:keyPopup.titleOfSelectedItem];
+        if (keyCode == 0) { conflictLabel.stringValue = @""; return; }
+
+        // Build a temporary entry to check against
+        ShortcutEntry *test = [[ShortcutEntry alloc] init];
+        test.hasCmd   = (chkCmd.state == NSControlStateValueOn);
+        test.hasCtrl  = (chkCtrl.state == NSControlStateValueOn);
+        test.hasAlt   = (chkOpt.state == NSControlStateValueOn);
+        test.hasShift = (chkShift.state == NSControlStateValueOn);
+        test.keyCode  = keyCode;
+
+        NSString *conflicts = [weakSelf _findConflictsFor:test excluding:e];
+        if (conflicts.length) {
+            conflictLabel.textColor = [NSColor systemRedColor];
+            conflictLabel.stringValue = [NSString stringWithFormat:@"CONFLICT: %@", conflicts];
+        } else {
+            conflictLabel.textColor = [NSColor secondaryLabelColor];
+            conflictLabel.stringValue = @"No shortcut conflicts.";
+        }
+    };
+
+    // Wire live checking to all controls
+    for (NSButton *chk in @[chkCmd, chkCtrl, chkOpt, chkShift]) {
+        chk.target = [NSBlockOperation blockOperationWithBlock:checkConflict];
+        chk.action = @selector(main);
+    }
+    keyPopup.target = [NSBlockOperation blockOperationWithBlock:checkConflict];
+    keyPopup.action = @selector(main);
+
+    // Initial check
+    checkConflict();
+
+    // Buttons
+    NSButton *btnOK = [[NSButton alloc] initWithFrame:NSMakeRect(195, 12, 90, 28)];
     btnOK.title = @"OK"; btnOK.bezelStyle = NSBezelStyleRounded;
     btnOK.keyEquivalent = @"\r"; btnOK.target = NSApp; btnOK.action = @selector(stopModal);
     [cv addSubview:btnOK];
 
-    NSButton *btnCancel = [[NSButton alloc] initWithFrame:NSMakeRect(220, 12, 90, 28)];
+    NSButton *btnCancel = [[NSButton alloc] initWithFrame:NSMakeRect(293, 12, 90, 28)];
     btnCancel.title = @"Cancel"; btnCancel.bezelStyle = NSBezelStyleRounded;
     btnCancel.keyEquivalent = @"\033"; btnCancel.target = NSApp; btnCancel.action = @selector(abortModal);
     [cv addSubview:btnCancel];
@@ -868,7 +942,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     [_tableView reloadData];
 
     // Update conflict info
-    NSString *conflicts = [self _findConflictsFor:e];
+    NSString *conflicts = [self _findConflictsFor:e excluding:nil];
     _conflictInfo.stringValue = conflicts.length ? conflicts : @"No shortcut conflicts for this item.";
 }
 
@@ -1032,9 +1106,10 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
         NSLog(@"[ShortcutMapper] Saving InternalCommand: %@ sel=%@ key=%lu", e.name, e.selectorName, (unsigned long)e.keyCode);
         NSXMLElement *sc = [NSXMLElement elementWithName:@"Shortcut"];
         [sc addAttribute:[NSXMLNode attributeWithName:@"id" stringValue:e.selectorName ?: @""]];
-        [sc addAttribute:[NSXMLNode attributeWithName:@"Ctrl" stringValue:e.hasCmd ? @"yes" : @"no"]];
+        [sc addAttribute:[NSXMLNode attributeWithName:@"Ctrl" stringValue:e.hasCtrl ? @"yes" : @"no"]];
         [sc addAttribute:[NSXMLNode attributeWithName:@"Alt" stringValue:e.hasAlt ? @"yes" : @"no"]];
         [sc addAttribute:[NSXMLNode attributeWithName:@"Shift" stringValue:e.hasShift ? @"yes" : @"no"]];
+        [sc addAttribute:[NSXMLNode attributeWithName:@"Cmd" stringValue:e.hasCmd ? @"yes" : @"no"]];
         [sc addAttribute:[NSXMLNode attributeWithName:@"Key"
                                           stringValue:[NSString stringWithFormat:@"%lu", (unsigned long)e.keyCode]]];
         [intCmdsEl addChild:sc];
@@ -1056,9 +1131,10 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
                 [macroEl removeAttributeForName:@"Alt"];
                 [macroEl removeAttributeForName:@"Shift"];
                 [macroEl removeAttributeForName:@"Key"];
-                [macroEl addAttribute:[NSXMLNode attributeWithName:@"Ctrl" stringValue:e.hasCmd ? @"yes" : @"no"]];
+                [macroEl addAttribute:[NSXMLNode attributeWithName:@"Ctrl" stringValue:e.hasCtrl ? @"yes" : @"no"]];
                 [macroEl addAttribute:[NSXMLNode attributeWithName:@"Alt" stringValue:e.hasAlt ? @"yes" : @"no"]];
                 [macroEl addAttribute:[NSXMLNode attributeWithName:@"Shift" stringValue:e.hasShift ? @"yes" : @"no"]];
+                [macroEl addAttribute:[NSXMLNode attributeWithName:@"Cmd" stringValue:e.hasCmd ? @"yes" : @"no"]];
                 [macroEl addAttribute:[NSXMLNode attributeWithName:@"Key"
                                                        stringValue:[NSString stringWithFormat:@"%lu", (unsigned long)e.keyCode]]];
                 break;

@@ -296,21 +296,32 @@
 
         SEL sel = NSSelectorFromString(selectorName);
         NSMenuItem *mi = [self _findMenuItemWithAction:sel inMenu:[NSApp mainMenu]];
-        if (!mi) continue;
+        if (!mi) {
+            NSLog(@"[Shortcuts] WARNING: menu item not found for selector '%@'", selectorName);
+            continue;
+        }
+        NSLog(@"[Shortcuts] Applying override for '%@' to menu item '%@' (current key='%@')",
+              selectorName, mi.title, mi.keyEquivalent);
 
         BOOL hasCtrl  = [[[sc attributeForName:@"Ctrl"]  stringValue] isEqualToString:@"yes"];
         BOOL hasAlt   = [[[sc attributeForName:@"Alt"]   stringValue] isEqualToString:@"yes"];
         BOOL hasShift = [[[sc attributeForName:@"Shift"] stringValue] isEqualToString:@"yes"];
+        BOOL hasCmd   = [[[sc attributeForName:@"Cmd"]   stringValue] isEqualToString:@"yes"];
         NSUInteger keyCode = [[[sc attributeForName:@"Key"] stringValue] integerValue];
+
+        // Backward compat: if no Cmd attribute, treat Ctrl as Cmd (Windows convention)
+        if (!hasCmd && hasCtrl && ![sc attributeForName:@"Cmd"]) {
+            hasCmd = YES; hasCtrl = NO;
+        }
 
         if (keyCode == 0) {
             mi.keyEquivalent = @"";
             mi.keyEquivalentModifierMask = 0;
         } else {
             NSEventModifierFlags mods = 0;
-            // Map Windows Ctrl → macOS Cmd
-            if (hasCtrl) mods |= NSEventModifierFlagCommand;
-            if (hasAlt)  mods |= NSEventModifierFlagOption;
+            if (hasCmd)   mods |= NSEventModifierFlagCommand;
+            if (hasCtrl)  mods |= NSEventModifierFlagControl;
+            if (hasAlt)   mods |= NSEventModifierFlagOption;
             if (hasShift) mods |= NSEventModifierFlagShift;
 
             NSString *key = @"";
@@ -335,6 +346,7 @@
     for (NSMenuItem *mi in menu.itemArray) {
         if (mi.action == action) return mi;
         if (mi.submenu) {
+            [mi.submenu update]; // force populate nested submenus
             NSMenuItem *found = [self _findMenuItemWithAction:action inMenu:mi.submenu];
             if (found) return found;
         }
