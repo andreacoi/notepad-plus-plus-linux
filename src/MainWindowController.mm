@@ -1284,6 +1284,8 @@ static BOOL groupHasTrailingSep(NSString *ident) {
         if (edIdx != NSNotFound) {
             NSInteger cid = [_tabManager.tabBar tabColorAtIndex:edIdx];
             if (cid >= 0) info[@"tabColorId"] = @(cid);
+            if ([_tabManager.tabBar isTabPinnedAtIndex:edIdx])
+                info[@"pinned"] = @YES;
         }
         [tabs addObject:info];
     }
@@ -1343,12 +1345,13 @@ static BOOL groupHasTrailingSep(NSString *ident) {
         if (lang.length) [ed setLanguage:lang];
         [_tabManager refreshCurrentTabTitle];
 
-        // Restore per-tab color
+        // Restore per-tab color and pin state
+        NSInteger tabIdx = (NSInteger)_tabManager.allEditors.count - 1;
         NSNumber *colorNum = info[@"tabColorId"];
-        if (colorNum) {
-            NSInteger tabIdx = (NSInteger)_tabManager.allEditors.count - 1;
+        if (colorNum)
             [_tabManager.tabBar setTabColorAtIndex:tabIdx colorId:colorNum.integerValue];
-        }
+        if ([info[@"pinned"] boolValue])
+            [_tabManager.tabBar pinTabAtIndex:tabIdx toggle:YES];
         opened++;
     }
 
@@ -2446,6 +2449,22 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     if (sel < 0) return;
     BOOL currently = [_activeTabManager.tabBar isTabPinnedAtIndex:sel];
     [_activeTabManager.tabBar pinTabAtIndex:sel toggle:!currently];
+
+    // Auto-move pinned tab to start (after other pinned tabs)
+    if (!currently) {
+        // Find insertion point: after the last already-pinned tab
+        NSInteger insertAt = 0;
+        for (NSInteger i = 0; i < _activeTabManager.tabBar.tabCount; i++) {
+            if (i == sel) continue; // skip the tab being pinned
+            if ([_activeTabManager.tabBar isTabPinnedAtIndex:i])
+                insertAt = i + 1;
+        }
+        // Move tab from sel to insertAt by repeated swaps
+        while (sel > insertAt) {
+            [_activeTabManager swapEditorAtIndex:sel withIndex:sel - 1];
+            sel--;
+        }
+    }
 }
 
 // "Lock Tab" in View > Tab is an alias for pin.

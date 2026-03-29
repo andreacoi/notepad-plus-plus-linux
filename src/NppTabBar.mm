@@ -149,11 +149,14 @@ static NSImage *toolbarIcon(NSString *name) {
     return self;
 }
 
+static const CGFloat kPinSize = 11.0; // pin icon drawn at ~80% of original ~14px
+
 - (CGFloat)preferredWidth {
     NSDictionary *attrs = @{NSFontAttributeName: [NSFont systemFontOfSize:12 weight:NSFontWeightRegular]};
     CGFloat tw       = [_title sizeWithAttributes:attrs].width;
-    CGFloat closeGap = _isPinned ? 0 : (4 + kCloseSize + 4);
-    return MAX(kTabMinWidth, MIN(kTabMaxWidth, 8 + kIconSize + 4 + tw + closeGap + 8));
+    CGFloat closeGap = 4 + kCloseSize + 4;
+    CGFloat pinGap   = _isPinned ? (kPinSize + 2) : 0; // pin icon to left of close
+    return MAX(kTabMinWidth, MIN(kTabMaxWidth, 8 + kIconSize + 4 + tw + pinGap + closeGap + 8));
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
@@ -225,32 +228,42 @@ static NSImage *toolbarIcon(NSString *name) {
                              NSForegroundColorAttributeName: textColor,
                              NSParagraphStyleAttributeName: ps};
     CGFloat textX = 8 + kIconSize + 4;
-    CGFloat textW = w - textX - (_isPinned ? 18 : kCloseSize + 8);
+    CGFloat rightPad = kCloseSize + 8 + (_isPinned ? kPinSize + 2 : 0);
+    CGFloat textW = w - textX - rightPad;
     CGFloat textY = (h - font.pointSize - 2) / 2.0;
     [_title drawInRect:NSMakeRect(textX, textY, textW, font.pointSize + 4)
         withAttributes:attrs];
 
-    // ── Pin / close ───────────────────────────────────────────────────────────
+    // ── Close button (always present, rightmost) ──────────────────────────────
+    CGFloat cx = w - kCloseSize - 6;
+    CGFloat cy = (h - kCloseSize) / 2.0;
+    if (_isSelected || _hovered) {
+        NSImage *closeImg = nil;
+        if (_closeHovered)    closeImg = tabIcon(@"closeTabButton_hoverIn");
+        else if (_isSelected) closeImg = tabIcon(@"closeTabButton");
+        else                  closeImg = tabIcon(@"closeTabButton_hoverOnTab");
+        if (closeImg) { closeImg.size = NSMakeSize(32, 32);
+            [closeImg drawInRect:NSMakeRect(cx, cy, kCloseSize, kCloseSize)
+                       fromRect:NSZeroRect
+                      operation:NSCompositingOperationSourceOver fraction:1.0];
+        } else {
+            NSDictionary *xa = @{NSFontAttributeName: [NSFont systemFontOfSize:11],
+                                  NSForegroundColorAttributeName: textColor};
+            [@"×" drawAtPoint:NSMakePoint(cx + 1, cy - 1) withAttributes:xa];
+        }
+    }
+
+    // ── Pin icon (to the left of close button, only when pinned) ─────────────
     if (_isPinned) {
-        NSDictionary *pa = @{NSFontAttributeName: [NSFont systemFontOfSize:10]};
-        [@"📌" drawAtPoint:NSMakePoint(w - 18, (h - 14) / 2.0) withAttributes:pa];
-    } else {
-        CGFloat cx = w - kCloseSize - 6;
-        CGFloat cy = (h - kCloseSize) / 2.0;
-        if (_isSelected || _hovered) {
-            NSImage *closeImg = nil;
-            if (_closeHovered)    closeImg = tabIcon(@"closeTabButton_hoverIn");
-            else if (_isSelected) closeImg = tabIcon(@"closeTabButton");
-            else                  closeImg = tabIcon(@"closeTabButton_hoverOnTab");
-            if (closeImg) { closeImg.size = NSMakeSize(32, 32);
-                [closeImg drawInRect:NSMakeRect(cx, cy, kCloseSize, kCloseSize)
-                           fromRect:NSZeroRect
-                          operation:NSCompositingOperationSourceOver fraction:1.0];
-            } else {
-                NSDictionary *xa = @{NSFontAttributeName: [NSFont systemFontOfSize:11],
-                                      NSForegroundColorAttributeName: textColor};
-                [@"×" drawAtPoint:NSMakePoint(cx + 1, cy - 1) withAttributes:xa];
-            }
+        NSString *pinPath = [[NSBundle mainBundle] pathForResource:@"pinTabButton_pinned" ofType:@"png"
+                                                       inDirectory:@"icons/standard/tabbar"];
+        NSImage *pinImg = pinPath ? [[NSImage alloc] initWithContentsOfFile:pinPath] : nil;
+        if (pinImg) {
+            CGFloat px = cx - kPinSize - 2;
+            CGFloat py = (h - kPinSize) / 2.0;
+            [pinImg drawInRect:NSMakeRect(px, py, kPinSize, kPinSize)
+                     fromRect:NSZeroRect
+                    operation:NSCompositingOperationSourceOver fraction:1.0];
         }
     }
 }
@@ -279,7 +292,7 @@ static NSImage *toolbarIcon(NSString *name) {
 - (void)mouseDown:(NSEvent *)event {
     NSPoint p  = [self convertPoint:event.locationInWindow fromView:nil];
     CGFloat cx = self.bounds.size.width - kCloseSize - 6;
-    BOOL overClose = !_isPinned && (_isSelected || _hovered)
+    BOOL overClose = (_isSelected || _hovered)
                      && p.x >= cx && p.x <= cx + kCloseSize;
     SEL action = overClose ? _closeAction : _selectAction;
 #pragma clang diagnostic push
