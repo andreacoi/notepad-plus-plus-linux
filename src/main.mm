@@ -1,4 +1,5 @@
 #import <Cocoa/Cocoa.h>
+#import "NppApplication.h"
 #import "AppDelegate.h"
 #import "NppCommandLineParams.h"
 
@@ -54,7 +55,7 @@ int main(int argc, const char *argv[]) {
         // -loadingTime: record start time
         NSDate *launchStart = cliParams.showLoadingTime ? [NSDate date] : nil;
 
-        NSApplication *app = [NSApplication sharedApplication];
+        NppApplication *app = (NppApplication *)[NppApplication sharedApplication];
         AppDelegate *delegate = [[AppDelegate alloc] init];
         delegate.cliParams = cliParams;
         delegate.launchStart = launchStart;

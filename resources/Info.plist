@@ -20,7 +20,7 @@
     <key>CFBundleExecutable</key>
     <string>NotepadPlusPlus</string>
     <key>NSPrincipalClass</key>
-    <string>NSApplication</string>
+    <string>NppApplication</string>
     <key>CFBundleIconFile</key>
     <string>npp</string>
     <key>LSHasLocalizedDisplayName</key>

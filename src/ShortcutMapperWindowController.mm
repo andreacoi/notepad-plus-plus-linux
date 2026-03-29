@@ -1,4 +1,6 @@
 #import "ShortcutMapperWindowController.h"
+#import "AppDelegate.h"
+#import "MainWindowController.h"
 #import "NppPluginManager.h"
 
 NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChangedNotification";
@@ -1072,6 +1074,11 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     // Save ALL changes to shortcuts.xml
     [self _saveToShortcutsXML];
 
+    // Rebuild the Macro menu to reflect deletions/changes
+    AppDelegate *appDel = (AppDelegate *)[NSApp delegate];
+    for (MainWindowController *wc in appDel.windowControllers)
+        [wc rebuildMacroMenu];
+
     NSLog(@"[ShortcutMapper] Saved %ld modified shortcuts", (long)modCount);
 
     // Post notification for other parts of the app
@@ -1175,9 +1182,20 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     NSLog(@"[ShortcutMapper] InternalCommands: %ld entries saved", (long)intCmdCount);
 
     // ── Update Macros in-place (only shortcut attributes, preserve Action children) ──
+    // Build set of macro names that still exist in the in-memory list
+    NSMutableSet *liveMacroNames = [NSMutableSet set];
+    for (ShortcutEntry *e in _macroEntries)
+        [liveMacroNames addObject:e.name];
+
     NSArray *macroNodes = [doc nodesForXPath:@"//Macros/Macro" error:nil];
     for (NSXMLElement *macroEl in macroNodes) {
         NSString *macroName = [[macroEl attributeForName:@"name"] stringValue];
+        // Remove macros that were deleted from the in-memory list
+        if (![liveMacroNames containsObject:macroName]) {
+            NSLog(@"[ShortcutMapper] Deleting macro from XML: %@", macroName);
+            [macroEl detach];
+            continue;
+        }
         for (ShortcutEntry *e in _macroEntries) {
             if ([e.name isEqualToString:macroName] && e.isModified) {
                 [macroEl removeAttributeForName:@"Ctrl"];

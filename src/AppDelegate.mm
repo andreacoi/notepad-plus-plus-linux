@@ -1,4 +1,5 @@
 #import "AppDelegate.h"
+#import "NppApplication.h"
 #import "MainWindowController.h"
 #import "MenuBuilder.h"
 #import "NppLocalizer.h"
@@ -99,6 +100,9 @@
         }
         [pm fireReady];
     }
+
+    // ── Build recordable selectors for macro recording ────────────────
+    [(NppApplication *)NSApp buildRecordableSelectorsFromMenu];
 
     // ── Loading time (-loadingTime) ─────────────────────────────────────
 

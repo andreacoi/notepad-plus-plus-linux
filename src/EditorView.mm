@@ -1,4 +1,5 @@
 #import "EditorView.h"
+#import "NppApplication.h"
 #import "PreferencesWindowController.h"
 #import "StyleConfiguratorWindowController.h"
 #import "GitHelper.h"
@@ -2304,11 +2305,19 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
 - (void)runMacroActions:(NSArray<NSDictionary *> *)actions {
     if (!actions.count) { NSBeep(); return; }
     ScintillaView *sci = _scintillaView;
+    [(NppApplication *)NSApp setPlayingBackMacro:YES];
     [sci message:SCI_BEGINUNDOACTION];
     for (NSDictionary *action in actions) {
-        // Support both recorded format (msg/wp/lp/text) and shortcuts.xml format (type/message/wParam/lParam/sParam)
-        BOOL isXmlFormat = (action[@"type"] != nil);
+        // ── Recorded format: menu command by selector name ──
+        NSString *menuCmd = action[@"menuCommand"];
+        if (menuCmd) {
+            SEL sel = NSSelectorFromString(menuCmd);
+            [NSApp sendAction:sel to:nil from:self];
+            continue;
+        }
 
+        // ── XML format (from shortcuts.xml) ──
+        BOOL isXmlFormat = (action[@"type"] != nil);
         if (isXmlFormat) {
             int type       = [action[@"type"] intValue];
             int msg        = [action[@"message"] intValue];
@@ -2317,30 +2326,18 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
             NSString *sParam = action[@"sParam"];
 
             if (type == 2) {
-                // Menu command: wParam = IDM_* command ID
-                // Map known Windows menu command IDs to macOS selectors
-                SEL menuAction = nil;
-                switch ((int)wp) {
-                    case 42024: menuAction = @selector(trimTrailingWhitespace:); break; // IDM_EDIT_TRIMTRAILING
-                    case 41006: menuAction = @selector(saveDocument:); break;           // IDM_FILE_SAVE
-                    case 41001: menuAction = @selector(newDocument:); break;            // IDM_FILE_NEW
-                    case 41002: menuAction = @selector(openDocument:); break;           // IDM_FILE_OPEN
-                    case 41003: menuAction = @selector(closeCurrentTab:); break;        // IDM_FILE_CLOSE
-                    case 41007: menuAction = @selector(saveAllDocuments:); break;       // IDM_FILE_SAVEALL
-                    default: break;
-                }
-                if (menuAction) {
+                // Menu command: sParam = macOS selector name
+                if (sParam.length) {
+                    SEL menuAction = NSSelectorFromString(sParam);
                     [NSApp sendAction:menuAction to:nil from:self];
                 }
             } else if (type == 1 && sParam.length > 0) {
-                // String parameter (text insertion, search, etc.)
                 [sci message:(uint32_t)msg wParam:(uptr_t)wp lParam:(sptr_t)sParam.UTF8String];
             } else {
-                // Numeric parameter
                 [sci message:(uint32_t)msg wParam:(uptr_t)wp lParam:(sptr_t)lp];
             }
         } else {
-            // Recorded macro format
+            // ── Recorded format: Scintilla message ──
             unsigned int msg = [action[@"msg"] unsignedIntValue];
             uptr_t       wp  = (uptr_t)[action[@"wp"] unsignedLongLongValue];
             NSString    *text = action[@"text"];
@@ -2353,6 +2350,7 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
         }
     }
     [sci message:SCI_ENDUNDOACTION];
+    [(NppApplication *)NSApp setPlayingBackMacro:NO];
 }
 
 - (void)startMacroRecording {
@@ -2366,14 +2364,31 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
     _isRecordingMacro = NO;
 }
 
+- (void)recordMenuCommand:(NSString *)selectorName {
+    if (!_isRecordingMacro || !selectorName.length) return;
+    [_macroActions addObject:@{
+        @"menuCommand": selectorName,  // type 2: menu command by selector name
+    }];
+    NSLog(@"[Macro] Recorded menu command: %@", selectorName);
+}
+
 - (void)runMacro {
     if (!_macroActions.count) { NSBeep(); return; }
     ScintillaView *sci = _scintillaView;
+    [(NppApplication *)NSApp setPlayingBackMacro:YES];
     [sci message:SCI_BEGINUNDOACTION];
     for (NSDictionary *action in _macroActions) {
+        // Type 2: menu command by selector name
+        NSString *menuCmd = action[@"menuCommand"];
+        if (menuCmd) {
+            SEL sel = NSSelectorFromString(menuCmd);
+            [NSApp sendAction:sel to:nil from:self];
+            continue;
+        }
+        // Type 0/1: Scintilla message
         unsigned int msg = [action[@"msg"] unsignedIntValue];
         uptr_t       wp  = (uptr_t)[action[@"wp"] unsignedLongLongValue];
-        NSString    *text = action[@"text"]; // set for text-carrying messages
+        NSString    *text = action[@"text"];
         if (text) {
             [sci message:msg wParam:wp lParam:(sptr_t)text.UTF8String];
         } else {
@@ -2382,6 +2397,7 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
         }
     }
     [sci message:SCI_ENDUNDOACTION];
+    [(NppApplication *)NSApp setPlayingBackMacro:NO];
 }
 
 #pragma mark - Auto-close & Word Completion

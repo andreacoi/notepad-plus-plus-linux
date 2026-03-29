@@ -69,6 +69,7 @@ target_include_directories(lexilla PUBLIC
 # -----------------------------------------------------------------------------
 set(APP_SRCS
     src/main.mm
+    src/NppApplication.mm
     src/NppCommandLineParams.mm
     src/ShortcutMapperWindowController.mm
     src/NppLocalizer.mm

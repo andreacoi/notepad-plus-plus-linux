@@ -794,7 +794,7 @@ static NSMenu *buildLanguageMenu() {
     [runMenu addItem:item(@"Wikipedia Search",                    @selector(wikiSearch:),                    @"")];
     [runMenu addItem:item(@"Open Selected File Path in New Instance", @selector(openSelectedFileInNewInstance:), @"")];
     addSep(runMenu);
-    [runMenu addItem:nyi(@"Modify Shortcut/Delete Command…")];
+    [runMenu addItem:item(@"Modify Shortcut/Delete Command…", @selector(showShortcutMapperRunCmds:), @"")];
 
     // ── Plugins ───────────────────────────────────────────────────────────────
     NSMenuItem *pluginsItem = [[NSMenuItem alloc] init];

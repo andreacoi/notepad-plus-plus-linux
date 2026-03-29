@@ -1858,12 +1858,26 @@ static void removeMacroFromShortcutsXML(NSString *name) {
 static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary *> *recorded) {
     NSMutableArray *xmlActions = [NSMutableArray array];
     for (NSDictionary *act in recorded) {
+        NSMutableDictionary *xmlAct = [NSMutableDictionary dictionary];
+
+        // Type 2: menu command by selector name
+        NSString *menuCmd = act[@"menuCommand"];
+        if (menuCmd) {
+            xmlAct[@"type"]    = @2;   // mtMenuCommand
+            xmlAct[@"message"] = @0;
+            xmlAct[@"wParam"]  = @0;
+            xmlAct[@"lParam"]  = @0;
+            xmlAct[@"sParam"]  = menuCmd;  // store selector name in sParam
+            [xmlActions addObject:xmlAct];
+            continue;
+        }
+
+        // Type 0/1: Scintilla message
         int msg = [act[@"msg"] intValue];
         long long wp = [act[@"wp"] longLongValue];
         long long lp = [act[@"lp"] longLongValue];
         NSString *text = act[@"text"];
 
-        NSMutableDictionary *xmlAct = [NSMutableDictionary dictionary];
         xmlAct[@"message"] = @(msg);
         xmlAct[@"wParam"]  = @(wp);
         xmlAct[@"lParam"]  = @(lp);
@@ -4692,6 +4706,12 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     static ShortcutMapperWindowController *mapper = nil;
     mapper = [[ShortcutMapperWindowController alloc] init];
     [mapper showWithTab:ShortcutMapperTabMacros];
+}
+
+- (void)showShortcutMapperRunCmds:(id)sender {
+    static ShortcutMapperWindowController *mapper = nil;
+    mapper = [[ShortcutMapperWindowController alloc] init];
+    [mapper showWithTab:ShortcutMapperTabRunCommands];
 }
 
 - (void)editPopupContextMenu:(id)sender {

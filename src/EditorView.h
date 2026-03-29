@@ -119,6 +119,8 @@ extern NSNotificationName const EditorViewCursorDidMoveNotification;
 - (void)runMacro;
 /// Run a macro from a saved actions array (same format as the recorded macro).
 - (void)runMacroActions:(NSArray<NSDictionary *> *)actions;
+/// Record a menu command action (type 2) by selector name during macro recording.
+- (void)recordMenuCommand:(NSString *)selectorName;
 /// The currently recorded macro actions (nil / empty if nothing recorded).
 @property (nonatomic, readonly, nullable) NSArray<NSDictionary *> *macroActions;
 

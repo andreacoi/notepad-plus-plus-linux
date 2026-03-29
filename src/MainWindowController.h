@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// plugin sends NPPM_ADDTOOLBARICON_FORDARKMODE.
 - (void)addPluginToolbarIcon:(NSImage *)icon tooltip:(NSString *)tooltip cmdID:(int)cmdID;
 
+/// Rebuild the Macro menu from shortcuts.xml (called after macro save/delete).
+- (void)rebuildMacroMenu;
+
 @end
 
 NS_ASSUME_NONNULL_END
