@@ -1,5 +1,6 @@
 #import "FindReplacePanel.h"
 #import "NppLocalizer.h"
+#import "NppThemeManager.h"
 
 static const CGFloat kFindOnlyHeight   = 44.0;
 static const CGFloat kFindReplaceHeight = 80.0;
@@ -31,7 +32,11 @@ static const CGFloat kHiddenHeight     =  0.0;
     self = [super initWithFrame:frame];
     if (self) {
         self.wantsLayer = YES;
-        self.layer.backgroundColor = [NSColor windowBackgroundColor].CGColor;
+        self.layer.backgroundColor = [NppThemeManager shared].statusBarBackground.CGColor;
+
+        [[NSNotificationCenter defaultCenter]
+            addObserver:self selector:@selector(_darkModeChanged:)
+                   name:NPPDarkModeChangedNotification object:nil];
 
         // Separator line on top
         NSBox *sep = [[NSBox alloc] init];
@@ -294,6 +299,10 @@ static const CGFloat kHiddenHeight     =  0.0;
     b.font = [NSFont systemFontOfSize:12];
     if (tip) b.toolTip = tip;
     return b;
+}
+
+- (void)_darkModeChanged:(NSNotification *)n {
+    self.layer.backgroundColor = [NppThemeManager shared].statusBarBackground.CGColor;
 }
 
 @end

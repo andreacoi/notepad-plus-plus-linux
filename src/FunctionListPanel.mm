@@ -3,6 +3,7 @@
 #import "StyleConfiguratorWindowController.h"
 #import "Scintilla.h"
 #import "ScintillaMessages.h"
+#import "NppThemeManager.h"
 
 // ── Data model: tree item (node = class/struct, leaf = function/method) ──────
 
@@ -105,6 +106,7 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
                                                      name:NPPLocalizationChanged object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_themeChanged:)
                                                      name:@"NPPPreferencesChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_darkModeChanged:) name:NPPDarkModeChangedNotification object:nil];
     }
     return self;
 }
@@ -135,7 +137,7 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
     _titleBar = [[NSView alloc] init];
     _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
     _titleBar.wantsLayer = YES;
-    _titleBar.layer.backgroundColor = [NSColor controlBackgroundColor].CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
     [self addSubview:_titleBar];
 
     _titleLabel = [NSTextField labelWithString:@"Function List"];
@@ -257,7 +259,7 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
 
 - (void)_applyTheme {
     // Follow the same theme as other panels (controlBackgroundColor adapts to dark mode).
-    _titleBar.layer.backgroundColor = [NSColor controlBackgroundColor].CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
     _titleLabel.textColor = [NSColor labelColor];
     _emptyLabel.textColor = [NSColor secondaryLabelColor];
     [_outlineView reloadData]; // colors may have changed
@@ -646,4 +648,8 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
     [ed.window makeFirstResponder:ed.scintillaView];
 }
 
+
+- (void)_darkModeChanged:(NSNotification *)n {
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+}
 @end

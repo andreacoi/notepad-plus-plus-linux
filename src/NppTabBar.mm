@@ -1,4 +1,5 @@
 #import "NppTabBar.h"
+#import "NppThemeManager.h"
 
 @interface NppTabBar (ContextMenu)
 - (NSMenu *)buildTabContextMenu;
@@ -16,14 +17,12 @@ static const CGFloat kIconSize     = 16.0;
 static const CGFloat kCloseSize    = 14.0;
 static const CGFloat kArrowBtnW    = 14.0;  // width of each scroll-arrow button
 
-// ── Colors ────────────────────────────────────────────────────────────────────
-static NSColor *tabBarBgColor()    { return [NSColor colorWithRed:0xF0/255.0 green:0xF0/255.0 blue:0xF0/255.0 alpha:1]; }
-static NSColor *inactiveTabColor() { return [NSColor colorWithWhite:0.80 alpha:1]; }
-static NSColor *activeTabColor()   { return [NSColor colorWithWhite:1.00 alpha:1]; }
-static NSColor *hoverTabColor()    { return [NSColor colorWithWhite:0.87 alpha:1]; }
-// #fda640 — amber/orange accent on active tab top
-static NSColor *accentColor()      { return [NSColor colorWithRed:(253/255.0) green:(166/255.0) blue:(64/255.0) alpha:1]; }
-// Per-tab color palette (5 colors matching Windows NPP light-mode defaults)
+// ── Colors (all routed through NppThemeManager) ──────────────────────────────
+#define TM [NppThemeManager shared]
+static NSColor *tabBarBgColor()    { return TM.tabBarBackground; }
+static NSColor *activeTabColor()   { return TM.activeTabFill; }
+static NSColor *accentColor()      { return TM.accentStripe; }
+// Per-tab color palette (same for light/dark)
 static NSColor *tabColorForId(NSInteger colorId) {
     switch (colorId) {
         case 0: return [NSColor colorWithRed:0xFC/255.0 green:0xE3/255.0 blue:0x86/255.0 alpha:1]; // Yellow
@@ -34,20 +33,16 @@ static NSColor *tabColorForId(NSInteger colorId) {
         default: return nil; // -1 = use default accent
     }
 }
-static NSColor *tabBorderColor()   { return [NSColor colorWithWhite:0.58 alpha:1]; }
-static NSColor *dividerGray()      { return [NSColor colorWithWhite:0.55 alpha:1]; }
-static NSColor *dividerWhite()     { return [NSColor colorWithWhite:0.96 alpha:1]; }
+static NSColor *tabBorderColor()   { return TM.tabBorder; }
+static NSColor *dividerGray()      { return TM.dividerDark; }
+static NSColor *dividerWhite()     { return TM.dividerLight; }
 
-// ── Icon helpers ──────────────────────────────────────────────────────────────
+// ── Icon helpers (routed through NppThemeManager) ────────────────────────────
 static NSImage *tabIcon(NSString *name) {
-    NSString *p = [[NSBundle mainBundle] pathForResource:name ofType:@"png"
-                                             inDirectory:@"icons/dark/tabbar"];
-    return p ? [[NSImage alloc] initWithContentsOfFile:p] : nil;
+    return [TM tabbarIconNamed:name];
 }
 static NSImage *toolbarIcon(NSString *name) {
-    NSString *p = [[NSBundle mainBundle] pathForResource:name ofType:@"png"
-                                             inDirectory:@"icons/standard/toolbar"];
-    return p ? [[NSImage alloc] initWithContentsOfFile:p] : nil;
+    return [TM toolbarIconNamed:name];
 }
 
 // ── Windows-style scroll arrow button ────────────────────────────────────────
@@ -89,13 +84,12 @@ static NSImage *toolbarIcon(NSString *name) {
     CGFloat h = self.bounds.size.height;
 
     // Background — slightly brighter on hover
-    NSColor *bg = _hovering ? [NSColor colorWithWhite:0.91 alpha:1]
-                             : [NSColor colorWithWhite:0.83 alpha:1];
+    NSColor *bg = _hovering ? TM.arrowHoverBg : TM.arrowPressBg;
     [bg setFill];
     NSRectFill(self.bounds);
 
     // 1px border
-    [[NSColor colorWithWhite:0.50 alpha:1] setStroke];
+    [TM.arrowBorder setStroke];
     NSBezierPath *border = [NSBezierPath bezierPathWithRect:NSInsetRect(self.bounds, 0.5, 0.5)];
     border.lineWidth = 0.5;
     [border stroke];
@@ -116,7 +110,7 @@ static NSImage *toolbarIcon(NSString *name) {
         [tri lineToPoint:NSMakePoint(ax + aw, ay + ah)];
     }
     [tri closePath];
-    [[NSColor colorWithWhite:0.18 alpha:1] setFill];
+    [TM.arrowFill setFill];
     [tri fill];
 }
 @end
@@ -181,9 +175,8 @@ static const CGFloat kPinSize = 11.0; // pin icon drawn at ~80% of original ~14p
         [activeTabColor() setFill];
         [tabPath fill];
     } else {
-        NSColor *top    = _hovered ? [NSColor colorWithWhite:0.90 alpha:1]
-                                   : [NSColor colorWithWhite:0.86 alpha:1];
-        NSColor *bottom = _hovered ? hoverTabColor() : inactiveTabColor();
+        NSColor *top    = _hovered ? TM.hoverTabGradientTop    : TM.inactiveTabGradientTop;
+        NSColor *bottom = _hovered ? TM.hoverTabGradientBottom : TM.inactiveTabGradientBottom;
         NSGradient *g = [[NSGradient alloc] initWithStartingColor:top endingColor:bottom];
         [NSGraphicsContext saveGraphicsState];
         [tabPath addClip];
@@ -220,8 +213,7 @@ static const CGFloat kPinSize = 11.0; // pin icon drawn at ~80% of original ~14p
     // ── Title ─────────────────────────────────────────────────────────────────
     NSMutableParagraphStyle *ps = [[NSMutableParagraphStyle alloc] init];
     ps.lineBreakMode = NSLineBreakByTruncatingMiddle;
-    NSColor *textColor = _isSelected ? [NSColor labelColor]
-                                     : [NSColor colorWithWhite:0.15 alpha:1];
+    NSColor *textColor = _isSelected ? TM.tabText : TM.tabTextInactive;
     NSFont  *font      = _isSelected ? [NSFont systemFontOfSize:11 weight:NSFontWeightMedium]
                                      : [NSFont systemFontOfSize:11 weight:NSFontWeightRegular];
     NSDictionary *attrs = @{NSFontAttributeName: font,
@@ -330,8 +322,20 @@ static const CGFloat kPinSize = 11.0; // pin icon drawn at ~80% of original ~14p
         _items         = [NSMutableArray array];
         _selectedIndex = -1;
         [self _buildUI];
+        [[NSNotificationCenter defaultCenter]
+            addObserver:self selector:@selector(_darkModeChanged:)
+                   name:NPPDarkModeChangedNotification object:nil];
     }
     return self;
+}
+
+- (void)_darkModeChanged:(NSNotification *)n {
+    // Redraw all tabs and the bar itself with updated theme colors
+    for (_NppTabItem *item in _items)
+        [item setNeedsDisplay:YES];
+    [_scrollLeftBtn setNeedsDisplay:YES];
+    [_scrollRightBtn setNeedsDisplay:YES];
+    [self setNeedsDisplay:YES];
 }
 
 - (void)_buildUI {

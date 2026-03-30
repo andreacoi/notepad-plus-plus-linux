@@ -1,5 +1,6 @@
 #import "IncrementalSearchBar.h"
 #import "NppLocalizer.h"
+#import "NppThemeManager.h"
 
 static const CGFloat kBarHeight = 36.0;
 
@@ -16,7 +17,10 @@ static const CGFloat kBarHeight = 36.0;
     if (!self) return nil;
 
     self.wantsLayer = YES;
-    self.layer.backgroundColor = [NSColor windowBackgroundColor].CGColor;
+    self.layer.backgroundColor = [NppThemeManager shared].statusBarBackground.CGColor;
+    [[NSNotificationCenter defaultCenter]
+        addObserver:self selector:@selector(_darkModeChanged:)
+               name:NPPDarkModeChangedNotification object:nil];
 
     // Separator at the top
     NSBox *sep = [[NSBox alloc] init];
@@ -192,6 +196,10 @@ static const CGFloat kBarHeight = 36.0;
         }
     }
     return NO;
+}
+
+- (void)_darkModeChanged:(NSNotification *)n {
+    self.layer.backgroundColor = [NppThemeManager shared].statusBarBackground.CGColor;
 }
 
 @end

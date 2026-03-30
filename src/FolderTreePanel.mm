@@ -2,6 +2,7 @@
 #import "NppLocalizer.h"
 #import "StyleConfiguratorWindowController.h"
 #import <objc/runtime.h>
+#import "NppThemeManager.h"
 
 // ── Tree item model ───────────────────────────────────────────────────────────
 
@@ -266,6 +267,7 @@ static _FTPanelButton *_panelBtn(NSString *iconName, NSString *subdir, NSString 
                name:NSOutlineViewItemDidCollapseNotification object:_outlineView];
     [nc addObserver:self selector:@selector(_themeChanged:)
                name:@"NPPPreferencesChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_darkModeChanged:) name:NPPDarkModeChangedNotification object:nil];
 
     for (NSView *v in @[titleBar, sep, _scrollView])
         [self addSubview:v];
@@ -299,7 +301,7 @@ static _FTPanelButton *_panelBtn(NSString *iconName, NSString *subdir, NSString 
 
     // Title bar: opaque system color so it never inherits the editor theme.
     _titleBar.wantsLayer = YES;
-    _titleBar.layer.backgroundColor = [NSColor controlBackgroundColor].CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
 
     // Match disclosure-triangle (arrow) color to background: dark bg → DarkAqua appearance
     // so arrows are drawn white; light bg → Aqua so arrows are drawn dark.
@@ -875,4 +877,8 @@ static _FTPanelButton *_panelBtn(NSString *iconName, NSString *subdir, NSString 
     return 22;
 }
 
+
+- (void)_darkModeChanged:(NSNotification *)n {
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+}
 @end

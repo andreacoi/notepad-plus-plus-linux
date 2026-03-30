@@ -23,6 +23,7 @@
 #import "ShortcutMapperWindowController.h"
 #import "UserDefineLangManager.h"
 #import "UserDefineDialog.h"
+#import "NppThemeManager.h"
 #import <objc/runtime.h>
 #include <sys/sysctl.h>
 #include <sys/resource.h>
@@ -159,13 +160,10 @@ static NSToolbarItemIdentifier const kTBGroup8  = @"TB_G8";  // panels
 static NSToolbarItemIdentifier const kTBGroup9  = @"TB_G9";  // monitoring
 static NSToolbarItemIdentifier const kTBGroup10 = @"TB_G10"; // macro
 
-// Load a toolbar icon from Resources/icons/standard/toolbar/{fileName}.png.
+// Load a toolbar icon using NppThemeManager (auto-switches light/dark).
 static NSImage *nppToolbarIcon(NSString *fileName) {
-    NSString *path = [[[NSBundle mainBundle] resourcePath]
-        stringByAppendingPathComponent:
-            [NSString stringWithFormat:@"icons/standard/toolbar/%@.png", fileName]];
-    NSImage *img = [[NSImage alloc] initWithContentsOfFile:path];
-    img.cacheMode = NSImageCacheNever;   // always read fresh from disk
+    NSImage *img = [[NppThemeManager shared] toolbarIconNamed:fileName];
+    if (img) img.cacheMode = NSImageCacheNever;
     return img;
 }
 
@@ -746,6 +744,7 @@ static BOOL groupHasTrailingSep(NSString *ident) {
             btn.action  = NSSelectorFromString(desc[4]);
             btn.target  = self;
             btn.toolTip = desc[2];
+            btn.identifier = desc[3]; // store icon filename for dark mode refresh
             [groupView addSubview:btn];
 
             // Store references for toggle state refresh
@@ -1128,7 +1127,7 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     _statusBar = [[NSView alloc] init];
     _statusBar.translatesAutoresizingMaskIntoConstraints = NO;
     _statusBar.wantsLayer = YES;
-    _statusBar.layer.backgroundColor = [NSColor windowBackgroundColor].CGColor;
+    _statusBar.layer.backgroundColor = [NppThemeManager shared].statusBarBackground.CGColor;
 
     NSBox *sep = [[NSBox alloc] init];
     sep.boxType = NSBoxSeparator;
@@ -1158,6 +1157,11 @@ static BOOL groupHasTrailingSep(NSString *ident) {
         [_gitBranchLabel.trailingAnchor constraintEqualToAnchor:_statusRight.leadingAnchor constant:-16],
         [_gitBranchLabel.centerYAnchor constraintEqualToAnchor:_statusBar.centerYAnchor constant:1],
     ]];
+
+    // ── Dark mode observer ──────────────────────────────────────────────────────
+    [[NSNotificationCenter defaultCenter]
+        addObserver:self selector:@selector(_darkModeChanged:)
+               name:NPPDarkModeChangedNotification object:nil];
 
     // ── Horizontal (left/right) split: views | side panels ────────────────────
     _sidePanelHost = [[SidePanelHost alloc] init];
@@ -5008,6 +5012,29 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
     [NSApp runModalForWindow:panel];
     [panel orderOut:nil];
+}
+
+// ── Dark mode ────────────────────────────────────────────────────────────────
+
+- (void)_darkModeChanged:(NSNotification *)n {
+    // Re-assign CGColor on status bar (snapshot needs refresh)
+    _statusBar.layer.backgroundColor = [NppThemeManager shared].statusBarBackground.CGColor;
+
+    // Refresh toolbar icons (switch between light/dark icon sets)
+    NSToolbar *toolbar = self.window.toolbar;
+    for (NSToolbarItem *item in toolbar.items) {
+        NSView *groupView = item.view;
+        if (!groupView) continue;
+        for (NSView *sub in groupView.subviews) {
+            if ([sub isKindOfClass:[NSButton class]]) {
+                NSButton *btn = (NSButton *)sub;
+                if (btn.identifier.length) {
+                    NSImage *newImg = nppToolbarIcon(btn.identifier);
+                    if (newImg) btn.image = newImg;
+                }
+            }
+        }
+    }
 }
 
 // checkForUpdates: moved to AppDelegate

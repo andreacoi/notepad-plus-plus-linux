@@ -3,6 +3,7 @@
 #import "ScintillaView.h"
 #import "Scintilla.h"
 #import "ScintillaMessages.h"
+#import "NppThemeManager.h"
 
 namespace Scintilla { struct ILexer5; }
 extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
@@ -69,6 +70,7 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
         [[NSNotificationCenter defaultCenter]
             addObserver:self selector:@selector(_prefsChanged:)
                    name:@"NPPPreferencesChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_darkModeChanged:) name:NPPDarkModeChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter]
             addObserver:self selector:@selector(_locChanged:)
                    name:NPPLocalizationChanged object:nil];
@@ -93,7 +95,7 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
     _titleBar = [[NSView alloc] init];
     _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
     _titleBar.wantsLayer = YES;
-    _titleBar.layer.backgroundColor = [NSColor controlBackgroundColor].CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
     [self addSubview:_titleBar];
 
     _titleLabel = [NSTextField labelWithString:@"Document Map"];
@@ -422,4 +424,8 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
     [_overlay setNeedsDisplay:YES];
 }
 
+
+- (void)_darkModeChanged:(NSNotification *)n {
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+}
 @end

@@ -1,5 +1,6 @@
 #import "PreferencesWindowController.h"
 #import "NppLocalizer.h"
+#import "NppThemeManager.h"
 
 // ── NSUserDefaults keys (mirrors NPP settings) ────────────────────────────────
 NSString *const kPrefTabWidth           = @"tabWidth";
@@ -66,6 +67,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         kPrefStyleFontSize:      @11,
         kPrefAutoCompleteEnable:   @YES,
         kPrefAutoCompleteMinChars: @1,
+        kPrefDarkMode:             @0,   // 0=Auto, 1=Light, 2=Dark
     }];
     // Force-upgrade any stale @NO value stored by earlier builds.
     // registerDefaults: only fills in missing keys, so previously-stored @NO
@@ -194,6 +196,32 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     hint.textColor = NSColor.secondaryLabelColor;
     hint.frame = NSMakeRect(20, y - 16, 500, 44);
     [v addSubview:hint];
+    y -= 70;
+
+    // ── Dark Mode section ────────────────────────────────────────────────────
+    NSTextField *dmLabel = [NSTextField labelWithString:@"Appearance"];
+    dmLabel.font = [NSFont boldSystemFontOfSize:NSFont.systemFontSize];
+    dmLabel.frame = NSMakeRect(20, y, 200, 20);
+    [v addSubview:dmLabel];
+    y -= 28;
+
+    NSMatrix *dmMatrix = [[NSMatrix alloc]
+        initWithFrame:NSMakeRect(20, y - 20, 400, 22)
+                 mode:NSRadioModeMatrix
+            cellClass:[NSButtonCell class]
+     numberOfRows:1 numberOfColumns:3];
+    NSArray *titles = @[@"Auto (Follow System)", @"Light", @"Dark"];
+    for (NSInteger i = 0; i < 3; i++) {
+        NSButtonCell *cell = [dmMatrix cellAtRow:0 column:i];
+        cell.title = titles[i];
+        cell.buttonType = NSButtonTypeRadio;
+        [cell setFont:[NSFont systemFontOfSize:NSFont.systemFontSize]];
+    }
+    dmMatrix.tag = 500;
+    dmMatrix.target = self;
+    dmMatrix.action = @selector(prefChanged:);
+    [dmMatrix selectCellAtRow:0 column:[NppThemeManager shared].mode];
+    [v addSubview:dmMatrix];
 
     item.view = v;
     return item;
@@ -401,6 +429,13 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
                 }
             }
             return; // NppLocalizer already posts NPPPreferencesChanged via NPPLocalizationChanged
+        }
+        case 500: {
+            // Dark mode radio buttons
+            NSMatrix *matrix = (NSMatrix *)sender;
+            NSInteger col = matrix.selectedColumn;
+            [NppThemeManager shared].mode = (NppDarkModeOption)col;
+            return; // NppThemeManager posts NPPDarkModeChangedNotification
         }
     }
 

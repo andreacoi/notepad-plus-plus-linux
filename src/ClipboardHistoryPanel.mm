@@ -1,6 +1,7 @@
 #import "ClipboardHistoryPanel.h"
 #import "NppLocalizer.h"
 #import "StyleConfiguratorWindowController.h"
+#import "NppThemeManager.h"
 
 static const NSUInteger kMaxHistory = 30;
 
@@ -26,6 +27,7 @@ static const NSUInteger kMaxHistory = 30;
                                                      name:NPPLocalizationChanged object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_themeChanged:)
                                                      name:@"NPPPreferencesChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_darkModeChanged:) name:NPPDarkModeChangedNotification object:nil];
     }
     return self;
 }
@@ -44,7 +46,7 @@ static const NSUInteger kMaxHistory = 30;
     _titleBar = [[NSView alloc] init];
     _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
     _titleBar.wantsLayer = YES;
-    _titleBar.layer.backgroundColor = [NSColor controlBackgroundColor].CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
     [self addSubview:_titleBar];
 
     _titleLabel = [NSTextField labelWithString:@"Clipboard History"];
@@ -235,4 +237,8 @@ static const NSUInteger kMaxHistory = 30;
     return cell;
 }
 
+
+- (void)_darkModeChanged:(NSNotification *)n {
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+}
 @end

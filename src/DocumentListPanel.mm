@@ -2,6 +2,7 @@
 #import "EditorView.h"
 #import "NppLocalizer.h"
 #import "StyleConfiguratorWindowController.h"
+#import "NppThemeManager.h"
 
 @implementation DocumentListPanel {
     TabManager   *_tabManager;
@@ -9,6 +10,7 @@
     NSTableView  *_tableView;
     NSArray<EditorView *> *_items;
     NSTextField  *_titleLabel;
+    NSView       *_titleBar;
 }
 
 - (instancetype)initWithTabManager:(TabManager *)tabManager {
@@ -32,11 +34,11 @@
 
 - (void)_buildLayout {
     // ── Title bar ─────────────────────────────────────────────────────────────
-    NSView *titleBar = [[NSView alloc] init];
-    titleBar.translatesAutoresizingMaskIntoConstraints = NO;
-    titleBar.wantsLayer = YES;
-    titleBar.layer.backgroundColor = [NSColor controlBackgroundColor].CGColor;
-    [self addSubview:titleBar];
+        _titleBar = [[NSView alloc] init];
+    _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
+    _titleBar.wantsLayer = YES;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+    [self addSubview:_titleBar];
 
     _titleLabel = [NSTextField labelWithString:@"Document List"];
     NSTextField *titleLabel = _titleLabel;
@@ -44,27 +46,27 @@
     titleLabel.font = [NSFont boldSystemFontOfSize:11];
     titleLabel.textColor = [NSColor labelColor];
     titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    [titleBar addSubview:titleLabel];
+    [_titleBar addSubview:titleLabel];
 
     NSButton *closeBtn = [NSButton buttonWithTitle:@"✕" target:self action:@selector(_closePanel:)];
     closeBtn.translatesAutoresizingMaskIntoConstraints = NO;
     closeBtn.bezelStyle = NSBezelStyleInline;
     closeBtn.bordered = NO;
     closeBtn.font = [NSFont systemFontOfSize:11];
-    [titleBar addSubview:closeBtn];
+    [_titleBar addSubview:closeBtn];
 
     [NSLayoutConstraint activateConstraints:@[
-        [titleBar.topAnchor      constraintEqualToAnchor:self.topAnchor],
-        [titleBar.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
-        [titleBar.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [titleBar.heightAnchor   constraintEqualToConstant:26],
+        [_titleBar.topAnchor      constraintEqualToAnchor:self.topAnchor],
+        [_titleBar.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
+        [_titleBar.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+        [_titleBar.heightAnchor   constraintEqualToConstant:26],
 
-        [titleLabel.leadingAnchor  constraintEqualToAnchor:titleBar.leadingAnchor constant:6],
-        [titleLabel.centerYAnchor  constraintEqualToAnchor:titleBar.centerYAnchor],
+        [titleLabel.leadingAnchor  constraintEqualToAnchor:_titleBar.leadingAnchor constant:6],
+        [titleLabel.centerYAnchor  constraintEqualToAnchor:_titleBar.centerYAnchor],
         [titleLabel.trailingAnchor constraintLessThanOrEqualToAnchor:closeBtn.leadingAnchor constant:-4],
 
-        [closeBtn.trailingAnchor constraintEqualToAnchor:titleBar.trailingAnchor constant:-6],
-        [closeBtn.centerYAnchor  constraintEqualToAnchor:titleBar.centerYAnchor],
+        [closeBtn.trailingAnchor constraintEqualToAnchor:_titleBar.trailingAnchor constant:-6],
+        [closeBtn.centerYAnchor  constraintEqualToAnchor:_titleBar.centerYAnchor],
         [closeBtn.widthAnchor    constraintEqualToConstant:20],
         [closeBtn.heightAnchor   constraintEqualToConstant:20],
     ]];
@@ -75,7 +77,7 @@
     sep.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:sep];
     [NSLayoutConstraint activateConstraints:@[
-        [sep.topAnchor      constraintEqualToAnchor:titleBar.bottomAnchor],
+        [sep.topAnchor      constraintEqualToAnchor:_titleBar.bottomAnchor],
         [sep.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
         [sep.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
         [sep.heightAnchor   constraintEqualToConstant:1],
@@ -120,6 +122,7 @@
     [[NSNotificationCenter defaultCenter]
         addObserver:self selector:@selector(_themeChanged:)
                name:@"NPPPreferencesChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_darkModeChanged:) name:NPPDarkModeChangedNotification object:nil];
 }
 
 - (void)_applyTheme {
@@ -198,4 +201,8 @@
     }
 }
 
+
+- (void)_darkModeChanged:(NSNotification *)n {
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+}
 @end

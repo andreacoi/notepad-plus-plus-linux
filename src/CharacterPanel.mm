@@ -1,6 +1,7 @@
 #import "CharacterPanel.h"
 #import "NppLocalizer.h"
 #import "StyleConfiguratorWindowController.h"   // NPPStyleStore
+#import "NppThemeManager.h"
 
 // ── HTML data helpers (ported from asciiListView.cpp) ─────────────────────────
 
@@ -236,7 +237,7 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
     NSView *titleBar = _titleBar;
     titleBar.translatesAutoresizingMaskIntoConstraints = NO;
     titleBar.wantsLayer = YES;
-    titleBar.layer.backgroundColor = [NSColor controlBackgroundColor].CGColor;
+    titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
     [self addSubview:titleBar];
 
     _titleLabel = [NSTextField labelWithString:@"ASCII Codes Insertion Panel"];
@@ -342,6 +343,7 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
     [[NSNotificationCenter defaultCenter]
         addObserver:self selector:@selector(_themeChanged:)
                name:@"NPPPreferencesChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_darkModeChanged:) name:NPPDarkModeChangedNotification object:nil];
 }
 
 - (void)_applyTheme {
@@ -357,7 +359,7 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
 
     // Title bar stays system-colored so it's visually distinct
     _titleBar.wantsLayer = YES;
-    _titleBar.layer.backgroundColor = [NSColor controlBackgroundColor].CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
 
     // Drive table appearance (incl. header) from theme brightness
     _tableView.appearance = [NSAppearance appearanceNamed:
@@ -439,6 +441,10 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
 
     if (!str.length) { NSBeep(); return; }
     [_delegate characterPanel:self insertString:str];
+}
+
+- (void)_darkModeChanged:(NSNotification *)n {
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
 }
 
 @end

@@ -2,6 +2,7 @@
 #import "GitHelper.h"
 #import "NppLocalizer.h"
 #import "StyleConfiguratorWindowController.h"
+#import "NppThemeManager.h"
 
 // ── Status item model ─────────────────────────────────────────────────────────
 
@@ -20,6 +21,7 @@
     NSArray<_GitStatusItem *> *_items;
 
     // Title bar
+    NSView               *_titleBar;
     NSTextField          *_titleLabel;
     NSButton             *_browseRepoButton;
     NSButton             *_refreshButton;
@@ -60,6 +62,7 @@ static NSString * const kLastRepoRootKey = @"GitPanelLastRepoRoot";
         [[NSNotificationCenter defaultCenter]
             addObserver:self selector:@selector(_themeChanged:)
                    name:@"NPPPreferencesChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_darkModeChanged:) name:NPPDarkModeChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter]
             addObserver:self selector:@selector(_locChanged:)
                    name:NPPLocalizationChanged object:nil];
@@ -156,17 +159,17 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
     NSFont *monoFont  = [NSFont monospacedSystemFontOfSize:11 weight:NSFontWeightRegular];
 
     // ── Title bar ─────────────────────────────────────────────────────────────
-    NSView *titleBar = [[NSView alloc] init];
-    titleBar.translatesAutoresizingMaskIntoConstraints = NO;
-    titleBar.wantsLayer = YES;
-    titleBar.layer.backgroundColor = [NSColor controlBackgroundColor].CGColor;
+    _titleBar = [[NSView alloc] init];
+    _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
+    _titleBar.wantsLayer = YES;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
 
     _titleLabel = [NSTextField labelWithString:@"Source Control"];
     _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _titleLabel.font = titleFont;
     _titleLabel.textColor = [NSColor labelColor];
     _titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    [titleBar addSubview:_titleLabel];
+    [_titleBar addSubview:_titleLabel];
 
     _refreshButton = _gitPanelBtn(@"funclstReload",          @"icons/standard/panels/toolbar",
                                    @"Refresh",                self, @selector(_refresh:), 10);
@@ -186,19 +189,19 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
     [_closeButton.heightAnchor constraintEqualToConstant:20].active = YES;
 
     for (NSView *v in @[_titleLabel, _browseRepoButton, _refreshButton, _closeButton])
-        [titleBar addSubview:v];
+        [_titleBar addSubview:v];
 
     [NSLayoutConstraint activateConstraints:@[
-        [titleBar.heightAnchor constraintEqualToConstant:26],
-        [_titleLabel.leadingAnchor    constraintEqualToAnchor:titleBar.leadingAnchor constant:6],
-        [_titleLabel.centerYAnchor    constraintEqualToAnchor:titleBar.centerYAnchor],
+        [_titleBar.heightAnchor constraintEqualToConstant:26],
+        [_titleLabel.leadingAnchor    constraintEqualToAnchor:_titleBar.leadingAnchor constant:6],
+        [_titleLabel.centerYAnchor    constraintEqualToAnchor:_titleBar.centerYAnchor],
         [_titleLabel.trailingAnchor   constraintLessThanOrEqualToAnchor:_browseRepoButton.leadingAnchor constant:-4],
         [_browseRepoButton.trailingAnchor constraintEqualToAnchor:_refreshButton.leadingAnchor  constant:-2],
         [_refreshButton.trailingAnchor    constraintEqualToAnchor:_closeButton.leadingAnchor    constant:-4],
-        [_closeButton.trailingAnchor      constraintEqualToAnchor:titleBar.trailingAnchor       constant:-4],
-        [_browseRepoButton.centerYAnchor  constraintEqualToAnchor:titleBar.centerYAnchor],
-        [_refreshButton.centerYAnchor     constraintEqualToAnchor:titleBar.centerYAnchor],
-        [_closeButton.centerYAnchor       constraintEqualToAnchor:titleBar.centerYAnchor],
+        [_closeButton.trailingAnchor      constraintEqualToAnchor:_titleBar.trailingAnchor       constant:-4],
+        [_browseRepoButton.centerYAnchor  constraintEqualToAnchor:_titleBar.centerYAnchor],
+        [_refreshButton.centerYAnchor     constraintEqualToAnchor:_titleBar.centerYAnchor],
+        [_closeButton.centerYAnchor       constraintEqualToAnchor:_titleBar.centerYAnchor],
     ]];
 
     // ── Separator under title ──────────────────────────────────────────────────
@@ -327,17 +330,17 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
     _noRepoLabel.maximumNumberOfLines = 2;
 
     // ── Assemble layout ───────────────────────────────────────────────────────
-    for (NSView *v in @[titleBar, sep0, header, sep1, _scrollView, buttonRow, sep2,
+    for (NSView *v in @[_titleBar, sep0, header, sep1, _scrollView, buttonRow, sep2,
                         _commitField, _commitButton, _noRepoLabel])
         [self addSubview:v];
 
     [NSLayoutConstraint activateConstraints:@[
         // Title bar
-        [titleBar.topAnchor      constraintEqualToAnchor:self.topAnchor],
-        [titleBar.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
-        [titleBar.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+        [_titleBar.topAnchor      constraintEqualToAnchor:self.topAnchor],
+        [_titleBar.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
+        [_titleBar.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
         // Sep0
-        [sep0.topAnchor      constraintEqualToAnchor:titleBar.bottomAnchor],
+        [sep0.topAnchor      constraintEqualToAnchor:_titleBar.bottomAnchor],
         [sep0.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
         [sep0.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
         [sep0.heightAnchor   constraintEqualToConstant:1],
@@ -591,4 +594,8 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
     }
 }
 
+
+- (void)_darkModeChanged:(NSNotification *)n {
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+}
 @end
