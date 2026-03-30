@@ -8,7 +8,7 @@
 // Bar layout: barH = kTabTopGap + inactiveTabH + 1(border).
 // inactiveTabH = barH - kTabTopGap - 1.  activeTabH = inactiveTabH + kActiveBoost.
 // MainWindowController sets the height constraint = barH.
-static const CGFloat kTabTopGap    = 4.0;   // dead space at bar top (gap below toolbar)
+static const CGFloat kTabTopGap    = 5.0;   // dead space at bar top (gap below toolbar)
 static const CGFloat kActiveBoost  = 3.0;   // px active tab is taller than inactive
 static const CGFloat kTabMinWidth  = 80.0;
 static const CGFloat kTabMaxWidth  = 190.0;
@@ -211,7 +211,7 @@ static const CGFloat kPinSize = 11.0; // pin icon drawn at ~80% of original ~14p
     // ── Floppy icon ───────────────────────────────────────────────────────────
     NSImage *icon = _isModified ? toolbarIcon(@"saveFileRed") : toolbarIcon(@"saveFile");
     if (icon) {
-        CGFloat sz  = kIconSize * 0.8;
+        CGFloat sz  = kIconSize * 0.704;
         NSRect  ir  = NSMakeRect(8 + (kIconSize - sz) / 2.0, (h - sz) / 2.0, sz, sz);
         [icon drawInRect:ir fromRect:NSZeroRect
                operation:NSCompositingOperationSourceOver fraction:1.0];
@@ -230,7 +230,7 @@ static const CGFloat kPinSize = 11.0; // pin icon drawn at ~80% of original ~14p
     CGFloat textX = 8 + kIconSize + 4;
     CGFloat rightPad = kCloseSize + 8 + (_isPinned ? kPinSize + 2 : 0);
     CGFloat textW = w - textX - rightPad;
-    CGFloat textY = (h - font.pointSize - 2) / 2.0;
+    CGFloat textY = _isSelected ? 3.0 : 1.5;  // bottom space (active 3.0, inactive 1.5)
     [_title drawInRect:NSMakeRect(textX, textY, textW, font.pointSize + 4)
         withAttributes:attrs];
 
