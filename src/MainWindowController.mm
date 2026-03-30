@@ -1162,6 +1162,9 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     [[NSNotificationCenter defaultCenter]
         addObserver:self selector:@selector(_darkModeChanged:)
                name:NPPDarkModeChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter]
+        addObserver:self selector:@selector(_prefsChanged:)
+               name:@"NPPPreferencesChanged" object:nil];
 
     // ── Horizontal (left/right) split: views | side panels ────────────────────
     _sidePanelHost = [[SidePanelHost alloc] init];
@@ -2946,13 +2949,24 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 #pragma mark - Search menu actions
 
 - (void)showFindPanel:(id)sender {
+    [self _fillFindFieldWithSelectionIfEnabled];
     [_findPanel openForFind];
     [self animateFindPanel];
 }
 
 - (void)showReplacePanel:(id)sender {
+    [self _fillFindFieldWithSelectionIfEnabled];
     [_findPanel openForReplace];
     [self animateFindPanel];
+}
+
+- (void)_fillFindFieldWithSelectionIfEnabled {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:kPrefFillFindWithSelection]) return;
+    EditorView *ed = [self currentEditor];
+    NSString *sel = [ed selectedText];
+    if (sel.length > 0 && sel.length < 1000) {
+        [_findPanel setSearchText:sel];
+    }
 }
 
 - (void)findNext:(id)sender {
@@ -5016,6 +5030,15 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
 // ── Dark mode ────────────────────────────────────────────────────────────────
 
+- (void)_prefsChanged:(NSNotification *)n {
+    // Status bar visibility
+    BOOL showStatus = [[NSUserDefaults standardUserDefaults] boolForKey:kPrefShowStatusBar];
+    _statusBar.hidden = !showStatus;
+
+    // Title bar (full path vs filename only)
+    [self updateTitle];
+}
+
 - (void)_darkModeChanged:(NSNotification *)n {
     // Re-assign CGColor on status bar (snapshot needs refresh)
     _statusBar.layer.backgroundColor = [NppThemeManager shared].statusBarBackground.CGColor;
@@ -5447,7 +5470,14 @@ static int64_t _sysctlInt(const char *name) {
 
 - (void)updateTitle {
     EditorView *ed = [self currentEditor];
-    NSString *name = ed ? ed.displayName : @"Notepad++";
+    NSString *name;
+    if (!ed) {
+        name = @"Notepad++";
+    } else if ([[NSUserDefaults standardUserDefaults] boolForKey:kPrefShowFullPathInTitle] && ed.filePath) {
+        name = ed.filePath;
+    } else {
+        name = ed.displayName;
+    }
     self.window.title = ed.isModified ? [name stringByAppendingString:@" •"] : name;
 }
 

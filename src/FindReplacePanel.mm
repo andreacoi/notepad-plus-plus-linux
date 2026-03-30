@@ -194,6 +194,7 @@ static const CGFloat kHiddenHeight     =  0.0;
 #pragma mark - Property accessors
 
 - (NSString *)currentSearchText { return _findField.stringValue ?: @""; }
+- (void)setSearchText:(NSString *)text { _findField.stringValue = text ?: @""; }
 - (BOOL)currentMatchCase { return _matchCaseBtn.state == NSControlStateValueOn; }
 - (BOOL)currentWholeWord { return _wholeWordBtn.state == NSControlStateValueOn; }
 - (BOOL)currentWrap      { return _wrapBtn.state      == NSControlStateValueOn; }

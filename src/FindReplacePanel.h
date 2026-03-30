@@ -36,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Last search text (empty string if none entered yet).
 @property (nonatomic, readonly) NSString *currentSearchText;
+- (void)setSearchText:(NSString *)text;
 @property (nonatomic, readonly) BOOL currentMatchCase;
 @property (nonatomic, readonly) BOOL currentWholeWord;
 @property (nonatomic, readonly) BOOL currentWrap;

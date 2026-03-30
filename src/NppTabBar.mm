@@ -1,5 +1,6 @@
 #import "NppTabBar.h"
 #import "NppThemeManager.h"
+#import "PreferencesWindowController.h"
 
 @interface NppTabBar (ContextMenu)
 - (NSMenu *)buildTabContextMenu;
@@ -150,7 +151,11 @@ static const CGFloat kPinSize = 11.0; // pin icon drawn at ~80% of original ~14p
     CGFloat tw       = [_title sizeWithAttributes:attrs].width;
     CGFloat closeGap = 4 + kCloseSize + 4;
     CGFloat pinGap   = _isPinned ? (kPinSize + 2) : 0; // pin icon to left of close
-    return MAX(kTabMinWidth, MIN(kTabMaxWidth, 8 + kIconSize + 4 + tw + pinGap + closeGap + 8));
+    NSInteger maxW = [[NSUserDefaults standardUserDefaults] integerForKey:kPrefTabMaxLabelWidth];
+    if (maxW < 80) maxW = 80;
+    BOOL showClose = [[NSUserDefaults standardUserDefaults] boolForKey:kPrefTabCloseButton];
+    if (!showClose) closeGap = 0;
+    return MAX(kTabMinWidth, MIN((CGFloat)maxW, 8 + kIconSize + 4 + tw + pinGap + closeGap + 8));
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
@@ -226,10 +231,11 @@ static const CGFloat kPinSize = 11.0; // pin icon drawn at ~80% of original ~14p
     [_title drawInRect:NSMakeRect(textX, textY, textW, font.pointSize + 4)
         withAttributes:attrs];
 
-    // ── Close button (always present, rightmost) ──────────────────────────────
+    // ── Close button (rightmost, hidden if pref is off) ─────────────────────
+    BOOL showClose = [[NSUserDefaults standardUserDefaults] boolForKey:kPrefTabCloseButton];
     CGFloat cx = w - kCloseSize - 6;
     CGFloat cy = (h - kCloseSize) / 2.0;
-    if (_isSelected || _hovered) {
+    if (showClose && (_isSelected || _hovered)) {
         NSImage *closeImg = nil;
         if (_closeHovered)    closeImg = tabIcon(@"closeTabButton_hoverIn");
         else if (_isSelected) closeImg = tabIcon(@"closeTabButton");
@@ -284,8 +290,14 @@ static const CGFloat kPinSize = 11.0; // pin icon drawn at ~80% of original ~14p
 - (void)mouseDown:(NSEvent *)event {
     NSPoint p  = [self convertPoint:event.locationInWindow fromView:nil];
     CGFloat cx = self.bounds.size.width - kCloseSize - 6;
-    BOOL overClose = (_isSelected || _hovered)
+    BOOL closeVisible = [[NSUserDefaults standardUserDefaults] boolForKey:kPrefTabCloseButton];
+    BOOL overClose = closeVisible && (_isSelected || _hovered)
                      && p.x >= cx && p.x <= cx + kCloseSize;
+    // Double-click anywhere on tab to close (if enabled)
+    if (!overClose && event.clickCount == 2 &&
+        [[NSUserDefaults standardUserDefaults] boolForKey:kPrefDoubleClickTabClose]) {
+        overClose = YES;
+    }
     SEL action = overClose ? _closeAction : _selectAction;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"

@@ -1031,8 +1031,7 @@ static NSColor *nppColorFromHex(NSString *hex) {
     [sci setColorProperty:SCI_STYLESETBACK parameter:STYLE_LINENUMBER
                     value:(bgBrightness > 0.5 ? [NSColor colorWithWhite:0.95 alpha:1.0] : bg)];
 
-    // Caret: thin 1-pixel vertical line
-    [sci message:SCI_SETCARETWIDTH wParam:1];
+    // Caret color (width is set in applyPreferencesFromDefaults)
     [sci message:SCI_SETCARETFORE wParam:sciColor(fg)];
 
     // Current-line highlight background (visibility controlled by prefs)
@@ -1536,6 +1535,111 @@ static int vkToScintillaKey(int vk) {
 
     NSInteger zoomLevel = [ud integerForKey:kPrefZoomLevel];
     [sci message:SCI_SETZOOM wParam:(uptr_t)zoomLevel];
+
+    // ── Caret width (1-3 pixels) ──
+    {
+        NSInteger caretW = [ud integerForKey:kPrefCaretWidth];
+        if (caretW < 1) caretW = 1;
+        if (caretW > 3) caretW = 3;
+        [sci message:SCI_SETCARETWIDTH wParam:(uptr_t)caretW];
+    }
+
+    // ── Virtual space ──
+    [sci message:SCI_SETVIRTUALSPACEOPTIONS
+           wParam:[ud boolForKey:kPrefVirtualSpace] ? 3 : 0]; // SCVS_RECTANGULARSELECTION | SCVS_USERACCESSIBLE
+
+    // ── Scroll beyond last line ──
+    [sci message:SCI_SETENDATLASTLINE wParam:[ud boolForKey:kPrefScrollBeyondLastLine] ? 0 : 1];
+
+    // ── Caret blink rate ──
+    {
+        NSInteger rate = [ud integerForKey:kPrefCaretBlinkRate];
+        if (rate < 0) rate = 0; // 0 = no blink
+        [sci message:SCI_SETCARETPERIOD wParam:(uptr_t)rate];
+    }
+
+    // ── Font quality ──
+    [sci message:SCI_SETFONTQUALITY wParam:(uptr_t)[ud integerForKey:kPrefFontQuality]];
+
+    // ── Show EOL markers ──
+    [sci message:SCI_SETVIEWEOL wParam:[ud boolForKey:kPrefShowEOL] ? 1 : 0];
+
+    // ── Show whitespace ──
+    [sci message:SCI_SETVIEWWS wParam:[ud boolForKey:kPrefShowWhitespace] ? 1 : 0]; // 1=SCWS_VISIBLEALWAYS
+
+    // ── Bookmark margin ──
+    [sci message:SCI_SETMARGINWIDTHN wParam:1 lParam:[ud boolForKey:kPrefShowBookmarkMargin] ? 14 : 0];
+
+    // ── Edge column indicator ──
+    {
+        NSInteger edgeMode = [ud integerForKey:kPrefEdgeMode];
+        NSInteger edgeCol  = [ud integerForKey:kPrefEdgeColumn];
+        [sci message:SCI_SETEDGEMODE   wParam:(uptr_t)edgeMode];
+        [sci message:SCI_SETEDGECOLUMN wParam:(uptr_t)edgeCol];
+        [sci message:SCI_SETEDGECOLOUR wParam:0xCCCCCC]; // light gray edge line
+    }
+
+    // ── Padding ──
+    [sci message:SCI_SETMARGINLEFT  wParam:0 lParam:[ud integerForKey:kPrefPaddingLeft]];
+    [sci message:SCI_SETMARGINRIGHT wParam:0 lParam:[ud integerForKey:kPrefPaddingRight]];
+
+    // ── Line number dynamic width ──
+    if ([ud boolForKey:kPrefShowLineNumbers]) {
+        if ([ud boolForKey:kPrefLineNumDynWidth]) {
+            sptr_t lineCount = [sci message:SCI_GETLINECOUNT];
+            NSString *measure = [NSString stringWithFormat:@"_%ld", (long)lineCount];
+            sptr_t width = [sci message:SCI_TEXTWIDTH wParam:STYLE_LINENUMBER
+                                  lParam:(sptr_t)measure.UTF8String];
+            if (width < 30) width = 30;
+            [sci message:SCI_SETMARGINWIDTHN wParam:0 lParam:width];
+        }
+        // else: fixed 44px already set above
+    }
+
+    // ── Fold margin style ──
+    {
+        NSInteger foldStyle = [ud integerForKey:kPrefFoldStyle];
+        if (foldStyle == 4) {
+            // None — hide fold margin
+            [sci message:SCI_SETMARGINWIDTHN wParam:3 lParam:0];
+        } else {
+            [sci message:SCI_SETMARGINWIDTHN wParam:3 lParam:12];
+            int plus, minus, plusC, minusC, mid, tail, sub;
+            switch (foldStyle) {
+                case 1: // Circle
+                    plus=SC_MARK_CIRCLEPLUS; minus=SC_MARK_CIRCLEMINUS;
+                    plusC=SC_MARK_CIRCLEPLUSCONNECTED; minusC=SC_MARK_CIRCLEMINUSCONNECTED;
+                    mid=SC_MARK_TCORNERCURVE; tail=SC_MARK_LCORNERCURVE; sub=SC_MARK_VLINE;
+                    break;
+                case 2: // Arrow
+                    plus=SC_MARK_ARROWDOWN; minus=SC_MARK_ARROW;
+                    plusC=SC_MARK_ARROWDOWN; minusC=SC_MARK_ARROW;
+                    mid=SC_MARK_EMPTY; tail=SC_MARK_EMPTY; sub=SC_MARK_EMPTY;
+                    break;
+                case 3: // Simple +/-
+                    plus=SC_MARK_PLUS; minus=SC_MARK_MINUS;
+                    plusC=SC_MARK_PLUS; minusC=SC_MARK_MINUS;
+                    mid=SC_MARK_EMPTY; tail=SC_MARK_EMPTY; sub=SC_MARK_EMPTY;
+                    break;
+                default: // 0 = Box (default)
+                    plus=SC_MARK_BOXPLUS; minus=SC_MARK_BOXMINUS;
+                    plusC=SC_MARK_BOXPLUSCONNECTED; minusC=SC_MARK_BOXMINUSCONNECTED;
+                    mid=SC_MARK_TCORNERCURVE; tail=SC_MARK_LCORNERCURVE; sub=SC_MARK_VLINE;
+                    break;
+            }
+            [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDER        lParam:plus];
+            [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDEROPEN    lParam:minus];
+            [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDEREND     lParam:plusC];
+            [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDEROPENMID lParam:minusC];
+            [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERMIDTAIL lParam:mid];
+            [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERTAIL    lParam:tail];
+            [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERSUB     lParam:sub];
+        }
+    }
+
+    // ── Disable text drag-drop ──
+    // Note: SCI_SETMOUSEDWELLTIME can disable drag; we use a simpler approach
+    // by not processing drag events when disabled (handled in Scintilla Cocoa)
 }
 
 - (void)_preferencesChanged:(NSNotification *)note {
@@ -2415,12 +2519,16 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
 
 - (void)updateSmartHighlight {
     ScintillaView *sci = _scintillaView;
-    sptr_t selStart = [sci message:SCI_GETSELECTIONSTART];
-    sptr_t selEnd   = [sci message:SCI_GETSELECTIONEND];
 
     // Always clear first
     [sci message:SCI_SETINDICATORCURRENT wParam:kHighlightIndicator];
     [sci message:SCI_INDICATORCLEARRANGE wParam:0 lParam:[sci message:SCI_GETLENGTH]];
+
+    // Bail if smart highlighting is disabled
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:kPrefSmartHighlight]) return;
+
+    sptr_t selStart = [sci message:SCI_GETSELECTIONSTART];
+    sptr_t selEnd   = [sci message:SCI_GETSELECTIONEND];
 
     NSInteger selLen = selEnd - selStart;
     if (selLen < 2) return;
@@ -2433,7 +2541,14 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
 
     const char *needle = selText.UTF8String;
     NSInteger needleLen = (NSInteger)strlen(needle);
-    [sci message:SCI_SETSEARCHFLAGS wParam:SCFIND_WHOLEWORD | SCFIND_MATCHCASE];
+    {
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        int flags = 0;
+        if ([ud boolForKey:kPrefSmartHiliteCase]) flags |= SCFIND_MATCHCASE;
+        if ([ud boolForKey:kPrefSmartHiliteWord]) flags |= SCFIND_WHOLEWORD;
+        if (!flags) flags = SCFIND_WHOLEWORD | SCFIND_MATCHCASE; // default behavior
+        [sci message:SCI_SETSEARCHFLAGS wParam:(uptr_t)flags];
+    }
 
     sptr_t docLen = [sci message:SCI_GETLENGTH];
     sptr_t pos = 0;
@@ -2558,8 +2673,9 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
 - (void)handleCharAdded:(int)ch {
     ScintillaView *sci = _scintillaView;
 
-    // Auto-close bracket pairs — only when there's no existing selection
-    if ([sci message:SCI_GETSELECTIONSTART] == [sci message:SCI_GETSELECTIONEND]) {
+    // Auto-close bracket pairs — only when enabled and no existing selection
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kPrefAutoCloseBrackets] &&
+        [sci message:SCI_GETSELECTIONSTART] == [sci message:SCI_GETSELECTIONEND]) {
         const char *closeStr = nullptr;
         if      (ch == '(') closeStr = ")";
         else if (ch == '[') closeStr = "]";
@@ -2570,6 +2686,11 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
             [sci message:SCI_INSERTTEXT wParam:(uptr_t)pos lParam:(sptr_t)closeStr];
             [sci message:SCI_GOTOPOS   wParam:(uptr_t)pos];
         }
+    }
+
+    // Function parameters hint: auto-trigger after typing '('
+    if (ch == '(' && [[NSUserDefaults standardUserDefaults] boolForKey:kPrefFuncParamsHint]) {
+        [self triggerFunctionParametersHint:nil];
     }
 
     // Word completion: trigger on word characters when auto-complete is enabled
