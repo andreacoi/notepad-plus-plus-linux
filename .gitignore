@@ -23,3 +23,6 @@ cmake_install.cmake
 Makefile
 *.a
 *.o
+
+# Documentation (local only)
+docs/
