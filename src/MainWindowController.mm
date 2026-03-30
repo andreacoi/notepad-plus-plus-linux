@@ -4973,6 +4973,11 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     [[NSWorkspace sharedWorkspace] openFile:dir];
 }
 
+- (void)openUDLCollection:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:
+        [NSURL URLWithString:@"https://github.com/notepad-plus-plus/userDefinedLanguages"]];
+}
+
 - (void)showCLIHelp:(id)sender {
     NSPanel *panel = [[NSPanel alloc]
         initWithContentRect:NSMakeRect(0, 0, 620, 520)

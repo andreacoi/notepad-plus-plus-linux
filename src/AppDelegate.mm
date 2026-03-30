@@ -10,12 +10,16 @@
 #import "UserDefineLangManager.h"
 #import "EditorView.h"
 
-@implementation AppDelegate
+@implementation AppDelegate {
+    NSMutableArray<NSString *> *_pendingFilePaths;
+    BOOL _didFinishLaunching;
+}
 
 - (instancetype)init {
     self = [super init];
     if (self) {
         _windowControllers = [NSMutableArray array];
+        _pendingFilePaths  = [NSMutableArray array];
     }
     return self;
 }
@@ -137,6 +141,15 @@
 
     if (cli.multiInstance) {
         [self openNewWindow];
+    }
+
+    // ── Mark launch complete and process any pending file-open requests ────
+    _didFinishLaunching = YES;
+    if (_pendingFilePaths.count > 0) {
+        for (NSString *path in _pendingFilePaths) {
+            [self.mainWindowController openFileAtPath:path];
+        }
+        [_pendingFilePaths removeAllObjects];
     }
 
     // ── Background update check (non-blocking, after 5 second delay) ────
@@ -261,17 +274,27 @@
 }
 
 - (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename {
-    // Route to the key window's controller, or primary if no key window
+    if (!_didFinishLaunching) {
+        // App still launching — queue the file for processing after init completes
+        [_pendingFilePaths addObject:filename];
+        return YES;
+    }
     MainWindowController *mwc = [self _activeWindowController];
     [mwc openFileAtPath:filename];
     return YES;
 }
 
 - (void)application:(NSApplication *)sender openFiles:(NSArray<NSString *> *)filenames {
+    if (!_didFinishLaunching) {
+        [_pendingFilePaths addObjectsFromArray:filenames];
+        [sender replyToOpenOrPrint:NSApplicationDelegateReplySuccess];
+        return;
+    }
     MainWindowController *mwc = [self _activeWindowController];
     for (NSString *path in filenames) {
         [mwc openFileAtPath:path];
     }
+    [sender replyToOpenOrPrint:NSApplicationDelegateReplySuccess];
 }
 
 /// Returns the window controller for the key window, or mainWindowController as fallback.

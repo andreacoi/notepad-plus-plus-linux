@@ -168,6 +168,7 @@ static NSMenu *buildLanguageMenu() {
     NSMenu *udlMenu = submenu(@"User Defined Language");
     [udlMenu addItem:item(@"Define your language…", @selector(showDefineLanguage:), @"")];
     [udlMenu addItem:item(@"Open User Defined Language Folder…", @selector(openUDLFolder:), @"")];
+    [udlMenu addItem:item(@"Notepad++ User Defined Languages Collection", @selector(openUDLCollection:), @"")];
     [m addItem:withSubmenu(@"User Defined Language", udlMenu)];
     // Pre-installed Markdown UDLs — use UDL action (not built-in lexer)
     NSMenuItem *mdItem = item(@"Markdown (preinstalled)", @selector(setUDLLanguageFromMenu:), @"");
