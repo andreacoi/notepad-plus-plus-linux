@@ -68,24 +68,96 @@ static NSDictionary<NSString *, NSString *> *languageLexerNameMap() {
     static dispatch_once_t once;
     dispatch_once(&once, ^{
         map = @{
-            @"c"          : @"cpp",
-            @"cpp"        : @"cpp",
-            @"objc"       : @"cpp",
-            @"python"     : @"python",
-            @"javascript" : @"cpp",
-            @"typescript" : @"cpp",
-            @"html"       : @"hypertext",
-            @"xml"        : @"xml",
-            @"css"        : @"css",
-            @"bash"       : @"bash",
-            @"ruby"       : @"ruby",
-            @"swift"      : @"cpp",
-            @"json"       : @"json",
-            @"markdown"   : @"markdown",
-            @"sql"        : @"sql",
-            @"lua"        : @"lua",
-            @"perl"       : @"perl",
-            @"php"        : @"phpscript",
+            // ── C-family (all use "cpp" lexer) ──
+            @"c"            : @"cpp",
+            @"cpp"          : @"cpp",
+            @"objc"         : @"cpp",
+            @"cs"           : @"cpp",        // C#
+            @"java"         : @"cpp",
+            @"javascript"   : @"cpp",
+            @"javascript.js": @"cpp",
+            @"typescript"   : @"cpp",
+            @"swift"        : @"cpp",
+            @"rc"           : @"cpp",        // Resource script
+            @"actionscript" : @"cpp",
+            // ── Web ──
+            @"html"         : @"hypertext",
+            @"asp"          : @"hypertext",
+            @"xml"          : @"xml",
+            @"css"          : @"css",
+            @"json"         : @"json",
+            @"php"          : @"phpscript",
+            // ── Scripting ──
+            @"python"       : @"python",
+            @"ruby"         : @"ruby",
+            @"perl"         : @"perl",
+            @"lua"          : @"lua",
+            @"bash"         : @"bash",
+            @"powershell"   : @"powershell",
+            @"batch"        : @"batch",
+            @"tcl"          : @"tcl",
+            @"r"            : @"r",
+            @"raku"         : @"raku",
+            @"coffeescript"  : @"coffeescript",
+            // ── Systems ──
+            @"rust"         : @"rust",
+            @"go"           : @"cpp",        // Go uses cpp lexer
+            @"d"            : @"d",
+            // ── Markup / Config ──
+            @"markdown"     : @"markdown",
+            @"latex"        : @"latex",
+            @"tex"          : @"tex",
+            @"yaml"         : @"yaml",
+            @"toml"         : @"toml",
+            @"ini"          : @"props",      // INI uses "props" lexer
+            @"props"        : @"props",
+            @"makefile"     : @"makefile",
+            @"cmake"        : @"cmake",
+            @"diff"         : @"diff",
+            @"registry"     : @"registry",
+            @"nsis"         : @"nsis",
+            @"inno"         : @"inno",
+            // ── Database ──
+            @"sql"          : @"sql",
+            @"mssql"        : @"mssql",
+            // ── Scientific / Academic ──
+            @"fortran"      : @"fortran",
+            @"fortran77"    : @"f77",
+            @"pascal"       : @"pascal",
+            @"haskell"      : @"haskell",
+            @"caml"         : @"caml",
+            @"lisp"         : @"lisp",
+            @"scheme"       : @"lisp",       // Scheme uses Lisp lexer
+            @"erlang"       : @"erlang",
+            @"nim"          : @"nim",
+            @"gdscript"     : @"gdscript",
+            @"sas"          : @"sas",
+            // ── Hardware ──
+            @"vhdl"         : @"vhdl",
+            @"verilog"      : @"verilog",
+            @"spice"        : @"spice",
+            @"asm"          : @"asm",
+            // ── Other ──
+            @"ada"          : @"ada",
+            @"cobol"        : @"COBOL",
+            @"vb"           : @"vb",
+            @"autoit"       : @"au3",
+            @"postscript"   : @"ps",
+            @"smalltalk"    : @"smalltalk",
+            @"forth"        : @"forth",
+            @"oscript"      : @"oscript",
+            @"avs"          : @"avs",
+            @"hollywood"    : @"hollywood",
+            @"purebasic"    : @"purebasic",
+            @"freebasic"    : @"freebasic",
+            @"blitzbasic"   : @"blitzbasic",
+            @"kix"          : @"kix",
+            @"matlab"       : @"matlab",
+            @"visualprolog" : @"visualprolog",
+            @"baanc"        : @"baan",
+            @"nncrontab"    : @"nncrontab",
+            @"csound"       : @"csound",
+            @"escript"      : @"escript",
         };
     });
     return map;
@@ -97,25 +169,77 @@ static NSDictionary<NSString *, NSString *> *extensionLanguageMap() {
     static dispatch_once_t once;
     dispatch_once(&once, ^{
         map = @{
-            @"c"    : @"c",     @"h"    : @"c",
-            @"cpp"  : @"cpp",   @"cxx"  : @"cpp",
-            @"cc"   : @"cpp",   @"hpp"  : @"cpp",
-            @"m"    : @"objc",  @"mm"   : @"objc",
-            @"py"   : @"python",
-            @"js"   : @"javascript", @"mjs"  : @"javascript",
-            @"ts"   : @"typescript",
-            @"html" : @"html",  @"htm"  : @"html",
-            @"xml"  : @"xml",
-            @"css"  : @"css",
-            @"sh"   : @"bash",  @"bash" : @"bash", @"zsh" : @"bash",
-            @"rb"   : @"ruby",
+            // C-family
+            @"c"    : @"c",       @"h"    : @"c",
+            @"cpp"  : @"cpp",     @"cxx"  : @"cpp",
+            @"cc"   : @"cpp",     @"hpp"  : @"cpp",  @"hxx" : @"cpp",
+            @"m"    : @"objc",    @"mm"   : @"objc",
+            @"cs"   : @"cs",
+            @"java" : @"java",
+            @"js"   : @"javascript", @"mjs"  : @"javascript", @"jsx" : @"javascript",
+            @"ts"   : @"typescript", @"tsx" : @"typescript",
             @"swift": @"swift",
+            @"rc"   : @"rc",
+            @"as"   : @"actionscript",
+            // Web
+            @"html" : @"html",    @"htm"  : @"html",
+            @"asp"  : @"asp",     @"aspx" : @"asp",
+            @"xml"  : @"xml",     @"xsl"  : @"xml",  @"xslt": @"xml",
+            @"svg"  : @"xml",     @"plist": @"xml",
+            @"css"  : @"css",     @"scss" : @"css",   @"less": @"css",
             @"json" : @"json",
-            @"md"   : @"markdown", @"markdown": @"markdown",
-            @"sql"  : @"sql",
-            @"lua"  : @"lua",
-            @"pl"   : @"perl",  @"pm"   : @"perl",
             @"php"  : @"php",
+            // Scripting
+            @"py"   : @"python",  @"pyw"  : @"python",
+            @"rb"   : @"ruby",    @"rake" : @"ruby",  @"gemspec": @"ruby",
+            @"pl"   : @"perl",    @"pm"   : @"perl",
+            @"lua"  : @"lua",
+            @"sh"   : @"bash",    @"bash" : @"bash",  @"zsh" : @"bash",
+            @"ps1"  : @"powershell", @"psm1": @"powershell",
+            @"bat"  : @"batch",   @"cmd"  : @"batch",
+            @"tcl"  : @"tcl",
+            @"r"    : @"r",       @"R"    : @"r",
+            @"coffee": @"coffeescript",
+            // Systems
+            @"rs"   : @"rust",
+            @"go"   : @"go",
+            @"d"    : @"d",
+            // Markup / Config
+            @"md"   : @"markdown", @"markdown": @"markdown",
+            @"tex"  : @"latex",   @"latex": @"latex",
+            @"yml"  : @"yaml",    @"yaml" : @"yaml",
+            @"toml" : @"toml",
+            @"ini"  : @"ini",     @"cfg"  : @"ini",   @"conf": @"ini",
+            @"properties": @"props",
+            @"makefile": @"makefile", @"mk": @"makefile",
+            @"cmake": @"cmake",
+            @"diff" : @"diff",    @"patch": @"diff",
+            @"reg"  : @"registry",
+            @"nsi"  : @"nsis",    @"nsh"  : @"nsis",
+            @"iss"  : @"inno",
+            // Database
+            @"sql"  : @"sql",
+            // Scientific
+            @"f"    : @"fortran", @"f90"  : @"fortran", @"f95": @"fortran",
+            @"f77"  : @"fortran77",
+            @"pas"  : @"pascal",  @"pp"   : @"pascal",
+            @"hs"   : @"haskell", @"lhs"  : @"haskell",
+            @"ml"   : @"caml",    @"mli"  : @"caml",
+            @"erl"  : @"erlang",
+            @"nim"  : @"nim",
+            @"gd"   : @"gdscript",
+            @"sas"  : @"sas",
+            // Hardware
+            @"vhd"  : @"vhdl",    @"vhdl" : @"vhdl",
+            @"v"    : @"verilog", @"sv"   : @"verilog",
+            @"asm"  : @"asm",     @"s"    : @"asm",
+            // Other
+            @"ada"  : @"ada",     @"adb"  : @"ada",   @"ads": @"ada",
+            @"cob"  : @"cobol",   @"cbl"  : @"cobol",
+            @"vb"   : @"vb",      @"vbs"  : @"vb",    @"bas": @"vb",
+            @"au3"  : @"autoit",
+            @"ps"   : @"postscript", @"eps": @"postscript",
+            @"mat"  : @"matlab",
         };
     });
     return map;
@@ -163,9 +287,6 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     BOOL               _gitGutterEnabled;
 
     // Hex view
-    BOOL               _hexViewMode;
-    NSData            *_hexRawData;       // original file bytes (kept while hex view is active)
-    NSString          *_hexSavedLanguage; // language to restore when leaving hex view
 }
 
 - (instancetype)initWithFrame:(NSRect)frame {
@@ -525,112 +646,7 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
 - (BOOL)monitoringMode { return _monitoringMode; }
 - (void)setMonitoringMode:(BOOL)v { _monitoringMode = v; }
 
-- (BOOL)hexViewMode { return _hexViewMode; }
 
-// ── Hex View ─────────────────────────────────────────────────────────────────
-
-/// Format raw bytes as a standard hex dump:
-///   OFFSET   HH HH HH HH HH HH HH HH  HH HH HH HH HH HH HH HH  |ASCII...........|
-static NSData *_formatHexDump(NSData *data) {
-    const uint8_t *bytes = (const uint8_t *)data.bytes;
-    NSUInteger len = data.length;
-    // Pre-allocate: each 16-byte row produces ~78 chars + newline
-    NSMutableData *out = [NSMutableData dataWithCapacity:(len / 16 + 1) * 80];
-
-    for (NSUInteger offset = 0; offset < len; offset += 16) {
-        char line[128];
-        int pos = 0;
-
-        // Offset (8 hex digits)
-        pos += snprintf(line + pos, sizeof(line) - pos, "%08lX  ", (unsigned long)offset);
-
-        // Hex bytes: two groups of 8, separated by extra space
-        for (int i = 0; i < 16; i++) {
-            if (i == 8) line[pos++] = ' ';  // extra space between groups
-            if (offset + i < len)
-                pos += snprintf(line + pos, sizeof(line) - pos, "%02X ", bytes[offset + i]);
-            else
-                pos += snprintf(line + pos, sizeof(line) - pos, "   ");
-        }
-
-        // ASCII column
-        line[pos++] = ' ';
-        line[pos++] = '|';
-        for (int i = 0; i < 16; i++) {
-            if (offset + i < len) {
-                uint8_t c = bytes[offset + i];
-                line[pos++] = (c >= 0x20 && c <= 0x7E) ? (char)c : '.';
-            } else {
-                line[pos++] = ' ';
-            }
-        }
-        line[pos++] = '|';
-        line[pos++] = '\n';
-
-        [out appendBytes:line length:pos];
-    }
-    return out;
-}
-
-- (void)toggleHexView:(id)sender {
-    if (_hexViewMode) {
-        // ── Exit hex view: reload original file ──────────────────────────────
-        _hexViewMode = NO;
-        _hexRawData = nil;
-        [_scintillaView message:SCI_SETREADONLY wParam:0 lParam:0];
-
-        if (_filePath) {
-            NSError *err = nil;
-            [self loadFileAtPath:_filePath error:&err];
-        }
-        if (_hexSavedLanguage)
-            [self setLanguage:_hexSavedLanguage];
-        _hexSavedLanguage = nil;
-    } else {
-        // ── Enter hex view ───────────────────────────────────────────────────
-        // Read raw bytes from disk (or use current editor content for untitled)
-        NSData *rawData = nil;
-        if (_filePath) {
-            rawData = [NSData dataWithContentsOfFile:_filePath];
-        }
-        if (!rawData) {
-            // Untitled or missing file: grab current content from Scintilla
-            sptr_t len = [_scintillaView message:SCI_GETLENGTH wParam:0 lParam:0];
-            if (len > 0) {
-                char *buf = (char *)malloc(len);
-                [_scintillaView message:SCI_GETTEXT wParam:len + 1 lParam:(sptr_t)buf];
-                rawData = [NSData dataWithBytesNoCopy:buf length:len freeWhenDone:YES];
-            } else {
-                rawData = [NSData data];
-            }
-        }
-
-        _hexRawData = rawData;
-        _hexSavedLanguage = [_currentLanguage copy];
-        _hexViewMode = YES;
-
-        // Format as hex dump
-        NSData *hexDump = _formatHexDump(rawData);
-
-        // Load formatted hex into Scintilla
-        [_scintillaView message:SCI_SETREADONLY wParam:0 lParam:0];
-        [_scintillaView message:SCI_CLEARALL wParam:0 lParam:0];
-        [_scintillaView message:SCI_ADDTEXT
-                         wParam:(uptr_t)hexDump.length
-                         lParam:(sptr_t)hexDump.bytes];
-
-        // Set monospace font and plain text mode for clean hex display
-        [self setLanguage:@""];
-        const char *monoFont = "Menlo";
-        [_scintillaView message:SCI_STYLESETFONT wParam:STYLE_DEFAULT lParam:(sptr_t)monoFont];
-        [_scintillaView message:SCI_STYLESETSIZE wParam:STYLE_DEFAULT lParam:12];
-        [_scintillaView message:SCI_STYLECLEARALL wParam:0 lParam:0];
-
-        // Make read-only
-        [_scintillaView message:SCI_SETREADONLY wParam:1 lParam:0];
-        [_scintillaView message:SCI_GOTOPOS wParam:0 lParam:0];
-    }
-}
 
 /// Called every second by _fileMonitorTimer.
 /// Compares the file's current mtime against _lastKnownModDate.
@@ -682,9 +698,16 @@ static NSData *_formatHexDump(NSData *data) {
 - (void)setLanguage:(NSString *)languageName {
     _currentLanguage = [languageName copy];
 
+    // Reset all styles to STYLE_DEFAULT before switching language.
+    // This prevents stale styles from a previous language from bleeding through.
+    // Matches Windows NPP's defineDocType() which calls SCI_STYLECLEARALL first.
+    [_scintillaView message:SCI_STYLECLEARALL];
+
     if (!languageName.length) {
-        // Plain text — null lexer
+        // Plain text — null lexer, all text rendered in STYLE_DEFAULT
         [_scintillaView message:(unsigned int)Scintilla::Message::SetILexer wParam:0 lParam:0];
+        sptr_t docLen = [_scintillaView message:SCI_GETLENGTH];
+        if (docLen > 0) [_scintillaView message:SCI_COLOURISE wParam:0 lParam:docLen];
         return;
     }
 
@@ -705,19 +728,22 @@ static NSData *_formatHexDump(NSData *data) {
     [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.compact" lParam:(sptr_t)"0"];
 
     NSString *lang = languageName.lowercaseString;
-    if ([lang isEqualToString:@"c"]   || [lang isEqualToString:@"cpp"] ||
-        [lang isEqualToString:@"objc"]|| [lang isEqualToString:@"javascript"] ||
-        [lang isEqualToString:@"typescript"] || [lang isEqualToString:@"swift"]) {
+    // C-family languages (brace-based folding)
+    NSSet *cFamily = [NSSet setWithArray:@[@"c", @"cpp", @"objc", @"cs", @"java",
+        @"javascript", @"javascript.js", @"typescript", @"swift", @"go", @"rust",
+        @"d", @"actionscript", @"rc"]];
+    if ([cFamily containsObject:lang]) {
         [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.comment"      lParam:(sptr_t)"1"];
         [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.preprocessor" lParam:(sptr_t)"1"];
-    } else if ([lang isEqualToString:@"html"] || [lang isEqualToString:@"xml"]) {
+    } else if ([lang isEqualToString:@"html"] || [lang isEqualToString:@"xml"] ||
+               [lang isEqualToString:@"asp"]) {
         [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.html"               lParam:(sptr_t)"1"];
         [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.html.preprocessor"  lParam:(sptr_t)"1"];
     } else if ([lang isEqualToString:@"python"]) {
         [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.quotes.python" lParam:(sptr_t)"1"];
     } else if ([lang isEqualToString:@"lua"]) {
         [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.comment.lua" lParam:(sptr_t)"1"];
-    } else if ([lang isEqualToString:@"sql"]) {
+    } else if ([lang isEqualToString:@"sql"] || [lang isEqualToString:@"mssql"]) {
         [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.comment" lParam:(sptr_t)"1"];
         [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.sql.only.begin" lParam:(sptr_t)"1"];
     }
@@ -2377,10 +2403,22 @@ static const unsigned int kSCI_SetRectSelAnchor          = 2590;
 #pragma mark - Navigation
 
 - (void)goToLineNumber:(NSInteger)lineNumber {
-    NSInteger total = [_scintillaView message:SCI_GETLINECOUNT];
+    ScintillaView *sci = _scintillaView;
+    NSInteger total = [sci message:SCI_GETLINECOUNT];
     lineNumber = MAX(1, MIN(lineNumber, total));
-    [_scintillaView message:SCI_GOTOLINE wParam:(uptr_t)(lineNumber - 1)];
-    [_scintillaView message:SCI_SCROLLCARET];
+    sptr_t line0 = lineNumber - 1;
+
+    // Center the target line vertically on screen
+    sptr_t linesOnScreen = [sci message:SCI_LINESONSCREEN];
+    sptr_t topLine = line0 - linesOnScreen / 2;
+    if (topLine < 0) topLine = 0;
+    [sci message:SCI_SETFIRSTVISIBLELINE wParam:(uptr_t)topLine];
+
+    // Select the entire line (highlight it)
+    sptr_t lineStart = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)line0];
+    sptr_t lineEnd   = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)line0];
+    [sci message:SCI_SETSEL wParam:(uptr_t)lineStart lParam:lineEnd];
+    [sci message:SCI_SCROLLCARET];
 }
 
 #pragma mark - Change History Navigation

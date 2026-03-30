@@ -2799,11 +2799,6 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         [(NSMenuItem *)item setState:(hasFile && ed.monitoringMode) ? NSControlStateValueOn : NSControlStateValueOff];
         return hasFile;
     }
-    // Hex View checkmark
-    if (action == @selector(toggleHexView:)) {
-        [(NSMenuItem *)item setState:(ed && ed.hexViewMode) ? NSControlStateValueOn : NSControlStateValueOff];
-        return ed != nil;
-    }
     if (action == @selector(showSummary:))       return ed != nil;
     if (action == @selector(focusOnAnotherView:)) return (vHasTabs || hHasTabs);
     if (action == @selector(setTextDirectionRTL:) ||
@@ -2941,6 +2936,36 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
             [(NSMenuItem *)item setState:[encName isEqualToString:match] ? NSControlStateValueOn : NSControlStateValueOff];
             return ed != nil;
         }
+    }
+
+    // ── Language menu checkmark ──
+    if (action == @selector(setLanguageFromMenu:)) {
+        NSString *langCode = [(NSMenuItem *)item representedObject];
+        NSString *current  = ed.currentLanguage ?: @"";
+        BOOL match = [current isEqualToString:langCode];
+        [(NSMenuItem *)item setState:match ? NSControlStateValueOn : NSControlStateValueOff];
+        // Propagate checkmark to parent letter submenu (A, B, C, etc.)
+        NSMenu *parentMenu = [(NSMenuItem *)item menu];
+        NSMenu *grandparent = parentMenu.supermenu;
+        if (grandparent) {
+            NSInteger idx = [grandparent indexOfItemWithSubmenu:parentMenu];
+            if (idx >= 0) {
+                // Check if ANY sibling in this letter submenu is checked
+                BOOL anyChecked = NO;
+                for (NSMenuItem *sibling in parentMenu.itemArray) {
+                    if (sibling.state == NSControlStateValueOn) { anyChecked = YES; break; }
+                }
+                [[grandparent itemAtIndex:idx] setState:anyChecked ? NSControlStateValueOn : NSControlStateValueOff];
+            }
+        }
+        return YES;
+    }
+    if (action == @selector(setUDLLanguageFromMenu:)) {
+        NSString *udlName = [(NSMenuItem *)item representedObject];
+        NSString *current = ed.currentLanguage ?: @"";
+        [(NSMenuItem *)item setState:[current isEqualToString:udlName]
+            ? NSControlStateValueOn : NSControlStateValueOff];
+        return YES;
     }
 
     return YES;
@@ -3492,12 +3517,6 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
 // ── Hex View ─────────────────────────────────────────────────────────────────
 
-- (void)toggleHexView:(id)sender {
-    EditorView *ed = [self currentEditor];
-    if (!ed) return;
-    [ed toggleHexView:sender];
-}
-
 #pragma mark - Not Yet Implemented
 
 /// Hide the primary tab bar (for -notabbar CLI flag).
@@ -3925,6 +3944,9 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     NSString *lang = [sender representedObject] ?: @"";
     [[self currentEditor] setLanguage:lang];
     [self updateStatusBar];
+    // Refresh Function List if it's open
+    if (_funcListPanel && [_sidePanelHost hasPanel:_funcListPanel])
+        [_funcListPanel loadEditor:[self currentEditor]];
 }
 
 /// Apply a User Defined Language from the Language menu.
@@ -5319,7 +5341,6 @@ static int64_t _sysctlInt(const char *name) {
             [ed.scintillaView message:SCI_GETREADONLY] ? @"YES" : @"NO"];
         [info appendFormat:@"Word Wrap: %@\n", ed.wordWrapEnabled ? @"ON" : @"OFF"];
         [info appendFormat:@"Monitoring: %@\n", ed.monitoringMode ? @"ON" : @"OFF"];
-        [info appendFormat:@"Hex View: %@\n", ed.hexViewMode ? @"ON" : @"OFF"];
         sptr_t docLen = [ed.scintillaView message:SCI_GETLENGTH];
         [info appendFormat:@"Document length: %ld bytes\n", (long)docLen];
         [info appendFormat:@"Line count: %ld\n", (long)ed.lineCount];
@@ -5481,13 +5502,106 @@ static int64_t _sysctlInt(const char *name) {
     self.window.title = ed.isModified ? [name stringByAppendingString:@" •"] : name;
 }
 
+/// Language display name mapping matching Windows NPP _langNameInfoArray._longName
+static NSString *languageDisplayName(NSString *langCode) {
+    if (!langCode.length) return @"Normal text file";
+    static NSDictionary *map;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        map = @{
+            @"c"            : @"C source file",
+            @"cpp"          : @"C++ source file",
+            @"cs"           : @"C# source file",
+            @"objc"         : @"Objective-C source file",
+            @"java"         : @"Java source file",
+            @"javascript"   : @"JavaScript file",
+            @"javascript.js": @"JavaScript file",
+            @"typescript"   : @"TypeScript file",
+            @"swift"        : @"Swift file",
+            @"go"           : @"Go source file",
+            @"rust"         : @"Rust file",
+            @"d"            : @"D programming language",
+            @"rc"           : @"Windows Resource file",
+            @"actionscript" : @"Flash ActionScript file",
+            @"html"         : @"Hyper Text Markup Language file",
+            @"asp"          : @"Active Server Pages script file",
+            @"xml"          : @"eXtensible Markup Language file",
+            @"css"          : @"Cascade Style Sheets File",
+            @"json"         : @"JSON file",
+            @"php"          : @"PHP Hypertext Preprocessor file",
+            @"python"       : @"Python file",
+            @"ruby"         : @"Ruby file",
+            @"perl"         : @"Perl source file",
+            @"lua"          : @"Lua source File",
+            @"bash"         : @"Unix script file",
+            @"powershell"   : @"Windows PowerShell",
+            @"batch"        : @"Batch file",
+            @"tcl"          : @"Tool Command Language file",
+            @"r"            : @"R programming language",
+            @"raku"         : @"Raku source file",
+            @"coffeescript"  : @"CoffeeScript file",
+            @"markdown"     : @"Markdown file",
+            @"latex"        : @"LaTeX file",
+            @"tex"          : @"TeX file",
+            @"yaml"         : @"YAML Ain't Markup Language",
+            @"toml"         : @"Tom's Obvious Minimal Language file",
+            @"ini"          : @"MS ini file",
+            @"props"        : @"Properties file",
+            @"makefile"     : @"Makefile",
+            @"cmake"        : @"CMake file",
+            @"diff"         : @"Diff file",
+            @"registry"     : @"Registry file",
+            @"nsis"         : @"Nullsoft Scriptable Install System script file",
+            @"inno"         : @"Inno Setup script",
+            @"sql"          : @"Structured Query Language file",
+            @"mssql"        : @"Microsoft Transact-SQL file",
+            @"fortran"      : @"Fortran free form source file",
+            @"fortran77"    : @"Fortran fixed form source file",
+            @"pascal"       : @"Pascal source file",
+            @"haskell"      : @"Haskell",
+            @"caml"         : @"Categorical Abstract Machine Language",
+            @"lisp"         : @"List Processing language file",
+            @"scheme"       : @"Scheme file",
+            @"erlang"       : @"Erlang file",
+            @"nim"          : @"Nim file",
+            @"gdscript"     : @"GDScript file",
+            @"sas"          : @"SAS file",
+            @"matlab"       : @"MATrix LABoratory",
+            @"vhdl"         : @"VHSIC Hardware Description Language file",
+            @"verilog"      : @"Verilog file",
+            @"spice"        : @"Spice file",
+            @"asm"          : @"Assembly language source file",
+            @"ada"          : @"Ada file",
+            @"cobol"        : @"COmmon Business Oriented Language",
+            @"vb"           : @"Visual Basic file",
+            @"autoit"       : @"AutoIt",
+            @"postscript"   : @"PostScript file",
+            @"smalltalk"    : @"Smalltalk file",
+            @"forth"        : @"Forth file",
+            @"oscript"      : @"OScript source file",
+            @"avs"          : @"AviSynth scripts files",
+            @"hollywood"    : @"Hollywood script",
+            @"purebasic"    : @"PureBasic file",
+            @"freebasic"    : @"FreeBasic file",
+            @"blitzbasic"   : @"BlitzBasic file",
+            @"kix"          : @"KiXtart file",
+            @"visualprolog" : @"Visual Prolog file",
+            @"baanc"        : @"BaanC File",
+            @"nncrontab"    : @"Extended crontab file",
+            @"csound"       : @"Csound file",
+            @"escript"      : @"ESCRIPT file",
+        };
+    });
+    return map[langCode.lowercaseString] ?: langCode;
+}
+
 - (void)updateStatusBar {
     EditorView *ed = [self currentEditor];
     if (!ed) { _statusLeft.stringValue = _statusRight.stringValue = @""; return; }
     sptr_t docLength = [ed.scintillaView message:SCI_GETLENGTH wParam:0 lParam:0];
     _statusLeft.stringValue  = [NSString stringWithFormat:@"Ln %ld, Col %ld  |  Length: %ld  |  Lines: %ld",
                                  (long)ed.cursorLine, (long)ed.cursorColumn, (long)docLength, (long)ed.lineCount];
-    NSString *lang = ed.currentLanguage.length ? ed.currentLanguage : @"Plain Text";
+    NSString *lang = languageDisplayName(ed.currentLanguage);
     NSString *mode = ed.isOverwriteMode ? @"OVR" : @"INS";
     _statusRight.stringValue = [NSString stringWithFormat:@"%@  |  %@  |  %@  |  %@",
                                  lang, ed.encodingName, ed.eolName, mode];

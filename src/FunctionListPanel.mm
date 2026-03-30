@@ -207,8 +207,6 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
     _outlineView.allowsMultipleSelection = NO;
     _outlineView.dataSource = self;
     _outlineView.delegate = self;
-    _outlineView.target = self;
-    _outlineView.action = @selector(_outlineClicked:);
     _outlineView.autoresizesOutlineColumn = YES;
 
     NSTableColumn *col = [[NSTableColumn alloc] initWithIdentifier:@"func"];
@@ -351,7 +349,8 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
     NSMutableArray<_FuncItem *> *classNodes = [NSMutableArray array];
 
     NSString *classPattern = nil;
-    if ([@[@"c", @"cpp", @"objc", @"swift", @"java", @"csharp", @"typescript"] containsObject:lang]) {
+    if ([@[@"c", @"cpp", @"objc", @"swift", @"java", @"cs", @"typescript", @"javascript",
+           @"javascript.js", @"go", @"d", @"rust", @"kotlin"] containsObject:lang]) {
         classPattern = @"(?m)^[ \\t]*(?:public\\s+|private\\s+|protected\\s+|internal\\s+|abstract\\s+|final\\s+|static\\s+)*"
                        @"(?:class|struct|protocol|interface|enum)\\s+(\\w+)";
     } else if ([lang isEqualToString:@"python"]) {
@@ -404,16 +403,26 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
 
     [funcRE enumerateMatchesInString:text options:0 range:NSMakeRange(0, text.length)
                           usingBlock:^(NSTextCheckingResult *m, NSMatchingFlags f, BOOL *stop) {
+        // Try capture group 1, fall back to group 2 (for patterns with alternation)
         NSRange nameR = [m rangeAtIndex:1];
+        if (nameR.location == NSNotFound && m.numberOfRanges > 2)
+            nameR = [m rangeAtIndex:2];
         if (nameR.location == NSNotFound) return;
         NSString *name = [text substringWithRange:nameR];
+
+        // Truncate long names (e.g. full XML tags) and collapse whitespace
+        if (name.length > 50) name = [[name substringToIndex:50] stringByAppendingString:@"…"];
+        name = [[name componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]]
+                componentsJoinedByString:@" "];
 
         // Dedup by name + position
         NSString *key = [NSString stringWithFormat:@"%@_%lu", name, (unsigned long)m.range.location];
         if ([addedNames containsObject:key]) return;
         [addedNames addObject:key];
 
-        NSUInteger pos = m.range.location;
+        // Use the position of the captured NAME (not the full match start)
+        // to get the exact line the function name appears on
+        NSUInteger pos = nameR.location;
         NSInteger line = [self _lineForPos:pos inText:text];
 
         _FuncItem *leaf = [[_FuncItem alloc] initWithName:name line:line pos:(NSInteger)pos isNode:NO];
@@ -459,19 +468,24 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
         return @"(?m)^[ \\t]*def\\s+(\\w+)";
     if ([lang isEqualToString:@"bash"])
         return @"(?m)^[ \\t]*(\\w+)\\s*\\(\\s*\\)";
-    if ([@[@"javascript", @"typescript"] containsObject:lang]) {
-        // Matches: function foo(, async foo(, foo: function(, foo = function(, foo( ...{
+    if ([@[@"javascript", @"javascript.js", @"typescript"] containsObject:lang]) {
         return @"(?m)(?:function\\s+(\\w+)\\s*\\(|(?:async\\s+)?(\\w+)\\s*\\([^)]*\\)\\s*[:{])";
     }
-    if ([@[@"c", @"cpp", @"objc", @"swift", @"java", @"csharp"] containsObject:lang]) {
-        return @"(?m)^[\\t ]*(?:[\\w\\*<>\\[\\],\\s]+\\s+)(\\w+)\\s*\\([^;]*\\)\\s*(?:\\{|->|throws|where)";
+    // Swift: func keyword required
+    if ([lang isEqualToString:@"swift"]) {
+        return @"(?m)^[ \\t]*(?:@\\w+\\s+)*(?:(?:public|private|internal|fileprivate|open|static|class|override|mutating|final)\\s+)*func\\s+(\\w+)";
+    }
+    // C/C++/ObjC/Java/C#: return-type + name + params + opening brace
+    if ([@[@"c", @"cpp", @"objc", @"java", @"cs", @"go", @"d", @"actionscript", @"rc"] containsObject:lang]) {
+        // [^)]* matches until closing paren (NOT [^;]* which crosses function boundaries)
+        return @"(?m)^[\\t ]*(?:[\\w\\*<>\\[\\],&:\\s]+\\s+)(\\w+)\\s*\\([^)]*\\)\\s*(?:const\\s*)?(?:override\\s*)?(?:noexcept\\s*)?\\{";
     }
     if ([lang isEqualToString:@"php"])
         return @"(?m)^[ \\t]*(?:public\\s+|private\\s+|protected\\s+|static\\s+)*function\\s+(\\w+)\\s*\\(";
     if ([lang isEqualToString:@"go"])
         return @"(?m)^func\\s+(?:\\([^)]+\\)\\s+)?(\\w+)\\s*\\(";
     if ([lang isEqualToString:@"rust"])
-        return @"(?m)^\\s*(?:pub\\s+)?(?:async\\s+)?fn\\s+(\\w+)";
+        return @"(?m)^\\s*(?:pub(?:\\([^)]*\\))?\\s+)?(?:async\\s+)?fn\\s+(\\w+)";
     if ([lang isEqualToString:@"lua"])
         return @"(?m)(?:function\\s+(\\w[\\w.:]*)\\s*\\(|local\\s+function\\s+(\\w+)\\s*\\()";
     if ([lang isEqualToString:@"perl"])
@@ -480,8 +494,54 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
         return @"(?m)^(\\w+)\\s+::";
     if ([lang isEqualToString:@"r"])
         return @"(?m)(\\w+)\\s*<-\\s*function\\s*\\(";
-    // Generic: C-style function definitions
-    return @"(?m)^[\\t ]*[\\w\\*]+(?:[\\s\\*]+)(\\w+)\\s*\\([^;]*\\)\\s*\\{";
+    if ([lang isEqualToString:@"powershell"])
+        return @"(?m)^\\s*function\\s+(\\w[\\w-]*)";
+    if ([lang isEqualToString:@"pascal"])
+        return @"(?m)^\\s*(?:procedure|function)\\s+(\\w+)";
+    if ([@[@"fortran", @"fortran77"] containsObject:lang])
+        return @"(?mi)^\\s*(?:(?:integer|real|double\\s+precision|complex|logical|character|subroutine|function|program)\\s+)(\\w+)";
+    if ([lang isEqualToString:@"ada"])
+        return @"(?m)^\\s*(?:procedure|function)\\s+(\\w+)";
+    if ([lang isEqualToString:@"vb"])
+        return @"(?mi)^\\s*(?:public\\s+|private\\s+|friend\\s+)?(?:sub|function|property)\\s+(\\w+)";
+    if ([lang isEqualToString:@"sql"] || [lang isEqualToString:@"mssql"])
+        return @"(?mi)^\\s*create\\s+(?:or\\s+replace\\s+)?(?:function|procedure|trigger)\\s+(\\w+)";
+    if ([lang isEqualToString:@"latex"])
+        return @"(?m)\\\\(?:section|subsection|subsubsection|chapter|part)\\{([^}]+)\\}";
+    if ([lang isEqualToString:@"makefile"])
+        return @"(?m)^([\\w][\\w.-]*)\\s*:";
+    if ([lang isEqualToString:@"cmake"])
+        return @"(?mi)^\\s*(?:function|macro)\\s*\\(\\s*(\\w+)";
+    if ([lang isEqualToString:@"nim"])
+        return @"(?m)^\\s*(?:proc|func|method|iterator|template|macro)\\s+(\\w+)";
+    if ([lang isEqualToString:@"erlang"])
+        return @"(?m)^(\\w+)\\s*\\(";
+    if ([lang isEqualToString:@"asm"])
+        return @"(?m)^(\\w+):";
+    if ([lang isEqualToString:@"vhdl"])
+        return @"(?mi)^\\s*(?:procedure|function)\\s+(\\w+)";
+    if ([lang isEqualToString:@"verilog"])
+        return @"(?m)^\\s*(?:module|task|function)\\s+(\\w+)";
+    if ([lang isEqualToString:@"css"])
+        return @"(?m)^([.#]?[\\w][\\w.#>~+\\-\\s,:]*)\\s*\\{";
+    if ([lang isEqualToString:@"ini"] || [lang isEqualToString:@"props"])
+        return @"(?m)^\\[([^\\]]+)\\]";
+    if ([lang isEqualToString:@"yaml"])
+        return @"(?m)^(\\w[\\w-]*)\\s*:";
+    if ([lang isEqualToString:@"toml"])
+        return @"(?m)^\\[([^\\]]+)\\]";
+    if ([lang isEqualToString:@"batch"])
+        return @"(?mi)^\\s*:(\\w+)";
+    if ([lang isEqualToString:@"coffeescript"])
+        return @"(?m)^\\s*(\\w+)\\s*[=:]\\s*(?:\\([^)]*\\))?\\s*[-=]>";
+    // XML/HTML: capture full opening tag (truncated to 50 chars in display)
+    if ([lang isEqualToString:@"xml"] || [lang isEqualToString:@"html"] || [lang isEqualToString:@"asp"])
+        return @"(?m)(<\\w+(?:\\s+[\\w:-]+\\s*=\\s*\"[^\"]*\")*\\s*/?>)";
+    // JSON: top-level keys
+    if ([lang isEqualToString:@"json"])
+        return @"(?m)^\\s*\"(\\w[\\w\\s]*)\"\\s*:";
+    // Generic fallback: C-style function definitions
+    return @"(?m)^[\\t ]*[\\w\\*]+(?:[\\s\\*]+)(\\w+)\\s*\\([^)]*\\)\\s*\\{";
 }
 
 #pragma mark - Helpers
@@ -637,15 +697,26 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
 
 #pragma mark - Click handler
 
-- (void)_outlineClicked:(id)sender {
-    _FuncItem *fi = [_outlineView itemAtRow:_outlineView.clickedRow];
+- (void)outlineViewSelectionDidChange:(NSNotification *)n {
+    NSInteger row = _outlineView.selectedRow;
+    if (row < 0) return;
+    _FuncItem *fi = [_outlineView itemAtRow:row];
     if (!fi) return;
     EditorView *ed = _editor;
     if (!ed) return;
 
-    // Navigate to the function's line
-    [ed goToLineNumber:fi.line];
-    [ed.window makeFirstResponder:ed.scintillaView];
+    NSInteger line = fi.line;
+    // Give focus to Scintilla's inner content view (SCIContentView), then navigate.
+    // Must target the content view — not ScintillaView itself — for selection to render.
+    NSView *contentView = [ed.scintillaView content];
+    [ed.window makeFirstResponder:contentView];
+
+    // Use performSelector with delay so the focus change fully settles
+    // before we set the selection (otherwise the focus-in event clears it).
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)),
+                   dispatch_get_main_queue(), ^{
+        [ed goToLineNumber:line];
+    });
 }
 
 

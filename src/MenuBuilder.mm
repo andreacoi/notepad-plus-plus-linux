@@ -727,7 +727,6 @@ static NSMenu *buildLanguageMenu() {
     [viewMenu addItem:item(@"Text Direction LTR",    @selector(setTextDirectionLTR:), @"")];
     addSep(viewMenu);
     [viewMenu addItem:item(@"Monitoring (tail -f)", @selector(toggleMonitoring:),    @"")];
-    [viewMenu addItem:item(@"Hex View",             @selector(toggleHexView:),       @"")];
 
     // ── Encoding ──────────────────────────────────────────────────────────────
     NSMenuItem *encItem = [[NSMenuItem alloc] init];
