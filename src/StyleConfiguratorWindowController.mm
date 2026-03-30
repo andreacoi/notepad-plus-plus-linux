@@ -489,7 +489,7 @@ static NSString *modelLexerID(NSString *themeID) {
     const CGFloat pad = 16;
 
     // Theme row
-    CGFloat y = H - 20;
+    CGFloat y = H - 30;
     NSTextField *themeLbl = [self _label:@"Select theme:"];
     themeLbl.frame = NSMakeRect(W - pad - 250 - 110, y - 3, 110, 20);
     [cv addSubview:themeLbl];
