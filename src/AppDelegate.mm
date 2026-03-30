@@ -138,6 +138,12 @@
     if (cli.multiInstance) {
         [self openNewWindow];
     }
+
+    // ── Background update check (non-blocking, after 5 second delay) ────
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)),
+                   dispatch_get_main_queue(), ^{
+        [self checkForUpdateUserInitiated:NO];
+    });
 }
 
 // ── New Window ──────────────────────────────────────────────────────────────
@@ -490,6 +496,133 @@
 
     [about addButtonWithTitle:@"OK"];
     [about runModal];
+}
+
+// ── Update check (GitHub Releases API) ──────────────────────────────────────
+
+static NSString *const kGitHubReleasesAPI = @"https://api.github.com/repos/nppmss/notepad-plus-plus-macos/releases/latest";
+static NSString *const kUpdateMenuItemTag = @"checkForUpdatesMenuItem";
+
+/// Find the "Check for Updates..." menu item in the app menu.
+- (nullable NSMenuItem *)_updateMenuItem {
+    NSMenu *appMenu = [NSApp mainMenu].itemArray.firstObject.submenu;
+    for (NSMenuItem *mi in appMenu.itemArray) {
+        if (mi.action == @selector(checkForUpdates:)) return mi;
+    }
+    return nil;
+}
+
+- (void)checkForUpdates:(id)sender {
+    [self checkForUpdateUserInitiated:YES];
+}
+
+- (void)checkForUpdateUserInitiated:(BOOL)userInitiated {
+    NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ?: @"0.0.0";
+
+    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:kGitHubReleasesAPI]];
+    [req setValue:@"application/vnd.github+json" forHTTPHeaderField:@"Accept"];
+    [req setValue:@"notepad-plus-plus-macos" forHTTPHeaderField:@"User-Agent"];
+    req.timeoutInterval = 15.0;
+
+    NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:req
+        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error || !data) {
+                if (userInitiated) {
+                    NSAlert *a = [[NSAlert alloc] init];
+                    a.messageText = @"Unable to Check for Updates";
+                    a.informativeText = error.localizedDescription ?: @"No response from server.";
+                    [a runModal];
+                }
+                return;
+            }
+
+            NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+            if (statusCode != 200) {
+                if (userInitiated) {
+                    NSAlert *a = [[NSAlert alloc] init];
+                    a.messageText = @"Unable to Check for Updates";
+                    a.informativeText = [NSString stringWithFormat:
+                        @"Server returned status %ld. The repository may be private.", (long)statusCode];
+                    [a runModal];
+                }
+                return;
+            }
+
+            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            if (!json) return;
+
+            NSString *tagName = json[@"tag_name"]; // e.g. "v1.1.0"
+            if (!tagName.length) return;
+
+            // Strip leading 'v' if present
+            NSString *latestVersion = tagName;
+            if ([latestVersion hasPrefix:@"v"])
+                latestVersion = [latestVersion substringFromIndex:1];
+
+            NSComparisonResult cmp = [latestVersion compare:currentVersion options:NSNumericSearch];
+
+            if (cmp == NSOrderedDescending) {
+                // Update available — badge the menu item
+                NSMenuItem *mi = [self _updateMenuItem];
+                if (mi) {
+                    mi.title = [NSString stringWithFormat:@"🟢 Update Available (v%@)", latestVersion];
+                }
+
+                if (userInitiated) {
+                    [self _showUpdateAlertForVersion:latestVersion
+                                       releaseNotes:json[@"body"]
+                                          htmlURL:json[@"html_url"]
+                                           assets:json[@"assets"]];
+                }
+            } else {
+                if (userInitiated) {
+                    NSAlert *a = [[NSAlert alloc] init];
+                    a.messageText = @"You're Up to Date";
+                    a.informativeText = [NSString stringWithFormat:
+                        @"Notepad++ %@ is the latest version.", currentVersion];
+                    [a runModal];
+                }
+            }
+        });
+    }];
+    [task resume];
+}
+
+- (void)_showUpdateAlertForVersion:(NSString *)version
+                      releaseNotes:(NSString *)notes
+                         htmlURL:(NSString *)htmlURL
+                          assets:(NSArray *)assets {
+    NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ?: @"0.0.0";
+
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText = [NSString stringWithFormat:@"Notepad++ v%@ is Available", version];
+    alert.informativeText = [NSString stringWithFormat:
+        @"You are currently running v%@.\n\n%@",
+        currentVersion,
+        (notes.length > 500) ? [[notes substringToIndex:500] stringByAppendingString:@"…"] : (notes ?: @"")];
+    [alert addButtonWithTitle:@"Download"];
+    [alert addButtonWithTitle:@"Release Page"];
+    [alert addButtonWithTitle:@"Later"];
+
+    NSModalResponse resp = [alert runModal];
+
+    if (resp == NSAlertFirstButtonReturn) {
+        // Find DMG asset in release assets
+        NSString *downloadURL = nil;
+        for (NSDictionary *asset in assets) {
+            NSString *name = asset[@"name"];
+            if ([name.lowercaseString hasSuffix:@".dmg"]) {
+                downloadURL = asset[@"browser_download_url"];
+                break;
+            }
+        }
+        if (!downloadURL) downloadURL = htmlURL; // fallback to release page
+        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:downloadURL]];
+    } else if (resp == NSAlertSecondButtonReturn) {
+        if (htmlURL.length)
+            [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:htmlURL]];
+    }
 }
 
 @end

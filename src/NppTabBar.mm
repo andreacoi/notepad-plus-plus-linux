@@ -152,7 +152,7 @@ static NSImage *toolbarIcon(NSString *name) {
 static const CGFloat kPinSize = 11.0; // pin icon drawn at ~80% of original ~14px
 
 - (CGFloat)preferredWidth {
-    NSDictionary *attrs = @{NSFontAttributeName: [NSFont systemFontOfSize:12 weight:NSFontWeightRegular]};
+    NSDictionary *attrs = @{NSFontAttributeName: [NSFont systemFontOfSize:11 weight:NSFontWeightRegular]};
     CGFloat tw       = [_title sizeWithAttributes:attrs].width;
     CGFloat closeGap = 4 + kCloseSize + 4;
     CGFloat pinGap   = _isPinned ? (kPinSize + 2) : 0; // pin icon to left of close
@@ -222,8 +222,8 @@ static const CGFloat kPinSize = 11.0; // pin icon drawn at ~80% of original ~14p
     ps.lineBreakMode = NSLineBreakByTruncatingMiddle;
     NSColor *textColor = _isSelected ? [NSColor labelColor]
                                      : [NSColor colorWithWhite:0.15 alpha:1];
-    NSFont  *font      = _isSelected ? [NSFont systemFontOfSize:12 weight:NSFontWeightMedium]
-                                     : [NSFont systemFontOfSize:12 weight:NSFontWeightRegular];
+    NSFont  *font      = _isSelected ? [NSFont systemFontOfSize:11 weight:NSFontWeightMedium]
+                                     : [NSFont systemFontOfSize:11 weight:NSFontWeightRegular];
     NSDictionary *attrs = @{NSFontAttributeName: font,
                              NSForegroundColorAttributeName: textColor,
                              NSParagraphStyleAttributeName: ps};

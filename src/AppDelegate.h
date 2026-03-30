@@ -20,4 +20,10 @@
 /// Create and show a new editor window. Returns the new controller.
 - (MainWindowController *)openNewWindow;
 
+/// Check GitHub for a newer release. If userInitiated is YES, shows alert even if up-to-date.
+- (void)checkForUpdateUserInitiated:(BOOL)userInitiated;
+
+/// Action wired to "Check for Updates..." menu item.
+- (void)checkForUpdates:(id)sender;
+
 @end

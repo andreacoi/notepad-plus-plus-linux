@@ -5010,17 +5010,8 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     [panel orderOut:nil];
 }
 
-- (void)checkForUpdates:(id)sender {
-    [[NSWorkspace sharedWorkspace]
-     openURL:[NSURL URLWithString:@"https://github.com/notepad-plus-plus/notepad-plus-plus/releases"]];
-}
-
-- (void)showUpdaterProxyStub:(id)sender {
-    NSAlert *a = [[NSAlert alloc] init];
-    a.messageText     = @"Set Updater Proxy";
-    a.informativeText = @"Proxy configuration is not supported in this port.";
-    [a runModal];
-}
+// checkForUpdates: moved to AppDelegate
+// showUpdaterProxyStub: removed
 
 - (void)showMacroManager:(id)sender {
     // Build a list of saved macros and allow deletion.

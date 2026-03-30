@@ -199,6 +199,7 @@ static NSMenu *buildLanguageMenu() {
     NSMenu *appMenu = submenu(@"App");
     appItem.submenu = appMenu;
     [appMenu addItemWithTitle:@"About Notepad++" action:@selector(showAboutPanel:) keyEquivalent:@""];
+    [appMenu addItemWithTitle:@"Check for Updates…" action:@selector(checkForUpdates:) keyEquivalent:@""];
     addSep(appMenu);
     [appMenu addItemWithTitle:@"Hide Notepad++" action:@selector(hide:) keyEquivalent:@"h"];
     NSMenuItem *hideOthers = [appMenu addItemWithTitle:@"Hide Others" action:@selector(hideOtherApplications:) keyEquivalent:@"h"];
@@ -928,13 +929,7 @@ static NSMenu *buildLanguageMenu() {
     [helpMenu addItem:item(@"Notepad++ Online User Manual",@selector(openNppManual:),      @"")];
     [helpMenu addItem:item(@"Notepad++ Community (Forum)", @selector(openNppForum:),       @"")];
     addSep(helpMenu);
-    [helpMenu addItem:item(@"Update Notepad++",   @selector(checkForUpdates:),      @"")];
-    [helpMenu addItem:item(@"Set Updater Proxy…", @selector(showUpdaterProxyStub:), @"")];
-    addSep(helpMenu);
     [helpMenu addItem:item(@"Debug Info…", @selector(showDebugInfo:), @"")];
-    [helpMenu addItemWithTitle:@"About Notepad++"
-                        action:@selector(showAboutPanel:)
-                 keyEquivalent:@""];
 }
 
 + (void)insertPluginMenuItems:(NSArray<NSMenuItem *> *)items {
