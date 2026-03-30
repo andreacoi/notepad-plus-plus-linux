@@ -247,7 +247,9 @@ static NSDictionary<NSString *, NSString *> *toolbarIconMapping(void) {
 }
 
 - (NSString *)tabbarIconDir {
-    return _cachedIsDark ? @"icons/dark/tabbar" : @"icons/standard/tabbar";
+    // Both modes use dark/tabbar — these are the subtle gray icons.
+    // icons/standard/tabbar has Windows-style colored icons we don't use for close buttons.
+    return @"icons/dark/tabbar";
 }
 
 - (NSString *)panelsIconDir {
