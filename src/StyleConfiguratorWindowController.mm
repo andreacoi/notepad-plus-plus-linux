@@ -182,10 +182,17 @@ static NSString *modelLexerID(NSString *themeID) {
         return result; // "Default (stylers.xml)" = pure model defaults
     }
 
-    // Find theme XML in bundle Resources/themes/
-    NSURL *themeURL = [[NSBundle mainBundle] URLForResource:themeName
-                                              withExtension:@"xml"
-                                               subdirectory:@"themes"];
+    // Find theme XML: check user ~/.notepad++/themes/ first, then bundle
+    NSURL *themeURL = nil;
+    NSString *userPath = [_userThemesDir() stringByAppendingPathComponent:
+                          [themeName stringByAppendingPathExtension:@"xml"]];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:userPath]) {
+        themeURL = [NSURL fileURLWithPath:userPath];
+    } else {
+        themeURL = [[NSBundle mainBundle] URLForResource:themeName
+                                          withExtension:@"xml"
+                                           subdirectory:@"themes"];
+    }
     if (!themeURL) {
         NSLog(@"[NPPStyleStore] Theme not found: %@", themeName);
         return result;
@@ -228,24 +235,43 @@ static NSString *modelLexerID(NSString *themeID) {
 
 // ── Available themes ──────────────────────────────────────────────────────────
 
+/// Return path to ~/.notepad++/themes/ (user-installed themes directory).
+static NSString *_userThemesDir(void) {
+    return [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/themes"];
+}
+
 - (NSArray<NSString *> *)availableThemeNames {
     NSMutableArray<NSString *> *names = [NSMutableArray new];
     [names addObject:kDefaultThemeName];
-    NSURL *themesDir = [[NSBundle mainBundle] URLForResource:@"themes" withExtension:nil];
-    if (themesDir) {
+
+    NSMutableSet<NSString *> *seen = [NSMutableSet new]; // deduplicate by name
+
+    // Scan user themes first (~/.notepad++/themes/) — user themes override bundled
+    NSString *userDir = _userThemesDir();
+    NSArray<NSString *> *userFiles = [[NSFileManager defaultManager]
+        contentsOfDirectoryAtPath:userDir error:nil];
+    for (NSString *f in userFiles) {
+        if ([f.pathExtension.lowercaseString isEqualToString:@"xml"])
+            [seen addObject:f.stringByDeletingPathExtension];
+    }
+
+    // Scan bundled themes (Resources/themes/)
+    NSURL *bundleDir = [[NSBundle mainBundle] URLForResource:@"themes" withExtension:nil];
+    if (bundleDir) {
         NSArray<NSURL *> *files = [[NSFileManager defaultManager]
-            contentsOfDirectoryAtURL:themesDir
+            contentsOfDirectoryAtURL:bundleDir
             includingPropertiesForKeys:nil
             options:NSDirectoryEnumerationSkipsHiddenFiles
             error:nil];
-        NSMutableArray<NSString *> *xmlNames = [NSMutableArray new];
         for (NSURL *u in files) {
             if ([u.pathExtension.lowercaseString isEqualToString:@"xml"])
-                [xmlNames addObject:u.URLByDeletingPathExtension.lastPathComponent];
+                [seen addObject:u.URLByDeletingPathExtension.lastPathComponent];
         }
-        [xmlNames sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-        [names addObjectsFromArray:xmlNames];
     }
+
+    NSMutableArray<NSString *> *sorted = [seen.allObjects mutableCopy];
+    [sorted sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    [names addObjectsFromArray:sorted];
     return [names copy];
 }
 

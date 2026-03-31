@@ -291,6 +291,11 @@ static void ensureNppDirs(void) {
             NSLog(@"[ContextMenu] Copied default contextMenu.xml from bundle");
         }
     }
+
+    // Create ~/.notepad++/themes/ for user-installed themes (empty on first run).
+    NSString *userThemesDir = [nppConfigDir() stringByAppendingPathComponent:@"themes"];
+    [fm createDirectoryAtPath:userThemesDir
+  withIntermediateDirectories:YES attributes:nil error:nil];
 }
 
 // Toolbar item identifiers
