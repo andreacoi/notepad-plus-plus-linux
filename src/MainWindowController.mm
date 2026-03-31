@@ -681,6 +681,17 @@ static void ensureNppDirs(void) {
         }
     }
 
+    // Copy langs.model.xml from bundle as langs.xml if user copy doesn't exist.
+    // User edits ~/.notepad++/langs.xml to customize extensions, keywords, comment delimiters.
+    NSString *langsPath = [nppConfigDir() stringByAppendingPathComponent:@"langs.xml"];
+    if (![fm fileExistsAtPath:langsPath]) {
+        NSString *bundleCopy = [[NSBundle mainBundle] pathForResource:@"langs.model" ofType:@"xml"];
+        if (bundleCopy) {
+            [fm copyItemAtPath:bundleCopy toPath:langsPath error:nil];
+            NSLog(@"[Langs] Copied langs.model.xml as langs.xml to ~/.notepad++/");
+        }
+    }
+
     // Create ~/.notepad++/themes/ for user-installed themes (empty on first run).
     NSString *userThemesDir = [nppConfigDir() stringByAppendingPathComponent:@"themes"];
     [fm createDirectoryAtPath:userThemesDir

@@ -8,6 +8,7 @@
 #import "PreferencesWindowController.h"
 #import "StyleConfiguratorWindowController.h"
 #import "UserDefineLangManager.h"
+#import "NppLangsManager.h"
 #import "EditorView.h"
 
 @implementation AppDelegate {
@@ -35,6 +36,9 @@
 
     // Apply saved shortcut overrides from shortcuts.xml <InternalCommands>
     [self _loadShortcutOverrides];
+
+    // Load built-in language definitions from langs.xml (keywords, extensions, comments).
+    [[NppLangsManager shared] loadLangs];
 
     // Load User Defined Languages from bundled + user directories.
     [[UserDefineLangManager shared] loadAll];

@@ -1,5 +1,6 @@
 #import "EditorView.h"
 #import "NppApplication.h"
+#import "NppLangsManager.h"
 #import "PreferencesWindowController.h"
 #import "StyleConfiguratorWindowController.h"
 #import "GitHelper.h"
@@ -163,12 +164,13 @@ static NSDictionary<NSString *, NSString *> *languageLexerNameMap() {
     return map;
 }
 
-// File extension → language name
+// File extension → language name.
+// Merges langs.xml data on top of hardcoded defaults.
 static NSDictionary<NSString *, NSString *> *extensionLanguageMap() {
     static NSDictionary *map;
     static dispatch_once_t once;
     dispatch_once(&once, ^{
-        map = @{
+        NSMutableDictionary *m = [@{
             // C-family
             @"c"    : @"c",       @"h"    : @"c",
             @"cpp"  : @"cpp",     @"cxx"  : @"cpp",
@@ -240,7 +242,13 @@ static NSDictionary<NSString *, NSString *> *extensionLanguageMap() {
             @"au3"  : @"autoit",
             @"ps"   : @"postscript", @"eps": @"postscript",
             @"mat"  : @"matlab",
-        };
+        } mutableCopy];
+
+        // Merge extensions from langs.xml (overrides hardcoded on conflict)
+        NSDictionary *langsMap = [[NppLangsManager shared] extensionMap];
+        [m addEntriesFromDictionary:langsMap];
+
+        map = [m copy];
     });
     return map;
 }
@@ -543,6 +551,7 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
         return NO;
     }
 
+    NSString *oldPath = _filePath;
     _filePath = [path copy];
     _isModified = NO;
     [_scintillaView message:SCI_SETSAVEPOINT];
@@ -555,6 +564,15 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     // to do, but FSEvents notification timing made it unreliable).
     _lastKnownModDate = [[NSFileManager defaultManager]
                          attributesOfItemAtPath:path error:nil][NSFileModificationDate];
+
+    // Re-detect language if the file extension changed (e.g. Save As with new name)
+    NSString *oldExt = oldPath.pathExtension.lowercaseString ?: @"";
+    NSString *newExt = path.pathExtension.lowercaseString ?: @"";
+    if (![oldExt isEqualToString:newExt]) {
+        NSString *lang = extensionLanguageMap()[newExt] ?: @"";
+        [self setLanguage:lang];
+    }
+
     [self updateGitDiffMarkers];
     return YES;
 }
@@ -1681,11 +1699,42 @@ static int vkToScintillaKey(int vk) {
     ScintillaView *sci = _scintillaView;
     lang = lang.lowercaseString;
 
-    if ([@[@"c", @"cpp", @"objc", @"swift", @"typescript"] containsObject:lang]) {
-        lang = @"cpp"; // all use the cpp lexer keyword set
+    // Some languages share lexers — map to the canonical language for keyword lookup.
+    // c, objc, swift all use the cpp lexer; javascript.js uses javascript.
+    NSString *kwLang = lang;
+    if ([@[@"c", @"objc", @"swift"] containsObject:lang]) kwLang = @"cpp";
+    if ([lang isEqualToString:@"javascript.js"]) kwLang = @"javascript";
+
+    NppLangsManager *lm = [NppLangsManager shared];
+    BOOL fed = NO;
+
+    // Keyword class names → Scintilla SCI_SETKEYWORDS index.
+    // The mapping follows the most common pattern used by Scintilla lexers:
+    // instre1→0, type1→1, instre2→2, type2→3, type3→4, type4→5, type5→6, type6→7, type7→8
+    static NSDictionary<NSString *, NSNumber *> *kwClassToIndex;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        kwClassToIndex = @{
+            @"instre1": @0, @"type1": @1, @"instre2": @2,
+            @"type2": @3, @"type3": @4, @"type4": @5,
+            @"type5": @6, @"type6": @7, @"type7": @8,
+        };
+    });
+
+    // Feed keywords from langs.xml for all keyword classes
+    for (NSString *kwClass in kwClassToIndex) {
+        NSString *kw = [lm keywordsForLanguage:kwLang keywordClass:kwClass];
+        if (!kw.length) continue;
+        NSInteger idx = kwClassToIndex[kwClass].integerValue;
+        const char *utf8 = kw.UTF8String;
+        [sci message:SCI_SETKEYWORDS wParam:(uptr_t)idx lParam:(sptr_t)utf8];
+        fed = YES;
     }
 
-    if ([lang isEqualToString:@"cpp"]) {
+    if (fed) return;
+
+    // Hardcoded fallback for the 4 languages that had keywords before langs.xml
+    if ([kwLang isEqualToString:@"cpp"]) {
         const char *kw = "alignas alignof and and_eq asm auto bitand bitor bool break case catch char "
             "char8_t char16_t char32_t class compl concept const consteval constexpr constinit "
             "const_cast continue co_await co_return co_yield decltype default delete do double "
@@ -1696,18 +1745,18 @@ static int vkToScintillaKey(int vk) {
             "typedef typeid typename union unsigned using virtual void volatile wchar_t while "
             "xor xor_eq";
         [sci message:SCI_SETKEYWORDS wParam:0 lParam:(sptr_t)kw];
-    } else if ([lang isEqualToString:@"python"]) {
+    } else if ([kwLang isEqualToString:@"python"]) {
         const char *kw = "False None True and as assert async await break class continue def del "
             "elif else except finally for from global if import in is lambda nonlocal not or "
             "pass raise return try while with yield";
         [sci message:SCI_SETKEYWORDS wParam:0 lParam:(sptr_t)kw];
-    } else if ([lang isEqualToString:@"javascript"]) {
+    } else if ([kwLang isEqualToString:@"javascript"]) {
         const char *kw = "async await break case catch class const continue debugger default "
             "delete do else export extends false finally for from function if import in "
             "instanceof let new null of return static super switch this throw true try typeof "
             "undefined var void while with yield";
         [sci message:SCI_SETKEYWORDS wParam:0 lParam:(sptr_t)kw];
-    } else if ([lang isEqualToString:@"sql"]) {
+    } else if ([kwLang isEqualToString:@"sql"]) {
         const char *kw = "add all alter and any as asc authorization backup begin between by "
             "cascade case check close clustered coalesce column commit compute constraint "
             "contains containstable continue convert create cross current current_date "
@@ -1891,6 +1940,11 @@ static const int kGitGutterMargin   = 4;  // margin index for git gutter
 
 // Returns the single-line comment prefix for the current language.
 - (NSString *)_lineCommentPrefix {
+    // Try langs.xml first
+    NSString *fromXML = [[NppLangsManager shared] commentLineForLanguage:_currentLanguage];
+    if (fromXML) return fromXML;
+
+    // Hardcoded fallback
     NSDictionary *commentMap = @{
         @"python":@"#", @"bash":@"#", @"ruby":@"#", @"perl":@"#",
         @"r":@"#", @"yaml":@"#", @"makefile":@"#", @"cmake":@"#", @"toml":@"#",
@@ -1965,22 +2019,29 @@ static const int kGitGutterMargin   = 4;  // margin index for git gutter
 
 #pragma mark - Block Comment
 
+/// Returns @[openDelimiter, closeDelimiter] for the current language, or nil.
+- (nullable NSArray<NSString *> *)_blockCommentDelimiters {
+    // Try langs.xml first
+    NSString *start = [[NppLangsManager shared] commentStartForLanguage:_currentLanguage];
+    NSString *end = [[NppLangsManager shared] commentEndForLanguage:_currentLanguage];
+    if (start.length && end.length) return @[start, end];
+
+    // Hardcoded fallback
+    static NSDictionary<NSString *, NSArray<NSString *> *> *fallback;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        fallback = @{
+            @"c":@[@"/*",@"*/"], @"cpp":@[@"/*",@"*/"], @"objc":@[@"/*",@"*/"],
+            @"javascript":@[@"/*",@"*/"], @"typescript":@[@"/*",@"*/"],
+            @"swift":@[@"/*",@"*/"], @"css":@[@"/*",@"*/"], @"sql":@[@"/*",@"*/"],
+            @"lua":@[@"--[[",@"]]"], @"html":@[@"<!--",@"-->"], @"xml":@[@"<!--",@"-->"],
+        };
+    });
+    return fallback[_currentLanguage.lowercaseString];
+}
+
 - (void)toggleBlockComment:(id)sender {
-    // Language → {open, close} delimiters
-    NSDictionary<NSString *, NSArray<NSString *> *> *delimiters = @{
-        @"c":          @[@"/*",   @"*/"],
-        @"cpp":        @[@"/*",   @"*/"],
-        @"objc":       @[@"/*",   @"*/"],
-        @"javascript": @[@"/*",   @"*/"],
-        @"typescript": @[@"/*",   @"*/"],
-        @"swift":      @[@"/*",   @"*/"],
-        @"css":        @[@"/*",   @"*/"],
-        @"sql":        @[@"/*",   @"*/"],
-        @"lua":        @[@"--[[", @"]]"],
-        @"html":       @[@"<!--", @"-->"],
-        @"xml":        @[@"<!--", @"-->"],
-    };
-    NSArray<NSString *> *pair = delimiters[_currentLanguage.lowercaseString];
+    NSArray<NSString *> *pair = [self _blockCommentDelimiters];
     if (!pair) return;
 
     NSString *open  = pair[0];
@@ -2018,13 +2079,7 @@ static const int kGitGutterMargin   = 4;  // margin index for git gutter
 }
 
 - (void)addBlockComment:(id)sender {
-    NSDictionary<NSString *, NSArray<NSString *> *> *delimiters = @{
-        @"c":@[@"/* ",@" */"], @"cpp":@[@"/* ",@" */"], @"objc":@[@"/* ",@" */"],
-        @"javascript":@[@"/* ",@" */"], @"typescript":@[@"/* ",@" */"],
-        @"swift":@[@"/* ",@" */"], @"css":@[@"/* ",@" */"], @"sql":@[@"/* ",@" */"],
-        @"lua":@[@"--[[",@"]]"], @"html":@[@"<!-- ",@" -->"], @"xml":@[@"<!-- ",@" -->"],
-    };
-    NSArray<NSString *> *pair = delimiters[_currentLanguage.lowercaseString];
+    NSArray<NSString *> *pair = [self _blockCommentDelimiters];
     if (!pair) { NSBeep(); return; }
     NSString *open = pair[0], *close = pair[1];
     ScintillaView *sci = _scintillaView;
@@ -2037,14 +2092,7 @@ static const int kGitGutterMargin   = 4;  // margin index for git gutter
 }
 
 - (void)removeBlockComment:(id)sender {
-    NSDictionary<NSString *, NSArray<NSString *> *> *delimiters = @{
-        @"c":@[@"/* ",@" */"], @"cpp":@[@"/* ",@" */"], @"objc":@[@"/* ",@" */"],
-        @"javascript":@[@"/* ",@" */"], @"typescript":@[@"/* ",@" */"],
-        @"swift":@[@"/* ",@" */"], @"css":@[@"/* ",@" */"], @"sql":@[@"/* ",@" */"],
-        @"lua":@[@"--[[",@"]]"], @"html":@[@"<!-- ",@" -->"], @"xml":@[@"<!-- ",@" -->"],
-    };
-    // Also try without trailing space
-    NSArray<NSString *> *pair = delimiters[_currentLanguage.lowercaseString];
+    NSArray<NSString *> *pair = [self _blockCommentDelimiters];
     if (!pair) { NSBeep(); return; }
     ScintillaView *sci = _scintillaView;
     NSString *docText = sci.string;

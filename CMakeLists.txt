@@ -74,6 +74,7 @@ set(APP_SRCS
     src/NppCommandLineParams.mm
     src/ShortcutMapperWindowController.mm
     src/NppLocalizer.mm
+    src/NppLangsManager.mm
     src/AppDelegate.mm
     src/MainWindowController.mm
     src/EditorView.mm
@@ -106,6 +107,7 @@ set(APP_SRCS
 
 set(APP_HEADERS
     src/NppLocalizer.h
+    src/NppLangsManager.h
     src/AppDelegate.h
     src/MainWindowController.h
     src/EditorView.h
@@ -162,6 +164,12 @@ add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
         "${CMAKE_SOURCE_DIR}/resources/stylers.model.xml"
         "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/stylers.model.xml"
     COMMENT "Copying stylers.model.xml into bundle")
+
+add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/resources/langs.model.xml"
+        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/langs.model.xml"
+    COMMENT "Copying langs.model.xml into bundle")
 
 add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
