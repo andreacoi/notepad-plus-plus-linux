@@ -108,6 +108,9 @@
     // ── Build recordable selectors for macro recording ────────────────
     [(NppApplication *)NSApp buildRecordableSelectorsFromMenu];
 
+    // ── Build editor context menu (after plugins + full menu are ready) ──
+    [self.mainWindowController applyEditorContextMenuToAll];
+
     // ── Loading time (-loadingTime) ─────────────────────────────────────
 
     if (self.launchStart) {

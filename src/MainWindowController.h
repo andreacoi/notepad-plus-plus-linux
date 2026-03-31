@@ -26,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Rebuild the Macro menu from shortcuts.xml (called after macro save/delete).
 - (void)rebuildMacroMenu;
 
+/// Build and apply the editor right-click context menu to all editors.
+- (void)applyEditorContextMenuToAll;
+
 @end
 
 NS_ASSUME_NONNULL_END

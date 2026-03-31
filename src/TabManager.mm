@@ -171,14 +171,12 @@
 - (void)selectTabAtIndex:(NSInteger)index {
     if (index < 0 || index >= (NSInteger)_editors.count) return;
     [self activateTabAtIndex:index];
-    [_delegate tabManager:self didSelectEditor:_editors[index]];
 }
 
 #pragma mark - NppTabBarDelegate
 
 - (void)tabBar:(NppTabBar *)bar didSelectTabAtIndex:(NSInteger)index {
     [self activateTabAtIndex:index];
-    [_delegate tabManager:self didSelectEditor:_editors[index]];
 }
 
 - (void)tabBar:(NppTabBar *)bar didCloseTabAtIndex:(NSInteger)index {
@@ -222,6 +220,8 @@
     editor.frame = _contentView.bounds;
     [_tabBar selectTabAtIndex:index];
     [_contentView setNeedsLayout:YES];
+
+    [_delegate tabManager:self didSelectEditor:editor];
 }
 
 - (void)removeEditor:(EditorView *)editor {

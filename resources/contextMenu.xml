@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+Customize the editor right-click context menu.
+
+This file is copied to ~/.notepad++/contextMenu.xml on first launch.
+To customize, edit the copy in ~/.notepad++/contextMenu.xml and restart
+Notepad++. To reset to defaults, delete that file and restart.
+
+Each <Item> references a command from the main menu bar:
+  MenuEntryName   = top-level menu (File, Edit, Search, View, etc.)
+  MenuItemName    = exact menu item title (case-insensitive, searches submenus)
+  MenuSubMenuName = (optional) restrict search to a specific submenu within
+                    MenuEntryName — useful when two submenus share item names
+  FolderName      = (optional) group items into a context-menu submenu
+  ItemNameAs      = (optional) display name override
+  id="0"          = separator line
+
+For plugin commands (from the Plugins menu):
+  PluginEntryName       = plugin name as shown in Plugins menu
+  PluginCommandItemName = command name in that plugin's submenu
+  FolderName/ItemNameAs work the same way
+
+For macro commands (from the Macro menu):
+  MacroEntryName  = macro name as shown in Macro menu
+
+You can add any command that appears in the menu bar, including commands
+nested inside submenus. The parser searches recursively.
+
+Examples:
+  <Item MenuEntryName="Edit" MenuItemName="Cut"/>
+  <Item MenuEntryName="Edit" MenuItemName="UPPERCASE"/>
+  <Item MenuEntryName="Search" MenuSubMenuName="Style All Occurrences of Token" MenuItemName="Using 1st Style"/>
+  <Item PluginEntryName="MIME Tools" PluginCommandItemName="Base64 Encode"/>
+  <Item FolderName="My Tools" MenuEntryName="Edit" MenuItemName="Sort Lines Ascending"/>
+  <Item id="0"/>
+-->
+<NotepadPlus>
+    <ScintillaContextMenu>
+        <Item MenuEntryName="Edit" MenuItemName="Cut"/>
+        <Item MenuEntryName="Edit" MenuItemName="Copy"/>
+        <Item MenuEntryName="Edit" MenuItemName="Paste"/>
+        <Item MenuEntryName="Edit" MenuItemName="Delete"/>
+        <Item MenuEntryName="Edit" MenuItemName="Select All"/>
+        <Item MenuEntryName="Edit" MenuItemName="Begin/End Select"/>
+        <Item MenuEntryName="Edit" MenuItemName="Begin/End Select in Column Mode"/>
+
+        <Item id="0"/>
+
+        <Item FolderName="Style All Occurrences of Token" MenuEntryName="Search" MenuSubMenuName="Style All Occurrences of Token" MenuItemName="Using 1st Style"/>
+        <Item FolderName="Style All Occurrences of Token" MenuEntryName="Search" MenuSubMenuName="Style All Occurrences of Token" MenuItemName="Using 2nd Style"/>
+        <Item FolderName="Style All Occurrences of Token" MenuEntryName="Search" MenuSubMenuName="Style All Occurrences of Token" MenuItemName="Using 3rd Style"/>
+        <Item FolderName="Style All Occurrences of Token" MenuEntryName="Search" MenuSubMenuName="Style All Occurrences of Token" MenuItemName="Using 4th Style"/>
+        <Item FolderName="Style All Occurrences of Token" MenuEntryName="Search" MenuSubMenuName="Style All Occurrences of Token" MenuItemName="Using 5th Style"/>
+
+        <Item FolderName="Style One Token" MenuEntryName="Search" MenuSubMenuName="Style One Token" MenuItemName="Using 1st Style"/>
+        <Item FolderName="Style One Token" MenuEntryName="Search" MenuSubMenuName="Style One Token" MenuItemName="Using 2nd Style"/>
+        <Item FolderName="Style One Token" MenuEntryName="Search" MenuSubMenuName="Style One Token" MenuItemName="Using 3rd Style"/>
+        <Item FolderName="Style One Token" MenuEntryName="Search" MenuSubMenuName="Style One Token" MenuItemName="Using 4th Style"/>
+        <Item FolderName="Style One Token" MenuEntryName="Search" MenuSubMenuName="Style One Token" MenuItemName="Using 5th Style"/>
+
+        <Item FolderName="Clear Style" MenuEntryName="Search" MenuSubMenuName="Clear Style" MenuItemName="Clear 1st Style"/>
+        <Item FolderName="Clear Style" MenuEntryName="Search" MenuSubMenuName="Clear Style" MenuItemName="Clear 2nd Style"/>
+        <Item FolderName="Clear Style" MenuEntryName="Search" MenuSubMenuName="Clear Style" MenuItemName="Clear 3rd Style"/>
+        <Item FolderName="Clear Style" MenuEntryName="Search" MenuSubMenuName="Clear Style" MenuItemName="Clear 4th Style"/>
+        <Item FolderName="Clear Style" MenuEntryName="Search" MenuSubMenuName="Clear Style" MenuItemName="Clear 5th Style"/>
+        <Item FolderName="Clear Style" MenuEntryName="Search" MenuSubMenuName="Clear Style" MenuItemName="Clear All Styles"/>
+
+        <Item id="0"/>
+
+        <!--
+        Plugin commands: PluginEntryName is the plugin name in the Plugins menu,
+        PluginCommandItemName is the command within that plugin's submenu.
+        These only work if the plugin is installed and loaded.
+        -->
+        <Item FolderName="Plugin Commands" PluginEntryName="MIME Tools" PluginCommandItemName="Base64 Encode"/>
+        <Item FolderName="Plugin Commands" PluginEntryName="MIME Tools" PluginCommandItemName="Base64 Decode"/>
+        <Item FolderName="Plugin Commands" PluginEntryName="NppExport" PluginCommandItemName="Copy all formats to clipboard" ItemNameAs="Copy Text with Syntax Highlighting"/>
+
+        <Item id="0"/>
+
+        <Item MenuEntryName="Edit" MenuItemName="UPPERCASE"/>
+        <Item MenuEntryName="Edit" MenuItemName="lowercase"/>
+
+        <Item id="0"/>
+
+        <Item MenuEntryName="Edit" MenuItemName="Open File"/>
+        <Item MenuEntryName="Edit" MenuItemName="Search on Internet"/>
+
+        <Item id="0"/>
+
+        <Item MenuEntryName="Edit" MenuItemName="Toggle Single Line Comment"/>
+        <Item MenuEntryName="Edit" MenuItemName="Block Comment"/>
+        <Item MenuEntryName="Edit" MenuItemName="Block Uncomment"/>
+
+        <Item id="0"/>
+
+        <Item MenuEntryName="View" MenuItemName="Hide Lines"/>
+    </ScintillaContextMenu>
+</NotepadPlus>

@@ -505,22 +505,50 @@ static NSMenu *buildLanguageMenu() {
     [searchMenu addItem:withSubmenu(@"Change History", chMenu)];
 
     static NSString * const kOrd[5] = {@"st", @"nd", @"rd", @"th", @"th"};
+    // Mark style colors (BGR from Scintilla, converted to NSColor RGB)
+    NSArray *markSwatches = @[
+        [NSColor colorWithRed:0/255.0 green:255/255.0 blue:255/255.0 alpha:1],   // 1: cyan
+        [NSColor colorWithRed:255/255.0 green:255/255.0 blue:0/255.0 alpha:1],   // 2: yellow
+        [NSColor colorWithRed:0/255.0 green:200/255.0 blue:0/255.0 alpha:1],     // 3: green
+        [NSColor colorWithRed:255/255.0 green:120/255.0 blue:0/255.0 alpha:1],   // 4: orange
+        [NSColor colorWithRed:200/255.0 green:100/255.0 blue:255/255.0 alpha:1], // 5: violet
+    ];
+    NSImage *(^markSwatch)(int) = ^NSImage *(int idx) {
+        NSImage *sw = [[NSImage alloc] initWithSize:NSMakeSize(12, 12)];
+        [sw lockFocus];
+        [markSwatches[idx] setFill];
+        NSRectFill(NSMakeRect(1, 1, 10, 10));
+        [[NSColor grayColor] setStroke];
+        [NSBezierPath strokeRect:NSMakeRect(0.5, 0.5, 11, 11)];
+        [sw unlockFocus];
+        return sw;
+    };
+
     NSMenu *styleAllMenu = submenu(@"Style All Occurrences of Token");
-    for (int i = 1; i <= 5; i++)
-        [styleAllMenu addItem:itemTag([NSString stringWithFormat:@"Using %d%@ Style", i, kOrd[i-1]],
-                                      @selector(styleAllOccurrences:), i)];
+    for (int i = 1; i <= 5; i++) {
+        NSMenuItem *mi = itemTag([NSString stringWithFormat:@"Using %d%@ Style", i, kOrd[i-1]],
+                                 @selector(styleAllOccurrences:), i);
+        mi.image = markSwatch(i - 1);
+        [styleAllMenu addItem:mi];
+    }
     [searchMenu addItem:withSubmenu(@"Style All Occurrences of Token", styleAllMenu)];
 
     NSMenu *styleOneMenu = submenu(@"Style One Token");
-    for (int i = 1; i <= 5; i++)
-        [styleOneMenu addItem:itemTag([NSString stringWithFormat:@"Using %d%@ Style", i, kOrd[i-1]],
-                                       @selector(styleOneToken:), i)];
+    for (int i = 1; i <= 5; i++) {
+        NSMenuItem *mi = itemTag([NSString stringWithFormat:@"Using %d%@ Style", i, kOrd[i-1]],
+                                 @selector(styleOneToken:), i);
+        mi.image = markSwatch(i - 1);
+        [styleOneMenu addItem:mi];
+    }
     [searchMenu addItem:withSubmenu(@"Style One Token", styleOneMenu)];
 
     NSMenu *clearStyleMenu = submenu(@"Clear Style");
-    for (int i = 1; i <= 5; i++)
-        [clearStyleMenu addItem:itemTag([NSString stringWithFormat:@"Clear %d%@ Style", i, kOrd[i-1]],
-                                         @selector(clearMarkStyleN:), i)];
+    for (int i = 1; i <= 5; i++) {
+        NSMenuItem *mi = itemTag([NSString stringWithFormat:@"Clear %d%@ Style", i, kOrd[i-1]],
+                                 @selector(clearMarkStyleN:), i);
+        mi.image = markSwatch(i - 1);
+        [clearStyleMenu addItem:mi];
+    }
     addSep(clearStyleMenu);
     [clearStyleMenu addItem:item(@"Clear All Styles", @selector(clearAllMarkStyles:), @"")];
     [searchMenu addItem:withSubmenu(@"Clear Style", clearStyleMenu)];

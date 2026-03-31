@@ -89,6 +89,173 @@ static void addMacroToShortcutsXML(NSString *name, NSArray<NSDictionary *> *acti
                                    BOOL ctrl, BOOL alt, BOOL shift, BOOL cmd, NSUInteger keyCode);
 static void removeMacroFromShortcutsXML(NSString *name);
 
+#pragma mark - Context menu XML parser
+
+/// Walk a menu recursively to find an item by title (case-insensitive, strips shortcuts).
+static NSMenuItem *_ctxFindMenuItemByTitle(NSMenu *menu, NSString *title) {
+    NSString *target = title.lowercaseString;
+    for (NSMenuItem *mi in menu.itemArray) {
+        if (mi.isSeparatorItem) continue;
+        NSString *clean = mi.title;
+        NSRange tabR = [clean rangeOfString:@"\t"];
+        if (tabR.location != NSNotFound) clean = [clean substringToIndex:tabR.location];
+        clean = [clean stringByReplacingOccurrencesOfString:@"&" withString:@""];
+        clean = [clean stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if ([clean.lowercaseString isEqualToString:target]) return mi;
+        if (mi.submenu) {
+            NSMenuItem *found = _ctxFindMenuItemByTitle(mi.submenu, title);
+            if (found) return found;
+        }
+    }
+    return nil;
+}
+
+/// Find a submenu by title (non-recursive, only direct children).
+static NSMenu *_ctxFindSubMenuByTitle(NSMenu *menu, NSString *title) {
+    NSString *target = title.lowercaseString;
+    for (NSMenuItem *mi in menu.itemArray) {
+        if (mi.isSeparatorItem || !mi.submenu) continue;
+        NSString *clean = mi.title;
+        clean = [clean stringByReplacingOccurrencesOfString:@"&" withString:@""];
+        clean = [clean stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if ([clean.lowercaseString isEqualToString:target]) return mi.submenu;
+        // Also check one level deeper for nested submenus
+        NSMenu *deeper = _ctxFindSubMenuByTitle(mi.submenu, title);
+        if (deeper) return deeper;
+    }
+    return nil;
+}
+
+/// Build editor context menu from XML. Returns nil if file not found or parse fails.
+static NSMenu *_buildEditorContextMenuFromXML(NSString *xmlPath) {
+    NSData *data = [NSData dataWithContentsOfFile:xmlPath];
+    if (!data) return nil;
+
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:0 error:nil];
+    if (!doc) return nil;
+
+    NSArray *items = [doc nodesForXPath:@"//ScintillaContextMenu/Item" error:nil];
+    if (!items.count) return nil;
+
+    NSMenu *mainMenu = [NSApp mainMenu];
+    NSMenu *contextMenu = [[NSMenu alloc] initWithTitle:@""];
+    NSMutableDictionary<NSString *, NSMenu *> *folders = [NSMutableDictionary dictionary];
+
+    for (NSXMLElement *el in items) {
+        NSString *folderName  = [[el attributeForName:@"FolderName"] stringValue];
+        NSString *menuEntry   = [[el attributeForName:@"MenuEntryName"] stringValue];
+        NSString *menuItem    = [[el attributeForName:@"MenuItemName"] stringValue];
+        NSString *subMenuName = [[el attributeForName:@"MenuSubMenuName"] stringValue];
+        NSString *displayAs   = [[el attributeForName:@"ItemNameAs"] stringValue];
+        NSString *pluginEntry = [[el attributeForName:@"PluginEntryName"] stringValue];
+        NSString *pluginCmd   = [[el attributeForName:@"PluginCommandItemName"] stringValue];
+        NSString *macroEntry  = [[el attributeForName:@"MacroEntryName"] stringValue];
+        NSInteger itemId      = [[[el attributeForName:@"id"] stringValue] integerValue];
+
+        // Separator
+        if ([[el attributeForName:@"id"] stringValue] && itemId == 0) {
+            NSMenu *target = folderName.length ? folders[folderName] : contextMenu;
+            if (target) [target addItem:[NSMenuItem separatorItem]];
+            continue;
+        }
+
+        NSMenuItem *found = nil;
+
+        // Plugin command lookup: Plugins > PluginName > CommandName
+        if (pluginEntry.length && pluginCmd.length) {
+            // Find the Plugins top-level menu
+            NSMenu *pluginsMenu = nil;
+            for (NSMenuItem *top in mainMenu.itemArray) {
+                if (!top.submenu) continue;
+                // Identify Plugins menu by looking for showPluginsAdmin: action
+                for (NSMenuItem *mi in top.submenu.itemArray) {
+                    if (mi.action == @selector(showPluginsAdmin:)) {
+                        pluginsMenu = top.submenu;
+                        break;
+                    }
+                }
+                if (pluginsMenu) break;
+            }
+            if (pluginsMenu) {
+                // Find plugin submenu by name
+                NSMenu *pluginSub = _ctxFindSubMenuByTitle(pluginsMenu, pluginEntry);
+                if (pluginSub) {
+                    found = _ctxFindMenuItemByTitle(pluginSub, pluginCmd);
+                }
+            }
+            if (!found || !found.action) continue;
+        }
+        // Macro command lookup: Macro menu > macro name
+        else if (macroEntry.length) {
+            for (NSMenuItem *top in mainMenu.itemArray) {
+                if (!top.submenu) continue;
+                NSMenuItem *f = _ctxFindMenuItemByTitle(top.submenu, macroEntry);
+                if (f && f.action) { found = f; break; }
+            }
+            if (!found || !found.action) continue;
+        }
+        // Standard menu command lookup
+        else if (menuEntry.length && menuItem.length) {
+            // Find the top-level menu matching MenuEntryName
+            NSMenu *entryMenu = nil;
+            for (NSMenuItem *top in mainMenu.itemArray) {
+                NSString *title = top.submenu.title ?: top.title;
+                if ([title.lowercaseString isEqualToString:menuEntry.lowercaseString]) {
+                    entryMenu = top.submenu;
+                    break;
+                }
+            }
+            if (!entryMenu) continue;
+
+            // If MenuSubMenuName is specified, narrow search to that submenu
+            NSMenu *searchIn = entryMenu;
+            if (subMenuName.length) {
+                NSMenu *sub = _ctxFindSubMenuByTitle(entryMenu, subMenuName);
+                if (sub) searchIn = sub;
+            }
+
+            found = _ctxFindMenuItemByTitle(searchIn, menuItem);
+            if (!found || !found.action) continue;
+        } else {
+            continue;
+        }
+
+        // Build context menu item with the resolved action
+        NSString *title = displayAs.length ? displayAs : found.title;
+        NSMenuItem *ctxItem = [[NSMenuItem alloc] initWithTitle:title
+                                                         action:found.action
+                                                  keyEquivalent:@""];
+        ctxItem.target = found.target;
+        // Preserve the original tag (e.g. style number) but if 0, mark as ours with sentinel
+        ctxItem.tag = found.tag ?: 44000;
+        if (found.image) ctxItem.image = found.image;
+
+        // Add to folder submenu or top level
+        if (folderName.length) {
+            if (!folders[folderName]) {
+                folders[folderName] = [[NSMenu alloc] initWithTitle:folderName];
+                NSMenuItem *parent = [[NSMenuItem alloc] initWithTitle:folderName
+                                                                action:nil keyEquivalent:@""];
+                parent.submenu = folders[folderName];
+                parent.tag = 44001; // mark as ours so menuNeedsUpdate: won't strip it
+                [contextMenu addItem:parent];
+            }
+            [folders[folderName] addItem:ctxItem];
+        } else {
+            [contextMenu addItem:ctxItem];
+        }
+    }
+
+    // Clean up trailing/leading/duplicate separators
+    while (contextMenu.numberOfItems > 0 && [contextMenu itemAtIndex:0].isSeparatorItem)
+        [contextMenu removeItemAtIndex:0];
+    while (contextMenu.numberOfItems > 0 &&
+           [contextMenu itemAtIndex:contextMenu.numberOfItems - 1].isSeparatorItem)
+        [contextMenu removeItemAtIndex:contextMenu.numberOfItems - 1];
+
+    return contextMenu.numberOfItems > 0 ? contextMenu : nil;
+}
+
 static void ensureNppDirs(void) {
     NSFileManager *fm = [NSFileManager defaultManager];
     [fm createDirectoryAtPath:nppBackupDir()
@@ -111,6 +278,17 @@ static void ensureNppDirs(void) {
         NSString *bundleCopy = [[NSBundle mainBundle] pathForResource:@"tabContextMenu" ofType:@"xml"];
         if (bundleCopy) {
             [fm copyItemAtPath:bundleCopy toPath:tabCtxExamplePath error:nil];
+        }
+    }
+
+    // Copy contextMenu.xml from bundle if user copy doesn't exist.
+    // User edits ~/.notepad++/contextMenu.xml to customize the editor right-click menu.
+    NSString *ctxMenuPath = [nppConfigDir() stringByAppendingPathComponent:@"contextMenu.xml"];
+    if (![fm fileExistsAtPath:ctxMenuPath]) {
+        NSString *bundleCopy = [[NSBundle mainBundle] pathForResource:@"contextMenu" ofType:@"xml"];
+        if (bundleCopy) {
+            [fm copyItemAtPath:bundleCopy toPath:ctxMenuPath error:nil];
+            NSLog(@"[ContextMenu] Copied default contextMenu.xml from bundle");
         }
     }
 }
@@ -453,7 +631,8 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
      NSSplitViewDelegate, IncrementalSearchBarDelegate,
      FolderTreePanelDelegate, GitPanelDelegate,
      ClipboardHistoryPanelDelegate, DocumentMapPanelDelegate,
-     DocumentListPanelDelegate, CharacterPanelDelegate>
+     DocumentListPanelDelegate, CharacterPanelDelegate,
+     NSMenuDelegate>
 @end
 
 @implementation MainWindowController {
@@ -525,6 +704,9 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     NSColor          *_savedBgColor;
     BOOL              _distractionFreeMode;
     BOOL              _savedToolbarVisible;
+
+    // Editor right-click context menu (built from contextMenu.xml)
+    NSMenu           *_editorContextMenu;
 }
 
 - (instancetype)init {
@@ -4185,10 +4367,61 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     return p - 150;   // panel at least 150pt when visible
 }
 
+#pragma mark - Editor context menu
+
+- (void)_buildEditorContextMenu {
+    // Try user-customized contextMenu.xml first, fall back to bundled default
+    NSString *userPath = [nppConfigDir() stringByAppendingPathComponent:@"contextMenu.xml"];
+    _editorContextMenu = _buildEditorContextMenuFromXML(userPath);
+    if (!_editorContextMenu) {
+        NSString *bundledPath = [[NSBundle mainBundle] pathForResource:@"contextMenu" ofType:@"xml"];
+        _editorContextMenu = _buildEditorContextMenuFromXML(bundledPath);
+    }
+    if (!_editorContextMenu) {
+        // Ultimate fallback: minimal menu
+        _editorContextMenu = [[NSMenu alloc] initWithTitle:@""];
+        [_editorContextMenu addItemWithTitle:@"Cut" action:@selector(cut:) keyEquivalent:@""];
+        [_editorContextMenu addItemWithTitle:@"Copy" action:@selector(copy:) keyEquivalent:@""];
+        [_editorContextMenu addItemWithTitle:@"Paste" action:@selector(paste:) keyEquivalent:@""];
+    }
+    // Prevent macOS from injecting AutoFill, Services, and other system items
+    _editorContextMenu.allowsContextMenuPlugIns = NO;
+    _editorContextMenu.delegate = self;
+}
+
+/// Strip system-injected items (AutoFill, etc.) before the context menu opens.
+/// Belt-and-suspenders: allowsContextMenuPlugIns handles most cases, but
+/// macOS may still inject AutoFill on newer versions via a different path.
+- (void)menuNeedsUpdate:(NSMenu *)menu {
+    if (menu != _editorContextMenu) return;
+    for (NSInteger i = menu.numberOfItems - 1; i >= 0; i--) {
+        NSMenuItem *mi = [menu itemAtIndex:i];
+        if (mi.isSeparatorItem) continue;
+        if (mi.tag == 0) [menu removeItemAtIndex:i];
+    }
+}
+
+- (void)_applyEditorContextMenu:(EditorView *)editor {
+    if (!_editorContextMenu) [self _buildEditorContextMenu];
+    [editor.scintillaView setMenu:_editorContextMenu];
+}
+
+/// Apply context menu to ALL editors in all tab managers.
+- (void)applyEditorContextMenuToAll {
+    if (!_editorContextMenu) [self _buildEditorContextMenu];
+    for (TabManager *tm in @[_tabManager, _subTabManagerH, _subTabManagerV]) {
+        if (!tm) continue;
+        for (EditorView *ed in [tm allEditors]) {
+            [ed.scintillaView setMenu:_editorContextMenu];
+        }
+    }
+}
+
 #pragma mark - TabManagerDelegate
 
 - (void)tabManager:(id)tabManager didSelectEditor:(EditorView *)editor {
     _activeTabManager = tabManager;
+    [self _applyEditorContextMenu:editor];
     [self updateTitle];
     [self updateStatusBar];
     if (_docListPanel) [_docListPanel reloadData];
@@ -4970,10 +5203,16 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 }
 
 - (void)editPopupContextMenu:(id)sender {
-    NSAlert *a = [[NSAlert alloc] init];
-    a.messageText     = @"Edit Popup Context Menu";
-    a.informativeText = @"Context menu editing is not yet supported in this port.";
-    [a runModal];
+    // Open ~/.notepad++/contextMenu.xml for editing in Notepad++ itself
+    NSString *ctxPath = [nppConfigDir() stringByAppendingPathComponent:@"contextMenu.xml"];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:ctxPath]) {
+        [self openFileAtPath:ctxPath];
+    } else {
+        NSAlert *a = [[NSAlert alloc] init];
+        a.messageText     = @"contextMenu.xml Not Found";
+        a.informativeText = @"Restart Notepad++ to regenerate the default contextMenu.xml.";
+        [a runModal];
+    }
 }
 
 - (void)openUDLFolder:(id)sender {
