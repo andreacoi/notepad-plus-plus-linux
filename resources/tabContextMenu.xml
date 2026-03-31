@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+By modifying this file and renaming it to "tabContextMenu.xml", you can customize your context menu
+that appears when right clicking on a tab.
+
+Each <Item> references a command from the main menu bar:
+  MenuEntryName = top-level menu name (File, Edit, View, etc.)
+  MenuItemName  = the exact menu item title (case-insensitive)
+  FolderName    = optional submenu grouping
+  ItemNameAs    = optional display name override
+  id="0"        = separator line
+
+Special built-in commands (no MenuEntryName needed):
+  BuiltIn="PinTab"  = Pin/Unpin tab toggle
+-->
+<NotepadPlus>
+	<TabContextMenu>
+		<Item BuiltIn="PinTab"/>
+		<Item MenuEntryName="File" MenuItemName="Close"/>
+
+		<Item FolderName="Close Multiple Tabs" MenuEntryName="File" MenuItemName="Close All but Active Document"/>
+		<Item FolderName="Close Multiple Tabs" MenuEntryName="File" MenuItemName="Close All But Pinned"/>
+		<Item FolderName="Close Multiple Tabs" MenuEntryName="File" MenuItemName="Close All to the Left"/>
+		<Item FolderName="Close Multiple Tabs" MenuEntryName="File" MenuItemName="Close All to the Right"/>
+		<Item FolderName="Close Multiple Tabs" MenuEntryName="File" MenuItemName="Close All Unchanged"/>
+
+		<Item MenuEntryName="File" MenuItemName="Save"/>
+		<Item MenuEntryName="File" MenuItemName="Save As..."/>
+		<Item MenuEntryName="File" MenuItemName="Rename..."/>
+		<Item MenuEntryName="File" MenuItemName="Move to Trash"/>
+		<Item MenuEntryName="File" MenuItemName="Reload from Disk"/>
+		<Item MenuEntryName="File" MenuItemName="Print..."/>
+
+		<Item id="0"/>
+
+		<Item MenuEntryName="Edit" MenuItemName="Set Read-Only"/>
+		<Item MenuEntryName="Edit" MenuItemName="Clear Read-Only Flag"/>
+
+		<Item id="0"/>
+
+		<Item FolderName="Copy to Clipboard" MenuEntryName="Edit" MenuItemName="Copy Current Full File Path"/>
+		<Item FolderName="Copy to Clipboard" MenuEntryName="Edit" MenuItemName="Copy Current Filename"/>
+		<Item FolderName="Copy to Clipboard" MenuEntryName="Edit" MenuItemName="Copy Current Dir. Path"/>
+
+		<Item FolderName="Move Document" MenuEntryName="View" MenuItemName="Move to Start"/>
+		<Item FolderName="Move Document" MenuEntryName="View" MenuItemName="Move to End"/>
+		<Item FolderName="Move Document" id="0"/>
+		<Item FolderName="Move Document" MenuEntryName="View" MenuItemName="Move to Other Vertical View"/>
+		<Item FolderName="Move Document" MenuEntryName="View" MenuItemName="Clone to Other Vertical View"/>
+		<Item FolderName="Move Document" id="0"/>
+		<Item FolderName="Move Document" MenuEntryName="View" MenuItemName="Move to Other Horizontal View"/>
+		<Item FolderName="Move Document" MenuEntryName="View" MenuItemName="Clone to Other Horizontal View"/>
+		<Item FolderName="Move Document" id="0"/>
+		<Item FolderName="Move Document" MenuEntryName="View" MenuItemName="Reset View"/>
+
+		<Item FolderName="Apply Color to Tab" MenuEntryName="View" MenuItemName="Apply Color 1"/>
+		<Item FolderName="Apply Color to Tab" MenuEntryName="View" MenuItemName="Apply Color 2"/>
+		<Item FolderName="Apply Color to Tab" MenuEntryName="View" MenuItemName="Apply Color 3"/>
+		<Item FolderName="Apply Color to Tab" MenuEntryName="View" MenuItemName="Apply Color 4"/>
+		<Item FolderName="Apply Color to Tab" MenuEntryName="View" MenuItemName="Apply Color 5"/>
+		<Item FolderName="Apply Color to Tab" MenuEntryName="View" MenuItemName="Remove Color"/>
+	</TabContextMenu>
+</NotepadPlus>

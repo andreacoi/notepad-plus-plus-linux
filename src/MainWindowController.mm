@@ -103,6 +103,16 @@ static void ensureNppDirs(void) {
             NSLog(@"[Shortcuts] Copied default shortcuts.xml from bundle");
         }
     }
+
+    // Copy tabContextMenu_example.xml to ~/.notepad++/ as a template for user customization.
+    // User renames it to tabContextMenu.xml to activate custom tab context menu.
+    NSString *tabCtxExamplePath = [nppConfigDir() stringByAppendingPathComponent:@"tabContextMenu_example.xml"];
+    if (![fm fileExistsAtPath:tabCtxExamplePath]) {
+        NSString *bundleCopy = [[NSBundle mainBundle] pathForResource:@"tabContextMenu" ofType:@"xml"];
+        if (bundleCopy) {
+            [fm copyItemAtPath:bundleCopy toPath:tabCtxExamplePath error:nil];
+        }
+    }
 }
 
 // Toolbar item identifiers

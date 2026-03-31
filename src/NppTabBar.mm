@@ -604,57 +604,142 @@ static const CGFloat kPinSize = 11.0; // pin icon drawn at ~80% of original ~14p
 
 #pragma mark - Context menu
 
+/// Walk a menu recursively to find an item by title (case-insensitive, strips shortcuts).
+static NSMenuItem *_findMenuItemByTitle(NSMenu *menu, NSString *title) {
+    NSString *target = title.lowercaseString;
+    for (NSMenuItem *mi in menu.itemArray) {
+        if (mi.isSeparatorItem) continue;
+        // Strip keyboard shortcut suffix (everything after \t) and & accelerator markers
+        NSString *clean = mi.title;
+        NSRange tabR = [clean rangeOfString:@"\t"];
+        if (tabR.location != NSNotFound) clean = [clean substringToIndex:tabR.location];
+        clean = [clean stringByReplacingOccurrencesOfString:@"&" withString:@""];
+        clean = [clean stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+
+        if ([clean.lowercaseString isEqualToString:target]) return mi;
+
+        // Recurse into submenus
+        if (mi.submenu) {
+            NSMenuItem *found = _findMenuItemByTitle(mi.submenu, title);
+            if (found) return found;
+        }
+    }
+    return nil;
+}
+
+/// Load tab context menu from XML. Returns nil if file not found or parse fails.
+static NSMenu *_buildTabContextMenuFromXML(NSString *xmlPath) {
+    NSData *data = [NSData dataWithContentsOfFile:xmlPath];
+    if (!data) return nil;
+
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:0 error:nil];
+    if (!doc) return nil;
+
+    NSArray *items = [doc nodesForXPath:@"//TabContextMenu/Item" error:nil];
+    if (!items.count) return nil;
+
+    NSMenu *mainMenu = [NSApp mainMenu];
+    NSMenu *contextMenu = [[NSMenu alloc] initWithTitle:@""];
+    NSMutableDictionary<NSString *, NSMenu *> *folders = [NSMutableDictionary dictionary];
+    // Track folder insertion order for consistent submenu placement
+    NSMutableArray<NSString *> *folderOrder = [NSMutableArray array];
+
+    for (NSXMLElement *el in items) {
+        NSString *folderName = [[el attributeForName:@"FolderName"] stringValue];
+        NSString *menuEntry  = [[el attributeForName:@"MenuEntryName"] stringValue];
+        NSString *menuItem   = [[el attributeForName:@"MenuItemName"] stringValue];
+        NSString *displayAs  = [[el attributeForName:@"ItemNameAs"] stringValue];
+        NSString *builtIn    = [[el attributeForName:@"BuiltIn"] stringValue];
+        NSInteger itemId     = [[[el attributeForName:@"id"] stringValue] integerValue];
+
+        // Separator
+        if ([[el attributeForName:@"id"] stringValue] && itemId == 0) {
+            NSMenu *target = folderName.length ? folders[folderName] : contextMenu;
+            if (target) [target addItem:[NSMenuItem separatorItem]];
+            continue;
+        }
+
+        // Built-in special commands (not in main menu)
+        if (builtIn.length) {
+            if ([builtIn isEqualToString:@"PinTab"]) {
+                NSMenuItem *pinItem = [[NSMenuItem alloc] initWithTitle:@"Pin Tab"
+                                                                action:@selector(pinCurrentTab:)
+                                                         keyEquivalent:@""];
+                [contextMenu addItem:pinItem];
+            }
+            continue;
+        }
+
+        if (!menuEntry.length || !menuItem.length) continue;
+
+        // Find the top-level menu matching MenuEntryName
+        NSMenu *entryMenu = nil;
+        for (NSMenuItem *top in mainMenu.itemArray) {
+            NSString *title = top.submenu.title ?: top.title;
+            if ([title.lowercaseString isEqualToString:menuEntry.lowercaseString]) {
+                entryMenu = top.submenu;
+                break;
+            }
+        }
+        if (!entryMenu) continue;
+
+        // Find the specific item within that menu (recursive search)
+        NSMenuItem *found = _findMenuItemByTitle(entryMenu, menuItem);
+        if (!found || !found.action) continue;
+
+        // Build context menu item with the resolved action
+        NSString *title = displayAs.length ? displayAs : found.title;
+        NSMenuItem *ctxItem = [[NSMenuItem alloc] initWithTitle:title
+                                                         action:found.action
+                                                  keyEquivalent:@""];
+        ctxItem.target = found.target;
+
+        // Copy color swatch image from main menu item (for Apply Color items)
+        if (found.image) ctxItem.image = found.image;
+
+        // Add to folder submenu or top level
+        if (folderName.length) {
+            if (!folders[folderName]) {
+                folders[folderName] = [[NSMenu alloc] initWithTitle:folderName];
+                [folderOrder addObject:folderName];
+                NSMenuItem *parent = [[NSMenuItem alloc] initWithTitle:folderName
+                                                                action:nil keyEquivalent:@""];
+                parent.submenu = folders[folderName];
+                parent.tag = 99000 + (NSInteger)folderOrder.count; // unique tag for ordering
+                [contextMenu addItem:parent];
+            }
+            [folders[folderName] addItem:ctxItem];
+        } else {
+            [contextMenu addItem:ctxItem];
+        }
+    }
+
+    // Clean up: remove trailing/leading/duplicate separators
+    while (contextMenu.numberOfItems > 0 && [contextMenu itemAtIndex:0].isSeparatorItem)
+        [contextMenu removeItemAtIndex:0];
+    while (contextMenu.numberOfItems > 0 &&
+           [contextMenu itemAtIndex:contextMenu.numberOfItems - 1].isSeparatorItem)
+        [contextMenu removeItemAtIndex:contextMenu.numberOfItems - 1];
+
+    return contextMenu.numberOfItems > 0 ? contextMenu : nil;
+}
+
 - (NSMenu *)buildTabContextMenu {
-    NSMenu * (^sub)(NSString *) = ^NSMenu *(NSString *t) { return [[NSMenu alloc] initWithTitle:t]; };
-    NSMenuItem * (^it)(NSString *, SEL) = ^NSMenuItem *(NSString *t, SEL s) {
-        return [[NSMenuItem alloc] initWithTitle:t action:s keyEquivalent:@""];
-    };
-    NSMenuItem * (^withSub)(NSString *, NSMenu *) = ^NSMenuItem *(NSString *t, NSMenu *m) {
-        NSMenuItem *i = [[NSMenuItem alloc] initWithTitle:t action:nil keyEquivalent:@""];
-        i.submenu = m; return i;
-    };
+    // Try user-customized tabContextMenu.xml first
+    NSString *configDir = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++"];
+    NSString *customPath = [configDir stringByAppendingPathComponent:@"tabContextMenu.xml"];
+    NSMenu *menu = _buildTabContextMenuFromXML(customPath);
+    if (menu) return menu;
 
-    NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
-    [menu addItem:it(@"Pin Tab",  @selector(pinCurrentTab:))];
-    [menu addItem:it(@"Close",    @selector(closeCurrentTab:))];
+    // Fall back to bundled default
+    NSString *bundledPath = [[NSBundle mainBundle] pathForResource:@"tabContextMenu" ofType:@"xml"];
+    menu = _buildTabContextMenuFromXML(bundledPath);
+    if (menu) return menu;
 
-    NSMenu *cm = sub(@"Close Multiple Tabs");
-    [cm addItem:it(@"Close All But This",     @selector(closeAllButCurrent:))];
-    [cm addItem:it(@"Close All to the Left",  @selector(closeAllToLeft:))];
-    [cm addItem:it(@"Close All to the Right", @selector(closeAllToRight:))];
-    [cm addItem:it(@"Close All Unchanged",    @selector(closeAllUnchanged:))];
-    [menu addItem:withSub(@"Close Multiple Tabs", cm)];
-
-    [menu addItem:[NSMenuItem separatorItem]];
-    [menu addItem:it(@"Save",     @selector(saveDocument:))];
-    [menu addItem:it(@"Save As…", @selector(saveDocumentAs:))];
-    [menu addItem:it(@"Rename…",  @selector(renameDocument:))];
-
-    [menu addItem:[NSMenuItem separatorItem]];
-    [menu addItem:it(@"Reload from Disk", @selector(reloadFromDisk:))];
-    [menu addItem:it(@"Move to Trash",    @selector(moveToTrash:))];
-    [menu addItem:it(@"Print…",           @selector(printDocument:))];
-
-    [menu addItem:[NSMenuItem separatorItem]];
-    [menu addItem:it(@"Read-Only in Notepad++", @selector(toggleReadOnly:))];
-
-    [menu addItem:[NSMenuItem separatorItem]];
-    NSMenu *cp = sub(@"Copy to Clipboard");
-    [cp addItem:it(@"Copy Full File Path",         @selector(copyFullFilePath:))];
-    [cp addItem:it(@"Copy File Name",              @selector(copyFileName:))];
-    [cp addItem:it(@"Copy Current Directory Path", @selector(copyCurrentDirectoryPath:))];
-    [menu addItem:withSub(@"Copy to Clipboard", cp)];
-
-    NSMenu *mv = sub(@"Move Document");
-    [mv addItem:it(@"Move to Other Vertical View",    @selector(moveToOtherVerticalView:))];
-    [mv addItem:it(@"Clone to Other Vertical View",   @selector(cloneToOtherVerticalView:))];
-    [mv addItem:[NSMenuItem separatorItem]];
-    [mv addItem:it(@"Move to Other Horizontal View",  @selector(moveToOtherHorizontalView:))];
-    [mv addItem:it(@"Clone to Other Horizontal View", @selector(cloneToOtherHorizontalView:))];
-    [mv addItem:[NSMenuItem separatorItem]];
-    [mv addItem:it(@"Reset View",                     @selector(resetView:))];
-    [menu addItem:withSub(@"Move Document", mv)];
-
+    // Ultimate fallback: minimal hardcoded menu
+    menu = [[NSMenu alloc] initWithTitle:@""];
+    [menu addItemWithTitle:@"Close" action:@selector(closeCurrentTab:) keyEquivalent:@""];
+    [menu addItemWithTitle:@"Save" action:@selector(saveDocument:) keyEquivalent:@""];
     return menu;
 }
 

@@ -201,6 +201,13 @@ add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
         "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/shortcuts.xml"
     COMMENT "Copying default shortcuts.xml into bundle")
 
+# Default tabContextMenu.xml (copied to ~/.notepad++/ on first run)
+add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/resources/tabContextMenu.xml"
+        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/tabContextMenu.xml"
+    COMMENT "Copying default tabContextMenu.xml into bundle")
+
 # Localized display name so Dock shows "Notepad++" not "NotepadPlusPlus"
 add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory
