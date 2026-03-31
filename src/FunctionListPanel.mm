@@ -1,6 +1,7 @@
 #import "FunctionListPanel.h"
 #import "NppLocalizer.h"
 #import "StyleConfiguratorWindowController.h"
+#import "PreferencesWindowController.h"
 #import "Scintilla.h"
 #import "ScintillaMessages.h"
 #import "NppThemeManager.h"
@@ -88,7 +89,16 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
 
     // Empty state
     NSTextField *_emptyLabel;
+
+    // Background scanning
+    NSUInteger _scanGeneration;         // incremented on each loadEditor, cancels stale scans
+
+    // Line offset table (built once per scan, used for O(log n) line lookups)
+    NSUInteger *_lineOffsets;           // array of byte offsets where each line starts
+    NSUInteger  _lineOffsetCount;       // number of lines
 }
+
+// dealloc is below (after init) — _lineOffsets freed there
 
 #pragma mark - Init
 
@@ -113,7 +123,11 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
 
 - (instancetype)init { return [self initWithFrame:NSZeroRect]; }
 
-- (void)dealloc { [[NSNotificationCenter defaultCenter] removeObserver:self]; }
+- (void)dealloc {
+    free(_lineOffsets);
+    _lineOffsets = NULL;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 #pragma mark - Icons
 
@@ -310,33 +324,403 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
     _editor = editor;
     [_rootItems removeAllObjects];
     [_filteredItems removeAllObjects];
+    [_outlineView reloadData];
+    [self _updateEmptyState];
 
-    if (!editor) {
-        [_outlineView reloadData];
-        [self _updateEmptyState];
-        return;
-    }
+    if (!editor) return;
 
-    // Grab full text from Scintilla
+    // Grab full text from Scintilla (must be on main thread — Scintilla is not thread-safe)
     intptr_t len = [editor.scintillaView message:SCI_GETLENGTH];
     char *buf = (char *)malloc((size_t)len + 1);
-    if (!buf) { [self _updateEmptyState]; return; }
+    if (!buf) return;
     [editor.scintillaView message:SCI_GETTEXT wParam:(uptr_t)(len + 1) lParam:(sptr_t)buf];
     NSString *text = [[NSString alloc] initWithBytes:buf length:(NSUInteger)len
                                             encoding:NSUTF8StringEncoding];
-    free(buf);
-    if (!text) { [self _updateEmptyState]; return; }
+    if (!text) { free(buf); return; }
 
-    [self _scanText:text forLanguage:editor.currentLanguage];
-    [self _rebuildFilteredItems];
-    [_outlineView reloadData];
-    [self _expandAllNodes];
-    [self _updateEmptyState];
+    // Build line offset table from raw UTF-8 (fast, single pass)
+    [self _buildLineOffsetsFromUTF8:buf length:(NSUInteger)len];
+    free(buf);
+
+    NSString *lang = editor.currentLanguage;
+
+    // Increment generation to cancel any in-flight background scan
+    NSUInteger gen = ++_scanGeneration;
+
+    // Dispatch scanning to background queue
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        // Check if this scan is still current
+        if (gen != self->_scanGeneration) return;
+
+        [self _scanText:text forLanguage:lang];
+
+        if (gen != self->_scanGeneration) return;
+
+        // Update UI on main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (gen != self->_scanGeneration) return;
+            [self _rebuildFilteredItems];
+            [self->_outlineView reloadData];
+            [self _expandAllNodes];
+            [self _updateEmptyState];
+        });
+    });
 }
 
 - (void)reload {
     EditorView *ed = _editor;
     if (ed) [self loadEditor:ed];
+}
+
+#pragma mark - Line offset table (O(n) build, O(log n) lookup)
+
+/// Build a table of byte offsets for the start of each line.
+- (void)_buildLineOffsetsFromUTF8:(const char *)utf8 length:(NSUInteger)len {
+    free(_lineOffsets);
+    // Estimate: one line per 40 bytes on average
+    NSUInteger cap = MAX(len / 40, 256);
+    _lineOffsets = (NSUInteger *)malloc(cap * sizeof(NSUInteger));
+    _lineOffsetCount = 0;
+
+    _lineOffsets[_lineOffsetCount++] = 0; // line 1 starts at offset 0
+    for (NSUInteger i = 0; i < len; i++) {
+        if (utf8[i] == '\n') {
+            if (_lineOffsetCount >= cap) {
+                cap *= 2;
+                _lineOffsets = (NSUInteger *)realloc(_lineOffsets, cap * sizeof(NSUInteger));
+            }
+            _lineOffsets[_lineOffsetCount++] = i + 1;
+        }
+    }
+}
+
+/// Fast O(log n) line lookup using the pre-built offset table. Returns 1-based line number.
+- (NSInteger)_fastLineForPos:(NSUInteger)pos {
+    if (!_lineOffsets || _lineOffsetCount == 0) return 1;
+    // Binary search: find the last offset <= pos
+    NSUInteger lo = 0, hi = _lineOffsetCount;
+    while (lo < hi) {
+        NSUInteger mid = (lo + hi) / 2;
+        if (_lineOffsets[mid] <= pos) lo = mid + 1;
+        else hi = mid;
+    }
+    return (NSInteger)lo; // lo is 1-based line number
+}
+
+#pragma mark - XML/regex cache
+
+/// Cache parsed XML parser elements + compiled regexes per language.
+/// Key = language name, Value = NSDictionary with parsed data.
+static NSMutableDictionary<NSString *, NSDictionary *> *_xmlParserCache = nil;
+
+static NSDictionary *_cachedParserForLanguage(NSString *lang) {
+    if (!_xmlParserCache) _xmlParserCache = [NSMutableDictionary new];
+    return _xmlParserCache[lang];
+}
+
+static void _cacheParser(NSString *lang, NSDictionary *entry) {
+    if (!_xmlParserCache) _xmlParserCache = [NSMutableDictionary new];
+    _xmlParserCache[lang] = entry;
+}
+
+#pragma mark - XML-based function list parser engine
+
+/// Convert PCRE regex to ICU-compatible regex. Returns nil if unconvertible
+/// (e.g. uses (?(DEFINE)...) or (?&name) subroutines).
+static NSString *_pcreToICU(NSString *pcre) {
+    if (!pcre.length) return nil;
+
+    // Features that cannot be converted — bail out to hardcoded fallback
+    if ([pcre containsString:@"(?(DEFINE)"] || [pcre containsString:@"(?&"])
+        return nil;
+
+    NSMutableString *s = [pcre mutableCopy];
+
+    // \K (reset match start) — remove it; we'll match from the start and use nameExpr to extract
+    [s replaceOccurrencesOfString:@"\\K" withString:@""
+                          options:0 range:NSMakeRange(0, s.length)];
+
+    // \h (horizontal whitespace) → [\\t ]
+    [s replaceOccurrencesOfString:@"\\h" withString:@"[\\t\\x20]"
+                          options:0 range:NSMakeRange(0, s.length)];
+
+    // Named groups: (?'name'...) → (?<name>...)
+    {
+        NSRegularExpression *re = [NSRegularExpression
+            regularExpressionWithPattern:@"\\(\\?'(\\w+)'" options:0 error:nil];
+        if (re) {
+            NSString *replaced = [re stringByReplacingMatchesInString:s options:0
+                range:NSMakeRange(0, s.length) withTemplate:@"(?<$1>"];
+            s = [replaced mutableCopy];
+        }
+    }
+
+    // Named backrefs: \k'name' → \k<name>
+    {
+        NSRegularExpression *re = [NSRegularExpression
+            regularExpressionWithPattern:@"\\\\k'(\\w+)'" options:0 error:nil];
+        if (re) {
+            NSString *replaced = [re stringByReplacingMatchesInString:s options:0
+                range:NSMakeRange(0, s.length) withTemplate:@"\\k<$1>"];
+            s = [replaced mutableCopy];
+        }
+    }
+
+    // Scoped modifiers (?m-s:...) → strip the -s part (ICU doesn't support negated inline modifiers in groups)
+    // Replace (?m-s: with (?m: and (?-s: with (?:
+    {
+        NSRegularExpression *re = [NSRegularExpression
+            regularExpressionWithPattern:@"\\(\\?([a-z]*)-([a-z]+):" options:0 error:nil];
+        if (re) {
+            NSString *replaced = [re stringByReplacingMatchesInString:s options:0
+                range:NSMakeRange(0, s.length) withTemplate:@"(?$1:"];
+            s = [replaced mutableCopy];
+        }
+    }
+
+    // XML entities that might appear in attributes: &lt; &gt; &amp;
+    [s replaceOccurrencesOfString:@"&lt;" withString:@"<"
+                          options:0 range:NSMakeRange(0, s.length)];
+    [s replaceOccurrencesOfString:@"&gt;" withString:@">"
+                          options:0 range:NSMakeRange(0, s.length)];
+    [s replaceOccurrencesOfString:@"&amp;" withString:@"&"
+                          options:0 range:NSMakeRange(0, s.length)];
+
+    return s;
+}
+
+/// Try to compile an ICU regex from a PCRE pattern. Returns nil on failure.
+static NSRegularExpression *_compilePattern(NSString *pcre, NSRegularExpressionOptions opts) {
+    NSString *icu = _pcreToICU(pcre);
+    if (!icu) return nil;
+    NSError *err = nil;
+    NSRegularExpression *re = [NSRegularExpression regularExpressionWithPattern:icu options:opts error:&err];
+    if (err) {
+        NSLog(@"[FuncList] Regex compile failed: %@ — pattern: %.80s...", err.localizedDescription, icu.UTF8String);
+        return nil;
+    }
+    return re;
+}
+
+/// Load a function list XML file. Returns the <parser> element or nil.
+static NSXMLElement *_loadParserXML(NSString *lang) {
+    NSFileManager *fm = [NSFileManager defaultManager];
+
+    // 1. Check user override: ~/.notepad++/functionList/<lang>.xml
+    NSString *userPath = [NSHomeDirectory() stringByAppendingPathComponent:
+                          [NSString stringWithFormat:@".notepad++/functionList/%@.xml", lang]];
+    NSData *data = [fm fileExistsAtPath:userPath] ? [NSData dataWithContentsOfFile:userPath] : nil;
+
+    // 2. Fall back to bundled: Resources/functionList/<lang>.xml
+    if (!data) {
+        NSString *bundlePath = [[NSBundle mainBundle] pathForResource:lang ofType:@"xml"
+                                                         inDirectory:@"functionList"];
+        if (bundlePath) data = [NSData dataWithContentsOfFile:bundlePath];
+    }
+    if (!data) return nil;
+
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:0 error:nil];
+    if (!doc) return nil;
+
+    NSArray *parsers = [doc nodesForXPath:@"//functionList/parser" error:nil];
+    return parsers.count ? (NSXMLElement *)parsers[0] : nil;
+}
+
+/// Extract name from text using a chain of nameExpr elements (last one refines).
+static NSString *_extractName(NSString *matchedText, NSArray<NSXMLElement *> *nameExprs) {
+    NSString *result = matchedText;
+    for (NSXMLElement *ne in nameExprs) {
+        NSString *pattern = [[ne attributeForName:@"expr"] stringValue];
+        if (!pattern.length) continue;
+        NSRegularExpression *re = _compilePattern(pattern, 0);
+        if (!re) continue;
+        NSTextCheckingResult *m = [re firstMatchInString:result options:0
+                                                   range:NSMakeRange(0, result.length)];
+        if (m) result = [result substringWithRange:m.range];
+    }
+    return [result stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
+/// Build an NSIndexSet of comment ranges (excluded from function matching).
+/// No string mutation — just tracks which byte ranges are comments.
+static NSIndexSet *_commentRanges(NSString *text, NSString *commentExpr) {
+    if (!commentExpr.length) return nil;
+    NSRegularExpression *re = _compilePattern(commentExpr,
+        NSRegularExpressionAnchorsMatchLines | NSRegularExpressionDotMatchesLineSeparators);
+    if (!re) return nil;
+
+    NSMutableIndexSet *ranges = [NSMutableIndexSet new];
+    [re enumerateMatchesInString:text options:0 range:NSMakeRange(0, text.length)
+                      usingBlock:^(NSTextCheckingResult *m, NSMatchingFlags f, BOOL *stop) {
+        [ranges addIndexesInRange:m.range];
+    }];
+    return ranges.count ? ranges : nil;
+}
+
+/// Check if a match range overlaps with comment ranges.
+static BOOL _isInComment(NSRange range, NSIndexSet *commentRanges) {
+    if (!commentRanges) return NO;
+    return [commentRanges intersectsIndexesInRange:range];
+}
+
+/// XML-based scan: parse a function list XML and populate _rootItems.
+/// Returns YES if successful, NO if XML not found or unconvertible (fall back to hardcoded).
+- (BOOL)_scanTextWithXML:(NSString *)text forLanguage:(NSString *)lang {
+    // ── Load parser (cached) ──────────────────────────────────────────
+    NSDictionary *cached = _cachedParserForLanguage(lang);
+    NSXMLElement *parser = nil;
+    NSRegularExpression *commentRE = nil;
+
+    if (cached) {
+        parser = cached[@"parser"];
+        commentRE = cached[@"commentRE"]; // may be [NSNull null]
+    } else {
+        parser = _loadParserXML(lang);
+        if (!parser) return NO;
+
+        NSString *commentExpr = [[parser attributeForName:@"commentExpr"] stringValue];
+        commentRE = commentExpr.length ? _compilePattern(commentExpr,
+            NSRegularExpressionAnchorsMatchLines | NSRegularExpressionDotMatchesLineSeparators) : nil;
+
+        _cacheParser(lang, @{
+            @"parser": parser,
+            @"commentRE": commentRE ?: [NSNull null]
+        });
+    }
+    if (!parser) return NO;
+    if ([commentRE isEqual:[NSNull null]]) commentRE = nil;
+
+    // ── Build comment exclusion ranges ────────────────────────────────
+    NSIndexSet *commentRanges = nil;
+    if (commentRE) {
+        NSMutableIndexSet *cRanges = [NSMutableIndexSet new];
+        [commentRE enumerateMatchesInString:text options:0 range:NSMakeRange(0, text.length)
+                                 usingBlock:^(NSTextCheckingResult *m, NSMatchingFlags f, BOOL *stop) {
+            [cRanges addIndexesInRange:m.range];
+        }];
+        if (cRanges.count) commentRanges = cRanges;
+    }
+
+    // ── Collect parser elements ───────────────────────────────────────
+    NSArray<NSXMLElement *> *classRangeEls = [parser nodesForXPath:@"classRange" error:nil];
+    NSArray<NSXMLElement *> *topFuncEls = [parser nodesForXPath:@"function" error:nil];
+    NSMutableArray<NSXMLElement *> *topLevelFuncs = [NSMutableArray array];
+    for (NSXMLElement *fe in topFuncEls) {
+        if (![fe.parent.name isEqualToString:@"classRange"])
+            [topLevelFuncs addObject:fe];
+    }
+
+    BOOL didParse = NO;
+
+    // ── Process classRange elements ───────────────────────────────────
+    for (NSXMLElement *crEl in classRangeEls) {
+        NSString *crMainExpr = [[crEl attributeForName:@"mainExpr"] stringValue];
+        NSRegularExpression *crRE = _compilePattern(crMainExpr,
+            NSRegularExpressionAnchorsMatchLines | NSRegularExpressionDotMatchesLineSeparators);
+        if (!crRE) continue;
+        didParse = YES;
+
+        NSArray<NSXMLElement *> *classNameExprs = [crEl nodesForXPath:@"className/nameExpr" error:nil];
+        NSArray<NSXMLElement *> *nestedFuncEls = [crEl nodesForXPath:@"function" error:nil];
+
+        [crRE enumerateMatchesInString:text options:0
+                                 range:NSMakeRange(0, text.length)
+                            usingBlock:^(NSTextCheckingResult *m, NSMatchingFlags f, BOOL *stop) {
+            if (_isInComment(m.range, commentRanges)) return;
+
+            NSString *matchedText = [text substringWithRange:m.range];
+            NSString *className = classNameExprs.count
+                ? _extractName(matchedText, classNameExprs)
+                : [matchedText componentsSeparatedByCharactersInSet:
+                   [NSCharacterSet whitespaceAndNewlineCharacterSet]][0];
+            if (!className.length) return;
+
+            NSInteger classLine = [self _fastLineForPos:m.range.location];
+            _FuncItem *classNode = [[_FuncItem alloc] initWithName:className line:classLine
+                                                               pos:(NSInteger)m.range.location isNode:YES];
+
+            for (NSXMLElement *funcEl in nestedFuncEls) {
+                NSString *funcMainExpr = [[funcEl attributeForName:@"mainExpr"] stringValue];
+                NSRegularExpression *funcRE = _compilePattern(funcMainExpr,
+                    NSRegularExpressionAnchorsMatchLines);
+                if (!funcRE) continue;
+
+                NSArray<NSXMLElement *> *funcNameExprs = [funcEl nodesForXPath:@"functionName/funcNameExpr" error:nil];
+                if (!funcNameExprs.count)
+                    funcNameExprs = [funcEl nodesForXPath:@"functionName/nameExpr" error:nil];
+
+                [funcRE enumerateMatchesInString:matchedText options:0
+                                           range:NSMakeRange(0, matchedText.length)
+                                      usingBlock:^(NSTextCheckingResult *fm2, NSMatchingFlags f2, BOOL *stop2) {
+                    NSString *funcMatch = [matchedText substringWithRange:fm2.range];
+                    NSString *funcName = funcNameExprs.count
+                        ? _extractName(funcMatch, funcNameExprs) : funcMatch;
+                    if (!funcName.length) return;
+
+                    NSUInteger absPos = m.range.location + fm2.range.location;
+                    NSInteger funcLine = [self _fastLineForPos:absPos];
+                    _FuncItem *leaf = [[_FuncItem alloc] initWithName:funcName line:funcLine
+                                                                 pos:(NSInteger)absPos isNode:NO];
+                    [classNode.children addObject:leaf];
+                }];
+            }
+
+            [self->_rootItems addObject:classNode];
+        }];
+    }
+
+    // ── Process top-level function elements ───────────────────────────
+    for (NSXMLElement *funcEl in topLevelFuncs) {
+        NSString *funcMainExpr = [[funcEl attributeForName:@"mainExpr"] stringValue];
+        NSRegularExpression *funcRE = _compilePattern(funcMainExpr,
+            NSRegularExpressionAnchorsMatchLines);
+        if (!funcRE) continue;
+        didParse = YES;
+
+        NSArray<NSXMLElement *> *funcNameExprs = [funcEl nodesForXPath:@"functionName/funcNameExpr" error:nil];
+        if (!funcNameExprs.count)
+            funcNameExprs = [funcEl nodesForXPath:@"functionName/nameExpr" error:nil];
+        NSArray<NSXMLElement *> *topClassExprs = [funcEl nodesForXPath:@"className/nameExpr" error:nil];
+
+        [funcRE enumerateMatchesInString:text options:0
+                                   range:NSMakeRange(0, text.length)
+                              usingBlock:^(NSTextCheckingResult *fm3, NSMatchingFlags f3, BOOL *stop3) {
+            if (_isInComment(fm3.range, commentRanges)) return;
+
+            NSString *funcMatch = [text substringWithRange:fm3.range];
+            NSString *funcName = funcNameExprs.count
+                ? _extractName(funcMatch, funcNameExprs) : funcMatch;
+            if (!funcName.length) return;
+
+            NSInteger funcLine = [self _fastLineForPos:fm3.range.location];
+            _FuncItem *leaf = [[_FuncItem alloc] initWithName:funcName line:funcLine
+                                                         pos:(NSInteger)fm3.range.location isNode:NO];
+
+            if (topClassExprs.count) {
+                NSString *clsName = _extractName(funcMatch, topClassExprs);
+                if (clsName.length) {
+                    _FuncItem *parent = nil;
+                    for (_FuncItem *existing in self->_rootItems) {
+                        if (existing.isNode && [existing.name isEqualToString:clsName]) {
+                            parent = existing;
+                            break;
+                        }
+                    }
+                    if (!parent) {
+                        parent = [[_FuncItem alloc] initWithName:clsName line:funcLine
+                                                             pos:(NSInteger)fm3.range.location isNode:YES];
+                        [self->_rootItems addObject:parent];
+                    }
+                    [parent.children addObject:leaf];
+                    return;
+                }
+            }
+
+            [self->_rootItems addObject:leaf];
+        }];
+    }
+
+    return didParse;
 }
 
 #pragma mark - Scanning (hierarchical: classes → methods)
@@ -345,20 +729,37 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
     [_rootItems removeAllObjects];
     lang = lang.lowercaseString;
 
+    // If XML-based parsing is enabled, try the multi-stage XML parser first.
+    // Falls back to hardcoded regex if XML not found or patterns are unconvertible.
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kPrefFuncListUseXML]) {
+        if ([self _scanTextWithXML:text forLanguage:lang])
+            return; // XML parser succeeded
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // Hardcoded regex fallback (original approach)
+    // ═══════════════════════════════════════════════════════════════════
+
     // === Phase 1: Detect classes/structs/protocols ===
     NSMutableArray<_FuncItem *> *classNodes = [NSMutableArray array];
 
-    NSString *classPattern = nil;
-    if ([@[@"c", @"cpp", @"objc", @"swift", @"java", @"cs", @"typescript", @"javascript",
-           @"javascript.js", @"go", @"d", @"rust", @"kotlin"] containsObject:lang]) {
-        classPattern = @"(?m)^[ \\t]*(?:public\\s+|private\\s+|protected\\s+|internal\\s+|abstract\\s+|final\\s+|static\\s+)*"
-                       @"(?:class|struct|protocol|interface|enum)\\s+(\\w+)";
-    } else if ([lang isEqualToString:@"python"]) {
-        classPattern = @"(?m)^class\\s+(\\w+)";
-    } else if ([lang isEqualToString:@"ruby"]) {
-        classPattern = @"(?m)^[ \\t]*(?:class|module)\\s+(\\w+)";
-    } else if ([lang isEqualToString:@"php"]) {
-        classPattern = @"(?m)^[ \\t]*(?:abstract\\s+|final\\s+)?class\\s+(\\w+)";
+    // Check user override for class pattern
+    NSString *userClassPattern = nil;
+    _userFuncPatternForLanguage(lang, &userClassPattern);
+
+    NSString *classPattern = userClassPattern; // nil if no user override
+    if (!classPattern) {
+        if ([@[@"c", @"cpp", @"objc", @"swift", @"java", @"cs", @"typescript", @"javascript",
+               @"javascript.js", @"go", @"d", @"rust", @"kotlin"] containsObject:lang]) {
+            classPattern = @"(?m)^[ \\t]*(?:public\\s+|private\\s+|protected\\s+|internal\\s+|abstract\\s+|final\\s+|static\\s+)*"
+                           @"(?:class|struct|protocol|interface|enum)\\s+(\\w+)";
+        } else if ([lang isEqualToString:@"python"]) {
+            classPattern = @"(?m)^class\\s+(\\w+)";
+        } else if ([lang isEqualToString:@"ruby"]) {
+            classPattern = @"(?m)^[ \\t]*(?:class|module)\\s+(\\w+)";
+        } else if ([lang isEqualToString:@"php"]) {
+            classPattern = @"(?m)^[ \\t]*(?:abstract\\s+|final\\s+)?class\\s+(\\w+)";
+        }
     }
 
     // Build a list of class ranges: {name, startLine, startPos, endPos}
@@ -375,7 +776,7 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
                 if (nameR.location == NSNotFound) return;
                 NSString *name = [text substringWithRange:nameR];
                 NSUInteger startPos = m.range.location;
-                NSInteger line = [self _lineForPos:startPos inText:text];
+                NSInteger line = [self _fastLineForPos:startPos];
 
                 _FuncItem *node = [[_FuncItem alloc] initWithName:name line:line pos:(NSInteger)startPos isNode:YES];
                 [classNodes addObject:node];
@@ -423,7 +824,7 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
         // Use the position of the captured NAME (not the full match start)
         // to get the exact line the function name appears on
         NSUInteger pos = nameR.location;
-        NSInteger line = [self _lineForPos:pos inText:text];
+        NSInteger line = [self _fastLineForPos:pos];
 
         _FuncItem *leaf = [[_FuncItem alloc] initWithName:name line:line pos:(NSInteger)pos isNode:NO];
 
@@ -461,7 +862,45 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
     }];
 }
 
+/// Check ~/.notepad++/functionList/<lang>.xml for a user-defined pattern override.
+/// Expected format:
+///   <NotepadPlus><functionList><parser>
+///     <function mainExpr="regex-with-capture-group-1-for-name" />
+///     <classRange mainExpr="regex-with-capture-group-1-for-name" />  (optional)
+///   </parser></functionList></NotepadPlus>
+/// Returns nil if no user override exists or the file can't be parsed.
+static NSString *_userFuncPatternForLanguage(NSString *lang, NSString * __autoreleasing *outClassPattern) {
+    NSString *path = [NSHomeDirectory() stringByAppendingPathComponent:
+                      [NSString stringWithFormat:@".notepad++/functionList/%@.xml", lang.lowercaseString]];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    if (!data) return nil;
+
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:0 error:nil];
+    if (!doc) return nil;
+
+    // Extract function mainExpr
+    NSArray *funcNodes = [doc nodesForXPath:@"//functionList/parser/function" error:nil];
+    NSString *funcExpr = nil;
+    if (funcNodes.count) {
+        funcExpr = [[(NSXMLElement *)funcNodes[0] attributeForName:@"mainExpr"] stringValue];
+    }
+
+    // Extract optional classRange mainExpr
+    if (outClassPattern) {
+        NSArray *classNodes = [doc nodesForXPath:@"//functionList/parser/classRange" error:nil];
+        if (classNodes.count) {
+            *outClassPattern = [[(NSXMLElement *)classNodes[0] attributeForName:@"mainExpr"] stringValue];
+        }
+    }
+
+    return funcExpr;
+}
+
 - (NSString *)_funcPatternForLanguage:(NSString *)lang {
+    // Check user override first
+    NSString *userPattern = _userFuncPatternForLanguage(lang, nil);
+    if (userPattern.length) return userPattern;
+
     if ([lang isEqualToString:@"python"])
         return @"(?m)^[ \\t]*(?:async\\s+)?def\\s+(\\w+)\\s*\\(";
     if ([lang isEqualToString:@"ruby"])
@@ -546,15 +985,7 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
 
 #pragma mark - Helpers
 
-- (NSInteger)_lineForPos:(NSUInteger)pos inText:(NSString *)text {
-    NSUInteger nl = 0;
-    NSUInteger limit = MIN(pos, text.length);
-    const char *utf8 = text.UTF8String;
-    for (NSUInteger i = 0; i < limit; i++) {
-        if (utf8[i] == '\n') nl++;
-    }
-    return (NSInteger)(nl + 1);
-}
+// _lineForPos:inText: removed — replaced by _fastLineForPos: (O(log n) binary search)
 
 - (NSUInteger)_findBraceOpen:(NSString *)text from:(NSUInteger)start {
     NSUInteger len = text.length;

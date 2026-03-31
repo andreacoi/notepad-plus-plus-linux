@@ -256,6 +256,395 @@ static NSMenu *_buildEditorContextMenuFromXML(NSString *xmlPath) {
     return contextMenu.numberOfItems > 0 ? contextMenu : nil;
 }
 
+#pragma mark - config.xml read/write
+
+static NSString *_configXmlPath(void) {
+    return [nppConfigDir() stringByAppendingPathComponent:@"config.xml"];
+}
+
+/// Helper: "yes"/"no" string from BOOL
+static NSString *_yn(BOOL v) { return v ? @"yes" : @"no"; }
+/// Helper: "show"/"hide" string from BOOL
+static NSString *_sh(BOOL v) { return v ? @"show" : @"hide"; }
+/// Helper: BOOL from "yes"/"no" (default NO)
+static BOOL _ynBool(NSString *s) { return [s.lowercaseString isEqualToString:@"yes"]; }
+/// Helper: BOOL from "show"/"hide" (default NO)
+static BOOL _shBool(NSString *s) { return [s.lowercaseString isEqualToString:@"show"]; }
+
+/// Write current preferences from NSUserDefaults to ~/.notepad++/config.xml.
+void writeConfigXML(void) {
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+
+    // Convenience: read prefs
+    BOOL useTabs       = [ud boolForKey:kPrefUseTabs];
+    NSInteger tabWidth = [ud integerForKey:kPrefTabWidth];
+    BOOL autoIndent    = [ud boolForKey:kPrefAutoIndent];
+    BOOL showLineNum   = [ud boolForKey:kPrefShowLineNumbers];
+    BOOL wordWrap      = [ud boolForKey:kPrefWordWrap];
+    BOOL highlightLine = [ud boolForKey:kPrefHighlightCurrentLine];
+    NSInteger eolType  = [ud integerForKey:kPrefEOLType];
+    NSInteger encoding = [ud integerForKey:kPrefEncoding];
+    BOOL autoBackup    = [ud boolForKey:kPrefAutoBackup];
+    NSInteger backupInterval = [ud integerForKey:kPrefBackupInterval];
+    NSInteger zoom     = [ud integerForKey:kPrefZoomLevel];
+    BOOL autoComplete  = [ud boolForKey:kPrefAutoCompleteEnable];
+    NSInteger acMinChars = [ud integerForKey:kPrefAutoCompleteMinChars];
+    BOOL autoClose     = [ud boolForKey:kPrefAutoCloseBrackets];
+    BOOL fullPathTitle = [ud boolForKey:kPrefShowFullPathInTitle];
+    NSInteger caretW   = [ud integerForKey:kPrefCaretWidth];
+    NSInteger caretBlink = [ud integerForKey:kPrefCaretBlinkRate];
+    NSInteger tabMaxW  = [ud integerForKey:kPrefTabMaxLabelWidth];
+    BOOL tabClose      = [ud boolForKey:kPrefTabCloseButton];
+    BOOL dblClickClose = [ud boolForKey:kPrefDoubleClickTabClose];
+    BOOL virtualSpace  = [ud boolForKey:kPrefVirtualSpace];
+    BOOL scrollBeyond  = [ud boolForKey:kPrefScrollBeyondLastLine];
+    NSInteger fontQual = [ud integerForKey:kPrefFontQuality];
+    BOOL copyLineNoSel = [ud boolForKey:kPrefCopyLineNoSelection];
+    BOOL smartHL       = [ud boolForKey:kPrefSmartHighlight];
+    BOOL fillFind      = [ud boolForKey:kPrefFillFindWithSelection];
+    BOOL funcParams    = [ud boolForKey:kPrefFuncParamsHint];
+    BOOL showStatus    = [ud boolForKey:kPrefShowStatusBar];
+    BOOL muteSounds    = [ud boolForKey:kPrefMuteSounds];
+    BOOL saveAllConf   = [ud boolForKey:kPrefSaveAllConfirm];
+    BOOL rightClickSel = [ud boolForKey:kPrefRightClickKeepsSel];
+    BOOL disableDrag   = [ud boolForKey:kPrefDisableTextDragDrop];
+    BOOL monoFontFind  = [ud boolForKey:kPrefMonoFontFind];
+    BOOL confirmRepl   = [ud boolForKey:kPrefConfirmReplaceAll];
+    BOOL replStop      = [ud boolForKey:kPrefReplaceAndStop];
+    BOOL smartCase     = [ud boolForKey:kPrefSmartHiliteCase];
+    BOOL smartWord     = [ud boolForKey:kPrefSmartHiliteWord];
+    BOOL dtReverse     = [ud boolForKey:kPrefDateTimeReverse];
+    BOOL keepAbsent    = [ud boolForKey:kPrefKeepAbsentSession];
+    BOOL showBookmark  = [ud boolForKey:kPrefShowBookmarkMargin];
+    BOOL showEOL       = [ud boolForKey:kPrefShowEOL];
+    BOOL showWS        = [ud boolForKey:kPrefShowWhitespace];
+    NSInteger edgeCol  = [ud integerForKey:kPrefEdgeColumn];
+    NSInteger edgeMode = [ud integerForKey:kPrefEdgeMode];
+    NSInteger padL     = [ud integerForKey:kPrefPaddingLeft];
+    NSInteger padR     = [ud integerForKey:kPrefPaddingRight];
+    BOOL panelKeep     = [ud boolForKey:kPrefPanelKeepState];
+    NSInteger foldStyle = [ud integerForKey:kPrefFoldStyle];
+    BOOL dynLineNum    = [ud boolForKey:kPrefLineNumDynWidth];
+    NSInteger inSelThr = [ud integerForKey:kPrefInSelThreshold];
+    NSInteger darkMode = [ud integerForKey:kPrefDarkMode];
+    BOOL spellCheck    = [ud boolForKey:kPrefSpellCheck];
+
+    // Fold style names matching Windows: box, circle, arrow, simple, none
+    NSArray *foldNames = @[@"box", @"circle", @"arrow", @"simple", @"none"];
+    NSString *foldStr  = (foldStyle >= 0 && foldStyle < (NSInteger)foldNames.count)
+                         ? foldNames[foldStyle] : @"box";
+
+    // Dark mode mapping: 0=Auto, 1=Light, 2=Dark
+    NSString *dmEnable = (darkMode == 2) ? @"yes" : @"no";
+
+    // Build XML string
+    NSMutableString *xml = [NSMutableString new];
+    [xml appendString:@"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"];
+    [xml appendString:@"<NotepadPlus>\n"];
+    [xml appendString:@"    <GUIConfigs>\n"];
+
+    // StatusBar
+    [xml appendFormat:@"        <GUIConfig name=\"StatusBar\">%@</GUIConfig>\n",
+     showStatus ? @"show" : @"hide"];
+
+    // TabBar
+    [xml appendFormat:@"        <GUIConfig name=\"TabBar\" closeButton=\"%@\" "
+     @"doubleClick2Close=\"%@\" reduce=\"yes\" dragAndDrop=\"yes\" "
+     @"drawTopBar=\"yes\" drawInactiveTab=\"yes\" "
+     @"pinButton=\"yes\" tabCompactLabelLen=\"%ld\" />\n",
+     _yn(tabClose), _yn(dblClickClose), (long)tabMaxW];
+
+    // TabSetting
+    [xml appendFormat:@"        <GUIConfig name=\"TabSetting\" replaceBySpace=\"%@\" size=\"%ld\" />\n",
+     _yn(!useTabs), (long)tabWidth];
+
+    // MaintainIndent
+    [xml appendFormat:@"        <GUIConfig name=\"MaintainIndent\">%@</GUIConfig>\n",
+     autoIndent ? @"1" : @"0"];
+
+    // RememberLastSession
+    [xml appendString:@"        <GUIConfig name=\"RememberLastSession\">yes</GUIConfig>\n"];
+
+    // KeepSessionAbsentFileEntries
+    [xml appendFormat:@"        <GUIConfig name=\"KeepSessionAbsentFileEntries\">%@</GUIConfig>\n",
+     _yn(keepAbsent)];
+
+    // SaveAllConfirm
+    [xml appendFormat:@"        <GUIConfig name=\"SaveAllConfirm\">%@</GUIConfig>\n",
+     _yn(saveAllConf)];
+
+    // NewDocDefaultSettings
+    [xml appendFormat:@"        <GUIConfig name=\"NewDocDefaultSettings\" format=\"%ld\" "
+     @"encoding=\"%ld\" openAnsiAsUTF8=\"yes\" />\n",
+     (long)eolType, (long)encoding];
+
+    // Backup
+    [xml appendFormat:@"        <GUIConfig name=\"Backup\" action=\"%@\" "
+     @"isSnapshotMode=\"%@\" snapshotBackupTiming=\"%ld\" />\n",
+     autoBackup ? @"2" : @"0", _yn(autoBackup), (long)(backupInterval * 1000)];
+
+    // Caret
+    [xml appendFormat:@"        <GUIConfig name=\"Caret\" width=\"%ld\" blinkRate=\"%ld\" />\n",
+     (long)caretW, (long)caretBlink];
+
+    // titleBar
+    [xml appendFormat:@"        <GUIConfig name=\"titleBar\" short=\"%@\" />\n",
+     _yn(!fullPathTitle)];
+
+    // insertDateTime
+    [xml appendFormat:@"        <GUIConfig name=\"insertDateTime\" reverseDefaultOrder=\"%@\" />\n",
+     _yn(dtReverse)];
+
+    // auto-completion
+    [xml appendFormat:@"        <GUIConfig name=\"auto-completion\" autoCAction=\"%@\" "
+     @"triggerFromNbChar=\"%ld\" funcParams=\"%@\" />\n",
+     autoComplete ? @"3" : @"0", (long)acMinChars, _yn(funcParams)];
+
+    // auto-insert
+    [xml appendFormat:@"        <GUIConfig name=\"auto-insert\" parentheses=\"%@\" "
+     @"brackets=\"%@\" curlyBrackets=\"%@\" quotes=\"%@\" doubleQuotes=\"%@\" />\n",
+     _yn(autoClose), _yn(autoClose), _yn(autoClose), _yn(autoClose), _yn(autoClose)];
+
+    // SmartHighLight
+    [xml appendFormat:@"        <GUIConfig name=\"SmartHighLight\" matchCase=\"%@\" "
+     @"wholeWordOnly=\"%@\">%@</GUIConfig>\n",
+     _yn(smartCase), _yn(smartWord), _yn(smartHL)];
+
+    // Searching
+    [xml appendFormat:@"        <GUIConfig name=\"Searching\" monospacedFontFindDlg=\"%@\" "
+     @"fillFindFieldWithSelected=\"%@\" confirmReplaceInAllOpenDocs=\"%@\" "
+     @"replaceStopsWithoutFindingNext=\"%@\" inSelectionAutocheckThreshold=\"%ld\" />\n",
+     _yn(monoFontFind), _yn(fillFind), _yn(confirmRepl), _yn(replStop), (long)inSelThr];
+
+    // DarkMode
+    [xml appendFormat:@"        <GUIConfig name=\"DarkMode\" enable=\"%@\" darkModeAuto=\"%@\" />\n",
+     dmEnable, (darkMode == 0) ? @"yes" : @"no"];
+
+    // MISC
+    BOOL funcListXML = [ud boolForKey:kPrefFuncListUseXML];
+    [xml appendFormat:@"        <GUIConfig name=\"MISC\" muteSounds=\"%@\" "
+     @"disableTextDragDrop=\"%@\" spellCheck=\"%@\" "
+     @"panelKeepState=\"%@\" funcListUseXML=\"%@\" />\n",
+     _yn(muteSounds), _yn(disableDrag), _yn(spellCheck), _yn(panelKeep), _yn(funcListXML)];
+
+    // ScintillaPrimaryView
+    [xml appendFormat:@"        <GUIConfig name=\"ScintillaPrimaryView\" "
+     @"lineNumberMargin=\"%@\" lineNumberDynamicWidth=\"%@\" "
+     @"bookMarkMargin=\"%@\" folderMarkStyle=\"%@\" "
+     @"virtualSpace=\"%@\" scrollBeyondLastLine=\"%@\" "
+     @"rightClickKeepsSelection=\"%@\" "
+     @"lineCopyCutWithoutSelection=\"%@\" "
+     @"Wrap=\"%@\" "
+     @"currentLineIndicator=\"%@\" "
+     @"whiteSpaceShow=\"%@\" eolShow=\"%@\" eolMode=\"%ld\" "
+     @"zoom=\"%ld\" smoothFont=\"%ld\" "
+     @"paddingLeft=\"%ld\" paddingRight=\"%ld\" "
+     @"edgeMultiColumnPos=\"%@\" isEdgeBgMode=\"%@\" />\n",
+     _sh(showLineNum), _yn(dynLineNum),
+     _sh(showBookmark), foldStr,
+     _yn(virtualSpace), _yn(scrollBeyond),
+     _yn(rightClickSel),
+     _yn(copyLineNoSel),
+     _yn(wordWrap),
+     highlightLine ? @"1" : @"0",
+     showWS ? @"show" : @"hide", showEOL ? @"show" : @"hide", (long)eolType,
+     (long)zoom, (long)fontQual,
+     (long)padL, (long)padR,
+     edgeCol > 0 ? [NSString stringWithFormat:@"%ld", (long)edgeCol] : @"",
+     (edgeMode == 2) ? @"yes" : @"no"];
+
+    [xml appendString:@"    </GUIConfigs>\n"];
+    [xml appendString:@"</NotepadPlus>\n"];
+
+    [xml writeToFile:_configXmlPath() atomically:YES encoding:NSUTF8StringEncoding error:nil];
+}
+
+/// Read ~/.notepad++/config.xml and apply settings to NSUserDefaults.
+void readConfigXML(void) {
+    NSString *path = _configXmlPath();
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    if (!data) return;
+
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:0 error:nil];
+    if (!doc) return;
+
+    NSArray<NSXMLElement *> *configs = [doc nodesForXPath:@"//GUIConfigs/GUIConfig" error:nil];
+    if (!configs.count) return;
+
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+
+    for (NSXMLElement *el in configs) {
+        NSString *name = [[el attributeForName:@"name"] stringValue];
+        NSString *text = [el stringValue];
+        if (!name.length) continue;
+
+        if ([name isEqualToString:@"StatusBar"]) {
+            [ud setBool:_shBool(text) forKey:kPrefShowStatusBar];
+        }
+        else if ([name isEqualToString:@"TabBar"]) {
+            NSString *v;
+            if ((v = [el attributeForName:@"closeButton"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefTabCloseButton];
+            if ((v = [el attributeForName:@"doubleClick2Close"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefDoubleClickTabClose];
+            if ((v = [el attributeForName:@"tabCompactLabelLen"].stringValue))
+                [ud setInteger:v.integerValue forKey:kPrefTabMaxLabelWidth];
+        }
+        else if ([name isEqualToString:@"TabSetting"]) {
+            NSString *v;
+            if ((v = [el attributeForName:@"replaceBySpace"].stringValue))
+                [ud setBool:!_ynBool(v) forKey:kPrefUseTabs]; // inverted
+            if ((v = [el attributeForName:@"size"].stringValue))
+                [ud setInteger:v.integerValue forKey:kPrefTabWidth];
+        }
+        else if ([name isEqualToString:@"MaintainIndent"]) {
+            [ud setBool:(text.integerValue != 0) forKey:kPrefAutoIndent];
+        }
+        else if ([name isEqualToString:@"KeepSessionAbsentFileEntries"]) {
+            [ud setBool:_ynBool(text) forKey:kPrefKeepAbsentSession];
+        }
+        else if ([name isEqualToString:@"SaveAllConfirm"]) {
+            [ud setBool:_ynBool(text) forKey:kPrefSaveAllConfirm];
+        }
+        else if ([name isEqualToString:@"NewDocDefaultSettings"]) {
+            NSString *v;
+            if ((v = [el attributeForName:@"format"].stringValue))
+                [ud setInteger:v.integerValue forKey:kPrefEOLType];
+            if ((v = [el attributeForName:@"encoding"].stringValue))
+                [ud setInteger:v.integerValue forKey:kPrefEncoding];
+        }
+        else if ([name isEqualToString:@"Backup"]) {
+            NSString *v;
+            if ((v = [el attributeForName:@"action"].stringValue))
+                [ud setBool:(v.integerValue != 0) forKey:kPrefAutoBackup];
+            if ((v = [el attributeForName:@"snapshotBackupTiming"].stringValue))
+                [ud setInteger:MAX(1, v.integerValue / 1000) forKey:kPrefBackupInterval];
+        }
+        else if ([name isEqualToString:@"Caret"]) {
+            NSString *v;
+            if ((v = [el attributeForName:@"width"].stringValue))
+                [ud setInteger:v.integerValue forKey:kPrefCaretWidth];
+            if ((v = [el attributeForName:@"blinkRate"].stringValue))
+                [ud setInteger:v.integerValue forKey:kPrefCaretBlinkRate];
+        }
+        else if ([name isEqualToString:@"titleBar"]) {
+            NSString *v;
+            if ((v = [el attributeForName:@"short"].stringValue))
+                [ud setBool:!_ynBool(v) forKey:kPrefShowFullPathInTitle]; // inverted
+        }
+        else if ([name isEqualToString:@"insertDateTime"]) {
+            NSString *v;
+            if ((v = [el attributeForName:@"reverseDefaultOrder"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefDateTimeReverse];
+        }
+        else if ([name isEqualToString:@"auto-completion"]) {
+            NSString *v;
+            if ((v = [el attributeForName:@"autoCAction"].stringValue))
+                [ud setBool:(v.integerValue != 0) forKey:kPrefAutoCompleteEnable];
+            if ((v = [el attributeForName:@"triggerFromNbChar"].stringValue))
+                [ud setInteger:v.integerValue forKey:kPrefAutoCompleteMinChars];
+            if ((v = [el attributeForName:@"funcParams"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefFuncParamsHint];
+        }
+        else if ([name isEqualToString:@"auto-insert"]) {
+            NSString *v;
+            // macOS uses single toggle — take parentheses as representative
+            if ((v = [el attributeForName:@"parentheses"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefAutoCloseBrackets];
+        }
+        else if ([name isEqualToString:@"SmartHighLight"]) {
+            [ud setBool:_ynBool(text) forKey:kPrefSmartHighlight];
+            NSString *v;
+            if ((v = [el attributeForName:@"matchCase"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefSmartHiliteCase];
+            if ((v = [el attributeForName:@"wholeWordOnly"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefSmartHiliteWord];
+        }
+        else if ([name isEqualToString:@"Searching"]) {
+            NSString *v;
+            if ((v = [el attributeForName:@"monospacedFontFindDlg"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefMonoFontFind];
+            if ((v = [el attributeForName:@"fillFindFieldWithSelected"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefFillFindWithSelection];
+            if ((v = [el attributeForName:@"confirmReplaceInAllOpenDocs"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefConfirmReplaceAll];
+            if ((v = [el attributeForName:@"replaceStopsWithoutFindingNext"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefReplaceAndStop];
+            if ((v = [el attributeForName:@"inSelectionAutocheckThreshold"].stringValue))
+                [ud setInteger:v.integerValue forKey:kPrefInSelThreshold];
+        }
+        else if ([name isEqualToString:@"DarkMode"]) {
+            NSString *enable = [el attributeForName:@"enable"].stringValue;
+            NSString *autoMode = [el attributeForName:@"darkModeAuto"].stringValue;
+            if (_ynBool(autoMode))
+                [ud setInteger:0 forKey:kPrefDarkMode]; // Auto
+            else if (_ynBool(enable))
+                [ud setInteger:2 forKey:kPrefDarkMode]; // Dark
+            else
+                [ud setInteger:1 forKey:kPrefDarkMode]; // Light
+        }
+        else if ([name isEqualToString:@"MISC"]) {
+            NSString *v;
+            if ((v = [el attributeForName:@"muteSounds"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefMuteSounds];
+            if ((v = [el attributeForName:@"disableTextDragDrop"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefDisableTextDragDrop];
+            if ((v = [el attributeForName:@"spellCheck"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefSpellCheck];
+            if ((v = [el attributeForName:@"panelKeepState"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefPanelKeepState];
+            if ((v = [el attributeForName:@"funcListUseXML"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefFuncListUseXML];
+        }
+        else if ([name isEqualToString:@"ScintillaPrimaryView"]) {
+            NSString *v;
+            if ((v = [el attributeForName:@"lineNumberMargin"].stringValue))
+                [ud setBool:_shBool(v) forKey:kPrefShowLineNumbers];
+            if ((v = [el attributeForName:@"lineNumberDynamicWidth"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefLineNumDynWidth];
+            if ((v = [el attributeForName:@"bookMarkMargin"].stringValue))
+                [ud setBool:_shBool(v) forKey:kPrefShowBookmarkMargin];
+            if ((v = [el attributeForName:@"folderMarkStyle"].stringValue)) {
+                NSDictionary *foldMap = @{@"box":@0, @"circle":@1, @"arrow":@2, @"simple":@3, @"none":@4};
+                NSNumber *n = foldMap[v.lowercaseString];
+                if (n) [ud setInteger:n.integerValue forKey:kPrefFoldStyle];
+            }
+            if ((v = [el attributeForName:@"virtualSpace"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefVirtualSpace];
+            if ((v = [el attributeForName:@"scrollBeyondLastLine"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefScrollBeyondLastLine];
+            if ((v = [el attributeForName:@"rightClickKeepsSelection"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefRightClickKeepsSel];
+            if ((v = [el attributeForName:@"lineCopyCutWithoutSelection"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefCopyLineNoSelection];
+            if ((v = [el attributeForName:@"Wrap"].stringValue))
+                [ud setBool:_ynBool(v) forKey:kPrefWordWrap];
+            if ((v = [el attributeForName:@"currentLineIndicator"].stringValue))
+                [ud setBool:(v.integerValue != 0) forKey:kPrefHighlightCurrentLine];
+            if ((v = [el attributeForName:@"whiteSpaceShow"].stringValue))
+                [ud setBool:_shBool(v) forKey:kPrefShowWhitespace];
+            if ((v = [el attributeForName:@"eolShow"].stringValue))
+                [ud setBool:_shBool(v) forKey:kPrefShowEOL];
+            if ((v = [el attributeForName:@"eolMode"].stringValue))
+                [ud setInteger:v.integerValue forKey:kPrefEOLType];
+            if ((v = [el attributeForName:@"zoom"].stringValue))
+                [ud setInteger:v.integerValue forKey:kPrefZoomLevel];
+            if ((v = [el attributeForName:@"smoothFont"].stringValue))
+                [ud setInteger:v.integerValue forKey:kPrefFontQuality];
+            if ((v = [el attributeForName:@"paddingLeft"].stringValue))
+                [ud setInteger:v.integerValue forKey:kPrefPaddingLeft];
+            if ((v = [el attributeForName:@"paddingRight"].stringValue))
+                [ud setInteger:v.integerValue forKey:kPrefPaddingRight];
+            if ((v = [el attributeForName:@"edgeMultiColumnPos"].stringValue))
+                [ud setInteger:v.integerValue forKey:kPrefEdgeColumn];
+            if ((v = [el attributeForName:@"isEdgeBgMode"].stringValue))
+                [ud setInteger:_ynBool(v) ? 2 : ([ud integerForKey:kPrefEdgeColumn] > 0 ? 1 : 0)
+                        forKey:kPrefEdgeMode];
+        }
+    }
+    NSLog(@"[Config] Loaded preferences from %@", path);
+}
+
 static void ensureNppDirs(void) {
     NSFileManager *fm = [NSFileManager defaultManager];
     [fm createDirectoryAtPath:nppBackupDir()
@@ -295,6 +684,11 @@ static void ensureNppDirs(void) {
     // Create ~/.notepad++/themes/ for user-installed themes (empty on first run).
     NSString *userThemesDir = [nppConfigDir() stringByAppendingPathComponent:@"themes"];
     [fm createDirectoryAtPath:userThemesDir
+  withIntermediateDirectories:YES attributes:nil error:nil];
+
+    // Create ~/.notepad++/functionList/ for user-defined function list parsers.
+    NSString *userFuncListDir = [nppConfigDir() stringByAppendingPathComponent:@"functionList"];
+    [fm createDirectoryAtPath:userFuncListDir
   withIntermediateDirectories:YES attributes:nil error:nil];
 }
 
@@ -5738,6 +6132,7 @@ static int64_t _sysctlInt(const char *name) {
     // 1. Back up all modified editors and write session.plist FIRST —
     //    before any editors are removed. This captures untitled tabs.
     [self saveSession];
+    writeConfigXML();
 
     // 2. Prompt to save only named files with unsaved changes.
     for (EditorView *ed in _tabManager.allEditors.copy)

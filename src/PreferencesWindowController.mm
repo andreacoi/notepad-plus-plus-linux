@@ -54,6 +54,7 @@ NSString *const kPrefPanelKeepState      = @"panelKeepState";
 NSString *const kPrefFoldStyle           = @"foldStyle";
 NSString *const kPrefLineNumDynWidth     = @"lineNumDynWidth";
 NSString *const kPrefInSelThreshold      = @"inSelThreshold";
+NSString *const kPrefFuncListUseXML      = @"funcListUseXML";
 
 // Theme / Style Configurator keys
 NSString *const kPrefThemePreset        = @"themePreset";
@@ -156,6 +157,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         kPrefFoldStyle:            @0,    // 0=box 1=circle 2=arrow 3=simple 4=none
         kPrefLineNumDynWidth:      @YES,
         kPrefInSelThreshold:       @1024,
+        kPrefFuncListUseXML:       @YES,
         kPrefDarkMode:             @0,   // 0=Auto, 1=Light, 2=Dark
     }];
     // Force-upgrade any stale @NO value stored by earlier builds.
@@ -915,6 +917,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         @[@"Reverse default date/time order",          @1202, kPrefDateTimeReverse],
         @[@"Keep absent file entries in session",      @1203, kPrefKeepAbsentSession],
         @[@"Remember panel visibility across sessions", @1204, kPrefPanelKeepState],
+        @[@"Use XML-based function list parsers",      @1205, kPrefFuncListUseXML],
     ];
     for (NSArray *def in checks) {
         NSButton *chk = [NSButton checkboxWithTitle:def[0] target:self action:@selector(prefChanged:)];
@@ -1029,6 +1032,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         case 1202: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefDateTimeReverse]; break;
         case 1203: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefKeepAbsentSession]; break;
         case 1204: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefPanelKeepState]; break;
+        case 1205: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefFuncListUseXML]; break;
     }
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"NPPPreferencesChanged" object:nil];

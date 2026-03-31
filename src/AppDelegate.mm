@@ -27,6 +27,10 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
     // Disable the macOS press-and-hold accent picker so key repeat works in the editor.
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"ApplePressAndHoldEnabled"];
+
+    // Load config.xml preferences before building UI (applies saved XML → NSUserDefaults)
+    readConfigXML();
+
     [MenuBuilder buildMainMenu];
 
     // Apply saved shortcut overrides from shortcuts.xml <InternalCommands>

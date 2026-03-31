@@ -31,4 +31,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// Write current NSUserDefaults preferences to ~/.notepad++/config.xml.
+void writeConfigXML(void);
+
+/// Read ~/.notepad++/config.xml and apply settings to NSUserDefaults.
+void readConfigXML(void);
+
 NS_ASSUME_NONNULL_END

@@ -56,6 +56,7 @@ extern NSString *const kPrefPanelKeepState;      // BOOL, default YES
 extern NSString *const kPrefFoldStyle;           // NSInteger, 0=box 1=circle 2=arrow 3=simple 4=none
 extern NSString *const kPrefLineNumDynWidth;     // BOOL, default YES
 extern NSString *const kPrefInSelThreshold;      // NSInteger, default 1024
+extern NSString *const kPrefFuncListUseXML;      // BOOL, default YES — use XML parsers vs hardcoded regex
 
 // Theme / Style Configurator keys (hex color strings "#RRGGBB")
 extern NSString *const kPrefThemePreset;    // preset name or "Custom"
