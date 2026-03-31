@@ -30,6 +30,48 @@
 }
 @end
 
+// ── Lightweight XML node (preserves newlines in attribute values) ─────────────
+
+@interface _FLNode : NSObject
+@property (nonatomic, copy) NSString *tagName;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *attrs;
+@property (nonatomic, strong) NSMutableArray<_FLNode *> *children;
+@property (nonatomic, weak) _FLNode *parent;
+- (NSString *)attr:(NSString *)name;
+- (NSArray<_FLNode *> *)childrenWithTag:(NSString *)tag;
+- (NSArray<_FLNode *> *)descendantsAtPath:(NSString *)path;
+@end
+
+@implementation _FLNode
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _attrs = [NSMutableDictionary new];
+        _children = [NSMutableArray new];
+    }
+    return self;
+}
+- (NSString *)attr:(NSString *)name { return _attrs[name]; }
+- (NSArray<_FLNode *> *)childrenWithTag:(NSString *)tag {
+    NSMutableArray *r = [NSMutableArray new];
+    for (_FLNode *c in _children)
+        if ([c.tagName isEqualToString:tag]) [r addObject:c];
+    return r;
+}
+- (NSArray<_FLNode *> *)descendantsAtPath:(NSString *)path {
+    NSArray<NSString *> *parts = [path componentsSeparatedByString:@"/"];
+    NSArray<_FLNode *> *current = @[self];
+    for (NSString *part in parts) {
+        NSMutableArray *next = [NSMutableArray new];
+        for (_FLNode *n in current)
+            [next addObjectsFromArray:[n childrenWithTag:part]];
+        current = next;
+        if (!current.count) return @[];
+    }
+    return current;
+}
+@end
+
 // ── Panel button helper (same pattern as FolderTreePanel / GitPanel) ─────────
 
 static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
@@ -502,8 +544,143 @@ static NSRegularExpression *_compilePattern(NSString *pcre, NSRegularExpressionO
     return re;
 }
 
-/// Load a function list XML file. Returns the <parser> element or nil.
-static NSXMLElement *_loadParserXML(NSString *lang) {
+/// Parse raw XML bytes preserving newlines in attribute values.
+/// Returns the root _FLNode tree, or nil on failure.
+/// This is intentionally minimal — handles only the subset needed for functionList XML.
+static _FLNode *_parseRawXML(NSData *data) {
+    NSString *raw = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    if (!raw) return nil;
+
+    _FLNode *root = [[_FLNode alloc] init];
+    root.tagName = @"__root__";
+    NSMutableArray<_FLNode *> *stack = [NSMutableArray arrayWithObject:root];
+
+    NSUInteger len = raw.length;
+    NSUInteger i = 0;
+
+    while (i < len) {
+        // Skip to next '<'
+        NSUInteger tagStart = [raw rangeOfString:@"<" options:0 range:NSMakeRange(i, len - i)].location;
+        if (tagStart == NSNotFound) break;
+        i = tagStart + 1;
+        if (i >= len) break;
+
+        // Skip comments <!-- ... -->
+        if (i + 2 < len && [raw characterAtIndex:i] == '!' &&
+            [raw characterAtIndex:i+1] == '-' && [raw characterAtIndex:i+2] == '-') {
+            NSRange endComment = [raw rangeOfString:@"-->" options:0 range:NSMakeRange(i, len - i)];
+            if (endComment.location != NSNotFound) i = NSMaxRange(endComment);
+            continue;
+        }
+        // Skip processing instructions <? ... ?>
+        if ([raw characterAtIndex:i] == '?') {
+            NSRange endPI = [raw rangeOfString:@"?>" options:0 range:NSMakeRange(i, len - i)];
+            if (endPI.location != NSNotFound) i = NSMaxRange(endPI);
+            continue;
+        }
+        // Closing tag </name>
+        if ([raw characterAtIndex:i] == '/') {
+            NSRange endTag = [raw rangeOfString:@">" options:0 range:NSMakeRange(i, len - i)];
+            if (endTag.location != NSNotFound) i = NSMaxRange(endTag);
+            if (stack.count > 1) [stack removeLastObject];
+            continue;
+        }
+
+        // Opening tag: extract tag name
+        NSMutableString *tagName = [NSMutableString new];
+        while (i < len) {
+            unichar c = [raw characterAtIndex:i];
+            if (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '/' || c == '>') break;
+            [tagName appendFormat:@"%C", c];
+            i++;
+        }
+        if (!tagName.length) continue;
+
+        _FLNode *node = [[_FLNode alloc] init];
+        node.tagName = tagName;
+        node.parent = stack.lastObject;
+        [stack.lastObject.children addObject:node];
+
+        // Parse attributes (preserving newlines in values!)
+        BOOL selfClosing = NO;
+        while (i < len) {
+            // Skip whitespace
+            while (i < len) {
+                unichar c = [raw characterAtIndex:i];
+                if (c != ' ' && c != '\t' && c != '\n' && c != '\r') break;
+                i++;
+            }
+            if (i >= len) break;
+            unichar c = [raw characterAtIndex:i];
+            if (c == '>') { i++; break; }
+            if (c == '/') {
+                selfClosing = YES;
+                i++;
+                // Skip to '>'
+                while (i < len && [raw characterAtIndex:i] != '>') i++;
+                if (i < len) i++; // skip '>'
+                break;
+            }
+
+            // Attribute name
+            NSMutableString *attrName = [NSMutableString new];
+            while (i < len) {
+                unichar ac = [raw characterAtIndex:i];
+                if (ac == '=' || ac == ' ' || ac == '\t' || ac == '\n' || ac == '\r' ||
+                    ac == '>' || ac == '/') break;
+                [attrName appendFormat:@"%C", ac];
+                i++;
+            }
+            // Skip to '='
+            while (i < len && [raw characterAtIndex:i] != '=' &&
+                   [raw characterAtIndex:i] != '>' && [raw characterAtIndex:i] != '/') i++;
+            if (i >= len || [raw characterAtIndex:i] != '=') continue;
+            i++; // skip '='
+
+            // Skip whitespace before quote
+            while (i < len) {
+                unichar wc = [raw characterAtIndex:i];
+                if (wc != ' ' && wc != '\t' && wc != '\n' && wc != '\r') break;
+                i++;
+            }
+            if (i >= len) break;
+
+            unichar quote = [raw characterAtIndex:i];
+            if (quote != '"' && quote != '\'') continue;
+            i++; // skip opening quote
+
+            // Read attribute value — preserving newlines!
+            NSMutableString *attrVal = [NSMutableString new];
+            while (i < len) {
+                unichar vc = [raw characterAtIndex:i];
+                if (vc == quote) { i++; break; }
+                [attrVal appendFormat:@"%C", vc];
+                i++;
+            }
+
+            if (attrName.length) node.attrs[attrName] = attrVal;
+        }
+
+        if (!selfClosing) [stack addObject:node];
+    }
+
+    return root;
+}
+
+/// Find the <parser> element inside a functionList XML tree.
+static _FLNode *_findParserNode(_FLNode *root) {
+    for (_FLNode *c1 in root.children) {
+        if ([c1.tagName isEqualToString:@"parser"]) return c1;
+        if ([c1.tagName isEqualToString:@"NotepadPlus"] || [c1.tagName isEqualToString:@"functionList"]) {
+            _FLNode *found = _findParserNode(c1);
+            if (found) return found;
+        }
+    }
+    return nil;
+}
+
+/// Load a function list XML file. Returns the <parser> _FLNode or nil.
+static _FLNode *_loadParserXML(NSString *lang) {
     NSFileManager *fm = [NSFileManager defaultManager];
 
     // 1. Check user override: ~/.notepad++/functionList/<lang>.xml
@@ -519,24 +696,30 @@ static NSXMLElement *_loadParserXML(NSString *lang) {
     }
     if (!data) return nil;
 
-    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:0 error:nil];
-    if (!doc) return nil;
-
-    NSArray *parsers = [doc nodesForXPath:@"//functionList/parser" error:nil];
-    return parsers.count ? (NSXMLElement *)parsers[0] : nil;
+    _FLNode *root = _parseRawXML(data);
+    if (!root) return nil;
+    return _findParserNode(root);
 }
 
-/// Extract name from text using a chain of nameExpr elements (last one refines).
-static NSString *_extractName(NSString *matchedText, NSArray<NSXMLElement *> *nameExprs) {
+/// Extract name from text using a chain of nameExpr _FLNode elements (last one refines).
+static NSString *_extractName(NSString *matchedText, NSArray<_FLNode *> *nameExprs) {
     NSString *result = matchedText;
-    for (NSXMLElement *ne in nameExprs) {
-        NSString *pattern = [[ne attributeForName:@"expr"] stringValue];
+    for (_FLNode *ne in nameExprs) {
+        NSString *pattern = [ne attr:@"expr"];
         if (!pattern.length) continue;
         NSRegularExpression *re = _compilePattern(pattern, 0);
         if (!re) continue;
         NSTextCheckingResult *m = [re firstMatchInString:result options:0
                                                    range:NSMakeRange(0, result.length)];
-        if (m) result = [result substringWithRange:m.range];
+        if (m && m.range.length > 0) {
+            result = [result substringWithRange:m.range];
+        } else if (m && m.range.length == 0 && result.length > 1) {
+            // Zero-length match at start — happens when \K was stripped from mainExpr.
+            // The nameExpr expects text AFTER the \K point. Try from position 1 onwards.
+            m = [re firstMatchInString:result options:0
+                                 range:NSMakeRange(1, result.length - 1)];
+            if (m && m.range.length > 0) result = [result substringWithRange:m.range];
+        }
     }
     return [result stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
@@ -568,7 +751,7 @@ static BOOL _isInComment(NSRange range, NSIndexSet *commentRanges) {
 - (BOOL)_scanTextWithXML:(NSString *)text forLanguage:(NSString *)lang {
     // ── Load parser (cached) ──────────────────────────────────────────
     NSDictionary *cached = _cachedParserForLanguage(lang);
-    NSXMLElement *parser = nil;
+    _FLNode *parser = nil;
     NSRegularExpression *commentRE = nil;
 
     if (cached) {
@@ -578,7 +761,7 @@ static BOOL _isInComment(NSRange range, NSIndexSet *commentRanges) {
         parser = _loadParserXML(lang);
         if (!parser) return NO;
 
-        NSString *commentExpr = [[parser attributeForName:@"commentExpr"] stringValue];
+        NSString *commentExpr = [parser attr:@"commentExpr"];
         commentRE = commentExpr.length ? _compilePattern(commentExpr,
             NSRegularExpressionAnchorsMatchLines | NSRegularExpressionDotMatchesLineSeparators) : nil;
 
@@ -602,26 +785,22 @@ static BOOL _isInComment(NSRange range, NSIndexSet *commentRanges) {
     }
 
     // ── Collect parser elements ───────────────────────────────────────
-    NSArray<NSXMLElement *> *classRangeEls = [parser nodesForXPath:@"classRange" error:nil];
-    NSArray<NSXMLElement *> *topFuncEls = [parser nodesForXPath:@"function" error:nil];
-    NSMutableArray<NSXMLElement *> *topLevelFuncs = [NSMutableArray array];
-    for (NSXMLElement *fe in topFuncEls) {
-        if (![fe.parent.name isEqualToString:@"classRange"])
-            [topLevelFuncs addObject:fe];
-    }
+    NSArray<_FLNode *> *classRangeEls = [parser childrenWithTag:@"classRange"];
+    NSArray<_FLNode *> *allFuncEls = [parser childrenWithTag:@"function"];
+    NSMutableArray<_FLNode *> *topLevelFuncs = [allFuncEls mutableCopy];
 
     BOOL didParse = NO;
 
     // ── Process classRange elements ───────────────────────────────────
-    for (NSXMLElement *crEl in classRangeEls) {
-        NSString *crMainExpr = [[crEl attributeForName:@"mainExpr"] stringValue];
+    for (_FLNode *crEl in classRangeEls) {
+        NSString *crMainExpr = [crEl attr:@"mainExpr"];
         NSRegularExpression *crRE = _compilePattern(crMainExpr,
             NSRegularExpressionAnchorsMatchLines | NSRegularExpressionDotMatchesLineSeparators);
         if (!crRE) continue;
         didParse = YES;
 
-        NSArray<NSXMLElement *> *classNameExprs = [crEl nodesForXPath:@"className/nameExpr" error:nil];
-        NSArray<NSXMLElement *> *nestedFuncEls = [crEl nodesForXPath:@"function" error:nil];
+        NSArray<_FLNode *> *classNameExprs = [crEl descendantsAtPath:@"className/nameExpr"];
+        NSArray<_FLNode *> *nestedFuncEls = [crEl childrenWithTag:@"function"];
 
         [crRE enumerateMatchesInString:text options:0
                                  range:NSMakeRange(0, text.length)
@@ -639,15 +818,15 @@ static BOOL _isInComment(NSRange range, NSIndexSet *commentRanges) {
             _FuncItem *classNode = [[_FuncItem alloc] initWithName:className line:classLine
                                                                pos:(NSInteger)m.range.location isNode:YES];
 
-            for (NSXMLElement *funcEl in nestedFuncEls) {
-                NSString *funcMainExpr = [[funcEl attributeForName:@"mainExpr"] stringValue];
+            for (_FLNode *funcEl in nestedFuncEls) {
+                NSString *funcMainExpr = [funcEl attr:@"mainExpr"];
                 NSRegularExpression *funcRE = _compilePattern(funcMainExpr,
                     NSRegularExpressionAnchorsMatchLines);
                 if (!funcRE) continue;
 
-                NSArray<NSXMLElement *> *funcNameExprs = [funcEl nodesForXPath:@"functionName/funcNameExpr" error:nil];
+                NSArray<_FLNode *> *funcNameExprs = [funcEl descendantsAtPath:@"functionName/funcNameExpr"];
                 if (!funcNameExprs.count)
-                    funcNameExprs = [funcEl nodesForXPath:@"functionName/nameExpr" error:nil];
+                    funcNameExprs = [funcEl descendantsAtPath:@"functionName/nameExpr"];
 
                 [funcRE enumerateMatchesInString:matchedText options:0
                                            range:NSMakeRange(0, matchedText.length)
@@ -670,17 +849,17 @@ static BOOL _isInComment(NSRange range, NSIndexSet *commentRanges) {
     }
 
     // ── Process top-level function elements ───────────────────────────
-    for (NSXMLElement *funcEl in topLevelFuncs) {
-        NSString *funcMainExpr = [[funcEl attributeForName:@"mainExpr"] stringValue];
+    for (_FLNode *funcEl in topLevelFuncs) {
+        NSString *funcMainExpr = [funcEl attr:@"mainExpr"];
         NSRegularExpression *funcRE = _compilePattern(funcMainExpr,
             NSRegularExpressionAnchorsMatchLines);
         if (!funcRE) continue;
         didParse = YES;
 
-        NSArray<NSXMLElement *> *funcNameExprs = [funcEl nodesForXPath:@"functionName/funcNameExpr" error:nil];
+        NSArray<_FLNode *> *funcNameExprs = [funcEl descendantsAtPath:@"functionName/funcNameExpr"];
         if (!funcNameExprs.count)
-            funcNameExprs = [funcEl nodesForXPath:@"functionName/nameExpr" error:nil];
-        NSArray<NSXMLElement *> *topClassExprs = [funcEl nodesForXPath:@"className/nameExpr" error:nil];
+            funcNameExprs = [funcEl descendantsAtPath:@"functionName/nameExpr"];
+        NSArray<_FLNode *> *topClassExprs = [funcEl descendantsAtPath:@"className/nameExpr"];
 
         [funcRE enumerateMatchesInString:text options:0
                                    range:NSMakeRange(0, text.length)
@@ -875,22 +1054,20 @@ static NSString *_userFuncPatternForLanguage(NSString *lang, NSString * __autore
     NSData *data = [NSData dataWithContentsOfFile:path];
     if (!data) return nil;
 
-    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:0 error:nil];
-    if (!doc) return nil;
+    _FLNode *root = _parseRawXML(data);
+    if (!root) return nil;
+    _FLNode *parser = _findParserNode(root);
+    if (!parser) return nil;
 
     // Extract function mainExpr
-    NSArray *funcNodes = [doc nodesForXPath:@"//functionList/parser/function" error:nil];
-    NSString *funcExpr = nil;
-    if (funcNodes.count) {
-        funcExpr = [[(NSXMLElement *)funcNodes[0] attributeForName:@"mainExpr"] stringValue];
-    }
+    NSArray<_FLNode *> *funcNodes = [parser childrenWithTag:@"function"];
+    NSString *funcExpr = funcNodes.count ? [funcNodes[0] attr:@"mainExpr"] : nil;
 
     // Extract optional classRange mainExpr
     if (outClassPattern) {
-        NSArray *classNodes = [doc nodesForXPath:@"//functionList/parser/classRange" error:nil];
-        if (classNodes.count) {
-            *outClassPattern = [[(NSXMLElement *)classNodes[0] attributeForName:@"mainExpr"] stringValue];
-        }
+        NSArray<_FLNode *> *classNodes = [parser childrenWithTag:@"classRange"];
+        if (classNodes.count)
+            *outClassPattern = [classNodes[0] attr:@"mainExpr"];
     }
 
     return funcExpr;
