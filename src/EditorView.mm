@@ -10,6 +10,7 @@
 #include <CommonCrypto/CommonDigest.h>
 
 NSNotificationName const EditorViewCursorDidMoveNotification = @"EditorViewCursorDidMoveNotification";
+NSNotificationName const EditorViewDidGainFocusNotification  = @"EditorViewDidGainFocusNotification";
 NSNotificationName const EditorViewDidScrollNotification = @"EditorViewDidScrollNotification";
 
 // Forward-declare Lexilla's CreateLexer (statically linked)
@@ -2849,6 +2850,11 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
             if (_spellCheckEnabled) [self _scheduleSpellCheck];
             [[NSNotificationCenter defaultCenter]
                 postNotificationName:EditorViewCursorDidMoveNotification
+                              object:self];
+            break;
+        case SCN_FOCUSIN:
+            [[NSNotificationCenter defaultCenter]
+                postNotificationName:EditorViewDidGainFocusNotification
                               object:self];
             break;
         case SCN_MARGINCLICK:

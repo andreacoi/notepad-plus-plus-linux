@@ -1140,6 +1140,9 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
         [[NSNotificationCenter defaultCenter]
             addObserver:self selector:@selector(editorCursorMoved:)
                    name:EditorViewCursorDidMoveNotification object:nil];
+        [[NSNotificationCenter defaultCenter]
+            addObserver:self selector:@selector(editorDidGainFocus:)
+                   name:EditorViewDidGainFocusNotification object:nil];
         // (scroll sync uses a timer, not notifications)
         [self rebuildRecentFilesMenu];
         [self rebuildUDLLanguageMenu];
@@ -4881,6 +4884,24 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     if (ed == [self currentEditor]) {
         [self updateStatusBar];
         [self refreshCurrentTab];
+    }
+}
+
+/// Update _activeTabManager when a Scintilla editor gains keyboard focus.
+/// This ensures commands like Language switch target the correct pane in split view.
+- (void)editorDidGainFocus:(NSNotification *)note {
+    EditorView *ed = note.object;
+    if (!ed) return;
+    // Find which tab manager owns this editor
+    for (TabManager *mgr in @[_tabManager, _subTabManagerH, _subTabManagerV]) {
+        if ([mgr.allEditors containsObject:ed]) {
+            if (_activeTabManager != mgr) {
+                _activeTabManager = mgr;
+                [self updateTitle];
+                [self updateStatusBar];
+            }
+            return;
+        }
     }
 }
 
