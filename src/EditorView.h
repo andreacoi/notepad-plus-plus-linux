@@ -175,6 +175,7 @@ extern NSNotificationName const EditorViewDidGainFocusNotification;
 // ── Text direction ────────────────────────────────────────────────────────────
 - (void)setTextDirectionRTL:(id)sender;
 - (void)setTextDirectionLTR:(id)sender;
+@property (nonatomic, readonly) BOOL isTextDirectionRTL;
 
 // ── View toggles ─────────────────────────────────────────────────────────────
 - (void)showWhiteSpaceAndTab:(id)sender;

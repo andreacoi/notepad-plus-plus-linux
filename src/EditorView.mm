@@ -271,6 +271,7 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     BOOL    _hasBOM;
     BOOL    _largeFileMode;
     BOOL    _wordWrapEnabled;
+    BOOL    _savedWrapBeforeRTL;  // word wrap state before RTL was enabled
     BOOL    _isRecordingMacro;
     NSMutableArray<NSDictionary *> *_macroActions;
     NSInteger _untitledIndex;   // unique number for untitled tabs (1-based)
@@ -694,6 +695,14 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     if (action == @selector(toggleHideLineMarks:)) {
         BOOL on = ([_scintillaView message:SCI_GETMARGINWIDTHN wParam:1] == 0);
         [(NSMenuItem *)item setState:on ? NSControlStateValueOn : NSControlStateValueOff];
+        return YES;
+    }
+    if (action == @selector(setTextDirectionRTL:)) {
+        [(NSMenuItem *)item setState:self.isTextDirectionRTL ? NSControlStateValueOn : NSControlStateValueOff];
+        return YES;
+    }
+    if (action == @selector(setTextDirectionLTR:)) {
+        [(NSMenuItem *)item setState:!self.isTextDirectionRTL ? NSControlStateValueOn : NSControlStateValueOff];
         return YES;
     }
 
@@ -3171,10 +3180,63 @@ static const unsigned int kSCI_GetBidirectional = 2708;
 
 - (void)setTextDirectionRTL:(id)sender {
     [_scintillaView message:kSCI_SetBidirectional wParam:2]; // Bidirectional::R2L
+    [self _applyRTLKeyBindings:YES];
+    [self _applyRTLLayout:YES];
+    // Force word wrap in RTL to avoid horizontal scroll issues
+    _savedWrapBeforeRTL = _wordWrapEnabled;
+    if (!_wordWrapEnabled) {
+        _wordWrapEnabled = YES;
+        [_scintillaView message:SCI_SETWRAPMODE wParam:SC_WRAP_WORD];
+    }
 }
 
 - (void)setTextDirectionLTR:(id)sender {
-    [_scintillaView message:kSCI_SetBidirectional wParam:1]; // Bidirectional::L2R
+    [_scintillaView message:kSCI_SetBidirectional wParam:0]; // Bidirectional::Disabled
+    [self _applyRTLKeyBindings:NO];
+    [self _applyRTLLayout:NO];
+    // Restore word wrap to its state before RTL was enabled
+    if (!_savedWrapBeforeRTL && _wordWrapEnabled) {
+        _wordWrapEnabled = NO;
+        [_scintillaView message:SCI_SETWRAPMODE wParam:SC_WRAP_NONE];
+    }
+}
+
+/// RTL layout: ruler (line numbers/bookmarks/fold) moves to the right side.
+- (void)_applyRTLLayout:(BOOL)rtl {
+    SCIScrollView *sv = (SCIScrollView *)_scintillaView.scrollView;
+    sv.rtlMode = rtl;
+    [sv tile];
+    [sv setNeedsDisplay:YES];
+    [sv.verticalRulerView setNeedsDisplay:YES];
+}
+
+- (BOOL)isTextDirectionRTL {
+    return [_scintillaView message:kSCI_GetBidirectional] == 2;
+}
+
+/// Swap left/right arrow key bindings for RTL mode (same approach as Windows NPP).
+- (void)_applyRTLKeyBindings:(BOOL)rtl {
+    // Scintilla key codes: SCK_LEFT=300, SCK_RIGHT=301
+    // Modifiers: SCMOD_NORM=0, SCMOD_SHIFT=1, SCMOD_CTRL=2, SCMOD_ALT=4
+    // On macOS, Ctrl in Scintilla maps to Cmd key
+    const int kLeft = 300, kRight = 301;
+    struct { int key; int mod; int cmdL; int cmdR; } bindings[] = {
+        { kLeft,  0, SCI_CHARLEFT,       SCI_CHARRIGHT },
+        { kRight, 0, SCI_CHARRIGHT,      SCI_CHARLEFT },
+        { kLeft,  1, SCI_CHARLEFTEXTEND, SCI_CHARRIGHTEXTEND },
+        { kRight, 1, SCI_CHARRIGHTEXTEND, SCI_CHARLEFTEXTEND },
+        { kLeft,  2, SCI_WORDLEFT,       SCI_WORDRIGHT },
+        { kRight, 2, SCI_WORDRIGHT,      SCI_WORDLEFT },
+        { kLeft,  3, SCI_WORDLEFTEXTEND, SCI_WORDRIGHTEXTEND },
+        { kRight, 3, SCI_WORDRIGHTEXTEND, SCI_WORDLEFTEXTEND },
+        { kLeft,  5, SCI_WORDLEFTEND,    SCI_WORDRIGHTEND },
+        { kRight, 5, SCI_WORDRIGHTEND,   SCI_WORDLEFTEND },
+    };
+    for (size_t i = 0; i < sizeof(bindings)/sizeof(bindings[0]); i++) {
+        int keyDef = bindings[i].key + (bindings[i].mod << 16);
+        int cmd = rtl ? bindings[i].cmdR : bindings[i].cmdL;
+        [_scintillaView message:SCI_ASSIGNCMDKEY wParam:(uptr_t)keyDef lParam:cmd];
+    }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

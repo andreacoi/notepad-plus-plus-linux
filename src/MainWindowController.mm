@@ -2032,7 +2032,7 @@ static BOOL groupHasTrailingSep(NSString *ident) {
         if ([info[@"userReadOnly"] boolValue])
             [sci message:SCI_SETREADONLY wParam:1];
         if ([info[@"RTL"] boolValue])
-            [sci message:2709 wParam:2]; // SCI_SETBIDIRECTIONAL R2L
+            [ed setTextDirectionRTL:nil]; // Full RTL setup: bidi + keys + wrap + layout
 
         // ── Restore per-tab color and pin state ──
         NSInteger tabIdx = (NSInteger)_tabManager.allEditors.count - 1;
@@ -3421,8 +3421,14 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     }
     if (action == @selector(showSummary:))       return ed != nil;
     if (action == @selector(focusOnAnotherView:)) return (vHasTabs || hHasTabs);
-    if (action == @selector(setTextDirectionRTL:) ||
-        action == @selector(setTextDirectionLTR:)) return ed != nil;
+    if (action == @selector(setTextDirectionRTL:)) {
+        [(NSMenuItem *)item setState:ed.isTextDirectionRTL ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil;
+    }
+    if (action == @selector(setTextDirectionLTR:)) {
+        [(NSMenuItem *)item setState:!ed.isTextDirectionRTL ? NSControlStateValueOn : NSControlStateValueOff];
+        return ed != nil;
+    }
 
     // Pin / Lock Tab checkmark
     if (action == @selector(pinCurrentTab:) || action == @selector(lockCurrentTab:)) {
