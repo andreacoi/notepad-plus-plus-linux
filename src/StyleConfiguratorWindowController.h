@@ -51,6 +51,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) NSString *globalFontName;
 @property (readonly, nonatomic) int       globalFontSize;
 
+/// Look up a Global Style (WidgetStyle) entry by name.
+/// Names: "Caret colour", "Line number margin", "Brace highlight style",
+/// "Current line background colour", "Selected text colour", "Fold", "Fold margin",
+/// "White space symbol", "Bad brace colour", etc.
+- (nullable NPPStyleEntry *)globalStyleNamed:(NSString *)name;
+
 /// Load a fresh set of lexers for the given theme name (Default or XML file name).
 /// Returns a fully-merged array (model defaults + theme overrides).
 - (NSArray<NPPLexer *> *)lexersForTheme:(NSString *)themeName;

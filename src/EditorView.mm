@@ -1054,48 +1054,60 @@ static NSColor *nppColorFromHex(NSString *hex) {
     // Propagate defaults to all styles, then re-apply language-specific colors
     [sci message:SCI_STYLECLEARALL];
 
-    // Derive line-number colors from bg (slightly tinted)
     CGFloat bgBrightness = bg.brightnessComponent;
-    NSColor *lnFg = bgBrightness > 0.5
-        ? [NSColor colorWithWhite:0.5 alpha:1.0]
-        : [NSColor colorWithWhite:0.6 alpha:1.0];
-    NSColor *lnBg = bgBrightness > 0.5
-        ? [NSColor colorWithWhite:0.95 alpha:1.0]
-        : [bg colorWithAlphaComponent:1.0]; // same as editor bg in dark themes
+
+    // ── Global Styles from stylers.xml / theme XML ──────────────────────────
+    // Line number margin
+    NPPStyleEntry *gsLineNum = [store globalStyleNamed:@"Line number margin"];
+    NSColor *lnFg = gsLineNum.fgColor ?: (bgBrightness > 0.5 ? [NSColor colorWithWhite:0.5 alpha:1.0]
+                                                               : [NSColor colorWithWhite:0.6 alpha:1.0]);
+    NSColor *lnBg = gsLineNum.bgColor ?: (bgBrightness > 0.5 ? [NSColor colorWithWhite:0.95 alpha:1.0] : bg);
     [sci setColorProperty:SCI_STYLESETFORE parameter:STYLE_LINENUMBER value:lnFg];
     [sci setColorProperty:SCI_STYLESETBACK parameter:STYLE_LINENUMBER value:lnBg];
 
     // Caret
-    [sci message:SCI_SETCARETFORE wParam:sciColor(fg)];
+    NPPStyleEntry *gsCaret = [store globalStyleNamed:@"Caret colour"];
+    [sci message:SCI_SETCARETFORE wParam:sciColor(gsCaret.fgColor ?: fg)];
 
-    // Caret-line highlight: subtle tint toward the opposite of bg
-    NSColor *caretLineBg = bgBrightness > 0.5
-        ? [NSColor colorWithRed:0.97 green:0.97 blue:1.0 alpha:1.0]
-        : [NSColor colorWithWhite:bgBrightness + 0.08 alpha:1.0];
+    // Caret-line highlight
+    NPPStyleEntry *gsCaretLine = [store globalStyleNamed:@"Current line background colour"];
+    NSColor *caretLineBg = gsCaretLine.bgColor
+        ?: (bgBrightness > 0.5
+            ? [NSColor colorWithRed:0.97 green:0.97 blue:1.0 alpha:1.0]
+            : [NSColor colorWithWhite:bgBrightness + 0.08 alpha:1.0]);
     [sci message:SCI_SETCARETLINEBACK wParam:sciColor(caretLineBg)];
 
-    // Fold margin column background:
-    //   • Listed dark themes → Default Style bg read directly from XML (exact hex, no color-space shift)
-    //   • All other themes   → #f2f2f2
-    NSString *activeThem = [[NPPStyleStore sharedStore] activeThemeName];
-    BOOL darkFold = foldMarginUsesEditorBg(activeThem);
-    sptr_t foldBGR = darkFold ? foldMarginBGRForTheme(activeThem) : -1;
-    sptr_t foldMarginBGR2 = (foldBGR >= 0) ? foldBGR : 0xF2F2F2;
+    // Selected text
+    NPPStyleEntry *gsSelected = [store globalStyleNamed:@"Selected text colour"];
+    if (gsSelected.bgColor)
+        [sci message:SCI_SETSELBACK wParam:1 lParam:sciColor(gsSelected.bgColor)];
+
+    // Fold margin
+    NPPStyleEntry *gsFold = [store globalStyleNamed:@"Fold"];
+    NPPStyleEntry *gsFoldMargin = [store globalStyleNamed:@"Fold margin"];
+    sptr_t foldMarginBGR2;
+    if (gsFoldMargin && gsFoldMargin.bgColor) {
+        foldMarginBGR2 = sciColor(gsFoldMargin.bgColor);
+    } else {
+        NSString *activeThem = [store activeThemeName];
+        BOOL darkFold = foldMarginUsesEditorBg(activeThem);
+        sptr_t fbgr = darkFold ? foldMarginBGRForTheme(activeThem) : -1;
+        foldMarginBGR2 = (fbgr >= 0) ? fbgr : 0xF2F2F2;
+    }
     [sci message:SCI_SETFOLDMARGINCOLOUR   wParam:1 lParam:foldMarginBGR2];
     [sci message:SCI_SETFOLDMARGINHICOLOUR wParam:1 lParam:foldMarginBGR2];
-    NSColor *foldBack2 = darkFold
-        ? [NSColor colorWithWhite:bgBrightness + 0.22 alpha:1.0]
-        : [NSColor colorWithWhite:0.82 alpha:1.0];
-    NSColor *foldFore2 = darkFold
-        ? [NSColor colorWithWhite:0.80 alpha:1.0]
-        : [NSColor blackColor];
+    NSColor *foldFore2 = gsFold.fgColor ?: (bgBrightness > 0.5 ? [NSColor blackColor]
+                                                                 : [NSColor colorWithWhite:0.80 alpha:1.0]);
+    NSColor *foldBack2 = gsFold.bgColor ?: (bgBrightness > 0.5 ? [NSColor colorWithWhite:0.82 alpha:1.0]
+                                                                 : [NSColor colorWithWhite:bgBrightness + 0.22 alpha:1.0]);
     for (int mn = SC_MARKNUM_FOLDEREND; mn <= SC_MARKNUM_FOLDEROPEN; mn++) {
         [sci setColorProperty:SCI_MARKERSETFORE parameter:mn value:foldFore2];
         [sci setColorProperty:SCI_MARKERSETBACK parameter:mn value:foldBack2];
     }
 
-    // Whitespace symbols color — re-assert after SCI_STYLECLEARALL clears all styles.
-    [sci message:SCI_SETWHITESPACEFORE wParam:1 lParam:0x0000FF]; // red (BGR)
+    // Whitespace symbols
+    NPPStyleEntry *gsWS = [store globalStyleNamed:@"White space symbol"];
+    [sci message:SCI_SETWHITESPACEFORE wParam:1 lParam:sciColor(gsWS.fgColor ?: [NSColor orangeColor])];
 
     // Re-apply language colors with the new theme palette
     if (_currentLanguage.length) [self applyLexerColors:_currentLanguage];
@@ -1118,36 +1130,58 @@ static NSColor *nppColorFromHex(NSString *hex) {
     // 2. Propagate STYLE_DEFAULT to ALL lexer styles (must come AFTER colors are set)
     [sci message:SCI_STYLECLEARALL];
 
-    // Line numbers margin (type must be set even if width comes from prefs)
-    [sci message:SCI_SETMARGINTYPEN wParam:0 lParam:SC_MARGIN_NUMBER];
+    // ── Apply Global Styles from stylers.xml / theme XML ──────────────────────
+    NPPStyleStore *store = [NPPStyleStore sharedStore];
     CGFloat bgBrightness = bg.brightnessComponent;
-    [sci setColorProperty:SCI_STYLESETFORE parameter:STYLE_LINENUMBER
-                    value:(bgBrightness > 0.5 ? [NSColor colorWithWhite:0.5 alpha:1.0]
-                                               : [NSColor colorWithWhite:0.6 alpha:1.0])];
-    [sci setColorProperty:SCI_STYLESETBACK parameter:STYLE_LINENUMBER
-                    value:(bgBrightness > 0.5 ? [NSColor colorWithWhite:0.95 alpha:1.0] : bg)];
 
-    // Caret color (width is set in applyPreferencesFromDefaults)
-    [sci message:SCI_SETCARETFORE wParam:sciColor(fg)];
+    // Line numbers margin
+    [sci message:SCI_SETMARGINTYPEN wParam:0 lParam:SC_MARGIN_NUMBER];
+    NPPStyleEntry *gsLineNum = [store globalStyleNamed:@"Line number margin"];
+    NSColor *lnFg = gsLineNum.fgColor ?: (bgBrightness > 0.5 ? [NSColor colorWithWhite:0.5 alpha:1.0]
+                                                               : [NSColor colorWithWhite:0.6 alpha:1.0]);
+    NSColor *lnBg = gsLineNum.bgColor ?: (bgBrightness > 0.5 ? [NSColor colorWithWhite:0.95 alpha:1.0] : bg);
+    [sci setColorProperty:SCI_STYLESETFORE parameter:STYLE_LINENUMBER value:lnFg];
+    [sci setColorProperty:SCI_STYLESETBACK parameter:STYLE_LINENUMBER value:lnBg];
 
-    // Current-line highlight background (visibility controlled by prefs)
-    NSColor *caretLineBg = bgBrightness > 0.5
-        ? [NSColor colorWithRed:0.97 green:0.97 blue:1.0 alpha:1.0]
-        : [NSColor colorWithWhite:bgBrightness + 0.08 alpha:1.0];
+    // Caret color
+    NPPStyleEntry *gsCaret = [store globalStyleNamed:@"Caret colour"];
+    [sci message:SCI_SETCARETFORE wParam:sciColor(gsCaret.fgColor ?: fg)];
+
+    // Current-line highlight background
+    NPPStyleEntry *gsCaretLine = [store globalStyleNamed:@"Current line background colour"];
+    NSColor *caretLineBg = gsCaretLine.bgColor
+        ?: (bgBrightness > 0.5
+            ? [NSColor colorWithRed:0.97 green:0.97 blue:1.0 alpha:1.0]
+            : [NSColor colorWithWhite:bgBrightness + 0.08 alpha:1.0]);
     [sci message:SCI_SETCARETLINEBACK wParam:sciColor(caretLineBg)];
 
-    // Indentation guides / EOL mode (not user-configurable yet)
+    // Selected text colour
+    NPPStyleEntry *gsSelected = [store globalStyleNamed:@"Selected text colour"];
+    if (gsSelected.bgColor)
+        [sci message:SCI_SETSELBACK wParam:1 lParam:sciColor(gsSelected.bgColor)];
+
+    // White space symbol colour
+    NPPStyleEntry *gsWhiteSpace = [store globalStyleNamed:@"White space symbol"];
+    if (gsWhiteSpace.fgColor)
+        [sci message:SCI_SETWHITESPACEFORE wParam:1 lParam:sciColor(gsWhiteSpace.fgColor)];
+
+    // Indentation guides
     [sci message:SCI_SETINDENTATIONGUIDES wParam:SC_IV_LOOKBOTH];
     [sci message:SCI_SETEOLMODE wParam:SC_EOL_LF];
+    NPPStyleEntry *gsIndent = [store globalStyleNamed:@"Indent guideline style"];
+    if (gsIndent.fgColor) [sci setColorProperty:SCI_STYLESETFORE parameter:37 value:gsIndent.fgColor];
+    if (gsIndent.bgColor) [sci setColorProperty:SCI_STYLESETBACK parameter:37 value:gsIndent.bgColor];
 
-    // Brace matching: red foreground, light-red background (matches NPP's red bracket highlight)
+    // Brace matching
+    NPPStyleEntry *gsBrace = [store globalStyleNamed:@"Brace highlight style"];
     [sci setColorProperty:SCI_STYLESETFORE parameter:STYLE_BRACELIGHT
-                    value:[NSColor colorWithRed:0.80 green:0.0 blue:0.0 alpha:1.0]];
+                    value:gsBrace.fgColor ?: [NSColor colorWithRed:0.80 green:0.0 blue:0.0 alpha:1.0]];
     [sci setColorProperty:SCI_STYLESETBACK parameter:STYLE_BRACELIGHT
-                    value:[NSColor colorWithRed:1.0 green:0.87 blue:0.87 alpha:1.0]];
-    [sci message:SCI_STYLESETBOLD wParam:STYLE_BRACELIGHT lParam:1];
+                    value:gsBrace.bgColor ?: [NSColor colorWithRed:1.0 green:0.87 blue:0.87 alpha:1.0]];
+    [sci message:SCI_STYLESETBOLD wParam:STYLE_BRACELIGHT lParam:(gsBrace ? gsBrace.bold : YES)];
+    NPPStyleEntry *gsBadBrace = [store globalStyleNamed:@"Bad brace colour"];
     [sci setColorProperty:SCI_STYLESETFORE parameter:STYLE_BRACEBAD
-                    value:[NSColor colorWithRed:0.75 green:0.0 blue:0.0 alpha:1.0]];
+                    value:gsBadBrace.fgColor ?: [NSColor colorWithRed:0.75 green:0.0 blue:0.0 alpha:1.0]];
 
     // ── Multiple selections & column/rectangular mode ────────────────────────
     // Ctrl+click adds a caret; Alt+drag creates a column (rectangular) selection.
@@ -1194,23 +1228,27 @@ static NSColor *nppColorFromHex(NSString *hex) {
     [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERMIDTAIL lParam:SC_MARK_TCORNERCURVE];
     [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERTAIL    lParam:SC_MARK_LCORNERCURVE];
     [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERSUB     lParam:SC_MARK_VLINE];
-    // Fold margin column background:
-    //   • Listed dark themes → Default Style bg read directly from XML (exact hex, no color-space shift)
-    //   • All other themes   → #f2f2f2
-    NSString *activeThm = [[NPPStyleStore sharedStore] activeThemeName];
-    BOOL darkFold = foldMarginUsesEditorBg(activeThm);
-    sptr_t foldBGR = darkFold ? foldMarginBGRForTheme(activeThm) : -1;
-    sptr_t foldMarginBGR = (foldBGR >= 0) ? foldBGR : 0xF2F2F2;
+    // Fold margin colors from Global Styles, with fallback
+    NPPStyleEntry *gsFold = [store globalStyleNamed:@"Fold"];
+    NPPStyleEntry *gsFoldMargin = [store globalStyleNamed:@"Fold margin"];
+    sptr_t foldMarginBGR;
+    if (gsFoldMargin && gsFoldMargin.bgColor) {
+        foldMarginBGR = sciColor(gsFoldMargin.bgColor);
+    } else {
+        NSString *activeThm = [store activeThemeName];
+        BOOL darkFold = foldMarginUsesEditorBg(activeThm);
+        sptr_t fbgr = darkFold ? foldMarginBGRForTheme(activeThm) : -1;
+        foldMarginBGR = (fbgr >= 0) ? fbgr : 0xF2F2F2;
+    }
     [sci message:SCI_SETFOLDMARGINCOLOUR   wParam:1 lParam:foldMarginBGR];
     [sci message:SCI_SETFOLDMARGINHICOLOUR wParam:1 lParam:foldMarginBGR];
-    // Marker (+/−) colours: adapt to the margin background
-    NSColor *foldBack = darkFold
-        ? [NSColor colorWithWhite:bgBrightness + 0.22 alpha:1.0]
-        : [NSColor colorWithWhite:0.82 alpha:1.0];
-    NSColor *foldFore = darkFold
-        ? [NSColor colorWithWhite:0.80 alpha:1.0]
-        : [NSColor blackColor];
-    NSColor *foldRed  = [NSColor colorWithRed:0.80 green:0.0 blue:0.0 alpha:1.0];
+    // Marker (+/−) colours from "Fold" global style, with adaptive fallback
+    NSColor *foldFore = gsFold.fgColor ?: (bgBrightness > 0.5 ? [NSColor blackColor]
+                                                                : [NSColor colorWithWhite:0.80 alpha:1.0]);
+    NSColor *foldBack = gsFold.bgColor ?: (bgBrightness > 0.5 ? [NSColor colorWithWhite:0.82 alpha:1.0]
+                                                                : [NSColor colorWithWhite:bgBrightness + 0.22 alpha:1.0]);
+    NPPStyleEntry *gsFoldActive = [store globalStyleNamed:@"Fold active"];
+    NSColor *foldRed = gsFoldActive.fgColor ?: [NSColor colorWithRed:0.80 green:0.0 blue:0.0 alpha:1.0];
     for (int mn = SC_MARKNUM_FOLDEREND; mn <= SC_MARKNUM_FOLDEROPEN; mn++) {
         [sci setColorProperty:SCI_MARKERSETFORE          parameter:mn value:foldFore];
         [sci setColorProperty:SCI_MARKERSETBACK          parameter:mn value:foldBack];

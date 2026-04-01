@@ -150,8 +150,15 @@ static NSString *modelLexerID(NSString *themeID) {
 }
 
 - (NSMutableArray<NPPLexer *> *)_parseDefaultXML {
-    NSURL *url = [[NSBundle mainBundle] URLForResource:@"stylers.model" withExtension:@"xml"];
-    if (!url) { NSLog(@"[NPPStyleStore] stylers.model.xml not found in bundle"); return [NSMutableArray new]; }
+    // Read from ~/.notepad++/stylers.xml first (user-editable), fall back to bundle model.
+    NSString *userStylers = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/stylers.xml"];
+    NSURL *url = nil;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:userStylers]) {
+        url = [NSURL fileURLWithPath:userStylers];
+    } else {
+        url = [[NSBundle mainBundle] URLForResource:@"stylers.model" withExtension:@"xml"];
+    }
+    if (!url) { NSLog(@"[NPPStyleStore] stylers.xml not found"); return [NSMutableArray new]; }
     NSData *data = [NSData dataWithContentsOfURL:url];
     NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:0 error:nil];
     return doc ? [self _parseXML:doc] : [NSMutableArray new];
@@ -352,6 +359,12 @@ static NSString *_userThemesDir(void) {
 - (NSColor *)globalBg   { NPPStyleEntry *e = [self _globalDefaultEntry]; return e.bgColor ?: [NSColor whiteColor]; }
 - (NSString *)globalFontName { NPPStyleEntry *e = [self _globalDefaultEntry]; return (e.fontName.length) ? e.fontName : @"Menlo"; }
 - (int)globalFontSize   { NPPStyleEntry *e = [self _globalDefaultEntry]; return e.fontSize > 0 ? e.fontSize : 11; }
+
+- (nullable NPPStyleEntry *)globalStyleNamed:(NSString *)name {
+    if (!_lexers.count) [self loadFromDefaults];
+    NPPLexer *g = _lexerDict[@"global"];
+    return g ? [g styleForName:name] : nil;
+}
 
 - (void)previewLexers:(NSArray<NPPLexer *> *)lexers {
     _lexers = [NSMutableArray new];

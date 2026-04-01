@@ -687,6 +687,17 @@ static void ensureNppDirs(void) {
         }
     }
 
+    // Copy stylers.model.xml from bundle as stylers.xml if user copy doesn't exist.
+    // User edits ~/.notepad++/stylers.xml to customize the Default theme styles.
+    NSString *stylersPath = [nppConfigDir() stringByAppendingPathComponent:@"stylers.xml"];
+    if (![fm fileExistsAtPath:stylersPath]) {
+        NSString *bundleCopy = [[NSBundle mainBundle] pathForResource:@"stylers.model" ofType:@"xml"];
+        if (bundleCopy) {
+            [fm copyItemAtPath:bundleCopy toPath:stylersPath error:nil];
+            NSLog(@"[Stylers] Copied stylers.model.xml as stylers.xml to ~/.notepad++/");
+        }
+    }
+
     // Create ~/.notepad++/themes/ for user-installed themes (empty on first run).
     NSString *userThemesDir = [nppConfigDir() stringByAppendingPathComponent:@"themes"];
     [fm createDirectoryAtPath:userThemesDir
@@ -697,9 +708,11 @@ static void ensureNppDirs(void) {
     [fm createDirectoryAtPath:userFuncListDir
   withIntermediateDirectories:YES attributes:nil error:nil];
 
-    // Copy toolbarButtonsConf.xml from bundle as _example if not present.
-    NSString *tbExPath = [nppConfigDir() stringByAppendingPathComponent:@"toolbarButtonsConf_example.xml"];
-    if (![fm fileExistsAtPath:tbExPath]) {
+    // Copy toolbarButtonsConf.xml from bundle as _example — only if neither
+    // the user's active config nor the example already exists.
+    NSString *tbConfPath = [nppConfigDir() stringByAppendingPathComponent:@"toolbarButtonsConf.xml"];
+    NSString *tbExPath   = [nppConfigDir() stringByAppendingPathComponent:@"toolbarButtonsConf_example.xml"];
+    if (![fm fileExistsAtPath:tbConfPath] && ![fm fileExistsAtPath:tbExPath]) {
         NSString *bundleCopy = [[NSBundle mainBundle] pathForResource:@"toolbarButtonsConf" ofType:@"xml"];
         if (bundleCopy) [fm copyItemAtPath:bundleCopy toPath:tbExPath error:nil];
     }
@@ -713,6 +726,10 @@ static void ensureNppDirs(void) {
 /// Regenerate toolbarButtonsConf_example.xml with current plugin entries.
 /// Called after plugins are loaded so all plugin actions are included.
 void regenerateToolbarExample(void) {
+    // Skip if user already has an active toolbar config
+    NSString *tbConfPath = [nppConfigDir() stringByAppendingPathComponent:@"toolbarButtonsConf.xml"];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:tbConfPath]) return;
+
     // Read the bundled template
     NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"toolbarButtonsConf" ofType:@"xml"];
     if (!bundlePath) return;
@@ -828,6 +845,32 @@ static NSImage *nppToolbarIcon(NSString *fileName) {
     NSImage *img = [[NppThemeManager shared] toolbarIconNamed:fileName];
     if (img) img.cacheMode = NSImageCacheNever;
     return img;
+}
+
+/// Load a custom toolbar icon from ~/.notepad++/toolbarIcons/{folderName}/{buttonId}.png
+/// Returns nil if not found.
+static NSImage *_customToolbarIcon(NSString *buttonId, NSDictionary *toolbarConfig) {
+    // Parse icoFolderName from the config (already parsed, but we need to read it here)
+    // For simplicity, check the standard location directly
+    NSString *iconDir = [nppConfigDir() stringByAppendingPathComponent:@"toolbarIcons"];
+
+    // Check for icon directly in toolbarIcons/ (flat layout)
+    NSString *flatPath = [iconDir stringByAppendingPathComponent:
+        [buttonId stringByAppendingString:@".png"]];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:flatPath]) {
+        NSImage *img = [[NSImage alloc] initWithContentsOfFile:flatPath];
+        if (img) { img.size = NSMakeSize(16, 16); return img; }
+    }
+
+    // Check in toolbarIcons/default/ subfolder
+    NSString *defaultPath = [[iconDir stringByAppendingPathComponent:@"default"]
+        stringByAppendingPathComponent:[buttonId stringByAppendingString:@".png"]];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:defaultPath]) {
+        NSImage *img = [[NSImage alloc] initWithContentsOfFile:defaultPath];
+        if (img) { img.size = NSMakeSize(16, 16); return img; }
+    }
+
+    return nil;
 }
 
 // ── Compact flat toolbar button (16×16 pt, 1-px rounded hover border) ───────
@@ -1036,12 +1079,13 @@ static NSImage *nppToolbarIcon(NSString *fileName) {
 
 // ── Toolbar configuration from XML ──────────────────────────────────────────
 
-/// Parse toolbarButtonsConf.xml and return the set of button IDs that should be hidden.
-/// Also returns any extra buttons (hide="no") that are not in the default 32 toolbar set.
+/// Parse toolbarButtonsConf.xml and return the ordered list of visible buttons.
+/// The XML document order determines toolbar button order (left to right).
 /// Lookup order: ~/.notepad++/toolbarButtonsConf.xml → bundled default.
 static NSDictionary *_parseToolbarConfig(void) {
     NSString *userPath = [nppConfigDir() stringByAppendingPathComponent:@"toolbarButtonsConf.xml"];
-    NSString *path = [[NSFileManager defaultManager] fileExistsAtPath:userPath]
+    BOOL hasUserConfig = [[NSFileManager defaultManager] fileExistsAtPath:userPath];
+    NSString *path = hasUserConfig
         ? userPath
         : [[NSBundle mainBundle] pathForResource:@"toolbarButtonsConf" ofType:@"xml"];
     if (!path) return @{};
@@ -1058,8 +1102,9 @@ static NSDictionary *_parseToolbarConfig(void) {
         hideAll = [ha isEqualToString:@"yes"];
     }
 
+    // Collect ALL visible buttons in document order — this IS the toolbar sequence.
+    NSMutableArray *visibleButtons = [NSMutableArray array];
     NSMutableSet *hiddenIDs = [NSMutableSet set];
-    NSMutableArray *extraButtons = [NSMutableArray array]; // non-default buttons with hide="no"
 
     NSArray *buttons = [doc nodesForXPath:@"//Standard/Button" error:nil];
     for (NSXMLElement *el in buttons) {
@@ -1074,8 +1119,7 @@ static NSDictionary *_parseToolbarConfig(void) {
         if (isHidden) {
             [hiddenIDs addObject:btnId];
         } else {
-            // Collect non-default-32 buttons that user wants visible
-            [extraButtons addObject:@{
+            [visibleButtons addObject:@{
                 @"id": btnId,
                 @"action": action ?: @"",
                 @"name": name ?: btnId,
@@ -1098,8 +1142,9 @@ static NSDictionary *_parseToolbarConfig(void) {
         }
     }
 
-    // Parse <Plugin> section — hidden plugin cmdIDs
+    // Parse <Plugin> section — hidden and visible plugin cmdIDs
     NSMutableSet *hiddenPluginCmdIDs = [NSMutableSet set];
+    NSMutableArray *visiblePluginButtons = [NSMutableArray array];
     BOOL hideAllPlugins = NO;
     NSArray *pluginNodes = [doc nodesForXPath:@"//Plugin" error:nil];
     if (pluginNodes.count) {
@@ -1110,17 +1155,28 @@ static NSDictionary *_parseToolbarConfig(void) {
     for (NSXMLElement *el in pluginButtons) {
         NSString *cmdIDStr = [el attributeForName:@"cmdID"].stringValue;
         NSString *hide     = [el attributeForName:@"hide"].stringValue;
+        NSString *name     = [el attributeForName:@"name"].stringValue;
+        NSString *plugin   = [el attributeForName:@"plugin"].stringValue;
         if (!cmdIDStr) continue;
         BOOL isHidden = hideAllPlugins || [hide isEqualToString:@"yes"];
-        if (isHidden)
+        if (isHidden) {
             [hiddenPluginCmdIDs addObject:@(cmdIDStr.intValue)];
+        } else {
+            [visiblePluginButtons addObject:@{
+                @"cmdID": @(cmdIDStr.intValue),
+                @"name": name ?: @"Plugin",
+                @"plugin": plugin ?: @""
+            }];
+        }
     }
 
     return @{
         @"hiddenIDs": hiddenIDs,
+        @"visibleButtons": visibleButtons,
+        @"visiblePluginButtons": visiblePluginButtons,
+        @"hasUserConfig": @(hasUserConfig),
         @"hiddenPluginCmdIDs": hiddenPluginCmdIDs,
         @"hideAllPlugins": @(hideAllPlugins),
-        @"extraButtons": extraButtons,
         @"appearance": appearance
     };
 }
@@ -1427,7 +1483,16 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     [[NppPluginManager shared] runPluginCommandWithID:cmdID];
 }
 
+static NSToolbarItemIdentifier const kTBUserConfig = @"TB_UserConfig";
+
 - (NSArray<NSToolbarItemIdentifier> *)toolbarDefaultItemIdentifiers:(NSToolbar *)tb {
+    // When user has a custom toolbar config, use a single dynamic item
+    // containing all standard + plugin buttons in XML order
+    if ([_toolbarConfig[@"hasUserConfig"] boolValue]) {
+        return @[kTBUserConfig,
+                 NSToolbarFlexibleSpaceItemIdentifier,
+                 kTBTabControls];
+    }
     return @[kTBGroup1,
              kTBGroup2,
              kTBGroup3,
@@ -1452,6 +1517,10 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     if ([ident isEqualToString:kTBTabControls])
         return [self makeTabControlsToolbarItem];
 
+    // User-configured toolbar: single item with all visible buttons in XML order
+    if ([ident isEqualToString:kTBUserConfig])
+        return [self makeUserConfigToolbarItem];
+
     // Group 7 gets special handling: Word Wrap + All Chars button + dropdown arrow + Indent Guide.
     if ([ident isEqualToString:kTBGroup7])
         return [self makeViewTogglesGroupToolbarItem];
@@ -1466,6 +1535,188 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     NSArray *idents = toolbarGroupMap()[ident];
     if (idents) return [self makeGroupToolbarItem:ident identifiers:idents];
     return nil;
+}
+
+/// Build a single toolbar item containing all visible buttons from the user's XML config,
+/// in document order, with separator lines at default group boundaries.
+- (NSToolbarItem *)makeUserConfigToolbarItem {
+    static const CGFloat kBtnSize = 17.0;
+    static const CGFloat kSpacing = 1.0;
+    static const CGFloat kSepGap  = 6.0; // total gap for a separator (padL + 1px line + padR)
+
+    NSArray *visibleButtons = _toolbarConfig[@"visibleButtons"];
+    if (!visibleButtons.count) return nil;
+
+    // Default group membership: which buttons belong to which group (for separator placement).
+    // Buttons at group boundaries get a separator line after the last button of the previous group.
+    static NSDictionary *buttonToGroup = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSDictionary *gmap = toolbarGroupMap();
+        NSMutableDictionary *b2g = [NSMutableDictionary dictionary];
+        for (NSString *gid in gmap)
+            for (NSString *bid in gmap[gid])
+                b2g[bid] = gid;
+        // Group 7 buttons (handled specially in default mode)
+        b2g[kTBWrap] = kTBGroup7;
+        b2g[kTBAllChars] = kTBGroup7;
+        b2g[kTBIndentGuide] = kTBGroup7;
+        buttonToGroup = [b2g copy];
+    });
+
+    // Build the descriptor lookup (default 32 + any extra)
+    NSMutableDictionary *descMap = [NSMutableDictionary dictionary];
+    for (NSArray *desc in toolbarDescriptors()) descMap[desc[0]] = desc;
+
+    NSSet *desatSet = desatToggleIdents();
+    NSSet *panelSet = panelToggleIdents();
+
+    // First pass: calculate total width
+    NSString *prevGroup = nil;
+    CGFloat totalW = 0;
+    NSInteger btnCount = 0;
+    for (NSDictionary *btn in visibleButtons) {
+        NSString *btnId = btn[@"id"];
+        NSString *group = buttonToGroup[btnId];
+        if (prevGroup && group && ![group isEqualToString:prevGroup])
+            totalW += kSepGap;
+        else if (btnCount > 0)
+            totalW += kSpacing;
+        totalW += kBtnSize;
+        prevGroup = group ?: prevGroup;
+        btnCount++;
+    }
+
+    // Second pass: create buttons
+    NSView *container = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, totalW, kBtnSize)];
+    CGFloat x = 0;
+    prevGroup = nil;
+    btnCount = 0;
+
+    for (NSDictionary *btn in visibleButtons) {
+        NSString *btnId = btn[@"id"];
+        NSString *action = btn[@"action"];
+        NSString *name = btn[@"name"];
+        NSString *trigger = btn[@"trigger"];
+        NSString *group = buttonToGroup[btnId];
+
+        // Insert separator between groups
+        if (prevGroup && group && ![group isEqualToString:prevGroup]) {
+            CGFloat sepX = x + 3.0;
+            _ToolbarBorderLine *sv = [[_ToolbarBorderLine alloc]
+                initWithFrame:NSMakeRect(sepX, 0, 1, kBtnSize)];
+            [container addSubview:sv];
+            x += kSepGap;
+        } else if (btnCount > 0) {
+            x += kSpacing;
+        }
+
+        // Look up icon: custom icon → default descriptor → system symbol fallback
+        NSArray *desc = descMap[btnId];
+        NSImage *img = _customToolbarIcon(btnId, _toolbarConfig);
+        if (!img && desc) img = nppToolbarIcon(desc[3]);
+        if (!img) img = [NSImage imageWithSystemSymbolName:@"square" accessibilityDescription:name];
+
+        // Determine button type
+        BOOL isToggle = [trigger isEqualToString:@"toggle"];
+        BOOL isDesatToggle = [desatSet containsObject:btnId];
+        BOOL isPanelToggle = [panelSet containsObject:btnId];
+
+        NppToolbarButton *button;
+        if (isToggle || isDesatToggle || isPanelToggle) {
+            NppToggleToolbarButton *tb = [[NppToggleToolbarButton alloc]
+                initWithFrame:NSMakeRect(x, 0, kBtnSize, kBtnSize)];
+            tb.useBlueHighlight = isPanelToggle || (isToggle && !isDesatToggle);
+            button = tb;
+        } else {
+            button = [[NppToolbarButton alloc]
+                initWithFrame:NSMakeRect(x, 0, kBtnSize, kBtnSize)];
+        }
+        button.image = img;
+        button.toolTip = name;
+        button.identifier = desc ? desc[3] : btnId; // icon name for dark mode refresh
+
+        // Set action: use the descriptor's action if available, otherwise use the XML action
+        SEL sel = NSSelectorFromString(desc ? desc[4] : action);
+        button.action = sel;
+        button.target = self;
+
+        [container addSubview:button];
+
+        // Store toggle button references for state refresh
+        if ([btnId isEqualToString:kTBWrap])         _tbWrap = (NppToggleToolbarButton *)button;
+        else if ([btnId isEqualToString:kTBSyncV])   _tbSyncV = (NppToggleToolbarButton *)button;
+        else if ([btnId isEqualToString:kTBSyncH])   _tbSyncH = (NppToggleToolbarButton *)button;
+        else if ([btnId isEqualToString:kTBMonitor])  _tbMonitor = (NppToggleToolbarButton *)button;
+        else if ([btnId isEqualToString:kTBUDL])      _tbUDL = (NppToggleToolbarButton *)button;
+        else if ([btnId isEqualToString:kTBDocMap])   _tbDocMap = (NppToggleToolbarButton *)button;
+        else if ([btnId isEqualToString:kTBDocList])  _tbDocList = (NppToggleToolbarButton *)button;
+        else if ([btnId isEqualToString:kTBFuncList]) _tbFuncList = (NppToggleToolbarButton *)button;
+        else if ([btnId isEqualToString:kTBFileBrowser]) _tbFileBrowser = (NppToggleToolbarButton *)button;
+        else if ([btnId isEqualToString:kTBIndentGuide]) _tbIndentGuide = (NppToggleToolbarButton *)button;
+
+        x += kBtnSize;
+        prevGroup = group ?: prevGroup;
+        btnCount++;
+    }
+
+    // ── Append visible plugin buttons (from <Plugin> section) ────────────────
+    NSArray *visPlugins = _toolbarConfig[@"visiblePluginButtons"];
+    if (visPlugins.count) {
+        // Separator before plugin section
+        if (btnCount > 0) {
+            CGFloat sepX = x + 3.0;
+            _ToolbarBorderLine *sv = [[_ToolbarBorderLine alloc]
+                initWithFrame:NSMakeRect(sepX, 0, 1, kBtnSize)];
+            [container addSubview:sv];
+            x += kSepGap;
+        }
+        for (NSDictionary *pb in visPlugins) {
+            if (btnCount > 0 && pb != visPlugins[0])
+                x += kSpacing;
+
+            int cmdID = [pb[@"cmdID"] intValue];
+            NSString *pName = pb[@"name"];
+
+            // Try to find icon from plugin's registered toolbar items
+            NSImage *pImg = nil;
+            for (NSDictionary *pti in _pluginToolbarItems) {
+                if ([pti[@"cmdID"] intValue] == cmdID) {
+                    pImg = pti[@"icon"];
+                    break;
+                }
+            }
+            // Try custom icon by plugin cmdID
+            if (!pImg) pImg = _customToolbarIcon(
+                [NSString stringWithFormat:@"Plugin_%d", cmdID], _toolbarConfig);
+            // Fallback
+            if (!pImg) pImg = [NSImage imageWithSystemSymbolName:@"puzzlepiece"
+                                        accessibilityDescription:pName];
+
+            NppToolbarButton *pBtn = [[NppToolbarButton alloc]
+                initWithFrame:NSMakeRect(x, 0, kBtnSize, kBtnSize)];
+            pBtn.image = pImg;
+            pBtn.toolTip = pName;
+            pBtn.tag = cmdID;
+            pBtn.target = self;
+            pBtn.action = @selector(pluginToolbarAction:);
+            [container addSubview:pBtn];
+
+            x += kBtnSize;
+            btnCount++;
+        }
+    }
+
+    // Resize container to fit all buttons
+    NSRect cf = container.frame;
+    cf.size.width = x;
+    container.frame = cf;
+
+    NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:kTBUserConfig];
+    item.view = container;
+    item.minSize = NSMakeSize(x, kBtnSize);
+    item.maxSize = NSMakeSize(x, kBtnSize);
+    return item;
 }
 
 // Whether this group should have a trailing separator line.
@@ -1506,7 +1757,8 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     for (NSString *btnIdent in idents) {
         NSArray *desc = descMap[btnIdent];
         if (desc) {
-            NSImage *img = nppToolbarIcon(desc[3]);
+            NSImage *img = _customToolbarIcon(btnIdent, _toolbarConfig);
+            if (!img) img = nppToolbarIcon(desc[3]);
             if (!img) img = [NSImage imageWithSystemSymbolName:@"doc" accessibilityDescription:desc[1]];
 
             BOOL isDesatToggle = [desatSet containsObject:btnIdent];
