@@ -37,4 +37,7 @@ void writeConfigXML(void);
 /// Read ~/.notepad++/config.xml and apply settings to NSUserDefaults.
 void readConfigXML(void);
 
+/// Regenerate toolbarButtonsConf_example.xml with current plugin entries.
+void regenerateToolbarExample(void);
+
 NS_ASSUME_NONNULL_END

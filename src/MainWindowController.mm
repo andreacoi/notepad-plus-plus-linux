@@ -696,6 +696,76 @@ static void ensureNppDirs(void) {
     NSString *userFuncListDir = [nppConfigDir() stringByAppendingPathComponent:@"functionList"];
     [fm createDirectoryAtPath:userFuncListDir
   withIntermediateDirectories:YES attributes:nil error:nil];
+
+    // Copy toolbarButtonsConf.xml from bundle as _example if not present.
+    NSString *tbExPath = [nppConfigDir() stringByAppendingPathComponent:@"toolbarButtonsConf_example.xml"];
+    if (![fm fileExistsAtPath:tbExPath]) {
+        NSString *bundleCopy = [[NSBundle mainBundle] pathForResource:@"toolbarButtonsConf" ofType:@"xml"];
+        if (bundleCopy) [fm copyItemAtPath:bundleCopy toPath:tbExPath error:nil];
+    }
+
+    // Create ~/.notepad++/toolbarIcons/ for user custom toolbar icon sets.
+    NSString *toolbarIconsDir = [nppConfigDir() stringByAppendingPathComponent:@"toolbarIcons"];
+    [fm createDirectoryAtPath:toolbarIconsDir
+  withIntermediateDirectories:YES attributes:nil error:nil];
+}
+
+/// Regenerate toolbarButtonsConf_example.xml with current plugin entries.
+/// Called after plugins are loaded so all plugin actions are included.
+void regenerateToolbarExample(void) {
+    // Read the bundled template
+    NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"toolbarButtonsConf" ofType:@"xml"];
+    if (!bundlePath) return;
+    NSString *content = [NSString stringWithContentsOfFile:bundlePath encoding:NSUTF8StringEncoding error:nil];
+    if (!content) return;
+
+    // Build plugin section
+    NSArray<NSDictionary *> *pluginActions = [[NppPluginManager shared] allPluginActions];
+    if (pluginActions.count == 0) {
+        // No plugins — just copy the template as-is
+        NSString *exPath = [nppConfigDir() stringByAppendingPathComponent:@"toolbarButtonsConf_example.xml"];
+        [content writeToFile:exPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+        return;
+    }
+
+    NSMutableString *pluginXML = [NSMutableString string];
+    [pluginXML appendString:@"\n"];
+    NSString *currentPlugin = @"";
+    for (NSDictionary *action in pluginActions) {
+        NSString *pluginName = action[@"pluginName"];
+        if (![pluginName isEqualToString:currentPlugin]) {
+            [pluginXML appendFormat:@"      <!-- ── %@ ── -->\n", pluginName];
+            currentPlugin = pluginName;
+        }
+        NSString *hide = [action[@"hasToolbarIcon"] boolValue] ? @"no" : @"yes";
+        int cmdID = [action[@"cmdID"] intValue];
+        NSString *actionName = action[@"actionName"];
+        // Escape XML special chars in action name
+        actionName = [actionName stringByReplacingOccurrencesOfString:@"&" withString:@"&amp;"];
+        actionName = [actionName stringByReplacingOccurrencesOfString:@"<" withString:@"&lt;"];
+        actionName = [actionName stringByReplacingOccurrencesOfString:@">" withString:@"&gt;"];
+        actionName = [actionName stringByReplacingOccurrencesOfString:@"\"" withString:@"&quot;"];
+        [pluginXML appendFormat:@"      <Button hide=\"%@\" cmdID=\"%d\" plugin=\"%@\" name=\"%@\" trigger=\"click\" />\n",
+            hide, cmdID, pluginName, actionName];
+    }
+
+    // Replace the empty <Plugin> section with populated one
+    NSString *emptyPlugin = @"    <Plugin hideAll=\"no\">\n"
+        @"      <!-- Plugin toolbar buttons are added dynamically at startup.\n"
+        @"           Plugins that register toolbar icons appear here with hide=\"no\".\n"
+        @"           To hide a plugin button, add:\n"
+        @"           <Button hide=\"yes\" name=\"PluginName - Action\" />\n"
+        @"      -->\n"
+        @"    </Plugin>";
+    NSMutableString *populatedPlugin = [NSMutableString string];
+    [populatedPlugin appendString:@"    <Plugin hideAll=\"no\">"];
+    [populatedPlugin appendString:pluginXML];
+    [populatedPlugin appendString:@"    </Plugin>"];
+
+    NSString *result = [content stringByReplacingOccurrencesOfString:emptyPlugin withString:populatedPlugin];
+
+    NSString *exPath = [nppConfigDir() stringByAppendingPathComponent:@"toolbarButtonsConf_example.xml"];
+    [result writeToFile:exPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
 
 // Toolbar item identifiers
@@ -964,6 +1034,97 @@ static NSImage *nppToolbarIcon(NSString *fileName) {
 }
 @end
 
+// ── Toolbar configuration from XML ──────────────────────────────────────────
+
+/// Parse toolbarButtonsConf.xml and return the set of button IDs that should be hidden.
+/// Also returns any extra buttons (hide="no") that are not in the default 32 toolbar set.
+/// Lookup order: ~/.notepad++/toolbarButtonsConf.xml → bundled default.
+static NSDictionary *_parseToolbarConfig(void) {
+    NSString *userPath = [nppConfigDir() stringByAppendingPathComponent:@"toolbarButtonsConf.xml"];
+    NSString *path = [[NSFileManager defaultManager] fileExistsAtPath:userPath]
+        ? userPath
+        : [[NSBundle mainBundle] pathForResource:@"toolbarButtonsConf" ofType:@"xml"];
+    if (!path) return @{};
+
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path]
+                                                              options:0 error:nil];
+    if (!doc) return @{};
+
+    // Check <Standard hideAll="yes">
+    NSArray *standardNodes = [doc nodesForXPath:@"//Standard" error:nil];
+    BOOL hideAll = NO;
+    if (standardNodes.count) {
+        NSString *ha = [(NSXMLElement *)standardNodes[0] attributeForName:@"hideAll"].stringValue;
+        hideAll = [ha isEqualToString:@"yes"];
+    }
+
+    NSMutableSet *hiddenIDs = [NSMutableSet set];
+    NSMutableArray *extraButtons = [NSMutableArray array]; // non-default buttons with hide="no"
+
+    NSArray *buttons = [doc nodesForXPath:@"//Standard/Button" error:nil];
+    for (NSXMLElement *el in buttons) {
+        NSString *btnId  = [el attributeForName:@"id"].stringValue;
+        NSString *hide   = [el attributeForName:@"hide"].stringValue;
+        NSString *action = [el attributeForName:@"action"].stringValue;
+        NSString *name   = [el attributeForName:@"name"].stringValue;
+        NSString *trigger = [el attributeForName:@"trigger"].stringValue;
+        if (!btnId) continue;
+
+        BOOL isHidden = hideAll || [hide isEqualToString:@"yes"];
+        if (isHidden) {
+            [hiddenIDs addObject:btnId];
+        } else {
+            // Collect non-default-32 buttons that user wants visible
+            [extraButtons addObject:@{
+                @"id": btnId,
+                @"action": action ?: @"",
+                @"name": name ?: btnId,
+                @"trigger": trigger ?: @"click"
+            }];
+        }
+    }
+
+    // Parse appearance
+    NSMutableDictionary *appearance = [NSMutableDictionary dictionary];
+    for (NSString *state in @[@"Hover", @"Active", @"ToggleOn", @"Normal"]) {
+        NSArray *nodes = [doc nodesForXPath:
+            [NSString stringWithFormat:@"//ToolbarAppearance/%@", state] error:nil];
+        if (nodes.count) {
+            NSXMLElement *el = nodes[0];
+            NSMutableDictionary *d = [NSMutableDictionary dictionary];
+            for (NSString *attr in @[@"bgColor", @"borderColor", @"borderWidth", @"cornerRadius"])
+                if ([el attributeForName:attr]) d[attr] = [el attributeForName:attr].stringValue;
+            appearance[state] = d;
+        }
+    }
+
+    // Parse <Plugin> section — hidden plugin cmdIDs
+    NSMutableSet *hiddenPluginCmdIDs = [NSMutableSet set];
+    BOOL hideAllPlugins = NO;
+    NSArray *pluginNodes = [doc nodesForXPath:@"//Plugin" error:nil];
+    if (pluginNodes.count) {
+        NSString *ha = [(NSXMLElement *)pluginNodes[0] attributeForName:@"hideAll"].stringValue;
+        hideAllPlugins = [ha isEqualToString:@"yes"];
+    }
+    NSArray *pluginButtons = [doc nodesForXPath:@"//Plugin/Button" error:nil];
+    for (NSXMLElement *el in pluginButtons) {
+        NSString *cmdIDStr = [el attributeForName:@"cmdID"].stringValue;
+        NSString *hide     = [el attributeForName:@"hide"].stringValue;
+        if (!cmdIDStr) continue;
+        BOOL isHidden = hideAllPlugins || [hide isEqualToString:@"yes"];
+        if (isHidden)
+            [hiddenPluginCmdIDs addObject:@(cmdIDStr.intValue)];
+    }
+
+    return @{
+        @"hiddenIDs": hiddenIDs,
+        @"hiddenPluginCmdIDs": hiddenPluginCmdIDs,
+        @"hideAllPlugins": @(hideAllPlugins),
+        @"extraButtons": extraButtons,
+        @"appearance": appearance
+    };
+}
+
 // Toolbar descriptor: {identifier, label, tooltip, icon-base-name, action-selector-string}
 // icon-base-name maps to icons/light|dark/toolbar/filled/{name}_off.png
 static NSArray<NSArray *> *toolbarDescriptors() {
@@ -1102,6 +1263,9 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     // Plugin toolbar icons: array of @{@"id": identifier, @"icon": NSImage, @"tooltip": NSString, @"cmdID": @(int)}
     NSMutableArray<NSDictionary *> *_pluginToolbarItems;
 
+    // Toolbar configuration parsed from toolbarButtonsConf.xml
+    NSDictionary *_toolbarConfig; // @{@"hiddenIDs": NSSet, @"extraButtons": NSArray, @"appearance": NSDictionary}
+
     // View display modes
     BOOL              _postItMode;
     BOOL              _postItSavedToolbarVisible;
@@ -1183,6 +1347,9 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
 #pragma mark - Toolbar (NSToolbarDelegate)
 
 - (void)buildToolbar {
+    // Parse toolbar configuration (hidden buttons, extra buttons, appearance)
+    _toolbarConfig = _parseToolbarConfig();
+
     NSToolbar *tb = [[NSToolbar alloc] initWithIdentifier:@"NppToolbar"];
     tb.delegate = self;
     tb.allowsUserCustomization = NO;
@@ -1196,6 +1363,11 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
 }
 
 - (void)addPluginToolbarIcon:(NSImage *)icon tooltip:(NSString *)tooltip cmdID:(int)cmdID {
+    // Check if user's toolbar config hides this plugin button
+    if ([_toolbarConfig[@"hideAllPlugins"] boolValue]) return;
+    NSSet *hiddenCmds = _toolbarConfig[@"hiddenPluginCmdIDs"];
+    if ([hiddenCmds containsObject:@(cmdID)]) return;
+
     if (!_pluginToolbarItems)
         _pluginToolbarItems = [NSMutableArray array];
 
@@ -1307,6 +1479,17 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     static const CGFloat kSpacing =  1.0;
     static const CGFloat kSepPadL =  3.0; // padding left of separator
     static const CGFloat kSepPadR = -4.0; // negative to compensate NSToolbar inter-item gap
+
+    // Filter out hidden buttons from toolbar config
+    NSSet *hiddenIDs = _toolbarConfig[@"hiddenIDs"];
+    if (hiddenIDs.count) {
+        NSMutableArray *filtered = [NSMutableArray array];
+        for (NSString *btnId in idents)
+            if (![hiddenIDs containsObject:btnId]) [filtered addObject:btnId];
+        idents = filtered;
+    }
+    if (idents.count == 0) return nil; // entire group hidden
+
     BOOL hasSep = groupHasTrailingSep(ident);
     NSInteger n = (NSInteger)idents.count;
     CGFloat buttonsW = n * kBtnSize + (n - 1) * kSpacing;

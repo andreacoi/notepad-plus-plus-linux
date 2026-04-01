@@ -364,6 +364,31 @@ static NSString *pluginBaseDir(void) {
     [self runPluginCommandWithID:(int)sender.tag];
 }
 
+- (NSArray<NSDictionary *> *)allPluginActions {
+    NSMutableArray *actions = [NSMutableArray array];
+    // Collect cmdIDs that have registered toolbar icons
+    NSMutableSet *toolbarCmdIDs = [NSMutableSet set];
+    for (NSDictionary *pti in [_mwc valueForKey:@"_pluginToolbarItems"])
+        if (pti[@"cmdID"]) [toolbarCmdIDs addObject:pti[@"cmdID"]];
+
+    for (auto &pi : _plugins) {
+        NSString *pluginName = [NSString stringWithUTF8String:pi->displayName.c_str()];
+        for (int i = 0; i < pi->nbFuncItems; i++) {
+            struct FuncItem *fi = &pi->funcItems[i];
+            if (!fi->_pFunc) continue; // skip separators
+            NSString *actionName = [NSString stringWithUTF8String:fi->_itemName];
+            BOOL hasIcon = [toolbarCmdIDs containsObject:@(fi->_cmdID)];
+            [actions addObject:@{
+                @"pluginName": pluginName,
+                @"actionName": actionName,
+                @"cmdID": @(fi->_cmdID),
+                @"hasToolbarIcon": @(hasIcon)
+            }];
+        }
+    }
+    return actions;
+}
+
 - (void)runPluginCommandWithID:(int)cmdID {
     for (auto &pi : _plugins) {
         for (int i = 0; i < pi->nbFuncItems; i++) {

@@ -111,6 +111,9 @@
             [MenuBuilder insertPluginMenuItems:[pm pluginMenuItems]];
         }
         [pm fireReady];
+
+        // Regenerate toolbar example XML with plugin entries
+        regenerateToolbarExample();
     }
 
     // ── Build recordable selectors for macro recording ────────────────

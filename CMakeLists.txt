@@ -223,6 +223,13 @@ add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
         "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/contextMenu.xml"
     COMMENT "Copying default contextMenu.xml into bundle")
 
+# Default toolbarButtonsConf.xml (copied as _example to ~/.notepad++/ on first run)
+add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/resources/toolbarButtonsConf.xml"
+        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/toolbarButtonsConf.xml"
+    COMMENT "Copying default toolbarButtonsConf.xml into bundle")
+
 # Localized display name so Dock shows "Notepad++" not "NotepadPlusPlus"
 add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory

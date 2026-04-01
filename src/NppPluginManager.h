@@ -58,6 +58,10 @@ extern NSNotificationName const NppPluginsDidLoadNotification;
 /// Execute a plugin command by its assigned command ID (from FuncItem._cmdID).
 - (void)runPluginCommandWithID:(int)cmdID;
 
+/// Returns all plugin actions for toolbar config XML generation.
+/// Each entry: @{@"pluginName", @"actionName", @"cmdID", @"hasToolbarIcon"}
+- (NSArray<NSDictionary *> *)allPluginActions;
+
 @end
 
 NS_ASSUME_NONNULL_END

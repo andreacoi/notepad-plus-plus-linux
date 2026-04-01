@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<NotepadPlus>
+<!--
+  Toolbar Configuration for Notepad++ (macOS)
+  ============================================
+  This file controls which buttons appear on the toolbar and how they look.
+
+  To customize: copy ~/.notepad++/toolbarButtonsConf_example.xml
+  to ~/.notepad++/toolbarButtonsConf.xml, edit it, and relaunch Notepad++.
+
+  Each <Button> has these attributes:
+    hide     = "yes" or "no" (whether the button is visible on the toolbar)
+    id       = unique identifier (do not modify)
+    action   = Objective-C selector invoked when clicked (do not modify)
+    name     = human-readable label (for your reference; also used as tooltip)
+    trigger  = "click" (momentary) or "toggle" (stateful on/off)
+
+  Buttons with hide="yes" are available but hidden by default.
+  To add a button to your toolbar, change hide="yes" to hide="no".
+  To remove a button, change hide="no" to hide="yes".
+  Set <Standard hideAll="yes"> to hide all built-in buttons at once.
+-->
+
+  <ToolbarButtons>
+    <Standard hideAll="no">
+
+      <!-- ══════════ File ══════════ -->
+      <Button hide="no"  id="TB_New"           action="newDocument:"              name="New"                    trigger="click" />
+      <Button hide="no"  id="TB_Open"          action="openDocument:"             name="Open..."                trigger="click" />
+      <Button hide="no"  id="TB_Save"          action="saveDocument:"             name="Save"                   trigger="click" />
+      <Button hide="no"  id="TB_SaveAll"       action="saveAllDocuments:"         name="Save All"               trigger="click" />
+      <Button hide="no"  id="TB_Close"         action="closeCurrentTab:"          name="Close"                  trigger="click" />
+      <Button hide="no"  id="TB_CloseAll"      action="closeAllTabs:"             name="Close All"              trigger="click" />
+      <Button hide="no"  id="TB_Print"         action="printDocument:"            name="Print..."               trigger="click" />
+      <Button hide="yes" id="TB_SaveAs"        action="saveDocumentAs:"           name="Save As..."             trigger="click" />
+      <Button hide="yes" id="TB_SaveCopy"      action="saveDocumentCopyAs:"       name="Save a Copy As..."      trigger="click" />
+      <Button hide="yes" id="TB_Rename"        action="renameDocument:"           name="Rename..."              trigger="click" />
+      <Button hide="yes" id="TB_Reload"        action="reloadFromDisk:"           name="Reload from Disk"       trigger="click" />
+      <Button hide="yes" id="TB_MoveTrash"     action="moveToTrash:"              name="Move to Trash"          trigger="click" />
+      <Button hide="yes" id="TB_CloseButCur"   action="closeAllButCurrent:"       name="Close All But Current"  trigger="click" />
+      <Button hide="yes" id="TB_CloseUnchg"    action="closeAllUnchanged:"        name="Close All Unchanged"    trigger="click" />
+      <Button hide="yes" id="TB_CloseButPin"   action="closeAllButPinned:"        name="Close All But Pinned"   trigger="click" />
+      <Button hide="yes" id="TB_LoadSession"   action="loadSession:"              name="Load Session..."        trigger="click" />
+      <Button hide="yes" id="TB_SaveSession"   action="saveSessionAs:"            name="Save Session..."        trigger="click" />
+      <Button hide="yes" id="TB_RevealFinder"  action="revealInFinder:"           name="Reveal in Finder"       trigger="click" />
+      <Button hide="yes" id="TB_OpenTerminal"  action="openInTerminal:"           name="Open in Terminal"       trigger="click" />
+      <Button hide="yes" id="TB_OpenViewer"    action="openInDefaultViewer:"      name="Open in Default Viewer" trigger="click" />
+
+      <!-- ══════════ Edit ══════════ -->
+      <Button hide="no"  id="TB_Cut"           action="cut:"                      name="Cut"                    trigger="click" />
+      <Button hide="no"  id="TB_Copy"          action="copy:"                     name="Copy"                   trigger="click" />
+      <Button hide="no"  id="TB_Paste"         action="paste:"                    name="Paste"                  trigger="click" />
+      <Button hide="no"  id="TB_Undo"          action="undo:"                     name="Undo"                   trigger="click" />
+      <Button hide="no"  id="TB_Redo"          action="redo:"                     name="Redo"                   trigger="click" />
+      <Button hide="yes" id="TB_SelectAll"     action="selectAll:"                name="Select All"             trigger="click" />
+      <Button hide="yes" id="TB_Indent"        action="indentSelection:"          name="Indent"                 trigger="click" />
+      <Button hide="yes" id="TB_Unindent"      action="unindentSelection:"        name="Unindent"               trigger="click" />
+      <Button hide="yes" id="TB_Uppercase"     action="convertToUppercase:"       name="UPPERCASE"              trigger="click" />
+      <Button hide="yes" id="TB_Lowercase"     action="convertToLowercase:"       name="lowercase"              trigger="click" />
+      <Button hide="yes" id="TB_DupLine"       action="duplicateLine:"            name="Duplicate Line"         trigger="click" />
+      <Button hide="yes" id="TB_DelLine"       action="deleteLine:"              name="Delete Line"            trigger="click" />
+      <Button hide="yes" id="TB_MoveLineUp"    action="moveLineUp:"              name="Move Line Up"           trigger="click" />
+      <Button hide="yes" id="TB_MoveLineDn"    action="moveLineDown:"            name="Move Line Down"         trigger="click" />
+      <Button hide="yes" id="TB_ToggleComment" action="toggleLineComment:"       name="Toggle Comment"         trigger="click" />
+      <Button hide="yes" id="TB_BlockComment"  action="addBlockComment:"         name="Block Comment"          trigger="click" />
+      <Button hide="yes" id="TB_BlockUncom"    action="removeBlockComment:"      name="Block Uncomment"        trigger="click" />
+      <Button hide="yes" id="TB_TrimTrail"     action="trimTrailingWhitespace:"  name="Trim Trailing Space"    trigger="click" />
+      <Button hide="yes" id="TB_SortAsc"       action="sortLinesAscending:"      name="Sort Lines A-Z"         trigger="click" />
+      <Button hide="yes" id="TB_SortDesc"      action="sortLinesDescending:"     name="Sort Lines Z-A"         trigger="click" />
+      <Button hide="yes" id="TB_RemoveDup"     action="removeDuplicateLines:"    name="Remove Duplicate Lines" trigger="click" />
+      <Button hide="yes" id="TB_ColumnEdit"    action="showColumnEditor:"        name="Column Editor..."       trigger="click" />
+      <Button hide="yes" id="TB_CharPanel"     action="characterPanel:"          name="Character Panel"        trigger="click" />
+      <Button hide="yes" id="TB_ClipHistory"   action="showClipboardHistory:"    name="Clipboard History"      trigger="click" />
+      <Button hide="yes" id="TB_ReadOnly"      action="toggleReadOnly:"          name="Toggle Read-Only"       trigger="toggle" />
+
+      <!-- ══════════ Search ══════════ -->
+      <Button hide="no"  id="TB_Find"          action="showFindPanel:"           name="Find..."                trigger="click" />
+      <Button hide="no"  id="TB_FindRep"       action="showReplacePanel:"        name="Replace..."             trigger="click" />
+      <Button hide="yes" id="TB_FindInFiles"   action="showFindInFiles:"         name="Find in Files..."       trigger="click" />
+      <Button hide="yes" id="TB_FindNext"      action="findNext:"               name="Find Next"              trigger="click" />
+      <Button hide="yes" id="TB_FindPrev"      action="findPrevious:"           name="Find Previous"          trigger="click" />
+      <Button hide="yes" id="TB_GoToLine"      action="goToLine:"               name="Go to Line..."          trigger="click" />
+      <Button hide="yes" id="TB_GoToBrace"     action="goToMatchingBrace:"      name="Go to Matching Brace"   trigger="click" />
+      <Button hide="yes" id="TB_IncSearch"     action="showIncrementalSearch:"   name="Incremental Search"     trigger="click" />
+      <Button hide="yes" id="TB_MarkDialog"    action="showMarkDialog:"         name="Mark..."                trigger="click" />
+      <Button hide="yes" id="TB_Bookmark"      action="toggleBookmark:"         name="Toggle Bookmark"        trigger="click" />
+      <Button hide="yes" id="TB_NextBookmark"  action="nextBookmark:"           name="Next Bookmark"          trigger="click" />
+      <Button hide="yes" id="TB_PrevBookmark"  action="previousBookmark:"       name="Previous Bookmark"      trigger="click" />
+      <Button hide="yes" id="TB_ClearBookmark" action="clearAllBookmarks:"      name="Clear All Bookmarks"    trigger="click" />
+
+      <!-- ══════════ View ══════════ -->
+      <Button hide="no"  id="TB_ZoomIn"        action="zoomIn:"                  name="Zoom In"                trigger="click" />
+      <Button hide="no"  id="TB_ZoomOut"       action="zoomOut:"                 name="Zoom Out"               trigger="click" />
+      <Button hide="no"  id="TB_SyncV"         action="toggleSyncVerticalScrolling:"   name="Sync Vertical Scrolling"   trigger="toggle" />
+      <Button hide="no"  id="TB_SyncH"         action="toggleSyncHorizontalScrolling:" name="Sync Horizontal Scrolling" trigger="toggle" />
+      <Button hide="no"  id="TB_Wrap"          action="toggleWordWrap:"          name="Word Wrap"              trigger="toggle" />
+      <Button hide="no"  id="TB_AllChars"      action="toggleShowAllChars:"      name="Show All Characters"    trigger="toggle" />
+      <Button hide="no"  id="TB_IndentGuide"   action="toggleIndentGuides:"      name="Indent Guide"           trigger="toggle" />
+      <Button hide="no"  id="TB_UDL"           action="showDefineLanguage:"      name="User Defined Language"  trigger="toggle" />
+      <Button hide="no"  id="TB_DocMap"        action="showDocumentMap:"         name="Document Map"           trigger="toggle" />
+      <Button hide="no"  id="TB_DocList"       action="showDocumentList:"        name="Document List"          trigger="toggle" />
+      <Button hide="no"  id="TB_FuncList"      action="showFunctionList:"        name="Function List"          trigger="toggle" />
+      <Button hide="no"  id="TB_FileBrowser"   action="showFolderAsWorkspace:"   name="Folder as Workspace"    trigger="toggle" />
+      <Button hide="no"  id="TB_Monitor"       action="toggleMonitoring:"        name="Monitoring (tail -f)"   trigger="toggle" />
+      <Button hide="yes" id="TB_ResetZoom"     action="resetZoom:"               name="Restore Default Zoom"   trigger="click" />
+      <Button hide="yes" id="TB_FullScreen"    action="toggleFullScreen:"        name="Full Screen"            trigger="toggle" />
+      <Button hide="yes" id="TB_PostIt"        action="togglePostItMode:"        name="Post-It Mode"           trigger="toggle" />
+      <Button hide="yes" id="TB_DistrFree"     action="toggleDistractionFreeMode:" name="Distraction Free Mode" trigger="toggle" />
+      <Button hide="yes" id="TB_WhiteSpace"    action="showWhiteSpaceAndTab:"    name="Show White Space"       trigger="toggle" />
+      <Button hide="yes" id="TB_EOL"           action="showEndOfLine:"           name="Show End of Line"       trigger="toggle" />
+      <Button hide="yes" id="TB_LineNumbers"   action="toggleLineNumbers:"       name="Show Line Numbers"      trigger="toggle" />
+      <Button hide="yes" id="TB_FoldAll"       action="foldAll:"                 name="Fold All"               trigger="click" />
+      <Button hide="yes" id="TB_UnfoldAll"     action="unfoldAll:"               name="Unfold All"             trigger="click" />
+      <Button hide="yes" id="TB_Summary"       action="showSummary:"             name="Summary..."             trigger="click" />
+      <Button hide="yes" id="TB_GitPanel"      action="showGitPanel:"            name="Git Panel"              trigger="toggle" />
+      <Button hide="yes" id="TB_SpellCheck"    action="toggleSpellCheck:"        name="Spell Check"            trigger="toggle" />
+      <Button hide="yes" id="TB_FolderTree"    action="showFolderTreePanel:"     name="Folder Tree"            trigger="toggle" />
+      <Button hide="yes" id="TB_RTL"           action="setTextDirectionRTL:"     name="Text Direction RTL"     trigger="click" />
+      <Button hide="yes" id="TB_LTR"           action="setTextDirectionLTR:"     name="Text Direction LTR"     trigger="click" />
+      <Button hide="yes" id="TB_FocusView"     action="focusOnAnotherView:"      name="Focus on Another View"  trigger="click" />
+      <Button hide="yes" id="TB_ResetView"     action="resetView:"               name="Reset View"             trigger="click" />
+
+      <!-- ══════════ Macro ══════════ -->
+      <Button hide="no"  id="TB_StartRecord"   action="startMacroRecording:"     name="Start Recording"        trigger="click" />
+      <Button hide="no"  id="TB_StopRecord"    action="stopMacroRecording:"      name="Stop Recording"         trigger="click" />
+      <Button hide="no"  id="TB_PlayRecord"    action="runMacro:"                name="Playback"               trigger="click" />
+      <Button hide="no"  id="TB_PlayRecordM"   action="runMacroMultipleTimes:"   name="Run Macro Multiple Times" trigger="click" />
+      <Button hide="no"  id="TB_SaveRecord"    action="saveCurrentMacro:"        name="Save Current Macro"     trigger="click" />
+      <Button hide="yes" id="TB_TrimSave"      action="trimTrailingSpaceAndSave:" name="Trim Trailing and Save" trigger="click" />
+
+      <!-- ══════════ Tools ══════════ -->
+      <Button hide="yes" id="TB_MD5Gen"        action="hashMD5Generate:"         name="MD5 Generate"           trigger="click" />
+      <Button hide="yes" id="TB_SHA256Gen"     action="hashSHA256Generate:"      name="SHA-256 Generate"       trigger="click" />
+      <Button hide="yes" id="TB_Base64Enc"     action="base64Encode:"            name="Base64 Encode"          trigger="click" />
+      <Button hide="yes" id="TB_Base64Dec"     action="base64Decode:"            name="Base64 Decode"          trigger="click" />
+
+      <!-- ══════════ Encoding (quick access) ══════════ -->
+      <Button hide="yes" id="TB_EncUTF8"       action="setEncodingUTF8:"         name="UTF-8"                  trigger="click" />
+      <Button hide="yes" id="TB_EncANSI"       action="setEncodingANSI:"         name="ANSI"                   trigger="click" />
+      <Button hide="yes" id="TB_EncUTF8BOM"    action="setEncodingUTF8BOM:"      name="UTF-8-BOM"              trigger="click" />
+
+      <!-- ══════════ Run ══════════ -->
+      <Button hide="yes" id="TB_RunDialog"     action="showRunDialog:"            name="Run..."                trigger="click" />
+
+      <!-- ══════════ Window ══════════ -->
+      <Button hide="yes" id="TB_WindowsList"   action="showWindowsList:"          name="Windows..."            trigger="click" />
+      <Button hide="yes" id="TB_NewWindow"     action="openNewWindow:"            name="New Window"            trigger="click" />
+
+      <!-- ══════════ Settings ══════════ -->
+      <Button hide="yes" id="TB_Preferences"   action="showPreferences:"          name="Preferences..."        trigger="click" />
+      <Button hide="yes" id="TB_StyleConfig"   action="showStyleConfigurator:"    name="Style Configurator..." trigger="click" />
+
+    </Standard>
+
+    <Plugin hideAll="no">
+      <!-- Plugin toolbar buttons are added dynamically at startup.
+           Plugins that register toolbar icons appear here with hide="no".
+           To hide a plugin button, add:
+           <Button hide="yes" name="PluginName - Action" />
+      -->
+    </Plugin>
+  </ToolbarButtons>
+
+<!--
+  Toolbar Appearance
+  ==================
+  Customize colors and sizes for toolbar button states.
+  Colors are hex (#RRGGBB) or "transparent". Sizes in pixels.
+-->
+  <ToolbarAppearance>
+    <Hover     bgColor="#E8F0FE" borderColor="#4285F4" borderWidth="1" cornerRadius="4" />
+    <Active    bgColor="#D2E3FC" borderColor="#1967D2" borderWidth="1" cornerRadius="4" />
+    <ToggleOn  bgColor="#C8E6C9" borderColor="#388E3C" borderWidth="1" cornerRadius="4" />
+    <Normal    bgColor="transparent" borderColor="transparent" borderWidth="0" cornerRadius="4" />
+    <IconSize  width="16" height="16" />
+    <Spacing   gap="1" groupGap="8" />
+  </ToolbarAppearance>
+
+<!--
+  Custom Toolbar Icons
+  ====================
+  Place custom .png icons in ~/.notepad++/toolbarIcons/{folderName}/
+  Each icon should be named matching the id attribute (e.g. TB_Save.png).
+  Missing icons will use the built-in default.
+  Set icoFolderName="" to use ~/.notepad++/toolbarIcons/default/
+-->
+  <ToolBarIcons icoFolderName="" />
+
+</NotepadPlus>
