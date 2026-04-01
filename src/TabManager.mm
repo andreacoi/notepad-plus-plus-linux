@@ -118,9 +118,8 @@
 }
 
 - (void)closeEditor:(EditorView *)editor {
-    // Only prompt for named files with unsaved changes.
-    // Untitled tabs are backed up automatically — no prompt needed.
-    if (editor.isModified) {
+    // Only prompt for unsaved changes when no clone sibling holds the shared document.
+    if (editor.isModified && !editor.cloneSibling) {
         NSAlert *alert = [[NSAlert alloc] init];
         alert.messageText = [NSString stringWithFormat:@"Save changes to \"%@\"?", editor.displayName];
         alert.informativeText = @"Your changes will be lost if you don't save them.";

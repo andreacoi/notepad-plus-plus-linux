@@ -490,8 +490,10 @@ static const CGFloat kPinSize = 11.0; // pin icon drawn at ~80% of original ~14p
 #pragma mark - Tab item callbacks
 
 - (void)tabItemSelected:(_NppTabItem *)item {
-    if (item.tabIndex == _selectedIndex) return;
-    [self selectTabAtIndex:item.tabIndex];
+    if (item.tabIndex != _selectedIndex)
+        [self selectTabAtIndex:item.tabIndex];
+    // Always fire delegate — even for already-selected tabs — so that
+    // _activeTabManager updates when the user clicks/right-clicks in any pane.
     [_delegate tabBar:self didSelectTabAtIndex:item.tabIndex];
 }
 

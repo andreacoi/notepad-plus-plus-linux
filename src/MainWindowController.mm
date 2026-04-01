@@ -3085,24 +3085,33 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 }
 
 // Move the same EditorView object (no content copy, no save prompt).
-// Clicking the same direction again is a toggle: moves back to primary and collapses.
+// If the editor is already in the secondary pane, move it back to primary.
 - (void)_moveEditor:(EditorView *)ed toVertical:(BOOL)vertical {
     if (!ed) return;
     TabManager *sub = vertical ? _subTabManagerV : _subTabManagerH;
 
-    if (_activeTabManager == sub) {
-        // Toggle: move back to primary and collapse the secondary pane
+    // Find which tab manager currently owns this editor (don't rely on
+    // _activeTabManager — it can mutate during evict/adopt callbacks).
+    TabManager *source = nil;
+    for (TabManager *mgr in @[_tabManager, _subTabManagerH, _subTabManagerV])
+        if ([mgr.allEditors containsObject:ed]) { source = mgr; break; }
+    if (!source) return;
+
+    if (source == sub) {
+        // Editor is in the secondary pane — move back to primary
         [sub evictEditor:ed];
         [_tabManager adoptEditor:ed];
-        if (vertical)
-            [_vSplitView setPosition:MAX(NSWidth(_vSplitView.frame),   9999) ofDividerAtIndex:0];
-        else
-            [_hSplitView setPosition:MAX(NSHeight(_hSplitView.frame),  9999) ofDividerAtIndex:0];
+        // Only collapse when the secondary pane has no remaining tabs
+        if (sub.allEditors.count == 0) {
+            if (vertical)
+                [_vSplitView setPosition:MAX(NSWidth(_vSplitView.frame),   9999) ofDividerAtIndex:0];
+            else
+                [_hSplitView setPosition:MAX(NSHeight(_hSplitView.frame),  9999) ofDividerAtIndex:0];
+        }
     } else {
         // Move from current pane to secondary
-        [_activeTabManager evictEditor:ed];
-        // If primary became empty (last tab moved out), add a blank tab to keep it usable
-        if (_activeTabManager == _tabManager && _tabManager.allEditors.count == 0)
+        [source evictEditor:ed];
+        if (source == _tabManager && _tabManager.allEditors.count == 0)
             [_tabManager addNewTab];
         [sub adoptEditor:ed];
         if (vertical) [self _ensureVerticalViewVisible];
@@ -4840,6 +4849,9 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
 - (void)tabManager:(id)tabManager didSelectEditor:(EditorView *)editor {
     _activeTabManager = tabManager;
+    // Give the editor keyboard focus so the old pane's caret stops blinking
+    // and SCN_FOCUSIN fires on the correct editor.
+    [self.window makeFirstResponder:editor.scintillaView];
     [self _applyEditorContextMenu:editor];
     [self updateTitle];
     [self updateStatusBar];
