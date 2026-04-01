@@ -66,6 +66,13 @@ extern NSNotificationName const EditorViewDidGainFocusNotification;
 /// Copy all text content from another editor (for untitled tab cloning).
 - (void)loadContentFromEditor:(EditorView *)source;
 
+/// Share the Scintilla document from another editor (for clone-to-view).
+/// Both views point to the same document — edits in one appear in the other.
+- (void)shareDocumentFrom:(EditorView *)source;
+
+/// The clone sibling (the other view sharing the same Scintilla document), or nil.
+@property (nonatomic, weak, nullable) EditorView *cloneSibling;
+
 /// Open a file from disk into this editor.
 - (BOOL)loadFileAtPath:(NSString *)path error:(NSError **)error;
 

@@ -349,11 +349,21 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
 }
 
 - (void)prepareForClose {
-    // NSFileCoordinator holds a strong reference to registered file presenters,
     [_fileMonitorTimer invalidate];
     _fileMonitorTimer = nil;
     [_spellTimer invalidate];
     _spellTimer = nil;
+
+    // If this is a clone, release the shared document reference and unlink sibling.
+    if (_cloneSibling) {
+        sptr_t docPtr = [_scintillaView message:SCI_GETDOCPOINTER];
+        // Set this view to a fresh empty document before releasing the shared one,
+        // so that SCI_RELEASEDOCUMENT doesn't free a document we're still pointing at.
+        [_scintillaView message:SCI_SETDOCPOINTER wParam:0 lParam:0];
+        [_scintillaView message:SCI_RELEASEDOCUMENT wParam:0 lParam:docPtr];
+        _cloneSibling.cloneSibling = nil;
+        _cloneSibling = nil;
+    }
 }
 
 
@@ -366,6 +376,27 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     [source.scintillaView message:SCI_GETTEXT wParam:(uptr_t)(len + 1) lParam:(sptr_t)buf];
     [_scintillaView message:SCI_SETTEXT wParam:0 lParam:(sptr_t)buf];
     free(buf);
+}
+
+- (void)shareDocumentFrom:(EditorView *)source {
+    // Get the source's document pointer and add a reference so it stays alive.
+    sptr_t docPtr = [source.scintillaView message:SCI_GETDOCPOINTER];
+    [_scintillaView message:SCI_ADDREFDOCUMENT wParam:0 lParam:docPtr];
+    // Point this view at the shared document (releases the old default document).
+    [_scintillaView message:SCI_SETDOCPOINTER wParam:0 lParam:docPtr];
+
+    // Copy editor metadata so the clone looks and behaves like the source.
+    _filePath = [source.filePath copy];
+    _fileEncoding = source->_fileEncoding;
+    _hasBOM = source->_hasBOM;
+    _isModified = source->_isModified;
+    _largeFileMode = source->_largeFileMode;
+    if (source.currentLanguage.length)
+        [self setLanguage:source.currentLanguage];
+
+    // Establish bidirectional sibling link.
+    self.cloneSibling = source;
+    source.cloneSibling = self;
 }
 
 #pragma mark - File I/O
@@ -560,6 +591,14 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     if (_backupFilePath) {
         [[NSFileManager defaultManager] removeItemAtPath:_backupFilePath error:nil];
         _backupFilePath = nil;
+    }
+    // Sync clone sibling's filePath so both point to the saved file.
+    if (_cloneSibling) {
+        _cloneSibling.filePath = [path copy];
+        if (_cloneSibling.backupFilePath) {
+            [[NSFileManager defaultManager] removeItemAtPath:_cloneSibling.backupFilePath error:nil];
+            _cloneSibling.backupFilePath = nil;
+        }
     }
     // Record the mtime we just wrote so the polling timer won't mistake our own
     // write for an external change (this is what the old _savingSuppressed flag tried
@@ -2805,6 +2844,8 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
         case SCN_MODIFIED:
             if (notification->modificationType & (SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT)) {
                 _isModified = YES;
+                // Sync clone sibling's modified state (shared document).
+                if (_cloneSibling) _cloneSibling->_isModified = YES;
                 // When whitespace display is active, newly inserted characters may not
                 // get their whitespace symbols drawn by Scintilla's incremental update.
                 // Queuing a full redraw ensures tab arrows / space dots appear immediately.
@@ -2812,6 +2853,14 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
                     [_scintillaView setNeedsDisplay:YES];
                 }
             }
+            break;
+        case SCN_SAVEPOINTREACHED:
+            _isModified = NO;
+            if (_cloneSibling) _cloneSibling->_isModified = NO;
+            break;
+        case SCN_SAVEPOINTLEFT:
+            _isModified = YES;
+            if (_cloneSibling) _cloneSibling->_isModified = YES;
             break;
         case SCN_CHARADDED:
             [self handleCharAdded:notification->ch];

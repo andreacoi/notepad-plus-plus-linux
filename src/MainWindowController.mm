@@ -3111,17 +3111,14 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     [self updateTitle];
 }
 
-// Clone: open the same file in the other view (new EditorView, same document path).
-// No save prompt — purely additive.
+// Clone: share the same Scintilla document in the other view.
+// Both views stay in sync — edits in one appear in the other.
 - (void)_cloneEditor:(EditorView *)ed toVertical:(BOOL)vertical {
     if (!ed) return;
     TabManager *sub = vertical ? _subTabManagerV : _subTabManagerH;
-    if (ed.filePath) {
-        [sub openFileAtPath:ed.filePath];
-    } else {
-        EditorView *newEd = [sub addNewTab];
-        [newEd loadContentFromEditor:ed];
-    }
+    EditorView *clone = [sub addNewTab];
+    [clone shareDocumentFrom:ed];
+    [sub refreshCurrentTabTitle];
     if (vertical) [self _ensureVerticalViewVisible];
     else          [self _ensureHorizontalViewVisible];
     [self updateTitle];
