@@ -280,7 +280,6 @@ void writeConfigXML(void) {
     NSInteger tabWidth = [ud integerForKey:kPrefTabWidth];
     BOOL autoIndent    = [ud boolForKey:kPrefAutoIndent];
     BOOL showLineNum   = [ud boolForKey:kPrefShowLineNumbers];
-    BOOL wordWrap      = [ud boolForKey:kPrefWordWrap];
     BOOL highlightLine = [ud boolForKey:kPrefHighlightCurrentLine];
     NSInteger eolType  = [ud integerForKey:kPrefEOLType];
     NSInteger encoding = [ud integerForKey:kPrefEncoding];
@@ -434,7 +433,6 @@ void writeConfigXML(void) {
      @"virtualSpace=\"%@\" scrollBeyondLastLine=\"%@\" "
      @"rightClickKeepsSelection=\"%@\" "
      @"lineCopyCutWithoutSelection=\"%@\" "
-     @"Wrap=\"%@\" "
      @"currentLineIndicator=\"%@\" "
      @"whiteSpaceShow=\"%@\" eolShow=\"%@\" eolMode=\"%ld\" "
      @"zoom=\"%ld\" smoothFont=\"%ld\" "
@@ -445,7 +443,6 @@ void writeConfigXML(void) {
      _yn(virtualSpace), _yn(scrollBeyond),
      _yn(rightClickSel),
      _yn(copyLineNoSel),
-     _yn(wordWrap),
      highlightLine ? @"1" : @"0",
      showWS ? @"show" : @"hide", showEOL ? @"show" : @"hide", (long)eolType,
      (long)zoom, (long)fontQual,
@@ -617,8 +614,6 @@ void readConfigXML(void) {
                 [ud setBool:_ynBool(v) forKey:kPrefRightClickKeepsSel];
             if ((v = [el attributeForName:@"lineCopyCutWithoutSelection"].stringValue))
                 [ud setBool:_ynBool(v) forKey:kPrefCopyLineNoSelection];
-            if ((v = [el attributeForName:@"Wrap"].stringValue))
-                [ud setBool:_ynBool(v) forKey:kPrefWordWrap];
             if ((v = [el attributeForName:@"currentLineIndicator"].stringValue))
                 [ud setBool:(v.integerValue != 0) forKey:kPrefHighlightCurrentLine];
             if ((v = [el attributeForName:@"whiteSpaceShow"].stringValue))
@@ -1863,27 +1858,29 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     NSString *backupDir = nppBackupDir();
 
     // Persist ALL open tabs so they reopen on next launch.
-    // External files: record their path only (no backup — they live on disk).
-    // Untitled tabs: back up content to ~/.notepad++/backup/ (auto-save only for these).
+    // Modified text files: back up content to ~/.notepad++/backup/ so unsaved
+    // changes survive quit.  On next launch they reload from backup and show
+    // as modified (Windows NPP behaviour — no save prompt on exit).
+    // Binary / large-file tabs: record path only, no backup.
+    // Clean up stale backups after saving.
+    NSMutableSet *activeBackups = [NSMutableSet set];
+
     NSMutableArray *tabs = [NSMutableArray array];
-    NSMutableSet *savedPaths = [NSMutableSet set];  // prevent duplicate entries
     for (EditorView *ed in _tabManager.allEditors) {
-        // Skip duplicate file paths (same file open in multiple tabs shouldn't be saved twice)
-        if (ed.filePath) {
-            if ([savedPaths containsObject:ed.filePath]) continue;
-            [savedPaths addObject:ed.filePath];
-        }
         NSMutableDictionary *info = [NSMutableDictionary dictionary];
+
+        if (ed.filePath) info[@"filePath"] = ed.filePath;
 
         if (!ed.filePath) {
             // Untitled tab — only worth restoring if it has content
             if (!ed.isModified) continue;
             NSString *backup = [ed saveBackupToDirectory:backupDir];
-            if (backup) info[@"backupFilePath"] = backup;
+            if (backup) { info[@"backupFilePath"] = backup; [activeBackups addObject:backup]; }
             info[@"untitledIndex"] = @(ed.untitledIndex);
-        } else {
-            // External file — just record the path; reopen from disk on restore
-            info[@"filePath"] = ed.filePath;
+        } else if (ed.isModified && !ed.largeFileMode) {
+            // Named file with unsaved changes — back up content
+            NSString *backup = [ed saveBackupToDirectory:backupDir];
+            if (backup) { info[@"backupFilePath"] = backup; [activeBackups addObject:backup]; }
         }
 
         if (ed.currentLanguage.length) info[@"language"] = ed.currentLanguage;
@@ -1950,6 +1947,15 @@ static BOOL groupHasTrailingSep(NSString *ident) {
         @"selectedIndex": @(_tabManager.tabBar.selectedIndex)
     };
     [session writeToFile:nppSessionPath() atomically:YES];
+
+    // Prune stale backup files no longer referenced by any open editor
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSArray *backupFiles = [fm contentsOfDirectoryAtPath:backupDir error:nil];
+    for (NSString *name in backupFiles) {
+        NSString *full = [backupDir stringByAppendingPathComponent:name];
+        if (![activeBackups containsObject:full])
+            [fm removeItemAtPath:full error:nil];
+    }
 }
 
 /// Restore session from ~/.notepad++/session.plist.
@@ -1961,17 +1967,11 @@ static BOOL groupHasTrailingSep(NSString *ident) {
 
     NSFileManager *fm = [NSFileManager defaultManager];
     NSInteger opened = 0;
-    NSMutableSet *seenPaths = [NSMutableSet set];  // deduplication guard
 
     for (NSDictionary *info in tabs) {
         NSString *filePath   = info[@"filePath"];
         NSString *backupPath = info[@"backupFilePath"];
         NSString *lang       = info[@"language"];
-
-        // Skip duplicates (same filePath or same backupFilePath)
-        NSString *dedupeKey = filePath ?: backupPath ?: @"";
-        if (dedupeKey.length && [seenPaths containsObject:dedupeKey]) continue;
-        if (dedupeKey.length) [seenPaths addObject:dedupeKey];
 
         // Prefer backup (more recent snapshot) if it exists
         NSString *loadPath   = nil;
@@ -2236,13 +2236,15 @@ static void removeMacroFromShortcutsXML(NSString *name) {
 
 #pragma mark - Auto-save
 
-/// Every 60 s: write all modified editors to ~/.notepad++/backup/ — never to the original file.
-/// Mirrors NPP's background snapshot thread (NPPM_INTERNAL_SAVEBACKUP).
+/// Periodically write all modified editors to ~/.notepad++/backup/ — never to the original file.
+/// Backs up both named and untitled files so unsaved changes survive a crash.
 - (void)autoSaveTick:(NSTimer *)t {
     ensureNppDirs();
     NSString *backupDir = nppBackupDir();
-    for (EditorView *ed in _tabManager.allEditors)
-        if (ed.isModified && !ed.filePath) [ed saveBackupToDirectory:backupDir];
+    NSArray *managers = @[_tabManager, _subTabManagerH, _subTabManagerV];
+    for (TabManager *mgr in managers)
+        for (EditorView *ed in mgr.allEditors)
+            if (ed.isModified && !ed.largeFileMode) [ed saveBackupToDirectory:backupDir];
 }
 
 #pragma mark - Public
@@ -2355,15 +2357,22 @@ static void removeMacroFromShortcutsXML(NSString *name) {
 }
 
 - (void)saveAllDocuments:(id)sender {
-    NSMutableArray *allEditors = [NSMutableArray arrayWithArray:_tabManager.allEditors];
-    [allEditors addObjectsFromArray:_subTabManagerH.allEditors];
-    [allEditors addObjectsFromArray:_subTabManagerV.allEditors];
-    for (EditorView *ed in allEditors) {
-        if (!ed.filePath) continue;
-        NSError *err;
-        [ed saveError:&err];
+    // Save all modified files silently. Named files save to disk;
+    // untitled files prompt Save As for each one.
+    NSArray<TabManager *> *managers = @[_tabManager, _subTabManagerH, _subTabManagerV];
+    for (TabManager *mgr in managers) {
+        for (EditorView *ed in mgr.allEditors.copy) {
+            if (!ed.isModified) continue;
+            if (ed.filePath) {
+                NSError *err;
+                [ed saveError:&err];
+            } else {
+                [mgr runSavePanelForEditor:ed completion:nil];
+            }
+        }
+        [mgr refreshAllTabTitles];
     }
-    [self refreshCurrentTab];
+    [self updateTitle];
 }
 
 - (void)closeCurrentTab:(id)sender {
@@ -4847,8 +4856,16 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     if (_gitPanel && [_sidePanelHost hasPanel:_gitPanel]) {
         [self _updateGitPanelForPath:editor.filePath];
     }
-    [self _updateGitBranch:editor.filePath];
-    [editor updateGitDiffMarkers];
+    // Defer git operations 1s so they run after the TCC grant from the file read
+    // has been established — avoids extra permission prompts for protected folders.
+    NSString *gitPath = editor.filePath;
+    __weak typeof(self) weakSelf = self;
+    __weak EditorView *weakEd = editor;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)),
+                   dispatch_get_main_queue(), ^{
+        [weakSelf _updateGitBranch:gitPath];
+        [weakEd updateGitDiffMarkers];
+    });
     [self _refreshToolbarStates];
 }
 
@@ -5929,7 +5946,6 @@ static int64_t _sysctlInt(const char *name) {
     [info appendString:@"\n── Settings ──\n"];
     [info appendFormat:@"Periodic Backup: %@\n", [ud boolForKey:@"kPrefAutoBackup"] ? @"ON" : @"OFF"];
     [info appendFormat:@"Auto-Indent: %@\n", [ud boolForKey:@"kPrefAutoIndent"] ? @"ON" : @"OFF"];
-    [info appendFormat:@"Word Wrap: %@\n", [ud boolForKey:@"kPrefWordWrap"] ? @"ON" : @"OFF"];
     [info appendFormat:@"Show Line Numbers: %@\n", [ud boolForKey:@"kPrefShowLineNumbers"] ? @"ON" : @"OFF"];
     [info appendFormat:@"Tab Width: %ld\n", (long)[ud integerForKey:@"kPrefTabWidth"]];
     [info appendFormat:@"Use Tabs: %@\n", [ud boolForKey:@"kPrefUseTabs"] ? @"ON" : @"OFF"];
@@ -6140,15 +6156,11 @@ static int64_t _sysctlInt(const char *name) {
 }
 
 - (BOOL)windowShouldClose:(NSWindow *)sender {
-    // 1. Back up all modified editors and write session.plist FIRST —
-    //    before any editors are removed. This captures untitled tabs.
+    // Windows NPP behaviour: no save prompts on quit.
+    // Back up all modified editors to ~/.notepad++/backup/ and save session.
+    // On next launch, modified files reload from backup and show as unsaved.
     [self saveSession];
     writeConfigXML();
-
-    // 2. Prompt to save only named files with unsaved changes.
-    for (EditorView *ed in _tabManager.allEditors.copy)
-        if (ed.isModified && ed.filePath) [_tabManager closeEditor:ed];
-
     return YES;
 }
 

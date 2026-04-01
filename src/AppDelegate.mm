@@ -256,21 +256,15 @@
 // ── App lifecycle ───────────────────────────────────────────────────────────
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-    // Close all windows — each will save session and prompt for unsaved files.
-    // Process in reverse so removals from the array don't skip entries.
+    // Windows NPP behaviour: no save prompts on quit.
+    // Each window saves session + backups, then closes silently.
     for (NSInteger i = (NSInteger)_windowControllers.count - 1; i >= 0; i--) {
         MainWindowController *mwc = _windowControllers[i];
         NSWindow *win = mwc.window;
         if (win) {
-            // Call windowShouldClose: directly (synchronous)
-            if ([(id<NSWindowDelegate>)mwc windowShouldClose:win]) {
-                [_windowControllers removeObjectAtIndex:i];
-                // Use close (not orderOut) so windowWillClose: fires and timers are cleaned up
-                [win close];
-            } else {
-                // User cancelled — abort termination
-                return NSTerminateCancel;
-            }
+            [(id<NSWindowDelegate>)mwc windowShouldClose:win];
+            [_windowControllers removeObjectAtIndex:i];
+            [win close];
         }
     }
     return NSTerminateNow;

@@ -370,10 +370,10 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
 #pragma mark - File I/O
 
 - (BOOL)loadFileAtPath:(NSString *)path error:(NSError **)error {
-    // ── Large-file guard ──────────────────────────────────────────────────────
-    NSUInteger fileSize = 0;
+    // ── Stat once — used for large-file guard AND mtime recording ─────────────
     NSDictionary *attrs = [[NSFileManager defaultManager]
                            attributesOfItemAtPath:path error:nil];
+    NSUInteger fileSize = 0;
     if (attrs) fileSize = (NSUInteger)[attrs[NSFileSize] unsignedLongLongValue];
 
     BOOL large = (fileSize > kLargeFileThreshold);
@@ -499,17 +499,18 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     // without this every line would show as orange immediately after file open.
     [_scintillaView message:SCI_SETSAVEPOINT];
 
-    // Record mtime now so the polling timer won't treat our own load as a change.
-    _lastKnownModDate = [[NSFileManager defaultManager]
-                         attributesOfItemAtPath:path error:nil][NSFileModificationDate];
+    // Record mtime from the stat we already performed at the top of this method.
+    _lastKnownModDate = attrs[NSFileModificationDate];
 
-    // Start (or restart) 1-second polling for external changes.
+    // Start (or restart) polling for external changes.
+    // First tick deferred 3s so it coalesces with the TCC grant from the file read above.
     [_fileMonitorTimer invalidate];
     _fileMonitorTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                          target:self
                                                        selector:@selector(_pollExternalChange:)
                                                        userInfo:nil
                                                         repeats:YES];
+    _fileMonitorTimer.fireDate = [NSDate dateWithTimeIntervalSinceNow:3.0];
     return YES;
 }
 
@@ -773,6 +774,8 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     sptr_t docLen = [sci message:SCI_GETLENGTH];
     if (docLen > 0) [sci message:SCI_COLOURISE wParam:0 lParam:docLen];
 }
+
+- (BOOL)largeFileMode { return _largeFileMode; }
 
 - (NSString *)displayName {
     if (_filePath) return _filePath.lastPathComponent;
@@ -1569,10 +1572,6 @@ static int vkToScintillaKey(int vk) {
 
     BOOL showLineNumbers = [ud boolForKey:kPrefShowLineNumbers];
     [sci message:SCI_SETMARGINWIDTHN wParam:0 lParam:showLineNumbers ? 44 : 0];
-
-    BOOL wordWrap = [ud boolForKey:kPrefWordWrap];
-    [sci message:SCI_SETWRAPMODE wParam:wordWrap ? SC_WRAP_WORD : SC_WRAP_NONE];
-    _wordWrapEnabled = wordWrap;
 
     BOOL hlLine = [ud boolForKey:kPrefHighlightCurrentLine];
     [sci message:SCI_SETCARETLINEVISIBLE wParam:hlLine ? 1 : 0];

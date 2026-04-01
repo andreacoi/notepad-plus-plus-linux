@@ -29,6 +29,14 @@
     <true/>
     <key>NSSupportsAutomaticGraphicsSwitching</key>
     <true/>
+    <key>NSDownloadsFolderUsageDescription</key>
+    <string>Notepad++ needs access to open and edit files in Downloads.</string>
+    <key>NSDesktopFolderUsageDescription</key>
+    <string>Notepad++ needs access to open and edit files on Desktop.</string>
+    <key>NSDocumentsFolderUsageDescription</key>
+    <string>Notepad++ needs access to open and edit files in Documents.</string>
+    <key>NSRemovableVolumesUsageDescription</key>
+    <string>Notepad++ needs access to open and edit files on external drives.</string>
     <key>CFBundleDocumentTypes</key>
     <array>
         <dict>

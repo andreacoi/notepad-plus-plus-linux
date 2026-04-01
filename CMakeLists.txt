@@ -232,6 +232,14 @@ add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
         "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/en.lproj/InfoPlist.strings"
     COMMENT "Copying localized display name")
 
+# Ad-hoc code signing — gives the app a stable identity so macOS can
+# remember TCC permission grants (Downloads, Desktop, Documents) across launches.
+# Strip extended attributes first (resource forks / Finder info break codesign).
+add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
+    COMMAND xattr -cr "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>"
+    COMMAND codesign --force --deep --sign - "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>"
+    COMMENT "Ad-hoc code signing the app bundle")
+
 set_target_properties(NotepadPlusPlusMac PROPERTIES
     OUTPUT_NAME "NotepadPlusPlus"
     MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/resources/Info.plist"

@@ -168,6 +168,11 @@
     [_tabBar setTitle:editor.displayName modified:editor.isModified atIndex:_selectedIndex];
 }
 
+- (void)refreshAllTabTitles {
+    for (NSInteger i = 0; i < (NSInteger)_editors.count; i++)
+        [_tabBar setTitle:_editors[i].displayName modified:_editors[i].isModified atIndex:i];
+}
+
 - (void)selectTabAtIndex:(NSInteger)index {
     if (index < 0 || index >= (NSInteger)_editors.count) return;
     [self activateTabAtIndex:index];
@@ -306,9 +311,10 @@
         if (result == NSModalResponseOK) {
             NSError *err;
             [editor saveToPath:panel.URL.path error:&err];
-            completion(YES);
+            [self refreshAllTabTitles];
+            if (completion) completion(YES);
         } else {
-            completion(NO);
+            if (completion) completion(NO);
         }
     }];
 }

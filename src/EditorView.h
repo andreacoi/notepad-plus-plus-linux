@@ -53,6 +53,9 @@ extern NSNotificationName const EditorViewCursorDidMoveNotification;
 // YES when monitoring mode (tail -f) is active — file changes silently auto-reload.
 @property (nonatomic) BOOL monitoringMode;
 
+// YES when the file was opened in large-file (binary) mode — no backup on quit.
+@property (nonatomic, readonly) BOOL largeFileMode;
+
 /// Must be called when a tab is permanently closed (not evicted to another split).
 /// Unregisters the file presenter so the EditorView can be deallocated.
 - (void)prepareForClose;

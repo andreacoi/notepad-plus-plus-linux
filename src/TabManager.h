@@ -49,6 +49,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Notify tab bar that the current editor's modified state changed.
 - (void)refreshCurrentTabTitle;
 
+/// Refresh all tab titles and modified icons (e.g. after Save All).
+- (void)refreshAllTabTitles;
+
 /// Select tab by index programmatically (fires delegate).
 - (void)selectTabAtIndex:(NSInteger)index;
 
@@ -58,6 +61,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Reorder tabs to match the given sorted array (must contain same editors, same count).
 /// The previously active editor remains selected.
 - (void)reorderEditors:(NSArray<EditorView *> *)orderedEditors;
+
+/// Show Save As panel for an untitled editor.
+- (void)runSavePanelForEditor:(EditorView *)editor completion:(nullable void(^)(BOOL saved))completion;
 
 @end
 

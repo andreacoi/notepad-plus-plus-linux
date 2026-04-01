@@ -7,7 +7,6 @@ extern NSString *const kPrefTabWidth;
 extern NSString *const kPrefUseTabs;
 extern NSString *const kPrefAutoIndent;
 extern NSString *const kPrefShowLineNumbers;
-extern NSString *const kPrefWordWrap;
 extern NSString *const kPrefHighlightCurrentLine;
 extern NSString *const kPrefEOLType;
 extern NSString *const kPrefEncoding;

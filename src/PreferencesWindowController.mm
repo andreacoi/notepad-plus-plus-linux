@@ -7,7 +7,6 @@ NSString *const kPrefTabWidth           = @"tabWidth";
 NSString *const kPrefUseTabs            = @"useTabs";
 NSString *const kPrefAutoIndent         = @"autoIndent";
 NSString *const kPrefShowLineNumbers    = @"showLineNumbers";
-NSString *const kPrefWordWrap           = @"wordWrap";
 NSString *const kPrefHighlightCurrentLine = @"highlightCurrentLine";
 NSString *const kPrefEOLType            = @"eolType";       // 0=CRLF 1=LF 2=CR
 NSString *const kPrefEncoding           = @"encoding";      // 0=UTF-8 1=Latin-1
@@ -99,7 +98,6 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         kPrefUseTabs:            @YES,
         kPrefAutoIndent:         @YES,
         kPrefShowLineNumbers:    @YES,
-        kPrefWordWrap:           @NO,
         kPrefHighlightCurrentLine: @YES,
         kPrefEOLType:            @1,
         kPrefEncoding:           @0,
@@ -215,7 +213,6 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         kPrefUseTabs:            @YES,
         kPrefAutoIndent:         @YES,
         kPrefShowLineNumbers:    @YES,
-        kPrefWordWrap:           @NO,
         kPrefHighlightCurrentLine: @YES,
         kPrefEOLType:            @1,
         kPrefEncoding:           @0,
@@ -546,7 +543,6 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         @[@"Use tabs (instead of spaces)",    @101, kPrefUseTabs],
         @[@"Auto-indent",                     @102, kPrefAutoIndent],
         @[@"Show line numbers",               @103, kPrefShowLineNumbers],
-        @[@"Word wrap",                       @104, kPrefWordWrap],
         @[@"Highlight current line",          @105, kPrefHighlightCurrentLine],
         @[@"Auto-close brackets ( ) [ ] { }", @700, kPrefAutoCloseBrackets],
         @[@"Enable virtual space",            @702, kPrefVirtualSpace],
@@ -967,7 +963,6 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         case 101: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefUseTabs]; break;
         case 102: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefAutoIndent]; break;
         case 103: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefShowLineNumbers]; break;
-        case 104: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefWordWrap]; break;
         case 105: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefHighlightCurrentLine]; break;
         case 200: [ud setInteger:[(NSPopUpButton *)sender indexOfSelectedItem] forKey:kPrefEOLType]; break;
         case 201: [ud setInteger:[(NSPopUpButton *)sender indexOfSelectedItem] forKey:kPrefEncoding]; break;
