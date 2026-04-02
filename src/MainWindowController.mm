@@ -13,6 +13,7 @@
 #import "ProjectPanel.h"
 #import "PreferencesWindowController.h"
 #import "StyleConfiguratorWindowController.h"
+#import "ShortcutMapperWindowController.h"
 #import "IncrementalSearchBar.h"
 #import "CommandPalettePanel.h"
 #import "GitHelper.h"
@@ -3116,15 +3117,18 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     plusKey.frame = NSMakeRect(270, 145, 15, 16);
     [cv addSubview:plusKey];
 
-    // Key dropdown — wide enough for longest key name
+    // Key dropdown — A-Z, 0-9, F1-F12, special keys, punctuation
     NSPopUpButton *keyPopup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(288, 141, 95, 25) pullsDown:NO];
-    [keyPopup addItemWithTitle:@"None"];
-    for (unichar c = 'A'; c <= 'Z'; c++)
-        [keyPopup addItemWithTitle:[NSString stringWithFormat:@"%c", c]];
-    for (unichar c = '0'; c <= '9'; c++)
-        [keyPopup addItemWithTitle:[NSString stringWithFormat:@"%c", c]];
-    for (int i = 1; i <= 12; i++)
-        [keyPopup addItemWithTitle:[NSString stringWithFormat:@"F%d", i]];
+    {
+        NSMutableArray *keys = [NSMutableArray arrayWithObject:@"None"];
+        for (unichar c = 'A'; c <= 'Z'; c++) [keys addObject:[NSString stringWithFormat:@"%c", c]];
+        for (unichar c = '0'; c <= '9'; c++) [keys addObject:[NSString stringWithFormat:@"%c", c]];
+        for (int i = 1; i <= 12; i++) [keys addObject:[NSString stringWithFormat:@"F%d", i]];
+        [keys addObjectsFromArray:@[@"Backspace", @"Tab", @"Enter", @"Escape", @"Space",
+            @"Page Up", @"Page Down", @"End", @"Home", @"Left", @"Up", @"Right", @"Down",
+            @"Insert", @"Delete", @";", @"=", @",", @"-", @".", @"/", @"`", @"[", @"\\", @"]", @"'"]];
+        [keyPopup addItemsWithTitles:keys];
+    }
     [cv addSubview:keyPopup];
 
     // Conflict warning label (red text)
@@ -5894,56 +5898,528 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         [NSString stringWithFormat:@"https://en.wikipedia.org/wiki/Special:Search?search=%@", q]]];
 }
 
+/// Substitute $(VARIABLE) placeholders in a Run command string.
+- (NSString *)_expandRunVariables:(NSString *)cmd {
+    EditorView *ed = [self currentEditor];
+    ScintillaView *sci = ed.scintillaView;
+    NSMutableString *result = [cmd mutableCopy];
+
+    // Helper: replace all occurrences of a variable
+    void (^sub)(NSString *var, NSString *val) = ^(NSString *var, NSString *val) {
+        [result replaceOccurrencesOfString:[NSString stringWithFormat:@"$(%@)", var]
+                                withString:val ?: @""
+                                   options:0 range:NSMakeRange(0, result.length)];
+    };
+
+    NSString *filePath = ed.filePath ?: @"";
+    sub(@"FULL_CURRENT_PATH", filePath);
+    sub(@"CURRENT_DIRECTORY", filePath.length ? filePath.stringByDeletingLastPathComponent : @"");
+    sub(@"FILE_NAME", filePath.length ? filePath.lastPathComponent : @"");
+    sub(@"NAME_PART", filePath.length ? filePath.lastPathComponent.stringByDeletingPathExtension : @"");
+    NSString *ext = filePath.pathExtension;
+    sub(@"EXT_PART", ext.length ? [@"." stringByAppendingString:ext] : @"");
+    sub(@"CURRENT_WORD", ed.selectedText ?: @"");
+    sub(@"NPP_DIRECTORY", [NSBundle mainBundle].bundlePath);
+    sub(@"NPP_FULL_FILE_PATH", [NSBundle mainBundle].executablePath);
+
+    if (sci) {
+        sptr_t pos = [sci message:SCI_GETCURRENTPOS];
+        sptr_t line = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)pos];
+        sptr_t col  = [sci message:SCI_GETCOLUMN wParam:(uptr_t)pos];
+        sub(@"CURRENT_LINE", [@(line + 1) stringValue]);
+        sub(@"CURRENT_COLUMN", [@(col + 1) stringValue]);
+
+        // Get current line text
+        sptr_t lineLen = [sci message:SCI_LINELENGTH wParam:(uptr_t)line];
+        if (lineLen > 0) {
+            char *buf = (char *)malloc((size_t)lineLen + 1);
+            [sci message:SCI_GETLINE wParam:(uptr_t)line lParam:(sptr_t)buf];
+            buf[lineLen] = '\0';
+            NSString *lineStr = [NSString stringWithUTF8String:buf] ?: @"";
+            // Trim trailing newline
+            lineStr = [lineStr stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+            sub(@"CURRENT_LINESTR", lineStr);
+            free(buf);
+        } else {
+            sub(@"CURRENT_LINESTR", @"");
+        }
+    }
+    return result;
+}
+
 - (void)showRunDialog:(id)sender {
-    NSPanel *panel = [[NSPanel alloc] initWithContentRect:NSMakeRect(0,0,480,90)
-                                                styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable
-                                                  backing:NSBackingStoreBuffered
-                                                    defer:NO];
-    panel.title = @"Run";
+    static NSPanel *panel = nil;
+    static NSComboBox *cmdCombo = nil;
+
+    if (!panel) {
+        panel = [[NSPanel alloc] initWithContentRect:NSMakeRect(0, 0, 560, 150)
+                                           styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable
+                                             backing:NSBackingStoreBuffered
+                                               defer:NO];
+        panel.title = @"Run...";
+        panel.releasedWhenClosed = NO;
+        panel.hidesOnDeactivate = NO;
+        NSView *v = panel.contentView;
+
+        // Title label
+        NSTextField *titleLabel = [NSTextField labelWithString:@"The Program to Run"];
+        titleLabel.frame = NSMakeRect(0, 118, 560, 18);
+        titleLabel.alignment = NSTextAlignmentCenter;
+        titleLabel.font = [NSFont systemFontOfSize:13];
+        [v addSubview:titleLabel];
+
+        // Command combo box (editable, remembers history)
+        cmdCombo = [[NSComboBox alloc] initWithFrame:NSMakeRect(20, 82, 440, 24)];
+        cmdCombo.editable = YES;
+        cmdCombo.completes = NO;
+        cmdCombo.placeholderString = @"Enter command or URL...";
+        cmdCombo.numberOfVisibleItems = 10;
+        [v addSubview:cmdCombo];
+
+        // "..." button (file browser)
+        NSButton *browseBtn = [[NSButton alloc] initWithFrame:NSMakeRect(468, 82, 36, 24)];
+        browseBtn.title = @"...";
+        browseBtn.bezelStyle = NSBezelStyleRounded;
+        browseBtn.target = self;
+        browseBtn.action = @selector(_runDlgBrowse:);
+        [v addSubview:browseBtn];
+
+        // "+" button (variables menu)
+        NSButton *plusBtn = [[NSButton alloc] initWithFrame:NSMakeRect(498, 82, 36, 24)];
+        plusBtn.title = @"+";
+        plusBtn.bezelStyle = NSBezelStyleRounded;
+        plusBtn.target = self;
+        plusBtn.action = @selector(_runDlgInsertVariable:);
+        [v addSubview:plusBtn];
+
+        // Separator line
+        NSBox *sep = [[NSBox alloc] initWithFrame:NSMakeRect(20, 56, 520, 1)];
+        sep.boxType = NSBoxSeparator;
+        [v addSubview:sep];
+
+        // Bottom buttons: Run, Save..., Cancel
+        NSButton *runBtn = [[NSButton alloc] initWithFrame:NSMakeRect(165, 16, 80, 28)];
+        runBtn.title = @"Run";
+        runBtn.bezelStyle = NSBezelStyleRounded;
+        runBtn.keyEquivalent = @"\r";
+        runBtn.target = self;
+        runBtn.action = @selector(_runDlgRun:);
+        [v addSubview:runBtn];
+
+        NSButton *saveBtn = [[NSButton alloc] initWithFrame:NSMakeRect(255, 16, 80, 28)];
+        saveBtn.title = @"Save...";
+        saveBtn.bezelStyle = NSBezelStyleRounded;
+        saveBtn.target = self;
+        saveBtn.action = @selector(_runDlgSave:);
+        [v addSubview:saveBtn];
+
+        NSButton *cancelBtn = [[NSButton alloc] initWithFrame:NSMakeRect(345, 16, 80, 28)];
+        cancelBtn.title = @"Cancel";
+        cancelBtn.bezelStyle = NSBezelStyleRounded;
+        cancelBtn.keyEquivalent = @"\033";
+        cancelBtn.target = panel;
+        cancelBtn.action = @selector(close);
+        [v addSubview:cancelBtn];
+    }
+
+    [panel makeKeyAndOrderFront:nil];
+    [panel center];
+    [panel makeFirstResponder:cmdCombo];
+}
+
+/// "..." button — browse for executable
+- (void)_runDlgBrowse:(id)sender {
+    NSOpenPanel *op = [NSOpenPanel openPanel];
+    op.canChooseFiles = YES;
+    op.canChooseDirectories = NO;
+    op.allowsMultipleSelection = NO;
+    NSWindow *runPanel = [sender window];
+    [op beginSheetModalForWindow:runPanel completionHandler:^(NSModalResponse result) {
+        if (result == NSModalResponseOK) {
+            NSComboBox *combo = nil;
+            for (NSView *sub in runPanel.contentView.subviews)
+                if ([sub isKindOfClass:[NSComboBox class]]) { combo = (NSComboBox *)sub; break; }
+            if (combo) {
+                NSString *path = op.URL.path;
+                if ([path containsString:@" "]) path = [NSString stringWithFormat:@"\"%@\"", path];
+                combo.stringValue = path;
+            }
+        }
+    }];
+}
+
+/// "+" button — popup menu of variables
+- (void)_runDlgInsertVariable:(NSButton *)sender {
+    NSMenu *menu = [[NSMenu alloc] init];
+    struct { NSString *var; NSString *desc; } vars[] = {
+        { @"FULL_CURRENT_PATH",  @"Full path to active file" },
+        { @"CURRENT_DIRECTORY",  @"Active file's directory" },
+        { @"FILE_NAME",          @"Active file's name" },
+        { @"NAME_PART",          @"File name without extension" },
+        { @"EXT_PART",           @"File extension (with .)" },
+        { @"CURRENT_WORD",       @"Selected word or word under caret" },
+        { @"NPP_DIRECTORY",      @"Notepad++.app directory" },
+        { @"NPP_FULL_FILE_PATH", @"Full path of Notepad++.app" },
+        { @"CURRENT_LINE",       @"Line number of caret" },
+        { @"CURRENT_COLUMN",     @"Column number of caret" },
+        { @"CURRENT_LINESTR",    @"Current line text" },
+    };
+    for (int i = 0; i < 11; i++) {
+        NSString *title = [NSString stringWithFormat:@"%@\t%@", vars[i].var, vars[i].desc];
+        NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:title
+                                                    action:@selector(_runDlgVariableSelected:)
+                                             keyEquivalent:@""];
+        mi.target = self;
+        mi.representedObject = vars[i].var;
+        [menu addItem:mi];
+    }
+    NSPoint pt = NSMakePoint(NSMaxX(sender.frame), NSMinY(sender.frame));
+    [menu popUpMenuPositioningItem:nil atLocation:pt inView:sender.superview];
+}
+
+/// Variable menu item selected — insert into combo box
+- (void)_runDlgVariableSelected:(NSMenuItem *)mi {
+    NSString *var = [NSString stringWithFormat:@"$(%@)", mi.representedObject];
+    // Find the combo box
+    NSComboBox *combo = nil;
+    for (NSWindow *w in [NSApp windows])
+        if ([w.title isEqualToString:@"Run..."]) {
+            for (NSView *sub in w.contentView.subviews)
+                if ([sub isKindOfClass:[NSComboBox class]]) { combo = (NSComboBox *)sub; break; }
+            break;
+        }
+    if (!combo) return;
+    // Insert at current cursor position in the field editor
+    NSText *fieldEditor = [combo.window fieldEditor:YES forObject:combo];
+    if (fieldEditor) {
+        [fieldEditor replaceCharactersInRange:fieldEditor.selectedRange withString:var];
+    } else {
+        combo.stringValue = [combo.stringValue stringByAppendingString:var];
+    }
+}
+
+/// Run button — execute the command
+- (void)_runDlgRun:(id)sender {
+    NSComboBox *combo = nil;
+    NSPanel *panel = (NSPanel *)[sender window];
+    for (NSView *sub in panel.contentView.subviews)
+        if ([sub isKindOfClass:[NSComboBox class]]) { combo = (NSComboBox *)sub; break; }
+    if (!combo) return;
+
+    NSString *rawCmd = combo.stringValue;
+    if (!rawCmd.length) return;
+
+    // Add to combo history
+    if (![combo.objectValues containsObject:rawCmd])
+        [combo addItemWithObjectValue:rawCmd];
+
+    // Expand variables
+    NSString *cmd = [self _expandRunVariables:rawCmd];
+
+    // Execute: URLs open in browser, .app bundles via open, everything else via /bin/sh -c
+    if ([cmd hasPrefix:@"http://"] || [cmd hasPrefix:@"https://"]) {
+        NSURL *url = [NSURL URLWithString:cmd];
+        if (url) [[NSWorkspace sharedWorkspace] openURL:url];
+    } else {
+        // Strip quotes for path detection
+        NSString *trimmed = [cmd stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *unquoted = trimmed;
+        if ([unquoted hasPrefix:@"\""] && [unquoted hasSuffix:@"\""])
+            unquoted = [unquoted substringWithRange:NSMakeRange(1, unquoted.length - 2)];
+        // .app bundles need "open" to launch
+        if ([unquoted hasSuffix:@".app"] || [cmd containsString:@".app "]) {
+            NSString *openCmd = [NSString stringWithFormat:@"open %@", cmd];
+            @try {
+                [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:@[@"-c", openCmd]];
+            } @catch (NSException *e) {
+                NSAlert *alert = [[NSAlert alloc] init];
+                alert.messageText = @"Run Error";
+                alert.informativeText = [NSString stringWithFormat:@"Failed to execute:\n%@\n\n%@", openCmd, e.reason];
+                [alert runModal];
+            }
+        } else {
+            @try {
+                [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:@[@"-c", cmd]];
+            } @catch (NSException *e) {
+                NSAlert *alert = [[NSAlert alloc] init];
+                alert.messageText = @"Run Error";
+                alert.informativeText = [NSString stringWithFormat:@"Failed to execute:\n%@\n\n%@", cmd, e.reason];
+                [alert runModal];
+            }
+        }
+    }
+}
+
+/// Save button — open shortcut assignment dialog (matches Shortcut Mapper style)
+/// and save to shortcuts.xml under <UserDefinedCommands>
+- (void)_runDlgSave:(id)sender {
+    NSComboBox *combo = nil;
+    NSPanel *runPanel = (NSPanel *)[sender window];
+    for (NSView *sub in runPanel.contentView.subviews)
+        if ([sub isKindOfClass:[NSComboBox class]]) { combo = (NSComboBox *)sub; break; }
+    if (!combo || !combo.stringValue.length) return;
+
+    NSString *rawCmd = combo.stringValue;
+
+    // Build Shortcut dialog — same layout as Shortcut Mapper's Modify dialog
+    NSPanel *panel = [[NSPanel alloc]
+        initWithContentRect:NSMakeRect(0, 0, 400, 240)
+                  styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
+                    backing:NSBackingStoreBuffered defer:NO];
+    panel.title = @"Shortcut";
     [panel center];
     NSView *cv = panel.contentView;
 
-    NSTextField *tf = [[NSTextField alloc] init];
-    tf.translatesAutoresizingMaskIntoConstraints = NO;
-    tf.placeholderString = @"Shell command…";
-    NSButton *runBtn = [NSButton buttonWithTitle:@"Run" target:nil action:nil];
-    runBtn.translatesAutoresizingMaskIntoConstraints = NO;
-    runBtn.keyEquivalent = @"\r";
-    NSButton *cancelBtn = [NSButton buttonWithTitle:@"Cancel" target:nil action:nil];
-    cancelBtn.translatesAutoresizingMaskIntoConstraints = NO;
-    cancelBtn.keyEquivalent = @"\033";
-    [cv addSubview:tf]; [cv addSubview:runBtn]; [cv addSubview:cancelBtn];
-    [NSLayoutConstraint activateConstraints:@[
-        [tf.topAnchor constraintEqualToAnchor:cv.topAnchor constant:16],
-        [tf.leadingAnchor constraintEqualToAnchor:cv.leadingAnchor constant:16],
-        [tf.trailingAnchor constraintEqualToAnchor:cv.trailingAnchor constant:-16],
-        [runBtn.trailingAnchor constraintEqualToAnchor:cv.trailingAnchor constant:-16],
-        [runBtn.bottomAnchor constraintEqualToAnchor:cv.bottomAnchor constant:-16],
-        [cancelBtn.trailingAnchor constraintEqualToAnchor:runBtn.leadingAnchor constant:-8],
-        [cancelBtn.bottomAnchor constraintEqualToAnchor:runBtn.bottomAnchor],
-    ]];
-    [panel makeFirstResponder:tf];
+    // Name field
+    NSTextField *nameLbl = [NSTextField labelWithString:@"Name:"];
+    nameLbl.frame = NSMakeRect(20, 205, 50, 16);
+    [cv addSubview:nameLbl];
 
-    __block BOOL didRun = NO;
-    __weak NSPanel *wPanel = panel;
-    __weak NSTextField *wTF = tf;
-    runBtn.target = [NSBlockOperation blockOperationWithBlock:^{
-        NSString *cmd = wTF.stringValue;
-        if (cmd.length) {
-            [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:@[@"-c", cmd]];
-            didRun = YES;
+    NSTextField *nameField = [[NSTextField alloc] initWithFrame:NSMakeRect(75, 201, 305, 24)];
+    nameField.placeholderString = @"Command name for Run menu";
+    [cv addSubview:nameField];
+
+    // Modifier checkboxes — same layout as Shortcut Mapper
+    NSButton *chkCmd = [NSButton checkboxWithTitle:@"\u2318 Command" target:nil action:nil];
+    chkCmd.frame = NSMakeRect(20, 170, 140, 20);
+    [cv addSubview:chkCmd];
+
+    NSButton *chkCtrl = [NSButton checkboxWithTitle:@"\u2303 Control" target:nil action:nil];
+    chkCtrl.frame = NSMakeRect(170, 170, 140, 20);
+    [cv addSubview:chkCtrl];
+
+    NSButton *chkOpt = [NSButton checkboxWithTitle:@"\u2325 Option" target:nil action:nil];
+    chkOpt.frame = NSMakeRect(20, 143, 140, 20);
+    [cv addSubview:chkOpt];
+
+    NSButton *chkShift = [NSButton checkboxWithTitle:@"\u21E7 Shift" target:nil action:nil];
+    chkShift.frame = NSMakeRect(170, 143, 100, 20);
+    [cv addSubview:chkShift];
+
+    NSTextField *plusKey = [NSTextField labelWithString:@"+"];
+    plusKey.frame = NSMakeRect(270, 145, 15, 16);
+    [cv addSubview:plusKey];
+
+    // Key dropdown
+    NSPopUpButton *keyPopup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(288, 141, 95, 25) pullsDown:NO];
+    [keyPopup addItemWithTitle:@"None"];
+    for (unichar c = 'A'; c <= 'Z'; c++)
+        [keyPopup addItemWithTitle:[NSString stringWithFormat:@"%c", c]];
+    for (unichar c = '0'; c <= '9'; c++)
+        [keyPopup addItemWithTitle:[NSString stringWithFormat:@"%c", c]];
+    for (int i = 1; i <= 12; i++)
+        [keyPopup addItemWithTitle:[NSString stringWithFormat:@"F%d", i]];
+    [cv addSubview:keyPopup];
+
+    // Conflict warning label
+    NSTextField *conflictLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 100, 360, 32)];
+    conflictLabel.editable = NO;
+    conflictLabel.bordered = NO;
+    conflictLabel.drawsBackground = NO;
+    conflictLabel.font = [NSFont systemFontOfSize:11];
+    conflictLabel.textColor = [NSColor secondaryLabelColor];
+    conflictLabel.stringValue = @"";
+    conflictLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    conflictLabel.maximumNumberOfLines = 2;
+    [cv addSubview:conflictLabel];
+
+    // Live conflict check
+    void (^checkConflict)(void) = ^{
+        NSString *keyName = keyPopup.titleOfSelectedItem;
+        if ([keyName isEqualToString:@"None"]) {
+            conflictLabel.textColor = [NSColor secondaryLabelColor];
+            conflictLabel.stringValue = @"";
+            return;
         }
-        [NSApp stopModal];
-        [wPanel orderOut:nil];
-    }];
-    runBtn.action = @selector(main);
-    cancelBtn.target = [NSBlockOperation blockOperationWithBlock:^{
-        [NSApp stopModal];
-        [wPanel orderOut:nil];
-    }];
-    cancelBtn.action = @selector(main);
-    [NSApp runModalForWindow:panel];
-    (void)didRun;
+        NSUInteger keyCode = 0;
+        if (keyName.length == 1) keyCode = [keyName characterAtIndex:0];
+        else if ([keyName hasPrefix:@"F"]) keyCode = 111 + [keyName substringFromIndex:1].intValue;
+        if (keyCode == 0) { conflictLabel.stringValue = @""; return; }
+
+        NSMutableString *msg = [NSMutableString string];
+        __block void (^checkMenuBlock)(NSMenu *, NSString *);
+        checkMenuBlock = ^(NSMenu *menu, NSString *cat) {
+            for (NSMenuItem *mi in menu.itemArray) {
+                if (mi.submenu) { checkMenuBlock(mi.submenu, cat); continue; }
+                if (!mi.action || !mi.keyEquivalent.length) continue;
+                NSEventModifierFlags m = mi.keyEquivalentModifierMask;
+                BOOL mCmd = (m & NSEventModifierFlagCommand) != 0;
+                BOOL mCtrl = (m & NSEventModifierFlagControl) != 0;
+                BOOL mAlt = (m & NSEventModifierFlagOption) != 0;
+                BOOL mShift = (m & NSEventModifierFlagShift) != 0;
+                unichar mKey = [mi.keyEquivalent.uppercaseString characterAtIndex:0];
+                if (mKey >= 0xF704 && mKey <= 0xF70F) mKey = 112 + (mKey - 0xF704);
+                if (mKey == keyCode &&
+                    mCmd == (chkCmd.state == NSControlStateValueOn) &&
+                    mCtrl == (chkCtrl.state == NSControlStateValueOn) &&
+                    mAlt == (chkOpt.state == NSControlStateValueOn) &&
+                    mShift == (chkShift.state == NSControlStateValueOn)) {
+                    [msg appendFormat:@"Conflict: %@ (%@)", mi.title, cat];
+                }
+            }
+        };
+        for (NSMenuItem *topItem in [NSApp mainMenu].itemArray) {
+            if (!topItem.submenu) continue;
+            checkMenuBlock(topItem.submenu, topItem.submenu.title ?: topItem.title);
+        }
+        if (msg.length) {
+            conflictLabel.textColor = [NSColor systemRedColor];
+            conflictLabel.stringValue = msg;
+        } else {
+            conflictLabel.textColor = [NSColor secondaryLabelColor];
+            conflictLabel.stringValue = @"No shortcut conflicts.";
+        }
+    };
+
+    for (NSButton *chk in @[chkCmd, chkCtrl, chkOpt, chkShift]) {
+        chk.target = [NSBlockOperation blockOperationWithBlock:checkConflict];
+        chk.action = @selector(main);
+    }
+    keyPopup.target = [NSBlockOperation blockOperationWithBlock:checkConflict];
+    keyPopup.action = @selector(main);
+
+    // OK / Cancel
+    NSButton *btnOK = [[NSButton alloc] initWithFrame:NSMakeRect(195, 12, 90, 28)];
+    btnOK.title = @"OK";
+    btnOK.bezelStyle = NSBezelStyleRounded;
+    btnOK.keyEquivalent = @"\r";
+    btnOK.target = NSApp;
+    btnOK.action = @selector(stopModal);
+    [cv addSubview:btnOK];
+
+    NSButton *btnCancel = [[NSButton alloc] initWithFrame:NSMakeRect(293, 12, 90, 28)];
+    btnCancel.title = @"Cancel";
+    btnCancel.bezelStyle = NSBezelStyleRounded;
+    btnCancel.keyEquivalent = @"\033";
+    btnCancel.target = NSApp;
+    btnCancel.action = @selector(abortModal);
+    [cv addSubview:btnCancel];
+
+    NSModalResponse resp = [NSApp runModalForWindow:panel];
+    [panel orderOut:nil];
+    if (resp != NSModalResponseStop || !nameField.stringValue.length) return;
+
+    // Collect shortcut info
+    NSString *name = nameField.stringValue;
+    BOOL hasCmd   = (chkCmd.state == NSControlStateValueOn);
+    BOOL hasCtrl  = (chkCtrl.state == NSControlStateValueOn);
+    BOOL hasOpt   = (chkOpt.state == NSControlStateValueOn);
+    BOOL hasShift = (chkShift.state == NSControlStateValueOn);
+    NSString *keyTitle = keyPopup.titleOfSelectedItem;
+    int keyCode = 0;
+    if ([keyTitle isEqualToString:@"None"]) keyCode = 0;
+    else if (keyTitle.length == 1) keyCode = [keyTitle characterAtIndex:0];
+    else if ([keyTitle hasPrefix:@"F"] && keyTitle.length <= 3) keyCode = 111 + [keyTitle substringFromIndex:1].intValue;
+    else if ([keyTitle isEqualToString:@"Backspace"]) keyCode = 8;
+    else if ([keyTitle isEqualToString:@"Tab"]) keyCode = 9;
+    else if ([keyTitle isEqualToString:@"Enter"]) keyCode = 13;
+    else if ([keyTitle isEqualToString:@"Escape"]) keyCode = 27;
+    else if ([keyTitle isEqualToString:@"Space"]) keyCode = 32;
+    else if ([keyTitle isEqualToString:@"Page Up"]) keyCode = 33;
+    else if ([keyTitle isEqualToString:@"Page Down"]) keyCode = 34;
+    else if ([keyTitle isEqualToString:@"End"]) keyCode = 35;
+    else if ([keyTitle isEqualToString:@"Home"]) keyCode = 36;
+    else if ([keyTitle isEqualToString:@"Left"]) keyCode = 37;
+    else if ([keyTitle isEqualToString:@"Up"]) keyCode = 38;
+    else if ([keyTitle isEqualToString:@"Right"]) keyCode = 39;
+    else if ([keyTitle isEqualToString:@"Down"]) keyCode = 40;
+    else if ([keyTitle isEqualToString:@"Insert"]) keyCode = 45;
+    else if ([keyTitle isEqualToString:@"Delete"]) keyCode = 46;
+
+    // Insert into shortcuts.xml using raw text manipulation (preserves file structure)
+    NSString *shortcutsPath = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/shortcuts.xml"];
+    NSMutableString *xml = [[NSString stringWithContentsOfFile:shortcutsPath
+                                                     encoding:NSUTF8StringEncoding error:nil] mutableCopy];
+    if (!xml) return;
+
+    // Build the <Command> element
+    // XML-escape the command text
+    NSMutableString *escapedCmd = [rawCmd mutableCopy];
+    [escapedCmd replaceOccurrencesOfString:@"&" withString:@"&amp;" options:0 range:NSMakeRange(0, escapedCmd.length)];
+    [escapedCmd replaceOccurrencesOfString:@"<" withString:@"&lt;" options:0 range:NSMakeRange(0, escapedCmd.length)];
+    [escapedCmd replaceOccurrencesOfString:@">" withString:@"&gt;" options:0 range:NSMakeRange(0, escapedCmd.length)];
+    [escapedCmd replaceOccurrencesOfString:@"\"" withString:@"&quot;" options:0 range:NSMakeRange(0, escapedCmd.length)];
+
+    NSString *cmdXML = [NSString stringWithFormat:
+        @"        <Command name=\"%@\" Ctrl=\"%@\" Alt=\"%@\" Shift=\"%@\" Cmd=\"%@\" Key=\"%d\">%@</Command>",
+        name,
+        hasCtrl ? @"yes" : @"no",
+        hasOpt ? @"yes" : @"no",
+        hasShift ? @"yes" : @"no",
+        hasCmd ? @"yes" : @"no",
+        keyCode,
+        escapedCmd];
+
+    // Find </UserDefinedCommands> and insert before it
+    NSRange closeTag = [xml rangeOfString:@"</UserDefinedCommands>"];
+    if (closeTag.location != NSNotFound) {
+        [xml insertString:[cmdXML stringByAppendingString:@"\n"] atIndex:closeTag.location];
+    }
+
+    [xml writeToFile:shortcutsPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+
+    // Add to Run menu
+    NSMenu *runMenu = nil;
+    for (NSMenuItem *mi in [NSApp mainMenu].itemArray)
+        if ([mi.title isEqualToString:@"Run"]) { runMenu = mi.submenu; break; }
+    if (runMenu) {
+        NSMenuItem *newItem = [[NSMenuItem alloc] initWithTitle:name
+                                                        action:@selector(_runSavedCommand:)
+                                                 keyEquivalent:@""];
+        newItem.target = self;
+        newItem.representedObject = rawCmd;
+        if (keyCode > 0) {
+            NSEventModifierFlags mods = 0;
+            if (hasCmd)   mods |= NSEventModifierFlagCommand;
+            if (hasCtrl)  mods |= NSEventModifierFlagControl;
+            if (hasOpt)   mods |= NSEventModifierFlagOption;
+            if (hasShift) mods |= NSEventModifierFlagShift;
+            // Convert key code to NSMenuItem key equivalent
+            unichar kc = 0;
+            if (keyCode >= 112 && keyCode <= 123) kc = NSF1FunctionKey + (keyCode - 112);
+            else if (keyCode >= 'A' && keyCode <= 'Z') kc = keyCode + 32; // lowercase
+            else if (keyCode >= '0' && keyCode <= '9') kc = keyCode;
+            else if (keyCode == 8) kc = NSBackspaceCharacter;
+            else if (keyCode == 9) kc = NSTabCharacter;
+            else if (keyCode == 13) kc = NSCarriageReturnCharacter;
+            else if (keyCode == 27) kc = 0x1B;
+            else if (keyCode == 32) kc = ' ';
+            else if (keyCode == 127) kc = NSDeleteCharacter;
+            else kc = keyCode;
+            if (kc) {
+                newItem.keyEquivalent = [NSString stringWithCharacters:&kc length:1];
+                newItem.keyEquivalentModifierMask = mods;
+            }
+        }
+        NSInteger insertIdx = runMenu.numberOfItems - 2;
+        if (insertIdx < 0) insertIdx = runMenu.numberOfItems;
+        [runMenu insertItem:newItem atIndex:insertIdx];
+    }
+}
+
+/// Execute a saved Run command from the menu
+- (void)_runSavedCommand:(NSMenuItem *)mi {
+    NSString *rawCmd = mi.representedObject;
+    if (!rawCmd.length) return;
+    NSString *cmd = [self _expandRunVariables:rawCmd];
+    if ([cmd hasPrefix:@"http://"] || [cmd hasPrefix:@"https://"]) {
+        NSURL *url = [NSURL URLWithString:cmd];
+        if (url) [[NSWorkspace sharedWorkspace] openURL:url];
+    } else {
+        // .app bundles need "open" to launch
+        NSString *execCmd = cmd;
+        NSString *trimmed = [cmd stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *unquoted = trimmed;
+        if ([unquoted hasPrefix:@"\""] && [unquoted hasSuffix:@"\""])
+            unquoted = [unquoted substringWithRange:NSMakeRange(1, unquoted.length - 2)];
+        if ([unquoted hasSuffix:@".app"] || [cmd containsString:@".app "])
+            execCmd = [NSString stringWithFormat:@"open %@", cmd];
+        @try {
+            [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:@[@"-c", execCmd]];
+        } @catch (NSException *e) {
+            NSLog(@"Run command error: %@", e.reason);
+        }
+    }
 }
 
 #pragma mark - Search: Mark Text

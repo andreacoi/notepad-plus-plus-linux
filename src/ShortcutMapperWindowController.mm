@@ -1249,11 +1249,23 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
         }
     }
 
-    // ── Update UserDefinedCommands shortcuts in-place ──
+    // ── Update UserDefinedCommands shortcuts in-place + handle deletions ──
     {
+        // Build set of run command names that still exist in the in-memory list
+        NSMutableSet *liveRunNames = [NSMutableSet set];
+        for (ShortcutEntry *e in _runCmdEntries)
+            [liveRunNames addObject:e.name];
+
         NSArray *cmdNodes = [doc nodesForXPath:@"//UserDefinedCommands/Command" error:nil];
         for (NSXMLElement *cmdEl in cmdNodes) {
             NSString *cmdName = [[cmdEl attributeForName:@"name"] stringValue];
+            // Remove commands that were deleted from the in-memory list
+            if (![liveRunNames containsObject:cmdName]) {
+                NSLog(@"[ShortcutMapper] Deleting RunCommand: %@", cmdName);
+                [cmdEl detach];
+                continue;
+            }
+            // Update shortcut attributes for modified commands
             for (ShortcutEntry *e in _runCmdEntries) {
                 if ([e.name isEqualToString:cmdName] && e.isModified) {
                     NSLog(@"[ShortcutMapper] Saving RunCommand shortcut: %@ key=%lu",
@@ -1261,6 +1273,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
                     [cmdEl removeAttributeForName:@"Ctrl"];
                     [cmdEl removeAttributeForName:@"Alt"];
                     [cmdEl removeAttributeForName:@"Shift"];
+                    [cmdEl removeAttributeForName:@"Cmd"];
                     [cmdEl removeAttributeForName:@"Key"];
                     [cmdEl addAttribute:[NSXMLNode attributeWithName:@"Ctrl" stringValue:e.hasCtrl ? @"yes" : @"no"]];
                     [cmdEl addAttribute:[NSXMLNode attributeWithName:@"Alt" stringValue:e.hasAlt ? @"yes" : @"no"]];
