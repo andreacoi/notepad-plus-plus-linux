@@ -12,6 +12,7 @@
 #import "DocumentMapPanel.h"
 #import "ProjectPanel.h"
 #import "PreferencesWindowController.h"
+#import "StyleConfiguratorWindowController.h"
 #import "IncrementalSearchBar.h"
 #import "CommandPalettePanel.h"
 #import "GitHelper.h"
@@ -6216,6 +6217,17 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 - (void)_darkModeChanged:(NSNotification *)n {
     // Re-assign CGColor on status bar (snapshot needs refresh)
     _statusBar.layer.backgroundColor = [NppThemeManager shared].statusBarBackground.CGColor;
+
+    // Auto mode: switch editor theme to match system appearance
+    if ([NppThemeManager shared].mode == NppDarkModeAuto) {
+        BOOL isDark = [NppThemeManager shared].isDark;
+        NSString *targetTheme = isDark ? @"DarkModeDefault" : @"Default (stylers.xml)";
+        NPPStyleStore *store = [NPPStyleStore sharedStore];
+        if (![store.activeThemeName isEqualToString:targetTheme]) {
+            NSArray *lexers = [store lexersForTheme:targetTheme];
+            [store commitLexers:lexers themeName:targetTheme];
+        }
+    }
 
     // Refresh toolbar icons (switch between light/dark icon sets)
     NSToolbar *toolbar = self.window.toolbar;
