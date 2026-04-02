@@ -2264,6 +2264,7 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     // Session restore is handled by AppDelegate (which checks CLI flags like -nosession).
     // AppDelegate calls restoreLastSession or addNewTab as needed.
     [self rebuildMacroMenu];
+    [self rebuildRunMenu];
     [self updateStatusBar];
 
     // Accept file drag-and-drop onto the primary editor area
@@ -3331,6 +3332,79 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         }
 
         [macroMenu insertItem:item atIndex:insertIdx++];
+    }
+}
+
+- (void)rebuildRunMenu {
+    NSMenu *runMenu = nil;
+    for (NSMenuItem *mi in [NSApp mainMenu].itemArray)
+        if ([mi.submenu.title isEqualToString:@"Run"]) { runMenu = mi.submenu; break; }
+    if (!runMenu) return;
+
+    // Remove previously inserted user commands (between last built-in item and final separator)
+    // Built-in items: Run…, sep, PHP Help, Wiki Search, Open Selected…, sep, Modify Shortcut…
+    // User commands go before the final separator (index = numberOfItems - 2)
+    // We tag dynamic items with 9910 to identify them for cleanup.
+    NSMutableArray<NSMenuItem *> *toRemove = [NSMutableArray array];
+    for (NSMenuItem *mi in runMenu.itemArray)
+        if (mi.tag == 9910) [toRemove addObject:mi];
+    for (NSMenuItem *mi in toRemove)
+        [runMenu removeItem:mi];
+
+    // Load from shortcuts.xml
+    NSString *path = nppShortcutsPath();
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    if (!data) return;
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:0 error:nil];
+    if (!doc) return;
+
+    NSArray *cmdNodes = [doc nodesForXPath:@"//UserDefinedCommands/Command" error:nil];
+    if (!cmdNodes.count) return;
+
+    NSInteger insertIdx = runMenu.numberOfItems - 2;
+    if (insertIdx < 0) insertIdx = runMenu.numberOfItems;
+
+    for (NSXMLElement *cmdEl in cmdNodes) {
+        NSString *name = [[cmdEl attributeForName:@"name"] stringValue];
+        NSString *cmdText = [cmdEl stringValue];
+        if (!name.length || !cmdText.length) continue;
+
+        NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:name
+                                                      action:@selector(_runSavedCommand:)
+                                               keyEquivalent:@""];
+        item.target = self;
+        item.representedObject = cmdText;
+        item.tag = 9910;
+
+        NSUInteger keyCode = [[[cmdEl attributeForName:@"Key"] stringValue] integerValue];
+        if (keyCode > 0) {
+            BOOL hasCtrl  = [[[cmdEl attributeForName:@"Ctrl"]  stringValue] isEqualToString:@"yes"];
+            BOOL hasAlt   = [[[cmdEl attributeForName:@"Alt"]   stringValue] isEqualToString:@"yes"];
+            BOOL hasShift = [[[cmdEl attributeForName:@"Shift"] stringValue] isEqualToString:@"yes"];
+            BOOL hasCmd   = [[[cmdEl attributeForName:@"Cmd"]   stringValue] isEqualToString:@"yes"];
+
+            if (!hasCmd && hasCtrl && ![cmdEl attributeForName:@"Cmd"]) {
+                hasCmd = YES; hasCtrl = NO;
+            }
+
+            NSEventModifierFlags mods = 0;
+            if (hasCmd)   mods |= NSEventModifierFlagCommand;
+            if (hasCtrl)  mods |= NSEventModifierFlagControl;
+            if (hasAlt)   mods |= NSEventModifierFlagOption;
+            if (hasShift) mods |= NSEventModifierFlagShift;
+
+            unichar kc = 0;
+            if (keyCode >= 112 && keyCode <= 123) kc = NSF1FunctionKey + (keyCode - 112);
+            else if (keyCode >= 'A' && keyCode <= 'Z') kc = keyCode + 32;
+            else if (keyCode >= '0' && keyCode <= '9') kc = keyCode;
+            else kc = keyCode;
+            if (kc) {
+                item.keyEquivalent = [NSString stringWithCharacters:&kc length:1];
+                item.keyEquivalentModifierMask = mods;
+            }
+        }
+
+        [runMenu insertItem:item atIndex:insertIdx++];
     }
 }
 
@@ -6358,43 +6432,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
     [xml writeToFile:shortcutsPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
 
-    // Add to Run menu
-    NSMenu *runMenu = nil;
-    for (NSMenuItem *mi in [NSApp mainMenu].itemArray)
-        if ([mi.title isEqualToString:@"Run"]) { runMenu = mi.submenu; break; }
-    if (runMenu) {
-        NSMenuItem *newItem = [[NSMenuItem alloc] initWithTitle:name
-                                                        action:@selector(_runSavedCommand:)
-                                                 keyEquivalent:@""];
-        newItem.target = self;
-        newItem.representedObject = rawCmd;
-        if (keyCode > 0) {
-            NSEventModifierFlags mods = 0;
-            if (hasCmd)   mods |= NSEventModifierFlagCommand;
-            if (hasCtrl)  mods |= NSEventModifierFlagControl;
-            if (hasOpt)   mods |= NSEventModifierFlagOption;
-            if (hasShift) mods |= NSEventModifierFlagShift;
-            // Convert key code to NSMenuItem key equivalent
-            unichar kc = 0;
-            if (keyCode >= 112 && keyCode <= 123) kc = NSF1FunctionKey + (keyCode - 112);
-            else if (keyCode >= 'A' && keyCode <= 'Z') kc = keyCode + 32; // lowercase
-            else if (keyCode >= '0' && keyCode <= '9') kc = keyCode;
-            else if (keyCode == 8) kc = NSBackspaceCharacter;
-            else if (keyCode == 9) kc = NSTabCharacter;
-            else if (keyCode == 13) kc = NSCarriageReturnCharacter;
-            else if (keyCode == 27) kc = 0x1B;
-            else if (keyCode == 32) kc = ' ';
-            else if (keyCode == 127) kc = NSDeleteCharacter;
-            else kc = keyCode;
-            if (kc) {
-                newItem.keyEquivalent = [NSString stringWithCharacters:&kc length:1];
-                newItem.keyEquivalentModifierMask = mods;
-            }
-        }
-        NSInteger insertIdx = runMenu.numberOfItems - 2;
-        if (insertIdx < 0) insertIdx = runMenu.numberOfItems;
-        [runMenu insertItem:newItem atIndex:insertIdx];
-    }
+    [self rebuildRunMenu];
 }
 
 /// Execute a saved Run command from the menu

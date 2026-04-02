@@ -879,9 +879,7 @@ static NSMenu *buildLanguageMenu() {
 
     [runMenu addItem:item(@"Run…", @selector(showRunDialog:), @"")];
     addSep(runMenu);
-    [runMenu addItem:item(@"Get PHP Help",                        @selector(getPHPHelp:),                    @"")];
-    [runMenu addItem:item(@"Wikipedia Search",                    @selector(wikiSearch:),                    @"")];
-    [runMenu addItem:item(@"Open Selected File Path in New Instance", @selector(openSelectedFileInNewInstance:), @"")];
+    // User-defined commands inserted here by rebuildRunMenu
     addSep(runMenu);
     [runMenu addItem:item(@"Modify Shortcut/Delete Command…", @selector(showShortcutMapperRunCmds:), @"")];
 
