@@ -649,36 +649,66 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     _isModified = YES;
 }
 
-/// Write content to the backup directory.
+/// Write content to the backup directory using raw Scintilla bytes.
+/// Same byte-level approach as saveToPath: — no NSString intermediate,
+/// no encoding roundtrip, preserves null bytes and BOM.
 /// Mirrors NPP Buffer.cpp: creates ONE timestamped file per buffer on first backup,
 /// then overwrites that same file in-place on every subsequent backup cycle.
 - (nullable NSString *)saveBackupToDirectory:(NSString *)dir {
-    // If we already have a backup file, overwrite it in-place (NPP behaviour)
-    if (_backupFilePath) {
-        NSError *err;
-        if ([_scintillaView.string writeToFile:_backupFilePath atomically:YES
-                                      encoding:_fileEncoding error:&err]) {
-            return _backupFilePath;
-        }
-        // Backup file was deleted externally — fall through and create a new one
-        _backupFilePath = nil;
+    NSString *dest = _backupFilePath;
+
+    if (!dest) {
+        // First backup for this buffer — create with timestamp (created once, reused forever)
+        NSString *base = _filePath ? _filePath.lastPathComponent
+                                   : [NSString stringWithFormat:@"new %ld", (long)_untitledIndex];
+        NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+        fmt.dateFormat = @"yyyy-MM-dd_HHmmss";
+        NSString *name = [NSString stringWithFormat:@"%@@%@", base,
+                          [fmt stringFromDate:[NSDate date]]];
+        dest = [dir stringByAppendingPathComponent:name];
     }
 
-    // First backup for this buffer — create with timestamp (created once, reused forever)
-    // Use the same name as displayName so each tab gets a unique backup file
-    NSString *base = _filePath ? _filePath.lastPathComponent
-                               : [NSString stringWithFormat:@"new %ld", (long)_untitledIndex];
-    NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-    fmt.dateFormat = @"yyyy-MM-dd_HHmmss";
-    NSString *name = [NSString stringWithFormat:@"%@@%@", base,
-                      [fmt stringFromDate:[NSDate date]]];
-    NSString *dest = [dir stringByAppendingPathComponent:name];
-    NSError *err;
-    if ([_scintillaView.string writeToFile:dest atomically:YES
-                                  encoding:_fileEncoding error:&err]) {
+    // Get raw UTF-8 bytes directly from Scintilla (no NSString conversion)
+    intptr_t len = [_scintillaView message:SCI_GETLENGTH];
+    NSMutableData *out = [NSMutableData dataWithCapacity:(NSUInteger)len + 4];
+
+    // Add BOM if the original file had one
+    if (_hasBOM) {
+        if (_fileEncoding == NSUTF8StringEncoding) {
+            const uint8_t bom[] = {0xEF, 0xBB, 0xBF};
+            [out appendBytes:bom length:3];
+        } else if (_fileEncoding == NSUTF16BigEndianStringEncoding) {
+            const uint8_t bom[] = {0xFE, 0xFF};
+            [out appendBytes:bom length:2];
+        } else if (_fileEncoding == NSUTF16LittleEndianStringEncoding) {
+            const uint8_t bom[] = {0xFF, 0xFE};
+            [out appendBytes:bom length:2];
+        }
+    }
+
+    // Scintilla stores content as UTF-8 bytes internally.
+    // For UTF-8 files: write raw bytes directly (no conversion needed).
+    // For non-UTF-8 files: convert via NSString (same as saveToPath:).
+    if (_fileEncoding == NSUTF8StringEncoding) {
+        char *buf = (char *)malloc((size_t)len + 1);
+        if (!buf) return nil;
+        [_scintillaView message:SCI_GETTEXT wParam:(uptr_t)(len + 1) lParam:(sptr_t)buf];
+        [out appendBytes:buf length:(NSUInteger)len];
+        free(buf);
+    } else {
+        NSString *content = _scintillaView.string;
+        NSData *body = [content dataUsingEncoding:_fileEncoding allowLossyConversion:YES];
+        if (!body) return nil;
+        [out appendData:body];
+    }
+
+    if ([out writeToFile:dest atomically:YES]) {
         _backupFilePath = [dest copy];
         return dest;
     }
+    // Backup file write failed — reset path if it was a first-time attempt
+    if (!_backupFilePath) return nil;
+    _backupFilePath = nil;
     return nil;
 }
 
