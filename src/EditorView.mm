@@ -544,6 +544,16 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
                                                        userInfo:nil
                                                         repeats:YES];
     _fileMonitorTimer.fireDate = [NSDate dateWithTimeIntervalSinceNow:3.0];
+
+    // After file load, clear stale fold highlight delimiter by triggering
+    // InvalidateStyleRedraw (DropGraphics + full margin invalidation).
+    // SCI_SETMARGINRIGHT with the current value is a lightweight trigger.
+    // Deferred so the view has its final layout and correct LinesOnScreen.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        sptr_t curRight = [_scintillaView message:SCI_GETMARGINRIGHT];
+        [_scintillaView message:SCI_SETMARGINRIGHT wParam:0 lParam:curRight];
+    });
+
     return YES;
 }
 
@@ -1082,8 +1092,7 @@ static NSColor *nppColorFromHex(NSString *hex) {
     if (gsSelected.bgColor)
         [sci message:SCI_SETSELBACK wParam:1 lParam:sciColor(gsSelected.bgColor)];
 
-    // Fold margin
-    NPPStyleEntry *gsFold = [store globalStyleNamed:@"Fold"];
+    // Fold margin background from "Fold margin" global style
     NPPStyleEntry *gsFoldMargin = [store globalStyleNamed:@"Fold margin"];
     sptr_t foldMarginBGR2;
     if (gsFoldMargin && gsFoldMargin.bgColor) {
@@ -1096,6 +1105,8 @@ static NSColor *nppColorFromHex(NSString *hex) {
     }
     [sci message:SCI_SETFOLDMARGINCOLOUR   wParam:1 lParam:foldMarginBGR2];
     [sci message:SCI_SETFOLDMARGINHICOLOUR wParam:1 lParam:foldMarginBGR2];
+    // Fold marker colours from "Fold" global style
+    NPPStyleEntry *gsFold = [store globalStyleNamed:@"Fold"];
     NSColor *foldFore2 = gsFold.fgColor ?: (bgBrightness > 0.5 ? [NSColor blackColor]
                                                                  : [NSColor colorWithWhite:0.80 alpha:1.0]);
     NSColor *foldBack2 = gsFold.bgColor ?: (bgBrightness > 0.5 ? [NSColor colorWithWhite:0.82 alpha:1.0]
@@ -1111,6 +1122,7 @@ static NSColor *nppColorFromHex(NSString *hex) {
 
     // Re-apply language colors with the new theme palette
     if (_currentLanguage.length) [self applyLexerColors:_currentLanguage];
+
 }
 
 - (void)applyDefaultTheme {
@@ -1228,8 +1240,7 @@ static NSColor *nppColorFromHex(NSString *hex) {
     [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERMIDTAIL lParam:SC_MARK_TCORNERCURVE];
     [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERTAIL    lParam:SC_MARK_LCORNERCURVE];
     [sci message:SCI_MARKERDEFINE wParam:SC_MARKNUM_FOLDERSUB     lParam:SC_MARK_VLINE];
-    // Fold margin colors from Global Styles, with fallback
-    NPPStyleEntry *gsFold = [store globalStyleNamed:@"Fold"];
+    // Fold margin background from "Fold margin" global style
     NPPStyleEntry *gsFoldMargin = [store globalStyleNamed:@"Fold margin"];
     sptr_t foldMarginBGR;
     if (gsFoldMargin && gsFoldMargin.bgColor) {
@@ -1242,7 +1253,8 @@ static NSColor *nppColorFromHex(NSString *hex) {
     }
     [sci message:SCI_SETFOLDMARGINCOLOUR   wParam:1 lParam:foldMarginBGR];
     [sci message:SCI_SETFOLDMARGINHICOLOUR wParam:1 lParam:foldMarginBGR];
-    // Marker (+/−) colours from "Fold" global style, with adaptive fallback
+    // Fold marker colours from "Fold" and "Fold active" global styles
+    NPPStyleEntry *gsFold = [store globalStyleNamed:@"Fold"];
     NSColor *foldFore = gsFold.fgColor ?: (bgBrightness > 0.5 ? [NSColor blackColor]
                                                                 : [NSColor colorWithWhite:0.80 alpha:1.0]);
     NSColor *foldBack = gsFold.bgColor ?: (bgBrightness > 0.5 ? [NSColor colorWithWhite:0.82 alpha:1.0]
@@ -1543,6 +1555,12 @@ static NSColor *nppColorFromHex(NSString *hex) {
 
     // Apply any ScintillaKeys overrides from shortcuts.xml
     [self applyScintillaKeyOverrides];
+
+    // Force scroll view re-layout so the ruler view (margins) frame covers
+    // the full visible area — prevents half-visible fold connecting lines.
+    SCIScrollView *sv = (SCIScrollView *)_scintillaView.scrollView;
+    [sv tile];
+    [sv.verticalRulerView setNeedsDisplay:YES];
 }
 
 // ── Scintilla key overrides ──────────────────────────────────────────────────
@@ -3288,7 +3306,15 @@ static const unsigned int kSCI_GetBidirectional = 2708;
 - (void)viewDidMoveToWindow {
     [super viewDidMoveToWindow];
     // The system may reset scrollerStyle when the view enters a window.
-    if (self.window) [self _applyLegacyScrollerStyle];
+    if (self.window) {
+        [self _applyLegacyScrollerStyle];
+        // After the view is added to a window and laid out, force a full
+        // margin repaint so highlightDelimiter is computed with correct
+        // LinesOnScreen (sizeClient is zero during init → stale fold highlight).
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_scintillaView.scrollView.verticalRulerView setNeedsDisplay:YES];
+        });
+    }
 }
 
 - (void)_scrollerStyleChanged:(NSNotification *)note {
