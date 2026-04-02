@@ -811,6 +811,10 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     // Matches Windows NPP's defineDocType() which calls SCI_STYLECLEARALL first.
     [_scintillaView message:SCI_STYLECLEARALL];
 
+    // SCI_STYLECLEARALL resets ALL style IDs (including STYLE_LINENUMBER=33,
+    // STYLE_BRACELIGHT=34, etc.) to STYLE_DEFAULT. Re-apply Global Styles.
+    [self applyGlobalStyleColors];
+
     if (!languageName.length) {
         // Plain text — null lexer, all text rendered in STYLE_DEFAULT
         [_scintillaView message:(unsigned int)Scintilla::Message::SetILexer wParam:0 lParam:0];
@@ -1135,16 +1139,20 @@ static NSColor *nppColorFromHex(NSString *hex) {
     }
     [sci message:SCI_SETFOLDMARGINCOLOUR   wParam:1 lParam:foldMarginBGR2];
     [sci message:SCI_SETFOLDMARGINHICOLOUR wParam:1 lParam:foldMarginBGR2];
-    // Fold marker colours from "Fold" global style
+    // Fold marker colours from "Fold" and "Fold active" global styles
     NPPStyleEntry *gsFold = [store globalStyleNamed:@"Fold"];
     NSColor *foldFore2 = gsFold.fgColor ?: (bgBrightness > 0.5 ? [NSColor blackColor]
                                                                  : [NSColor colorWithWhite:0.80 alpha:1.0]);
     NSColor *foldBack2 = gsFold.bgColor ?: (bgBrightness > 0.5 ? [NSColor colorWithWhite:0.82 alpha:1.0]
                                                                  : [NSColor colorWithWhite:bgBrightness + 0.22 alpha:1.0]);
+    NPPStyleEntry *gsFoldActive2 = [store globalStyleNamed:@"Fold active"];
+    NSColor *foldRed2 = gsFoldActive2.fgColor ?: [NSColor colorWithRed:0.80 green:0.0 blue:0.0 alpha:1.0];
     for (int mn = SC_MARKNUM_FOLDEREND; mn <= SC_MARKNUM_FOLDEROPEN; mn++) {
-        [sci setColorProperty:SCI_MARKERSETFORE parameter:mn value:foldFore2];
-        [sci setColorProperty:SCI_MARKERSETBACK parameter:mn value:foldBack2];
+        [sci setColorProperty:SCI_MARKERSETFORE          parameter:mn value:foldFore2];
+        [sci setColorProperty:SCI_MARKERSETBACK          parameter:mn value:foldBack2];
+        [sci setColorProperty:SCI_MARKERSETBACKSELECTED  parameter:mn value:foldRed2];
     }
+    [sci message:SCI_MARKERENABLEHIGHLIGHT wParam:1];
 
     // Whitespace symbols
     NPPStyleEntry *gsWS = [store globalStyleNamed:@"White space symbol"];
@@ -1153,6 +1161,42 @@ static NSColor *nppColorFromHex(NSString *hex) {
     // Re-apply language colors with the new theme palette
     if (_currentLanguage.length) [self applyLexerColors:_currentLanguage];
 
+}
+
+/// Re-apply Global Styles that use Scintilla style IDs (STYLE_LINENUMBER=33,
+/// STYLE_BRACELIGHT=34, STYLE_BRACEBAD=35, indent guide=37).
+/// Called after SCI_STYLECLEARALL which resets these to STYLE_DEFAULT.
+- (void)applyGlobalStyleColors {
+    ScintillaView *sci = _scintillaView;
+    NPPStyleStore *store = [NPPStyleStore sharedStore];
+    NSColor *bg = store.globalBg;
+    CGFloat bgBrightness = bg.brightnessComponent;
+
+    // Line number margin (styleID=33)
+    NPPStyleEntry *gsLineNum = [store globalStyleNamed:@"Line number margin"];
+    NSColor *lnFg = gsLineNum.fgColor ?: (bgBrightness > 0.5 ? [NSColor colorWithWhite:0.5 alpha:1.0]
+                                                               : [NSColor colorWithWhite:0.6 alpha:1.0]);
+    NSColor *lnBg = gsLineNum.bgColor ?: (bgBrightness > 0.5 ? [NSColor colorWithWhite:0.95 alpha:1.0] : bg);
+    [sci setColorProperty:SCI_STYLESETFORE parameter:STYLE_LINENUMBER value:lnFg];
+    [sci setColorProperty:SCI_STYLESETBACK parameter:STYLE_LINENUMBER value:lnBg];
+
+    // Indent guideline style (styleID=37)
+    NPPStyleEntry *gsIndent = [store globalStyleNamed:@"Indent guideline style"];
+    if (gsIndent.fgColor) [sci setColorProperty:SCI_STYLESETFORE parameter:37 value:gsIndent.fgColor];
+    if (gsIndent.bgColor) [sci setColorProperty:SCI_STYLESETBACK parameter:37 value:gsIndent.bgColor];
+
+    // Brace highlight (styleID=34)
+    NPPStyleEntry *gsBrace = [store globalStyleNamed:@"Brace highlight style"];
+    [sci setColorProperty:SCI_STYLESETFORE parameter:STYLE_BRACELIGHT
+                    value:gsBrace.fgColor ?: [NSColor colorWithRed:0.80 green:0.0 blue:0.0 alpha:1.0]];
+    [sci setColorProperty:SCI_STYLESETBACK parameter:STYLE_BRACELIGHT
+                    value:gsBrace.bgColor ?: [NSColor colorWithRed:1.0 green:0.87 blue:0.87 alpha:1.0]];
+    [sci message:SCI_STYLESETBOLD wParam:STYLE_BRACELIGHT lParam:(gsBrace ? gsBrace.bold : YES)];
+
+    // Bad brace (styleID=35)
+    NPPStyleEntry *gsBadBrace = [store globalStyleNamed:@"Bad brace colour"];
+    [sci setColorProperty:SCI_STYLESETFORE parameter:STYLE_BRACEBAD
+                    value:gsBadBrace.fgColor ?: [NSColor colorWithRed:0.75 green:0.0 blue:0.0 alpha:1.0]];
 }
 
 - (void)applyDefaultTheme {

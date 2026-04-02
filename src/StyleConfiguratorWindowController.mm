@@ -292,11 +292,21 @@ static NSString *_userThemesDir(void) {
         NSArray<NSString *> *parts = [key componentsSeparatedByString:@"|"];
         if (parts.count != 3) continue;
         NSString *lid  = parts[0];
-        int       sid  = parts[1].intValue;
+        NSString *sidOrName = parts[1];
         NSString *prop = parts[2];
         NPPLexer  *lex = dict[lid];
         if (!lex) continue;
-        NPPStyleEntry *entry = [lex styleForID:sid];
+        // Global styles use name as key (many share styleID=0).
+        // Lexer styles use styleID (unique within each lexer).
+        // Detect by checking if the middle part is numeric.
+        NPPStyleEntry *entry;
+        BOOL isNumeric = sidOrName.length > 0 && [sidOrName rangeOfCharacterFromSet:
+            [[NSCharacterSet decimalDigitCharacterSet] invertedSet]].location == NSNotFound;
+        if ([lid isEqualToString:@"global"] && !isNumeric) {
+            entry = [lex styleForName:sidOrName];
+        } else {
+            entry = [lex styleForID:sidOrName.intValue];
+        }
         if (!entry) continue;
         id val = overrides[key];
         if ([prop isEqualToString:@"fg"])         entry.fgColor   = colorFromRRGGBB(val);
@@ -377,8 +387,8 @@ static NSString *_userThemesDir(void) {
 }
 
 - (void)commitLexers:(NSArray<NPPLexer *> *)lexers themeName:(NSString *)themeName {
+    _activeThemeName = themeName;  // Set BEFORE preview so applyThemeColors reads the correct theme name
     [self previewLexers:lexers];
-    _activeThemeName = themeName;
 
     // Serialize diffs against clean theme baseline (no user overrides)
     NSArray<NPPLexer *> *baseline = [self lexersForTheme:themeName];
@@ -386,11 +396,18 @@ static NSString *_userThemesDir(void) {
     for (NPPLexer *lex in baseline) baseDict[lex.lexerID] = lex;
 
     NSMutableDictionary *overrides = [NSMutableDictionary new];
+    BOOL isGlobal;
     for (NPPLexer *lex in _lexers) {
         NPPLexer *baseLex = baseDict[lex.lexerID];
+        isGlobal = [lex.lexerID isEqualToString:@"global"];
         for (NPPStyleEntry *e in lex.styles) {
-            NPPStyleEntry *b = [baseLex styleForID:e.styleID];
-            NSString *base = [NSString stringWithFormat:@"%@|%d|", lex.lexerID, e.styleID];
+            // For Global Styles, use name as key (many entries share styleID=0).
+            // For lexer styles, use styleID (unique within each lexer).
+            NPPStyleEntry *b = isGlobal ? [baseLex styleForName:e.name]
+                                        : [baseLex styleForID:e.styleID];
+            NSString *base = isGlobal
+                ? [NSString stringWithFormat:@"%@|%@|", lex.lexerID, e.name]
+                : [NSString stringWithFormat:@"%@|%d|", lex.lexerID, e.styleID];
             NSString *bFg = b.fgColor ? hexFromColor(b.fgColor) : nil;
             NSString *eFg = e.fgColor ? hexFromColor(e.fgColor) : nil;
             if (eFg && ![eFg isEqualToString:bFg]) overrides[[base stringByAppendingString:@"fg"]] = eFg;
@@ -418,6 +435,109 @@ static NSString *_userThemesDir(void) {
     [ud setObject:[@"#" stringByAppendingString:hexFromColor(self.globalBg)] forKey:kPrefStyleBg];
     [ud setObject:self.globalFontName forKey:kPrefStyleFontName];
     [ud setInteger:self.globalFontSize forKey:kPrefStyleFontSize];
+
+    // Write changes back to the XML file (selective update, not full rewrite).
+    [self _writeOverridesToXML:overrides themeName:themeName];
+}
+
+/// Selectively update changed style attributes in the theme/stylers XML file.
+/// Only modifies attribute values for entries that have overrides — preserves
+/// file structure, comments, and unchanged entries.
+- (void)_writeOverridesToXML:(NSDictionary *)overrides themeName:(NSString *)themeName {
+    if (!overrides.count) return;
+
+    // Determine target XML file
+    NSString *xmlPath;
+    if ([themeName isEqualToString:kDefaultThemeName] || !themeName.length) {
+        xmlPath = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/stylers.xml"];
+    } else {
+        // User themes dir first; if not there, copy from bundle
+        NSString *userPath = [_userThemesDir() stringByAppendingPathComponent:
+                              [themeName stringByAppendingPathExtension:@"xml"]];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:userPath]) {
+            xmlPath = userPath;
+        } else {
+            // Bundled theme — copy to user themes dir before modifying
+            NSURL *bundleURL = [[NSBundle mainBundle] URLForResource:themeName
+                                                      withExtension:@"xml"
+                                                       subdirectory:@"themes"];
+            if (!bundleURL) return;
+            [[NSFileManager defaultManager] copyItemAtPath:bundleURL.path
+                                                    toPath:userPath error:nil];
+            xmlPath = userPath;
+        }
+    }
+
+    NSData *data = [NSData dataWithContentsOfFile:xmlPath];
+    if (!data) return;
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data
+                                                     options:NSXMLNodePreserveWhitespace
+                                                       error:nil];
+    if (!doc) return;
+
+    BOOL changed = NO;
+    for (NSString *key in overrides) {
+        NSArray<NSString *> *parts = [key componentsSeparatedByString:@"|"];
+        if (parts.count != 3) continue;
+        NSString *lexerID = parts[0];
+        NSString *sidOrName = parts[1];
+        NSString *prop = parts[2];
+        id val = overrides[key];
+
+        // Find the XML element to update
+        NSArray<NSXMLElement *> *elements = nil;
+        if ([lexerID isEqualToString:@"global"]) {
+            // Global style: match by name attribute
+            NSString *xpath = [NSString stringWithFormat:
+                @"//GlobalStyles/WidgetStyle[@name='%@']", sidOrName];
+            elements = [doc nodesForXPath:xpath error:nil];
+        } else {
+            // Lexer style: match by LexerType name + WordsStyle styleID
+            BOOL isNumeric = sidOrName.length > 0 && [sidOrName rangeOfCharacterFromSet:
+                [[NSCharacterSet decimalDigitCharacterSet] invertedSet]].location == NSNotFound;
+            if (isNumeric) {
+                NSString *xpath = [NSString stringWithFormat:
+                    @"//LexerStyles/LexerType[@name='%@']/WordsStyle[@styleID='%@']",
+                    lexerID, sidOrName];
+                elements = [doc nodesForXPath:xpath error:nil];
+            }
+        }
+        if (!elements.count) continue;
+
+        NSXMLElement *el = elements[0];
+        // Map property name to XML attribute name
+        NSString *attrName = nil;
+        NSString *attrVal = nil;
+        if ([prop isEqualToString:@"fg"])          { attrName = @"fgColor";   attrVal = val; }
+        else if ([prop isEqualToString:@"bg"])      { attrName = @"bgColor";   attrVal = val; }
+        else if ([prop isEqualToString:@"fontName"]) { attrName = @"fontName";  attrVal = val; }
+        else if ([prop isEqualToString:@"fontSize"]) { attrName = @"fontSize";  attrVal = [val stringValue]; }
+        else if ([prop isEqualToString:@"bold"] || [prop isEqualToString:@"italic"]
+                 || [prop isEqualToString:@"underline"]) {
+            // Recalculate fontStyle bitmask from current overrides
+            NSXMLNode *fstNode = [el attributeForName:@"fontStyle"];
+            int fst = fstNode ? fstNode.stringValue.intValue : 0;
+            int bit = [prop isEqualToString:@"bold"] ? 1
+                    : [prop isEqualToString:@"italic"] ? 2 : 4;
+            if ([val boolValue]) fst |= bit; else fst &= ~bit;
+            attrName = @"fontStyle"; attrVal = [@(fst) stringValue];
+        }
+
+        if (attrName && attrVal) {
+            NSXMLNode *attr = [el attributeForName:attrName];
+            if (attr) {
+                attr.stringValue = attrVal;
+            } else {
+                [el addAttribute:[NSXMLNode attributeWithName:attrName stringValue:attrVal]];
+            }
+            changed = YES;
+        }
+    }
+
+    if (changed) {
+        NSData *output = [doc XMLDataWithOptions:NSXMLNodePrettyPrint | NSXMLNodeCompactEmptyElement];
+        [output writeToFile:xmlPath atomically:YES];
+    }
 }
 
 @end
@@ -491,6 +611,7 @@ static NSString *_userThemesDir(void) {
     // Currently displayed styles
     NSArray<NPPStyleEntry *>    *_currentStyles;
     int                          _selectedStyleID;
+    NSString                    *_selectedStyleName;  // name of selected style (needed for global styleID=0 collision)
     // Active theme name in working copy
     NSString                    *_workingTheme;
     // Suppress feedback loops when populating UI
@@ -576,6 +697,7 @@ static NSString *_userThemesDir(void) {
     NSTableColumn *col = [[NSTableColumn alloc] initWithIdentifier:@"style"];
     col.width = 3000;  // wide enough that names are never truncated
     col.resizingMask = NSTableColumnNoResizing;
+    col.editable = NO;  // style names are not user-editable
     [_styleTable addTableColumn:col];
     _styleTable.dataSource = self;
     _styleTable.delegate   = self;
@@ -754,6 +876,7 @@ static NSString *_userThemesDir(void) {
 
 - (void)_updateRightPanelForStyle:(NPPStyleEntry *)entry lang:(NPPLexer *)lex {
     _selectedStyleID = entry.styleID;
+    _selectedStyleName = entry.name;
     _headerLabel.stringValue = [NSString stringWithFormat:@"%@: %@",
                                   lex.displayName, entry.name];
     BOOL hasFg = (entry.fgColor != nil);
@@ -796,10 +919,14 @@ static NSString *_userThemesDir(void) {
 // ── Current working entry ─────────────────────────────────────────────────────
 
 - (nullable NPPStyleEntry *)_currentEntry {
-    if (_selectedStyleID < 0) return nil;
+    if (_selectedStyleID < 0 && !_selectedStyleName.length) return nil;
     NSInteger langIdx = _langPopup.indexOfSelectedItem;
     if (langIdx < 0 || langIdx >= (NSInteger)_workingLexers.count) return nil;
-    return [_workingLexers[langIdx] styleForID:_selectedStyleID];
+    NPPLexer *lex = _workingLexers[langIdx];
+    // Global Styles: use name lookup (many entries share styleID=0).
+    if ([lex.lexerID isEqualToString:@"global"] && _selectedStyleName.length)
+        return [lex styleForName:_selectedStyleName];
+    return [lex styleForID:_selectedStyleID];
 }
 
 // ── Actions ───────────────────────────────────────────────────────────────────
@@ -830,12 +957,14 @@ static NSString *_userThemesDir(void) {
     NPPStyleEntry *e = [self _currentEntry];
     if (!e) return;
     e.fgColor = swatch.swatchColor;
+    [[NPPStyleStore sharedStore] previewLexers:_workingLexers];
 }
 - (void)_bgColorChanged:(_SCColorSwatch *)swatch {
     if (_suppressActions) return;
     NPPStyleEntry *e = [self _currentEntry];
     if (!e) return;
     e.bgColor = swatch.swatchColor;
+    [[NPPStyleStore sharedStore] previewLexers:_workingLexers];
 }
 - (void)_fontNameChanged:(id)sender {
     if (_suppressActions) return;
@@ -975,7 +1104,17 @@ static NSString *_userThemesDir(void) {
             NSArray<NSString *> *parts = [key componentsSeparatedByString:@"|"];
             if (parts.count != 3) continue;
             NPPLexer *lex = lookup[parts[0]];
-            NPPStyleEntry *e = [lex styleForID:parts[1].intValue];
+            if (!lex) continue;
+            // Global styles: name-based key (many share styleID=0).
+            // Lexer styles: numeric styleID key.
+            NSString *sidOrName = parts[1];
+            BOOL isNumeric = sidOrName.length > 0 && [sidOrName rangeOfCharacterFromSet:
+                [[NSCharacterSet decimalDigitCharacterSet] invertedSet]].location == NSNotFound;
+            NPPStyleEntry *e;
+            if ([parts[0] isEqualToString:@"global"] && !isNumeric)
+                e = [lex styleForName:sidOrName];
+            else
+                e = [lex styleForID:sidOrName.intValue];
             if (!e) continue;
             id val = saved[key];
             NSString *prop = parts[2];

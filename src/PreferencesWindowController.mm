@@ -1,6 +1,7 @@
 #import "PreferencesWindowController.h"
 #import "NppLocalizer.h"
 #import "NppThemeManager.h"
+#import "StyleConfiguratorWindowController.h"
 
 // ── NSUserDefaults keys (mirrors NPP settings) ────────────────────────────────
 NSString *const kPrefTabWidth           = @"tabWidth";
@@ -748,6 +749,17 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         }
     }
     [NppThemeManager shared].mode = (NppDarkModeOption)mode;
+
+    // Switch theme to match dark/light mode
+    NPPStyleStore *store = [NPPStyleStore sharedStore];
+    BOOL effectiveDark = (mode == NppDarkModeDark) ||
+        (mode == NppDarkModeAuto && [NSApp.effectiveAppearance bestMatchFromAppearancesWithNames:
+            @[NSAppearanceNameDarkAqua]] != nil);
+    NSString *targetTheme = effectiveDark ? @"DarkModeDefault" : @"Default (stylers.xml)";
+    if (![store.activeThemeName isEqualToString:targetTheme]) {
+        NSArray *lexers = [store lexersForTheme:targetTheme];
+        [store commitLexers:lexers themeName:targetTheme];
+    }
 }
 
 #pragma mark - New Document Page
