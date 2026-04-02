@@ -647,19 +647,15 @@ static NSArray<NSString *> *decodeFields(NSString *raw, int fieldCount) {
 }
 
 /// Encode an array of field values back into prefix-encoded format.
-/// Inverse of decodeFields.
+/// Inverse of decodeFields. Empty slots emit bare prefix (e.g. "01 02")
+/// to preserve the Windows NPP on-disk format.
 static NSString *encodeFields(NSArray<NSString *> *fields) {
     NSMutableString *out = [NSMutableString string];
     for (int i = 0; i < (int)fields.count; i++) {
         NSString *val = fields[i];
-        if (!val.length) continue;
-        // Split value by spaces to add prefix before each word
-        NSArray *words = [val componentsSeparatedByString:@" "];
-        for (NSString *word in words) {
-            if (!word.length) continue;
-            if (out.length) [out appendString:@" "];
-            [out appendFormat:@"%02d%@", i, word];
-        }
+        if (out.length) [out appendString:@" "];
+        [out appendFormat:@"%02d", i];
+        if (val.length) [out appendString:val];
     }
     return out;
 }
@@ -724,41 +720,113 @@ static NSString *encodeFields(NSArray<NSString *> *fields) {
 #pragma mark — Save current form state back to XML
 
 /// Collect all form fields and write the UDL XML file.
+/// XML-escape a string for safe embedding in element content.
+static NSString *xmlEscape(NSString *s) {
+    NSMutableString *r = [s mutableCopy];
+    [r replaceOccurrencesOfString:@"&" withString:@"&amp;" options:0 range:NSMakeRange(0, r.length)];
+    [r replaceOccurrencesOfString:@"<" withString:@"&lt;" options:0 range:NSMakeRange(0, r.length)];
+    [r replaceOccurrencesOfString:@">" withString:@"&gt;" options:0 range:NSMakeRange(0, r.length)];
+    return r;
+}
+
+/// Convert newlines in keyword text to &#x000D;&#x000A; entities (Windows NPP format).
+static NSString *nlToEntity(NSString *s) {
+    NSMutableString *r = [s mutableCopy];
+    [r replaceOccurrencesOfString:@"\r\n" withString:@"&#x000D;&#x000A;" options:0 range:NSMakeRange(0, r.length)];
+    [r replaceOccurrencesOfString:@"\n" withString:@"&#x000D;&#x000A;" options:0 range:NSMakeRange(0, r.length)];
+    [r replaceOccurrencesOfString:@"\r" withString:@"&#x000D;&#x000A;" options:0 range:NSMakeRange(0, r.length)];
+    return r;
+}
+
+/// Get text from a scrollview's textview, with newline→entity and XML escaping.
+static NSString *getTextEscaped(NSScrollView *sv) {
+    NSString *raw = ((NSTextView *)sv.documentView).string ?: @"";
+    return xmlEscape(nlToEntity(raw));
+}
+
 - (void)_saveToXML {
     if (!_cur || !_cur.xmlPath) return;
 
-    NSMutableString *x = [NSMutableString string];
-    [x appendString:@"<NotepadPlus>\n"];
-    [x appendFormat:@"<UserLang name=\"%@\" ext=\"%@\" udlVersion=\"2.1\"",
-     _cur.name, _extField.stringValue ?: @""];
-    if (_cur.isDarkModeTheme) [x appendString:@" darkModeTheme=\"yes\""];
-    [x appendString:@">\n"];
+    // Read the original file as raw text to preserve comments, prolog, entities, indentation.
+    NSString *original = [NSString stringWithContentsOfFile:_cur.xmlPath
+                                                  encoding:NSUTF8StringEncoding error:nil];
+    if (!original) {
+        // Try Windows-1252 for files from Windows NPP
+        original = [NSString stringWithContentsOfFile:_cur.xmlPath
+                                             encoding:NSWindowsCP1252StringEncoding error:nil];
+    }
+    if (!original) return;
 
-    // Settings
+    NSMutableString *x = [original mutableCopy];
+
+    // Helper: replace content of an XML element found by attribute
+    // e.g. <Keywords name="Comments">OLD</Keywords> → <Keywords name="Comments">NEW</Keywords>
+    void (^replaceContent)(NSString *tag, NSString *attrName, NSString *attrVal, NSString *newContent) =
+        ^(NSString *tag, NSString *attrName, NSString *attrVal, NSString *newContent) {
+            // Find opening tag with attribute
+            NSString *search = [NSString stringWithFormat:@"%@=\"%@\"", attrName, attrVal];
+            NSRange attrRange = [x rangeOfString:search];
+            if (attrRange.location == NSNotFound) return;
+            // Find the closing > of the opening tag
+            NSRange gtRange = [x rangeOfString:@">" options:0
+                                         range:NSMakeRange(attrRange.location, x.length - attrRange.location)];
+            if (gtRange.location == NSNotFound) return;
+            NSUInteger contentStart = gtRange.location + 1;
+            // Find the closing tag
+            NSString *closeTag = [NSString stringWithFormat:@"</%@>", tag];
+            NSRange closeRange = [x rangeOfString:closeTag options:0
+                                            range:NSMakeRange(contentStart, x.length - contentStart)];
+            if (closeRange.location == NSNotFound) return;
+            // Replace content between > and </Tag>
+            NSRange contentRange = NSMakeRange(contentStart, closeRange.location - contentStart);
+            [x replaceCharactersInRange:contentRange withString:newContent];
+        };
+
+    // Helper: set an attribute value on an element
+    void (^setAttr)(NSString *elemSearch, NSString *attrName, NSString *attrVal) =
+        ^(NSString *elemSearch, NSString *attrName, NSString *attrVal) {
+            NSRange elemRange = [x rangeOfString:elemSearch];
+            if (elemRange.location == NSNotFound) return;
+            // Find the attribute within this element
+            NSString *attrSearch = [NSString stringWithFormat:@"%@=\"", attrName];
+            NSRange searchArea = NSMakeRange(elemRange.location, MIN((NSUInteger)500, x.length - elemRange.location));
+            NSRange attrStart = [x rangeOfString:attrSearch options:0 range:searchArea];
+            if (attrStart.location == NSNotFound) return;
+            NSUInteger valStart = attrStart.location + attrStart.length;
+            NSRange closeQuote = [x rangeOfString:@"\"" options:0
+                                            range:NSMakeRange(valStart, x.length - valStart)];
+            if (closeQuote.location == NSNotFound) return;
+            NSRange valRange = NSMakeRange(valStart, closeQuote.location - valStart);
+            [x replaceCharactersInRange:valRange withString:attrVal];
+        };
+
+    // ── Update UserLang attributes ──────────────────────────────────────────
+    setAttr(@"<UserLang ", @"name", _cur.name);
+    setAttr(@"<UserLang ", @"ext", _extField.stringValue ?: @"");
+
+    // ── Update Settings ─────────────────────────────────────────────────────
     BOOL ic = (_ignoreCaseCheck.state == NSControlStateValueOn);
     BOOL fc = (_foldCompactCheck.state == NSControlStateValueOn);
     BOOL afc = (_foldCmtCheck.state == NSControlStateValueOn);
     int lcp = (_radioBOL.state == NSControlStateValueOn) ? 1 : (_radioWS.state == NSControlStateValueOn) ? 2 : 0;
     int dec = (_decComma.state == NSControlStateValueOn) ? 1 : (_decBoth.state == NSControlStateValueOn) ? 2 : 0;
 
-    [x appendString:@"<Settings>\n"];
-    [x appendFormat:@"<Global caseIgnored=\"%@\" allowFoldOfComments=\"%@\" foldCompact=\"%@\" "
-     @"forcePureLC=\"%d\" decimalSeparator=\"%d\"/>\n",
-     ic?@"yes":@"no", afc?@"yes":@"no", fc?@"yes":@"no", lcp, dec];
-    [x appendString:@"<Prefix"];
+    setAttr(@"<Global ", @"caseIgnored", ic ? @"yes" : @"no");
+    setAttr(@"<Global ", @"allowFoldOfComments", afc ? @"yes" : @"no");
+    setAttr(@"<Global ", @"foldCompact", fc ? @"yes" : @"no");
+    setAttr(@"<Global ", @"forcePureLC", [@(lcp) stringValue]);
+    setAttr(@"<Global ", @"decimalSeparator", [@(dec) stringValue]);
+
     for (int i = 0; i < 8; i++) {
         BOOL pf = (_kwPfx[i].state == NSControlStateValueOn);
-        [x appendFormat:@" Keywords%d=\"%@\"", i+1, pf?@"yes":@"no"];
+        setAttr(@"<Prefix", [NSString stringWithFormat:@"Keywords%d", i+1], pf ? @"yes" : @"no");
     }
-    [x appendString:@"/>\n</Settings>\n"];
 
-    // KeywordLists
-    [x appendString:@"<KeywordLists>\n"];
-
-    // Comments: encode 5 fields → prefix "00"-"04"
-    NSArray *cmtVals = @[getText(_clOpen), getText(_clCont), getText(_clClose),
-                         getText(_bcOpen), getText(_bcClose)];
-    [x appendFormat:@"<Keywords name=\"Comments\">%@</Keywords>\n", encodeFields(cmtVals)];
+    // ── Update KeywordLists (content replacement) ───────────────────────────
+    // Comments: encode 5 fields
+    NSArray *cmtVals = @[getTextEscaped(_clOpen), getTextEscaped(_clCont), getTextEscaped(_clClose),
+                         getTextEscaped(_bcOpen), getTextEscaped(_bcClose)];
+    replaceContent(@"Keywords", @"name", @"Comments", encodeFields(cmtVals));
 
     // Number fields
     NSArray *numNames = @[@"Numbers, prefix1", @"Numbers, prefix2",
@@ -766,11 +834,11 @@ static NSString *encodeFields(NSArray<NSString *> *fields) {
                           @"Numbers, suffix1", @"Numbers, suffix2", @"Numbers, range"];
     NSArray *numFields = @[_nP1, _nP2, _nE1, _nE2, _nS1, _nS2, _nR];
     for (int i = 0; i < 7; i++)
-        [x appendFormat:@"<Keywords name=\"%@\">%@</Keywords>\n", numNames[i], getText(numFields[i])];
+        replaceContent(@"Keywords", @"name", numNames[i], getTextEscaped(numFields[i]));
 
     // Operators
-    [x appendFormat:@"<Keywords name=\"Operators1\">%@</Keywords>\n", getText(_op1)];
-    [x appendFormat:@"<Keywords name=\"Operators2\">%@</Keywords>\n", getText(_op2)];
+    replaceContent(@"Keywords", @"name", @"Operators1", getTextEscaped(_op1));
+    replaceContent(@"Keywords", @"name", @"Operators2", getTextEscaped(_op2));
 
     // Folders
     NSArray *foldNames = @[@"Folders in code1, open", @"Folders in code1, middle", @"Folders in code1, close",
@@ -778,46 +846,44 @@ static NSString *encodeFields(NSArray<NSString *> *fields) {
                            @"Folders in comment, open", @"Folders in comment, middle", @"Folders in comment, close"];
     NSArray *foldFields = @[_c1Open, _c1Mid, _c1Close, _c2Open, _c2Mid, _c2Close, _cfOpen, _cfMid, _cfClose];
     for (int i = 0; i < 9; i++)
-        [x appendFormat:@"<Keywords name=\"%@\">%@</Keywords>\n", foldNames[i], getText(foldFields[i])];
+        replaceContent(@"Keywords", @"name", foldNames[i], getTextEscaped(foldFields[i]));
 
     // Keywords 1-8
     for (int i = 0; i < 8; i++)
-        [x appendFormat:@"<Keywords name=\"Keywords%d\">%@</Keywords>\n", i+1, getText(_kwArea[i])];
+        replaceContent(@"Keywords", @"name",
+                       [NSString stringWithFormat:@"Keywords%d", i+1],
+                       getTextEscaped(_kwArea[i]));
 
-    // Delimiters: encode 24 fields (8 delims × 3) → prefix "00"-"23"
+    // Delimiters: encode 24 fields
     NSMutableArray *delimVals = [NSMutableArray arrayWithCapacity:24];
     for (int i = 0; i < 8; i++) {
-        [delimVals addObject:getText(_dO[i])];
-        [delimVals addObject:getText(_dE[i])];
-        [delimVals addObject:getText(_dC[i])];
+        [delimVals addObject:getTextEscaped(_dO[i])];
+        [delimVals addObject:getTextEscaped(_dE[i])];
+        [delimVals addObject:getTextEscaped(_dC[i])];
     }
-    [x appendFormat:@"<Keywords name=\"Delimiters\">%@</Keywords>\n", encodeFields(delimVals)];
+    replaceContent(@"Keywords", @"name", @"Delimiters", encodeFields(delimVals));
 
-    [x appendString:@"</KeywordLists>\n"];
-
-    // Styles — preserve from original
-    [x appendString:@"<Styles>\n"];
+    // ── Update Styles (attribute-level updates) ─────────────────────────────
     for (NSDictionary *style in _cur.styles) {
-        [x appendString:@"<WordsStyle"];
+        NSString *styleName = style[@"name"];
+        if (!styleName) continue;
+        NSString *elemSearch = [NSString stringWithFormat:@"name=\"%@\"", styleName];
         for (NSString *key in style) {
-            [x appendFormat:@" %@=\"%@\"", key, style[key]];
+            if ([key isEqualToString:@"name"]) continue;
+            setAttr(elemSearch, key, style[key]);
         }
-        [x appendString:@"/>\n"];
     }
-    [x appendString:@"</Styles>\n"];
 
-    [x appendString:@"</UserLang>\n</NotepadPlus>\n"];
-
-    // Write to file
+    // Write back
     NSError *err;
     [x writeToFile:_cur.xmlPath atomically:YES encoding:NSUTF8StringEncoding error:&err];
     if (err) NSLog(@"UDL save error: %@", err);
 }
 
-/// Called when the window is about to close — auto-save.
+/// Called when the window is about to close.
+/// No auto-save — user must explicitly use Save or Save As.
 - (void)windowWillClose:(NSNotification *)notification {
-    [self _saveToXML];
-    // Reload the manager so the lexer picks up changes
+    // Reload the manager so the lexer picks up any changes saved by the user
     [[UserDefineLangManager shared] loadAll];
 }
 

@@ -87,10 +87,17 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
     if (!data) { NSLog(@"UDL: cannot read %@", path.lastPathComponent); return; }
 
     NSError *error;
-    // Try tidy XML first to handle files with minor encoding issues
+    // Preserve original structure (comments, entities, whitespace) to avoid
+    // decoding &#x000D;&#x000A; entities and XML entity references on load.
     NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data
-                                                     options:NSXMLDocumentTidyXML
+                                                     options:NSXMLNodePreserveAll
                                                        error:&error];
+    if (!doc) {
+        // Fall back to tidy XML for files with encoding issues
+        doc = [[NSXMLDocument alloc] initWithData:data
+                                          options:NSXMLDocumentTidyXML
+                                            error:&error];
+    }
     if (!doc) {
         NSLog(@"UDL: XML parse error in %@: %@", path.lastPathComponent, error.localizedDescription);
         return;
