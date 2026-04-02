@@ -585,7 +585,7 @@ static NSMenu *buildLanguageMenu() {
     [bmMenu addItem:item(@"Inverse Bookmark",                     @selector(inverseBookmark:),         @"")];
     [searchMenu addItem:withSubmenu(@"Bookmark", bmMenu)];
     addSep(searchMenu);
-    [searchMenu addItem:nyi(@"Find Characters in Range…")]; // complex regex dialog, future work
+    [searchMenu addItem:item(@"Find Characters in Range…", @selector(showFindCharsInRange:), @"")];
 
     // ── View ──────────────────────────────────────────────────────────────────
     NSMenuItem *viewItem = [[NSMenuItem alloc] init];

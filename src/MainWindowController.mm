@@ -6061,6 +6061,296 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
 - (void)pasteToBookmarkedLines:(id)sender { [[self currentEditor] pasteToBookmarkedLines:sender]; }
 
+#pragma mark - Find Characters in Range
+
+- (void)showFindCharsInRange:(id)sender {
+    EditorView *ed = [self currentEditor];
+    if (!ed) return;
+
+    // Create panel if not already showing
+    static NSPanel *panel = nil;
+    static NSButton *radioNonASCII, *radioASCII, *radioCustom;
+    static NSTextField *rangeStartField, *rangeEndField;
+    static NSButton *radioDirDown, *radioDirUp, *wrapCheck;
+
+    if (!panel) {
+        panel = [[NSPanel alloc] initWithContentRect:NSMakeRect(0, 0, 400, 230)
+                                           styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable
+                                             backing:NSBackingStoreBuffered
+                                               defer:NO];
+        panel.title = @"Find Characters in Range...";
+        panel.releasedWhenClosed = NO;
+        panel.hidesOnDeactivate = NO;
+        NSView *v = panel.contentView;
+        CGFloat y = 200;
+
+        // Mutual exclusion handler for range radio buttons
+        void (^rangeRadioAction)(NSButton *) = ^(NSButton *clicked) {
+            for (NSButton *r in @[radioNonASCII, radioASCII, radioCustom])
+                r.state = (r == clicked) ? NSControlStateValueOn : NSControlStateValueOff;
+        };
+
+        // Radio buttons — range selection
+        radioNonASCII = [NSButton radioButtonWithTitle:@"Non-ASCII characters (128\u2013255)"
+                                                target:self action:@selector(_findCharRangeRadio:)];
+        radioNonASCII.frame = NSMakeRect(20, y, 300, 20);
+        radioNonASCII.tag = 1;
+        radioNonASCII.state = NSControlStateValueOn;
+        [v addSubview:radioNonASCII];
+        y -= 24;
+
+        radioASCII = [NSButton radioButtonWithTitle:@"ASCII characters (0\u2013127)"
+                                             target:self action:@selector(_findCharRangeRadio:)];
+        radioASCII.frame = NSMakeRect(20, y, 300, 20);
+        radioASCII.tag = 2;
+        [v addSubview:radioASCII];
+        y -= 24;
+
+        radioCustom = [NSButton radioButtonWithTitle:@"Custom range (0\u2013255):"
+                                              target:self action:@selector(_findCharRangeRadio:)];
+        radioCustom.frame = NSMakeRect(20, y, 190, 20);
+        radioCustom.tag = 3;
+        [v addSubview:radioCustom];
+
+        rangeStartField = [[NSTextField alloc] initWithFrame:NSMakeRect(215, y, 40, 22)];
+        rangeStartField.stringValue = @"0";
+        rangeStartField.alignment = NSTextAlignmentCenter;
+        rangeStartField.enabled = NO;  // disabled until Custom range selected
+        [v addSubview:rangeStartField];
+
+        NSTextField *dash = [NSTextField labelWithString:@"\u2013"];
+        dash.frame = NSMakeRect(258, y, 12, 20);
+        [v addSubview:dash];
+
+        rangeEndField = [[NSTextField alloc] initWithFrame:NSMakeRect(273, y, 40, 22)];
+        rangeEndField.stringValue = @"255";
+        rangeEndField.alignment = NSTextAlignmentCenter;
+        rangeEndField.enabled = NO;  // disabled until Custom range selected
+        [v addSubview:rangeEndField];
+
+        // Direction group
+        y -= 34;
+        NSBox *dirBox = [[NSBox alloc] initWithFrame:NSMakeRect(20, y - 30, 150, 55)];
+        dirBox.title = @"Direction";
+        dirBox.titlePosition = NSAtTop;
+
+        radioDirUp = [NSButton radioButtonWithTitle:@"Up" target:self action:@selector(_findCharDirRadio:)];
+        radioDirUp.frame = NSMakeRect(10, 5, 50, 18);
+        radioDirUp.tag = 10;
+        [dirBox addSubview:radioDirUp];
+
+        radioDirDown = [NSButton radioButtonWithTitle:@"Down" target:self action:@selector(_findCharDirRadio:)];
+        radioDirDown.frame = NSMakeRect(65, 5, 60, 18);
+        radioDirDown.tag = 11;
+        radioDirDown.state = NSControlStateValueOn;
+        [dirBox addSubview:radioDirDown];
+        [v addSubview:dirBox];
+
+        // Wrap around
+        wrapCheck = [NSButton checkboxWithTitle:@"Wrap around" target:nil action:nil];
+        wrapCheck.frame = NSMakeRect(185, y - 15, 120, 20);
+        [v addSubview:wrapCheck];
+
+        // Find and Close buttons — horizontal at the bottom
+        NSButton *findBtn = [[NSButton alloc] initWithFrame:NSMakeRect(200, 12, 85, 28)];
+        findBtn.title = @"Find";
+        findBtn.bezelStyle = NSBezelStyleRounded;
+        findBtn.keyEquivalent = @"\r";
+        findBtn.target = self;
+        findBtn.action = @selector(_findCharInRange:);
+        [v addSubview:findBtn];
+
+        NSButton *closeBtn = [[NSButton alloc] initWithFrame:NSMakeRect(295, 12, 85, 28)];
+        closeBtn.title = @"Close";
+        closeBtn.bezelStyle = NSBezelStyleRounded;
+        closeBtn.target = panel;
+        closeBtn.action = @selector(close);
+        [v addSubview:closeBtn];
+    }
+
+    [panel makeKeyAndOrderFront:nil];
+    [panel center];
+}
+
+/// Mutual exclusion for range radio buttons (Non-ASCII / ASCII / Custom).
+/// Tags 1-3 identify the range radio group. Enables/disables custom range fields.
+- (void)_findCharRangeRadio:(NSButton *)clicked {
+    NSView *v = clicked.superview;
+    BOOL customSelected = (clicked.tag == 3);
+    for (NSView *sub in v.subviews) {
+        if ([sub isKindOfClass:[NSButton class]]) {
+            NSInteger tag = [(NSButton *)sub tag];
+            if (tag >= 1 && tag <= 3)
+                [(NSButton *)sub setState:(sub == clicked) ? NSControlStateValueOn : NSControlStateValueOff];
+        }
+        // Enable/disable the custom range text fields
+        if ([sub isKindOfClass:[NSTextField class]] && [(NSTextField *)sub isEditable])
+            [(NSTextField *)sub setEnabled:customSelected];
+    }
+}
+
+/// Mutual exclusion for direction radio buttons (Up / Down).
+- (void)_findCharDirRadio:(NSButton *)clicked {
+    NSView *box = clicked.superview; // NSBox content view
+    for (NSView *sub in box.subviews) {
+        if ([sub isKindOfClass:[NSButton class]])
+            [(NSButton *)sub setState:(sub == clicked) ? NSControlStateValueOn : NSControlStateValueOff];
+    }
+}
+
+- (void)_findCharInRange:(id)sender {
+    EditorView *ed = [self currentEditor];
+    if (!ed) return;
+    ScintillaView *sci = ed.scintillaView;
+
+    // Get the panel controls via the sender's window
+    NSPanel *panel = (NSPanel *)[sender window];
+    NSView *v = panel.contentView;
+
+    // Find controls by walking subviews
+    NSButton *radioNonASCII = nil, *radioASCII = nil, *radioCustom = nil;
+    NSButton *radioDirUp = nil, *wrapCheck = nil;
+    NSTextField *rangeStartField = nil, *rangeEndField = nil;
+
+    for (NSView *sub in v.subviews) {
+        if ([sub isKindOfClass:[NSButton class]]) {
+            NSButton *btn = (NSButton *)sub;
+            if ([btn.title containsString:@"Non-ASCII"]) radioNonASCII = btn;
+            else if ([btn.title containsString:@"ASCII char"]) radioASCII = btn;
+            else if ([btn.title containsString:@"Custom"]) radioCustom = btn;
+            else if ([btn.title isEqualToString:@"Wrap around"]) wrapCheck = btn;
+        }
+        if ([sub isKindOfClass:[NSBox class]]) {
+            for (NSView *bs in sub.subviews) {
+                // NSBox content view
+                for (NSView *inner in bs.subviews) {
+                    if ([inner isKindOfClass:[NSButton class]]) {
+                        NSButton *btn = (NSButton *)inner;
+                        if ([btn.title isEqualToString:@"Up"]) radioDirUp = btn;
+                    }
+                }
+            }
+        }
+    }
+    // Find text fields (the small ones for custom range)
+    for (NSView *sub in v.subviews) {
+        if ([sub isKindOfClass:[NSTextField class]] && [(NSTextField *)sub isEditable]) {
+            NSTextField *tf = (NSTextField *)sub;
+            if (NSMinX(tf.frame) < 250) rangeStartField = tf;
+            else rangeEndField = tf;
+        }
+    }
+
+    // Determine byte range
+    unsigned char beginRange, endRange;
+    if (radioNonASCII && radioNonASCII.state == NSControlStateValueOn) {
+        beginRange = 128; endRange = 255;
+    } else if (radioASCII && radioASCII.state == NSControlStateValueOn) {
+        beginRange = 0; endRange = 127;
+    } else {
+        int s = rangeStartField ? rangeStartField.intValue : 0;
+        int e = rangeEndField ? rangeEndField.intValue : 255;
+        if (s < 0 || s > 255 || e < 0 || e > 255 || s > e) {
+            NSAlert *alert = [[NSAlert alloc] init];
+            alert.messageText = @"Invalid Range";
+            alert.informativeText = @"Range values must be 0-255 and start must be <= end.";
+            [alert runModal];
+            return;
+        }
+        beginRange = (unsigned char)s;
+        endRange = (unsigned char)e;
+    }
+
+    BOOL dirUp = (radioDirUp && radioDirUp.state == NSControlStateValueOn);
+    BOOL wrap = (wrapCheck && wrapCheck.state == NSControlStateValueOn);
+
+    // Get document content as raw UTF-8 bytes
+    intptr_t totalSize = [sci message:SCI_GETLENGTH];
+    intptr_t startPos = [sci message:SCI_GETCURRENTPOS];
+    if (startPos > totalSize) startPos = totalSize;
+    if (totalSize == 0) return;
+
+    const char *content = (const char *)[sci message:SCI_GETCHARACTERPOINTER];
+    if (!content) return;
+
+    // Decode a UTF-8 character at byte position, return its codepoint and byte length.
+    intptr_t (^utf8Decode)(intptr_t pos, int *outLen) = ^intptr_t(intptr_t pos, int *outLen) {
+        unsigned char b = (unsigned char)content[pos];
+        if (b < 0x80)       { *outLen = 1; return b; }
+        if (b < 0xC0)       { *outLen = 1; return b; } // continuation byte (shouldn't start here)
+        if (b < 0xE0 && pos+1 < totalSize) {
+            *outLen = 2;
+            return ((b & 0x1F) << 6) | (content[pos+1] & 0x3F);
+        }
+        if (b < 0xF0 && pos+2 < totalSize) {
+            *outLen = 3;
+            return ((b & 0x0F) << 12) | ((content[pos+1] & 0x3F) << 6) | (content[pos+2] & 0x3F);
+        }
+        if (pos+3 < totalSize) {
+            *outLen = 4;
+            return ((b & 0x07) << 18) | ((content[pos+1] & 0x3F) << 12)
+                 | ((content[pos+2] & 0x3F) << 6) | (content[pos+3] & 0x3F);
+        }
+        *outLen = 1; return b;
+    };
+
+    // Step backward to the start of the previous UTF-8 character.
+    intptr_t (^utf8PrevPos)(intptr_t pos) = ^intptr_t(intptr_t pos) {
+        if (pos <= 0) return -1;
+        pos--;
+        while (pos > 0 && ((unsigned char)content[pos] & 0xC0) == 0x80) pos--;
+        return pos;
+    };
+
+    // Search by Unicode codepoint, comparing against the 0-255 range.
+    intptr_t foundPos = -1;
+    int foundLen = 0;
+
+    if (!dirUp) {
+        // Search DOWN (forward)
+        for (intptr_t i = startPos; i < totalSize; ) {
+            int charLen;
+            intptr_t cp = utf8Decode(i, &charLen);
+            if (cp >= beginRange && cp <= endRange) { foundPos = i; foundLen = charLen; break; }
+            i += charLen;
+        }
+        if (foundPos < 0 && wrap) {
+            for (intptr_t i = 0; i < startPos; ) {
+                int charLen;
+                intptr_t cp = utf8Decode(i, &charLen);
+                if (cp >= beginRange && cp <= endRange) { foundPos = i; foundLen = charLen; break; }
+                i += charLen;
+            }
+        }
+    } else {
+        // Search UP (backward)
+        for (intptr_t i = utf8PrevPos(startPos); i >= 0; i = utf8PrevPos(i)) {
+            int charLen;
+            intptr_t cp = utf8Decode(i, &charLen);
+            if (cp >= beginRange && cp <= endRange) { foundPos = i; foundLen = charLen; break; }
+        }
+        if (foundPos < 0 && wrap) {
+            for (intptr_t i = utf8PrevPos(totalSize); i >= startPos; i = utf8PrevPos(i)) {
+                int charLen;
+                intptr_t cp = utf8Decode(i, &charLen);
+                if (cp >= beginRange && cp <= endRange) { foundPos = i; foundLen = charLen; break; }
+            }
+        }
+    }
+
+    if (foundPos >= 0) {
+        intptr_t line = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)foundPos];
+        [sci message:SCI_ENSUREVISIBLE wParam:(uptr_t)line];
+        if (!dirUp) {
+            [sci message:SCI_SETSEL wParam:(uptr_t)foundPos lParam:(sptr_t)(foundPos + foundLen)];
+        } else {
+            [sci message:SCI_SETSEL wParam:(uptr_t)(foundPos + foundLen) lParam:(sptr_t)foundPos];
+        }
+    } else {
+        NSBeep();
+    }
+}
+
 #pragma mark - Search Results Window (reuses Find in Files)
 
 - (void)showSearchResultsWindow:(id)sender  { [self showFindInFiles:sender]; }
