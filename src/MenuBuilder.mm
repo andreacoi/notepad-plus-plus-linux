@@ -734,11 +734,7 @@ static NSMenu *buildLanguageMenu() {
     [viewMenu addItem:item(@"Summary…", @selector(showSummary:), @"")];
     addSep(viewMenu);
 
-    NSMenu *projMenu = submenu(@"Project Panels");
-    [projMenu addItem:item(@"Project Panel 1", @selector(showProjectPanel1:), @"")];
-    [projMenu addItem:item(@"Project Panel 2", @selector(showProjectPanel2:), @"")];
-    [projMenu addItem:item(@"Project Panel 3", @selector(showProjectPanel3:), @"")];
-    [viewMenu addItem:withSubmenu(@"Project Panels", projMenu)];
+    [viewMenu addItem:item(@"Project Panels", @selector(showProjectPanel1:), @"")];
 
     // "Folder Tree" panel is now accessed via File > Open Folder as Workspace
     [viewMenu addItem:item(@"Document Map",         @selector(showDocumentMap:),        @"")];

@@ -1,5 +1,6 @@
 #import "PluginsAdminWindowController.h"
 #import "NppPluginManager.h"
+#import <CommonCrypto/CommonDigest.h>
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Plugin catalog entry — parsed from the nppPluginList JSON
@@ -8,13 +9,19 @@
 @interface NppPluginEntry : NSObject
 @property (nonatomic, copy) NSString *folderName;
 @property (nonatomic, copy) NSString *displayName;
-@property (nonatomic, copy) NSString *version;
+@property (nonatomic, copy) NSString *version;           // Windows version
 @property (nonatomic, copy) NSString *pluginDescription;
 @property (nonatomic, copy) NSString *author;
 @property (nonatomic, copy) NSString *homepage;
-@property (nonatomic, copy) NSString *repository;   // download URL
-@property (nonatomic, copy) NSString *pluginID;      // SHA-256 of zip
+@property (nonatomic, copy) NSString *repository;        // Windows download URL
+@property (nonatomic, copy) NSString *pluginID;           // Windows SHA-256
 @property (nonatomic) BOOL isInstalled;
+
+// macOS-specific (populated from macOS plugin list)
+@property (nonatomic) BOOL isMacAvailable;               // has macOS build
+@property (nonatomic, copy) NSString *macVersion;         // macOS version
+@property (nonatomic, copy) NSString *macRepository;      // macOS download URL
+@property (nonatomic, copy) NSString *macPluginID;        // macOS SHA-256 of zip
 @end
 
 @implementation NppPluginEntry
@@ -31,11 +38,15 @@ typedef NS_ENUM(NSInteger, PluginAdminTab) {
     PluginAdminTabIncompatible
 };
 
-static NSString *const kPluginListURL =
+// Windows x64 plugin list (full catalog — shows all plugins)
+static NSString *const kWinPluginListURL =
     @"https://raw.githubusercontent.com/notepad-plus-plus/nppPluginList/master/src/pl.x64.json";
+// macOS arm64 plugin list (our ported plugins — determines what's installable)
+static NSString *const kMacPluginListURL =
+    @"https://raw.githubusercontent.com/notepad-plus-plus-mac/nppPluginList/main/pl.macos-arm64.json";
 static NSString *const kPluginListRepoURL =
-    @"https://github.com/notepad-plus-plus/nppPluginList";
-static NSString *const kPluginListVersion = @"1.9.2";
+    @"https://github.com/notepad-plus-plus-mac/nppPluginList";
+static NSString *const kPluginListVersion = @"0.1.0";
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Private interface
@@ -309,40 +320,78 @@ static NSString *const kPluginListVersion = @"1.9.2";
 - (void)fetchPluginList {
     [_spinner startAnimation:nil];
 
-    NSURL *url = [NSURL URLWithString:kPluginListURL];
-    NSURLSessionDataTask *task = [[NSURLSession sharedSession]
-        dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *resp, NSError *err) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self->_spinner stopAnimation:nil];
+    // Fetch both lists concurrently, merge when both complete
+    __block NSData *winData = nil;
+    __block NSData *macData = nil;
+    dispatch_group_t group = dispatch_group_create();
+    NSURLSession *session = [NSURLSession sharedSession];
 
-                if (err || !data) {
-                    NSLog(@"[PluginsAdmin] Failed to fetch plugin list: %@", err);
-                    return;
-                }
+    dispatch_group_enter(group);
+    [[session dataTaskWithURL:[NSURL URLWithString:kWinPluginListURL]
+            completionHandler:^(NSData *data, NSURLResponse *resp, NSError *err) {
+        if (!err && data) winData = data;
+        else NSLog(@"[PluginsAdmin] Failed to fetch Windows plugin list: %@", err);
+        dispatch_group_leave(group);
+    }] resume];
 
-                [self parsePluginListJSON:data];
-                [self refreshForCurrentTab];
-            });
-        }];
-    [task resume];
+    dispatch_group_enter(group);
+    [[session dataTaskWithURL:[NSURL URLWithString:kMacPluginListURL]
+            completionHandler:^(NSData *data, NSURLResponse *resp, NSError *err) {
+        if (!err && data) macData = data;
+        else NSLog(@"[PluginsAdmin] Failed to fetch macOS plugin list: %@", err);
+        dispatch_group_leave(group);
+    }] resume];
+
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        [self->_spinner stopAnimation:nil];
+        [self mergePluginListsWin:winData mac:macData];
+        [self refreshForCurrentTab];
+    });
 }
 
-- (void)parsePluginListJSON:(NSData *)data {
-    NSError *jsonErr = nil;
-    NSDictionary *root = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonErr];
-    if (jsonErr || ![root isKindOfClass:[NSDictionary class]]) {
-        NSLog(@"[PluginsAdmin] JSON parse error: %@", jsonErr);
+- (void)mergePluginListsWin:(NSData *)winData mac:(NSData *)macData {
+    [_allAvailable removeAllObjects];
+
+    // ── Parse macOS list into a lookup by folder-name ──
+    NSMutableDictionary<NSString *, NSDictionary *> *macByFolder = [NSMutableDictionary dictionary];
+    NSMutableDictionary<NSString *, NSDictionary *> *macByName   = [NSMutableDictionary dictionary];
+    if (macData) {
+        NSError *err = nil;
+        NSDictionary *macRoot = [NSJSONSerialization JSONObjectWithData:macData options:0 error:&err];
+        if (!err && [macRoot isKindOfClass:[NSDictionary class]]) {
+            NSArray *macPlugins = macRoot[@"npp-plugins"];
+            if ([macPlugins isKindOfClass:[NSArray class]]) {
+                for (NSDictionary *mp in macPlugins) {
+                    if (![mp isKindOfClass:[NSDictionary class]]) continue;
+                    NSString *folder = mp[@"folder-name"] ?: @"";
+                    NSString *name   = mp[@"display-name"] ?: @"";
+                    if (folder.length > 0) macByFolder[folder] = mp;
+                    if (name.length > 0)   macByName[name] = mp;
+                }
+                NSLog(@"[PluginsAdmin] Loaded %lu macOS plugins", (unsigned long)macByFolder.count);
+            }
+        }
+    }
+
+    // ── Parse Windows list and join with macOS data ──
+    if (!winData) {
+        NSLog(@"[PluginsAdmin] No Windows plugin list data — catalog empty");
         return;
     }
 
-    NSArray *list = root[@"npp-plugins"];
-    if (![list isKindOfClass:[NSArray class]]) return;
+    NSError *err = nil;
+    NSDictionary *winRoot = [NSJSONSerialization JSONObjectWithData:winData options:0 error:&err];
+    if (err || ![winRoot isKindOfClass:[NSDictionary class]]) {
+        NSLog(@"[PluginsAdmin] Windows JSON parse error: %@", err);
+        return;
+    }
 
-    [_allAvailable removeAllObjects];
+    NSArray *winPlugins = winRoot[@"npp-plugins"];
+    if (![winPlugins isKindOfClass:[NSArray class]]) return;
 
     NSSet *installedNames = [self installedFolderNames];
 
-    for (NSDictionary *entry in list) {
+    for (NSDictionary *entry in winPlugins) {
         if (![entry isKindOfClass:[NSDictionary class]]) continue;
 
         NppPluginEntry *pe = [[NppPluginEntry alloc] init];
@@ -356,10 +405,38 @@ static NSString *const kPluginListVersion = @"1.9.2";
         pe.pluginID          = entry[@"id"] ?: @"";
         pe.isInstalled       = [installedNames containsObject:pe.folderName];
 
+        // Inner join: match by folder-name first, then by display-name
+        NSDictionary *macEntry = macByFolder[pe.folderName];
+        if (!macEntry) macEntry = macByName[pe.displayName];
+
+        if (macEntry) {
+            pe.isMacAvailable = YES;
+            pe.macVersion     = macEntry[@"version"] ?: pe.version;
+            pe.macRepository  = macEntry[@"repository"] ?: @"";
+            pe.macPluginID    = macEntry[@"id"] ?: @"";
+            // Also check if the macOS folder-name differs (for install path)
+            NSString *macFolder = macEntry[@"folder-name"];
+            if (macFolder.length > 0 && ![macFolder isEqualToString:pe.folderName]) {
+                pe.folderName = macFolder;  // use macOS folder name for install
+            }
+        }
+
         [_allAvailable addObject:pe];
     }
 
-    NSLog(@"[PluginsAdmin] Loaded %lu plugins from catalog", (unsigned long)_allAvailable.count);
+    // Sort: macOS-available first, then alphabetical
+    [_allAvailable sortUsingComparator:^NSComparisonResult(NppPluginEntry *a, NppPluginEntry *b) {
+        if (a.isMacAvailable != b.isMacAvailable)
+            return a.isMacAvailable ? NSOrderedAscending : NSOrderedDescending;
+        return [a.displayName localizedCaseInsensitiveCompare:b.displayName];
+    }];
+
+    NSInteger macCount = 0;
+    for (NppPluginEntry *pe in _allAvailable)
+        if (pe.isMacAvailable) macCount++;
+
+    NSLog(@"[PluginsAdmin] Catalog: %lu total, %ld macOS-available",
+          (unsigned long)_allAvailable.count, (long)macCount);
 }
 
 - (void)scanInstalledPlugins {
@@ -462,6 +539,7 @@ static NSString *const kPluginListVersion = @"1.9.2";
 - (NSView *)tableView:(NSTableView *)tv viewForTableColumn:(NSTableColumn *)col row:(NSInteger)row {
     NppPluginEntry *pe = _filteredList[row];
     NSString *ident = col.identifier;
+    BOOL canInstall = pe.isMacAvailable || pe.isInstalled;
 
     if ([ident isEqualToString:@"check"]) {
         NSButton *cb = [tv makeViewWithIdentifier:@"check" owner:self];
@@ -469,6 +547,16 @@ static NSString *const kPluginListVersion = @"1.9.2";
             cb = [NSButton checkboxWithTitle:@"" target:self action:@selector(checkboxToggled:)];
             cb.identifier = @"check";
         }
+
+        if (_currentTab == PluginAdminTabAvailable) {
+            // Only show checkboxes for macOS-available plugins
+            cb.hidden = !pe.isMacAvailable;
+            cb.enabled = pe.isMacAvailable;
+        } else {
+            cb.hidden = NO;
+            cb.enabled = YES;
+        }
+
         cb.state = [_checkedPlugins containsObject:pe.folderName]
                      ? NSControlStateValueOn : NSControlStateValueOff;
         cb.tag = row;
@@ -486,8 +574,20 @@ static NSString *const kPluginListVersion = @"1.9.2";
     if ([ident isEqualToString:@"plugin"]) {
         tf.stringValue = pe.displayName ?: @"";
     } else if ([ident isEqualToString:@"version"]) {
-        tf.stringValue = pe.version ?: @"";
+        // Show macOS version for available macOS plugins, Windows version otherwise
+        if (pe.isMacAvailable && pe.macVersion.length > 0)
+            tf.stringValue = pe.macVersion;
+        else
+            tf.stringValue = pe.version ?: @"";
     }
+
+    // Dim text for plugins without macOS builds (Available tab only)
+    if (_currentTab == PluginAdminTabAvailable && !canInstall) {
+        tf.textColor = [NSColor tertiaryLabelColor];
+    } else {
+        tf.textColor = [NSColor labelColor];
+    }
+
     return tf;
 }
 
@@ -502,6 +602,15 @@ static NSString *const kPluginListVersion = @"1.9.2";
 
     NppPluginEntry *pe = _filteredList[row];
     NSMutableString *desc = [NSMutableString string];
+
+    if (_currentTab == PluginAdminTabAvailable) {
+        if (pe.isMacAvailable) {
+            [desc appendFormat:@"[macOS available — v%@]\n\n",
+             pe.macVersion.length > 0 ? pe.macVersion : pe.version];
+        } else {
+            [desc appendString:@"[Windows only — macOS port not yet available]\n\n"];
+        }
+    }
 
     if (pe.pluginDescription.length > 0)
         [desc appendFormat:@"%@\n\n", pe.pluginDescription];
@@ -558,16 +667,163 @@ static NSString *const kPluginListVersion = @"1.9.2";
 }
 
 - (void)installCheckedPlugins {
+    // Collect macOS-available plugins that are checked
+    NSMutableArray<NppPluginEntry *> *toInstall = [NSMutableArray array];
+    for (NppPluginEntry *pe in _allAvailable) {
+        if ([_checkedPlugins containsObject:pe.folderName] && pe.isMacAvailable)
+            [toInstall addObject:pe];
+    }
+
+    if (toInstall.count == 0) return;
+
+    NSMutableArray *names = [NSMutableArray array];
+    for (NppPluginEntry *pe in toInstall)
+        [names addObject:pe.displayName];
+
+    NSAlert *confirm = [[NSAlert alloc] init];
+    confirm.messageText = @"Install Plugins";
+    confirm.informativeText = [NSString stringWithFormat:
+        @"Install the following plugins?\n\n%@\n\n"
+        @"Restart the application for changes to take effect.",
+        [names componentsJoinedByString:@"\n"]];
+    [confirm addButtonWithTitle:@"Install"];
+    [confirm addButtonWithTitle:@"Cancel"];
+
+    [confirm beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse resp) {
+        if (resp != NSAlertFirstButtonReturn) return;
+        [self downloadAndInstallPlugins:toInstall index:0];
+    }];
+}
+
+- (void)downloadAndInstallPlugins:(NSArray<NppPluginEntry *> *)plugins index:(NSUInteger)idx {
+    if (idx >= plugins.count) {
+        // All done — refresh
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self->_spinner stopAnimation:nil];
+            [self scanInstalledPlugins];
+            // Re-merge installed state
+            NSSet *inst = [self installedFolderNames];
+            for (NppPluginEntry *pe in self->_allAvailable)
+                pe.isInstalled = [inst containsObject:pe.folderName];
+            [self refreshForCurrentTab];
+
+            NSAlert *done = [[NSAlert alloc] init];
+            done.messageText = @"Installation Complete";
+            done.informativeText = @"Restart the application to load the installed plugins.";
+            [done beginSheetModalForWindow:self.window completionHandler:nil];
+        });
+        return;
+    }
+
+    NppPluginEntry *pe = plugins[idx];
+    NSString *url = pe.macRepository;
+    if (url.length == 0) {
+        NSLog(@"[PluginsAdmin] No macOS repository URL for %@", pe.displayName);
+        [self downloadAndInstallPlugins:plugins index:idx + 1];
+        return;
+    }
+
+    [_spinner startAnimation:nil];
+    NSLog(@"[PluginsAdmin] Downloading %@ from %@", pe.displayName, url);
+
+    NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]
+                                         cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                     timeoutInterval:120];
+    NSURLSessionDataTask *task = [[NSURLSession sharedSession]
+        dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *resp, NSError *err) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (err || !data) {
+                    NSLog(@"[PluginsAdmin] Download failed for %@: %@", pe.displayName, err);
+                    [self showInstallError:pe.displayName
+                                   detail:[NSString stringWithFormat:@"Download failed: %@",
+                                           err.localizedDescription ?: @"unknown error"]];
+                    [self downloadAndInstallPlugins:plugins index:idx + 1];
+                    return;
+                }
+
+                // Verify SHA-256
+                if (pe.macPluginID.length == 64) {
+                    unsigned char hash[CC_SHA256_DIGEST_LENGTH];
+                    CC_SHA256(data.bytes, (CC_LONG)data.length, hash);
+                    NSMutableString *hexHash = [NSMutableString stringWithCapacity:64];
+                    for (int i = 0; i < CC_SHA256_DIGEST_LENGTH; i++)
+                        [hexHash appendFormat:@"%02x", hash[i]];
+
+                    if (![hexHash isEqualToString:pe.macPluginID.lowercaseString]) {
+                        NSLog(@"[PluginsAdmin] SHA-256 mismatch for %@: expected %@, got %@",
+                              pe.displayName, pe.macPluginID, hexHash);
+                        [self showInstallError:pe.displayName
+                                       detail:@"SHA-256 hash mismatch — download may be corrupt."];
+                        [self downloadAndInstallPlugins:plugins index:idx + 1];
+                        return;
+                    }
+                }
+
+                // Extract ZIP to ~/.notepad++/plugins/
+                NSString *pluginsDir = [NSHomeDirectory()
+                    stringByAppendingPathComponent:@".notepad++/plugins"];
+                NSFileManager *fm = [NSFileManager defaultManager];
+                [fm createDirectoryAtPath:pluginsDir withIntermediateDirectories:YES
+                               attributes:nil error:nil];
+
+                if (![self extractZipData:data toDirectory:pluginsDir forPlugin:pe]) {
+                    [self showInstallError:pe.displayName detail:@"Failed to extract ZIP archive."];
+                }
+
+                [self downloadAndInstallPlugins:plugins index:idx + 1];
+            });
+        }];
+    [task resume];
+}
+
+- (BOOL)extractZipData:(NSData *)zipData toDirectory:(NSString *)destDir
+             forPlugin:(NppPluginEntry *)pe {
+    // Write ZIP to a temp file, then use NSFileCoordinator/unzip
+    NSString *tmpPath = [NSTemporaryDirectory()
+        stringByAppendingPathComponent:
+            [NSString stringWithFormat:@"npp_plugin_%@.zip", pe.folderName]];
+    if (![zipData writeToFile:tmpPath atomically:YES]) return NO;
+
+    // Use /usr/bin/ditto to extract (handles ZIP natively on macOS)
+    NSTask *task = [[NSTask alloc] init];
+    task.launchPath = @"/usr/bin/ditto";
+    task.arguments = @[@"-xk", tmpPath, destDir];
+    task.standardOutput = [NSPipe pipe];
+    task.standardError  = [NSPipe pipe];
+
+    @try {
+        [task launch];
+        [task waitUntilExit];
+    } @catch (NSException *e) {
+        NSLog(@"[PluginsAdmin] ditto failed for %@: %@", pe.displayName, e);
+        [[NSFileManager defaultManager] removeItemAtPath:tmpPath error:nil];
+        return NO;
+    }
+
+    [[NSFileManager defaultManager] removeItemAtPath:tmpPath error:nil];
+
+    if (task.terminationStatus != 0) {
+        NSLog(@"[PluginsAdmin] ditto exit %d for %@", task.terminationStatus, pe.displayName);
+        return NO;
+    }
+
+    // Verify the dylib exists after extraction
+    NSString *dylibPath = [destDir stringByAppendingPathComponent:
+        [NSString stringWithFormat:@"%@/%@.dylib", pe.folderName, pe.folderName]];
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:dylibPath];
+    if (!exists) {
+        NSLog(@"[PluginsAdmin] Warning: %@ not found after extraction", dylibPath);
+    } else {
+        NSLog(@"[PluginsAdmin] Installed %@ → %@", pe.displayName, dylibPath);
+    }
+    return exists;
+}
+
+- (void)showInstallError:(NSString *)pluginName detail:(NSString *)detail {
     NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = @"Install Plugins";
-    alert.informativeText = [NSString stringWithFormat:
-        @"Plugin installation from the catalog is not yet available.\n\n"
-        @"The catalog lists Windows (x64) plugins which are not compatible "
-        @"with this macOS port.\n\n"
-        @"To install a macOS plugin manually, place a .dylib in:\n"
-        @"~/.notepad++/plugins/PluginName/PluginName.dylib\n\n"
-        @"Then restart the application."];
-    alert.alertStyle = NSAlertStyleInformational;
+    alert.messageText = [NSString stringWithFormat:@"Failed to Install %@", pluginName];
+    alert.informativeText = detail;
+    alert.alertStyle = NSAlertStyleWarning;
     [alert beginSheetModalForWindow:self.window completionHandler:nil];
 }
 

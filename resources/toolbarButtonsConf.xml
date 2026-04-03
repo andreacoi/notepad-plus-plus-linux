@@ -101,6 +101,7 @@
       <Button hide="no"  id="TB_DocList"       action="showDocumentList:"        name="Document List"          trigger="toggle" />
       <Button hide="no"  id="TB_FuncList"      action="showFunctionList:"        name="Function List"          trigger="toggle" />
       <Button hide="no"  id="TB_FileBrowser"   action="showFolderAsWorkspace:"   name="Folder as Workspace"    trigger="toggle" />
+      <Button hide="yes" id="TB_ProjectPanels" action="showProjectPanel1:"       name="Project Panels"         trigger="toggle" />
       <Button hide="no"  id="TB_Monitor"       action="toggleMonitoring:"        name="Monitoring (tail -f)"   trigger="toggle" />
       <Button hide="yes" id="TB_ResetZoom"     action="resetZoom:"               name="Restore Default Zoom"   trigger="click" />
       <Button hide="yes" id="TB_FullScreen"    action="toggleFullScreen:"        name="Full Screen"            trigger="toggle" />
