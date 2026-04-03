@@ -2,8 +2,26 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Phase 2 stub — Project Panel (shared by panels 1, 2, and 3).
-@interface ProjectPanel : NSView
+@class ProjectPanel;
+
+@protocol ProjectPanelDelegate <NSObject>
+- (void)projectPanel:(ProjectPanel *)panel openFileAtPath:(NSString *)path;
+- (void)projectPanelDidRequestClose:(ProjectPanel *)panel;
+- (void)projectPanel:(ProjectPanel *)panel findInFilesAtPath:(NSString *)path;
+@end
+
+/// Project Panel — virtual workspace tree with projects, folders, and files.
+/// Contains 3 independent workspaces switchable via bottom segment control.
+@interface ProjectPanel : NSView <NSOutlineViewDataSource, NSOutlineViewDelegate>
+
+@property (nonatomic, weak, nullable) id<ProjectPanelDelegate> delegate;
+
+/// Switch to workspace tab (0, 1, or 2) and show it.
+- (void)activateTab:(NSInteger)tabIndex;
+
+/// Current active tab index (0-2).
+@property (nonatomic, readonly) NSInteger activeTab;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -1253,7 +1253,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     <TabManagerDelegate, NSWindowDelegate,
      NSToolbarDelegate, FindReplacePanelDelegate, NSUserInterfaceValidations,
      NSSplitViewDelegate, IncrementalSearchBarDelegate,
-     FolderTreePanelDelegate, GitPanelDelegate,
+     FolderTreePanelDelegate, GitPanelDelegate, ProjectPanelDelegate,
      ClipboardHistoryPanelDelegate, DocumentMapPanelDelegate,
      DocumentListPanelDelegate, CharacterPanelDelegate,
      NSMenuDelegate>
@@ -1280,6 +1280,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     NSView                *_folderTreePanel;   // FolderTreePanel
     NSView                *_gitPanel;          // GitPanel
     CharacterPanel        *_charPanel;
+    ProjectPanel          *_projectPanel;
 
     // Second editor view — horizontal (top/bottom)
     NSSplitView   *_hSplitView;
@@ -3572,17 +3573,25 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     });
 }
 
-- (void)showProjectPanel1:(id)sender {
-    // Phase 2 stub
+- (void)_showProjectPanelTab:(NSInteger)tab {
+    if (!_projectPanel) {
+        _projectPanel = [[ProjectPanel alloc] init];
+        _projectPanel.delegate = self;
+    }
+    BOOL wasOpen = [_sidePanelHost hasPanel:_projectPanel];
+    if (wasOpen && _projectPanel.activeTab == tab) {
+        // Toggle off if same tab clicked again
+        [self _setPanelVisible:_projectPanel title:@"Project Panel" show:NO];
+    } else {
+        [_projectPanel activateTab:tab];
+        if (!wasOpen)
+            [self _setPanelVisible:_projectPanel title:@"Project Panel" show:YES];
+    }
 }
 
-- (void)showProjectPanel2:(id)sender {
-    // Phase 2 stub
-}
-
-- (void)showProjectPanel3:(id)sender {
-    // Phase 2 stub
-}
+- (void)showProjectPanel1:(id)sender { [self _showProjectPanelTab:0]; }
+- (void)showProjectPanel2:(id)sender { [self _showProjectPanelTab:1]; }
+- (void)showProjectPanel3:(id)sender { [self _showProjectPanelTab:2]; }
 
 - (void)_ensureHorizontalViewVisible {
     if ([_hSplitView isSubviewCollapsed:_subEditorContainerH]) {
@@ -4713,6 +4722,23 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 }
 
 - (void)folderTreePanel:(FolderTreePanel *)panel findInFilesAtPath:(NSString *)path {
+    FindInFilesPanel *fif = [FindInFilesPanel sharedPanel];
+    fif.delegate        = self;
+    fif.searchDirectory = path;
+    [fif showWindow:nil];
+}
+
+#pragma mark - ProjectPanelDelegate
+
+- (void)projectPanel:(ProjectPanel *)panel openFileAtPath:(NSString *)path {
+    [self openFileAtPath:path];
+}
+
+- (void)projectPanelDidRequestClose:(ProjectPanel *)panel {
+    [self _setPanelVisible:_projectPanel title:@"Project Panel" show:NO];
+}
+
+- (void)projectPanel:(ProjectPanel *)panel findInFilesAtPath:(NSString *)path {
     FindInFilesPanel *fif = [FindInFilesPanel sharedPanel];
     fif.delegate        = self;
     fif.searchDirectory = path;
