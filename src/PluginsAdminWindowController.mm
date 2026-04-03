@@ -504,7 +504,11 @@ static NSString *const kPluginListVersion = @"0.1.0";
 
         case PluginAdminTabIncompatible:
             _actionButton.hidden = YES;
-            // Empty for now
+            // Windows-only plugins not yet ported to macOS
+            for (NppPluginEntry *pe in _allAvailable) {
+                if (!pe.isMacAvailable)
+                    [_filteredList addObject:pe];
+            }
             break;
     }
 
