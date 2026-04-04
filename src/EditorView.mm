@@ -1767,8 +1767,14 @@ static int vkToScintillaKey(int vk) {
     }
 
     // ── Virtual space ──
-    [sci message:SCI_SETVIRTUALSPACEOPTIONS
-           wParam:[ud boolForKey:kPrefVirtualSpace] ? 3 : 0]; // SCVS_RECTANGULARSELECTION | SCVS_USERACCESSIBLE
+    // SCVS_RECTANGULARSELECTION (1) is always on so Option+drag column selection
+    // extends cleanly past line ends (matching Windows NPP behavior).
+    // SCVS_USERACCESSIBLE (2) is controlled by user preference.
+    {
+        int vsOpts = SCVS_RECTANGULARSELECTION;
+        if ([ud boolForKey:kPrefVirtualSpace]) vsOpts |= SCVS_USERACCESSIBLE;
+        [sci message:SCI_SETVIRTUALSPACEOPTIONS wParam:vsOpts];
+    }
 
     // ── Scroll beyond last line ──
     [sci message:SCI_SETENDATLASTLINE wParam:[ud boolForKey:kPrefScrollBeyondLastLine] ? 0 : 1];
