@@ -1,0 +1,950 @@
+#import "FindWindow.h"
+#import "EditorView.h"
+#import "SearchResultsPanel.h"
+#import "ProjectPanel.h"
+#import <objc/runtime.h>
+
+// ── History keys ─────────────────────────────────────────────────────────────
+
+static NSString * const kHistoryFind    = @"FindWindow_FindHistory";
+static NSString * const kHistoryReplace = @"FindWindow_ReplaceHistory";
+static NSString * const kHistoryFilter  = @"FindWindow_FilterHistory";
+static NSString * const kHistoryDir     = @"FindWindow_DirHistory";
+static const NSInteger kMaxHistory = 20;
+
+// ── Layout constants (matching Windows NPP proportions) ──────────────────────
+
+static const CGFloat kWinW      = 620;   // default window width
+static const CGFloat kLeftM     = 30;    // left margin for checkboxes
+static const CGFloat kLabelR    = 140;   // right edge of "Find what:" label
+static const CGFloat kFieldL    = 145;   // left edge of combo boxes
+static const CGFloat kFieldR    = 410;   // right edge of combo boxes (from left)
+static const CGFloat kBtnL      = 450;   // left edge of buttons column
+static const CGFloat kBtnW      = 155;   // button width
+static const CGFloat kBtnH      = 28;    // button height
+static const CGFloat kRowH      = 32;    // vertical spacing between rows
+static const CGFloat kChkH      = 20;    // checkbox height
+
+// ── FindWindow ───────────────────────────────────────────────────────────────
+
+@implementation FindWindow {
+    NSSegmentedControl *_tabControl;
+
+    // 5 tab content views
+    NSView *_views[5];
+
+    // Per-tab controls — each tab owns its own instances to avoid re-parenting
+    // Find what combo is shared (moved between tabs)
+    NSComboBox *_findCombo;
+    NSComboBox *_replaceCombo;
+    NSComboBox *_filtersCombo;
+    NSComboBox *_directoryCombo;
+
+    // Options — per-tab instances (separate for Find/Replace vs FiF/FiP vs Mark)
+    // Find & Replace tab options
+    NSButton *_frBackward, *_frWholeWord, *_frMatchCase, *_frWrapAround;
+    NSButton *_frInSelection;
+    // Find in Files tab options
+    NSButton *_fifWholeWord, *_fifMatchCase;
+    NSButton *_fifInSubFolders, *_fifInHiddenFolders;
+    // Find in Projects tab options
+    NSButton *_fipWholeWord, *_fipMatchCase;
+    NSButton *_fipPanel1, *_fipPanel2, *_fipPanel3;
+    // Mark tab options
+    NSButton *_mkBookmarkLine, *_mkPurge, *_mkBackward;
+    NSButton *_mkWholeWord, *_mkMatchCase, *_mkWrapAround;
+    NSButton *_mkInSelection;
+
+    // Search mode — per-tab instances (Find, Replace, FiF, FiP, Mark)
+    NSButton *_smNormal[5], *_smExtended[5], *_smRegex[5], *_smDotNL[5];
+
+    // Status bar
+    NSTextField *_statusLabel;
+
+    FindWindowTab _currentTab;
+    BOOL _cancelSearch;
+}
+
+static FindWindow *_sharedInstance = nil;
+
++ (instancetype)sharedWindow {
+    if (!_sharedInstance) _sharedInstance = [[FindWindow alloc] init];
+    return _sharedInstance;
+}
+
+- (instancetype)init {
+    NSPanel *panel = [[NSPanel alloc]
+        initWithContentRect:NSMakeRect(0, 0, kWinW, 420)
+                  styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable)
+                    backing:NSBackingStoreBuffered defer:NO];
+    panel.title = @"Find";
+    panel.floatingPanel = YES;
+    panel.becomesKeyOnlyIfNeeded = YES;
+    panel.minSize = NSMakeSize(540, 350);
+    [panel center];
+
+    self = [super initWithWindow:panel];
+    if (self) {
+        _currentTab = FindWindowTabFind;
+        [self _buildAllTabs];
+        [self _restoreHistory];
+        [self _switchToTab:FindWindowTabFind];
+    }
+    return self;
+}
+
+#pragma mark - Public
+
+- (void)showTab:(FindWindowTab)tab {
+    _currentTab = tab;
+    _tabControl.selectedSegment = tab;
+    [self _switchToTab:tab];
+    [self showWindow:nil];
+    [self.window makeKeyAndOrderFront:nil];
+    [self.window makeFirstResponder:_findCombo];
+}
+
+- (NSString *)searchText { return _findCombo.stringValue ?: @""; }
+
+- (void)setSearchText:(NSString *)text {
+    if (text.length) _findCombo.stringValue = text;
+}
+
+- (NPPFindOptions *)currentOptions {
+    NPPFindOptions *o = [[NPPFindOptions alloc] init];
+    o.searchText  = _findCombo.stringValue ?: @"";
+    o.replaceText = _replaceCombo.stringValue ?: @"";
+
+    // Read from active tab's controls
+    NSInteger t = _currentTab;
+    if (t == FindWindowTabFind) {
+        o.matchCase  = (_frMatchCase.state == NSControlStateValueOn);
+        o.wholeWord  = (_frWholeWord.state == NSControlStateValueOn);
+        o.wrapAround = (_frWrapAround.state == NSControlStateValueOn);
+        o.inSelection = (_frInSelection.state == NSControlStateValueOn);
+        o.direction  = (_frBackward.state == NSControlStateValueOn) ? NPPSearchUp : NPPSearchDown;
+        o.searchType = [self _searchModeFromGroup:0];
+        o.dotMatchesNewline = (_smDotNL[0].state == NSControlStateValueOn);
+    } else if (t == FindWindowTabReplace) {
+        NSButton *mc = objc_getAssociatedObject(_views[1], "matchcase");
+        NSButton *ww = objc_getAssociatedObject(_views[1], "wholeword");
+        NSButton *wa = objc_getAssociatedObject(_views[1], "wraparound");
+        NSButton *bk = objc_getAssociatedObject(_views[1], "backward");
+        o.matchCase  = (mc.state == NSControlStateValueOn);
+        o.wholeWord  = (ww.state == NSControlStateValueOn);
+        o.wrapAround = (wa.state == NSControlStateValueOn);
+        o.inSelection = (_frInSelection.state == NSControlStateValueOn);
+        o.direction  = (bk.state == NSControlStateValueOn) ? NPPSearchUp : NPPSearchDown;
+        o.searchType = [self _searchModeFromGroup:1];
+        o.dotMatchesNewline = (_smDotNL[1].state == NSControlStateValueOn);
+    } else if (t == FindWindowTabFindInFiles) {
+        o.matchCase  = (_fifMatchCase.state == NSControlStateValueOn);
+        o.wholeWord  = (_fifWholeWord.state == NSControlStateValueOn);
+        o.wrapAround = YES;
+        o.filters    = _filtersCombo.stringValue ?: @"*.*";
+        o.directory  = _directoryCombo.stringValue ?: @"";
+        o.isRecursive = (_fifInSubFolders.state == NSControlStateValueOn);
+        o.isInHiddenDirs = (_fifInHiddenFolders.state == NSControlStateValueOn);
+        o.searchType = [self _searchModeFromGroup:2];
+        o.dotMatchesNewline = (_smDotNL[2].state == NSControlStateValueOn);
+    } else if (t == FindWindowTabFindInProjects) {
+        o.matchCase  = (_fipMatchCase.state == NSControlStateValueOn);
+        o.wholeWord  = (_fipWholeWord.state == NSControlStateValueOn);
+        o.wrapAround = YES;
+        o.filters    = _filtersCombo.stringValue ?: @"*.*";
+        o.projectPanel1 = (_fipPanel1.state == NSControlStateValueOn);
+        o.projectPanel2 = (_fipPanel2.state == NSControlStateValueOn);
+        o.projectPanel3 = (_fipPanel3.state == NSControlStateValueOn);
+        o.searchType = [self _searchModeFromGroup:3];
+        o.dotMatchesNewline = (_smDotNL[3].state == NSControlStateValueOn);
+    } else if (t == FindWindowTabMark) {
+        o.matchCase  = (_mkMatchCase.state == NSControlStateValueOn);
+        o.wholeWord  = (_mkWholeWord.state == NSControlStateValueOn);
+        o.wrapAround = (_mkWrapAround.state == NSControlStateValueOn);
+        o.inSelection = (_mkInSelection.state == NSControlStateValueOn);
+        o.direction  = (_mkBackward.state == NSControlStateValueOn) ? NPPSearchUp : NPPSearchDown;
+        o.doBookmarkLine = (_mkBookmarkLine.state == NSControlStateValueOn);
+        o.doPurge    = (_mkPurge.state == NSControlStateValueOn);
+        o.searchType = [self _searchModeFromGroup:4];
+        o.dotMatchesNewline = (_smDotNL[4].state == NSControlStateValueOn);
+    }
+    return o;
+}
+
+- (NPPSearchType)_searchModeFromGroup:(int)g {
+    if (_smRegex[g].state == NSControlStateValueOn) return NPPSearchRegex;
+    if (_smExtended[g].state == NSControlStateValueOn) return NPPSearchExtended;
+    return NPPSearchNormal;
+}
+
+#pragma mark - Factory helpers
+
+static NSComboBox *_mkCombo(void) {
+    NSComboBox *c = [[NSComboBox alloc] init];
+    c.translatesAutoresizingMaskIntoConstraints = NO;
+    c.font = [NSFont systemFontOfSize:12];
+    c.numberOfVisibleItems = 15;
+    c.completes = NO;
+    c.usesDataSource = NO;
+    return c;
+}
+
+static NSButton *_mkChk(NSString *title) {
+    NSButton *b = [NSButton checkboxWithTitle:title target:nil action:nil];
+    b.translatesAutoresizingMaskIntoConstraints = NO;
+    b.font = [NSFont systemFontOfSize:12];
+    return b;
+}
+
+static NSButton *_mkRadio(NSString *title) {
+    NSButton *b = [NSButton radioButtonWithTitle:title target:nil action:nil];
+    b.translatesAutoresizingMaskIntoConstraints = NO;
+    b.font = [NSFont systemFontOfSize:12];
+    return b;
+}
+
+static NSButton *_mkBtn(NSString *title, SEL action, id target) {
+    NSButton *b = [[NSButton alloc] init];
+    b.translatesAutoresizingMaskIntoConstraints = NO;
+    b.title = title;
+    b.bezelStyle = NSBezelStyleRounded;
+    b.target = target;
+    b.action = action;
+    b.font = [NSFont systemFontOfSize:12];
+    return b;
+}
+
+static NSTextField *_mkLabel(NSString *text) {
+    NSTextField *l = [NSTextField labelWithString:text];
+    l.translatesAutoresizingMaskIntoConstraints = NO;
+    l.font = [NSFont systemFontOfSize:12];
+    l.alignment = NSTextAlignmentRight;
+    return l;
+}
+
+/// Place a label + combo row. Returns the combo's top anchor Y for chaining.
+static void _placeFieldRow(NSView *parent, NSTextField *label, NSComboBox *combo,
+                           CGFloat topY, CGFloat labelRight, CGFloat fieldLeft, CGFloat fieldRight) {
+    [parent addSubview:label];
+    [parent addSubview:combo];
+    label.frame  = NSMakeRect(labelRight - 100, topY + 2, 100, 18);
+    combo.frame  = NSMakeRect(fieldLeft, topY, fieldRight - fieldLeft, 24);
+}
+
+/// Place a button in the right column.
+static void _placeBtn(NSView *parent, NSButton *btn, CGFloat topY) {
+    [parent addSubview:btn];
+    btn.frame = NSMakeRect(kBtnL, topY, kBtnW, kBtnH);
+}
+
+/// Place a checkbox at the given position.
+static void _placeChk(NSView *parent, NSButton *chk, CGFloat x, CGFloat y) {
+    [parent addSubview:chk];
+    [chk sizeToFit];
+    NSRect f = chk.frame;
+    f.origin = NSMakePoint(x, y);
+    chk.frame = f;
+}
+
+/// Build a Search Mode group box at the given position. Returns the 4 control pointers.
+- (void)_buildSearchModeGroup:(int)idx inView:(NSView *)parent atY:(CGFloat)y {
+    NSBox *box = [[NSBox alloc] initWithFrame:NSMakeRect(kLeftM, y, kFieldR - kLeftM + 20, 88)];
+    box.title = @"Search Mode";
+    box.titleFont = [NSFont systemFontOfSize:11];
+    [parent addSubview:box];
+
+    NSView *bc = box.contentView;
+    _smNormal[idx]   = _mkRadio(@"Normal");
+    _smExtended[idx] = _mkRadio(@"Extended (\\n, \\r, \\t, \\0, \\x...)");
+    _smRegex[idx]    = _mkRadio(@"Regular expression");
+    _smDotNL[idx]    = _mkChk(@". matches newline");
+    _smNormal[idx].state = NSControlStateValueOn;
+    _smDotNL[idx].enabled = NO;
+
+    // Mode change handler
+    _smNormal[idx].target = self;   _smNormal[idx].action = @selector(_modeChanged:);
+    _smExtended[idx].target = self; _smExtended[idx].action = @selector(_modeChanged:);
+    _smRegex[idx].target = self;    _smRegex[idx].action = @selector(_modeChanged:);
+
+    _placeChk(bc, _smNormal[idx],   8, 48);
+    _placeChk(bc, _smExtended[idx], 8, 28);
+    _placeChk(bc, _smRegex[idx],    8, 8);
+
+    [bc addSubview:_smDotNL[idx]];
+    [_smDotNL[idx] sizeToFit];
+    NSRect rf = _smRegex[idx].frame;
+    _smDotNL[idx].frame = NSMakeRect(NSMaxX(rf) + 16, 8,
+                                     _smDotNL[idx].frame.size.width,
+                                     _smDotNL[idx].frame.size.height);
+}
+
+#pragma mark - Build all 5 tabs
+
+- (void)_buildAllTabs {
+    NSView *cv = self.window.contentView;
+
+    // ── Tab control (segmented, top) ─────────────────────────────────────
+    _tabControl = [NSSegmentedControl segmentedControlWithLabels:
+        @[@"Find", @"Replace", @"Find in Files", @"Find in Projects", @"Mark"]
+        trackingMode:NSSegmentSwitchTrackingSelectOne target:self action:@selector(_tabChanged:)];
+    _tabControl.translatesAutoresizingMaskIntoConstraints = NO;
+    _tabControl.selectedSegment = 0;
+    _tabControl.font = [NSFont systemFontOfSize:11];
+    _tabControl.frame = NSMakeRect(12, NSHeight(cv.frame) - 32, 420, 24);
+    _tabControl.autoresizingMask = NSViewMinYMargin;
+    [cv addSubview:_tabControl];
+
+    // ── Status bar (bottom) ──────────────────────────────────────────────
+    _statusLabel = [NSTextField labelWithString:@""];
+    _statusLabel.frame = NSMakeRect(12, 6, kWinW - 24, 18);
+    _statusLabel.font = [NSFont boldSystemFontOfSize:12];
+    _statusLabel.textColor = [NSColor secondaryLabelColor];
+    _statusLabel.autoresizingMask = NSViewWidthSizable | NSViewMaxYMargin;
+    [cv addSubview:_statusLabel];
+
+    // ── Shared combos ────────────────────────────────────────────────────
+    _findCombo    = _mkCombo();
+    _replaceCombo = _mkCombo();
+    _filtersCombo = _mkCombo();
+    _filtersCombo.stringValue = @"*.*";
+    _directoryCombo = _mkCombo();
+
+    // ── Build each tab ───────────────────────────────────────────────────
+    [self _buildFindTab];
+    [self _buildReplaceTab];
+    [self _buildFindInFilesTab];
+    [self _buildFindInProjectsTab];
+    [self _buildMarkTab];
+}
+
+/// Anchor Y offset from top of content view. Since we use flipped-like placement
+/// (origin at top-left conceptually), all Y values are measured from the top.
+/// But NSView origin is bottom-left, so we convert: actualY = containerHeight - topY - elementHeight
+static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
+    return NSHeight(container.frame) - topOffset - height;
+}
+
+// ── Tab 0: Find ──────────────────────────────────────────────────────────────
+
+- (void)_buildFindTab {
+    NSRect cvFrame = self.window.contentView.frame;
+    NSView *v = [[NSView alloc] initWithFrame:NSMakeRect(0, 26, NSWidth(cvFrame), NSHeight(cvFrame) - 60)];
+    v.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    CGFloat H = NSHeight(v.frame);
+
+    // "Find what:" + combo
+    NSTextField *lbl = _mkLabel(@"Find what:");
+    _placeFieldRow(v, lbl, _findCombo, H - 30, kLabelR, kFieldL, kFieldR);
+
+    // "In selection" checkbox — centered between fields and buttons
+    _frInSelection = _mkChk(@"In selection");
+    _placeChk(v, _frInSelection, kFieldR - 60, H - 70);
+
+    // Buttons (right column, matching Windows vertical stack)
+    _placeBtn(v, _mkBtn(@"Find Next",                        @selector(_findNext:), self),        H - 34);
+    _placeBtn(v, _mkBtn(@"Count",                            @selector(_count:), self),           H - 66);
+    _placeBtn(v, _mkBtn(@"Find All in Current Document",     @selector(_findAllCurrent:), self),  H - 98);
+    _placeBtn(v, _mkBtn(@"Find All in All Opened Documents", @selector(_findAllOpened:), self),   H - 130);
+    _placeBtn(v, _mkBtn(@"Close",                            @selector(_close:), self),           H - 162);
+
+    // Left-side checkboxes (below the field row, matching Windows)
+    _frBackward  = _mkChk(@"Backward direction");
+    _frWholeWord = _mkChk(@"Match whole word only");
+    _frMatchCase = _mkChk(@"Match case");
+    _frWrapAround = _mkChk(@"Wrap around");
+    _frWrapAround.state = NSControlStateValueOn;
+
+    CGFloat chkY = H - 90;
+    _placeChk(v, _frBackward,  kLeftM, chkY);
+    _placeChk(v, _frWholeWord, kLeftM, chkY - 22);
+    _placeChk(v, _frMatchCase, kLeftM, chkY - 44);
+    _placeChk(v, _frWrapAround,kLeftM, chkY - 66);
+
+    // Search Mode group box
+    [self _buildSearchModeGroup:0 inView:v atY:chkY - 166];
+
+    _views[0] = v;
+    [self.window.contentView addSubview:v];
+}
+
+// ── Tab 1: Replace ───────────────────────────────────────────────────────────
+
+- (void)_buildReplaceTab {
+    NSRect cvFrame = self.window.contentView.frame;
+    NSView *v = [[NSView alloc] initWithFrame:NSMakeRect(0, 26, NSWidth(cvFrame), NSHeight(cvFrame) - 60)];
+    v.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    CGFloat H = NSHeight(v.frame);
+
+    NSTextField *lbl1 = _mkLabel(@"Find what:");
+    _placeFieldRow(v, lbl1, _findCombo, H - 30, kLabelR, kFieldL, kFieldR);
+
+    NSTextField *lbl2 = _mkLabel(@"Replace with:");
+    _placeFieldRow(v, lbl2, _replaceCombo, H - 62, kLabelR, kFieldL, kFieldR);
+
+    // "In selection"
+    _frInSelection = _mkChk(@"In selection");
+    _placeChk(v, _frInSelection, kFieldR - 60, H - 92);
+
+    // Buttons
+    _placeBtn(v, _mkBtn(@"Find Next",                            @selector(_findNext:), self),        H - 34);
+    _placeBtn(v, _mkBtn(@"Replace",                              @selector(_replace:), self),         H - 66);
+    _placeBtn(v, _mkBtn(@"Replace All",                          @selector(_replaceAll:), self),      H - 98);
+    _placeBtn(v, _mkBtn(@"Replace All in All Opened Documents",  @selector(_replaceAllOpened:), self),H - 130);
+    _placeBtn(v, _mkBtn(@"Close",                                @selector(_close:), self),           H - 162);
+
+    // Checkboxes (same as Find tab, reuse the same ivars since only one tab visible at a time)
+    // But we need separate instances to avoid re-parenting. The _fr* ivars are set per-tab-switch.
+    // Actually, Find and Replace share the same option ivars (they're the same set of controls).
+    // We created them in _buildFindTab. For Replace, we reference the SAME ivars.
+    // Problem: they can't exist in two views. Solution: on tab switch, move them.
+    // Better solution: create per-tab instances and sync values on tab switch.
+
+    // For simplicity, create local copies that are read in currentOptions via the _fr* pointers
+    // We'll recreate these for each tab that uses them:
+    NSButton *bk = _mkChk(@"Backward direction");
+    NSButton *ww = _mkChk(@"Match whole word only");
+    NSButton *mc = _mkChk(@"Match case");
+    NSButton *wa = _mkChk(@"Wrap around");
+    wa.state = NSControlStateValueOn;
+
+    CGFloat chkY = H - 110;
+    _placeChk(v, bk, kLeftM, chkY);
+    _placeChk(v, ww, kLeftM, chkY - 22);
+    _placeChk(v, mc, kLeftM, chkY - 44);
+    _placeChk(v, wa, kLeftM, chkY - 66);
+
+    // Store references — on tab switch to Replace, point _fr* to these
+    // We'll use objc_setAssociatedObject to tag them
+    objc_setAssociatedObject(v, "backward",  bk,  OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(v, "wholeword", ww,  OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(v, "matchcase", mc,  OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(v, "wraparound",wa,  OBJC_ASSOCIATION_RETAIN);
+
+    [self _buildSearchModeGroup:1 inView:v atY:chkY - 166];
+
+    _views[1] = v;
+    v.hidden = YES;
+    [self.window.contentView addSubview:v];
+}
+
+// ── Tab 2: Find in Files ─────────────────────────────────────────────────────
+
+- (void)_buildFindInFilesTab {
+    NSRect cvFrame = self.window.contentView.frame;
+    NSView *v = [[NSView alloc] initWithFrame:NSMakeRect(0, 26, NSWidth(cvFrame), NSHeight(cvFrame) - 60)];
+    v.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    CGFloat H = NSHeight(v.frame);
+
+    _placeFieldRow(v, _mkLabel(@"Find what:"),    _findCombo,      H - 30, kLabelR, kFieldL, kFieldR);
+    _placeFieldRow(v, _mkLabel(@"Replace with:"), _replaceCombo,   H - 62, kLabelR, kFieldL, kFieldR);
+    _placeFieldRow(v, _mkLabel(@"Filters:"),      _filtersCombo,   H - 94, kLabelR, kFieldL, kFieldR);
+    _placeFieldRow(v, _mkLabel(@"Directory:"),    _directoryCombo, H -126, kLabelR, kFieldL, kFieldR - 70);
+
+    // Browse & fill buttons next to directory
+    NSButton *browseBtn = _mkBtn(@"...", @selector(_browseDir:), self);
+    browseBtn.frame = NSMakeRect(kFieldR - 65, H - 126, 30, 24);
+    [v addSubview:browseBtn];
+    NSButton *fillBtn = _mkBtn(@"<<", @selector(_fillDirFromDoc:), self);
+    fillBtn.frame = NSMakeRect(kFieldR - 32, H - 126, 30, 24);
+    [v addSubview:fillBtn];
+
+    // Buttons
+    _placeBtn(v, _mkBtn(@"Find All",         @selector(_findInFiles:), self),    H - 34);
+    _placeBtn(v, _mkBtn(@"Replace in Files", @selector(_replaceInFiles:), self), H - 66);
+    _placeBtn(v, _mkBtn(@"Close",            @selector(_close:), self),          H - 98);
+
+    // Left options
+    _fifWholeWord = _mkChk(@"Match whole word only");
+    _fifMatchCase = _mkChk(@"Match case");
+    CGFloat chkY = H - 160;
+    _placeChk(v, _fifWholeWord, kLeftM, chkY);
+    _placeChk(v, _fifMatchCase, kLeftM, chkY - 22);
+
+    // Right options
+    _fifInSubFolders   = _mkChk(@"In all sub-folders");
+    _fifInSubFolders.state = NSControlStateValueOn;
+    _fifInHiddenFolders = _mkChk(@"In hidden folders");
+    _placeChk(v, _fifInSubFolders,   kBtnL, chkY);
+    _placeChk(v, _fifInHiddenFolders, kBtnL, chkY - 22);
+
+    [self _buildSearchModeGroup:2 inView:v atY:chkY - 120];
+
+    _views[2] = v;
+    v.hidden = YES;
+    [self.window.contentView addSubview:v];
+}
+
+// ── Tab 3: Find in Projects ──────────────────────────────────────────────────
+
+- (void)_buildFindInProjectsTab {
+    NSRect cvFrame = self.window.contentView.frame;
+    NSView *v = [[NSView alloc] initWithFrame:NSMakeRect(0, 26, NSWidth(cvFrame), NSHeight(cvFrame) - 60)];
+    v.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    CGFloat H = NSHeight(v.frame);
+
+    _placeFieldRow(v, _mkLabel(@"Find what:"),    _findCombo,    H - 30, kLabelR, kFieldL, kFieldR);
+    _placeFieldRow(v, _mkLabel(@"Replace with:"), _replaceCombo, H - 62, kLabelR, kFieldL, kFieldR);
+    _placeFieldRow(v, _mkLabel(@"Filters:"),      _filtersCombo, H - 94, kLabelR, kFieldL, kFieldR);
+
+    // Buttons
+    _placeBtn(v, _mkBtn(@"Find All",            @selector(_findInProjects:), self),    H - 34);
+    _placeBtn(v, _mkBtn(@"Replace in Projects", @selector(_replaceInProjects:), self), H - 66);
+    _placeBtn(v, _mkBtn(@"Close",               @selector(_close:), self),             H - 98);
+
+    // Left options
+    _fipWholeWord = _mkChk(@"Match whole word only");
+    _fipMatchCase = _mkChk(@"Match case");
+    CGFloat chkY = H - 130;
+    _placeChk(v, _fipWholeWord, kLeftM, chkY);
+    _placeChk(v, _fipMatchCase, kLeftM, chkY - 22);
+
+    // Right options: Project Panel 1/2/3
+    _fipPanel1 = _mkChk(@"Project Panel 1");
+    _fipPanel2 = _mkChk(@"Project Panel 2");
+    _fipPanel3 = _mkChk(@"Project Panel 3");
+    _placeChk(v, _fipPanel1, kBtnL, chkY);
+    _placeChk(v, _fipPanel2, kBtnL, chkY - 22);
+    _placeChk(v, _fipPanel3, kBtnL, chkY - 44);
+
+    [self _buildSearchModeGroup:3 inView:v atY:chkY - 120];
+
+    _views[3] = v;
+    v.hidden = YES;
+    [self.window.contentView addSubview:v];
+}
+
+// ── Tab 4: Mark ──────────────────────────────────────────────────────────────
+
+- (void)_buildMarkTab {
+    NSRect cvFrame = self.window.contentView.frame;
+    NSView *v = [[NSView alloc] initWithFrame:NSMakeRect(0, 26, NSWidth(cvFrame), NSHeight(cvFrame) - 60)];
+    v.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    CGFloat H = NSHeight(v.frame);
+
+    _placeFieldRow(v, _mkLabel(@"Find what:"), _findCombo, H - 30, kLabelR, kFieldL, kFieldR);
+
+    // "In selection" — centered
+    _mkInSelection = _mkChk(@"In selection");
+    _placeChk(v, _mkInSelection, kFieldR - 60, H - 60);
+
+    // Buttons
+    _placeBtn(v, _mkBtn(@"Mark All",         @selector(_markAll:), self),   H - 34);
+    _placeBtn(v, _mkBtn(@"Clear all marks",  @selector(_clearMarks:), self),H - 66);
+    _placeBtn(v, _mkBtn(@"Copy Marked Text", @selector(_copyMarked:), self),H - 98);
+    _placeBtn(v, _mkBtn(@"Close",            @selector(_close:), self),     H - 130);
+
+    // Left-side checkboxes (matching Windows Mark tab exactly)
+    _mkBookmarkLine = _mkChk(@"Bookmark line");
+    _mkPurge        = _mkChk(@"Purge for each search");
+    _mkBackward     = _mkChk(@"Backward direction");
+    _mkWholeWord    = _mkChk(@"Match whole word only");
+    _mkMatchCase    = _mkChk(@"Match case");
+    _mkWrapAround   = _mkChk(@"Wrap around");
+    _mkWrapAround.state = NSControlStateValueOn;
+
+    CGFloat chkY = H - 80;
+    _placeChk(v, _mkBookmarkLine, kLeftM, chkY);
+    _placeChk(v, _mkPurge,       kLeftM, chkY - 22);
+    _placeChk(v, _mkBackward,    kLeftM, chkY - 44);
+    _placeChk(v, _mkWholeWord,   kLeftM, chkY - 66);
+    _placeChk(v, _mkMatchCase,   kLeftM, chkY - 88);
+    _placeChk(v, _mkWrapAround,  kLeftM, chkY - 110);
+
+    [self _buildSearchModeGroup:4 inView:v atY:chkY - 210];
+
+    _views[4] = v;
+    v.hidden = YES;
+    [self.window.contentView addSubview:v];
+}
+
+#pragma mark - Tab switching
+
+- (void)_tabChanged:(id)sender {
+    _currentTab = (FindWindowTab)_tabControl.selectedSegment;
+    [self _switchToTab:_currentTab];
+}
+
+- (void)_switchToTab:(FindWindowTab)tab {
+    static NSString *titles[] = {@"Find", @"Replace", @"Find in Files", @"Find in Projects", @"Mark"};
+
+    // Move shared combos to the target tab view
+    // First remove from current parent
+    [_findCombo removeFromSuperview];
+    [_replaceCombo removeFromSuperview];
+    [_filtersCombo removeFromSuperview];
+    [_directoryCombo removeFromSuperview];
+
+    for (int i = 0; i < 5; i++) _views[i].hidden = (i != tab);
+    self.window.title = titles[tab];
+
+    // Re-add shared combos to the active tab's view
+    // The _placeFieldRow calls in each _build*Tab already placed them,
+    // but since we're removing/re-adding, we need to re-set their frames.
+    NSView *tv = _views[tab];
+    CGFloat H = NSHeight(tv.frame);
+
+    [tv addSubview:_findCombo];
+    _findCombo.frame = NSMakeRect(kFieldL, H - 30, kFieldR - kFieldL, 24);
+
+    if (tab == FindWindowTabReplace || tab == FindWindowTabFindInFiles || tab == FindWindowTabFindInProjects) {
+        [tv addSubview:_replaceCombo];
+        _replaceCombo.frame = NSMakeRect(kFieldL, H - 62, kFieldR - kFieldL, 24);
+    }
+    if (tab == FindWindowTabFindInFiles || tab == FindWindowTabFindInProjects) {
+        [tv addSubview:_filtersCombo];
+        CGFloat filtersY = (tab == FindWindowTabFindInFiles) ? H - 94 : H - 94;
+        _filtersCombo.frame = NSMakeRect(kFieldL, filtersY, kFieldR - kFieldL, 24);
+    }
+    if (tab == FindWindowTabFindInFiles) {
+        [tv addSubview:_directoryCombo];
+        _directoryCombo.frame = NSMakeRect(kFieldL, H - 126, kFieldR - kFieldL - 70, 24);
+    }
+
+    // Point _fr* to the correct tab's checkboxes for Find/Replace
+    if (tab == FindWindowTabFind) {
+        // _fr* already point to Find tab's controls (set in _buildFindTab)
+    } else if (tab == FindWindowTabReplace) {
+        // Point to Replace tab's copies
+        _frBackward  = objc_getAssociatedObject(tv, "backward");
+        _frWholeWord = objc_getAssociatedObject(tv, "wholeword");
+        _frMatchCase = objc_getAssociatedObject(tv, "matchcase");
+        _frWrapAround = objc_getAssociatedObject(tv, "wraparound");
+    }
+
+    _statusLabel.stringValue = @"";
+}
+
+#pragma mark - Status
+
+- (void)_showStatus:(NSString *)msg found:(BOOL)found {
+    _statusLabel.stringValue = msg;
+    _statusLabel.textColor = found
+        ? [NSColor colorWithRed:0 green:0 blue:0.7 alpha:1]
+        : [NSColor colorWithRed:0.8 green:0 blue:0 alpha:1];
+}
+
+#pragma mark - History
+
+- (void)_addToHistory:(NSComboBox *)combo key:(NSString *)key {
+    NSString *text = combo.stringValue;
+    if (!text.length) return;
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *h = [[ud arrayForKey:key] mutableCopy] ?: [NSMutableArray array];
+    [h removeObject:text];
+    [h insertObject:text atIndex:0];
+    if (h.count > (NSUInteger)kMaxHistory)
+        [h removeObjectsInRange:NSMakeRange(kMaxHistory, h.count - kMaxHistory)];
+    [ud setObject:h forKey:key];
+    [combo removeAllItems];
+    [combo addItemsWithObjectValues:h];
+}
+
+- (void)_restoreHistory {
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSArray *a;
+    if ((a = [ud arrayForKey:kHistoryFind]).count)    { [_findCombo    removeAllItems]; [_findCombo    addItemsWithObjectValues:a]; }
+    if ((a = [ud arrayForKey:kHistoryReplace]).count)  { [_replaceCombo removeAllItems]; [_replaceCombo addItemsWithObjectValues:a]; }
+    if ((a = [ud arrayForKey:kHistoryFilter]).count)   { [_filtersCombo removeAllItems]; [_filtersCombo addItemsWithObjectValues:a]; }
+    if ((a = [ud arrayForKey:kHistoryDir]).count)      { [_directoryCombo removeAllItems]; [_directoryCombo addItemsWithObjectValues:a]; }
+}
+
+- (void)_modeChanged:(id)sender {
+    // Enable ". matches newline" only when regex is selected
+    for (int i = 0; i < 5; i++) {
+        if (_smDotNL[i] && _smRegex[i])
+            _smDotNL[i].enabled = (_smRegex[i].state == NSControlStateValueOn);
+    }
+}
+
+#pragma mark - Actions: Find
+
+- (void)_findNext:(id)sender {
+    NPPFindOptions *opts = [self currentOptions];
+    if (!opts.searchText.length) return;
+    [self _addToHistory:_findCombo key:kHistoryFind];
+    EditorView *ed = [_delegate currentEditor];
+    if (!ed) return;
+    BOOL forward = (opts.direction == NPPSearchDown);
+    BOOL found = [SearchEngine findInView:ed.scintillaView options:opts forward:forward];
+    if (!found)
+        [self _showStatus:[NSString stringWithFormat:@"Find: Can't find the text \"%@\"", opts.searchText] found:NO];
+    else
+        [self _showStatus:@"" found:YES];
+}
+
+- (void)_count:(id)sender {
+    NPPFindOptions *opts = [self currentOptions];
+    if (!opts.searchText.length) return;
+    [self _addToHistory:_findCombo key:kHistoryFind];
+    EditorView *ed = [_delegate currentEditor];
+    if (!ed) return;
+    NSInteger count = [SearchEngine countInView:ed.scintillaView options:opts];
+    [self _showStatus:[NSString stringWithFormat:@"Count: %ld match(es).", (long)count] found:(count > 0)];
+}
+
+- (void)_findAllCurrent:(id)sender {
+    NPPFindOptions *opts = [self currentOptions];
+    if (!opts.searchText.length) return;
+    [self _addToHistory:_findCombo key:kHistoryFind];
+    EditorView *ed = [_delegate currentEditor];
+    if (!ed) return;
+    NSString *path = ed.filePath ?: ed.displayName;
+    NSArray *results = [SearchEngine findAllInView:ed.scintillaView filePath:path options:opts];
+    if (results.count) {
+        NPPFileResults *fr = [[NPPFileResults alloc] init];
+        fr.filePath = path;
+        [fr.results addObjectsFromArray:results];
+        [_delegate findWindow:self showResults:@[fr] forSearchText:opts.searchText options:opts filesSearched:1];
+        [_delegate findWindowShowSearchResultsPanel:self];
+    } else {
+        [self _showStatus:[NSString stringWithFormat:@"Find: Can't find the text \"%@\"", opts.searchText] found:NO];
+    }
+}
+
+- (void)_findAllOpened:(id)sender {
+    NPPFindOptions *opts = [self currentOptions];
+    if (!opts.searchText.length) return;
+    [self _addToHistory:_findCombo key:kHistoryFind];
+    NSArray<EditorView *> *editors = [_delegate allOpenEditors];
+    NSMutableArray *allResults = [NSMutableArray array];
+    for (EditorView *ed in editors) {
+        NSString *path = ed.filePath ?: ed.displayName;
+        NSArray *results = [SearchEngine findAllInView:ed.scintillaView filePath:path options:opts];
+        if (results.count) {
+            NPPFileResults *fr = [[NPPFileResults alloc] init];
+            fr.filePath = path;
+            [fr.results addObjectsFromArray:results];
+            [allResults addObject:fr];
+        }
+    }
+    if (allResults.count) {
+        [_delegate findWindow:self showResults:allResults forSearchText:opts.searchText
+                      options:opts filesSearched:(NSInteger)editors.count];
+        [_delegate findWindowShowSearchResultsPanel:self];
+    } else {
+        [self _showStatus:[NSString stringWithFormat:@"Find: Can't find the text \"%@\"", opts.searchText] found:NO];
+    }
+}
+
+#pragma mark - Actions: Replace
+
+- (void)_replace:(id)sender {
+    NPPFindOptions *opts = [self currentOptions];
+    if (!opts.searchText.length) return;
+    [self _addToHistory:_findCombo key:kHistoryFind];
+    [self _addToHistory:_replaceCombo key:kHistoryReplace];
+    EditorView *ed = [_delegate currentEditor];
+    if (!ed) return;
+    BOOL found = [SearchEngine replaceInView:ed.scintillaView options:opts];
+    if (!found)
+        [self _showStatus:[NSString stringWithFormat:@"Find: Can't find the text \"%@\"", opts.searchText] found:NO];
+    else
+        [self _showStatus:@"" found:YES];
+}
+
+- (void)_replaceAll:(id)sender {
+    NPPFindOptions *opts = [self currentOptions];
+    if (!opts.searchText.length) return;
+    [self _addToHistory:_findCombo key:kHistoryFind];
+    [self _addToHistory:_replaceCombo key:kHistoryReplace];
+    EditorView *ed = [_delegate currentEditor];
+    if (!ed) return;
+    NSInteger count = [SearchEngine replaceAllInView:ed.scintillaView options:opts];
+    NSString *scope = opts.inSelection ? @"in selection" : @"in entire file";
+    [self _showStatus:[NSString stringWithFormat:@"Replace All: %ld occurrence(s) were replaced %@.", (long)count, scope]
+                found:(count > 0)];
+}
+
+- (void)_replaceAllOpened:(id)sender {
+    NPPFindOptions *opts = [self currentOptions];
+    if (!opts.searchText.length) return;
+    [self _addToHistory:_findCombo key:kHistoryFind];
+    [self _addToHistory:_replaceCombo key:kHistoryReplace];
+    NSArray<EditorView *> *editors = [_delegate allOpenEditors];
+    NSInteger total = 0;
+    for (EditorView *ed in editors)
+        total += [SearchEngine replaceAllInView:ed.scintillaView options:opts];
+    [self _showStatus:[NSString stringWithFormat:@"Replace in Opened Files: %ld occurrence(s) were replaced.", (long)total]
+                found:(total > 0)];
+}
+
+#pragma mark - Actions: Find in Files
+
+- (void)_findInFiles:(id)sender {
+    NPPFindOptions *opts = [self currentOptions];
+    if (!opts.searchText.length || !opts.directory.length) return;
+    [self _addToHistory:_findCombo key:kHistoryFind];
+    [self _addToHistory:_filtersCombo key:kHistoryFilter];
+    [self _addToHistory:_directoryCombo key:kHistoryDir];
+    _cancelSearch = NO;
+    [self _showStatus:@"Searching..." found:YES];
+
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        NSArray<NPPFileResults *> *results = [SearchEngine findInDirectory:opts.directory
+            options:opts
+            progressBlock:^(NSString *file, NSInteger hits) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self _showStatus:[NSString stringWithFormat:@"Searching... %ld hit(s) — %@",
+                        (long)hits, file.lastPathComponent] found:YES];
+                });
+            }
+            cancelFlag:&self->_cancelSearch];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (results.count) {
+                [self->_delegate findWindow:self showResults:results forSearchText:opts.searchText
+                              options:opts filesSearched:-1];
+                [self->_delegate findWindowShowSearchResultsPanel:self];
+                NSInteger totalHits = 0;
+                for (NPPFileResults *fr in results) totalHits += (NSInteger)fr.results.count;
+                [self _showStatus:[NSString stringWithFormat:@"Find in Files: %ld hit(s) in %ld file(s).",
+                    (long)totalHits, (long)results.count] found:YES];
+            } else {
+                [self _showStatus:@"Find in Files: 0 hits." found:NO];
+            }
+        });
+    });
+}
+
+- (void)_replaceInFiles:(id)sender {
+    NPPFindOptions *opts = [self currentOptions];
+    if (!opts.searchText.length || !opts.directory.length) return;
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText = @"Replace in Files";
+    alert.informativeText = [NSString stringWithFormat:
+        @"Replace all occurrences of \"%@\" with \"%@\" in directory:\n%@\n\nThis cannot be undone.",
+        opts.searchText, opts.replaceText, opts.directory];
+    [alert addButtonWithTitle:@"Replace"];
+    [alert addButtonWithTitle:@"Cancel"];
+    if ([alert runModal] != NSAlertFirstButtonReturn) return;
+
+    [self _addToHistory:_findCombo key:kHistoryFind];
+    [self _addToHistory:_replaceCombo key:kHistoryReplace];
+    [self _addToHistory:_filtersCombo key:kHistoryFilter];
+    [self _addToHistory:_directoryCombo key:kHistoryDir];
+    [self _showStatus:@"Replacing in files..." found:YES];
+
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        NSArray<NPPFileResults *> *results = [SearchEngine findInDirectory:opts.directory
+            options:opts progressBlock:nil cancelFlag:NULL];
+        __block NSInteger totalReplacements = 0;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            for (NPPFileResults *fr in results) {
+                NSString *content = [NSString stringWithContentsOfFile:fr.filePath
+                                                             encoding:NSUTF8StringEncoding error:nil];
+                if (!content) continue;
+                NSString *search = opts.searchText;
+                NSString *repl = opts.replaceText ?: @"";
+                if (opts.searchType == NPPSearchExtended) {
+                    search = [SearchEngine expandExtendedString:search];
+                    repl = [SearchEngine expandExtendedString:repl];
+                }
+                NSStringCompareOptions cmp = opts.matchCase ? 0 : NSCaseInsensitiveSearch;
+                NSString *replaced = [content stringByReplacingOccurrencesOfString:search withString:repl
+                                                                          options:cmp range:NSMakeRange(0, content.length)];
+                if (![replaced isEqualToString:content]) {
+                    [replaced writeToFile:fr.filePath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+                    totalReplacements += (NSInteger)fr.results.count;
+                }
+            }
+            [self _showStatus:[NSString stringWithFormat:@"Replace in Files: %ld replacement(s) in %ld file(s).",
+                (long)totalReplacements, (long)results.count] found:(totalReplacements > 0)];
+        });
+    });
+}
+
+#pragma mark - Actions: Find in Projects
+
+- (void)_findInProjects:(id)sender {
+    [self _showStatus:@"Find in Projects: Not yet connected to Project Panel file list." found:NO];
+}
+
+- (void)_replaceInProjects:(id)sender {
+    [self _showStatus:@"Replace in Projects: Not yet connected." found:NO];
+}
+
+#pragma mark - Actions: Mark
+
+- (void)_markAll:(id)sender {
+    NPPFindOptions *opts = [self currentOptions];
+    if (!opts.searchText.length) return;
+    [self _addToHistory:_findCombo key:kHistoryFind];
+    EditorView *ed = [_delegate currentEditor];
+    if (!ed) return;
+    NSInteger count = [SearchEngine markAllInView:ed.scintillaView options:opts];
+    [self _showStatus:[NSString stringWithFormat:@"Mark: %ld match(es) marked.", (long)count] found:(count > 0)];
+}
+
+- (void)_clearMarks:(id)sender {
+    EditorView *ed = [_delegate currentEditor];
+    if (!ed) return;
+    ScintillaView *sci = ed.scintillaView;
+    [sci message:SCI_SETINDICATORCURRENT wParam:31];
+    [sci message:SCI_INDICATORCLEARRANGE wParam:0 lParam:[sci message:SCI_GETLENGTH]];
+    [sci message:SCI_MARKERDELETEALL wParam:20];
+    [self _showStatus:@"All marks cleared." found:YES];
+}
+
+- (void)_copyMarked:(id)sender {
+    EditorView *ed = [_delegate currentEditor];
+    if (!ed) return;
+    ScintillaView *sci = ed.scintillaView;
+    sptr_t docLen = [sci message:SCI_GETLENGTH];
+    NSMutableString *copied = [NSMutableString string];
+    sptr_t pos = 0;
+    while (pos < docLen) {
+        sptr_t start = [sci message:SCI_INDICATORSTART wParam:31 lParam:pos];
+        sptr_t val   = [sci message:SCI_INDICATORVALUEAT wParam:31 lParam:start];
+        if (val == 0) { pos = start + 1; continue; }
+        sptr_t end   = [sci message:SCI_INDICATOREND wParam:31 lParam:start];
+        if (end <= start) break;
+        sptr_t len = end - start;
+        char *buf = (char *)calloc(len + 1, 1);
+        struct Sci_TextRangeFull tr = {};
+        tr.chrg.cpMin = start; tr.chrg.cpMax = end; tr.lpstrText = buf;
+        [sci message:SCI_GETTEXTRANGEFULL wParam:0 lParam:(sptr_t)&tr];
+        NSString *text = [NSString stringWithUTF8String:buf];
+        if (text) [copied appendFormat:@"%@\n", text];
+        free(buf);
+        pos = end;
+    }
+    if (copied.length) {
+        [[NSPasteboard generalPasteboard] clearContents];
+        [[NSPasteboard generalPasteboard] setString:copied forType:NSPasteboardTypeString];
+        [self _showStatus:@"Marked text copied to clipboard." found:YES];
+    } else {
+        [self _showStatus:@"No marked text to copy." found:NO];
+    }
+}
+
+#pragma mark - Common actions
+
+- (void)_close:(id)sender { [self.window orderOut:nil]; }
+
+- (void)_browseDir:(id)sender {
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    panel.canChooseFiles = NO;
+    panel.canChooseDirectories = YES;
+    if ([panel runModal] == NSModalResponseOK)
+        _directoryCombo.stringValue = panel.URL.path;
+}
+
+- (void)_fillDirFromDoc:(id)sender {
+    EditorView *ed = [_delegate currentEditor];
+    if (ed.filePath)
+        _directoryCombo.stringValue = ed.filePath.stringByDeletingLastPathComponent;
+}
+
+#pragma mark - Keyboard
+
+- (void)keyDown:(NSEvent *)event {
+    unichar ch = event.characters.length > 0 ? [event.characters characterAtIndex:0] : 0;
+    if (ch == '\r' || ch == '\n') {
+        [self _findNext:nil];
+        return;
+    }
+    if (ch == 0x1B) { [self _close:nil]; return; }
+    [super keyDown:event];
+}
+
+@end

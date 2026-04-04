@@ -1,0 +1,523 @@
+#import "SearchEngine.h"
+#import "Scintilla.h"
+
+// ── NPPFindOptions ───────────────────────────────────────────────────────────
+
+@implementation NPPFindOptions
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _searchText  = @"";
+        _replaceText = @"";
+        _wrapAround  = YES;
+        _direction   = NPPSearchDown;
+        _searchType  = NPPSearchNormal;
+        _isRecursive = YES;
+        _filters     = @"*.*";
+        _markStyle   = 1;
+    }
+    return self;
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    NPPFindOptions *c = [[NPPFindOptions alloc] init];
+    c.searchText      = _searchText;
+    c.replaceText     = _replaceText;
+    c.matchCase       = _matchCase;
+    c.wholeWord       = _wholeWord;
+    c.wrapAround      = _wrapAround;
+    c.inSelection     = _inSelection;
+    c.direction       = _direction;
+    c.searchType      = _searchType;
+    c.dotMatchesNewline = _dotMatchesNewline;
+    c.filters         = _filters;
+    c.directory       = _directory;
+    c.isRecursive     = _isRecursive;
+    c.isInHiddenDirs  = _isInHiddenDirs;
+    c.doPurge         = _doPurge;
+    c.doBookmarkLine  = _doBookmarkLine;
+    c.markStyle       = _markStyle;
+    c.projectPanel1   = _projectPanel1;
+    c.projectPanel2   = _projectPanel2;
+    c.projectPanel3   = _projectPanel3;
+    return c;
+}
+
+@end
+
+// ── NPPSearchResult ──────────────────────────────────────────────────────────
+
+@implementation NPPSearchResult
+@end
+
+// ── NPPFileResults ───────────────────────────────────────────────────────────
+
+@implementation NPPFileResults
+- (instancetype)init {
+    self = [super init];
+    if (self) _results = [NSMutableArray array];
+    return self;
+}
+@end
+
+// ── SearchEngine ─────────────────────────────────────────────────────────────
+
+@implementation SearchEngine
+
+#pragma mark - Extended string expansion
+
++ (NSString *)expandExtendedString:(NSString *)input {
+    if (!input.length) return input;
+
+    NSMutableData *data = [NSMutableData dataWithCapacity:input.length];
+    const char *s = input.UTF8String;
+    size_t len = strlen(s);
+
+    for (size_t i = 0; i < len; i++) {
+        if (s[i] == '\\' && i + 1 < len) {
+            char next = s[i + 1];
+            switch (next) {
+                case 'n':  { char c = '\n'; [data appendBytes:&c length:1]; i++; continue; }
+                case 'r':  { char c = '\r'; [data appendBytes:&c length:1]; i++; continue; }
+                case 't':  { char c = '\t'; [data appendBytes:&c length:1]; i++; continue; }
+                case '0':  { char c = '\0'; [data appendBytes:&c length:1]; i++; continue; }
+                case '\\': { char c = '\\'; [data appendBytes:&c length:1]; i++; continue; }
+                case 'x': case 'X': {
+                    if (i + 3 < len) {
+                        char hex[3] = { s[i+2], s[i+3], 0 };
+                        char *end = NULL;
+                        long val = strtol(hex, &end, 16);
+                        if (end == hex + 2) {
+                            char c = (char)val;
+                            [data appendBytes:&c length:1];
+                            i += 3;
+                            continue;
+                        }
+                    }
+                    break;
+                }
+                default: break;
+            }
+        }
+        [data appendBytes:&s[i] length:1];
+    }
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] ?: input;
+}
+
+#pragma mark - Scintilla flags
+
++ (int)scintillaFlagsForOptions:(NPPFindOptions *)opts {
+    int flags = 0;
+    if (opts.matchCase) flags |= SCFIND_MATCHCASE;
+    if (opts.wholeWord && opts.searchType != NPPSearchRegex) flags |= SCFIND_WHOLEWORD;
+    if (opts.searchType == NPPSearchRegex) {
+        flags |= SCFIND_REGEXP | SCFIND_POSIX;
+        if (opts.dotMatchesNewline) flags |= 0x10000000; // SCFIND_REGEXP_DOTMATCHESNL
+    }
+    return flags;
+}
+
+/// Prepare the search needle, applying Extended expansion if needed. Returns UTF8 C string.
++ (const char *)preparedNeedle:(NPPFindOptions *)opts {
+    NSString *text = opts.searchText;
+    if (opts.searchType == NPPSearchExtended)
+        text = [self expandExtendedString:text];
+    return text.UTF8String;
+}
+
+#pragma mark - Find
+
++ (BOOL)findInView:(ScintillaView *)sci options:(NPPFindOptions *)opts forward:(BOOL)forward {
+    if (!opts.searchText.length) return NO;
+
+    const char *needle = [self preparedNeedle:opts];
+    size_t needleLen = strlen(needle);
+    int flags = [self scintillaFlagsForOptions:opts];
+
+    sptr_t docLen = [sci message:SCI_GETLENGTH];
+    sptr_t selStart = [sci message:SCI_GETSELECTIONSTART];
+    sptr_t selEnd   = [sci message:SCI_GETSELECTIONEND];
+
+    [sci message:SCI_SETSEARCHFLAGS wParam:(uptr_t)flags];
+
+    sptr_t searchStart, searchEnd;
+    if (forward) {
+        searchStart = selEnd;
+        searchEnd   = docLen;
+    } else {
+        searchStart = selStart;
+        searchEnd   = 0;
+    }
+
+    [sci message:SCI_SETTARGETRANGE wParam:(uptr_t)searchStart lParam:searchEnd];
+    sptr_t found = [sci message:SCI_SEARCHINTARGET wParam:needleLen lParam:(sptr_t)needle];
+
+    // Wrap around if not found and option is on
+    if (found < 0 && opts.wrapAround) {
+        if (forward) {
+            [sci message:SCI_SETTARGETRANGE wParam:0 lParam:searchStart];
+        } else {
+            [sci message:SCI_SETTARGETRANGE wParam:docLen lParam:searchEnd];
+        }
+        found = [sci message:SCI_SEARCHINTARGET wParam:needleLen lParam:(sptr_t)needle];
+    }
+
+    if (found >= 0) {
+        sptr_t end = [sci message:SCI_GETTARGETEND];
+        [sci message:SCI_SETSEL wParam:(uptr_t)found lParam:end];
+        [sci message:SCI_SCROLLCARET];
+        return YES;
+    }
+    return NO;
+}
+
+#pragma mark - Replace
+
++ (BOOL)replaceInView:(ScintillaView *)sci options:(NPPFindOptions *)opts {
+    if (!opts.searchText.length) return NO;
+
+    const char *needle = [self preparedNeedle:opts];
+    int flags = [self scintillaFlagsForOptions:opts];
+
+    // Check if current selection matches
+    sptr_t selStart = [sci message:SCI_GETSELECTIONSTART];
+    sptr_t selEnd   = [sci message:SCI_GETSELECTIONEND];
+
+    if (selStart != selEnd) {
+        [sci message:SCI_SETSEARCHFLAGS wParam:(uptr_t)flags];
+        [sci message:SCI_SETTARGETRANGE wParam:(uptr_t)selStart lParam:selEnd];
+        sptr_t found = [sci message:SCI_SEARCHINTARGET wParam:strlen(needle) lParam:(sptr_t)needle];
+
+        if (found >= 0 && [sci message:SCI_GETTARGETSTART] == selStart &&
+            [sci message:SCI_GETTARGETEND] == selEnd) {
+            // Current selection matches — replace it
+            NSString *replaceText = opts.replaceText ?: @"";
+            if (opts.searchType == NPPSearchExtended)
+                replaceText = [self expandExtendedString:replaceText];
+            const char *replacement = replaceText.UTF8String;
+
+            if (opts.searchType == NPPSearchRegex)
+                [sci message:SCI_REPLACETARGETRE wParam:(uptr_t)-1 lParam:(sptr_t)replacement];
+            else
+                [sci message:SCI_REPLACETARGET wParam:(uptr_t)-1 lParam:(sptr_t)replacement];
+        }
+    }
+
+    // Find next
+    return [self findInView:sci options:opts forward:(opts.direction == NPPSearchDown)];
+}
+
+#pragma mark - Replace All
+
++ (NSInteger)replaceAllInView:(ScintillaView *)sci options:(NPPFindOptions *)opts {
+    if (!opts.searchText.length) return 0;
+
+    const char *needle = [self preparedNeedle:opts];
+    size_t needleLen = strlen(needle);
+    int flags = [self scintillaFlagsForOptions:opts];
+
+    NSString *replaceText = opts.replaceText ?: @"";
+    if (opts.searchType == NPPSearchExtended)
+        replaceText = [self expandExtendedString:replaceText];
+    const char *replacement = replaceText.UTF8String;
+
+    [sci message:SCI_SETSEARCHFLAGS wParam:(uptr_t)flags];
+    [sci message:SCI_BEGINUNDOACTION];
+
+    sptr_t rangeStart, rangeEnd;
+    if (opts.inSelection) {
+        rangeStart = [sci message:SCI_GETSELECTIONSTART];
+        rangeEnd   = [sci message:SCI_GETSELECTIONEND];
+    } else if (opts.wrapAround) {
+        rangeStart = 0;
+        rangeEnd   = [sci message:SCI_GETLENGTH];
+    } else if (opts.direction == NPPSearchUp) {
+        rangeStart = 0;
+        rangeEnd   = [sci message:SCI_GETCURRENTPOS];
+    } else {
+        rangeStart = [sci message:SCI_GETCURRENTPOS];
+        rangeEnd   = [sci message:SCI_GETLENGTH];
+    }
+
+    NSInteger count = 0;
+    sptr_t pos = rangeStart;
+
+    while (pos < rangeEnd) {
+        [sci message:SCI_SETTARGETRANGE wParam:(uptr_t)pos lParam:rangeEnd];
+        sptr_t found = [sci message:SCI_SEARCHINTARGET wParam:needleLen lParam:(sptr_t)needle];
+        if (found < 0) break;
+
+        sptr_t targetEnd = [sci message:SCI_GETTARGETEND];
+        sptr_t replLen;
+        if (opts.searchType == NPPSearchRegex)
+            replLen = [sci message:SCI_REPLACETARGETRE wParam:(uptr_t)-1 lParam:(sptr_t)replacement];
+        else
+            replLen = [sci message:SCI_REPLACETARGET wParam:(uptr_t)-1 lParam:(sptr_t)replacement];
+
+        sptr_t delta = replLen - (targetEnd - found);
+        rangeEnd += delta;
+        pos = found + replLen;
+        if (pos <= found) pos = found + 1; // prevent infinite loop on zero-length match
+        count++;
+    }
+
+    [sci message:SCI_ENDUNDOACTION];
+    return count;
+}
+
+#pragma mark - Count
+
++ (NSInteger)countInView:(ScintillaView *)sci options:(NPPFindOptions *)opts {
+    if (!opts.searchText.length) return 0;
+
+    const char *needle = [self preparedNeedle:opts];
+    size_t needleLen = strlen(needle);
+    int flags = [self scintillaFlagsForOptions:opts];
+
+    [sci message:SCI_SETSEARCHFLAGS wParam:(uptr_t)flags];
+
+    sptr_t docLen = [sci message:SCI_GETLENGTH];
+    NSInteger count = 0;
+    sptr_t pos = 0;
+
+    while (pos < docLen) {
+        [sci message:SCI_SETTARGETRANGE wParam:(uptr_t)pos lParam:docLen];
+        sptr_t found = [sci message:SCI_SEARCHINTARGET wParam:needleLen lParam:(sptr_t)needle];
+        if (found < 0) break;
+        sptr_t end = [sci message:SCI_GETTARGETEND];
+        pos = end > found ? end : found + 1;
+        count++;
+    }
+    return count;
+}
+
+#pragma mark - Find All
+
++ (NSArray<NPPSearchResult *> *)findAllInView:(ScintillaView *)sci
+                                     filePath:(NSString *)path
+                                      options:(NPPFindOptions *)opts {
+    if (!opts.searchText.length) return @[];
+
+    const char *needle = [self preparedNeedle:opts];
+    size_t needleLen = strlen(needle);
+    int flags = [self scintillaFlagsForOptions:opts];
+
+    [sci message:SCI_SETSEARCHFLAGS wParam:(uptr_t)flags];
+
+    sptr_t docLen = [sci message:SCI_GETLENGTH];
+    NSMutableArray *results = [NSMutableArray array];
+    sptr_t pos = 0;
+
+    while (pos < docLen) {
+        [sci message:SCI_SETTARGETRANGE wParam:(uptr_t)pos lParam:docLen];
+        sptr_t found = [sci message:SCI_SEARCHINTARGET wParam:needleLen lParam:(sptr_t)needle];
+        if (found < 0) break;
+        sptr_t end = [sci message:SCI_GETTARGETEND];
+
+        // Get line number and line text
+        sptr_t line = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)found];
+        sptr_t lineStart = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)line];
+        sptr_t lineEnd   = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)line];
+        sptr_t lineLen   = lineEnd - lineStart;
+
+        // Get line text
+        char *buf = (char *)calloc(lineLen + 1, 1);
+        struct Sci_TextRangeFull tr;
+        tr.chrg.cpMin = lineStart;
+        tr.chrg.cpMax = lineEnd;
+        tr.lpstrText  = buf;
+        [sci message:SCI_GETTEXTRANGEFULL wParam:0 lParam:(sptr_t)&tr];
+
+        NPPSearchResult *r = [[NPPSearchResult alloc] init];
+        r.filePath    = path ?: @"";
+        r.lineNumber  = line + 1; // 1-based
+        r.lineText    = [NSString stringWithUTF8String:buf] ?: @"";
+        r.matchStart  = found - lineStart;
+        r.matchLength = end - found;
+        [results addObject:r];
+
+        free(buf);
+        pos = end > found ? end : found + 1;
+    }
+    return results;
+}
+
+#pragma mark - Mark All
+
++ (NSInteger)markAllInView:(ScintillaView *)sci options:(NPPFindOptions *)opts {
+    if (!opts.searchText.length) return 0;
+
+    const char *needle = [self preparedNeedle:opts];
+    size_t needleLen = strlen(needle);
+    int flags = [self scintillaFlagsForOptions:opts];
+
+    // Mark indicator slot: use indicator 31 for "Find Mark Style"
+    static const int kFindMarkIndicator = 31;
+
+    if (opts.doPurge) {
+        [sci message:SCI_SETINDICATORCURRENT wParam:kFindMarkIndicator];
+        [sci message:SCI_INDICATORCLEARRANGE wParam:0 lParam:[sci message:SCI_GETLENGTH]];
+        if (opts.doBookmarkLine) {
+            [sci message:SCI_MARKERDELETEALL wParam:20]; // bookmark marker 20
+        }
+    }
+
+    [sci message:SCI_SETINDICATORCURRENT wParam:kFindMarkIndicator];
+    [sci message:SCI_INDICSETSTYLE  wParam:kFindMarkIndicator lParam:INDIC_ROUNDBOX];
+    [sci message:SCI_INDICSETFORE   wParam:kFindMarkIndicator lParam:0xFF8000]; // orange
+    [sci message:SCI_INDICSETALPHA  wParam:kFindMarkIndicator lParam:100];
+
+    [sci message:SCI_SETSEARCHFLAGS wParam:(uptr_t)flags];
+
+    sptr_t docLen = [sci message:SCI_GETLENGTH];
+    NSInteger count = 0;
+    sptr_t pos = 0;
+
+    while (pos < docLen) {
+        [sci message:SCI_SETTARGETRANGE wParam:(uptr_t)pos lParam:docLen];
+        sptr_t found = [sci message:SCI_SEARCHINTARGET wParam:needleLen lParam:(sptr_t)needle];
+        if (found < 0) break;
+        sptr_t end = [sci message:SCI_GETTARGETEND];
+
+        [sci message:SCI_INDICATORFILLRANGE wParam:(uptr_t)found lParam:end - found];
+
+        if (opts.doBookmarkLine) {
+            sptr_t line = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)found];
+            [sci message:SCI_MARKERADD wParam:(uptr_t)line lParam:20]; // bookmark marker
+        }
+
+        pos = end > found ? end : found + 1;
+        count++;
+    }
+    return count;
+}
+
+#pragma mark - Find in Directory
+
++ (NSArray<NPPFileResults *> *)findInDirectory:(NSString *)directory
+                                       options:(NPPFindOptions *)opts
+                                 progressBlock:(nullable void(^)(NSString *currentFile, NSInteger hits))progressBlock
+                                    cancelFlag:(BOOL *)cancelFlag {
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSDirectoryEnumerator *en = [fm enumeratorAtPath:directory];
+    if (!opts.isRecursive) [en skipDescendants];
+
+    NSString *searchText = opts.searchText;
+    if (opts.searchType == NPPSearchExtended)
+        searchText = [self expandExtendedString:searchText];
+
+    // Build file filter predicates
+    NSArray<NSString *> *globs = [opts.filters componentsSeparatedByCharactersInSet:
+        [NSCharacterSet characterSetWithCharactersInString:@", "]];
+    NSMutableArray<NSPredicate *> *preds = [NSMutableArray array];
+    for (NSString *g in globs) {
+        NSString *t = [g stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if (t.length) [preds addObject:[NSPredicate predicateWithFormat:@"SELF LIKE[c] %@", t]];
+    }
+
+    NSStringCompareOptions cmpOpts = opts.matchCase ? 0 : NSCaseInsensitiveSearch;
+    NSMutableArray<NPPFileResults *> *allResults = [NSMutableArray array];
+    __block NSInteger totalHits = 0;
+    NSString *rel;
+
+    while ((rel = [en nextObject])) {
+        if (cancelFlag && *cancelFlag) break;
+
+        NSString *full = [directory stringByAppendingPathComponent:rel];
+        BOOL isDir = NO;
+        [fm fileExistsAtPath:full isDirectory:&isDir];
+        if (isDir) {
+            // Skip hidden directories
+            if (!opts.isInHiddenDirs && [rel.lastPathComponent hasPrefix:@"."]) {
+                [en skipDescendants];
+            }
+            continue;
+        }
+
+        // Skip hidden files
+        if (!opts.isInHiddenDirs && [rel.lastPathComponent hasPrefix:@"."]) continue;
+
+        // Apply file filter
+        NSString *name = rel.lastPathComponent;
+        BOOL pass = (preds.count == 0);
+        for (NSPredicate *p in preds) {
+            if ([p evaluateWithObject:name]) { pass = YES; break; }
+        }
+        if (!pass) continue;
+
+        // Read file
+        NSString *content = [NSString stringWithContentsOfFile:full
+                                                     encoding:NSUTF8StringEncoding error:nil];
+        if (!content) continue;
+
+        NSArray<NSString *> *lines = [content componentsSeparatedByString:@"\n"];
+        NPPFileResults *fileRes = nil;
+
+        for (NSInteger ln = 0; ln < (NSInteger)lines.count; ln++) {
+            if (cancelFlag && *cancelFlag) break;
+
+            NSString *line = lines[ln];
+            NSRange range;
+
+            if (opts.searchType == NPPSearchRegex) {
+                NSRegularExpressionOptions reOpts = 0;
+                if (!opts.matchCase) reOpts |= NSRegularExpressionCaseInsensitive;
+                if (opts.dotMatchesNewline) reOpts |= NSRegularExpressionDotMatchesLineSeparators;
+                NSRegularExpression *re = [NSRegularExpression regularExpressionWithPattern:searchText
+                                                                                   options:reOpts error:nil];
+                if (!re) return allResults;
+                NSTextCheckingResult *m = [re firstMatchInString:line options:0
+                                                          range:NSMakeRange(0, line.length)];
+                if (!m) continue;
+                range = m.range;
+            } else {
+                range = [line rangeOfString:searchText options:cmpOpts];
+                if (range.location == NSNotFound) continue;
+            }
+
+            // Whole word check for non-regex
+            if (opts.wholeWord && opts.searchType != NPPSearchRegex) {
+                if (range.location > 0) {
+                    unichar c = [line characterAtIndex:range.location - 1];
+                    if ([[NSCharacterSet alphanumericCharacterSet] characterIsMember:c] || c == '_')
+                        continue;
+                }
+                NSUInteger endPos = range.location + range.length;
+                if (endPos < line.length) {
+                    unichar c = [line characterAtIndex:endPos];
+                    if ([[NSCharacterSet alphanumericCharacterSet] characterIsMember:c] || c == '_')
+                        continue;
+                }
+            }
+
+            if (!fileRes) {
+                fileRes = [[NPPFileResults alloc] init];
+                fileRes.filePath = full;
+            }
+
+            NPPSearchResult *r = [[NPPSearchResult alloc] init];
+            r.filePath    = full;
+            r.lineNumber  = ln + 1;
+            r.lineText    = line;
+            r.matchStart  = (NSInteger)range.location;
+            r.matchLength = (NSInteger)range.length;
+            [fileRes.results addObject:r];
+        }
+
+        if (fileRes) {
+            totalHits += (NSInteger)fileRes.results.count;
+            [allResults addObject:fileRes];
+            if (progressBlock) {
+                NSInteger h = totalHits;
+                NSString *f = full;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    progressBlock(f, h);
+                });
+            }
+        }
+    }
+    return allResults;
+}
+
+@end

@@ -91,6 +91,9 @@ set(APP_SRCS
     src/FunctionListPanel.mm
     src/DocumentMapPanel.mm
     src/ProjectPanel.mm
+    src/SearchEngine.mm
+    src/SearchResultsPanel.mm
+    src/FindWindow.mm
     src/StyleConfiguratorWindowController.mm
     src/IncrementalSearchBar.mm
     src/CommandPalettePanel.mm
@@ -124,6 +127,9 @@ set(APP_HEADERS
     src/FunctionListPanel.h
     src/DocumentMapPanel.h
     src/ProjectPanel.h
+    src/SearchEngine.h
+    src/SearchResultsPanel.h
+    src/FindWindow.h
     src/StyleConfiguratorWindowController.h
     src/IncrementalSearchBar.h
     src/CommandPalettePanel.h

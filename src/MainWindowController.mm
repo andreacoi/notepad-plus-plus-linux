@@ -2,6 +2,9 @@
 #import "TabManager.h"
 #import "EditorView.h"
 #import "FindReplacePanel.h"
+#import "FindWindow.h"
+#import "SearchResultsPanel.h"
+#import "SearchEngine.h"
 #import "MenuBuilder.h"
 #import "ColumnEditorPanel.h"
 #import "FindInFilesPanel.h"
@@ -1254,6 +1257,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
      NSToolbarDelegate, FindReplacePanelDelegate, NSUserInterfaceValidations,
      NSSplitViewDelegate, IncrementalSearchBarDelegate,
      FolderTreePanelDelegate, GitPanelDelegate, ProjectPanelDelegate,
+     FindWindowDelegate, SearchResultsPanelDelegate,
      ClipboardHistoryPanelDelegate, DocumentMapPanelDelegate,
      DocumentListPanelDelegate, CharacterPanelDelegate,
      NSMenuDelegate>
@@ -1281,6 +1285,8 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     NSView                *_gitPanel;          // GitPanel
     CharacterPanel        *_charPanel;
     ProjectPanel          *_projectPanel;
+    SearchResultsPanel    *_searchResultsPanel;
+    NSSplitView           *_searchSplitView;    // wraps editor area + search results
 
     // Second editor view — horizontal (top/bottom)
     NSSplitView   *_hSplitView;
@@ -2219,7 +2225,19 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     [_hSplitView.widthAnchor constraintGreaterThanOrEqualToConstant:200].active = YES;
     [_sidePanelHost.widthAnchor constraintGreaterThanOrEqualToConstant:150].active = YES;
 
-    for (NSView *v in @[_editorSplitView, _incSearchBar, _findPanel, _statusBar]) {
+    // Search results panel (bottom of main window, collapsible)
+    _searchResultsPanel = [[SearchResultsPanel alloc] init];
+    _searchResultsPanel.delegate = self;
+
+    _searchSplitView = [[NSSplitView alloc] init];
+    _searchSplitView.vertical = NO; // horizontal split: top/bottom
+    _searchSplitView.dividerStyle = NSSplitViewDividerStyleThin;
+    _searchSplitView.delegate = self;
+    _searchSplitView.translatesAutoresizingMaskIntoConstraints = NO;
+    [_searchSplitView addSubview:_editorSplitView];
+    [_searchSplitView addSubview:_searchResultsPanel];
+
+    for (NSView *v in @[_searchSplitView, _incSearchBar, _findPanel, _statusBar]) {
         [content addSubview:v];
     }
 
@@ -2227,11 +2245,11 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     _findPanelHeightConstraint = [_findPanel.heightAnchor constraintEqualToConstant:0];
 
     [NSLayoutConstraint activateConstraints:@[
-        // Split view fills from top to incremental search bar
-        [_editorSplitView.topAnchor constraintEqualToAnchor:content.topAnchor],
-        [_editorSplitView.leadingAnchor constraintEqualToAnchor:content.leadingAnchor],
-        [_editorSplitView.trailingAnchor constraintEqualToAnchor:content.trailingAnchor],
-        [_editorSplitView.bottomAnchor constraintEqualToAnchor:_incSearchBar.topAnchor],
+        // Search split view fills from top to incremental search bar
+        [_searchSplitView.topAnchor constraintEqualToAnchor:content.topAnchor],
+        [_searchSplitView.leadingAnchor constraintEqualToAnchor:content.leadingAnchor],
+        [_searchSplitView.trailingAnchor constraintEqualToAnchor:content.trailingAnchor],
+        [_searchSplitView.bottomAnchor constraintEqualToAnchor:_incSearchBar.topAnchor],
 
         // Incremental search bar (sits between editor and find panel)
         [_incSearchBar.leadingAnchor constraintEqualToAnchor:content.leadingAnchor],
@@ -2257,6 +2275,8 @@ static BOOL groupHasTrailingSep(NSString *ident) {
         [self->_vSplitView   setPosition:MAX(NSWidth(self->_vSplitView.frame),   9999) ofDividerAtIndex:0];
         [self->_hSplitView   setPosition:MAX(NSHeight(self->_hSplitView.frame),  9999) ofDividerAtIndex:0];
         [self->_editorSplitView setPosition:MAX(NSWidth(self->_editorSplitView.frame), 9999) ofDividerAtIndex:0];
+        // Collapse search results panel initially
+        [self->_searchSplitView setPosition:NSHeight(self->_searchSplitView.frame) ofDividerAtIndex:0];
         // Restore after collapsing so the restore wins
         [self _restorePanelStates];
         [self _refreshToolbarStates];
@@ -4123,15 +4143,20 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 #pragma mark - Search menu actions
 
 - (void)showFindPanel:(id)sender {
+    [self _ensureFindWindow];
     [self _fillFindFieldWithSelectionIfEnabled];
-    [_findPanel openForFind];
-    [self animateFindPanel];
+    [[FindWindow sharedWindow] showTab:FindWindowTabFind];
 }
 
 - (void)showReplacePanel:(id)sender {
+    [self _ensureFindWindow];
     [self _fillFindFieldWithSelectionIfEnabled];
-    [_findPanel openForReplace];
-    [self animateFindPanel];
+    [[FindWindow sharedWindow] showTab:FindWindowTabReplace];
+}
+
+- (void)_ensureFindWindow {
+    FindWindow *fw = [FindWindow sharedWindow];
+    if (!fw.delegate) fw.delegate = self;
 }
 
 - (void)_fillFindFieldWithSelectionIfEnabled {
@@ -4139,45 +4164,51 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     EditorView *ed = [self currentEditor];
     NSString *sel = [ed selectedText];
     if (sel.length > 0 && sel.length < 1000) {
-        [_findPanel setSearchText:sel];
+        [[FindWindow sharedWindow] setSearchText:sel];
     }
 }
 
 - (void)findNext:(id)sender {
-    NSString *text = _findPanel.currentSearchText;
+    FindWindow *fw = [FindWindow sharedWindow];
+    NSString *text = fw.searchText;
     if (!text.length) { [self showFindPanel:sender]; return; }
     EditorView *ed = [self currentEditor];
     if (!ed) return;
-    if (![ed findNext:text matchCase:_findPanel.currentMatchCase
-           wholeWord:_findPanel.currentWholeWord wrap:_findPanel.currentWrap]) NSBeep();
+    NPPFindOptions *opts = [fw currentOptions];
+    if (![SearchEngine findInView:ed.scintillaView options:opts forward:YES]) NSBeep();
 }
 
 - (void)findPrevious:(id)sender {
-    NSString *text = _findPanel.currentSearchText;
+    FindWindow *fw = [FindWindow sharedWindow];
+    NSString *text = fw.searchText;
     if (!text.length) { [self showFindPanel:sender]; return; }
     EditorView *ed = [self currentEditor];
     if (!ed) return;
-    if (![ed findPrev:text matchCase:_findPanel.currentMatchCase
-           wholeWord:_findPanel.currentWholeWord wrap:_findPanel.currentWrap]) NSBeep();
+    NPPFindOptions *opts = [fw currentOptions];
+    if (![SearchEngine findInView:ed.scintillaView options:opts forward:NO]) NSBeep();
 }
 
 // Find Volatile: same as Find Next/Prev but never wraps
 - (void)findVolatileNext:(id)sender {
-    NSString *text = _findPanel.currentSearchText;
+    FindWindow *fw = [FindWindow sharedWindow];
+    NSString *text = fw.searchText;
     if (!text.length) return;
     EditorView *ed = [self currentEditor];
     if (!ed) return;
-    if (![ed findNext:text matchCase:_findPanel.currentMatchCase
-           wholeWord:_findPanel.currentWholeWord wrap:NO]) NSBeep();
+    NPPFindOptions *opts = [fw currentOptions];
+    opts.wrapAround = NO;
+    if (![SearchEngine findInView:ed.scintillaView options:opts forward:YES]) NSBeep();
 }
 
 - (void)findVolatilePrevious:(id)sender {
-    NSString *text = _findPanel.currentSearchText;
+    FindWindow *fw = [FindWindow sharedWindow];
+    NSString *text = fw.searchText;
     if (!text.length) return;
     EditorView *ed = [self currentEditor];
     if (!ed) return;
-    if (![ed findPrev:text matchCase:_findPanel.currentMatchCase
-           wholeWord:_findPanel.currentWholeWord wrap:NO]) NSBeep();
+    NPPFindOptions *opts = [fw currentOptions];
+    opts.wrapAround = NO;
+    if (![SearchEngine findInView:ed.scintillaView options:opts forward:NO]) NSBeep();
 }
 
 // ── Incremental Search ────────────────────────────────────────────────────────
@@ -4692,9 +4723,9 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 #pragma mark - Find in Files
 
 - (void)showFindInFiles:(id)sender {
-    FindInFilesPanel *panel = [FindInFilesPanel sharedPanel];
-    panel.delegate = self;
-    [panel showWindow:nil];
+    [self _ensureFindWindow];
+    [self _fillFindFieldWithSelectionIfEnabled];
+    [[FindWindow sharedWindow] showTab:FindWindowTabFindInFiles];
 }
 
 - (void)findInFilesPanel:(FindInFilesPanel *)panel
@@ -4726,6 +4757,68 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     fif.delegate        = self;
     fif.searchDirectory = path;
     [fif showWindow:nil];
+}
+
+#pragma mark - FindWindowDelegate
+
+- (EditorView *)currentEditorForFindWindow { return [self currentEditor]; }
+
+// FindWindowDelegate
+- (NSArray<EditorView *> *)allOpenEditors {
+    NSMutableArray *all = [NSMutableArray array];
+    for (EditorView *ed in _tabManager.allEditors) [all addObject:ed];
+    if (_subTabManagerV)
+        for (EditorView *ed in _subTabManagerV.allEditors) [all addObject:ed];
+    if (_subTabManagerH)
+        for (EditorView *ed in _subTabManagerH.allEditors) [all addObject:ed];
+    return all;
+}
+
+- (void)findWindow:(FindWindow *)fw navigateToFile:(NSString *)path atLine:(NSInteger)line {
+    [self openFileAtPath:path];
+    EditorView *ed = [self currentEditor];
+    if (ed && line > 0) [ed goToLineNumber:line];
+}
+
+- (void)findWindow:(FindWindow *)fw showResults:(NSArray *)results
+     forSearchText:(NSString *)text options:(NPPFindOptions *)opts
+      filesSearched:(NSInteger)filesSearched {
+    [self _showSearchResultsPanelIfHidden];
+    [_searchResultsPanel addResults:results forSearchText:text options:opts filesSearched:filesSearched];
+}
+
+- (void)findWindowShowSearchResultsPanel:(FindWindow *)fw {
+    [self _showSearchResultsPanelIfHidden];
+}
+
+- (SearchResultsPanel *)searchResultsPanel { return _searchResultsPanel; }
+
+- (ProjectPanel *)projectPanel { return _projectPanel; }
+
+#pragma mark - SearchResultsPanelDelegate
+
+- (void)searchResultsPanel:(SearchResultsPanel *)panel
+          navigateToFile:(NSString *)path atLine:(NSInteger)line
+               matchText:(NSString *)text matchCase:(BOOL)mc {
+    if (!path.length || line <= 0) return;
+    [self openFileAtPath:path];
+    EditorView *ed = [self currentEditor];
+    if (ed && line > 0) {
+        [ed goToLineNumber:line];
+        // Highlight the line
+        ScintillaView *sci = ed.scintillaView;
+        sptr_t lineIdx = line - 1;
+        sptr_t lineStart = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)lineIdx];
+        sptr_t lineEnd   = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)lineIdx];
+        [sci message:SCI_SETSEL wParam:(uptr_t)lineStart lParam:lineEnd];
+        [sci message:SCI_SCROLLCARET];
+    }
+}
+
+- (void)searchResultsPanelDidRequestClose:(SearchResultsPanel *)panel {
+    if (_searchSplitView) {
+        [_searchSplitView setPosition:NSHeight(_searchSplitView.frame) ofDividerAtIndex:0];
+    }
 }
 
 #pragma mark - ProjectPanelDelegate
@@ -5314,6 +5407,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     if (sv == _editorSplitView) return sub == _sidePanelHost;
     if (sv == _hSplitView)      return sub == _subEditorContainerH;
     if (sv == _vSplitView)      return sub == _subEditorContainerV;
+    if (sv == _searchSplitView) return sub == _searchResultsPanel;
     return NO;
 }
 
@@ -6526,77 +6620,9 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 }
 
 - (void)showMarkDialog:(id)sender {
-    // Simple sheet: text, match case, whole word, style selector, Mark All button.
-    NSPanel *panel = [[NSPanel alloc] initWithContentRect:NSMakeRect(0,0,380,150)
-                                                styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable
-                                                  backing:NSBackingStoreBuffered
-                                                    defer:NO];
-    panel.title = @"Mark";
-    [panel center];
-    NSView *cv = panel.contentView;
-
-    NSTextField *tf = [[NSTextField alloc] init];
-    tf.translatesAutoresizingMaskIntoConstraints = NO;
-    tf.placeholderString = @"Text to mark…";
-
-    NSButton *mcBox = [NSButton checkboxWithTitle:@"Match case" target:nil action:nil];
-    mcBox.translatesAutoresizingMaskIntoConstraints = NO;
-    NSButton *wwBox = [NSButton checkboxWithTitle:@"Whole word" target:nil action:nil];
-    wwBox.translatesAutoresizingMaskIntoConstraints = NO;
-
-    NSPopUpButton *stylePop = [[NSPopUpButton alloc] init];
-    stylePop.translatesAutoresizingMaskIntoConstraints = NO;
-    for (NSString *s in @[@"Style 1 (Cyan)", @"Style 2 (Yellow)", @"Style 3 (Green)",
-                           @"Style 4 (Orange)", @"Style 5 (Violet)"])
-        [stylePop addItemWithTitle:s];
-
-    NSButton *markBtn   = [NSButton buttonWithTitle:@"Mark All" target:nil action:nil];
-    markBtn.translatesAutoresizingMaskIntoConstraints = NO;
-    markBtn.keyEquivalent = @"\r";
-    NSButton *closeBtn  = [NSButton buttonWithTitle:@"Close" target:nil action:nil];
-    closeBtn.translatesAutoresizingMaskIntoConstraints = NO;
-    closeBtn.keyEquivalent = @"\033";
-
-    [cv addSubview:tf]; [cv addSubview:mcBox]; [cv addSubview:wwBox];
-    [cv addSubview:stylePop]; [cv addSubview:markBtn]; [cv addSubview:closeBtn];
-
-    [NSLayoutConstraint activateConstraints:@[
-        [tf.topAnchor constraintEqualToAnchor:cv.topAnchor constant:14],
-        [tf.leadingAnchor constraintEqualToAnchor:cv.leadingAnchor constant:12],
-        [tf.trailingAnchor constraintEqualToAnchor:cv.trailingAnchor constant:-12],
-        [mcBox.topAnchor constraintEqualToAnchor:tf.bottomAnchor constant:6],
-        [mcBox.leadingAnchor constraintEqualToAnchor:tf.leadingAnchor],
-        [wwBox.topAnchor constraintEqualToAnchor:mcBox.topAnchor],
-        [wwBox.leadingAnchor constraintEqualToAnchor:mcBox.trailingAnchor constant:12],
-        [stylePop.topAnchor constraintEqualToAnchor:mcBox.bottomAnchor constant:8],
-        [stylePop.leadingAnchor constraintEqualToAnchor:tf.leadingAnchor],
-        [stylePop.trailingAnchor constraintEqualToAnchor:tf.trailingAnchor],
-        [markBtn.trailingAnchor constraintEqualToAnchor:cv.trailingAnchor constant:-12],
-        [markBtn.bottomAnchor constraintEqualToAnchor:cv.bottomAnchor constant:-12],
-        [closeBtn.trailingAnchor constraintEqualToAnchor:markBtn.leadingAnchor constant:-8],
-        [closeBtn.bottomAnchor constraintEqualToAnchor:markBtn.bottomAnchor],
-    ]];
-    [panel makeFirstResponder:tf];
-
-    __weak typeof(self) wSelf = self;
-    __weak NSPanel *wPanel = panel;
-    __weak NSTextField *wTF = tf;
-    __weak NSButton *wMC = mcBox, *wWW = wwBox;
-    __weak NSPopUpButton *wPop = stylePop;
-    markBtn.target = [NSBlockOperation blockOperationWithBlock:^{
-        NSString *text = wTF.stringValue;
-        if (!text.length) return;
-        NSInteger style = wPop.indexOfSelectedItem + 1;
-        [[wSelf currentEditor] markStyle:style allOccurrencesOf:text
-                               matchCase:wMC.state == NSControlStateValueOn
-                               wholeWord:wWW.state == NSControlStateValueOn];
-    }];
-    markBtn.action = @selector(main);
-    closeBtn.target = [NSBlockOperation blockOperationWithBlock:^{
-        [NSApp stopModal]; [wPanel orderOut:nil];
-    }];
-    closeBtn.action = @selector(main);
-    [NSApp runModalForWindow:panel];
+    [self _ensureFindWindow];
+    [self _fillFindFieldWithSelectionIfEnabled];
+    [[FindWindow sharedWindow] showTab:FindWindowTabMark];
 }
 
 - (void)pasteToBookmarkedLines:(id)sender { [[self currentEditor] pasteToBookmarkedLines:sender]; }
@@ -6893,9 +6919,47 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
 #pragma mark - Search Results Window (reuses Find in Files)
 
-- (void)showSearchResultsWindow:(id)sender  { [self showFindInFiles:sender]; }
-- (void)nextSearchResult:(id)sender         { /* navigated via FindInFilesPanel row selection */ }
-- (void)previousSearchResult:(id)sender     { /* navigated via FindInFilesPanel row selection */ }
+- (void)showSearchResultsWindow:(id)sender {
+    [self _toggleSearchResultsPanel];
+}
+
+- (void)nextSearchResult:(id)sender {
+    if (_searchResultsPanel) [_searchResultsPanel navigateToNextResult];
+}
+
+- (void)previousSearchResult:(id)sender {
+    if (_searchResultsPanel) [_searchResultsPanel navigateToPreviousResult];
+}
+
+- (void)_toggleSearchResultsPanel {
+    if (!_searchResultsPanel) {
+        _searchResultsPanel = [[SearchResultsPanel alloc] init];
+        _searchResultsPanel.delegate = self;
+    }
+    if (!_searchSplitView) return;
+
+    BOOL isCollapsed = [_searchSplitView isSubviewCollapsed:_searchResultsPanel];
+    if (isCollapsed) {
+        CGFloat h = NSHeight(_searchSplitView.frame);
+        [_searchSplitView setPosition:h * 0.7 ofDividerAtIndex:0];
+    } else {
+        [_searchSplitView setPosition:NSHeight(_searchSplitView.frame) ofDividerAtIndex:0];
+    }
+}
+
+- (void)_showSearchResultsPanelIfHidden {
+    if (!_searchResultsPanel) {
+        _searchResultsPanel = [[SearchResultsPanel alloc] init];
+        _searchResultsPanel.delegate = self;
+    }
+    if (!_searchSplitView) return;
+
+    BOOL isCollapsed = [_searchSplitView isSubviewCollapsed:_searchResultsPanel];
+    if (isCollapsed) {
+        CGFloat h = NSHeight(_searchSplitView.frame);
+        [_searchSplitView setPosition:h * 0.7 ofDividerAtIndex:0];
+    }
+}
 
 #pragma mark - Multi-select in all opened documents
 
