@@ -400,7 +400,7 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
 
     // "In selection" checkbox — centered between fields and buttons
     _frInSelection = _mkChk([[NppLocalizer shared] translate:@"In selection"]);
-    _placeChk(v, _frInSelection, kFieldR - 60, H - 70);
+    _placeChk(v, _frInSelection, kFieldR - 88, H - 60);
 
     // Buttons (right column, dynamic height for wrapping labels)
     NppLocalizer *loc = [NppLocalizer shared];
@@ -447,7 +447,7 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
 
     // "In selection"
     _frInSelection = _mkChk([[NppLocalizer shared] translate:@"In selection"]);
-    _placeChk(v, _frInSelection, kFieldR - 60, H - 92);
+    _placeChk(v, _frInSelection, kFieldR - 90, H - 92);
 
     // Buttons
     _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Find Next"],                            @selector(_findNext:), self),        H - 34);
@@ -589,7 +589,7 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
 
     // "In selection" — centered
     _mkInSelection = _mkChk([[NppLocalizer shared] translate:@"In selection"]);
-    _placeChk(v, _mkInSelection, kFieldR - 60, H - 60);
+    _placeChk(v, _mkInSelection, kFieldR - 90, H - 60);
 
     // Buttons
     _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Mark All"],         @selector(_markAll:), self),   H - 34);
