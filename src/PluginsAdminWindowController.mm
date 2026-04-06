@@ -406,7 +406,6 @@ static NSString *const kPluginListVersion = @"0.1.0";
         pe.homepage          = entry[@"homepage"] ?: @"";
         pe.repository        = entry[@"repository"] ?: @"";
         pe.pluginID          = entry[@"id"] ?: @"";
-        pe.isInstalled       = [installedNames containsObject:pe.folderName];
 
         // Inner join: match by folder-name first, then by display-name
         NSDictionary *macEntry = macByFolder[pe.folderName];
@@ -417,12 +416,15 @@ static NSString *const kPluginListVersion = @"0.1.0";
             pe.macVersion     = macEntry[@"version"] ?: pe.version;
             pe.macRepository  = macEntry[@"repository"] ?: @"";
             pe.macPluginID    = macEntry[@"id"] ?: @"";
-            // Also check if the macOS folder-name differs (for install path)
+            // Use macOS folder name for install path if it differs
             NSString *macFolder = macEntry[@"folder-name"];
             if (macFolder.length > 0 && ![macFolder isEqualToString:pe.folderName]) {
-                pe.folderName = macFolder;  // use macOS folder name for install
+                pe.folderName = macFolder;
             }
         }
+
+        // Check installed state AFTER the macOS folder-name override
+        pe.isInstalled = [installedNames containsObject:pe.folderName];
 
         [_allAvailable addObject:pe];
     }
@@ -488,10 +490,7 @@ static NSString *const kPluginListVersion = @"0.1.0";
         case PluginAdminTabAvailable:
             _actionButton.title = [loc translate:@"Install"];
             _actionButton.hidden = NO;
-            for (NppPluginEntry *pe in _allAvailable) {
-                if (!pe.isInstalled)
-                    [_filteredList addObject:pe];
-            }
+            [_filteredList addObjectsFromArray:_allAvailable];
             break;
 
         case PluginAdminTabUpdates:
@@ -557,16 +556,22 @@ static NSString *const kPluginListVersion = @"0.1.0";
         }
 
         if (_currentTab == PluginAdminTabAvailable) {
-            // Only show checkboxes for macOS-available plugins
             cb.hidden = !pe.isMacAvailable;
-            cb.enabled = pe.isMacAvailable;
+            if (pe.isInstalled) {
+                // Already installed: show checked but disabled
+                cb.enabled = NO;
+                cb.state = NSControlStateValueOn;
+            } else {
+                cb.enabled = pe.isMacAvailable;
+                cb.state = [_checkedPlugins containsObject:pe.folderName]
+                             ? NSControlStateValueOn : NSControlStateValueOff;
+            }
         } else {
             cb.hidden = NO;
             cb.enabled = YES;
+            cb.state = [_checkedPlugins containsObject:pe.folderName]
+                         ? NSControlStateValueOn : NSControlStateValueOff;
         }
-
-        cb.state = [_checkedPlugins containsObject:pe.folderName]
-                     ? NSControlStateValueOn : NSControlStateValueOff;
         cb.tag = row;
         return cb;
     }
@@ -589,8 +594,8 @@ static NSString *const kPluginListVersion = @"0.1.0";
             tf.stringValue = pe.version ?: @"";
     }
 
-    // Dim text for plugins without macOS builds (Available tab only)
-    if (_currentTab == PluginAdminTabAvailable && !canInstall) {
+    // Dim text for installed or Windows-only plugins (Available tab)
+    if (_currentTab == PluginAdminTabAvailable && (!canInstall || pe.isInstalled)) {
         tf.textColor = [NSColor tertiaryLabelColor];
     } else {
         tf.textColor = [NSColor labelColor];
@@ -796,6 +801,7 @@ static NSString *const kPluginListVersion = @"0.1.0";
     if (![zipData writeToFile:tmpPath atomically:YES]) return NO;
 
     // Use /usr/bin/ditto to extract (handles ZIP natively on macOS)
+    // The ZIP contains files inside a subfolder (e.g. nppURLPlugin/nppURLPlugin.dylib)
     NSTask *task = [[NSTask alloc] init];
     task.launchPath = @"/usr/bin/ditto";
     task.arguments = @[@"-xk", tmpPath, destDir];
