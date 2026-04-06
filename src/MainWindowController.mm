@@ -7542,6 +7542,16 @@ static int64_t _sysctlInt(const char *name) {
     _autoSaveTimer = nil;
     [self saveWindowFrame];
     // Note: session already saved in windowShouldClose:
+
+    // Close all auxiliary windows so the app can terminate cleanly.
+    // Without this, standalone windows (Plugins Admin, Find, Style Configurator, etc.)
+    // keep the app alive after the main window closes.
+    [[FindWindow sharedWindow].window orderOut:nil];
+    [[PluginsAdminWindowController sharedController].window orderOut:nil];
+    [[StyleConfiguratorWindowController sharedController].window orderOut:nil];
+    [[FindInFilesPanel sharedPanel].window orderOut:nil];
+    [[UserDefineDialog sharedController].window orderOut:nil];
+    [[PreferencesWindowController sharedController].window orderOut:nil];
 }
 
 - (BOOL)windowShouldClose:(NSWindow *)sender {
