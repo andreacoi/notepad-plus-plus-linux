@@ -412,10 +412,17 @@ static NSString *const kPluginListVersion = @"0.1.0";
         if (!macEntry) macEntry = macByName[pe.displayName];
 
         if (macEntry) {
-            pe.isMacAvailable = YES;
-            pe.macVersion     = macEntry[@"version"] ?: pe.version;
-            pe.macRepository  = macEntry[@"repository"] ?: @"";
-            pe.macPluginID    = macEntry[@"id"] ?: @"";
+            pe.isMacAvailable    = YES;
+            pe.macVersion        = macEntry[@"version"] ?: pe.version;
+            pe.macRepository     = macEntry[@"repository"] ?: @"";
+            pe.macPluginID       = macEntry[@"id"] ?: @"";
+            // Override description/author/homepage with macOS values if present
+            NSString *macDesc = macEntry[@"description"];
+            if (macDesc.length > 0) pe.pluginDescription = macDesc;
+            NSString *macAuthor = macEntry[@"author"];
+            if (macAuthor.length > 0) pe.author = macAuthor;
+            NSString *macHome = macEntry[@"homepage"];
+            if (macHome.length > 0) pe.homepage = macHome;
             // Use macOS folder name for install path if it differs
             NSString *macFolder = macEntry[@"folder-name"];
             if (macFolder.length > 0 && ![macFolder isEqualToString:pe.folderName]) {
