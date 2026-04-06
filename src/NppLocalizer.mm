@@ -100,11 +100,14 @@ static NSString *normalizeForLookup(NSString *s) {
 
 - (void)autoLoad {
     NSString *saved = [[NSUserDefaults standardUserDefaults] stringForKey:kPrefLanguage];
+    // Normalize legacy value from english_customizable to english
+    if ([saved isEqualToString:@"english_customizable"]) {
+        saved = @"english";
+        [[NSUserDefaults standardUserDefaults] setObject:saved forKey:kPrefLanguage];
+    }
     if (saved.length > 0 && ![saved isEqualToString:@"english"]) {
         [self loadLanguageNamed:saved];
     }
-    // English needs no translation; just apply to restore any previously stashed
-    // originals if the language was reset programmatically outside of this object.
 }
 
 - (BOOL)loadLanguageNamed:(nullable NSString *)languageName {
@@ -281,7 +284,8 @@ static NSString *normalizeForLookup(NSString *s) {
         for (NSString *file in files) {
             if (![file.pathExtension.lowercaseString isEqualToString:@"xml"]) continue;
             NSString *stem = [file.stringByDeletingPathExtension lowercaseString];
-            if ([stem isEqualToString:@"english"]) continue; // already added
+            if ([stem isEqualToString:@"english"] ||
+                [stem isEqualToString:@"english_customizable"]) continue;
             NSString *fullPath = [dir stringByAppendingPathComponent:file];
             NSString *displayName = [self _displayNameFromXMLAtPath:fullPath] ?:
                                     [self _displayNameFromStem:stem];

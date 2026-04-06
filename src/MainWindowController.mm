@@ -5517,16 +5517,19 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     if (_gitPanel && [_sidePanelHost hasPanel:_gitPanel]) {
         [self _updateGitPanelForPath:editor.filePath];
     }
-    // Defer git operations 1s so they run after the TCC grant from the file read
-    // has been established — avoids extra permission prompts for protected folders.
-    NSString *gitPath = editor.filePath;
-    __weak typeof(self) weakSelf = self;
-    __weak EditorView *weakEd = editor;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)),
-                   dispatch_get_main_queue(), ^{
-        [weakSelf _updateGitBranch:gitPath];
-        [weakEd updateGitDiffMarkers];
-    });
+    // Git branch label and diff markers are only updated when the Git panel
+    // is open — avoids triggering the Xcode Command Line Tools install dialog
+    // on Macs without git installed.
+    if (_gitPanel && [_sidePanelHost hasPanel:_gitPanel]) {
+        NSString *gitPath = editor.filePath;
+        __weak typeof(self) weakSelf = self;
+        __weak EditorView *weakEd = editor;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)),
+                       dispatch_get_main_queue(), ^{
+            [weakSelf _updateGitBranch:gitPath];
+            [weakEd updateGitDiffMarkers];
+        });
+    }
     [self _refreshToolbarStates];
 }
 

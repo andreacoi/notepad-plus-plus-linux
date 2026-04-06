@@ -25,6 +25,39 @@
 
 // ── Public API ────────────────────────────────────────────────────────────────
 
++ (BOOL)isGitAvailable {
+    static BOOL checked = NO;
+    static BOOL available = NO;
+    if (checked) return available;
+    checked = YES;
+
+    // Check if /usr/bin/git exists AND is a real binary, not just the Xcode shim.
+    // The shim is a small stub (~170KB) that triggers "Install Command Line Tools".
+    // Real git is much larger. We also check for .git directory presence via stat
+    // to avoid triggering the shim dialog.
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if (![fm fileExistsAtPath:@"/usr/bin/git"]) return NO;
+
+    // Try running "git --version" with DEVELOPER_DIR set to block the install prompt.
+    // If git is real, it returns version info. If it's the shim, it fails silently.
+    NSTask *task = [[NSTask alloc] init];
+    task.launchPath = @"/usr/bin/git";
+    task.arguments = @[@"--version"];
+    task.environment = @{@"GIT_TERMINAL_PROMPT": @"0"};
+    NSPipe *outPipe = [NSPipe pipe];
+    NSPipe *errPipe = [NSPipe pipe];
+    task.standardOutput = outPipe;
+    task.standardError  = errPipe;
+    @try {
+        [task launch];
+        [task waitUntilExit];
+        available = (task.terminationStatus == 0);
+    } @catch (NSException *) {
+        available = NO;
+    }
+    return available;
+}
+
 + (nullable NSString *)gitRootForPath:(NSString *)path {
     // path may be a file or directory; normalize to directory
     BOOL isDir = NO;

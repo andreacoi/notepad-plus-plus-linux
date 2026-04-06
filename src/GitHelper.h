@@ -5,6 +5,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Utility class that wraps the git CLI via NSTask. No UI.
 @interface GitHelper : NSObject
 
+/// Returns YES if git CLI is available (not just the Xcode shim).
++ (BOOL)isGitAvailable;
+
 /// Walk up from path looking for .git; returns the repo root or nil.
 + (nullable NSString *)gitRootForPath:(NSString *)path;
 

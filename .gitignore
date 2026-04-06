@@ -28,5 +28,6 @@ Makefile
 *.a
 *.o
 
-# Documentation (local only)
+# Documentation and screenshots (local only)
 docs/
+screenshots/

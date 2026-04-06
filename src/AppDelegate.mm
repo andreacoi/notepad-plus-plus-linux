@@ -50,6 +50,7 @@
         static dispatch_once_t once;
         dispatch_once(&once, ^{
             langCodeMap = @{
+                @"en": @"english",
                 @"af": @"afrikaans", @"sq": @"albanian", @"am": @"amharic",
                 @"ar": @"arabic", @"hy": @"armenian", @"az": @"azerbaijani",
                 @"eu": @"basque", @"be": @"belarusian", @"bn": @"bengali",
