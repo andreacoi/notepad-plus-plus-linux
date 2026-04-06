@@ -1,0 +1,2142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Javanese (Basa Jawa) language file for Notepad++ macOS
+    Based on English template - community translations welcome
+    Created: 2026-04-04
+-->
+<NotepadPlus>
+	<Native-Langue name="Basa Jawa" filename="javanese.xml" version="8.9">
+		<Menu>
+			<Main>
+				<!-- Main Menu Entries -->
+				<Entries>
+					<Item menuId="file" name="Berkas"/>
+					<Item menuId="edit" name="Sunting"/>
+					<Item menuId="search" name="golèki"/>
+					<Item menuId="view" name="Ndeleng"/>
+					<Item menuId="encoding" name="Enkoding"/>
+					<Item menuId="language" name="basa"/>
+					<Item menuId="settings" name="Setelan"/>
+					<Item menuId="tools" name="Piranti"/>
+					<Item menuId="macro" name="Makro"/>
+					<Item menuId="run" name="Mlaku"/>
+					<Item menuId="Plugins" name="Plugins"/>
+					<Item menuId="Window" name="Jendhela"/>
+				</Entries>
+				<!-- Sub Menu Entries -->
+				<SubEntries>
+					<Item subMenuId="file-openFolder" name="Bukak Folder Isine"/>
+					<Item subMenuId="file-closeMore" name="Nutup Multiple Documents"/>
+					<Item subMenuId="file-recentFiles" name="Berkas Anyar"/>
+					<Item subMenuId="edit-insert" name="Pasang"/>
+					<Item subMenuId="edit-copyToClipboard" name="Salin menyang Clipboard"/>
+					<Item subMenuId="edit-indent" name="Indent"/>
+					<Item subMenuId="edit-convertCaseTo" name="Ngonversi Kasus menyang"/>
+					<Item subMenuId="edit-lineOperations" name="Operasi baris"/>
+					<Item subMenuId="edit-comment" name="Komentar / Batal komentar"/>
+					<Item subMenuId="edit-autoCompletion" name="Rampung otomatis"/>
+					<Item subMenuId="edit-eolConversion" name="Konversi EOL"/>
+					<Item subMenuId="edit-blankOperations" name="Operasi Kosong"/>
+					<Item subMenuId="edit-pasteSpecial" name="Tempel Istimewa"/>
+					<Item subMenuId="edit-onSelection" name="Ing Pamilihan"/>
+					<Item subMenuId="edit-multiSelectALL" name="Multi-pilih ALL"/>
+					<Item subMenuId="edit-multiSelectNext" name="Multi-pilih Sabanjure"/>
+					<Item subMenuId="edit-readonlyInNotepad++" name="Mung Waca ing Notepad++"/>
+					<Item subMenuId="search-changeHistory" name="Sajarah owah-owahan"/>
+					<Item subMenuId="search-markAll" name="Gaya Kabeh Kedadean Token"/>
+					<Item subMenuId="search-markOne" name="Gaya Siji Token"/>
+					<Item subMenuId="search-unmarkAll" name="Gaya cetha"/>
+					<Item subMenuId="search-jumpUp" name="Lumpat munggah"/>
+					<Item subMenuId="search-jumpDown" name="Lumpat mudhun"/>
+					<Item subMenuId="search-copyStyledText" name="Salin Teks Gaya"/>
+					<Item subMenuId="search-bookmark" name="Tetenger"/>
+					<Item subMenuId="view-currentFileIn" name="Deleng File Saiki ing"/>
+					<Item subMenuId="view-showSymbol" name="Tampilake Simbol"/>
+					<Item subMenuId="view-zoom" name="Zoom"/>
+					<Item subMenuId="view-moveCloneDocument" name="Pindhah/Kloning Dokumen Saiki"/>
+					<Item subMenuId="view-tab" name="Tab"/>
+					<Item subMenuId="view-collapseLevel" name="Tingkat lipatan"/>
+					<Item subMenuId="view-uncollapseLevel" name="Unfold Level"/>
+					<Item subMenuId="view-project" name="Proyek"/>
+					<Item subMenuId="encoding-characterSets" name="Set aksara"/>
+					<Item subMenuId="encoding-arabic" name="Arab"/>
+					<Item subMenuId="encoding-baltic" name="Baltik"/>
+					<Item subMenuId="encoding-celtic" name="Celtic"/>
+					<Item subMenuId="encoding-cyrillic" name="Sirilik"/>
+					<Item subMenuId="encoding-centralEuropean" name="Eropah Tengah"/>
+					<Item subMenuId="encoding-chinese" name="Cina"/>
+					<Item subMenuId="encoding-easternEuropean" name="Eropah Wétan"/>
+					<Item subMenuId="encoding-greek" name="Yunani"/>
+					<Item subMenuId="encoding-hebrew" name="Ibrani"/>
+					<Item subMenuId="encoding-japanese" name="Jepang"/>
+					<Item subMenuId="encoding-korean" name="Korea"/>
+					<Item subMenuId="encoding-northEuropean" name="Eropah Lor"/>
+					<Item subMenuId="encoding-thai" name="Thai"/>
+					<Item subMenuId="encoding-turkish" name="Turki"/>
+					<Item subMenuId="encoding-westernEuropean" name="Eropah Kulon"/>
+					<Item subMenuId="encoding-vietnamese" name="Vietnam"/>
+					<Item subMenuId="language-userDefinedLanguage" name="Basa Ditetepake Panganggo"/>
+					<Item subMenuId="settings-import" name="Impor"/>
+					<Item subMenuId="tools-md5" name="MD5"/>
+					<Item subMenuId="tools-sha1" name="SHA-1"/>
+					<Item subMenuId="tools-sha256" name="SHA-256"/>
+					<Item subMenuId="tools-sha512" name="SHA-512"/>
+					<Item subMenuId="window-sortby" name="Urut Miturut"/>
+				</SubEntries>
+
+				<!-- all menu item -->
+				<Commands>
+					<Item id="41001" name="anyar"/>
+					<Item id="41002" name="Bukak..."/>
+					<Item id="41019" name="Penjelajah"/>
+					<Item id="41020" name="cmd"/>
+					<Item id="41025" name="Folder minangka Workspace"/>
+					<Item id="41003" name="Tutup"/>
+					<Item id="41004" name="Tutup Kabeh"/>
+					<Item id="41005" name="Tutup Kabeh TAPI Dokumen Saiki"/>
+					<Item id="41026" name="Tutup Kabeh Dokumen sing Disemat"/>
+					<Item id="41009" name="Nutup Kabeh menyang Ngiwa"/>
+					<Item id="41018" name="Nutup kabeh ing tengen"/>
+					<Item id="41024" name="Tutup Kabeh Ora owah"/>
+					<Item id="41006" name="Simpen"/>
+					<Item id="41007" name="Simpen Kabeh"/>
+					<Item id="41008" name="Simpen Minangka..."/>
+					<Item id="41010" name="Printah..."/>
+					<Item id="1001" name="Cetak Saiki"/>
+					<Item id="41011" name="Metu"/>
+					<Item id="41012" name="Sesi Muat..."/>
+					<Item id="41013" name="Simpen Sesi..."/>
+					<Item id="41014" name="Muat maneh saka Disk"/>
+					<Item id="41015" name="Simpen Salinan Minangka..."/>
+					<Item id="41016" name="Pindhah menyang Recycle Bin"/>
+					<Item id="41017" name="Ganti jeneng..."/>
+					<Item id="41021" name="Mulihake File sing Ditutup Anyar"/>
+					<Item id="41022" name="Bukak Folder minangka Ruang Kerja..."/>
+					<Item id="41023" name="Bukak ing Default Viewer"/>
+					<Item id="42001" name="Cuti"/>
+					<Item id="42002" name="Salin"/>
+					<Item id="42003" name="batalaken"/>
+					<Item id="42004" name="Malih"/>
+					<Item id="42005" name="Tempel"/>
+					<Item id="42006" name="Mbusak"/>
+					<Item id="42007" name="Pilih Kabeh"/>
+					<Item id="42020" name="Miwiti/Akhir Pilih"/>
+					<Item id="42089" name="Miwiti/Pungkasi Pilih ing Mode Kolom"/>
+					<Item id="42084" name="Tanggal Wektu (cekak)"/>
+					<Item id="42085" name="Tanggal Wektu (dawa)"/>
+					<Item id="42086" name="Tanggal Wektu (disesuaikan)"/>
+					<Item id="42008" name="Tambah Indent Line"/>
+					<Item id="42009" name="Ngurangi Indent Line"/>
+					<Item id="42010" name="Duplikat Baris Saiki"/>
+					<Item id="42079" name="Mbusak garis duplikat"/>
+					<Item id="42077" name="Mbusak Baris Duplikat Berturut-turut"/>
+					<Item id="42012" name="Garis Pisah"/>
+					<Item id="42013" name="Gabung baris"/>
+					<Item id="42014" name="Pindhah munggah baris saiki"/>
+					<Item id="42015" name="Pindhah Ngisor Garis Saiki"/>
+					<Item id="42059" name="Urut Garis Leksikografi Naik"/>
+					<Item id="42060" name="Urut Garis Lexicographically Mudhun"/>
+					<Item id="42080" name="Urut Lines Lex.Minggah Nglirwakake Kasus"/>
+					<Item id="42081" name="Urut Lines Lex.Mudhun Nglirwakake Kasus"/>
+					<Item id="42100" name="Urut baris ing urutan lokal munggah"/>
+					<Item id="42101" name="Urut baris ing urutan lokal mudhun"/>
+					<Item id="42104" name="Urut Garis Miturut Dawane Munggah"/>
+					<Item id="42105" name="Urut Garis Miturut Dawane Mudhun"/>
+					<Item id="42061" name="Urut Garis Minangka Integer Munggah"/>
+					<Item id="42062" name="Urut Garis Minangka Integer Mudhun"/>
+					<Item id="42063" name="Urut Garis Minangka Desimal (Koma) Munggah"/>
+					<Item id="42064" name="Urut Garis Minangka Desimal (Koma) Mudhun"/>
+					<Item id="42065" name="Urut Garis Minangka Desimal (Titik) Munggah"/>
+					<Item id="42066" name="Urut Garis Minangka Desimal (Titik) Mudhun"/>
+					<Item id="42083" name="Susunan baris mbalikke"/>
+					<Item id="42078" name="Acak Line Order"/>
+					<Item id="42016" name="HURUF"/>
+					<Item id="42017" name="aksara cilik"/>
+					<Item id="42067" name="Kasus ingkang prayogi"/>
+					<Item id="42068" name="Kasus sing bener (campuran)"/>
+					<Item id="42069" name="prakara ukara"/>
+					<Item id="42070" name="Kasus kalimat (campuran)"/>
+					<Item id="42071" name="kasus inVERT"/>
+					<Item id="42072" name="ranDOm Case"/>
+					<Item id="42073" name="Bukak File"/>
+					<Item id="42074" name="Bukak Folder Ngandhut ing Explorer"/>
+					<Item id="42106" name="Pilihan Redact █ (Shift: ●)"/>
+					<Item id="42075" name="Nggoleki ing internet"/>
+					<Item id="42076" name="Ganti mesin telusur..."/>
+					<Item id="42090" name="Nglirwakake Kasus Kabeh Tembung"/>
+					<Item id="42091" name="Mung kasus sing cocog"/>
+					<Item id="42092" name="Cocokake Sabda Sakabehe"/>
+					<Item id="42093" name="Cocog Kasus Sakabehe Tembung"/>
+					<Item id="42094" name="Nglirwakake Kasus Kabeh Tembung"/>
+					<Item id="42095" name="Mung kasus sing cocog"/>
+					<Item id="42096" name="Cocokake Sabda Sakabehe"/>
+					<Item id="42097" name="Cocog Kasus Sakabehe Tembung"/>
+					<Item id="42098" name="Mbusak Pilihan Multi-Pilih Paling Anyar"/>
+					<Item id="42099" name="Skip Saiki Pindhah menyang Sabanjure Multi-pilih"/>
+					<Item id="42018" name="Mulai Rekaman"/>
+					<Item id="42019" name="Mungkasi Rekaman"/>
+					<Item id="42021" name="Playback"/>
+					<Item id="42022" name="Ganti Komentar Baris Tunggal"/>
+					<Item id="42023" name="Blokir Komentar"/>
+					<Item id="42047" name="Blokir Ora Komentar"/>
+					<Item id="42024" name="Trim Trailing Space"/>
+					<Item id="42042" name="Trim Anjog Spasi"/>
+					<Item id="42043" name="Trim Leading lan Trailing Space"/>
+					<Item id="42044" name="EOL menyang Angkasa"/>
+					<Item id="42045" name="Potong loro lan EOL menyang Space"/>
+					<Item id="42046" name="TAB menyang Angkasa"/>
+					<Item id="42054" name="Spasi menyang TAB (Kabeh)"/>
+					<Item id="42053" name="Spasi menyang TAB (Anjog)"/>
+					<Item id="42038" name="Tempel Konten HTML"/>
+					<Item id="42039" name="Tempel Konten RTF"/>
+					<Item id="42048" name="Salin isi binar"/>
+					<Item id="42049" name="Cut binar isi"/>
+					<Item id="42050" name="Tempel isi binar"/>
+					<Item id="42082" name="Nyalin pranala"/>
+					<Item id="42037" name="Mode Kolom..."/>
+					<Item id="42034" name="Editor Kolom..."/>
+					<Item id="42051" name="Panel Karakter"/>
+					<Item id="42052" name="Riwayat Clipboard"/>
+					<Item id="42025" name="Simpen Macro Saiki Direkam..."/>
+					<Item id="42026" name="Arah Teks RTL"/>
+					<Item id="42027" name="Arah Teks LTR"/>
+					<Item id="42028" name="Mung Waca ing Dokumen Saiki"/>
+					<Item id="42102" name="Mung Waca kanggo Kabeh Dokumen"/>
+					<Item id="42103" name="Mbusak Waca Mung kanggo Kabeh Dokumen"/>
+					<Item id="42029" name="Salin Path File Saiki"/>
+					<Item id="42030" name="Salin Jeneng Berkas Saiki"/>
+					<Item id="42031" name="Salin Dir.dalan"/>
+					<Item id="42087" name="Nyalin Kabeh Jeneng Berkas"/>
+					<Item id="42088" name="Nyalin Kabeh Path File"/>
+					<Item id="42032" name="Mbukak Macro kaping pirang-pirang..."/>
+					<Item id="42033" name="Atribut Mung Waca ing Windows"/>
+					<Item id="42035" name="Komentar Baris Tunggal"/>
+					<Item id="42036" name="Baris Tunggal Uncomment"/>
+					<Item id="42055" name="Mbusak Garis Kosong"/>
+					<Item id="42056" name="Mbusak Garis Kosong (Ngandhut karakter Kosong)"/>
+					<Item id="42057" name="Lebokake Baris Kosong Ndhuwur Saiki"/>
+					<Item id="42058" name="Lebokake Garis Kosong Ing Ngisor Saiki"/>
+					<Item id="43001" name="Golek..."/>
+					<Item id="43002" name="Golek Sabanjure"/>
+					<Item id="43003" name="Ganti..."/>
+					<Item id="43004" name="Lunga menyang..."/>
+					<Item id="43005" name="Ngalih tetenger"/>
+					<Item id="43006" name="Tetenger sabanjure"/>
+					<Item id="43007" name="Tetenger sadurunge"/>
+					<Item id="43008" name="Busak Kabeh Tetenger"/>
+					<Item id="43018" name="Cut garis tetenger"/>
+					<Item id="43019" name="Salin garis tetenger"/>
+					<Item id="43020" name="Tempel kanggo (Ganti) Garis Tetenger"/>
+					<Item id="43021" name="Mbusak garis tetenger"/>
+					<Item id="43051" name="Mbusak Garis Ora Ditenger"/>
+					<Item id="43050" name="Tetenger kuwalik"/>
+					<Item id="43052" name="Golek aksara ing jangkoan..."/>
+					<Item id="43053" name="Pilih Kabeh Ing antarane {} [] utawa ()"/>
+					<Item id="43009" name="Pindhah menyang Matching Brace"/>
+					<Item id="43010" name="Golek Sadurunge"/>
+					<Item id="43011" name="Nggoleki tambahan"/>
+					<Item id="43013" name="Temokake ing Files"/>
+					<Item id="43014" name="Golek (Volatile) Sabanjure"/>
+					<Item id="43015" name="Golek (Volatile) Sadurunge"/>
+					<Item id="43022" name="Nggunakake Gaya 1"/>
+					<Item id="43023" name="Clear 1st Style"/>
+					<Item id="43024" name="Nganggo Gaya 2"/>
+					<Item id="43025" name="Gaya 2 sing cetha"/>
+					<Item id="43026" name="Nggunakake Gaya 3"/>
+					<Item id="43027" name="Gaya 3 sing cetha"/>
+					<Item id="43028" name="Nggunakake Gaya 4"/>
+					<Item id="43029" name="Gaya 4 sing cetha"/>
+					<Item id="43030" name="Nggunakake Gaya 5"/>
+					<Item id="43031" name="Mbusak Gaya 5"/>
+					<Item id="43032" name="Busak Kabeh Gaya"/>
+					<Item id="43033" name="gaya 1"/>
+					<Item id="43034" name="gaya 2"/>
+					<Item id="43035" name="Gaya kaping 3"/>
+					<Item id="43036" name="gaya 4"/>
+					<Item id="43037" name="gaya 5"/>
+					<Item id="43038" name="Golek Gaya Tandha"/>
+					<Item id="43039" name="gaya 1"/>
+					<Item id="43040" name="gaya 2"/>
+					<Item id="43041" name="Gaya kaping 3"/>
+					<Item id="43042" name="gaya 4"/>
+					<Item id="43043" name="gaya 5"/>
+					<Item id="43044" name="Golek Gaya Tandha"/>
+					<Item id="43055" name="Gaya 1"/>
+					<Item id="43056" name="Gaya 2"/>
+					<Item id="43057" name="Gaya 3"/>
+					<Item id="43058" name="Gaya 4"/>
+					<Item id="43059" name="Gaya 5"/>
+					<Item id="43060" name="Kabeh Gaya"/>
+					<Item id="43061" name="Golek Gaya Tandha"/>
+					<Item id="43062" name="Nggunakake Gaya 1"/>
+					<Item id="43063" name="Nganggo Gaya 2"/>
+					<Item id="43064" name="Nggunakake Gaya 3"/>
+					<Item id="43065" name="Nggunakake Gaya 4"/>
+					<Item id="43066" name="Nggunakake Gaya 5"/>
+					<Item id="43067" name="Pindhah menyang Ganti Sabanjure"/>
+					<Item id="43068" name="Pindhah menyang Ganti Sadurunge"/>
+					<Item id="43069" name="Mbusak Sajarah Owah-owahan"/>
+					<Item id="43045" name="Jendhela asil panelusuran"/>
+					<Item id="43046" name="Salajêngipun asiling pados"/>
+					<Item id="43047" name="Hasil Panelusuran Sadurunge"/>
+					<Item id="43048" name="Pilih lan Golek Sabanjure"/>
+					<Item id="43049" name="Pilih lan Temokake Sadurunge"/>
+					<Item id="43054" name="Tandhani..."/>
+					<Item id="43501" name="Tutup Dipilih"/>
+					<Item id="43502" name="Tutup Liyane"/>
+					<Item id="43503" name="Salin jeneng sing dipilih"/>
+					<Item id="43504" name="Salin Jeneng Path sing Dipilih"/>
+					<Item id="44009" name="Post-It"/>
+					<Item id="44010" name="Lipat Kabeh"/>
+					<Item id="44011" name="Mode Bebas Gangguan"/>
+					<Item id="44019" name="Tampilake Kabeh Aksara"/>
+					<Item id="44020" name="Nuduhake Panuntun Indent"/>
+					<Item id="44022" name="Tembung rangkep"/>
+					<Item id="44023" name="Zoom In (Ctrl+Mouse Wheel Up)"/>
+					<Item id="44024" name="Zoom Out (Ctrl+Roda Mouse Mudhun)"/>
+					<Item id="44025" name="Tampilake Spasi lan Tab"/>
+					<Item id="44026" name="Tampilake End of Line"/>
+					<Item id="44029" name="Mbukak Kabeh"/>
+					<Item id="44030" name="Lipat Tingkat Saiki"/>
+					<Item id="44031" name="Mbukak Tataran Saiki"/>
+					<Item id="44049" name="Ringkesan..."/>
+					<Item id="44080" name="Peta Dokumen"/>
+					<Item id="44070" name="Daftar Dokumen"/>
+					<Item id="44084" name="Daftar Fungsi"/>
+					<Item id="44085" name="Folder minangka Workspace"/>
+					<Item id="44086" name="Tab 1"/>
+					<Item id="44087" name="Tab 2"/>
+					<Item id="44088" name="Tab kaping 3"/>
+					<Item id="44089" name="Tab kaping 4"/>
+					<Item id="44090" name="Tab kaping 5"/>
+					<Item id="44091" name="Tab 6"/>
+					<Item id="44092" name="Tab kaping 7"/>
+					<Item id="44093" name="Tab 8"/>
+					<Item id="44094" name="Tab 9"/>
+					<Item id="44116" name="Tab pisanan"/>
+					<Item id="44117" name="Tab pungkasan"/>
+					<Item id="44095" name="Tab Sabanjure"/>
+					<Item id="44096" name="Tab sadurungé"/>
+					<Item id="44097" name="Ngawasi (buntut -f)"/>
+					<Item id="44098" name="Pindhah Tab Maju"/>
+					<Item id="44099" name="Pindhah Tab Mundur"/>
+					<Item id="44110" name="Mbusak Warna"/>
+					<Item id="44111" name="Aplikasi Warna 1"/>
+					<Item id="44112" name="Aplikasi Warna 2"/>
+					<Item id="44113" name="Aplikasi Warna 3"/>
+					<Item id="44114" name="Aplikasi Warna 4"/>
+					<Item id="44115" name="Aplikasi Warna 5"/>
+					<Item id="44130" name="Nuduhake Aksara Non-Cetak"/>
+					<Item id="44131" name="Tampilake Karakter Kontrol Unicode EOL"/>
+					<Item id="44032" name="Ngalih Mode Layar Lengkap"/>
+					<Item id="44033" name="Mulihake Zoom Default"/>
+					<Item id="44034" name="Tansah ing Ndhuwur"/>
+					<Item id="44035" name="Sinkronisasi Gulung Vertikal"/>
+					<Item id="44036" name="Sinkronisasi Gulung Horisontal"/>
+					<Item id="44041" name="Tampilake Lambang Bungkus"/>
+					<Item id="44072" name="Fokus ing Pandangan liyane"/>
+					<Item id="44081" name="Panel Proyek 1"/>
+					<Item id="44082" name="Panel Proyek 2"/>
+					<Item id="44083" name="Panel Proyek 3"/>
+					<Item id="45001" name="Windows (CR LF)"/>
+					<Item id="45002" name="Unix (LF)"/>
+					<Item id="45003" name="Macintosh (CR)"/>
+					<Item id="45004" name="ANSI"/>
+					<Item id="45005" name="UTF-8-BOM"/>
+					<Item id="45006" name="UTF-16 BE BOM"/>
+					<Item id="45007" name="UTF-16 LE BOM"/>
+					<Item id="45008" name="UTF-8"/>
+					<Item id="45009" name="Ngonversi menyang ANSI"/>
+					<Item id="45010" name="Ngonversi menyang UTF-8"/>
+					<Item id="45011" name="Ngonversi menyang UTF-8-BOM"/>
+					<Item id="45012" name="Ngonversi menyang UTF-16 BE BOM"/>
+					<Item id="45013" name="Ngonversi menyang UTF-16 LE BOM"/>
+					<Item id="45060" name="Big5 (Tradisional)"/>
+					<Item id="45061" name="GB2312 (Sederhana)"/>
+					<Item id="45054" name="OEM 861: Icelandic"/>
+					<Item id="45057" name="OEM 865: Nordic"/>
+					<Item id="45053" name="OEM 860: Portugis"/>
+					<Item id="45056" name="OEM 863: Prancis"/>
+					<Item id="10001" name="Pindhah menyang Tampilan Liyane"/>
+					<Item id="10002" name="Klone menyang Tampilan Liyane"/>
+					<Item id="10003" name="Pindhah menyang Instance Anyar"/>
+					<Item id="10004" name="Bukak ing Instance Anyar"/>
+					<Item id="10005" name="Pindhah menyang Mulai"/>
+					<Item id="10006" name="Pindhah menyang Pungkasan"/>
+					<Item id="46001" name="Gaya Configurator..."/>
+					<Item id="46016" name="Ora ana (Teks Normal)"/>
+					<Item id="46250" name="Tegese basamu..."/>
+					<Item id="46300" name="Bukak folder User Defined Language..."/>
+					<Item id="46301" name="Notepad++ User Defined Language Collection"/>
+					<Item id="46180" name="Ditetepake panganggo"/>
+					<Item id="47000" name="Babagan Notepad++"/>
+					<Item id="47010" name="Argumentasi baris perintah..."/>
+					<Item id="47001" name="Notepad++ Ngarep"/>
+					<Item id="47002" name="Notepad++ Project Page"/>
+					<Item id="47003" name="Notepad++ Online User Manual"/>
+					<Item id="47004" name="Komunitas Notepad++ (Forum)"/>
+					<Item id="47012" name="Info debug..."/>
+					<Item id="47005" name="Entuk Plugins liyane"/>
+					<Item id="47006" name="Nganyari Notepad++"/>
+					<Item id="47009" name="Setel Updater Proxy..."/>
+					<Item id="48005" name="Impor plugin(s)..."/>
+					<Item id="48006" name="Impor gaya tema(s)..."/>
+					<Item id="48018" name="Sunting Popup ContextMenu"/>
+					<Item id="48009" name="Trabasan Mapper..."/>
+					<Item id="48011" name="Preferensi..."/>
+					<Item id="48014" name="Bukak Folder Plugins..."/>
+					<Item id="48015" name="Admin Plugins..."/>
+					<Item id="48501" name="Ngasilake..."/>
+					<Item id="48502" name="Gawea saka berkas..."/>
+					<Item id="48503" name="Nggawe saka pilihan menyang clipboard"/>
+					<Item id="48504" name="Ngasilake..."/>
+					<Item id="48505" name="Gawea saka berkas..."/>
+					<Item id="48506" name="Nggawe saka pilihan menyang clipboard"/>
+					<Item id="48507" name="Ngasilake..."/>
+					<Item id="48508" name="Gawea saka berkas..."/>
+					<Item id="48509" name="Nggawe saka pilihan menyang clipboard"/>
+					<Item id="48510" name="Generate..."/>
+					<Item id="48511" name="Gawea saka berkas..."/>
+					<Item id="48512" name="Nggawe saka pilihan menyang clipboard"/>
+					<Item id="49000" name="Mlayu..."/>
+
+					<Item id="50000" name="Fungsi Rampung"/>
+					<Item id="50001" name="Sabda Jangkep"/>
+					<Item id="50002" name="Parameter Fungsi Petunjuk"/>
+					<Item id="50010" name="Parameter Fungsi Petunjuk Sadurunge"/>
+					<Item id="50011" name="Parameter Fungsi Petunjuk Sabanjure"/>
+					<Item id="50005" name="Ngalih cathetan makro"/>
+					<Item id="50006" name="Rampungan dalan"/>
+					<Item id="44042" name="ndhelikake baris"/>
+					<Item id="42040" name="Bukak Kabeh Berkas Anyar"/>
+					<Item id="42041" name="Kosong Daftar File Terbaru"/>
+					<Item id="48016" name="Owahi Trabasan/Busak Makro..."/>
+					<Item id="48017" name="Ngowahi Trabasan/Busak Command..."/>
+
+					<Item id="11001" name="Windows..."/>
+					<Item id="11002" name="Jeneng A nganti Z"/>
+					<Item id="11003" name="Jenenge Z nganti A"/>
+					<Item id="11004" name="Path A nganti Z"/>
+					<Item id="11005" name="Path Z nganti A"/>
+					<Item id="11006" name="Ketik A nganti Z"/>
+					<Item id="11007" name="Ketik Z nganti A"/>
+					<Item id="11008" name="Panjang Isine munggah"/>
+					<Item id="11009" name="Panjang Isine Mudhun"/>
+					<Item id="11010" name="Wektu sing diowahi munggah"/>
+					<Item id="11011" name="Wektu Diowahi Mudhun"/>
+				</Commands>
+			</Main>
+			<TabBar>
+				<Item CMDID="41003" name="Tutup"/>
+				<Item CMDID="0" name="Nutup Multiple Tab"/>
+				<Item CMDID="41005" name="Tutup Kabeh TAPI Iki"/>
+				<Item CMDID="41026" name="Tutup Kabeh TAPI Disemat"/>
+				<Item CMDID="41009" name="Tutup Kabeh kiwa"/>
+				<Item CMDID="41018" name="Nutup kabeh ing tengen"/>
+				<Item CMDID="41024" name="Tutup Kabeh Ora owah"/>
+				<Item CMDID="44048" name="Pin Tab" alternativeName="Copot tab"/>
+				<Item CMDID="41006" name="Simpen"/>
+				<Item CMDID="41008" name="Simpen Minangka..."/>
+				<Item CMDID="1" name="Buka ing"/>
+				<Item CMDID="41019" name="Bukak Folder Ngandhut ing Explorer"/>
+				<Item CMDID="41020" name="Bukak folder sing ngemot ing cmd"/>
+				<Item CMDID="41025" name="Bukak Folder Ngandhut minangka Ruang Kerja"/>
+				<Item CMDID="41023" name="Bukak ing Default Viewer"/>
+				<Item CMDID="41017" name="Ganti jeneng..."/>
+				<Item CMDID="41016" name="Pindhah menyang Recycle Bin"/>
+				<Item CMDID="41014" name="Muat maneh"/>
+				<Item CMDID="41010" name="Printah..."/>
+				<Item CMDID="42028" name="Mung Waca ing Notepad++"/>
+				<Item CMDID="42033" name="Atribut Mung Waca ing Windows"/>
+				<Item CMDID="2" name="Salin menyang Clipboard"/>
+				<Item CMDID="42029" name="Salin Path File Lengkap"/>
+				<Item CMDID="42030" name="Salin Jeneng Berkas"/>
+				<Item CMDID="42031" name="Salin Dir.dalan"/>
+				<Item CMDID="3" name="Pindhah Dokumen"/>
+				<Item CMDID="10005" name="Pindhah menyang Mulai"/>
+				<Item CMDID="10006" name="Pindhah menyang Pungkasan"/>
+				<Item CMDID="10001" name="Pindhah menyang Tampilan Liyane"/>
+				<Item CMDID="10002" name="Klone menyang Tampilan Liyane"/>
+				<Item CMDID="10003" name="Pindhah menyang Instance Anyar"/>
+				<Item CMDID="10004" name="Bukak ing Instance Anyar"/>
+				<Item CMDID="4" name="Aplikasi Warna menyang Tab"/>
+				<Item CMDID="44111" name="Aplikasi Warna 1"/>
+				<Item CMDID="44112" name="Aplikasi Warna 2"/>
+				<Item CMDID="44113" name="Aplikasi Warna 3"/>
+				<Item CMDID="44114" name="Aplikasi Warna 4"/>
+				<Item CMDID="44115" name="Aplikasi Warna 5"/>
+				<Item CMDID="44110" name="Mbusak Warna"/>
+			</TabBar>
+			<TrayIcon>
+				<Item id="43101" name="Aktifake"/>
+				<Item id="43102" name="anyar"/>
+				<Item id="43103" name="Anyar lan Tempel"/>
+				<Item id="43104" name="Bukak..."/>
+				<Item id="43013" name="Golek ing File..."/>
+				<Item id="43105" name="Tutup Ikon Baki"/>
+			</TrayIcon>
+		</Menu>
+
+		<Dialog>
+			<Find title="" titleFind="Golek" titleReplace="Ganti" titleFindInFiles="Golek ing File" titleFindInProjects="Golek ing Proyèk" titleMark="Tandha">
+				<Item id="1" name="Golek Sabanjure"/>
+				<Item id="1722" name="arah mundur"/>
+				<Item id="2" name="Nutup"/>
+				<Item id="1620" name="Golek opo:"/>
+				<Item id="1603" name="Cocog kabèh tembung"/>
+				<Item id="1604" name="Kasus tandhing"/>
+				<Item id="1605" name="Ekspresi biasa"/>
+				<Item id="1606" name="Bungkusan"/>
+				<Item id="1614" name="Cacah"/>
+				<Item id="1615" name="Tandha Kabeh"/>
+				<Item id="1616" name="tetenger baris"/>
+				<Item id="1618" name="Purge kanggo saben golèk"/>
+				<Item id="1611" name="Ganti nganggo:"/>
+				<Item id="1608" name="Ganti"/>
+				<Item id="1609" name="Ganti Kabeh"/>
+				<Item id="1687" name="Ing ilang fokus"/>
+				<Item id="1688" name="tansah"/>
+				<Item id="1632" name="Ing pilihan"/>
+				<Item id="1633" name="Busak kabèh tandha"/>
+				<Item id="1635" name="Ganti Kabeh ing Kabeh Dokumen sing Dibukak"/>
+				<Item id="1636" name="Golek Kabeh ing Kabeh Dokumen sing Dibukak"/>
+				<Item id="1654" name="Saringan:"/>
+				<Item id="1655" name="Direktori:"/>
+				<Item id="1656" name="Golek Kabeh"/>
+				<Item id="1658" name="Ing sub-folder kabèh"/>
+				<Item id="1659" name="Ing folder sing didhelikake"/>
+				<Item id="1624" name="Mode golèk"/>
+				<Item id="1625" name="Biasa"/>
+				<Item id="1626" name="Extended (\n, \r, \t, \0, \x...)"/>
+				<Item id="1660" name="Ganti ing File"/>
+				<Item id="1665" name="Ganti ing Proyek"/>
+				<Item id="1662" name="Panel Proyek 1"/>
+				<Item id="1663" name="Panel Proyek 2"/>
+				<Item id="1664" name="Panel Proyek 3"/>
+				<Item id="1641" name="Golek Kabeh ing Dokumen Saiki"/>
+				<Item id="1686" name="Transparansi"/>
+				<Item id="1703" name=".cocog baris anyar"/>
+				<Item id="1721" name="▲"/>
+				<Item id="1723" name="▼ Golek Sabanjure"/>
+				<Item id="1725" name="Salin teks sing ditandhani"/>
+				<Menu>
+					<Item id="1726" name="⇅ Ganti Golek karo Ganti"/>
+					<Item id="1727" name="⤵ Salin saka Golek kanggo Ganti"/>
+					<Item id="1728" name="⤴ Salin saka Ganti menyang Golek"/>
+				</Menu>
+			</Find>
+
+			<IncrementalFind title="">
+				<Item id="1681" name="Golek:"/>
+				<Item id="1685" name="Kasus tandhing"/>
+				<Item id="1690" name="Sorot kabeh"/>
+			</IncrementalFind>
+
+			<FindCharsInRange title="Golek Karakter ing Range...">
+				<Item id="2" name="Tutup"/>
+				<Item id="2901" name="Karakter non-ASCII (128–255)"/>
+				<Item id="2902" name="Aksara ASCII (0–127)"/>
+				<Item id="2903" name="Kisaran khusus (0–255):"/>
+				<Item id="2906" name="Munggah"/>
+				<Item id="2907" name="Turun"/>
+				<Item id="2908" name="Arah"/>
+				<Item id="2909" name="Bungkusan"/>
+				<Item id="2910" name="Golek"/>
+			</FindCharsInRange>
+
+			<GoToLine title="Lunga menyang...">
+				<Item id="2007" name="baris"/>
+				<Item id="2008" name="Offset"/>
+				<Item id="1" name="Mangkat"/>
+				<Item id="2" name="ingsun ora mrana"/>
+				<Item id="2004" name="Kowe neng kene:"/>
+				<Item id="2005" name="Sampeyan pengin pindhah menyang:"/>
+				<Item id="2006" name="Sampeyan ora bisa ngluwihi:"/>
+			</GoToLine>
+
+			<Run title="Mlayu...">
+				<Item id="1903" name="Program kanggo Run"/>
+				<Item id="1" name="Mlaku"/>
+				<Item id="2" name="Batal"/>
+				<Item id="1904" name="Simpen..."/>
+			</Run>
+
+			<MD5FromFilesDlg title="Gawe MD5 digest saka file">
+				<Item id="1922" name="Pilih file kanggo ngasilake MD5..."/>
+				<Item id="1924" name="Salin menyang Clipboard"/>
+				<Item id="2" name="Tutup"/>
+			</MD5FromFilesDlg>
+
+			<MD5FromTextDlg title="Gawe MD5 digest">
+				<Item id="1932" name="Nambani saben baris minangka senar kapisah"/>
+				<Item id="1934" name="Salin menyang Clipboard"/>
+				<Item id="2" name="Tutup"/>
+			</MD5FromTextDlg>
+
+			<SHA256FromFilesDlg title="Nggawe SHA-256 digest saka file">
+				<Item id="1922" name="Pilih file kanggo ngasilake SHA-256..."/>
+				<Item id="1924" name="Salin menyang Clipboard"/>
+				<Item id="2" name="Tutup"/>
+			</SHA256FromFilesDlg>
+
+			<SHA256FromTextDlg title="Nggawe SHA-256 digest">
+				<Item id="1932" name="Nambani saben baris minangka senar kapisah"/>
+				<Item id="1934" name="Salin menyang Clipboard"/>
+				<Item id="2" name="Tutup"/>
+			</SHA256FromTextDlg>
+
+			<SHA1FromFilesDlg title="Nggawe SHA-1 digest saka file">
+				<Item id="1922" name="Pilih file kanggo ngasilake SHA-1..."/>
+				<Item id="1924" name="Salin menyang Clipboard"/>
+				<Item id="2" name="Tutup"/>
+			</SHA1FromFilesDlg>
+
+			<SHA1FromTextDlg title="Nggawe SHA-1 digest">
+				<Item id="1932" name="Nambani saben baris minangka senar kapisah"/>
+				<Item id="1934" name="Salin menyang Clipboard"/>
+				<Item id="2" name="Tutup"/>
+			</SHA1FromTextDlg>
+
+			<SHA512FromFilesDlg title="Nggawe SHA-512 digest saka file">
+				<Item id="1922" name="Pilih file kanggo ngasilake SHA-512..."/>
+				<Item id="1924" name="Salin menyang Clipboard"/>
+				<Item id="2" name="Tutup"/>
+			</SHA512FromFilesDlg>
+
+			<SHA512FromTextDlg title="Nggawe SHA-512 digest">
+				<Item id="1932" name="Nambani saben baris minangka senar kapisah"/>
+				<Item id="1934" name="Salin menyang Clipboard"/>
+				<Item id="2" name="Tutup"/>
+			</SHA512FromTextDlg>
+			<PluginsAdminDlg title="Admin Plugins" titleAvailable="Available" titleUpdates="Updates" titleInstalled="Installed" titleIncompatible="Incompatible">
+				<ColumnPlugin name="Plugin"/>
+				<ColumnVersion name="Versi"/>
+				<Item id="5501" name="Nggoleki:"/>
+				<Item id="5503" name="Pasang"/>
+				<Item id="5504" name="Nganyari"/>
+				<Item id="5505" name="Mbusak"/>
+				<Item id="5508" name="Salajengipun"/>
+				<Item id="5509" name="Versi dhaptar plugin:"/>
+				<Item id="5511" name="Repositori dhaptar plugin"/>
+				<Item id="2" name="Tutup"/>
+			</PluginsAdminDlg>
+
+			<StyleConfig title="Gaya Configurator">
+				<Item id="2" name="Batal"/>
+				<Item id="2301" name="Simpen Tutup"/>
+				<Item id="2303" name="Transparansi"/>
+				<Item id="2306" name="Pilih tema:"/>
+				<SubDialog>
+					<Item id="2204" name="Kandel"/>
+					<Item id="2205" name="Miring"/>
+					<Item id="2206" name="warnane ngarep"/>
+					<Item id="2207" name="Warna latar"/>
+					<Item id="2208" name="Jeneng font:"/>
+					<Item id="2209" name="Ukuran font:"/>
+					<Item id="2211" name="Gaya:"/>
+					<Item id="2212" name="Gaya Warna"/>
+					<Item id="2213" name="Gaya Font"/>
+					<Item id="2214" name="Ekst. Default:"/>
+					<Item id="2216" name="Ekst pangguna:"/>
+					<Item id="2218" name="Ngisor"/>
+					<Item id="2219" name="Kata kunci baku"/>
+					<Item id="2221" name="Tembung-tembung sing ditetepake pangguna"/>
+					<Item id="2225" name="Basa:"/>
+					<Item id="2226" name="Meksa werna latar ngarep kanggo kabeh gaya"/>
+					<Item id="2227" name="Meksa werna latar mburi kanggo kabeh gaya"/>
+					<Item id="2228" name="Meksa pilihan font kanggo kabeh gaya"/>
+					<Item id="2229" name="Meksa pilihan ukuran font kanggo kabeh gaya"/>
+					<Item id="2230" name="Meksa pilihan kandel kanggo kabeh gaya"/>
+					<Item id="2231" name="Meksa pilihan miring kanggo kabeh gaya"/>
+					<Item id="2232" name="Meksa pilihan garis ngisor kanggo kabeh gaya"/>
+					<Item id="2234" name="Pindhah menyang setelan"/>
+					<!-- Don't translate "Global override" -->
+					<Item id="2235" name="Apa Global Override?"/>
+				</SubDialog>
+			</StyleConfig>
+
+			<ShortcutMapper title="Trabasan Mapper">
+				<Item id="2602" name="Ngowahi"/>
+				<Item id="2603" name="Mbusak"/>
+				<Item id="2606" name="Cetha"/>
+				<Item id="2607" name="Filter:"/>
+				<Item id="1" name="Tutup"/>
+				<ColumnName name="jeneng"/>
+				<ColumnShortcut name="Trabasan"/>
+				<ColumnCategory name="Kategori"/>
+				<ColumnPlugin name="Plugin"/>
+				<MainMenuTab name="Menu utama"/>
+				<MacrosTab name="Makro"/>
+				<RunCommandsTab name="Rungokna dhawuh"/>
+				<PluginCommandsTab name="Prentah plugin"/>
+				<ScintillaCommandsTab name="parentah Scintilla"/>
+				<ConflictInfoOk name="Ora ana konflik trabasan kanggo item iki."/>
+				<ConflictInfoEditing name="Ora ana konflik..."/>
+				<AboutCategory name="Prakawis"/>
+				<ModifyContextMenu name="Ngowahi"/>
+				<DeleteContextMenu name="Mbusak"/>
+				<ClearContextMenu name="Cetha"/>
+				<MainCommandNames>
+					<Item id="41019" name="Bukak folder sing ngemot ing Explorer"/>
+					<Item id="41020" name="Bukak folder sing ngemot ing Command Prompt"/>
+					<Item id="41021" name="Mulihake File sing Ditutup Anyar"/>
+					<Item id="45001" name="Konversi EOL menyang Windows (CR LF)"/>
+					<Item id="45002" name="Konversi EOL menyang Unix (LF)"/>
+					<Item id="45003" name="Konversi EOL menyang Macintosh (CR)"/>
+					<Item id="43022" name="Gaya kabeh nganggo gaya 1"/>
+					<Item id="43024" name="Gaya kabeh nganggo gaya 2"/>
+					<Item id="43026" name="Gaya kabeh nganggo gaya 3"/>
+					<Item id="43028" name="Gaya kabeh nganggo gaya 4"/>
+					<Item id="43030" name="Gaya kabeh nganggo gaya 5"/>
+					<Item id="43062" name="Gaya siji nganggo gaya 1"/>
+					<Item id="43063" name="Gaya siji nganggo gaya 2"/>
+					<Item id="43064" name="Gaya siji nganggo gaya 3"/>
+					<Item id="43065" name="Gaya siji nganggo gaya 4"/>
+					<Item id="43066" name="Gaya siji nganggo gaya 5"/>
+					<Item id="43023" name="Gaya 1 sing cetha"/>
+					<Item id="43025" name="Gaya 2 sing cetha"/>
+					<Item id="43027" name="Gaya 3 sing cetha"/>
+					<Item id="43029" name="Gaya 4 sing cetha"/>
+					<Item id="43031" name="Gaya 5 sing cetha"/>
+					<Item id="43032" name="Busak kabeh gaya"/>
+					<Item id="43033" name="Gaya sadurunge gaya 1"/>
+					<Item id="43034" name="Gaya sadurungé saka gaya 2"/>
+					<Item id="43035" name="Gaya sadurunge gaya 3"/>
+					<Item id="43036" name="Gaya sadurunge gaya 4"/>
+					<Item id="43037" name="Gaya sadurungé saka gaya 5"/>
+					<Item id="43038" name="Gaya sadurunge Temokake Tandha gaya"/>
+					<Item id="43039" name="Gaya sabanjuré saka gaya 1"/>
+					<Item id="43040" name="Gaya sabanjure gaya 2"/>
+					<Item id="43041" name="Gaya sabanjure gaya 3"/>
+					<Item id="43042" name="Gaya sabanjure gaya 4"/>
+					<Item id="43043" name="Gaya sabanjure gaya 5"/>
+					<Item id="43044" name="Gaya sabanjure Temokake Tandha gaya"/>
+					<Item id="43055" name="Salin Teks Gaya saka Gaya 1"/>
+					<Item id="43056" name="Salin Teks Gaya Gaya 2"/>
+					<Item id="43057" name="Salin Teks Gaya Gaya 3"/>
+					<Item id="43058" name="Salin Teks Gaya Gaya 4"/>
+					<Item id="43059" name="Salin Teks Gaya Gaya 5"/>
+					<Item id="43060" name="Salin Teks Gaya Kabeh Gaya"/>
+					<Item id="43061" name="Salin Teks Gaya Gaya Temokake Tandha"/>
+					<Item id="44100" name="Deleng berkas saiki ing Firefox"/>
+					<Item id="44101" name="Deleng berkas saiki ing Chrome"/>
+					<Item id="44103" name="Deleng berkas saiki ing IE"/>
+					<Item id="44102" name="Deleng berkas saiki ing Edge"/>
+					<Item id="50003" name="Ngalih menyang dokumen sadurungé"/>
+					<Item id="50004" name="Ngalih menyang dokumen sabanjure"/>
+					<Item id="44051" name="Lipat Level 1"/>
+					<Item id="44052" name="Lempitan Level 2"/>
+					<Item id="44053" name="Lipat Level 3"/>
+					<Item id="44054" name="Lempitan Level 4"/>
+					<Item id="44055" name="Lipat Level 5"/>
+					<Item id="44056" name="Lipat Level 6"/>
+					<Item id="44057" name="Lempitan Level 7"/>
+					<Item id="44058" name="Lempitan Level 8"/>
+					<Item id="44061" name="Mbukak Level 1"/>
+					<Item id="44062" name="Mbukak Level 2"/>
+					<Item id="44063" name="Mbukak Level 3"/>
+					<Item id="44064" name="Mbukak Level 4"/>
+					<Item id="44065" name="Mbukak Level 5"/>
+					<Item id="44066" name="Mbukak Level 6"/>
+					<Item id="44067" name="Mbukak Level 7"/>
+					<Item id="44068" name="Mbukak Level 8"/>
+					<Item id="44081" name="Toggle Project Panel 1"/>
+					<Item id="44082" name="Toggle Project Panel 2"/>
+					<Item id="44083" name="Toggle Project Panel 3"/>
+					<Item id="44085" name="Ganti Folder minangka Ruang Kerja"/>
+					<Item id="44080" name="Ngalih Peta Dokumen"/>
+					<Item id="44070" name="Ngalih Dhaptar Dokumen"/>
+					<Item id="44084" name="Daftar Fungsi Toggle"/>
+					<Item id="50005" name="Ngalih rekaman makro"/>
+					<Item id="44104" name="Ngalih menyang Panel Proyek 1"/>
+					<Item id="44105" name="Ngalih menyang Panel Proyek 2"/>
+					<Item id="44106" name="Ngalih menyang Panel Proyek 3"/>
+					<Item id="44107" name="Ngalih menyang Folder minangka Ruang Kerja"/>
+					<Item id="44109" name="Ngalih menyang Dhaptar Dokumen"/>
+					<Item id="44108" name="Ngalih menyang Daftar Fungsi"/>
+					<Item id="44110" name="Mbusak Warna Tab"/>
+					<Item id="44111" name="Aplikasi Warna Tab 1"/>
+					<Item id="44112" name="Aplikasi Warna Tab 2"/>
+					<Item id="44113" name="Aplikasi Warna Tab 3"/>
+					<Item id="44114" name="Aplikasi Warna Tab 4"/>
+					<Item id="44115" name="Aplikasi Warna Tab 5"/>
+					<Item id="11002" name="Urut miturut Jeneng A nganti Z"/>
+					<Item id="11003" name="Urut miturut Jeneng Z nganti A"/>
+					<Item id="11004" name="Urut miturut Path A nganti Z"/>
+					<Item id="11005" name="Urut miturut Path Z nganti A"/>
+					<Item id="11006" name="Urut miturut Tipe A nganti Z"/>
+					<Item id="11007" name="Urut miturut Tipe Z nganti A"/>
+					<Item id="11008" name="Urut miturut dawa isi munggah"/>
+					<Item id="11009" name="Urut miturut Dawane Isi Mudhun"/>
+				</MainCommandNames>
+			</ShortcutMapper>
+			<ShortcutMapperSubDialg title="Trabasan">
+				<Item id="1" name="OKE"/>
+				<Item id="2" name="Batal"/>
+				<Item id="5006" name="jeneng"/>
+				<Item id="5008" name="Tambah"/>
+				<Item id="5009" name="Mbusak"/>
+				<Item id="5010" name="nglamar"/>
+				<Item id="5007" name="Iki bakal mbusak trabasan saka printah iki"/>
+				<Item id="5012" name="KONFLIK TEMONG!"/>
+			</ShortcutMapperSubDialg>
+			<UserDefine title="Ditetepake pangguna">
+				<Item id="20001" name="dermaga"/>
+				<Item id="20002" name="Ganti jeneng"/>
+				<Item id="20003" name="Gawe anyar..."/>
+				<Item id="20004" name="Mbusak"/>
+				<Item id="20005" name="Simpen Minangka..."/>
+				<Item id="20007" name="Basa panganggo"/>
+				<Item id="20009" name="Ext.:"/>
+				<Item id="20012" name="Nglirwakake kasus"/>
+				<Item id="20011" name="Transparansi"/>
+				<Item id="20015" name="Impor..."/>
+				<Item id="20016" name="Ekspor..."/>
+				<Item id="20017" name="Batal"/>
+				<StylerDialog title="Dialog Styler">
+					<Item id="25030" name="Pilihan font"/>
+					<Item id="25006" name="warnane ngarep"/>
+					<Item id="25007" name="Warna latar"/>
+					<Item id="25031" name="Jeneng:"/>
+					<Item id="25032" name="Ukuran:"/>
+					<Item id="25001" name="Kandel"/>
+					<Item id="25002" name="miring"/>
+					<Item id="25003" name="Ngisor"/>
+					<Item id="25029" name="nyarang"/>
+					<Item id="25008" name="Wates 1"/>
+					<Item id="25009" name="Wates 2"/>
+					<Item id="25010" name="Wates 3"/>
+					<Item id="25011" name="Wates 4"/>
+					<Item id="25012" name="Wates 5"/>
+					<Item id="25013" name="Wates 6"/>
+					<Item id="25014" name="Wates 7"/>
+					<Item id="25015" name="Wates 8"/>
+					<Item id="25018" name="Tembung 1"/>
+					<Item id="25019" name="Tembung 2"/>
+					<Item id="25020" name="Tembung 3"/>
+					<Item id="25021" name="Tembung 4"/>
+					<Item id="25022" name="Tembung 5"/>
+					<Item id="25023" name="Tembung 6"/>
+					<Item id="25024" name="Tembung 7"/>
+					<Item id="25025" name="Tembung 8"/>
+					<Item id="25016" name="Komentar"/>
+					<Item id="25017" name="Baris komentar"/>
+					<Item id="25026" name="Operator 1"/>
+					<Item id="25027" name="Operator 2"/>
+					<Item id="25028" name="Angka"/>
+					<Item id="25033" name="tembus"/>
+					<Item id="25034" name="tembus"/>
+					<Item id="1" name="OKE"/>
+					<Item id="2" name="Batal"/>
+				</StylerDialog>
+				<Folder title="Folder Default">
+					<Item id="21101" name="Gaya baku"/>
+					<Item id="21102" name="Gaya"/>
+					<Item id="21103" name="Bantuan online Basa Ditetepake Panganggo"/>
+					<Item id="21105" name="Dokumentasi"/>
+					<Item id="21106" name="Lipat kompak (lipat garis kosong uga)"/>
+					<Item id="21220" name="Lempitan ing kode 1 gaya"/>
+					<Item id="21224" name="Bukak:"/>
+					<Item id="21225" name="Tengah:"/>
+					<Item id="21226" name="Tutup:"/>
+					<Item id="21227" name="Gaya"/>
+					<Item id="21320" name="Lempitan ing gaya kode 2 (pemisah dibutuhake)"/>
+					<Item id="21324" name="Bukak:"/>
+					<Item id="21325" name="Tengah:"/>
+					<Item id="21326" name="Tutup:"/>
+					<Item id="21327" name="Gaya"/>
+					<Item id="21420" name="Lempitan ing gaya komentar"/>
+					<Item id="21424" name="Bukak:"/>
+					<Item id="21425" name="Tengah:"/>
+					<Item id="21426" name="Tutup:"/>
+					<Item id="21427" name="Gaya"/>
+				</Folder>
+				<Keywords title="Dhaptar Kata Kunci">
+					<Item id="22101" name="Kelompok 1"/>
+					<Item id="22201" name="Kelompok 2"/>
+					<Item id="22301" name="Kelompok 3"/>
+					<Item id="22401" name="Kelompok 4"/>
+					<Item id="22451" name="Kelompok 5"/>
+					<Item id="22501" name="Kelompok 6"/>
+					<Item id="22551" name="Kelompok 7"/>
+					<Item id="22601" name="Kelompok 8"/>
+					<Item id="22121" name="Modus ater-ater"/>
+					<Item id="22221" name="Modus ater-ater"/>
+					<Item id="22321" name="Mode awalan"/>
+					<Item id="22421" name="Modus ater-ater"/>
+					<Item id="22471" name="Modus ater-ater"/>
+					<Item id="22521" name="Modus ater-ater"/>
+					<Item id="22571" name="Modus ater-ater"/>
+					<Item id="22621" name="Modus ater-ater"/>
+					<Item id="22122" name="Gaya"/>
+					<Item id="22222" name="Gaya"/>
+					<Item id="22322" name="Gaya"/>
+					<Item id="22422" name="Gaya"/>
+					<Item id="22472" name="Gaya"/>
+					<Item id="22522" name="Gaya"/>
+					<Item id="22572" name="Gaya"/>
+					<Item id="22622" name="Gaya"/>
+				</Keywords>
+				<Comment title="Nomer Komentar">
+					<Item id="23003" name="Posisi komentar baris"/>
+					<Item id="23004" name="pareng ing pundi kemawon"/>
+					<Item id="23005" name="Meksa ing wiwitaning baris"/>
+					<Item id="23006" name="Ngidini spasi putih sadurunge"/>
+					<Item id="23001" name="Ngidini lempitan komentar"/>
+					<Item id="23326" name="Tukang gaya"/>
+					<Item id="23323" name="Buka"/>
+					<Item id="23324" name="Terus watak"/>
+					<Item id="23325" name="Tutup"/>
+					<Item id="23301" name="Gaya baris komentar"/>
+					<Item id="23124" name="Gaya"/>
+					<Item id="23122" name="Buka"/>
+					<Item id="23123" name="Tutup"/>
+					<Item id="23101" name="Gaya komentar"/>
+					<Item id="23201" name="Gaya angka"/>
+					<Item id="23220" name="Gaya"/>
+					<Item id="23230" name="Ater-ater 1"/>
+					<Item id="23232" name="Ater-ater 2"/>
+					<Item id="23234" name="Ekstra 1"/>
+					<Item id="23236" name="Ekstra 2"/>
+					<Item id="23238" name="Seselan 1"/>
+					<Item id="23240" name="Seselan 2"/>
+					<Item id="23242" name="Range:"/>
+					<Item id="23244" name="Pamisah desimal"/>
+					<Item id="23245" name="Titik"/>
+					<Item id="23246" name="Koma"/>
+					<Item id="23247" name="Kalih"/>
+				</Comment>
+				<Operator title="Operator Delimiter">
+					<Item id="24101" name="Gaya operator"/>
+					<Item id="24113" name="Gaya"/>
+					<Item id="24116" name="Operator 1"/>
+					<Item id="24117" name="Operator 2 (pemisah dibutuhake)"/>
+					<Item id="24201" name="Delimiter 1 gaya"/>
+					<Item id="24220" name="Bukak:"/>
+					<Item id="24221" name="Mlayu:"/>
+					<Item id="24222" name="Tutup:"/>
+					<Item id="24223" name="Gaya"/>
+					<Item id="24301" name="Delimiter 2 gaya"/>
+					<Item id="24320" name="Bukak:"/>
+					<Item id="24321" name="Mlayu:"/>
+					<Item id="24322" name="Tutup:"/>
+					<Item id="24323" name="Gaya"/>
+					<Item id="24401" name="Delimiter 3 gaya"/>
+					<Item id="24420" name="Bukak:"/>
+					<Item id="24421" name="Mlayu:"/>
+					<Item id="24422" name="Tutup:"/>
+					<Item id="24423" name="Gaya"/>
+					<Item id="24451" name="Delimiter 4 gaya"/>
+					<Item id="24470" name="Bukak:"/>
+					<Item id="24471" name="Mlayu:"/>
+					<Item id="24472" name="Tutup:"/>
+					<Item id="24473" name="Gaya"/>
+					<Item id="24501" name="Delimiter 5 gaya"/>
+					<Item id="24520" name="Bukak:"/>
+					<Item id="24521" name="Mlayu:"/>
+					<Item id="24522" name="Tutup:"/>
+					<Item id="24523" name="Gaya"/>
+					<Item id="24551" name="Delimiter 6 gaya"/>
+					<Item id="24570" name="Bukak:"/>
+					<Item id="24571" name="Mlayu:"/>
+					<Item id="24572" name="Tutup:"/>
+					<Item id="24573" name="Gaya"/>
+					<Item id="24601" name="Delimiter 7 gaya"/>
+					<Item id="24620" name="Bukak:"/>
+					<Item id="24621" name="Mlayu:"/>
+					<Item id="24622" name="Tutup:"/>
+					<Item id="24623" name="Gaya"/>
+					<Item id="24651" name="Delimiter 8 gaya"/>
+					<Item id="24670" name="Bukak:"/>
+					<Item id="24671" name="Mlayu:"/>
+					<Item id="24672" name="Tutup:"/>
+					<Item id="24673" name="Gaya"/>
+				</Operator>
+			</UserDefine>
+			<Preference title="Preferensi">
+				<Item id="6001" name="Tutup"/>
+				<Global title="Umum">
+					<Item id="6123" name="Lokalisasi"/>
+					<Item id="6131" name="Menu"/>
+					<Item id="6122" name="Singidaken (nggunakake tombol Alt utawa F10 kanggo ngalih)"/>
+					<Item id="6132" name="Singidaken trabasan tengen ＋ ▼ ✕"/>
+					<Item id="6133" name="Status Bar"/>
+					<Item id="6134" name="Singidaken"/>
+				</Global>
+
+				<Toolbar title="Toolbar">
+					<Item id="6102" name="Singidaken"/>
+					<Item id="6103" name="UI lancar: cilik"/>
+					<Item id="6104" name="UI lancar: gedhe"/>
+					<Item id="6129" name="Isi Fluent UI: cilik"/>
+					<Item id="6130" name="Isi Fluent UI: gedhe"/>
+					<Item id="6105" name="Ikon standar: cilik"/>
+					<Item id="6011" name="Werna warna"/>
+					<Item id="6012" name="jangkep"/>
+					<Item id="6013" name="Sebagean"/>
+					<Item id="6014" name="Pilihan warna"/>
+					<Item id="6015" name="Default"/>
+					<Item id="6016" name="abang"/>
+					<Item id="6017" name="Ijo"/>
+					<Item id="6018" name="Biru"/>
+					<Item id="6019" name="wungu"/>
+					<Item id="6020" name="Cyan"/>
+					<Item id="6021" name="Zaitun"/>
+					<Item id="6022" name="kuning"/>
+					<Item id="6023" name="Sistem Aksen"/>
+					<Item id="6024" name="Adat"/>
+				</Toolbar>
+
+				<Tabbar title="Tab Bar">
+					<Item id="6107" name="Ngurangi"/>
+					<Item id="6108" name="Kunci (ora seret lan nyelehake)"/>
+					<Item id="6109" name="Ganti warna tab sing ora aktif"/>
+					<Item id="6110" name="Gambar garis warna ing tab aktif"/>
+					<Item id="6111" name="Tampilake tombol ing tab sing ora aktif"/>
+					<Item id="6112" name="Nuduhake tombol tutup"/>
+					<Item id="6113" name="Klik kaping pindho kanggo nutup dokumen"/>
+					<Item id="6115" name="Aktifake fitur tab pin"/>
+					<Item id="6135" name="Tampilake mung tombol sing disematake"/>
+					<Item id="6118" name="Singidaken"/>
+					<Item id="6119" name="Multi-baris"/>
+					<Item id="6120" name="vertikal"/>
+					<Item id="6121" name="Metu ing tutup tab pungkasan"/>
+					<Item id="6128" name="lambang sulih"/>
+					<Item id="6125" name="tindak tanduk"/>
+					<Item id="6126" name="Katon rasane"/>
+					<Item id="6136" name="Maks.dawa label tab:"/>
+				</Tabbar>
+
+				<Scintillas title="Suntingan 1">
+					<Item id="6216" name="Setelan Karet"/>
+					<Item id="6217" name="Jembar:"/>
+					<Item id="6219" name="Tingkat kedhip:"/>
+					<Item id="6221" name="F"/>
+					<Item id="6222" name="S"/>
+					<Item id="6246" name="Nggawe level saiki lempitan / unfolding printah toggleable"/>
+					<Item id="6227" name="Garis Bungkus"/>
+					<Item id="6228" name="Default"/>
+					<Item id="6229" name="Sejajar"/>
+					<Item id="6230" name="Indent"/>
+					<Item id="6234" name="Pateni fitur gulung majeng amarga masalah touchpad"/>
+					<Item id="6215" name="Aktifake font alus"/>
+					<Item id="6236" name="Aktifake nggulung ngluwihi baris pungkasan"/>
+					<Item id="6239" name="Tansah pilihan nalika klik tengen ing njaba pilihan"/>
+					<Item id="6245" name="Aktifake ruang virtual"/>
+					<Item id="6214" name="Aktifake Copy/Cut Line tanpa pilihan"/>
+					<Item id="6225" name="Gunakake warna khusus menyang latar ngarep teks sing dipilih"/>
+					<Item id="6651" name="Indikator Garis Saiki"/>
+					<Item id="6652" name="Ora ana"/>
+					<Item id="6653" name="Sorot Latar"/>
+					<Item id="6654" name="Pigura"/>
+					<Item id="6655" name="Jembar:"/>
+				</Scintillas>
+
+				<Scintillas2 title="Suntingan 2">
+					<Item id="6521" name="Multi-Editing"/>
+					<Item id="6522" name="Aktifake Multi-Editing (Ctrl+Mouse klik/pilihan)"/>
+					<Item id="6523" name="Aktifake Pilihan Kolom menyang Multi-Editing"/>
+					<Item id="6247" name="EOL (CRLF)"/><!-- Don't translate "(CRLF)" -->
+					<Item id="6248" name="Default"/>
+					<Item id="6249" name="Teks Biasa"/>
+					<Item id="6250" name="Warna Custom"/>
+					<Item id="6252" name="Aksara Non-Cetak"/>
+					<Item id="6260" name="katon"/>
+					<Item id="6254" name="Singkatan"/>
+					<Item id="6255" name="Kodepoint"/>
+					<Item id="6256" name="Warna Custom"/>
+					<Item id="6258" name="Terapake setelan Penampilan menyang C0, C1 Unicode EOL"/>
+					<Item id="6259" name="Nyegah karakter kontrol (kode C0) ngetik menyang dokumen"/>
+				</Scintillas2>
+
+				<DarkMode title="Mode peteng">
+					<Item id="7131" name="Mode cahya"/>
+					<Item id="7132" name="Mode peteng"/>
+					<Item id="7133" name="Tindakake Windows"/>
+					<Item id="7102" name="Ireng"/>
+					<Item id="7103" name="abang"/>
+					<Item id="7104" name="Ijo"/>
+					<Item id="7105" name="Biru"/>
+					<Item id="7107" name="wungu"/>
+					<Item id="7108" name="Cyan"/>
+					<Item id="7109" name="Zaitun"/>
+					<Item id="7115" name="Ngaturaken"/>
+					<Item id="7116" name="Latar isi"/>
+					<Item id="7117" name="Item trek panas"/>
+					<Item id="7118" name="latar mburi kontrol"/>
+					<Item id="7119" name="Latar mburi dialog"/>
+					<Item id="7120" name="Salah"/>
+					<Item id="7121" name="Teks"/>
+					<Item id="7122" name="Teks luwih peteng"/>
+					<Item id="7123" name="Teks dipatèni"/>
+					<Item id="7124" name="pinggir"/>
+					<Item id="7125" name="Link"/>
+					<Item id="7126" name="sorot pinggir"/>
+					<Item id="7127" name="Pinggir dipatèni"/>
+					<Item id="7130" name="Reset"/>
+					<Item id="7135" name="Nada"/>
+				</DarkMode>
+
+				<MarginsBorderEdge title="Margin/Border/Edge">
+					<Item id="6201" name="Gaya Margin Lipat"/>
+					<Item id="6202" name="Prasaja"/>
+					<Item id="6203" name="Panah"/>
+					<Item id="6204" name="Wit bunder"/>
+					<Item id="6205" name="wit kothak"/>
+					<Item id="6226" name="Ora ana"/>
+					<Item id="6291" name="Nomer baris"/>
+					<Item id="6206" name="Tampilan"/>
+					<Item id="6292" name="Jembar dinamis"/>
+					<Item id="6293" name="ambane pancet"/>
+					<Item id="6207" name="Tampilan tetenger"/>
+					<Item id="6295" name="Sajarah owah-owahan"/>
+					<Item id="6223" name="Tampilake ing pinggir"/>
+					<Item id="6296" name="Tampilake ing teks"/>
+					<Item id="6211" name="Setelan Edge Vertikal"/>
+					<Item id="6213" name="Mode latar mburi"/>
+					<Item id="6231" name="Jembar Wates"/>
+					<Item id="6235" name="tan ana pinggir"/>
+					<Item id="6208" name="Pandhuan"/>
+					<Item id="6209" name="Ngiwa"/>
+					<Item id="6210" name="bener"/>
+					<Item id="6212" name="Bebasan gangguan"/>
+				</MarginsBorderEdge>
+
+				<NewDoc title="Dokumen Anyar">
+					<Item id="6401" name="Format (Garis pungkasan)"/>
+					<Item id="6402" name="Windows (CR LF)"/>
+					<Item id="6403" name="Unix (LF)"/>
+					<Item id="6404" name="Macintosh (CR)"/>
+					<Item id="6405" name="Enkoding"/>
+					<Item id="6406" name="ANSI"/>
+					<Item id="6407" name="UTF-8"/>
+					<Item id="6408" name="UTF-8 karo BOM"/>
+					<Item id="6409" name="UTF-16 Big Endian karo BOM"/>
+					<Item id="6410" name="UTF-16 Little Endian karo BOM"/>
+					<Item id="6411" name="Basa baku:"/>
+					<Item id="6419" name="Dokumen Anyar"/>
+					<Item id="6420" name="Aplikasi menyang file ANSI sing dibukak"/>
+					<Item id="6432" name="Tansah mbukak dokumen anyar saliyane nalika wiwitan"/>
+					<Item id="6433" name="Gunakake baris pisanan dokumen minangka jeneng tab tanpa irah-irahan"/>
+				</NewDoc>
+
+				<DefaultDir title="Direktori Default">
+					<Item id="6413" name="Default Buka/Simpen file Direktori"/>
+					<Item id="6414" name="Tindakake dokumen saiki"/>
+					<Item id="6415" name="Elinga direktori pungkasan digunakake"/>
+					<Item id="6431" name="Bukak kabeh file folder tinimbang ngluncurake Folder minangka Workspace nalika folder ngeculake"/>
+				</DefaultDir>
+
+				<FileAssoc title="Asosiasi berkas">
+					<Item id="4008" name="Mangga metu saka Notepad++ lan bukak maneh Notepad++ ing mode Administrator kanggo nggunakake fitur iki."/>
+					<Item id="4009" name="Ekstensi sing didhukung:"/>
+					<Item id="4010" name="Ekstensi kadhaptar:"/>
+				</FileAssoc>
+
+
+				<Language title="basa">
+					<Item id="6505" name="Item sing kasedhiya"/>
+					<Item id="6506" name="Barang dipatèni"/>
+					<Item id="6507" name="Gawe menu basa kompak"/>
+					<Item id="6508" name="Menu Basa"/>
+					<Item id="6335" name="Nambani backslash minangka karakter uwal kanggo SQL"/>
+				</Language>
+
+				<Indentation title="Indentasi">
+					<Item id="7161" name="Indent otomatis"/>
+					<Item id="7162" name="Ora ana"/>
+					<Item id="7163" name="dhasar"/>
+					<Item id="7164" name="majeng"/>
+					<Item id="6301" name="Setelan inden"/>
+					<Item id="6302" name="Karakter spasi"/>
+					<Item id="6303" name="Ukuran Indent:"/>
+					<Item id="6310" name="Indent nggunakake:"/>
+					<Item id="6311" name="karakter tab"/>
+					<Item id="6510" name="Gunakake nilai standar"/>
+					<Item id="6512" name="Backspace key undents tinimbang mbusak spasi siji"/>
+				</Indentation>
+
+				<Highlighting title="Sorotan">
+					<Item id="6351" name="Gaya Kabeh Kedadean Token"/>
+					<Item id="6352" name="Kasus tandhing"/>
+					<Item id="6353" name="Cocog kabèh tembung"/>
+					<Item id="6333" name="Sorotan pinter"/>
+					<Item id="6326" name="Aktifake"/>
+					<Item id="6354" name="Mathuk"/>
+					<Item id="6332" name="Kasus tandhing"/>
+					<Item id="6338" name="Cocog kabèh tembung"/>
+					<Item id="6339" name="Gunakake setelan dialog Golek"/>
+					<Item id="6340" name="Sorot tampilan liyane"/>
+					<Item id="6329" name="Sorot Tag Cocokake"/>
+					<Item id="6327" name="Aktifake"/>
+					<Item id="6328" name="Sorot atribut tag"/>
+					<Item id="6330" name="Sorot komentar/php/asp zone"/>
+				</Highlighting>
+
+				<Print title="Print">
+					<Item id="6601" name="Nomer baris printah"/>
+					<Item id="6602" name="Pilihan Warna"/>
+					<Item id="6603" name="WYSIWYG"/>
+					<Item id="6604" name="Walik"/>
+					<Item id="6605" name="Ireng putih"/>
+					<Item id="6606" name="Ora ana warna latar"/>
+					<Item id="6607" name="Setelan Margin (Unit:mm)"/>
+					<Item id="6612" name="Ngiwa"/>
+					<Item id="6613" name="Ndhuwur"/>
+					<Item id="6614" name="Kanan"/>
+					<Item id="6615" name="Ngisor"/>
+					<Item id="6706" name="Kandel"/>
+					<Item id="6707" name="Miring"/>
+					<Item id="6708" name="sirah"/>
+					<Item id="6709" name="sisih kiwa"/>
+					<Item id="6710" name="têngah"/>
+					<Item id="6711" name="sisih tengen"/>
+					<Item id="6717" name="Kandel"/>
+					<Item id="6718" name="Miring"/>
+					<Item id="6719" name="Footer"/>
+					<Item id="6720" name="sisih kiwa"/>
+					<Item id="6721" name="têngah"/>
+					<Item id="6722" name="sisih tengen"/>
+					<Item id="6723" name="Tambah"/>
+					<ComboBox id="6724">
+						<Element name="path jeneng berkas lengkap"/>
+						<Element name="Jeneng berkas"/>
+						<Element name="Direktori berkas"/>
+						<Element name="Kaca"/>
+						<Element name="Format tanggal singkat"/>
+						<Element name="Format tanggal dawa"/>
+						<Element name="Wektu"/>
+					</ComboBox>
+					<Item id="6725" name="Variabel:"/>
+					<Item id="6727" name="Ing kene nampilake setelan variabel sampeyan"/>
+					<Item id="6728" name="Heading and Footer"/>
+				</Print>
+
+				<Searching title="Nggoleki">
+					<Item id="6902" name="Gunakake font monospace ing dialog Golek (Perlu miwiti maneh Notepad++)"/>
+					<Item id="6903" name="Dialog temokake tetep mbukak sawise panelusuran sing metu menyang jendhela asil"/>
+					<Item id="6904" name="Konfirmasi Ganti Kabeh ing Kabeh Dokumen sing Dibukak"/>
+					<Item id="6905" name="Ganti: Aja pindhah menyang kedadeyan ing ngisor iki"/>
+					<Item id="6906" name="Jendhela Hasil Panelusuran: nuduhake mung siji entri saben baris sing ditemokake yen bisa"/>
+					<Item id="6907" name="Nalika Dialog Golek Dijaluk"/>
+					<Item id="6908" name="Isi Kolom Golek nganggo Teks sing Dipilih"/>
+					<Item id="6909" name="Pilih Tembung Ing Caret nalika Ora Ana sing Dipilih"/>
+					<Item id="6910" name="Ukuran Minimal kanggo Priksa Otomatis &quot;Ing pilihan&quot;:"/>
+					<Item id="6913" name="Isi Temokake ing Bidang Direktori File Adhedhasar Dokumen Aktif"/>
+					<Item id="6916" name=": Karakter Maks kanggo Isi Otomatis Golek Bidang saka Pilihan"/>
+				</Searching>
+
+				<RecentFilesHistory title="Sajarah Berkas Anyar">
+					<Item id="6304" name="Sajarah Berkas Anyar"/>
+					<Item id="6306" name="Maks.jumlah entri:"/>
+					<Item id="6305" name="Aja mriksa ing wektu peluncuran"/>
+					<Item id="6429" name="Tampilan"/>
+					<Item id="6424" name="Ing Submenu"/>
+					<Item id="6425" name="Mung Jeneng Berkas"/>
+					<Item id="6426" name="Path Jeneng Berkas Lengkap"/>
+					<Item id="6427" name="Ngatur Panjang Maksimum:"/>
+				</RecentFilesHistory>
+
+				<Backup title="Gawe serep">
+					<Item id="6817" name="Sesi snapshot lan serep berkala"/>
+					<Item id="6818" name="Aktifake snapshot sesi lan serep periodik"/>
+					<Item id="6819" name="Micu serep ing modifikasi ing saben"/>
+					<Item id="6821" name="detik"/>
+					<Item id="6822" name="Path serep:"/>
+					<Item id="6309" name="Elingi sesi saiki kanggo peluncuran sabanjure"/>
+					<Item id="6825" name="Elinga file sing ora bisa diakses saka sesi kepungkur"/>
+					<Item id="6801" name="Gawe serep ing simpen"/>
+					<Item id="6315" name="Ora ana"/>
+					<Item id="6316" name="Serep prasaja"/>
+					<Item id="6317" name="Serep verbose"/>
+					<Item id="6804" name="Direktori Serep Kustom"/>
+					<Item id="6803" name="Direktori:"/>
+				</Backup>
+
+				<AutoCompletion title="Rampung otomatis">
+					<Item id="6807" name="Rampung otomatis"/>
+					<Item id="6808" name="Aktifake otomatis rampung ing saben input"/>
+					<Item id="6809" name="Fungsi rampung"/>
+					<Item id="6810" name="Tembung jangkep"/>
+					<Item id="6816" name="Fungsi lan jangkeping tembung"/>
+					<Item id="6869" name="Sisipake Pilihan"/>
+					<Item id="6870" name="TAB"/><!-- TAB key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6871" name="ENTER"/><!-- ENTER key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6824" name="Nglirwakake angka"/>
+					<Item id="6811" name="saka"/>
+					<Item id="6813" name="watakipun"/>
+					<Item id="6872" name="Gawea ringkesan daftar rampung otomatis"/>
+					<Item id="6815" name="Paramèter fungsi pitunjuk ing input"/>
+					<Item id="6851" name="Sisipan otomatis"/>
+					<Item id="6857" name="tag tutup html/xml"/>
+					<Item id="6858" name="Buka"/>
+					<Item id="6859" name="Tutup"/>
+					<Item id="6860" name="Pasangan sing cocog 1:"/>
+					<Item id="6863" name="Pasangan sing cocog 2:"/>
+					<Item id="6866" name="Pasangan sing cocog 3:"/>
+				</AutoCompletion>
+
+				<MultiInstance title="Tanggal Multi-Instance">
+					<Item id="6151" name="Setelan multi-instance *"/>
+					<Item id="6152" name="Bukak sesi ing conto anyar (lan nyimpen sesi kanthi otomatis nalika metu)"/>
+					<Item id="6153" name="Tansah ing mode multi-kaya"/>
+					<Item id="6154" name="Default (mono-instance)"/>
+					<Item id="6155" name="* Modifikasi setelan iki kudu miwiti maneh Notepad++"/>
+					<Item id="6171" name="Kustomisasi sisipan Tanggal Wektu"/>
+					<Item id="6175" name="Urutan wektu tanggal standar mbalikke (format dawa cendhak)"/>
+					<Item id="6172" name="Format khusus:"/>
+					<Item id="6181" name="Status Panel lan [-nosession] *"/>
+					<Item id="6182" name="Elingi status panel (panel mbukak) ing kasus liyane (mode multi-instance) utawa nalika nggunakake parameter baris perintah [-nosession]"/>
+					<Item id="6183" name="Riwayat Clipboard"/>
+					<Item id="6184" name="Daftar Dokumen"/>
+					<Item id="6185" name="Panel aksara"/>
+					<Item id="6186" name="Folder minangka Workspace"/>
+					<Item id="6187" name="Panel Proyek"/>
+					<Item id="6188" name="Peta Dokumen"/>
+					<Item id="6189" name="Daftar Fungsi"/>
+					<Item id="6190" name="Panel Plugin"/>
+				</MultiInstance>
+
+				<Delimiter title="Wates">
+					<Item id="6251" name="Setelan pilihan delimiter (Ctrl + Mouse klik kaping pindho)"/>
+					<Item id="6252" name="Buka"/>
+					<Item id="6255" name="Tutup"/>
+					<Item id="6256" name="Ngidini ing sawetara baris"/>
+					<Item id="6161" name="Daftar aksara tembung"/>
+					<Item id="6162" name="Gunakake dhaptar karakter Word standar minangka"/>
+					<Item id="6163" name="Tambah karakter minangka bagéan saka tembung
+(aja milih yen ora ngerti apa sing ditindakake)"/>
+				</Delimiter>
+
+				<Performance title="pagelaran">
+					<Item id="7141" name="Watesan File Gedhe"/>
+					<Item id="7143" name="Aktifake Watesan File Gedhe (ora ana sorotan sintaks)"/>
+					<Item id="7144" name="Nemtokake Ukuran File Gedhe:"/>
+					<Item id="7146" name="MB (1 - 2046)"/>
+					<Item id="7147" name="Allow Brace Match"/>
+					<Item id="7148" name="Ngidini Rampung Otomatis"/>
+					<Item id="7149" name="Izinkan Sorotan Cerdas"/>
+					<Item id="7150" name="Mateni Word Wrap sacara global"/>
+					<Item id="7151" name="Allow URL Clickable Link"/>
+					<Item id="7152" name="Pateni bebaya nalika mbukak file ≥2GB"/>
+				</Performance>
+
+				<Cloud title="Awan Link">
+					<Item id="6262" name="Setelan ing méga"/>
+					<Item id="6263" name="Ora Awan"/>
+					<Item id="6267" name="Setel path lokasi awan sampeyan ing kene:"/>
+					<Item id="6318" name="Setelan Link sing Bisa Diklik"/>
+					<Item id="6319" name="Aktifake"/>
+					<Item id="6320" name="Ora ana garis ngisor"/>
+					<Item id="6350" name="Aktifake mode kothak lengkap"/>
+					<Item id="6264" name="Skema kustomisasi URI:"/>
+				</Cloud>
+
+				<SearchEngine title="Mesin telusur">
+					<Item id="6271" name="Search Engine (kanggo printah &quot;Telusuri ing Internet&quot;)"/>
+					<Item id="6272" name="DuckDuckGo"/>
+					<Item id="6273" name="Google"/>
+					<Item id="6274" name="Bing"/>
+					<Item id="6275" name="Yahoo!"/>
+					<Item id="6276" name="Setel mesin telusur sampeyan ing kene:"/>
+					<!-- Don't change anything after Example: -->
+					<Item id="6278" name="Tuladha: https://www.google.com/search?q=$(SAKINI_WORD)"/>
+				</SearchEngine>
+
+				<MISC title="MISC.">
+					<ComboBox id="6347">
+						<Element name="Aktifake kanggo berkas saiki"/>
+						<Element name="Aktifake kabeh berkas sing dibukak"/>
+						<Element name="Pateni"/>
+					</ComboBox>
+					<ComboBox id="6307">
+						<Element name="Ora ana tumindak ing"/>
+						<Element name="Nyilikake nganti"/>
+						<Element name="Cedhak karo"/>
+						<Element name="Nyilikake / Cedhak menyang"/>
+					</ComboBox>
+					<ComboBox id="6362">
+						<Element name="GDI (paling kompatibel)"/>
+						<Element name="DirectWrite (standar)"/>
+						<Element name="DirectWrite (makaryakke pigura)"/>
+						<Element name="DirectWrite (tarik menyang GDI DC)"/>
+						<Element name="DirectWrite (DirectX 11)"/>
+					</ComboBox>
+					<ComboBox id="6364">
+						<Element name="Pateni"/>
+						<Element name="Aktifake ing wiwitan Notepad ++"/>
+						<Element name="Aktifake ing Notepad++ metu"/>
+					</ComboBox>
+					<Item id="6308" name="sistem tray"/>
+					<Item id="6363" name="modus rendering"/>
+					<Item id="6365" name="Nganyari otomatis:"/>
+					<Item id="6312" name="Deteksi Otomatis Status File"/>
+					<Item id="6313" name="Nganyari meneng"/>
+					<Item id="6325" name="Gulung menyang baris pungkasan sawise nganyari"/>
+					<Item id="6322" name="File sesi ext.:"/>
+					<Item id="6324" name="Pengalih Dokumen (Ctrl+TAB)"/>
+					<Item id="6331" name="Tampilake mung jeneng berkas ing baris judhul"/>
+					<Item id="6334" name="Deteksi otomatis enkoding aksara"/>
+					<Item id="6337" name="File ruang kerja ext.:"/>
+					<Item id="6114" name="Aktifake"/>
+					<Item id="6117" name="Aktifake prilaku MRU"/>
+					<Item id="6344" name="Peeker Dokumen"/>
+					<Item id="6345" name="Intip ing tab"/>
+					<Item id="6346" name="Ndeleng ing peta dokumen"/>
+					<Item id="6360" name="Bisu kabeh swara"/>
+					<Item id="6361" name="Aktifake Simpen Kabeh dialog konfirmasi"/>
+				</MISC>
+			</Preference>
+			<MultiMacro title="Mbukak Macro kaping pirang-pirang">
+				<Item id="1" name="Mlaku"/>
+				<Item id="2" name="Batal"/>
+				<Item id="8006" name="Makro mlaku"/>
+				<Item id="8001" name="Mlaku"/>
+				<Item id="8005" name="kaping"/>
+				<Item id="8002" name="Mlaku nganti pungkasan berkas"/>
+			</MultiMacro>
+			<Window title="Windows">
+				<Item id="1" name="Aktifake"/>
+				<Item id="2" name="OKE"/>
+				<Item id="7002" name="Simpen"/>
+				<Item id="7003" name="Tutup jendhela"/>
+				<Item id="7004" name="Urut tab"/>
+			</Window>
+			<ColumnEditor title="Editor Kolom">
+				<Item id="2023" name="Teks sing arep dilebokake"/>
+				<Item id="2033" name="Nomer sing arep dilebokake"/>
+				<Item id="2030" name="Nomer wiwitan:"/>
+				<Item id="2031" name="Tambah dening:"/>
+				<Item id="2038" name="Pimpin:"/>
+				<ComboBox id="2039">
+					<Element name="Ora ana"/>
+					<Element name="nol"/>
+					<Element name="angkasa"/>
+				</ComboBox>
+				<Item id="2036" name="Baleni:"/>
+				<Item id="2032" name="Format"/>
+				<Item id="2024" name="Desember"/>
+				<Item id="2025" name="Oktober"/>
+				<Item id="2026" name="Hex"/>
+				<Item id="2027" name="bin"/>
+				<Item id="1" name="OKE"/>
+				<Item id="2" name="Batal"/>
+			</ColumnEditor>
+			<FindInFinder title="Golek ing asil golèk">
+				<Item id="1" name="Golek Kabeh"/>
+				<Item id="2" name="Tutup"/>
+				<Item id="1711" name="Golek opo:"/>
+				<Item id="1713" name="Nggoleki mung ing baris ketemu"/>
+				<Item id="1714" name="Cocog kabèh tembung"/>
+				<Item id="1715" name="Kasus tandhing"/>
+				<Item id="1716" name="Mode golèk"/>
+				<Item id="1717" name="Biasa"/>
+				<Item id="1719" name="Ekspresi biasa"/>
+				<Item id="1718" name="Extended (\n, \r, \t, \0, \x...)"/>
+				<Item id="1720" name=".cocog baris anyar"/>
+			</FindInFinder>
+			<DoSaveOrNot title="Simpen">
+				<Item id="1761" name="Simpen file &quot;$STR_REPLACE$&quot; ?"/>
+				<Item id="6" name="inggih"/>
+				<Item id="7" name="ora"/>
+				<Item id="2" name="Batal"/>
+				<Item id="4" name="inggih sadaya"/>
+				<Item id="5" name="Ora kabeh"/>
+			</DoSaveOrNot>
+			<DoSaveAll title="Simpen Kabeh Konfirmasi">
+				<Item id="1766" name="Apa sampeyan yakin pengin nyimpen kabeh dokumen sing diowahi?
+
+Pilih &quot;Tansah ya&quot; yen sampeyan ora pengin ndeleng dialog iki maneh.
+Sampeyan bisa ngaktifake maneh dialog iki ing Preferensi mengko."/>
+				<Item id="6" name="inggih"/>
+				<Item id="7" name="ora"/>
+				<Item id="4" name="Tansah iya"/>
+			</DoSaveAll><!-- HowToReproduce: Check the "Enable Save All confirm dialog" checkbox in Preference->MISC, now click "Save all" -->
+
+			<DebugInfo title="Info debug">
+				<Item id="1752" name="Nyalin info debug menyang clipboard"/>
+				<Item id="1" name="OKE"/>
+			</DebugInfo>
+					<MacStrings>
+				<Item id="90001" name="kasil golèk"/>
+				<Item id="90002" name="Nutup asile pados"/>
+				<Item id="90003" name="Busak Kabeh"/>
+				<Item id="90004" name="Nutup panel"/>
+				<Item id="90005" name="Panel Proyek"/>
+				<Item id="90006" name="Sumber Kontrol"/>
+				<Item id="90007" name="Prasetya"/>
+				<Item id="90008" name="Gagal Gagal"/>
+				<Item id="90009" name="Ora ana gudang git\nGunakake Browse kanggo mbukak repo."/>
+				<Item id="90010" name="Panggung"/>
+				<Item id="90011" name="Unstage"/>
+				<Item id="90012" name="Panggung Kabeh"/>
+				<Item id="90013" name="Unstage Kabeh"/>
+				<Item id="90014" name="Pesen komitmen\u2026"/>
+				<Item id="90015" name="Telusuri gudang\u2026"/>
+				<Item id="90016" name="Pilih folder repositori git"/>
+				<Item id="90017" name="(ora ana gudang)"/>
+				<Item id="90018" name="(kapisah)"/>
+				<Item id="90019" name="Kesalahan sing ora dingerteni"/>
+				<Item id="90020" name="Ora ana fungsi sing ditemokake"/>
+				<Item id="90021" name="Fungsi telusuran..."/>
+				<Item id="90022" name="Ngembangake Kabeh"/>
+				<Item id="90023" name="Goleki Berkas Saiki"/>
+				<Item id="90024" name="Refresh"/>
+				<Item id="90025" name="Fungsi Urut (A nganti Z)"/>
+				<Item id="90026" name="Asil"/>
+				<Item id="90027" name="mandeg"/>
+				<Item id="90028" name="Panelusuran mandheg."/>
+				<Item id="90029" name="Nggoleki\u2026"/>
+				<Item id="90030" name="Teks sing arep digoleki"/>
+				<Item id="90031" name="*.txt, *.cpp, \u2026"/>
+				<Item id="90032" name="Nggoleki..."/>
+				<Item id="90033" name="Ganti:"/>
+				<Item id="90034" name="Sabda wutuh"/>
+				<Item id="90035" name="sabda wutuh"/>
+				<Item id="90036" name="Bungkus"/>
+				<Item id="90037" name="Watak"/>
+				<Item id="90038" name="Jeneng HTML"/>
+				<Item id="90039" name="HTML Desimal"/>
+				<Item id="90040" name="HTML Heksadesimal"/>
+				<Item id="90041" name="Nilai"/>
+				<Item id="90042" name="Sesi Kosong"/>
+				<Item id="90043" name="Berkas sesi sing dipilih ora ana tab."/>
+				<Item id="90044" name="Sesi Muatan"/>
+				<Item id="90045" name="Sesi Simpenan"/>
+				<Item id="90046" name="Busak File Anyar"/>
+				<Item id="90047" name="Berkas ora ketemu"/>
+				<Item id="90048" name="Ora Ana Makro Kacathet"/>
+				<Item id="90049" name="Rekam makro dhisik nggunakake Mulai Rekaman."/>
+				<Item id="90050" name="Ora ana konflik trabasan."/>
+				<Item id="90051" name="Jeneng berkas"/>
+				<Item id="90052" name="Tipe"/>
+				<Item id="90053" name="dalan"/>
+				<Item id="90054" name="Pindhah menyang Line"/>
+				<Item id="90055" name="Lebokake Tanggal/Wektu"/>
+				<Item id="90056" name="Owah-owahan Enkoding"/>
+				<Item id="90057" name="Simpen Salinan Minangka"/>
+				<Item id="90058" name="Pindhah menyang Sampah"/>
+				<Item id="90059" name="Title Bar"/>
+				<Item id="90060" name="Tampilake path file lengkap ing baris judhul"/>
+				<Item id="90061" name="Tampilake status bar"/>
+				<Item id="90062" name="Ukuran tab:"/>
+				<Item id="90063" name="Jembar karet:"/>
+				<Item id="90064" name="Tingkat kedip karet (ms):"/>
+				<Item id="90065" name="Rendering font:"/>
+				<Item id="90066" name="Jembar tab maksimal (piksel):"/>
+				<Item id="90067" name="Ujung vertikal"/>
+				<Item id="90068" name="Mode pinggir:"/>
+				<Item id="90069" name="Kolom pinggir:"/>
+				<Item id="90070" name="Jembar angka garis dinamis"/>
+				<Item id="90071" name="Ngiwa:"/>
+				<Item id="90072" name="Kanan:"/>
+				<Item id="90073" name="Pungkasan baris standar:"/>
+				<Item id="90074" name="Encoding standar:"/>
+				<Item id="90075" name="Aktifake serep otomatis"/>
+				<Item id="90076" name="Interval serep (detik):"/>
+				<Item id="90077" name="Lokasi serep:"/>
+				<Item id="90078" name="Gaya Warna"/>
+				<Item id="90079" name="(warisan)"/>
+				<Item id="90080" name="Impor Gaya Tema"/>
+				<Item id="90081" name="Kategori"/>
+				<Item id="90082" name="Ketik kanggo nyaring..."/>
+				<Item id="90083" name="Ora ana konflik trabasan kanggo item iki."/>
+				<Item id="90084" name="Plugin"/>
+				<Item id="90085" name="Versi"/>
+				<Item id="90086" name="Instalasi Rampung"/>
+				<Item id="90087" name="Wiwiti maneh aplikasi kanggo mbukak plugin sing wis diinstal."/>
+				<Item id="90088" name="Pasang Plugins"/>
+				<Item id="90089" name="Mbusak Plugins"/>
+				<Item id="90090" name="Ora ana dhawuh"/>
+				<Item id="90091" name="Ketik kanggo nggoleki\u2026"/>
+				<Item id="90092" name="Basa Ditetepake Panganggo v.2.1"/>
+				<Item id="90093" name="Gawe Basa Anyar"/>
+				<Item id="90094" name="Ketik jeneng:"/>
+				<Item id="90095" name="Warna latar ngarep:"/>
+				<Item id="90096" name="Werna latar mburi:"/>
+				<Item id="90097" name="Aja Ngirit"/>
+				<Item id="90098" name="Rampung"/>
+				<Item id="90099" name="Ganti Tembung Wrap"/>
+				<Item id="90100" name="Tampilake Kabeh Aksara"/>
+				<Item id="90101" name="Tampilake Pilihan Karakter"/>
+				<Item id="90102" name="Toggle Indent Guide"/>
+				<Item id="90103" name="Durung kaleksanan"/>
+				<Item id="90104" name="Muat maneh saka Disk"/>
+				<Item id="90105" name="Ganti mesin telusur"/>
+				<Item id="90106" name="Kasalahan Run"/>
+				<Item id="90107" name="Notepad++ Loading Time"/>
+				<Item id="90108" name="Ora bisa mriksa nganyari"/>
+				<Item id="90109" name="Sampeyan lagi Up to date"/>
+				<Item id="90110" name="Ngundhuh"/>
+				<Item id="90111" name="Kaca rilis"/>
+				<Item id="90112" name="Mengko"/>
+				<Item id="90113" name="Plugins Filter\u2026"/>
+				<Item id="90114" name="Kasedhiya"/>
+				<Item id="90115" name="Nganyari"/>
+				<Item id="90116" name="Dipasang"/>
+				<Item id="90117" name="ora cocog"/>
+				<Item id="90118" name="Gagal Pasang"/>
+				<Item id="90119" name="Mbusak plugins ing ngisor iki?"/>
+				<Item id="90120" name="Instal plugin ing ngisor iki?"/>
+				<Item id="90121" name="Iki bakal mbusak file plugin."/>
+				<Item id="90122" name="Telusuri printah\u2026"/>
+				<Item id="90123" name="warnane ngarep"/>
+				<Item id="90124" name="Werna latar mburi"/>
+				<Item id="90125" name="jeneng makro"/>
+				<Item id="90126" name="Jeneng Makro"/>
+				<Item id="90127" name="Makro sing direkam saiki"/>
+				<Item id="90128" name="Pangurus Makro"/>
+				<Item id="90129" name="Ora Ana Makro sing Disimpen"/>
+				<Item id="90130" name="Rekam lan simpen makro dhisik."/>
+				<Item id="90131" name="Busak Trabasan"/>
+				<Item id="90132" name="Menu utama"/>
+				<Item id="90133" name="Makro"/>
+				<Item id="90134" name="Rungokna dhawuh"/>
+				<Item id="90135" name="Prentah plugin"/>
+				<Item id="90136" name="parentah Scintilla"/>
+				<Item id="90137" name="Bantahan baris parentah"/>
+				<Item id="90138" name="Jeneng printah kanggo menu Run"/>
+				<Item id="90139" name="Kabeh tandha dibusak."/>
+				<Item id="90140" name="Teks sing ditandhani disalin menyang clipboard."/>
+				<Item id="90141" name="Ora ana teks sing ditandhani kanggo disalin."/>
+				<Item id="90142" name="Nggoleki... %ld hit(s) \u2014 %@"/>
+				<Item id="90143" name="Ganti ing file..."/>
+				<Item id="90144" name="Ganti ing Proyek: Durung nyambung."/>
+				<Item id="90145" name="Temokake ing Proyek: Durung nyambung menyang dhaptar file Panel Proyek."/>
+				<Item id="90146" name="Ruang kerja diowahi."/>
+				<Item id="90147" name="Apa sampeyan pengin nyimpen owah-owahan?"/>
+				<Item id="90148" name="kasil golèk"/>
+				<Item id="90149" name="Sorot baris saiki"/>
+				<Item id="90150" name="Nuduhake nomer baris"/>
+				<Item id="90151" name="Nuduhake spasi putih"/>
+				<Item id="90152" name="Tampilake tandha EOL"/>
+				<Item id="90153" name="Tampilake margin tetenger"/>
+				<Item id="90154" name="Gunakake tab (tinimbang spasi)"/>
+				<Item id="90155" name="Gulung ngluwihi baris pungkasan"/>
+				<Item id="90156" name="Salin/potong baris tanpa pilihan"/>
+				<Item id="90157" name="Pateni seret-seret teks sing dipilih"/>
+				<Item id="90158" name="Aktifake sorotan pinter"/>
+				<Item id="90159" name="Sorotan pinter: kasus pertandingan"/>
+				<Item id="90160" name="Sorotan pinter: wutuh mung tembung"/>
+				<Item id="90161" name="Klik kaping pindho kanggo nutup tab"/>
+				<Item id="90162" name="Tampilake tombol tutup ing tab"/>
+				<Item id="90163" name="Elingi visibilitas panel ing kabeh sesi"/>
+				<Item id="90164" name="Tansah entri file sing ora ana ing sesi"/>
+				<Item id="90165" name="Konfirmasi sadurunge Simpen Kabeh"/>
+				<Item id="90166" name="Konfirmasi Ganti Kabeh ing dokumen mbukak"/>
+				<Item id="90167" name="Ganti: aja pindhah menyang kedadeyan sabanjure"/>
+				<Item id="90168" name="Gunakake font monospace ing dialog Golek"/>
+				<Item id="90169" name="Klik-tengen tetep pilihan"/>
+				<Item id="90170" name="Mbalikake urutan tanggal/wektu standar"/>
+				<Item id="90171" name="Gunakake parser dhaptar fungsi basis XML"/>
+				<Item id="90172" name="Otomatis nutup kurung ( ) [ ] { }"/>
+				<Item id="90173" name="Saka aksara Nth:"/>
+				<Item id="90174" name="Ambang mriksa otomatis ing pilihan (byte):"/>
+				<Item id="90175" name="Extended (\\n, \\r, \\t, \\0, \\x...)"/>
+				<Item id="90176" name="Editor"/>
+				<Item id="90177" name="Margining"/>
+				<Item id="90178" name="Peteng"/>
+				<Item id="90179" name="cahyaning"/>
+				<Item id="90180" name="Otomatis (Tindakake Sistem)"/>
+				<Item id="90181" name="Tipis (1px)"/>
+				<Item id="90182" name="Sedheng (2px)"/>
+				<Item id="90183" name="Kandel (3px)"/>
+				<Item id="90184" name="Mati"/>
+				<Item id="90185" name="latar"/>
+				<Item id="90186" name="Antialiased"/>
+				<Item id="90187" name="LCD Optimized"/>
+				<Item id="90188" name="Prasaja +/-"/>
+				<Item id="90189" name="Windows (CRLF)"/>
+				<Item id="90190" name="Mac (CR)"/>
+				<Item id="90191" name="Repositori dhaptar plugin"/>
+				<Item id="90192" name="Pilih file XML tema Notepad++ sing arep ditrapake"/>
+				<Item id="90193" name="Gawe anyar\u2026"/>
+				<Item id="90194" name="Simpen minangka\u2026"/>
+				<Item id="90195" name="Basa panganggo:"/>
+				<Item id="90196" name="jeneng basa"/>
+				<Item id="90197" name="Gawe"/>
+				<Item id="90198" name="Simpen Minangka"/>
+				<Item id="90199" name="iku"/>
+				<Item id="90200" name="ing kabèh berkas"/>
+				<Item id="90201" name="Pembatas Operator"/>
+				<Item id="90202" name="Range ora sah"/>
+				<Item id="90203" name="Nilai rentang kudu 0-255 lan wiwitan kudu &lt;= pungkasan."/>
+				<Item id="90204" name="contextMenu.xml Ora Ditemokake"/>
+				<Item id="90205" name="Wiwiti maneh Notepad ++ kanggo regenerasi default contextMenu.xml."/>
+				<Item id="90206" name="File kasebut nduweni owah-owahan sing ora disimpen.Muat maneh karo enkoding anyar bakal dibuwang.Terus?"/>
+				<Item id="90207" name="Ora ana respon saka server."/>
+				<Item id="90208" name="Status bali server"/>
+				<Item id="90209" name="Repositori bisa uga pribadi."/>
+				<Item id="90210" name="punika Kasedhiya"/>
+				<Item id="90211" name="iku versi paling anyar."/>
+				<Item id="90212" name="sira lagi mlaku"/>
+				<Item id="90213" name="Panemu ing kene"/>
+				<Item id="90214" name="Terminal kene"/>
+				<Item id="90215" name="File basa tambahan (.xml) bisa diselehake ing:"/>
+							<Item id="90216" name="Palette Command…"/>
+				<Item id="90217" name="Priksa Ejaan"/>
+				<Item id="90218" name="Ketik kanggo nggoleki…"/>
+				<Item id="90219" name="Jendhela Anyar"/>
+				<Item id="90220" name="Skip Saiki amp;Pindhah menyang Sabanjure Multi-pilih"/>
+				<Item id="90221" name="Atribut Dikunci (macOS)"/>
+				<Item id="90222" name="Priksa Update…"/>
+				<Item id="90223" name="Bukak pungkasan"/>
+			</MacStrings>
+		</Dialog>
+		<MessageBox>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<ContextMenuXmlEditWarning title="Ngedit contextMenu" message="Ngedit contextMenu.xml ngidini sampeyan ngowahi menu konteks popup Notepad++.
+Sampeyan kudu miwiti maneh Notepad ++ supaya bisa ditrapake sawise ngowahi contextMenu.xml."/>
+			<SaveCurrentModifWarning title="Simpen Modifikasi Saiki" message="Sampeyan kudu nyimpen modifikasi saiki.
+Kabeh modifikasi sing disimpen ora bisa dibatalake.
+
+Terus?"/><!-- HowToReproduce: when you openned file is modified but unsaved yet, and you are changing file encoding. -->
+			<LoseUndoAbilityWarning title="Kalah Batal Awas Kemampuan" message="Sampeyan kudu nyimpen modifikasi saiki.
+Kabeh modifikasi sing disimpen ora bisa dibatalake.
+
+Terus?"/><!-- HowToReproduce: when you openned file is modified and saved, then you are changing file encoding. -->
+			<CannotMoveDoc title="Pindhah menyang Instance Notepad++ anyar" message="Dokumen diowahi, simpen banjur coba maneh."/><!-- HowToReproduce: From your Notepad++ drag & drop a clean (not dirty) file to outside of Notepad++, another instance of Notepad++ will be created. Then from your first Notepad++ drag & drop an unsaved file to the new instance. -->
+			<DocReloadWarning title="Muat maneh" message="Apa sampeyan yakin pengin mbukak maneh file saiki lan ilang owah-owahan sing digawe ing Notepad ++?"/>
+			<FileLockedWarning title="Gagal nyimpen" message="Priksa manawa file iki dibukak ing program liya"/>
+			<FileAlreadyOpenedInNpp title="" message="File wis dibukak ing Notepad++."/><!-- HowToReproduce: Open a new document and open a file "c:/tmp/foo", save this new document by choosing "c:/tmp/foo" as file to save, reply the override popup "yes", then this message appears. -->
+			<RenameTabTemporaryNameAlreadyInUse title="Ganti jeneng gagal" message="Jeneng sing ditemtokake wis digunakake ing tab liyane."/><!-- HowToReproduce: Rename the tab of an untitled document and provide a name that is the same as an already-existing tab of an untitled document. -->
+			<RenameTabTemporaryNameIsEmpty title="Ganti jeneng gagal" message="Jeneng sing ditemtokake ora bisa kosong, utawa ora mung ngemot spasi utawa TAB."/><!-- HowToReproduce: Rename the tab of an untitled document and provide an empty string or only some white speces. -->
+			<DeleteFileFailed title="Busak File" message="Mbusak File gagal"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+
+			<NbFileToOpenImportantWarning title="Jumlah berkas sing arep dibukak kakehan" message="$INT_REPLACE$ files are about to be opened.
+Are you sure you want to open them?"/><!-- HowToReproduce: Check "Open all files of folder instead of launching Folder as Workspace on folder dropping" in "Default Directory" of Preferences dialog, then drop a folder which contains more then 200 files into Notepad++. -->
+			<SettingsOnCloudError title="Setelan ing Cloud" message="Kayane path setelan ing awan disetel ing drive mung diwaca,
+utawa ing folder needed hak istimewa kanggo akses nulis.
+Setelan sampeyan ing awan bakal dibatalake.Mangga setel ulang nilai sing koheren liwat dialog Preferensi."/>
+			<FilePathNotFoundWarning title="File mbukak" message="Berkas sing sampeyan coba bukak ora ana."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SessionFileInvalidError title="Ora Bisa Muat Sesi" message="File sesi rusak utawa ora valid."/><!-- HowToReproduce: Save current session via menu "File -> Save Session...", use another editor to modify the session you saved to make it an invalid xml file. Then load this invalid session via menu "File -> Load Session...". -->
+			<DroppingFolderAsProjectModeWarning title="Tumindak ora sah" message="Sampeyan mung bisa nyelehake file utawa folder nanging ora loro-lorone, amarga sampeyan ngeculake Folder minangka mode Project.
+Sampeyan kudu ngaktifake &quot;Mbukak kabeh file folder tinimbang ngluncurake Folder minangka Workspace nalika folder ngeculake&quot; ing bagean &quot;Direktori Default&quot; saka dialog Preferensi supaya operasi iki bisa digunakake."/>
+			<SortingError title="Kasalahan ngurut" message="Ora bisa ngurutake angka amarga baris $INT_REPLACE$."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SortLocaleMultiple title="Urut ora dilakokake" message="Ngurutake macem-macem pilihan ora didhukung."/><!-- HowToReproduce: Make a multiple selection and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<SortLocaleUnknown title="Urut Gagal" message="Alesan gagal ngurutake ora bisa ditemtokake."/><!-- HowToReproduce: This condition is theoretical; it is unknown what could cause it. -->
+			<SortLocaleExcept title="Urut Gagal" message="$STR_REPLACE$"/><!-- HowToReproduce: Open a large file, e.g. 500MB / 90k lines, in 32-bit Notepad++ and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<ColumnModeTip title="Tip Mode Kolom" message="Ana 3 cara kanggo ngalih menyang mode pilih kolom:
+
+1. (Keyboard lan Mouse) Tahan Alt nalika ngiwa-klik nyeret
+
+2. (Keyboard mung) Tahan Alt + Shift nalika nggunakake tombol panah
+
+3. (Keyboard utawa Mouse)
+Selehake caret ing wiwitan posisi blok kolom sing dikarepake, banjur
+nglakokake printah &quot;Miwiti / Mungkasi Pilih ing Mode Kolom&quot;;
+Pindhah caret menyang mburi dikarepake posisi blok kolom, banjur
+nglakokake printah &quot;Miwiti/Akhir Pilih ing Mode Kolom&quot; maneh"/>
+			<BufferInvalidWarning title="Gagal nyimpen" message="Ora bisa nyimpen: Buffer ora valid."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<DoCloseOrNot title="Simpen berkas sing ora ana" message="Berkas &quot;$STR_REPLACE$&quot; wis ora ana maneh.
+Simpen file iki ing editor?"/>
+			<DoDeleteOrNot title="Mbusak berkas" message="Berkas &quot;$STR_REPLACE$&quot;
+bakal dipindhah menyang Recycle Bin lan dokumen iki bakal ditutup.
+Terus?"/>
+			<NoBackupDoSaveFile title="Simpen" message="File serep sampeyan ora bisa ditemokake (dibusak saka njaba).
+Simpen yen ora data bakal ilang
+Apa sampeyan pengin nyimpen file &quot;$STR_REPLACE$&quot;?"/>
+			<DoReloadOrNot title="Muat maneh" message="&quot;$STR_REPLACE$&quot;
+
+Berkas iki wis diowahi dening program liya.
+Apa sampeyan pengin ngisi maneh?"/>
+			<DoReloadOrNotAndLooseChange title="Muat maneh" message="&quot;$STR_REPLACE$&quot;
+
+Berkas iki wis diowahi dening program liya.
+Apa sampeyan pengin ngisi maneh lan ilang owah-owahan ing Notepad ++?"/>
+			<PrehistoricSystemDetected title="Sistem prasejarah dideteksi" message="Kayane sampeyan isih nggunakake sistem prasejarah.Fitur iki mung dianggo ing sistem modern, nuwun sewu."/><!-- HowToReproduce: Launch "Document Map" under Windows XP. -->
+			<XpUpdaterProblem title="Notepad++ Updater" message="Updater Notepad ++ ora kompatibel karo XP amarga lapisan keamanan lungse ing XP.
+Apa sampeyan pengin menyang kaca Notepad++ kanggo ndownload versi paling anyar?"/><!-- HowToReproduce: Run menu "? -> Update Notepad++" under Windows XP. -->
+			<GUpProxyConfNeedAdminMode title="Setelan proxy" message="Bukak maneh Notepad ++ ing mode Admin kanggo ngatur proxy."/>
+			<DocTooDirtyToMonitor title="Masalah ngawasi" message="Dokumen kasebut reged.Simpen modifikasi sadurunge ngawasi."/>
+			<DocNoExistToMonitor title="Masalah ngawasi" message="File kasebut kudu ana kanggo dipantau."/>
+			<FileTooBigToOpen title="Masalah ukuran berkas" message="File gedhe banget kanggo dibukak dening Notepad++"/><!-- HowToReproduce: Try to open a 4GB file (it's not easy to reproduce, it depends on your system). -->
+			<FileLoadingException title="Kode pangecualian: $STR_REPLACE$" message="Ana kesalahan nalika mbukak file!"/>
+			<WantToOpenHugeFile title="Mbukak bebaya berkas ageng" message="Mbukak file gedhe 2GB+ bisa njupuk sawetara menit.
+Apa sampeyan pengin mbukak?"/>
+			<CreateNewFileOrNot title="Gawe berkas anyar" message="&quot;$STR_REPLACE$&quot; ora ana.Nggawe?"/>
+			<CreateNewFileError title="Gawe berkas anyar" message="Ora bisa nggawe berkas &quot;$STR_REPLACE$&quot;."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<OpenFileError title="SALUT" message="Ora bisa mbukak berkas &quot;$STR_REPLACE$&quot;."/>
+			<OpenFileNoFolderError title="Ora bisa mbukak berkas" message="&quot;$STR_REPLACE1$&quot; ora bisa dibukak:
+Folder &quot;$STR_REPLACE2$&quot; ora ana."/>
+			<FileBackupFailed title="Gawe serep file gagal" message="Versi berkas sadurungé ora bisa disimpen ing direktori serep ing &quot;$STR_REPLACE$&quot;.
+
+Apa sampeyan pengin nyimpen file saiki?"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<LoadStylersFailed title="Muat stylers.xml gagal" message="Muat &quot;$STR_REPLACE$&quot; gagal!"/>
+			<LoadLangsFailed title="Konfigurator" message="Muat langs.xml gagal!
+Apa sampeyan pengin mbalekake langs.xml sampeyan?"/><!-- HowToReproduce: Close Notepad++. Use another editor to remove all content of "langs.xml" (0 length) then save it. Open Notepad++. -->
+			<LoadLangsFailedFinal title="Konfigurator" message="Muat langs.xml gagal!"/><!-- HowToReproduce: Close Notepad++. Use another editor to make "langs.xml" an invalid xml file then save it. Open Notepad++. -->
+			<FolderAsWorspaceSubfolderExists title="Folder minangka Workspace nambah masalah folder" message="Ana subfolder saka folder sing pengin ditambahake.
+Mangga mbusak root saka panel sadurunge sampeyan nambah folder &quot;$STR_REPLACE$&quot;."/><!-- HowToReproduce: Add a folder like "c:\temp\aFolder\" into "Folder as Workspace" panel, then try to add "c:\temp\". -->
+
+			<ProjectPanelChanged title="$STR_REPLACE$" message="Ruang kerja diowahi.Apa sampeyan pengin nyimpen?"/>
+			<ProjectPanelSaveError title="$STR_REPLACE$" message="Ana kesalahan nalika nulis file ruang kerja sampeyan.
+Ruang kerja sampeyan durung disimpen."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<ProjectPanelOpenDoSaveDirtyWsOrNot title="Mbukak Ruang Kerja" message="Ruang kerja saiki wis diowahi.Apa sampeyan pengin nyimpen proyek saiki?"/>
+			<ProjectPanelNewDoSaveDirtyWsOrNot title="Ruang Kerja Anyar" message="Ruang kerja saiki wis diowahi.Apa sampeyan pengin nyimpen proyek saiki?"/>
+			<ProjectPanelOpenFailed title="Mbukak Ruang Kerja" message="Ruang kerja ora bisa dibukak.
+Kayane file sing bakal dibukak dudu file proyek sing bener."/>
+			<ProjectPanelRemoveFolderFromProject title="Mbusak folder saka project" message="Kabeh sub-item bakal dibusak.
+Apa sampeyan yakin pengin mbusak folder iki saka project?"/>
+			<ProjectPanelRemoveFileFromProject title="Mbusak berkas saka project" message="Apa sampeyan yakin pengin mbusak file iki saka proyek kasebut?"/>
+			<ProjectPanelReloadError title="Reload Workspace" message="Ora bisa nemokake file sing arep dimuat maneh."/>
+			<ProjectPanelReloadDirty title="Reload Workspace" message="Ruang kerja saiki wis diowahi.Muat maneh bakal ngilangi kabeh modifikasi.
+Apa sampeyan pengin nerusake?"/>
+			<UDLNewNameError title="Kasalahan UDL" message="Jeneng iki digunakake ing basa liya,
+tulung menehi siji liyane."/>
+			<UDLRemoveCurrentLang title="Mbusak basa saiki" message="Apa sampeyan yakin?"/>
+			<UDL_importSuccessful title="Basa Ditetepake Panganggo" message="Impor sukses."/>
+			<UDL_importFails title="Basa Ditetepake Panganggo" message="Gagal ngimpor."/>
+			<UDL_saveBeforeImport title="Basa Ditetepake Panganggo" message="Sadurunge ngekspor, simpen definisi basa kanthi ngeklik tombol &quot;Simpen Minangka...&quot;."/> <!-- HowToReproduce: Choose "User Defined Language" in User Language combobox, then click on "Export... button". -->
+			<UDL_exportSuccessful title="Basa Ditetepake Panganggo" message="Ekspor sukses."/>
+			<UDL_exportFails title="Basa Ditetepake Panganggo" message="Gagal ngekspor."/>
+			<SCMapperDoDeleteOrNot title="Apa sampeyan yakin?" message="Apa sampeyan yakin pengin mbusak trabasan iki?"/>
+			<FindCharRangeValueError title="Masalah Range Value" message="Sampeyan kudu ngetik antarane 0 lan 255."/> <!-- HowToReproduce: Search menu, then Find characters in range, select Custom range, enter 999 in either edit box, press Find. -->
+			<OpenInAdminMode title="Gagal nyimpen" message="File ora bisa disimpen lan bisa uga direksa.
+Apa sampeyan pengin mbukak Notepad ++ ing mode Administrator?"/>
+			<OpenInAdminModeWithoutCloseCurrent title="Gagal nyimpen" message="File ora bisa disimpen lan bisa uga direksa.
+Apa sampeyan pengin mbukak Notepad ++ ing mode Administrator?"/>
+			<OpenInAdminModeFailed title="Mbukak ing mode Administrator gagal" message="Notepad++ ora bisa dibukak ing mode Administrator."/><!-- HowToReproduce: When you have no Admin privilege and you try to save a modified file in a protected location (for example: any file in sub-folder of "C:\Program Files\". This message will appear after replying "Yes" to "Open in Admin mode" dialog. -->
+			<ViewInBrowser title="Deleng File Saiki ing Browser" message="Aplikasi ora bisa ditemokake ing sistem sampeyan."/>
+			<ExitToUpdatePlugins title="Notepad++ arep metu" message="Yen sampeyan ngeklik YA, sampeyan bakal metu saka Notepad ++ kanggo nerusake operasi.
+Notepad ++ bakal diwiwiti maneh sawise kabeh operasi rampung.
+Terus?"/>
+			<NeedToRestartToLoadPlugins title="Notepad++ kudu diluncurake maneh" message="Sampeyan kudu miwiti maneh Notepad ++ kanggo mbukak plugin sing wis diinstal."/><!-- HowToReproduce: Import a plugin via menu "Settings->Import->Import Plugin(s)...". -->
+			<ChangeHistoryEnabledWarning title="Notepad++ kudu diluncurake maneh" message="Sampeyan kudu miwiti maneh Notepad ++ kanggo ngaktifake Sejarah Ganti."/><!-- HowToReproduce: uncheck "Display Change History" via Preferences dialog "Marges/Border/Edge. -->
+			<WindowsSessionExit title="Notepad++ - metu sesi Windows" message="Sesi Windows bakal diakhiri nanging sampeyan duwe sawetara data sing ora disimpen.Apa sampeyan pengin metu saka Notepad++ saiki?"/>
+			<LanguageMenuCompactWarning title="Menu Basa Kompak" message="Opsi iki bakal diganti nalika diluncurake sabanjure."/><!-- HowToReproduce: toggle "Make language menu compact" via Preferences dialog "Language/Language Menu. -->
+			<SwitchUnsavedThemeWarning title="$STR_REPLACE$" message="Owah-owahan sing ora disimpen bakal dibuwang!
+Apa sampeyan pengin nyimpen owah-owahan sadurunge ngganti tema?"/><!-- HowToReproduce: In the Style Configurator dialog change some theme and switch to other theme without saving. -->
+			<MacroAndRunCmdlWarning title="Kompatibilitas Macro lan Run Commands" message="Printah Macro lan Run sing disimpen ing Notepad ++ v.8.5.2 (utawa luwih lawas) bisa uga ora kompatibel karo versi Notepad ++ sing saiki.
+Coba printah kasebut lan, yen perlu, owahi maneh.
+
+Utawa, sampeyan bisa downgrade menyang Notepad ++ v8.5.2 lan mulihake data sadurunge.
+Notepad ++ bakal nggawe serep &quot;shortcuts.xml&quot; lawas lan disimpen minangka &quot;shortcuts.xml.v8.5.2.backup&quot;.
+Ganti jeneng &quot;shortcuts.xml.v8.5.2.backup&quot; -&gt; &quot;shortcuts.xml&quot;, printah sampeyan kudu dibalekake lan bisa digunakake kanthi bener."/><!-- HowToReproduce: Close Notepad++, remove shortcuts.xml.v8.5.2.backup & v852ShortcutsCompatibilityWarning.xml if present, relaunch Notepad++, delete or modify a shortcuts via Shortcut Mapper, close Notepad++, then the message will show up -->
+			<FullReadOnlySavingForbidden title="Gagal nyimpen" message="Ora bisa nyimpen file.
+Mode terlarang nyimpen mung diwaca Notepad ++ nyegah file kasebut ora disimpen."/>
+			<NotEnoughRoom4Saving title="Simpen gagal" message="Gagal nyimpen file.
+Kayane ora cukup ruang ing disk kanggo nyimpen file.File sampeyan ora disimpen."/>
+			<FileInaccessibleUserSession title="Berkas ora bisa diakses" message="Sawetara file saka sesi sing disimpen kanthi manual &quot;$STR_REPLACE$&quot; ora bisa diakses.Bisa dibukak minangka dokumen kosong lan mung diwaca minangka placeholder.
+
+Apa sampeyan pengin nggawe placeholder kasebut?
+
+CATETAN: Milih ora nggawe placeholder utawa nutup mengko, sesi sing disimpen kanthi manual ora bakal diowahi nalika metu."/>
+			<FileInaccessibleDefaultSessionXml title="Berkas ora bisa diakses" message="Sawetara file saka sesi kepungkur ora bisa diakses.Bisa dibukak minangka dokumen kosong lan mung diwaca minangka placeholder.
+
+Apa sampeyan pengin nggawe placeholder kasebut?
+
+CATETAN: Milih ora nggawe placeholder utawa nutup mengko, sesi sampeyan bakal diowahi nalika metu!Disaranake sampeyan nggawe serep &quot;session.xml&quot; saiki."/>
+			<RTLvsDirectWrite title="Ora bisa mbukak RTL" message="RTL ora kompatibel karo mode DirectWrite.Mangga mateni mode DirectWrite ing MISC.bagean saka dialog Preferensi, lan miwiti maneh Notepad ++."/>
+			<FileMemoryAllocationFailed title="Pangecualian: Alokasi memori berkas gagal" message="Mesthine ora cukup memori gratis sing cedhak kanggo file sing dimuat dening Notepad ++."/><!-- HowToReproduce: Try to open multiple files with total size > ~700MB in the x86 Notepad++ (it will depend on the PC memory configuration and the current system memory usage...). -->
+			<FindRegexBackwardDisabled title="Panelusuran mundur regex dipateni" message="Kanthi gawan, telusuran regex mundur dipateni amarga ana asil sing ora dikarepake.Kanggo nindakake telusuran mundur, bukak dialog Temokake banjur pilih mode telusuran normal utawa lengkap tinimbang ekspresi reguler.
+Pencet tombol OK kanggo mbukak dialog Golek utawa nyetel fokus ing.
+
+Yen sampeyan mbutuhake fitur telusuran regex mundur, deleng manual pangguna kanggo instruksi babagan ngaktifake."/>
+			<PrintError title="0" message="Ora bisa miwiti dokumen printer."/><!-- Use title="0" to use Windows OS default translated "Error" title. -->
+			<FindAutoChangeOfInSelectionWarning title="pèngêtan pados" message="Status kothak &quot;Ing pilihan&quot; wis diowahi kanthi otomatis.
+Mangga verifikasi kondisi panelusuran sadurunge nindakake tumindak."/> <!-- HowToReproduce: https://github.com/notepad-plus-plus/notepad-plus-plus/issues/14897#issuecomment-2564316224 -->
+			<Need2Restart2ShowMenuShortcuts title="Notepad++ kudu diwiwiti maneh" message="Notepad ++ kudu diwiwiti maneh kanggo nuduhake trabasan menu tengen."/>
+			<NoAdminRight2ChangeReadOnlyFileAttribute title="Ngganti atribut mung diwaca file gagal" message="Bukak Notepad++ minangka administrator kanggo ngganti atribut file."/>
+		</MessageBox>
+		<ClipboardHistory>
+			<PanelTitle name="Riwayat Clipboard"/>
+		</ClipboardHistory>
+		<DocList>
+			<PanelTitle name="Daftar Dokumen"/>
+			<ColumnName name="jeneng"/>
+			<ColumnExt name="Ext."/>
+			<ColumnPath name="dalan"/>
+			<ListGroups name="Klompok miturut Tampilan"/>
+		</DocList>
+		<WindowsDlg>
+			<ColumnName name="jeneng"/>
+			<ColumnPath name="dalan"/>
+			<ColumnType name="Tipe"/>
+			<ColumnSize name="Ukuran"/>
+			<ColumnDateTime name="wayahe diowahi"/>
+			<NbDocsTotal name="total dokumen:"/>
+			<MenuCopyName name="Salin Jeneng(s)"/>
+			<MenuCopyPath name="Salin Jeneng Path(s)"/>
+		</WindowsDlg>
+		<AsciiInsertion>
+			<PanelTitle name="Panel Sisipan Kode ASCII"/>
+			<ColumnVal name="Nilai"/>
+			<ColumnHex name="Hex"/>
+			<ColumnChar name="Watak"/>
+			<ColumnHtmlName name="Jeneng HTML"/>
+			<ColumnHtmlNumber name="HTML Desimal"/>
+			<ColumnHtmlHexNb name="HTML Heksadesimal"/>
+		</AsciiInsertion>
+		<DocumentMap>
+			<PanelTitle name="Peta Dokumen"/>
+		</DocumentMap>
+		<FunctionList>
+			<PanelTitle name="Daftar Fungsi"/>
+			<SortTip name="Urut"/>
+			<ReloadTip name="Muat maneh"/>
+			<PreferencesTip name="Preferensi"/>
+			<PreferencesInitialSort name="Fungsi Urut (A nganti Z) kanthi gawan"/>
+		</FunctionList>
+		<FolderAsWorkspace>
+			<PanelTitle name="Folder minangka Workspace"/>
+			<SelectFolderFromBrowserString name="Pilih folder kanggo ditambahake ing Folder minangka panel Workspace"/>
+			<ExpandAllFoldersTip name="Mênggah sadaya"/>
+			<CollapseAllFoldersTip name="Lipat kabeh"/>
+			<LocateCurrentFileTip name="Goleki berkas saiki"/>
+			<Menu>
+				<Item id="3511" name="Mbusak"/>
+				<Item id="3512" name="Mbusak Kabeh"/>
+				<Item id="3513" name="Tambah"/>
+				<Item id="3514" name="Run dening sistem"/>
+				<Item id="3515" name="Buka"/>
+				<Item id="3516" name="salin dalan"/>
+				<Item id="3517" name="Golek ing File..."/>
+				<Item id="3518" name="Penjelajah ing kene"/>
+				<Item id="3519" name="CMD kene"/>
+				<Item id="3520" name="Nyalin jeneng file"/>
+			</Menu>
+		</FolderAsWorkspace>
+		<ProjectManager>
+			<PanelTitle name="Proyek"/>
+			<WorkspaceRootName name="Ruang kerja"/>
+			<NewProjectName name="Jeneng Proyek"/>
+			<NewFolderName name="Jeneng Folder"/>
+			<Menus>
+				<Entries>
+					<Item id="0" name="Ruang kerja"/>
+					<Item id="1" name="Sunting"/>
+				</Entries>
+				<WorkspaceMenu>
+					<Item id="3122" name="Ruang Kerja Anyar"/>
+					<Item id="3123" name="Mbukak Ruang Kerja"/>
+					<Item id="3124" name="Reload Workspace"/>
+					<Item id="3125" name="Simpen"/>
+					<Item id="3126" name="Simpen Minangka..."/>
+					<Item id="3127" name="Simpen Salinan Minangka..."/>
+					<Item id="3121" name="Tambah Proyek Anyar"/>
+					<Item id="3128" name="Golek ing Proyek..."/>
+				</WorkspaceMenu>
+				<ProjectMenu>
+					<Item id="3111" name="Ganti jeneng"/>
+					<Item id="3112" name="Tambah Folder"/>
+					<Item id="3113" name="Tambah File..."/>
+					<Item id="3117" name="Tambah File saka Direktori..."/>
+					<Item id="3114" name="Mbusak"/>
+					<Item id="3118" name="Pindhah munggah"/>
+					<Item id="3119" name="Pindhah mudhun"/>
+				</ProjectMenu>
+				<FolderMenu>
+					<Item id="3111" name="Ganti jeneng"/>
+					<Item id="3112" name="Tambah Folder"/>
+					<Item id="3113" name="Tambah File..."/>
+					<Item id="3117" name="Tambah File saka Direktori..."/>
+					<Item id="3114" name="Mbusak"/>
+					<Item id="3118" name="Pindhah munggah"/>
+					<Item id="3119" name="Pindhah mudhun"/>
+				</FolderMenu>
+				<FileMenu>
+					<Item id="3111" name="Ganti jeneng"/>
+					<Item id="3115" name="Mbusak"/>
+					<Item id="3116" name="Ngowahi File Path"/>
+					<Item id="3118" name="Pindhah munggah"/>
+					<Item id="3119" name="Pindhah mudhun"/>
+				</FileMenu>
+			</Menus>
+		</ProjectManager>
+		<MiscStrings>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<word-chars-list-tip value="Iki ngidini sampeyan nglebokake karakter tambahan menyang karakter tembung saiki nalika ngeklik kaping pindho kanggo pilihan utawa nggoleki kanthi opsi &quot;Cocok kabeh tembung&quot; sing dicenthang."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, hover your mouse on the "?" button. -->
+
+			<!-- Don't translate "(&quot;EOL custom color&quot;)" -->
+			<eol-custom-color-tip value="Pindhah menyang Configurator Gaya kanggo ngganti warna khusus EOL standar (&quot;Warna khusus EOL&quot;).."/>
+
+			<word-chars-list-warning-begin value="Eling:"/>
+			<word-chars-list-space-warning value="$INT_REPLACE$ space(s)"/>
+			<word-chars-list-tab-warning value="$INT_REPLACE$ TAB(s)"/>
+			<word-chars-list-warning-end value="ing dhaptar karakter sampeyan."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, check "Add your character as part of word\r(don't choose it unless you know what you're doing)", then type a white-space in the text field. -->
+			<backup-select-folder value="Pilih folder minangka direktori serep"/><!-- HowToReproduce: Settings > Preferences > Backup > [...] -->
+			<cloud-invalid-warning value="Path ora sah."/>
+			<cloud-restart-warning value="Mangga miwiti maneh Notepad ++ supaya bisa ditrapake."/>
+			<cloud-select-folder value="Pilih folder saka / menyang ngendi Notepad ++ maca / nulis setelane"/><!-- HowToReproduce: In "Cloud" section of Preferences dialog, check "Set your cloud location path here: ", then click the button "...". This message is displayed in the "Browse For Folder" dialog. -->
+			<default-open-save-select-folder value="Pilih folder minangka direktori standar"/><!-- HowToReproduce: Settings > Preferences > Default Directory > [...] -->
+			<shift-change-direction-tip value="Gunakake Shift+Enter kanggo nggoleki ing arah ngelawan"/>
+			<two-find-buttons-tip value="2 golèk kancing mode"/>
+			<find-in-files-filter-tip value="Temokake ing cpp, cxx, h, hxx hpp:
+*.cpp *.cxx *.h *.hxx *.hpp
+
+Temokake ing kabeh file kajaba exe, obj log:
+*.* !*.exe !*.obj !*.log
+
+Temokake ing kabeh file nanging ora kalebu tes folder, bin bin64:
+*.* !\tes !\bin*
+
+Temokake ing kabeh file nanging ora kalebu kabeh log folder utawa log kanthi rekursif:
+*.* !+\log*"/><!-- HowToReproduce: Tip of mouse hovered on "Filters" label in "Find in Files" section of Find dialog. -->
+			<find-in-files-select-folder value="Pilih folder sing arep digoleki"/><!-- HowToReproduce: Search > Find in Files > [...] -->
+			<find-in-files-dir-from-active-doc-tip value="Isi kolom Direktori adhedhasar dokumen aktif"/><!-- HowToReproduce: Search > Find in Files > [<<] -->
+			<find-status-top-reached value="Temokake: Tekan dokumen wiwitan, kedadeyan pisanan saka ngisor ditemokake."/>
+			<find-status-end-reached value="Temokake: Tekan pungkasan dokumen, kedadeyan pisanan saka ndhuwur ditemokake."/>
+			<find-status-replaceinfiles-1-replaced value="Ganti ing File: 1 kedadeyan diganti"/>
+			<find-status-replaceinfiles-nb-replaced value="Ganti ing File: $INT_REPLACE$ kedadeyan diganti"/>
+			<find-status-replaceinopenedfiles-1-replaced value="Ganti ing File sing Dibukak: 1 kedadeyan diganti"/>
+			<find-status-replaceinopenedfiles-nb-replaced value="Ganti ing File sing Dibukak: $INT_REPLACE$ kedadeyan diganti"/>
+			<find-status-invalid-re value="Golek: Ekspresi reguler ora valid"/>
+			<find-status-search-failed value="Golek: Gagal golèk"/>
+			<find-status-mark-1-match value="Tandha: 1 tandhing"/>
+			<find-status-mark-nb-matches value="Tandha: $INT_REPLACE$ cocog"/>
+			<find-status-count-1-match value="Wilangan: 1 tandhing"/>
+			<find-status-count-nb-matches value="Cacah: $INT_REPLACE$ cocog"/>
+			<find-status-replaceall-1-replaced value="Ganti Kabeh: 1 kedadeyan diganti"/>
+			<find-status-replaceall-nb-replaced value="Ganti Kabeh: $INT_REPLACE$ kedadeyan diganti"/>
+			<find-status-replaceall-readonly value="Ganti Kabeh: Ora bisa ngganti teks.Dokumen saiki mung diwaca"/>
+			<find-status-replace-end-reached value="Ganti: Tekan mburi dokumen, diwiwiti saka ndhuwur."/>
+			<find-status-replace-top-reached value="Ganti: Dokumen sing digayuh diwiwiti, diwiwiti saka ngisor."/>
+			<find-status-replaced-next-found value="Ganti: 1 kedadeyan diganti.Kedadeyan sabanjure ditemokake."/>
+			<find-status-replaced-without-continuing value="Ganti: 1 kedadeyan diganti."/>
+			<find-status-replaced-next-not-found value="Ganti: 1 kedadeyan diganti.Ora ana kedadeyan maneh."/>
+			<find-status-replace-not-found value="Ganti: ora ana kedadeyan"/>
+			<find-status-replace-readonly value="Ganti: Ora bisa ngganti teks.Dokumen saiki mung diwaca"/>
+			<find-status-cannot-find value="Golek: Ora bisa nemokake teks &quot;$STR_REPLACE$&quot;"/>
+			<find-status-cannot-find-pebkac-maybe value="Kedadeyan sing diwenehake ora bisa ditemokake.Sampeyan bisa uga wis lali mriksa &quot;Wrap around&quot; (kanggo ON), &quot;Cocok kasus&quot; (kanggo OFF), utawa &quot;Cocok kabeh tembung mung&quot; (kanggo OFF)."/>
+			<find-status-scope-selection value="ing teks kapilih"/>
+			<find-status-scope-all value="ing kabèh berkas"/>
+			<find-status-scope-backward value="wiwit-wiwitan ngantos karêt"/>
+			<find-status-scope-forward value="saka caret menyang end-of-file"/>
+			<find-status-invisible-chars-findWhat value="Karakter sing ora katon ing &quot;Ganti apa&quot; utawa &quot;Ganti karo&quot; isi"/>
+			<find-status-invisible-chars-findWhat-tip value="Pènget: Karakter sing ora katon ing kolom telusuran (utawa ngganti).
+Teks sing ditempelake ing kolom iki kalebu karakter sing ora katon (bisa uga ana pungkasan baris).Yen sampeyan nerusake tanpa mbusak, bakal dilebokake ing telusuran (utawa ngganti) teks."/>
+			<finder-find-in-finder value="Temokake ing asil panelusuran iki..."/>
+			<finder-close-this value="Nutup asil panelusuran iki"/>
+			<finder-collapse-all value="Lipat kabeh"/>
+			<finder-uncollapse-all value="Mênggah sadaya"/>
+			<finder-copy value="Salin Baris sing Dipilih"/>
+			<finder-copy-selected-paths value="Salin Jeneng Path sing Dipilih"/>
+			<finder-clear-all value="Mbusak kabeh"/>
+			<finder-open-selected-paths value="Bukak Jeneng Path sing Dipilih"/>
+			<finder-purge-for-every-search value="Purge kanggo saben golèk"/>
+			<finder-wrap-long-lines value="Tembung mbungkus larik dawa"/>
+			<common-ok value="OKE"/>
+			<common-cancel value="Batal"/>
+			<common-name value="jeneng"/>
+			<tabrename-title value="Ganti jeneng Tab Saiki"/>
+			<tabrename-newname value="jeneng anyar"/>
+			<splitter-rotate-left value="Puter ngiwa"/>
+			<splitter-rotate-right value="Puter nengen"/>
+			<userdefined-title-new value="Gawe Basa Anyar..."/>
+			<userdefined-title-save value="Simpen Jeneng Basa Saiki Minangka..."/>
+			<userdefined-title-rename value="Ganti Jeneng Basa Saiki"/>
+			<summary value="Ringkesan"/>
+			<summary-filepath value="Path berkas lengkap:"/>
+			<summary-filecreatetime value="Digawe:"/>
+			<summary-filemodifytime value="Diowahi:"/>
+			<summary-nbchar value="Karakter (tanpa pungkasan baris):"/>
+			<summary-nbword value="Tembung:"/>
+			<summary-nbline value="Larik:"/>
+			<summary-nbbyte value="Panjang dokumen:"/>
+			<summary-nbsel1 value="karakter sing dipilih ("/>
+			<summary-nbsel2 value="bita) ing"/>
+			<summary-nbrange value="jajaran"/>
+			<progress-hits-title value="Hits:"/>
+			<progress-cancel-info value="Mbatalake operasi, mangga ngenteni ..."/>
+			<find-in-files-progress-title value="Golek Ing File kemajuan..."/>
+			<replace-in-files-confirm-title value="Apa sampeyan yakin?"/>
+			<replace-in-files-confirm-directory value="Apa sampeyan yakin pengin ngganti kabeh kedadeyan ing:"/>
+			<replace-in-files-confirm-filetype value="Kanggo jinis berkas:"/>
+			<replace-in-files-progress-title value="Ganti Ing File kemajuan..."/>
+			<replace-in-projects-confirm-title value="Apa sampeyan yakin?"/>
+			<replace-in-projects-confirm-message value="Apa sampeyan pengin ngganti kabeh kedadeyan ing kabeh dokumen ing Panel Proyek sing dipilih?"/>
+			<replace-in-open-docs-confirm-title value="Apa sampeyan yakin?"/>
+			<replace-in-open-docs-confirm-message value="Apa sampeyan yakin pengin ngganti kabeh kedadeyan ing kabeh dokumen sing mbukak?"/>
+			<find-result-caption value="asil panelusuran"/>
+			<find-result-title value="golèki"/><!-- Must not begin with space or tab character -->
+			<find-result-title-info value="($INT_REPLACE1$ hits ing $INT_REPLACE2$ file saka $INT_REPLACE3$ digoleki)"/>
+			<find-result-title-info-selections value="($INT_REPLACE1$ hits ing $INT_REPLACE2$ pilihan saka $INT_REPLACE3$ digoleki)"/>
+			<find-result-title-info-options-searchmode-normal value="Biasa"/>
+			<find-result-title-info-options-searchmode-extended value="Dilangkungi"/>
+			<find-result-title-info-options-searchmode-regexp value="RegEx"/>
+			<find-result-title-info-options-case value="Kasus"/>
+			<find-result-title-info-options-word value="Tembung"/>
+			<find-result-title-info-extra value="- Mode Filter Line: mung nampilake asil sing disaring"/>
+			<find-result-hits value="($INT_REPLACE$ hits)"/>
+			<find-result-line-prefix value="baris"/><!-- Must not begin with space or tab character -->
+			<find-regex-zero-length-match value="tandhingan dawa nol"/>
+			<session-save-folder-as-workspace value="Simpen Folder minangka Ruang Kerja"/>
+			<tab-untitled-string value="anyar"/>
+			<file-save-assign-type value="Tambah ekstensi"/>
+			<close-panel-tip value="Tutup"/>
+			<IncrementalFind-FSFound value="$INT_REPLACE$ matches"/>
+			<IncrementalFind-FSNotFound value="Frasa ora ketemu"/>
+			<IncrementalFind-FSTopReached value="Tekan ndhuwur kaca, terus saka ngisor"/>
+			<IncrementalFind-FSEndReached value="Tekan mburi kaca, terus saka ndhuwur"/>
+			<contextMenu-styleAlloccurrencesOfToken value="Gaya kabeh kedadeyan token"/>
+			<contextMenu-styleOneToken value="Gaya siji token"/>
+			<contextMenu-clearStyle value="Gaya bening"/>
+			<contextMenu-PluginCommands value="Prentah plugin"/>
+			<largeFileRestriction-tip value="Sawetara fitur bisa nyuda kinerja ing file gedhe.Fitur kasebut bisa dipateni kanthi otomatis nalika mbukak file gedhe.Sampeyan bisa ngatur kene.
+
+CATETAN:
+1. Ngowahi opsi ing kene mbutuhake mbukak maneh file gedhe sing saiki dibukak kanggo entuk prilaku sing tepat.
+
+2. Yen &quot;Pateni Word Wrap global&quot; dicenthang lan sampeyan mbukak file gedhe, &quot;Word Wrap&quot; bakal dipateni kanggo kabeh file.Sampeyan bisa ngaktifake maneh liwat menu &quot;View-&gt; Word Wrap&quot;."/>
+			<npcNote-tip value="Perwakilan saka spasi putih &quot;non-ASCII&quot; sing dipilih lan karakter non-printing (kontrol).
+
+CATETAN:
+Nggunakake perwakilan bakal mateni efek karakter ing teks.
+
+Kanggo dhaptar lengkap spasi putih lan karakter non-printing sing dipilih, priksa Manual pangguna.
+
+Klik tombol iki kanggo mbukak situs web nganggo Manual pangguna."/>
+			<npcAbbreviation-tip value="Singkatan : jeneng
+NBSP: papan tanpa istirahat
+ZWSP: spasi nul-jembaré
+ZWNBSP : spasi nol-jembaré tanpa break
+
+Kanggo dhaptar lengkap mriksa Manual pangguna.
+Klik ing &quot;?&quot;tombol ing sisih tengen kanggo mbukak situs web nganggo Manual pangguna."/>
+			<npcCodepoint-tip value="Codepoint: jeneng
+U+00A0 : papan tanpa istirahat
+U+200B : spasi nul-jembaré
+U + FEFF: spasi nol-jembaré tanpa break
+
+Kanggo dhaptar lengkap mriksa Manual pangguna.
+Klik ing &quot;?&quot;tombol ing sisih tengen kanggo mbukak situs web nganggo Manual pangguna."/>
+
+			<!-- Don't translate "(&quot;Non-printing characters custom color&quot;)" -->
+			<npcCustomColor-tip value="Pindhah menyang Style Configurator kanggo ngganti warna khusus standar kanggo spasi putih lan karakter non-printing sing dipilih (&quot;Warna khusus karakter non-printing&quot;)."/>
+			<npcIncludeCcUniEol-tip value="Aplikasi setelan tampilan karakter non-printing kanggo C0, kontrol C1 lan Unicode EOL (baris sabanjuré, baris pamisah lan paragraf pamisah) karakter."/>
+			<searchingInSelThresh-tip value="Jumlah minimal karakter sing dipilih ing zona suntingan kanggo mriksa kothak &quot;Ing pilihan&quot; kanthi otomatis nalika dialog Temokake diaktifake.Nilai maksimal yaiku $INT_REPLACE$.Setel nilai dadi 0 kanggo mateni mriksa otomatis."/>
+			<searchingFillFindWhat-tip value="Jumlah maksimal karakter sing dipilih ing zona suntingan kanggo ngisi kolom &quot;Golek apa&quot; kanthi otomatis nalika Ctrl-F dipicu.Nilai maksimum yaiku $INT_REPLACE$, yaiku ukuran maksimum lapangan &quot;Golek apa&quot;, diwatesi dening sistem."/>
+			<verticalEdge-tip value="Tambah tandha kolom kanthi nuduhake posisi kanthi nomer desimal.Sampeyan bisa nemtokake sawetara tandha kolom kanthi nggunakake spasi putih kanggo misahake nomer sing beda."/>
+			<fileSaveAsCopySaveButton-tip value="Tahan Shift nalika mencet Simpen kanggo mbukak salinan sawise nyimpen."/>
+			<autoIndentBasic-tip value="Priksa manawa indentasi baris saiki (yaiku baris anyar sing digawe kanthi mencet tombol ENTER) cocog karo indentasi baris sadurunge."/>
+			<autoIndentAdvanced-tip value="Aktifake indentasi cerdas kanggo basa &quot;C-kaya&quot; lan Python.Basa &quot;C-like&quot; kalebu:
+C, C++, Java, C#, Objective-C, PHP, JavaScript, JSP, CSS, Perl, Rust, PowerShell lan JSON.
+
+Yen sampeyan milih mode lanjut nanging ora ngowahi file ing basa kasebut ing ndhuwur, indentasi bakal tetep ing mode dhasar."/>
+
+			<!-- Don't translate "Global override" and "Default Style" -->
+			<global-override-tip value="Ngaktifake &quot;Global override&quot; ing kene bakal ngilangi parameter kasebut ing kabeh gaya basa.Sampeyan mbokmenawa pengin nggunakake setelan &quot;Gaya Default&quot; tinimbang"/>
+			<scintillaRenderingTechnology-tip value="Bisa nambah rendering karakter khusus utawa ngrampungake sawetara masalah grafis, miwiti maneh Notepad ++ kanggo ngetrapake pangowahan kasebut."/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'length' & 'lines' are much longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-length-lines value="dawa: $STR_REPLACE1$ garis: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Ln' & 'Col' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Ln-Col value="Ln: $STR_REPLACE1$ Col: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Pos' & 'Sel' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Pos value="Pos:"/>
+			<statusbar-Sel value="Sel:"/>
+			<statusbar-Sel-number value="Sel"/>
+			<toolbar-accent-tip value="Opsi iki ndadekake lambang toolbar sampeyan tindakake werna aksen sistem Windows.Werna aksen minangka warna sorotan sing digunakake ing tombol, wates, lan kothak menu Start ing Windows.Kanggo ngganti, pindhah menyang Setelan &gt; Personalisasi &gt; Warna, banjur pilih werna aksen sing disenengi."/>
+			<len-limit-exceeded-tip value="Watesan dawa ngluwihi: Input sampeyan bisa ngluwihi watesan sing diidini lan bisa uga dipotong, lan ora bakal disimpen kanggo sesi sabanjure."/>
+			<max-len-on-search-tip value="Input sampeyan bisa ngluwihi watesan sing diidini lan bisa dipotong, lan ora bakal disimpen kanggo sesi sabanjure."/>
+			<max-len-on-save-tip value="Dawane input sampeyan dawa banget lan bisa uga ora disimpen kanggo sesi sabanjure."/>
+			<goto-setting-tip value="Golek aturmu ing kene"/>
+			<tabbar-tabcompactlabellen-tip value="Matesi dawa katon saka jeneng tab dawa.Ketik kanggo ngetrapake nilai sing diwenehake.Rentang nilai: 1-257 karakter (0 mateni truncation)."/>
+		</MiscStrings>
+	</Native-Langue>
+</NotepadPlus>
+
+

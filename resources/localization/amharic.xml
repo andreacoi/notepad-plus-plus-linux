@@ -1,0 +1,2142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Amharic (አማርኛ) language file for Notepad++ macOS
+    Based on English template - community translations welcome
+    Created: 2026-04-04
+-->
+<NotepadPlus>
+	<Native-Langue name="አማርኛ" filename="amharic.xml" version="8.9">
+		<Menu>
+			<Main>
+				<!-- Main Menu Entries -->
+				<Entries>
+					<Item menuId="file" name="ፋይል"/>
+					<Item menuId="edit" name="አርትዕ"/>
+					<Item menuId="search" name="ፈልግ"/>
+					<Item menuId="view" name="ይመልከቱ"/>
+					<Item menuId="encoding" name="Encoding"/>
+					<Item menuId="language" name="ቋንቋ"/>
+					<Item menuId="settings" name="ቅንብሮች"/>
+					<Item menuId="tools" name="መሳሪያዎች"/>
+					<Item menuId="macro" name="ማክሮ"/>
+					<Item menuId="run" name="ሩጡ"/>
+					<Item menuId="Plugins" name="ተሰኪዎች"/>
+					<Item menuId="Window" name="መስኮት"/>
+				</Entries>
+				<!-- Sub Menu Entries -->
+				<SubEntries>
+					<Item subMenuId="file-openFolder" name="የያዘ አቃፊ ይክፈቱ"/>
+					<Item subMenuId="file-closeMore" name="በርካታ ሰነዶችን ዝጋ"/>
+					<Item subMenuId="file-recentFiles" name="የቅርብ ጊዜ ፋይሎች"/>
+					<Item subMenuId="edit-insert" name="አስገባ"/>
+					<Item subMenuId="edit-copyToClipboard" name="ወደ ቅንጥብ ሰሌዳ ቅዳ"/>
+					<Item subMenuId="edit-indent" name="ገብ"/>
+					<Item subMenuId="edit-convertCaseTo" name="ጉዳዩን ወደ ቀይር"/>
+					<Item subMenuId="edit-lineOperations" name="የመስመር ስራዎች"/>
+					<Item subMenuId="edit-comment" name="አስተያየት/አስተያየት"/>
+					<Item subMenuId="edit-autoCompletion" name="ራስ-ማጠናቀቅ"/>
+					<Item subMenuId="edit-eolConversion" name="የኢኦኤል ልወጣ"/>
+					<Item subMenuId="edit-blankOperations" name="ባዶ ስራዎች"/>
+					<Item subMenuId="edit-pasteSpecial" name="ልዩ ለጥፍ"/>
+					<Item subMenuId="edit-onSelection" name="ምርጫ ላይ"/>
+					<Item subMenuId="edit-multiSelectALL" name="ሁሉንም ይምረጡ"/>
+					<Item subMenuId="edit-multiSelectNext" name="ባለብዙ ምረጥ ቀጣይ"/>
+					<Item subMenuId="edit-readonlyInNotepad++" name="በማስታወሻ ደብተር++ ውስጥ ማንበብ-ብቻ"/>
+					<Item subMenuId="search-changeHistory" name="ታሪክ ቀይር"/>
+					<Item subMenuId="search-markAll" name="የቅጡ ሁሉም የቶከን ክስተቶች"/>
+					<Item subMenuId="search-markOne" name="ስታይል አንድ ማስመሰያ"/>
+					<Item subMenuId="search-unmarkAll" name="ስታይል አጽዳ"/>
+					<Item subMenuId="search-jumpUp" name="ዝብሉ"/>
+					<Item subMenuId="search-jumpDown" name="ዝብሉ"/>
+					<Item subMenuId="search-copyStyledText" name="ቅጥ ያለው ጽሑፍ ቅዳ"/>
+					<Item subMenuId="search-bookmark" name="ዕልባት"/>
+					<Item subMenuId="view-currentFileIn" name="አሁን ያለውን ፋይል ይመልከቱ"/>
+					<Item subMenuId="view-showSymbol" name="ምልክት አሳይ"/>
+					<Item subMenuId="view-zoom" name="አጉላ"/>
+					<Item subMenuId="view-moveCloneDocument" name="የአሁኑን ሰነድ አንቀሳቅስ/ክልፍ"/>
+					<Item subMenuId="view-tab" name="ታብ"/>
+					<Item subMenuId="view-collapseLevel" name="የታጠፈ ደረጃ"/>
+					<Item subMenuId="view-uncollapseLevel" name="ደረጃን ማጠፍ"/>
+					<Item subMenuId="view-project" name="ፕሮጀክት"/>
+					<Item subMenuId="encoding-characterSets" name="የቁምፊ ስብስብ"/>
+					<Item subMenuId="encoding-arabic" name="አረብኛ"/>
+					<Item subMenuId="encoding-baltic" name="ባልቲክ"/>
+					<Item subMenuId="encoding-celtic" name="ሴልቲክ"/>
+					<Item subMenuId="encoding-cyrillic" name="ሲሪሊክ"/>
+					<Item subMenuId="encoding-centralEuropean" name="የመካከለኛው አውሮፓ"/>
+					<Item subMenuId="encoding-chinese" name="ቻይንኛ"/>
+					<Item subMenuId="encoding-easternEuropean" name="ምስራቃዊ አውሮፓ"/>
+					<Item subMenuId="encoding-greek" name="ግሪክ"/>
+					<Item subMenuId="encoding-hebrew" name="ዕብራይስጥ"/>
+					<Item subMenuId="encoding-japanese" name="ጃፓን"/>
+					<Item subMenuId="encoding-korean" name="ኮሪያኛ"/>
+					<Item subMenuId="encoding-northEuropean" name="ሰሜን አውሮፓ"/>
+					<Item subMenuId="encoding-thai" name="ታይ"/>
+					<Item subMenuId="encoding-turkish" name="የቱርክ"/>
+					<Item subMenuId="encoding-westernEuropean" name="ምዕራባዊ አውሮፓ"/>
+					<Item subMenuId="encoding-vietnamese" name="ቬትናምኛ"/>
+					<Item subMenuId="language-userDefinedLanguage" name="በተጠቃሚ የተገለጸ ቋንቋ"/>
+					<Item subMenuId="settings-import" name="አስመጣ"/>
+					<Item subMenuId="tools-md5" name="MD5"/>
+					<Item subMenuId="tools-sha1" name="SHA-1"/>
+					<Item subMenuId="tools-sha256" name="SHA-256"/>
+					<Item subMenuId="tools-sha512" name="SHA-512"/>
+					<Item subMenuId="window-sortby" name="ደርድር በ"/>
+				</SubEntries>
+
+				<!-- all menu item -->
+				<Commands>
+					<Item id="41001" name="አዲስ"/>
+					<Item id="41002" name="ክፍት..."/>
+					<Item id="41019" name="አሳሽ"/>
+					<Item id="41020" name="cmd"/>
+					<Item id="41025" name="አቃፊ እንደ የስራ ቦታ"/>
+					<Item id="41003" name="ዝጋ"/>
+					<Item id="41004" name="ሁሉንም ዝጋ"/>
+					<Item id="41005" name="ሁሉንም ነገር ግን አሁን ያለውን ሰነድ ዝጋ"/>
+					<Item id="41026" name="ሁሉንም ነገር ግን የተሰኩ ሰነዶችን ዝጋ"/>
+					<Item id="41009" name="ሁሉንም ወደ ግራ ዝጋ"/>
+					<Item id="41018" name="ሁሉንም ወደ ቀኝ ዝጋ"/>
+					<Item id="41024" name="ሁሉንም ዝጋ ያልተለወጡ"/>
+					<Item id="41006" name="አስቀምጥ"/>
+					<Item id="41007" name="ሁሉንም አድን"/>
+					<Item id="41008" name="አስቀምጥ እንደ..."/>
+					<Item id="41010" name="አትም..."/>
+					<Item id="1001" name="አሁን አትም"/>
+					<Item id="41011" name="ውጣ"/>
+					<Item id="41012" name="የመጫኛ ክፍለ ጊዜ..."/>
+					<Item id="41013" name="ክፍለ ጊዜን አስቀምጥ..."/>
+					<Item id="41014" name="ከዲስክ እንደገና ይጫኑ"/>
+					<Item id="41015" name="ቅጂ አስቀምጥ እንደ..."/>
+					<Item id="41016" name="ወደ ሪሳይክል ቢን ውሰድ"/>
+					<Item id="41017" name="እንደገና ይሰይሙ..."/>
+					<Item id="41021" name="የቅርብ ጊዜ የተዘጋ ፋይል ወደነበረበት መልስ"/>
+					<Item id="41022" name="አቃፊን እንደ የስራ ቦታ ክፈት..."/>
+					<Item id="41023" name="በነባሪ መመልከቻ ክፈት"/>
+					<Item id="42001" name="ቁረጥ"/>
+					<Item id="42002" name="ቅዳ"/>
+					<Item id="42003" name="ቀልብስ"/>
+					<Item id="42004" name="ድገም"/>
+					<Item id="42005" name="ለጥፍ"/>
+					<Item id="42006" name="ሰርዝ"/>
+					<Item id="42007" name="ሁሉንም ይምረጡ"/>
+					<Item id="42020" name="ጀምር/መጨረሻ ምረጥ"/>
+					<Item id="42089" name="በአምድ ሁነታ ጀምር/ጨርስ"/>
+					<Item id="42084" name="የቀን ሰዓት (አጭር)"/>
+					<Item id="42085" name="የቀን ሰዓት (ረጅም)"/>
+					<Item id="42086" name="የቀን ሰዓት (ብጁ የተደረገ)"/>
+					<Item id="42008" name="የመስመር ገብ"/>
+					<Item id="42009" name="የመስመር ገብን ቀንስ"/>
+					<Item id="42010" name="የአሁኑ መስመር ብዜት"/>
+					<Item id="42079" name="የተባዙ መስመሮችን አስወግድ"/>
+					<Item id="42077" name="ተከታታይ የተባዙ መስመሮችን አስወግድ"/>
+					<Item id="42012" name="የተከፈለ መስመር"/>
+					<Item id="42013" name="መስመሮችን ይቀላቀሉ"/>
+					<Item id="42014" name="የአሁን መስመር ወደ ላይ ውሰድ"/>
+					<Item id="42015" name="የአሁኑ መስመር ወደ ታች ውሰድ"/>
+					<Item id="42059" name="መስመሮችን በመዝገበ-ቃላት ወደ ላይ ደርድር"/>
+					<Item id="42060" name="መስመሮችን በመዝገበ ቃላት ደርድር"/>
+					<Item id="42080" name="መስመሮች ሌክስ ደርድር።ጉዳይን ችላ በማለት ወደ ላይ መውጣት"/>
+					<Item id="42081" name="መስመሮች ሌክስ ደርድር።ጉዳይን ችላ በማለት መውረድ"/>
+					<Item id="42100" name="መስመሮችን በአካባቢያዊ ቅደም ተከተል ወደ ላይ ደርድር"/>
+					<Item id="42101" name="መስመሮችን በአካባቢያዊ ቅደም ተከተል መውረድ"/>
+					<Item id="42104" name="መስመሮችን በከፍታ ርዝመት ደርድር"/>
+					<Item id="42105" name="መስመሮችን በመውረድ ርዝመት ደርድር"/>
+					<Item id="42061" name="መስመሮችን እንደ ኢንቲጀር ወደ ላይ ደርድር"/>
+					<Item id="42062" name="መስመሮችን እንደ ኢንቲጀር ሲወርዱ ደርድር"/>
+					<Item id="42063" name="መስመሮችን እንደ አስርዮሽ (ኮማ) ወደ ላይ ደርድር"/>
+					<Item id="42064" name="መስመሮችን እንደ አስርዮሽ (ኮማ) መውረድ"/>
+					<Item id="42065" name="መስመሮችን እንደ አስርዮሽ (ነጥብ) ወደ ላይ ደርድር"/>
+					<Item id="42066" name="መስመሮችን እንደ አስርዮሽ (ነጥብ) መውረድ"/>
+					<Item id="42083" name="የተገላቢጦሽ መስመር ትዕዛዝ"/>
+					<Item id="42078" name="የዘፈቀደ መስመር ትዕዛዝ"/>
+					<Item id="42016" name="የላቀ"/>
+					<Item id="42017" name="ትንሽ ፊደል"/>
+					<Item id="42067" name="ትክክለኛ ጉዳይ"/>
+					<Item id="42068" name="ትክክለኛ መያዣ (ቅልቅል)"/>
+					<Item id="42069" name="የቅጣት ጉዳይ"/>
+					<Item id="42070" name="የአረፍተ ነገር ጉዳይ (ድብልቅ)"/>
+					<Item id="42071" name="የ INVERT ጉዳይ"/>
+					<Item id="42072" name="ranDOm ጉዳይ"/>
+					<Item id="42073" name="ፋይል ክፈት"/>
+					<Item id="42074" name="በ Explorer ውስጥ ያለው አቃፊ ክፈት"/>
+					<Item id="42106" name="ምርጫን ቀይራ █ (ፈረቃ፡ ●)"/>
+					<Item id="42075" name="ኢንተርኔት ላይ ፍለጋ"/>
+					<Item id="42076" name="የፍለጋ ፕሮግራም ቀይር..."/>
+					<Item id="42090" name="ጉዳይ ሙሉ ቃልን ችላ በል"/>
+					<Item id="42091" name="የማቻቻል ጉዳይ"/>
+					<Item id="42092" name="ሙሉ ቃል ብቻ አዛምድ"/>
+					<Item id="42093" name="ተዛማጅ ጉዳይ ሙሉ ቃል"/>
+					<Item id="42094" name="ጉዳይ ሙሉ ቃልን ችላ በል"/>
+					<Item id="42095" name="የማቻቻል ጉዳይ"/>
+					<Item id="42096" name="ሙሉ ቃል ብቻ አዛምድ"/>
+					<Item id="42097" name="ተዛማጅ ጉዳይ ሙሉ ቃል"/>
+					<Item id="42098" name="የቅርብ ጊዜ የታከሉ ባለብዙ ምርጫ ቀልብስ"/>
+					<Item id="42099" name="የአሁኑን ዝለል ወደ ቀጣይ ሂድ ባለብዙ ምርጫ"/>
+					<Item id="42018" name="መቅዳት ጀምር"/>
+					<Item id="42019" name="መቅዳት አቁም"/>
+					<Item id="42021" name="መልሶ ማጫወት"/>
+					<Item id="42022" name="ነጠላ መስመር አስተያየት ቀይር"/>
+					<Item id="42023" name="አስተያየት አግድ"/>
+					<Item id="42047" name="አስተያየት አግድ"/>
+					<Item id="42024" name="መሄጃ ቦታን ይከርክሙ"/>
+					<Item id="42042" name="የሚመራ ቦታን ይከርክሙ"/>
+					<Item id="42043" name="መሪ እና መሄጃ ቦታን ይከርክሙ"/>
+					<Item id="42044" name="EOL ወደ ጠፈር"/>
+					<Item id="42045" name="ሁለቱንም እና EOL ወደ ጠፈር ይከርክሙ"/>
+					<Item id="42046" name="TAB ወደ ጠፈር"/>
+					<Item id="42054" name="ቦታ ለ TAB (ሁሉም)"/>
+					<Item id="42053" name="ቦታ ለ TAB (መሪ)"/>
+					<Item id="42038" name="HTML ይዘት ለጥፍ"/>
+					<Item id="42039" name="የ RTF ይዘትን ለጥፍ"/>
+					<Item id="42048" name="ሁለትዮሽ ይዘት ቅዳ"/>
+					<Item id="42049" name="ሁለትዮሽ ይዘት ቁረጥ"/>
+					<Item id="42050" name="ሁለትዮሽ ይዘት ለጥፍ"/>
+					<Item id="42082" name="ሊንክ ቅዳ"/>
+					<Item id="42037" name="የአምድ ሁነታ..."/>
+					<Item id="42034" name="የአምድ አዘጋጅ..."/>
+					<Item id="42051" name="የቁምፊ ፓነል"/>
+					<Item id="42052" name="የቅንጥብ ሰሌዳ ታሪክ"/>
+					<Item id="42025" name="በአሁኑ ጊዜ የተቀዳ ማክሮን ያስቀምጡ..."/>
+					<Item id="42026" name="የጽሑፍ አቅጣጫ RTL"/>
+					<Item id="42027" name="የጽሑፍ አቅጣጫ LTR"/>
+					<Item id="42028" name="አሁን ባለው ሰነድ ላይ ተነባቢ-ብቻ"/>
+					<Item id="42102" name="ለሁሉም ሰነዶች ተነባቢ-ብቻ"/>
+					<Item id="42103" name="ለሁሉም ሰነዶች ግልጽ ንባብ-ብቻ"/>
+					<Item id="42029" name="የአሁኑን ፋይል መንገድ ቅዳ"/>
+					<Item id="42030" name="የአሁኑን ፋይል ስም ቅዳ"/>
+					<Item id="42031" name="የአሁኑን Dir ቅዳ.መንገድ"/>
+					<Item id="42087" name="ሁሉንም የፋይል ስሞች ቅዳ"/>
+					<Item id="42088" name="ሁሉንም የፋይል መንገዶች ቅዳ"/>
+					<Item id="42032" name="ማክሮ ብዙ ጊዜ አሂድ..."/>
+					<Item id="42033" name="በዊንዶውስ ውስጥ የተነበበ-ብቻ ባህሪ"/>
+					<Item id="42035" name="ነጠላ መስመር አስተያየት"/>
+					<Item id="42036" name="ነጠላ መስመር አስተያየት"/>
+					<Item id="42055" name="ባዶ መስመሮችን አስወግድ"/>
+					<Item id="42056" name="ባዶ መስመሮችን አስወግድ (ባዶ ቁምፊዎችን የያዙ)"/>
+					<Item id="42057" name="ባዶ መስመር ከአሁኑ በላይ አስገባ"/>
+					<Item id="42058" name="ባዶ መስመር ከአሁኑ በታች አስገባ"/>
+					<Item id="43001" name="አግኝ..."/>
+					<Item id="43002" name="ቀጣይ አግኝ"/>
+					<Item id="43003" name="ተካ..."/>
+					<Item id="43004" name="ሂድ ወደ..."/>
+					<Item id="43005" name="ዕልባት ቀይር"/>
+					<Item id="43006" name="ቀጣይ ዕልባት"/>
+					<Item id="43007" name="ቀዳሚ ዕልባት"/>
+					<Item id="43008" name="ሁሉንም ዕልባቶችን አጽዳ"/>
+					<Item id="43018" name="ዕልባት የተደረገባቸው መስመሮችን ቁረጥ"/>
+					<Item id="43019" name="ዕልባት የተደረገባቸው መስመሮችን ቅዳ"/>
+					<Item id="43020" name="ዕልባት የተደረገባቸው መስመሮች ላይ ለጥፍ (ተካ)"/>
+					<Item id="43021" name="ዕልባት የተደረገባቸውን መስመሮች አስወግድ"/>
+					<Item id="43051" name="ዕልባት ያልተደረገባቸው መስመሮችን አስወግድ"/>
+					<Item id="43050" name="ተገላቢጦሽ ዕልባቶች"/>
+					<Item id="43052" name="በክልል ውስጥ ቁምፊዎችን ያግኙ..."/>
+					<Item id="43053" name="በ{} [] ወይም () መካከል ያለውን ሁሉ ይምረጡ"/>
+					<Item id="43009" name="ወደ ተዛማጅ ቅንፍ ይሂዱ"/>
+					<Item id="43010" name="ያለፈውን ያግኙ"/>
+					<Item id="43011" name="ተጨማሪ ፍለጋ"/>
+					<Item id="43013" name="በፋይሎች ውስጥ ያግኙ"/>
+					<Item id="43014" name="ቀጥሎ ያግኙ (ተለዋዋጭ)"/>
+					<Item id="43015" name="አግኝ (ተለዋዋጭ) ቀዳሚ"/>
+					<Item id="43022" name="1ኛ ስታይል መጠቀም"/>
+					<Item id="43023" name="1ኛ ስታይል አጽዳ"/>
+					<Item id="43024" name="2ኛ ስታይል መጠቀም"/>
+					<Item id="43025" name="አጽዳ 2ኛ ዘይቤ"/>
+					<Item id="43026" name="3ኛ ስታይል መጠቀም"/>
+					<Item id="43027" name="አጽዳ 3ኛ ዘይቤ"/>
+					<Item id="43028" name="4ኛ ስታይል መጠቀም"/>
+					<Item id="43029" name="4ተኛ ዘይቤን አጽዳ"/>
+					<Item id="43030" name="5ኛ ስታይል መጠቀም"/>
+					<Item id="43031" name="አጽዳ 5ኛ ዘይቤ"/>
+					<Item id="43032" name="ሁሉንም ቅጦች አጽዳ"/>
+					<Item id="43033" name="1ኛ ዘይቤ"/>
+					<Item id="43034" name="2ኛ ዘይቤ"/>
+					<Item id="43035" name="3ኛ ዘይቤ"/>
+					<Item id="43036" name="4ተኛ ዘይቤ"/>
+					<Item id="43037" name="5ኛ ዘይቤ"/>
+					<Item id="43038" name="ማርክ ስታይል አግኝ"/>
+					<Item id="43039" name="1ኛ ዘይቤ"/>
+					<Item id="43040" name="2ኛ ዘይቤ"/>
+					<Item id="43041" name="3ኛ ዘይቤ"/>
+					<Item id="43042" name="4ተኛ ዘይቤ"/>
+					<Item id="43043" name="5ኛ ዘይቤ"/>
+					<Item id="43044" name="ማርክ ስታይል አግኝ"/>
+					<Item id="43055" name="1ኛ እስታይል"/>
+					<Item id="43056" name="2ኛ ዘይቤ"/>
+					<Item id="43057" name="3ኛ ዘይቤ"/>
+					<Item id="43058" name="4ኛ ዘይቤ"/>
+					<Item id="43059" name="5ኛ እስታይል"/>
+					<Item id="43060" name="ሁሉም ቅጦች"/>
+					<Item id="43061" name="ማርክ ስታይል አግኝ"/>
+					<Item id="43062" name="1ኛ ስታይል መጠቀም"/>
+					<Item id="43063" name="2ኛ ስታይል መጠቀም"/>
+					<Item id="43064" name="3ኛ ስታይል መጠቀም"/>
+					<Item id="43065" name="4ኛ ስታይል መጠቀም"/>
+					<Item id="43066" name="5ኛ ስታይል መጠቀም"/>
+					<Item id="43067" name="ወደ ቀጣዩ ለውጥ ሂድ"/>
+					<Item id="43068" name="ወደ ቀዳሚው ለውጥ ይሂዱ"/>
+					<Item id="43069" name="የለውጥ ታሪክን አጽዳ"/>
+					<Item id="43045" name="የፍለጋ ውጤቶች መስኮት"/>
+					<Item id="43046" name="ቀጣይ የፍለጋ ውጤት"/>
+					<Item id="43047" name="ቀዳሚ የፍለጋ ውጤት"/>
+					<Item id="43048" name="ቀጥሎ ይምረጡ እና ያግኙ"/>
+					<Item id="43049" name="ቀዳሚውን ይምረጡ እና ያግኙ"/>
+					<Item id="43054" name="ማርክ..."/>
+					<Item id="43501" name="ዝጋ የተመረጡ"/>
+					<Item id="43502" name="ሌሎችን ዝጋ"/>
+					<Item id="43503" name="የተመረጡ ስሞችን ቅዳ"/>
+					<Item id="43504" name="የተመረጡ መንገዶችን ቅዳ"/>
+					<Item id="44009" name="ድህረ-እሱ"/>
+					<Item id="44010" name="ሁሉንም እጠፍ"/>
+					<Item id="44011" name="ከመረበሽ ነፃ ሁነታ"/>
+					<Item id="44019" name="ሁሉንም ቁምፊዎች አሳይ"/>
+					<Item id="44020" name="የመግቢያ መመሪያን አሳይ"/>
+					<Item id="44022" name="የቃላት መጠቅለያ"/>
+					<Item id="44023" name="አጉላ (Ctrl+Mouse Wheel Up)"/>
+					<Item id="44024" name="አሳንስ (Ctrl+Mouse Wheel Down)"/>
+					<Item id="44025" name="ቦታ እና ትር አሳይ"/>
+					<Item id="44026" name="የመስመሩን መጨረሻ አሳይ"/>
+					<Item id="44029" name="ሁሉንም ይግለጡ"/>
+					<Item id="44030" name="የአሁኑን ደረጃ ማጠፍ"/>
+					<Item id="44031" name="አሁን ያለውን ደረጃ ግለጽ"/>
+					<Item id="44049" name="ማጠቃለያ..."/>
+					<Item id="44080" name="የሰነድ ካርታ"/>
+					<Item id="44070" name="የሰነድ ዝርዝር"/>
+					<Item id="44084" name="የተግባር ዝርዝር"/>
+					<Item id="44085" name="አቃፊ እንደ የስራ ቦታ"/>
+					<Item id="44086" name="1ኛ ትር"/>
+					<Item id="44087" name="2ኛ ትር"/>
+					<Item id="44088" name="3ኛ ትር"/>
+					<Item id="44089" name="4ኛ ትር"/>
+					<Item id="44090" name="5ኛ ትር"/>
+					<Item id="44091" name="6ኛ ትር"/>
+					<Item id="44092" name="7ኛ ትር"/>
+					<Item id="44093" name="8ኛ ትር"/>
+					<Item id="44094" name="9ኛ ትር"/>
+					<Item id="44116" name="የመጀመሪያ ትር"/>
+					<Item id="44117" name="የመጨረሻው ትር"/>
+					<Item id="44095" name="ቀጣይ ትር"/>
+					<Item id="44096" name="የቀድሞ ትር"/>
+					<Item id="44097" name="ክትትል (ጅራት -f)"/>
+					<Item id="44098" name="ትርን ወደፊት አንቀሳቅስ"/>
+					<Item id="44099" name="ትርን ወደ ኋላ አንቀሳቅስ"/>
+					<Item id="44110" name="ቀለም አስወግድ"/>
+					<Item id="44111" name="ቀለም 1 ተግብር"/>
+					<Item id="44112" name="ቀለም 2 ተግብር"/>
+					<Item id="44113" name="ቀለም 3 ተግብር"/>
+					<Item id="44114" name="ቀለም 4 ተግብር"/>
+					<Item id="44115" name="ቀለም 5 ተግብር"/>
+					<Item id="44130" name="የማይታተሙ ቁምፊዎችን አሳይ"/>
+					<Item id="44131" name="የቁጥጥር ቁምፊዎችን አሳይ ዩኒኮድ EOL"/>
+					<Item id="44032" name="የሙሉ ስክሪን ሁነታ ቀይር"/>
+					<Item id="44033" name="ነባሪ ማጉላትን ወደነበረበት መልስ"/>
+					<Item id="44034" name="ሁሌም ከላይ"/>
+					<Item id="44035" name="አቀባዊ ማሸብለልን አመሳስል"/>
+					<Item id="44036" name="አግድም ማሸብለልን ያመሳስሉ"/>
+					<Item id="44041" name="የመጠቅለያ ምልክት አሳይ"/>
+					<Item id="44072" name="በሌላ እይታ ላይ አተኩር"/>
+					<Item id="44081" name="የፕሮጀክት ፓነል 1"/>
+					<Item id="44082" name="የፕሮጀክት ፓነል 2"/>
+					<Item id="44083" name="የፕሮጀክት ፓነል 3"/>
+					<Item id="45001" name="ዊንዶውስ (CR LF)"/>
+					<Item id="45002" name="ዩኒክስ (ኤልኤፍ)"/>
+					<Item id="45003" name="ማኪንቶሽ (ሲአር)"/>
+					<Item id="45004" name="ANSI"/>
+					<Item id="45005" name="UTF-8-BOM"/>
+					<Item id="45006" name="UTF-16 BE BOM"/>
+					<Item id="45007" name="UTF-16 LE BOM"/>
+					<Item id="45008" name="UTF-8"/>
+					<Item id="45009" name="ወደ ANSI ቀይር"/>
+					<Item id="45010" name="ወደ UTF-8 ቀይር"/>
+					<Item id="45011" name="ወደ UTF-8-BOM ይለውጡ"/>
+					<Item id="45012" name="ወደ UTF-16 BE BOM ይለውጡ"/>
+					<Item id="45013" name="ወደ UTF-16 LE BOM ይለውጡ"/>
+					<Item id="45060" name="Big5 (ባህላዊ)"/>
+					<Item id="45061" name="GB2312 (ቀላል)"/>
+					<Item id="45054" name="OEM 861: አይስላንድኛ"/>
+					<Item id="45057" name="OEM 865: ኖርዲክ"/>
+					<Item id="45053" name="OEM 860: ፖርቱጋልኛ"/>
+					<Item id="45056" name="OEM 863: ፈረንሳይኛ"/>
+					<Item id="10001" name="ወደ ሌላ እይታ ሂድ"/>
+					<Item id="10002" name="ወደ ሌላ እይታ"/>
+					<Item id="10003" name="ወደ አዲስ ምሳሌ ውሰድ"/>
+					<Item id="10004" name="በአዲስ ምሳሌ ክፈት"/>
+					<Item id="10005" name="ወደ መጀመር"/>
+					<Item id="10006" name="ወደ መጨረሻው አንቀሳቅስ"/>
+					<Item id="46001" name="የቅጥ አዋቅር..."/>
+					<Item id="46016" name="ምንም (የተለመደ ጽሑፍ)"/>
+					<Item id="46250" name="ቋንቋህን ግለጽ..."/>
+					<Item id="46300" name="በተጠቃሚ የተገለጸ ቋንቋ ማህደርን ክፈት..."/>
+					<Item id="46301" name="ማስታወሻ ደብተር++ በተጠቃሚ የተገለጹ የቋንቋዎች ስብስብ"/>
+					<Item id="46180" name="በተጠቃሚ የተገለጸ"/>
+					<Item id="47000" name="ስለ ማስታወሻ ደብተር++"/>
+					<Item id="47010" name="የትእዛዝ መስመር ክርክሮች..."/>
+					<Item id="47001" name="ማስታወሻ ደብተር++ መነሻ"/>
+					<Item id="47002" name="ማስታወሻ ደብተር++ የፕሮጀክት ገጽ"/>
+					<Item id="47003" name="ማስታወሻ ደብተር++ የመስመር ላይ የተጠቃሚ መመሪያ"/>
+					<Item id="47004" name="ማስታወሻ ደብተር++ ማህበረሰብ (ፎረም)"/>
+					<Item id="47012" name="የማረም መረጃ..."/>
+					<Item id="47005" name="ተጨማሪ ተሰኪዎችን ያግኙ"/>
+					<Item id="47006" name="የማስታወሻ ደብተር++ አዘምን"/>
+					<Item id="47009" name="የዝማኔ ተኪ አዘጋጅ..."/>
+					<Item id="48005" name="ተሰኪ(ዎች) አስመጣ..."/>
+					<Item id="48006" name="የቅጥ ጭብጥ(ዎች) አስመጣ..."/>
+					<Item id="48018" name="ብቅ ባይ አውድ ሜኑ"/>
+					<Item id="48009" name="አቋራጭ ካርታ..."/>
+					<Item id="48011" name="ምርጫዎች..."/>
+					<Item id="48014" name="የፕለጊኖች አቃፊን ክፈት..."/>
+					<Item id="48015" name="Plugins Admin..."/>
+					<Item id="48501" name="ማመንጨት..."/>
+					<Item id="48502" name="ከፋይሎች አመንጭ..."/>
+					<Item id="48503" name="ከምርጫ ወደ ቅንጥብ ሰሌዳ አመንጭ"/>
+					<Item id="48504" name="ማመንጨት..."/>
+					<Item id="48505" name="ከፋይሎች አመንጭ..."/>
+					<Item id="48506" name="ከምርጫ ወደ ቅንጥብ ሰሌዳ አመንጭ"/>
+					<Item id="48507" name="ማመንጨት..."/>
+					<Item id="48508" name="ከፋይሎች አመንጭ..."/>
+					<Item id="48509" name="ከምርጫ ወደ ቅንጥብ ሰሌዳ አመንጭ"/>
+					<Item id="48510" name="አመንጭ..."/>
+					<Item id="48511" name="ከፋይሎች አመንጭ..."/>
+					<Item id="48512" name="ከምርጫ ወደ ቅንጥብ ሰሌዳ አመንጭ"/>
+					<Item id="49000" name="ሩጡ..."/>
+
+					<Item id="50000" name="የተግባር ማጠናቀቂያ"/>
+					<Item id="50001" name="የቃላት ፍፃሜ"/>
+					<Item id="50002" name="የተግባር መለኪያዎች ፍንጭ"/>
+					<Item id="50010" name="የተግባር መለኪያዎች ቀዳሚ ፍንጭ"/>
+					<Item id="50011" name="የተግባር መለኪያዎች ቀጣይ ፍንጭ"/>
+					<Item id="50005" name="የማክሮ ሪኮርድን ቀያይር"/>
+					<Item id="50006" name="መንገድ ማጠናቀቅ"/>
+					<Item id="44042" name="መስመሮችን ደብቅ"/>
+					<Item id="42040" name="ሁሉንም የቅርብ ጊዜ ፋይሎች ክፈት"/>
+					<Item id="42041" name="ባዶ የቅርብ ጊዜ ፋይሎች ዝርዝር"/>
+					<Item id="48016" name="አቋራጭ ቀይር/ማክሮን ሰርዝ..."/>
+					<Item id="48017" name="አቋራጭ ቀይር/ትዕዛዙን ሰርዝ..."/>
+
+					<Item id="11001" name="ዊንዶውስ..."/>
+					<Item id="11002" name="ስም ከ ሀ እስከ ፐ"/>
+					<Item id="11003" name="ስም Z ወደ ሀ"/>
+					<Item id="11004" name="ከሀ እስከ ፐ"/>
+					<Item id="11005" name="መንገድ Z ወደ A"/>
+					<Item id="11006" name="ከ A እስከ Z ይተይቡ"/>
+					<Item id="11007" name="ከZ ወደ A ይተይቡ"/>
+					<Item id="11008" name="ወደ ላይ የይዘት ርዝመት"/>
+					<Item id="11009" name="የይዘት ርዝመት መውረድ"/>
+					<Item id="11010" name="የተሻሻለው ወደ ላይ የሚወጣበት ጊዜ"/>
+					<Item id="11011" name="የተሻሻለው ጊዜ መውረድ"/>
+				</Commands>
+			</Main>
+			<TabBar>
+				<Item CMDID="41003" name="ዝጋ"/>
+				<Item CMDID="0" name="ብዙ ትሮችን ዝጋ"/>
+				<Item CMDID="41005" name="ሁሉንም ዝጋ ከዚህ በስተቀር"/>
+				<Item CMDID="41026" name="ሁሉንም ዝጋ ግን ተሰክቷል"/>
+				<Item CMDID="41009" name="ሁሉንም ወደ ግራ ዝጋ"/>
+				<Item CMDID="41018" name="ሁሉንም ወደ ቀኝ ዝጋ"/>
+				<Item CMDID="41024" name="ሁሉንም ዝጋ ያልተለወጡ"/>
+				<Item CMDID="44048" name="ፒን ታብ" alternativeName="ትር ንቀል"/>
+				<Item CMDID="41006" name="አስቀምጥ"/>
+				<Item CMDID="41008" name="አስቀምጥ እንደ..."/>
+				<Item CMDID="1" name="ክፍት ወደ"/>
+				<Item CMDID="41019" name="በ Explorer ውስጥ ያለው አቃፊ ክፈት"/>
+				<Item CMDID="41020" name="በcmd ውስጥ የያዘ አቃፊ ይክፈቱ"/>
+				<Item CMDID="41025" name="የያዘ አቃፊ እንደ የስራ ቦታ ክፈት"/>
+				<Item CMDID="41023" name="በነባሪ መመልከቻ ክፈት"/>
+				<Item CMDID="41017" name="እንደገና ይሰይሙ..."/>
+				<Item CMDID="41016" name="ወደ ሪሳይክል ቢን ውሰድ"/>
+				<Item CMDID="41014" name="ዳግም ጫን"/>
+				<Item CMDID="41010" name="አትም..."/>
+				<Item CMDID="42028" name="በማስታወሻ ደብተር++ ውስጥ ማንበብ-ብቻ"/>
+				<Item CMDID="42033" name="በዊንዶውስ ውስጥ የተነበበ-ብቻ ባህሪ"/>
+				<Item CMDID="2" name="ወደ ቅንጥብ ሰሌዳ ቅዳ"/>
+				<Item CMDID="42029" name="ሙሉ ፋይል ዱካ ቅዳ"/>
+				<Item CMDID="42030" name="የፋይል ስም ቅዳ"/>
+				<Item CMDID="42031" name="የአሁኑን Dir ቅዳ.መንገድ"/>
+				<Item CMDID="3" name="ሰነድ አንቀሳቅስ"/>
+				<Item CMDID="10005" name="ወደ መጀመር"/>
+				<Item CMDID="10006" name="ወደ መጨረሻው አንቀሳቅስ"/>
+				<Item CMDID="10001" name="ወደ ሌላ እይታ ሂድ"/>
+				<Item CMDID="10002" name="ወደ ሌላ እይታ"/>
+				<Item CMDID="10003" name="ወደ አዲስ ምሳሌ ውሰድ"/>
+				<Item CMDID="10004" name="በአዲስ ምሳሌ ክፈት"/>
+				<Item CMDID="4" name="ቀለም ወደ ትር ተግብር"/>
+				<Item CMDID="44111" name="ቀለም 1 ተግብር"/>
+				<Item CMDID="44112" name="ቀለም 2 ተግብር"/>
+				<Item CMDID="44113" name="ቀለም 3 ተግብር"/>
+				<Item CMDID="44114" name="ቀለም 4 ተግብር"/>
+				<Item CMDID="44115" name="ቀለም 5 ተግብር"/>
+				<Item CMDID="44110" name="ቀለም አስወግድ"/>
+			</TabBar>
+			<TrayIcon>
+				<Item id="43101" name="አግብር"/>
+				<Item id="43102" name="አዲስ"/>
+				<Item id="43103" name="አዲስ እና ለጥፍ"/>
+				<Item id="43104" name="ክፍት..."/>
+				<Item id="43013" name="በፋይሎች ውስጥ ያግኙ..."/>
+				<Item id="43105" name="የትሪ አዶ ዝጋ"/>
+			</TrayIcon>
+		</Menu>
+
+		<Dialog>
+			<Find title="" titleFind="አግኝ" titleReplace="ተካ" titleFindInFiles="በፋይሎች ውስጥ ያግኙ" titleFindInProjects="በፕሮጀክቶች ውስጥ ያግኙ" titleMark="ምልክት">
+				<Item id="1" name="ቀጣይ አግኝ"/>
+				<Item id="1722" name="የኋላ አቅጣጫ"/>
+				<Item id="2" name="ገጠመ"/>
+				<Item id="1620" name="ምን አግኝ፡"/>
+				<Item id="1603" name="ሙሉውን ቃል ብቻ አዛምድ"/>
+				<Item id="1604" name="የማዛመድ ጉዳይ"/>
+				<Item id="1605" name="አዘውትሮ አገላለጽ"/>
+				<Item id="1606" name="መጠቅለል"/>
+				<Item id="1614" name="መቁጠር"/>
+				<Item id="1615" name="ሁሉንም ምልክት ያድርጉ"/>
+				<Item id="1616" name="የዕልባት መስመር"/>
+				<Item id="1618" name="ለእያንዳንዱ ፍለጋ ማፅዳት"/>
+				<Item id="1611" name="ተካ፡"/>
+				<Item id="1608" name="ተካ"/>
+				<Item id="1609" name="ሁሉንም ይተኩ"/>
+				<Item id="1687" name="ትኩረት ማጣት ላይ"/>
+				<Item id="1688" name="ሁሌም"/>
+				<Item id="1632" name="በምርጫ"/>
+				<Item id="1633" name="ሁሉንም ምልክቶች አጽዳ"/>
+				<Item id="1635" name="ሁሉንም በተከፈቱ ሰነዶች ይተኩ"/>
+				<Item id="1636" name="በሁሉም የተከፈቱ ሰነዶች ውስጥ ሁሉንም ያግኙ"/>
+				<Item id="1654" name="ማጣሪያዎች፡"/>
+				<Item id="1655" name="ማውጫ፡"/>
+				<Item id="1656" name="ሁሉንም አግኝ"/>
+				<Item id="1658" name="በሁሉም ንዑስ አቃፊዎች"/>
+				<Item id="1659" name="በተደበቁ ማህደሮች ውስጥ"/>
+				<Item id="1624" name="የፍለጋ ሁነታ"/>
+				<Item id="1625" name="መደበኛ"/>
+				<Item id="1626" name="የተራዘመ (\n, \r, \t, \0, \x...)"/>
+				<Item id="1660" name="በፋይሎች ውስጥ ተካ"/>
+				<Item id="1665" name="በፕሮጀክቶች ውስጥ መተካት"/>
+				<Item id="1662" name="የፕሮጀክት ፓነል 1"/>
+				<Item id="1663" name="የፕሮጀክት ፓነል 2"/>
+				<Item id="1664" name="የፕሮጀክት ፓነል 3"/>
+				<Item id="1641" name="ሁሉንም አሁን ባለው ሰነድ ውስጥ ያግኙ"/>
+				<Item id="1686" name="ግልጽነት"/>
+				<Item id="1703" name=".ግጥሚያዎች አዲስ መስመር"/>
+				<Item id="1721" name="▲"/>
+				<Item id="1723" name="▼ ቀጥሎ ያግኙ"/>
+				<Item id="1725" name="ምልክት የተደረገበት ጽሑፍ ቅዳ"/>
+				<Menu>
+					<Item id="1726" name="⇅ ፍለጋን በመተካት መለዋወጥ"/>
+					<Item id="1727" name="⤵ ለመተካት ከመፈለግ ቅዳ"/>
+					<Item id="1728" name="⤴ ከመተካት ወደ ፍለጋ ይቅዱ"/>
+				</Menu>
+			</Find>
+
+			<IncrementalFind title="">
+				<Item id="1681" name="አግኝ፡"/>
+				<Item id="1685" name="የማዛመድ ጉዳይ"/>
+				<Item id="1690" name="ሁሉንም አድምቅ"/>
+			</IncrementalFind>
+
+			<FindCharsInRange title="በክልል ውስጥ ቁምፊዎችን ያግኙ...">
+				<Item id="2" name="ዝጋ"/>
+				<Item id="2901" name="ASCII ያልሆኑ ቁምፊዎች (128-255)"/>
+				<Item id="2902" name="የ ASCII ቁምፊዎች (0-127)"/>
+				<Item id="2903" name="ብጁ ክልል (0–255):"/>
+				<Item id="2906" name="ወደላይ"/>
+				<Item id="2907" name="ዳውን"/>
+				<Item id="2908" name="አቅጣጫ"/>
+				<Item id="2909" name="መጠቅለል"/>
+				<Item id="2910" name="አግኝ"/>
+			</FindCharsInRange>
+
+			<GoToLine title="ሂድ ወደ...">
+				<Item id="2007" name="መስመር"/>
+				<Item id="2008" name="ማካካሻ"/>
+				<Item id="1" name="ሂድ"/>
+				<Item id="2" name="የትም አልሄድም"/>
+				<Item id="2004" name="እዚህ ነህ፡"/>
+				<Item id="2005" name="መሄድ ትፈልጋለህ፡-"/>
+				<Item id="2006" name="ከዚህ በላይ መሄድ አትችልም:"/>
+			</GoToLine>
+
+			<Run title="ሩጡ...">
+				<Item id="1903" name="የሚሄድ ፕሮግራም"/>
+				<Item id="1" name="ሩጫ"/>
+				<Item id="2" name="ሰርዝ"/>
+				<Item id="1904" name="አስቀምጥ..."/>
+			</Run>
+
+			<MD5FromFilesDlg title="ከፋይሎች MD5 መፍጨት ይፍጠሩ">
+				<Item id="1922" name="MD5 ለማመንጨት ፋይሎችን ይምረጡ..."/>
+				<Item id="1924" name="ወደ ቅንጥብ ሰሌዳ ቅዳ"/>
+				<Item id="2" name="ዝጋ"/>
+			</MD5FromFilesDlg>
+
+			<MD5FromTextDlg title="የ MD5 መፍጨት አመንጭ">
+				<Item id="1932" name="እያንዳንዱን መስመር እንደ የተለየ ሕብረቁምፊ ይያዙ"/>
+				<Item id="1934" name="ወደ ቅንጥብ ሰሌዳ ቅዳ"/>
+				<Item id="2" name="ዝጋ"/>
+			</MD5FromTextDlg>
+
+			<SHA256FromFilesDlg title="ከፋይሎች SHA-256 መፍጨት">
+				<Item id="1922" name="SHA-256 ለማመንጨት ፋይሎችን ይምረጡ..."/>
+				<Item id="1924" name="ወደ ቅንጥብ ሰሌዳ ቅዳ"/>
+				<Item id="2" name="ዝጋ"/>
+			</SHA256FromFilesDlg>
+
+			<SHA256FromTextDlg title="SHA-256 መፍጨት">
+				<Item id="1932" name="እያንዳንዱን መስመር እንደ የተለየ ሕብረቁምፊ ይያዙ"/>
+				<Item id="1934" name="ወደ ቅንጥብ ሰሌዳ ቅዳ"/>
+				<Item id="2" name="ዝጋ"/>
+			</SHA256FromTextDlg>
+
+			<SHA1FromFilesDlg title="ከፋይሎች SHA-1 መፍጨት">
+				<Item id="1922" name="SHA-1 ለማመንጨት ፋይሎችን ይምረጡ..."/>
+				<Item id="1924" name="ወደ ቅንጥብ ሰሌዳ ቅዳ"/>
+				<Item id="2" name="ዝጋ"/>
+			</SHA1FromFilesDlg>
+
+			<SHA1FromTextDlg title="SHA-1 መፍጨትን ይፍጠሩ">
+				<Item id="1932" name="እያንዳንዱን መስመር እንደ የተለየ ሕብረቁምፊ ይያዙ"/>
+				<Item id="1934" name="ወደ ቅንጥብ ሰሌዳ ቅዳ"/>
+				<Item id="2" name="ዝጋ"/>
+			</SHA1FromTextDlg>
+
+			<SHA512FromFilesDlg title="ከፋይሎች SHA-512 መፍጨት">
+				<Item id="1922" name="SHA-512 ለማመንጨት ፋይሎችን ይምረጡ..."/>
+				<Item id="1924" name="ወደ ቅንጥብ ሰሌዳ ቅዳ"/>
+				<Item id="2" name="ዝጋ"/>
+			</SHA512FromFilesDlg>
+
+			<SHA512FromTextDlg title="SHA-512 መፍጨት">
+				<Item id="1932" name="እያንዳንዱን መስመር እንደ የተለየ ሕብረቁምፊ ይያዙ"/>
+				<Item id="1934" name="ወደ ቅንጥብ ሰሌዳ ቅዳ"/>
+				<Item id="2" name="ዝጋ"/>
+			</SHA512FromTextDlg>
+			<PluginsAdminDlg title="Plugins Admin" titleAvailable="Available" titleUpdates="Updates" titleInstalled="Installed" titleIncompatible="Incompatible">
+				<ColumnPlugin name="መሰካት"/>
+				<ColumnVersion name="ስሪት"/>
+				<Item id="5501" name="ፍለጋ፡"/>
+				<Item id="5503" name="ጫን"/>
+				<Item id="5504" name="አዘምን"/>
+				<Item id="5505" name="አስወግድ"/>
+				<Item id="5508" name="ቀጣይ"/>
+				<Item id="5509" name="የተሰኪ ዝርዝር ስሪት፡"/>
+				<Item id="5511" name="የተሰኪ ዝርዝር ማከማቻ"/>
+				<Item id="2" name="ዝጋ"/>
+			</PluginsAdminDlg>
+
+			<StyleConfig title="የቅጥ አዋቅር">
+				<Item id="2" name="ሰርዝ"/>
+				<Item id="2301" name="አስቀምጥ ዝጋ"/>
+				<Item id="2303" name="ግልጽነት"/>
+				<Item id="2306" name="ጭብጥ ምረጥ፡"/>
+				<SubDialog>
+					<Item id="2204" name="ደፋር"/>
+					<Item id="2205" name="ኢታሊክ"/>
+					<Item id="2206" name="የፊት ቀለም"/>
+					<Item id="2207" name="ዳራ ቀለም"/>
+					<Item id="2208" name="የፊደል ስም፡"/>
+					<Item id="2209" name="የፊደል መጠን፡-"/>
+					<Item id="2211" name="እስታይል፡"/>
+					<Item id="2212" name="የቀለም ዘይቤ"/>
+					<Item id="2213" name="የፊደል አጻጻፍ ስልት"/>
+					<Item id="2214" name="ነባሪ ext:"/>
+					<Item id="2216" name="ተጠቃሚ ext.:"/>
+					<Item id="2218" name="ይሰመርበት"/>
+					<Item id="2219" name="ነባሪ ቁልፍ ቃላት"/>
+					<Item id="2221" name="በተጠቃሚ የተገለጹ ቁልፍ ቃላት"/>
+					<Item id="2225" name="ቋንቋ፡"/>
+					<Item id="2226" name="ለሁሉም ቅጦች የፊት ለፊት ቀለም ያስገድዱ"/>
+					<Item id="2227" name="ለሁሉም ቅጦች የግዳጅ የጀርባ ቀለም"/>
+					<Item id="2228" name="ለሁሉም ቅጦች የቅርጸ-ቁምፊ ምርጫን አስገድድ"/>
+					<Item id="2229" name="ለሁሉም ቅጦች የቅርጸ ቁምፊ መጠን ምርጫን ያስገድዱ"/>
+					<Item id="2230" name="ለሁሉም ቅጦች ደፋር ምርጫን አስገድድ"/>
+					<Item id="2231" name="ለሁሉም ቅጦች ሰያፍ ምርጫ አስገድዱ"/>
+					<Item id="2232" name="ለሁሉም ቅጦች ምርጫን አስገድድ"/>
+					<Item id="2234" name="ወደ ቅንብሮች ይሂዱ"/>
+					<!-- Don't translate "Global override" -->
+					<Item id="2235" name="ግሎባል መሻር ምንድን ነው?"/>
+				</SubDialog>
+			</StyleConfig>
+
+			<ShortcutMapper title="አቋራጭ ካርታ">
+				<Item id="2602" name="አስተካክል።"/>
+				<Item id="2603" name="ሰርዝ"/>
+				<Item id="2606" name="ግልጽ"/>
+				<Item id="2607" name="ማጣሪያ፡"/>
+				<Item id="1" name="ዝጋ"/>
+				<ColumnName name="ስም"/>
+				<ColumnShortcut name="አቋራጭ"/>
+				<ColumnCategory name="ምድብ"/>
+				<ColumnPlugin name="ተሰኪ"/>
+				<MainMenuTab name="ዋና ምናሌ"/>
+				<MacrosTab name="ማክሮስ"/>
+				<RunCommandsTab name="ትዕዛዞችን አሂድ"/>
+				<PluginCommandsTab name="ተሰኪ ትዕዛዞች"/>
+				<ScintillaCommandsTab name="Scintilla ትዕዛዞች"/>
+				<ConflictInfoOk name="ለዚህ ንጥል ምንም አቋራጭ ግጭት የለም።"/>
+				<ConflictInfoEditing name="ምንም ግጭቶች የሉም..."/>
+				<AboutCategory name="ስለ"/>
+				<ModifyContextMenu name="አስተካክል"/>
+				<DeleteContextMenu name="ሰርዝ"/>
+				<ClearContextMenu name="ግልጽ"/>
+				<MainCommandNames>
+					<Item id="41019" name="በ Explorer ውስጥ ያለውን አቃፊ ይክፈቱ"/>
+					<Item id="41020" name="በ Command Prompt ውስጥ ያለውን ማህደር ክፈት"/>
+					<Item id="41021" name="የቅርብ ጊዜ የተዘጋ ፋይል ወደነበረበት መልስ"/>
+					<Item id="45001" name="EOL ወደ ዊንዶውስ (CR LF) መለወጥ"/>
+					<Item id="45002" name="የኢኦኤል ለውጥ ወደ ዩኒክስ (LF)"/>
+					<Item id="45003" name="የኢኦኤል ለውጥ ወደ ማኪንቶሽ (ሲአር)"/>
+					<Item id="43022" name="ስታይል ሁሉም 1ኛ ስታይል በመጠቀም"/>
+					<Item id="43024" name="2ኛ ስታይል በመጠቀም ሁሉንም ስታይል"/>
+					<Item id="43026" name="3ኛ ስታይል በመጠቀም ሁሉንም ስታይል"/>
+					<Item id="43028" name="ስታይል ሁሉ 4ተኛ እስታይል በመጠቀም"/>
+					<Item id="43030" name="5ኛ እስታይል በመጠቀም ሁሉንም ስታይል"/>
+					<Item id="43062" name="1ኛ እስታይል በመጠቀም ስታይል አንድ"/>
+					<Item id="43063" name="ስታይል አንድ 2ኛ ዘይቤን በመጠቀም"/>
+					<Item id="43064" name="ስታይል አንድ 3ኛ እስታይል በመጠቀም"/>
+					<Item id="43065" name="ስታይል አንድ 4ኛ እስታይል በመጠቀም"/>
+					<Item id="43066" name="ስታይል አንድ 5ኛ እስታይል በመጠቀም"/>
+					<Item id="43023" name="ግልጽ 1ኛ ዘይቤ"/>
+					<Item id="43025" name="ግልጽ 2ኛ ዘይቤ"/>
+					<Item id="43027" name="ግልጽ 3ኛ ዘይቤ"/>
+					<Item id="43029" name="ግልጽ 4ኛ ዘይቤ"/>
+					<Item id="43031" name="5ኛ ዘይቤን አጽዳ"/>
+					<Item id="43032" name="ሁሉንም ቅጦች አጽዳ"/>
+					<Item id="43033" name="ያለፈው 1ኛ ዘይቤ"/>
+					<Item id="43034" name="ያለፈው 2ኛ ዘይቤ"/>
+					<Item id="43035" name="ያለፈው 3ኛ ዘይቤ"/>
+					<Item id="43036" name="ያለፈው 4ኛ ዘይቤ"/>
+					<Item id="43037" name="ያለፈው 5ኛ ዘይቤ"/>
+					<Item id="43038" name="የቀድሞ የአግኝ ማርክ ዘይቤ"/>
+					<Item id="43039" name="ቀጣይ 1ኛ ስታይል"/>
+					<Item id="43040" name="ቀጣይ 2ኛ ስታይል"/>
+					<Item id="43041" name="ቀጣይ 3ኛ ስታይል"/>
+					<Item id="43042" name="ቀጣይ 4ኛ እስታይል"/>
+					<Item id="43043" name="ቀጣይ 5ኛ እስታይል"/>
+					<Item id="43044" name="ቀጣይ እስታይል የማርክ ስታይል"/>
+					<Item id="43055" name="የ 1 ኛ ስታይል ጽሁፍ ቅዳ"/>
+					<Item id="43056" name="የ 2 ኛ ስታይል ጽሁፍ ቅዳ"/>
+					<Item id="43057" name="የ 3 ኛ ስታይል ጽሁፍ ቅዳ"/>
+					<Item id="43058" name="የ4ተኛ ስታይል ቅዳ ፅሁፍ"/>
+					<Item id="43059" name="የ 5ኛ ዘይቤ ቅዳ"/>
+					<Item id="43060" name="የሁሉም ቅጦች ጽሁፍ ቅዳ"/>
+					<Item id="43061" name="የቅጥ የተደረገ የማርክ ዘይቤ ጽሁፍ ቅዳ"/>
+					<Item id="44100" name="የአሁኑን ፋይል በፋየርፎክስ ይመልከቱ"/>
+					<Item id="44101" name="የአሁኑን ፋይል በChrome ይመልከቱ"/>
+					<Item id="44103" name="የአሁኑን ፋይል በ IE ይመልከቱ"/>
+					<Item id="44102" name="በ Edge ውስጥ ያለውን ፋይል ይመልከቱ"/>
+					<Item id="50003" name="ወደ ቀዳሚው ሰነድ ቀይር"/>
+					<Item id="50004" name="ወደ ቀጣዩ ሰነድ ቀይር"/>
+					<Item id="44051" name="ማጠፍ ደረጃ 1"/>
+					<Item id="44052" name="ማጠፍ ደረጃ 2"/>
+					<Item id="44053" name="ማጠፍ ደረጃ 3"/>
+					<Item id="44054" name="ማጠፍ ደረጃ 4"/>
+					<Item id="44055" name="ማጠፍ ደረጃ 5"/>
+					<Item id="44056" name="ማጠፍ ደረጃ 6"/>
+					<Item id="44057" name="ማጠፍ ደረጃ 7"/>
+					<Item id="44058" name="ማጠፍ ደረጃ 8"/>
+					<Item id="44061" name="ደረጃ 1 ፈታ"/>
+					<Item id="44062" name="ደረጃ 2 ፈታ"/>
+					<Item id="44063" name="ደረጃ 3 ፈታ"/>
+					<Item id="44064" name="ደረጃ 4 ፈታ"/>
+					<Item id="44065" name="ደረጃ 5 ፈታ"/>
+					<Item id="44066" name="ደረጃ 6 ን ይክፈቱ"/>
+					<Item id="44067" name="ደረጃ 7 ፈታ"/>
+					<Item id="44068" name="ደረጃ 8 ፈታ"/>
+					<Item id="44081" name="የፕሮጀክት ፓነልን 1 ቀይር"/>
+					<Item id="44082" name="የፕሮጀክት ፓነል 2 ቀይር"/>
+					<Item id="44083" name="የፕሮጀክት ፓነል 3 ቀይር"/>
+					<Item id="44085" name="አቃፊን እንደ የስራ ቦታ ቀይር"/>
+					<Item id="44080" name="የሰነድ ካርታ ቀይር"/>
+					<Item id="44070" name="የሰነድ ዝርዝር ቀያይር"/>
+					<Item id="44084" name="የተግባር ዝርዝር ቀያይር"/>
+					<Item id="50005" name="ማክሮ ቀረጻን ቀያይር"/>
+					<Item id="44104" name="ወደ ፕሮጀክት ፓነል 1 ቀይር"/>
+					<Item id="44105" name="ወደ ፕሮጀክት ፓነል 2 ቀይር"/>
+					<Item id="44106" name="ወደ ፕሮጀክት ፓነል 3 ቀይር"/>
+					<Item id="44107" name="ወደ አቃፊ እንደ የስራ ቦታ ቀይር"/>
+					<Item id="44109" name="ወደ ሰነድ ዝርዝር ቀይር"/>
+					<Item id="44108" name="ወደ ተግባር ዝርዝር ቀይር"/>
+					<Item id="44110" name="የትር ቀለም አስወግድ"/>
+					<Item id="44111" name="የትር ቀለም 1 ተግብር"/>
+					<Item id="44112" name="የትር ቀለም 2 ተግብር"/>
+					<Item id="44113" name="የትር ቀለም 3 ተግብር"/>
+					<Item id="44114" name="የትር ቀለም 4 ተግብር"/>
+					<Item id="44115" name="የትር ቀለም 5 ተግብር"/>
+					<Item id="11002" name="በስም ከ ሀ እስከ ፐ"/>
+					<Item id="11003" name="በስም ፐ ወደ ሀ ደርድር"/>
+					<Item id="11004" name="በመንገድ ሀ እስከ ፐ"/>
+					<Item id="11005" name="በመንገድ ፐ ወደ ሀ ደርድር"/>
+					<Item id="11006" name="ከ A እስከ Z ደርድር"/>
+					<Item id="11007" name="በ Z ወደ A ደርድር"/>
+					<Item id="11008" name="በይዘት ርዝመት ወደ ላይ ደርድር"/>
+					<Item id="11009" name="በመውረድ የይዘት ርዝመት ደርድር"/>
+				</MainCommandNames>
+			</ShortcutMapper>
+			<ShortcutMapperSubDialg title="አቋራጭ">
+				<Item id="1" name="እሺ"/>
+				<Item id="2" name="ሰርዝ"/>
+				<Item id="5006" name="ስም"/>
+				<Item id="5008" name="ጨምር"/>
+				<Item id="5009" name="አስወግድ"/>
+				<Item id="5010" name="ተግብር"/>
+				<Item id="5007" name="ይህ አቋራጭ መንገድ ከዚህ ትዕዛዝ ያስወግዳል"/>
+				<Item id="5012" name="ግጭት ተገኘ!"/>
+			</ShortcutMapperSubDialg>
+			<UserDefine title="በተጠቃሚ የተገለጸ">
+				<Item id="20001" name="ዶክ"/>
+				<Item id="20002" name="እንደገና ይሰይሙ"/>
+				<Item id="20003" name="አዲስ ፍጠር..."/>
+				<Item id="20004" name="አስወግድ"/>
+				<Item id="20005" name="አስቀምጥ እንደ..."/>
+				<Item id="20007" name="የተጠቃሚ ቋንቋ"/>
+				<Item id="20009" name="ውጽኢት፡"/>
+				<Item id="20012" name="ጉዳይን ችላ በል"/>
+				<Item id="20011" name="ግልጽነት"/>
+				<Item id="20015" name="አስመጣ..."/>
+				<Item id="20016" name="ወደ ውጭ መላክ..."/>
+				<Item id="20017" name="ቀልብስ"/>
+				<StylerDialog title="እስታይለር መገናኛ">
+					<Item id="25030" name="የፊደል አማራጮች"/>
+					<Item id="25006" name="የፊት ቀለም"/>
+					<Item id="25007" name="ዳራ ቀለም"/>
+					<Item id="25031" name="ስም፡"/>
+					<Item id="25032" name="መጠን፡"/>
+					<Item id="25001" name="ደፋር"/>
+					<Item id="25002" name="ኢታሊክ"/>
+					<Item id="25003" name="ይሰመርበት"/>
+					<Item id="25029" name="መክተቻ"/>
+					<Item id="25008" name="ገዳቢ 1"/>
+					<Item id="25009" name="ገዳቢ 2"/>
+					<Item id="25010" name="ገዳቢ 3"/>
+					<Item id="25011" name="ገዳቢ 4"/>
+					<Item id="25012" name="ገዳቢ 5"/>
+					<Item id="25013" name="ገዳቢ 6"/>
+					<Item id="25014" name="ገዳቢ 7"/>
+					<Item id="25015" name="ገዳቢ 8"/>
+					<Item id="25018" name="ቁልፍ ቃል 1"/>
+					<Item id="25019" name="ቁልፍ ቃል 2"/>
+					<Item id="25020" name="ቁልፍ ቃል 3"/>
+					<Item id="25021" name="ቁልፍ ቃል 4"/>
+					<Item id="25022" name="ቁልፍ ቃል 5"/>
+					<Item id="25023" name="ቁልፍ ቃል 6"/>
+					<Item id="25024" name="ቁልፍ ቃል 7"/>
+					<Item id="25025" name="ቁልፍ ቃል 8"/>
+					<Item id="25016" name="አስተያየት"/>
+					<Item id="25017" name="የአስተያየት መስመር"/>
+					<Item id="25026" name="ኦፕሬተር 1"/>
+					<Item id="25027" name="ኦፕሬተር 2"/>
+					<Item id="25028" name="ቁጥሮች"/>
+					<Item id="25033" name="ግልጽ"/>
+					<Item id="25034" name="ግልጽ"/>
+					<Item id="1" name="እሺ"/>
+					<Item id="2" name="ሰርዝ"/>
+				</StylerDialog>
+				<Folder title="የአቃፊ ነባሪ">
+					<Item id="21101" name="ነባሪ ቅጥ"/>
+					<Item id="21102" name="እስታይለር"/>
+					<Item id="21103" name="በተጠቃሚ የተገለጹ ቋንቋዎች በመስመር ላይ እገዛ"/>
+					<Item id="21105" name="ሰነዶች"/>
+					<Item id="21106" name="የታመቀ ማጠፍ (ባዶ መስመሮችንም ማጠፍ)"/>
+					<Item id="21220" name="በኮድ 1 ስታይል ማጠፍ"/>
+					<Item id="21224" name="ክፍት፡"/>
+					<Item id="21225" name="መሀል፡"/>
+					<Item id="21226" name="ዝጋ፡"/>
+					<Item id="21227" name="እስታይለር"/>
+					<Item id="21320" name="በኮድ 2 ስታይል መታጠፍ (ተለያዮች ያስፈልጋሉ)"/>
+					<Item id="21324" name="ክፈት፥"/>
+					<Item id="21325" name="መሀል፡"/>
+					<Item id="21326" name="ዝጋ፡"/>
+					<Item id="21327" name="እስታይለር"/>
+					<Item id="21420" name="በአስተያየት ስታይል ማጠፍ"/>
+					<Item id="21424" name="ክፍት፡"/>
+					<Item id="21425" name="መሀል፡"/>
+					<Item id="21426" name="ዝጋ፡"/>
+					<Item id="21427" name="እስታይለር"/>
+				</Folder>
+				<Keywords title="ቁልፍ ቃላት ዝርዝር">
+					<Item id="22101" name="1ኛ ቡድን"/>
+					<Item id="22201" name="2ኛ ቡድን"/>
+					<Item id="22301" name="3ኛ ቡድን"/>
+					<Item id="22401" name="4ኛ ቡድን"/>
+					<Item id="22451" name="5ኛ ቡድን"/>
+					<Item id="22501" name="6ኛ ቡድን"/>
+					<Item id="22551" name="7ኛ ቡድን"/>
+					<Item id="22601" name="8ኛ ቡድን"/>
+					<Item id="22121" name="ቅድመ ቅጥያ ሁነታ"/>
+					<Item id="22221" name="ቅድመ ቅጥያ ሁነታ"/>
+					<Item id="22321" name="ቅድመ ቅጥያ ሁነታ"/>
+					<Item id="22421" name="ቅድመ ቅጥያ ሁነታ"/>
+					<Item id="22471" name="ቅድመ ቅጥያ ሁነታ"/>
+					<Item id="22521" name="ቅድመ ቅጥያ ሁነታ"/>
+					<Item id="22571" name="ቅድመ ቅጥያ ሁነታ"/>
+					<Item id="22621" name="ቅድመ ቅጥያ ሁነታ"/>
+					<Item id="22122" name="እስታይለር"/>
+					<Item id="22222" name="እስታይለር"/>
+					<Item id="22322" name="እስታይለር"/>
+					<Item id="22422" name="እስታይለር"/>
+					<Item id="22472" name="እስታይለር"/>
+					<Item id="22522" name="እስታይለር"/>
+					<Item id="22572" name="እስታይለር"/>
+					<Item id="22622" name="እስታይለር"/>
+				</Keywords>
+				<Comment title="አስተያየት ቁጥር">
+					<Item id="23003" name="የመስመር አስተያየት አቀማመጥ"/>
+					<Item id="23004" name="የትም ፍቀድ"/>
+					<Item id="23005" name="በመስመሩ መጀመሪያ ላይ አስገድድ"/>
+					<Item id="23006" name="የቀደመው ነጭ ቦታ ፍቀድ"/>
+					<Item id="23001" name="አስተያየቶችን ማጠፍ ፍቀድ"/>
+					<Item id="23326" name="እስታይለር"/>
+					<Item id="23323" name="ክፍት"/>
+					<Item id="23324" name="ቀጥል ባህሪ"/>
+					<Item id="23325" name="ዝጋ"/>
+					<Item id="23301" name="የአስተያየት መስመር ዘይቤ"/>
+					<Item id="23124" name="እስታይለር"/>
+					<Item id="23122" name="ክፍት"/>
+					<Item id="23123" name="ዝጋ"/>
+					<Item id="23101" name="የአስተያየት ዘይቤ"/>
+					<Item id="23201" name="የቁጥር ዘይቤ"/>
+					<Item id="23220" name="እስታይለር"/>
+					<Item id="23230" name="ቅድመ ቅጥያ 1"/>
+					<Item id="23232" name="ቅድመ ቅጥያ 2"/>
+					<Item id="23234" name="ተጨማሪ 1"/>
+					<Item id="23236" name="ተጨማሪ 2"/>
+					<Item id="23238" name="ቅጥያ 1"/>
+					<Item id="23240" name="ቅጥያ 2"/>
+					<Item id="23242" name="ክልል፡"/>
+					<Item id="23244" name="የአስርዮሽ መለያያ"/>
+					<Item id="23245" name="ነጥብ"/>
+					<Item id="23246" name="ነጠላ ሰረዝ"/>
+					<Item id="23247" name="ሁለቱም"/>
+				</Comment>
+				<Operator title="ኦፕሬተሮች ገዳቢ">
+					<Item id="24101" name="ኦፕሬተሮች ዘይቤ"/>
+					<Item id="24113" name="እስታይለር"/>
+					<Item id="24116" name="ኦፕሬተሮች 1"/>
+					<Item id="24117" name="ኦፕሬተሮች 2 (መለያየቶች ያስፈልጋሉ)"/>
+					<Item id="24201" name="ገዳቢ 1 ስታይል"/>
+					<Item id="24220" name="ክፍት፡"/>
+					<Item id="24221" name="ማምለጥ፡"/>
+					<Item id="24222" name="ዝጋ፡"/>
+					<Item id="24223" name="እስታይለር"/>
+					<Item id="24301" name="ገዳቢ 2 ስታይል"/>
+					<Item id="24320" name="ክፍት፡"/>
+					<Item id="24321" name="ማምለጥ፡"/>
+					<Item id="24322" name="ዝጋ፡"/>
+					<Item id="24323" name="እስታይለር"/>
+					<Item id="24401" name="ገዳቢ 3 ስታይል"/>
+					<Item id="24420" name="ክፍት፡"/>
+					<Item id="24421" name="ማምለጥ፡"/>
+					<Item id="24422" name="ገጠመ፥"/>
+					<Item id="24423" name="እስታይለር"/>
+					<Item id="24451" name="ገዳቢ 4 ስታይል"/>
+					<Item id="24470" name="ክፍት፡"/>
+					<Item id="24471" name="ማምለጥ፡"/>
+					<Item id="24472" name="ዝጋ፡"/>
+					<Item id="24473" name="እስታይለር"/>
+					<Item id="24501" name="ገዳቢ 5 ስታይል"/>
+					<Item id="24520" name="ክፍት፡"/>
+					<Item id="24521" name="ማምለጥ፡"/>
+					<Item id="24522" name="ዝጋ፡"/>
+					<Item id="24523" name="እስታይለር"/>
+					<Item id="24551" name="ገዳቢ 6 ዘይቤ"/>
+					<Item id="24570" name="ክፍት፡"/>
+					<Item id="24571" name="ማምለጥ፡"/>
+					<Item id="24572" name="ዝጋ፡"/>
+					<Item id="24573" name="እስታይለር"/>
+					<Item id="24601" name="ገዳቢ 7 ዘይቤ"/>
+					<Item id="24620" name="ክፍት፡"/>
+					<Item id="24621" name="ማምለጥ፡"/>
+					<Item id="24622" name="ገጠመ፥"/>
+					<Item id="24623" name="እስታይለር"/>
+					<Item id="24651" name="ገዳቢ 8 ዘይቤ"/>
+					<Item id="24670" name="ክፍት፡"/>
+					<Item id="24671" name="ማምለጥ፡"/>
+					<Item id="24672" name="ዝጋ፡"/>
+					<Item id="24673" name="እስታይለር"/>
+				</Operator>
+			</UserDefine>
+			<Preference title="ምርጫዎች">
+				<Item id="6001" name="ዝጋ"/>
+				<Global title="አጠቃላይ">
+					<Item id="6123" name="አካባቢያዊነት"/>
+					<Item id="6131" name="ምናሌ"/>
+					<Item id="6122" name="ደብቅ (ለመቀያየር Alt ወይም F10 ቁልፍ ተጠቀም)"/>
+					<Item id="6132" name="የቀኝ አቋራጮችን ደብቅ ＋ ▼ ✕"/>
+					<Item id="6133" name="የሁኔታ አሞሌ"/>
+					<Item id="6134" name="ደብቅ"/>
+				</Global>
+
+				<Toolbar title="የመሳሪያ አሞሌ">
+					<Item id="6102" name="ደብቅ"/>
+					<Item id="6103" name="ፍሉይ ዩአይ፡ ትንሽ"/>
+					<Item id="6104" name="ፍሉይ ዩአይ፡ ትልቅ"/>
+					<Item id="6129" name="የተሞላ ፍሉዩ ዩአይ፡ ትንሽ"/>
+					<Item id="6130" name="የተሞላ ፍሉንት UI፡ ትልቅ"/>
+					<Item id="6105" name="መደበኛ አዶዎች: ትንሽ"/>
+					<Item id="6011" name="ቀለም መቀባት"/>
+					<Item id="6012" name="ሙሉ"/>
+					<Item id="6013" name="ከፊል"/>
+					<Item id="6014" name="የቀለም ምርጫ"/>
+					<Item id="6015" name="ነባሪ"/>
+					<Item id="6016" name="ቀይ"/>
+					<Item id="6017" name="አረንጓዴ"/>
+					<Item id="6018" name="ሰማያዊ"/>
+					<Item id="6019" name="ሐምራዊ"/>
+					<Item id="6020" name="ሲያን"/>
+					<Item id="6021" name="የወይራ"/>
+					<Item id="6022" name="ቢጫ"/>
+					<Item id="6023" name="የስርአት አነጋገር"/>
+					<Item id="6024" name="ብጁ"/>
+				</Toolbar>
+
+				<Tabbar title="ታብ ባር">
+					<Item id="6107" name="ቀንስ"/>
+					<Item id="6108" name="ቆልፍ (መጎተት እና መጣል የለም)"/>
+					<Item id="6109" name="የቦዘነ የትር ቀለም ቀይር"/>
+					<Item id="6110" name="በገባሪ ትር ላይ ባለ ቀለም ባር ይሳሉ"/>
+					<Item id="6111" name="በቦዘኑ ትሮች ላይ አዝራሮችን አሳይ"/>
+					<Item id="6112" name="የመዝጊያ ቁልፍ አሳይ"/>
+					<Item id="6113" name="ሰነድ ለመዝጋት ሁለቴ ጠቅ ያድርጉ"/>
+					<Item id="6115" name="የፒን ትር ባህሪን አንቃ"/>
+					<Item id="6135" name="የተሰካ ቁልፍ ብቻ አሳይ"/>
+					<Item id="6118" name="ደብቅ"/>
+					<Item id="6119" name="ባለብዙ መስመር"/>
+					<Item id="6120" name="አቀባዊ"/>
+					<Item id="6121" name="የመጨረሻውን ትር ዝጋ ውጣ"/>
+					<Item id="6128" name="ተለዋጭ አዶዎች"/>
+					<Item id="6125" name="ባህሪ"/>
+					<Item id="6126" name="ይመልከቱ ስሜት"/>
+					<Item id="6136" name="ከፍተኛ.የትር መለያ ርዝመት፡"/>
+				</Tabbar>
+
+				<Scintillas title="ማረም 1">
+					<Item id="6216" name="እንክብካቤ ቅንብሮች"/>
+					<Item id="6217" name="ስፋት፡"/>
+					<Item id="6219" name="የእይታ መጠን፡"/>
+					<Item id="6221" name="ረ"/>
+					<Item id="6222" name="ኤስ"/>
+					<Item id="6246" name="አሁን ያለውን ደረጃ የሚታጠፍ/የሚከፈቱ ትዕዛዞችን የሚቀያየሩ ያድርጉ"/>
+					<Item id="6227" name="የመስመር መጠቅለያ"/>
+					<Item id="6228" name="ነባሪ"/>
+					<Item id="6229" name="የተስተካከለ"/>
+					<Item id="6230" name="ገብ"/>
+					<Item id="6234" name="በመዳሰሻ ሰሌዳ ችግር ምክንያት የላቀ የማሸብለል ባህሪን አሰናክል"/>
+					<Item id="6215" name="ለስላሳ ቅርጸ-ቁምፊን አንቃ"/>
+					<Item id="6236" name="ካለፈው መስመር በላይ ማሸብለልን አንቃ"/>
+					<Item id="6239" name="ከምርጫ ውጭ በቀኝ ጠቅ ሲያደርጉ ምርጫውን ይቀጥሉ"/>
+					<Item id="6245" name="ምናባዊ ቦታን አንቃ"/>
+					<Item id="6214" name="ያለ ምርጫ ቅዳ/መስመርን ያንቁ"/>
+					<Item id="6225" name="ለተመረጠው የጽሁፍ ፊት ብጁ ቀለም ተግብር"/>
+					<Item id="6651" name="የአሁኑ መስመር አመልካች"/>
+					<Item id="6652" name="የለም"/>
+					<Item id="6653" name="ዋና ዳራ"/>
+					<Item id="6654" name="ፍሬም"/>
+					<Item id="6655" name="ስፋት፡"/>
+				</Scintillas>
+
+				<Scintillas2 title="ማረም 2">
+					<Item id="6521" name="መልቲ-ኤዲቲንግ"/>
+					<Item id="6522" name="ባለብዙ-ማስተካከያ አንቃ (Ctrl+Mouse ንካ/ምርጫ)"/>
+					<Item id="6523" name="የአምድ ምርጫን ለብዙ አርትዖት አንቃ"/>
+					<Item id="6247" name="ኢኦኤል (CRLF)"/><!-- Don't translate "(CRLF)" -->
+					<Item id="6248" name="ነባሪ"/>
+					<Item id="6249" name="ግልጽ ጽሑፍ"/>
+					<Item id="6250" name="ብጁ ቀለም"/>
+					<Item id="6252" name="የማይታተሙ ቁምፊዎች"/>
+					<Item id="6260" name="መልክ"/>
+					<Item id="6254" name="ምህጻረ ቃል"/>
+					<Item id="6255" name="ኮድ ነጥብ"/>
+					<Item id="6256" name="ብጁ ቀለም"/>
+					<Item id="6258" name="የመልክ ቅንብሮችን ወደ C0፣ C1 ዩኒኮድ ኢኦኤል ተግብር"/>
+					<Item id="6259" name="የቁጥጥር ቁምፊ (C0 ኮድ) ወደ ሰነድ መተየብ"/>
+				</Scintillas2>
+
+				<DarkMode title="ጨለማ ሁነታ">
+					<Item id="7131" name="የብርሃን ሁነታ"/>
+					<Item id="7132" name="ጨለማ ሁነታ"/>
+					<Item id="7133" name="ዊንዶውስ ይከተሉ"/>
+					<Item id="7102" name="ጥቁር"/>
+					<Item id="7103" name="ቀይ"/>
+					<Item id="7104" name="አረንጓዴ"/>
+					<Item id="7105" name="ሰማያዊ"/>
+					<Item id="7107" name="ሐምራዊ"/>
+					<Item id="7108" name="ሲያን"/>
+					<Item id="7109" name="የወይራ"/>
+					<Item id="7115" name="የተበጀ"/>
+					<Item id="7116" name="የይዘት ዳራ"/>
+					<Item id="7117" name="ትኩስ ትራክ ንጥል"/>
+					<Item id="7118" name="የቁጥጥር ዳራ"/>
+					<Item id="7119" name="የንግግር ዳራ"/>
+					<Item id="7120" name="ስህተት"/>
+					<Item id="7121" name="ጽሑፍ"/>
+					<Item id="7122" name="ጠቆር ያለ ጽሑፍ"/>
+					<Item id="7123" name="የተሰናከለ ጽሑፍ"/>
+					<Item id="7124" name="ጠርዝ"/>
+					<Item id="7125" name="ማገናኛ"/>
+					<Item id="7126" name="የጠርዝ ድምቀት"/>
+					<Item id="7127" name="ጠርዝ ተሰናክሏል"/>
+					<Item id="7130" name="ዳግም አስጀምር"/>
+					<Item id="7135" name="ድምፆች"/>
+				</DarkMode>
+
+				<MarginsBorderEdge title="ህዳግ/ ድንበር/ዳር">
+					<Item id="6201" name="የማርጂን ዘይቤን አጣጥፉ"/>
+					<Item id="6202" name="ቀላል"/>
+					<Item id="6203" name="ቀስት"/>
+					<Item id="6204" name="ክብ ዛፍ"/>
+					<Item id="6205" name="የቦክስ ዛፍ"/>
+					<Item id="6226" name="የለም"/>
+					<Item id="6291" name="የመስመር ቁጥር"/>
+					<Item id="6206" name="ማሳያ"/>
+					<Item id="6292" name="ተለዋዋጭ ስፋት"/>
+					<Item id="6293" name="የማያቋርጥ ስፋት"/>
+					<Item id="6207" name="ዕልባት አሳይ"/>
+					<Item id="6295" name="ታሪክ ቀይር"/>
+					<Item id="6223" name="በህዳግ ላይ አሳይ"/>
+					<Item id="6296" name="በጽሁፉ ውስጥ አሳይ"/>
+					<Item id="6211" name="የአቀባዊ ጠርዝ ቅንብሮች"/>
+					<Item id="6213" name="ዳራ ሁነታ"/>
+					<Item id="6231" name="የድንበር ስፋት"/>
+					<Item id="6235" name="ጠርዝ የለም"/>
+					<Item id="6208" name="ንጣፍ"/>
+					<Item id="6209" name="ግራ"/>
+					<Item id="6210" name="ቀኝ"/>
+					<Item id="6212" name="ከመረበሽ ነፃ"/>
+				</MarginsBorderEdge>
+
+				<NewDoc title="አዲስ ሰነድ">
+					<Item id="6401" name="ቅርጸት (የመስመር መጨረሻ)"/>
+					<Item id="6402" name="ዊንዶውስ (CR LF)"/>
+					<Item id="6403" name="ዩኒክስ (ኤልኤፍ)"/>
+					<Item id="6404" name="ማኪንቶሽ (ሲአር)"/>
+					<Item id="6405" name="ኢንኮዲንግ"/>
+					<Item id="6406" name="ANSI"/>
+					<Item id="6407" name="UTF-8"/>
+					<Item id="6408" name="UTF-8 ከ BOM ጋር"/>
+					<Item id="6409" name="UTF-16 ቢግ ኢንዲያን ከ BOM ጋር"/>
+					<Item id="6410" name="UTF-16 ትንሹ ኢንዲያን ከ BOM ጋር"/>
+					<Item id="6411" name="ነባሪ ቋንቋ፡"/>
+					<Item id="6419" name="አዲስ ሰነድ"/>
+					<Item id="6420" name="ለተከፈቱ ANSI ፋይሎች ያመልክቱ"/>
+					<Item id="6432" name="ጅምር ላይ ሁል ጊዜ አዲስ ሰነድ በተጨማሪ ይክፈቱ"/>
+					<Item id="6433" name="የመጀመሪያውን የሰነድ መስመር እንደ ርዕስ አልባ የትር ስም ይጠቀሙ"/>
+				</NewDoc>
+
+				<DefaultDir title="ነባሪ ማውጫ">
+					<Item id="6413" name="ነባሪ የፋይል ክፈት/አስቀምጥ ማውጫ"/>
+					<Item id="6414" name="የአሁኑን ሰነድ ይከተሉ"/>
+					<Item id="6415" name="ለመጨረሻ ጊዜ ጥቅም ላይ የዋለውን ማውጫ አስታውስ"/>
+					<Item id="6431" name="አቃፊን እንደ የስራ ቦታ ከማስጀመር ይልቅ ሁሉንም የአቃፊ ፋይሎች ክፈት"/>
+				</DefaultDir>
+
+				<FileAssoc title="ማህደር">
+					<Item id="4008" name="እባክዎን ከኖትፓድ++ ይውጡ እና ይህን ባህሪ ለመጠቀም ኖትፓድ++ን በአስተዳዳሪ ሁነታ እንደገና ያስጀምሩ።"/>
+					<Item id="4009" name="የሚደገፉ ቅጥያዎች፡"/>
+					<Item id="4010" name="የተመዘገቡ ቅጥያዎች፡"/>
+				</FileAssoc>
+
+
+				<Language title="ቋንቋ">
+					<Item id="6505" name="የሚገኙ እቃዎች"/>
+					<Item id="6506" name="የተሰናከሉ እቃዎች"/>
+					<Item id="6507" name="የቋንቋ ምናሌን የታመቀ አድርግ"/>
+					<Item id="6508" name="የቋንቋ ምናሌ"/>
+					<Item id="6335" name="የኋላ ሽንፈትን ለ SQL የማምለጫ ባህሪ አድርገው ይያዙት"/>
+				</Language>
+
+				<Indentation title="ማስገቢያ">
+					<Item id="7161" name="በራስ ሰር ማስገቢያ"/>
+					<Item id="7162" name="የለም"/>
+					<Item id="7163" name="መሰረታዊ"/>
+					<Item id="7164" name="የላቀ"/>
+					<Item id="6301" name="የመግቢያ ቅንብሮች"/>
+					<Item id="6302" name="የጠፈር ገጸ ባህሪ(ቶች)"/>
+					<Item id="6303" name="የገብ መጠን፡"/>
+					<Item id="6310" name="ገብን በመጠቀም፡"/>
+					<Item id="6311" name="የትር ቁምፊ"/>
+					<Item id="6510" name="ነባሪ እሴት ተጠቀም"/>
+					<Item id="6512" name="Backspace ቁልፍ ነጠላ ቦታን ከማስወገድ ይልቅ ወጣ ገባ"/>
+				</Indentation>
+
+				<Highlighting title="ማድመቅ">
+					<Item id="6351" name="የቅጡ ሁሉም የቶከን ክስተቶች"/>
+					<Item id="6352" name="የማዛመድ ጉዳይ"/>
+					<Item id="6353" name="ሙሉውን ቃል ብቻ አዛምድ"/>
+					<Item id="6333" name="ብልጥ ማድመቅ"/>
+					<Item id="6326" name="አንቃ"/>
+					<Item id="6354" name="ተዛማጅ"/>
+					<Item id="6332" name="የማዛመድ ጉዳይ"/>
+					<Item id="6338" name="ሙሉውን ቃል ብቻ አዛምድ"/>
+					<Item id="6339" name="የንግግር መቼቶችን አግኝ"/>
+					<Item id="6340" name="ሌላ እይታ ያድምቁ"/>
+					<Item id="6329" name="የድምቀት ተዛማጅ መለያዎች"/>
+					<Item id="6327" name="አንቃ"/>
+					<Item id="6328" name="መለያ ባህሪያትን ያድምቁ"/>
+					<Item id="6330" name="አስተያየት/php/asp ዞን አድምቅ"/>
+				</Highlighting>
+
+				<Print title="አትም">
+					<Item id="6601" name="የህትመት መስመር ቁጥር"/>
+					<Item id="6602" name="የቀለም አማራጮች"/>
+					<Item id="6603" name="WYSIWYG"/>
+					<Item id="6604" name="ተገላቢጦሽ"/>
+					<Item id="6605" name="ጥቁር በነጭ"/>
+					<Item id="6606" name="የጀርባ ቀለም የለም"/>
+					<Item id="6607" name="የኅዳግ መቼቶች (ክፍል፡ሚሜ)"/>
+					<Item id="6612" name="ግራ"/>
+					<Item id="6613" name="ከፍተኛ"/>
+					<Item id="6614" name="ትክክል"/>
+					<Item id="6615" name="ከታች"/>
+					<Item id="6706" name="ደፋር"/>
+					<Item id="6707" name="ኢታሊክ"/>
+					<Item id="6708" name="ርእስ"/>
+					<Item id="6709" name="የግራ ክፍል"/>
+					<Item id="6710" name="መካከለኛው ክፍል"/>
+					<Item id="6711" name="ትክክለኛው ክፍል"/>
+					<Item id="6717" name="ደፋር"/>
+					<Item id="6718" name="ኢታሊክ"/>
+					<Item id="6719" name="ግርጌ"/>
+					<Item id="6720" name="የግራ ክፍል"/>
+					<Item id="6721" name="መካከለኛው ክፍል"/>
+					<Item id="6722" name="ትክክለኛው ክፍል"/>
+					<Item id="6723" name="ጨምር"/>
+					<ComboBox id="6724">
+						<Element name="ሙሉ የፋይል ስም መንገድ"/>
+						<Element name="የመዝገብ ስም"/>
+						<Element name="የፋይል ማውጫ"/>
+						<Element name="ገጽ"/>
+						<Element name="አጭር የቀን ቅርጸት"/>
+						<Element name="ረጅም የቀን ቅርጸት"/>
+						<Element name="ጊዜ"/>
+					</ComboBox>
+					<Item id="6725" name="ተለዋዋጭ፡"/>
+					<Item id="6727" name="ተለዋዋጭ ቅንብሮችዎን እዚህ አሳይ"/>
+					<Item id="6728" name="ራስጌ እና ግርጌ"/>
+				</Print>
+
+				<Searching title="ፍለጋ">
+					<Item id="6902" name="መገናኛን አግኝ (ማስታወሻ ደብተር++ እንደገና ማስጀመር ያስፈልጋል)"/>
+					<Item id="6903" name="ከፍለጋ በኋላ የውጤት መስኮቱን የሚያወጣውን ንግግር ፈልግ"/>
+					<Item id="6904" name="በሁሉም የተከፈቱ ሰነዶች ውስጥ ሁሉንም መተካት ያረጋግጡ"/>
+					<Item id="6905" name="ተካ፡ ወደሚከተለው ክስተት አይሂዱ"/>
+					<Item id="6906" name="የፍለጋ ውጤት መስኮት፡ ከተቻለ በተገኘው መስመር አንድ ግቤት ብቻ አሳይ"/>
+					<Item id="6907" name="መገናኛ ፍለጋ ሲጠራ"/>
+					<Item id="6908" name="መስኩን በተመረጠ ጽሑፍ ሙላ"/>
+					<Item id="6909" name="ምንም ነገር ካልተመረጠ በእንክብካቤ ውስጥ ቃልን ይምረጡ"/>
+					<Item id="6910" name="&quot;በምርጫ&quot; ላይ በራስ-ሰር ለመፈተሽ ዝቅተኛው መጠን:"/>
+					<Item id="6913" name="በገባሪ ሰነድ ላይ የተመሰረተ የፋይሎች ማውጫ መስክ ይሙሉ"/>
+					<Item id="6916" name="ከምርጫ እስከ ራስ-ሙላ ፍለጋ መስክ ከፍተኛ ቁምፊዎች"/>
+				</Searching>
+
+				<RecentFilesHistory title="የቅርብ ጊዜ ፋይሎች ታሪክ">
+					<Item id="6304" name="የቅርብ ጊዜ ፋይሎች ታሪክ"/>
+					<Item id="6306" name="ከፍተኛ.የመግቢያ ብዛት፡"/>
+					<Item id="6305" name="በሚነሳበት ሰአት አታረጋግጥ"/>
+					<Item id="6429" name="ማሳያ"/>
+					<Item id="6424" name="በንዑስ ሜኑ"/>
+					<Item id="6425" name="የፋይል ስም ብቻ"/>
+					<Item id="6426" name="ሙሉ የፋይል ስም ዱካ"/>
+					<Item id="6427" name="ከፍተኛውን ርዝመት አብጅ፡"/>
+				</RecentFilesHistory>
+
+				<Backup title="ምትኬ">
+					<Item id="6817" name="የክፍለ ጊዜ ቅጽበታዊ ገጽ እይታ እና ወቅታዊ ምትኬ"/>
+					<Item id="6818" name="የክፍለ ጊዜ ቅጽበተ-ፎቶ እና ወቅታዊ ምትኬን አንቃ"/>
+					<Item id="6819" name="በእያንዳንዱ ማሻሻያ ላይ ምትኬን አስነሳ"/>
+					<Item id="6821" name="ሰከንዶች"/>
+					<Item id="6822" name="የመጠባበቂያ መንገድ፡"/>
+					<Item id="6309" name="ለሚቀጥለው ጅምር የአሁኑን ክፍለ ጊዜ አስታውስ"/>
+					<Item id="6825" name="ካለፈው ክፍለ ጊዜ የማይደረሱ ፋይሎችን አስታውስ"/>
+					<Item id="6801" name="ምትኬ በማስቀመጥ ላይ"/>
+					<Item id="6315" name="የለም"/>
+					<Item id="6316" name="ቀላል ምትኬ"/>
+					<Item id="6317" name="የቃል ምትኬ"/>
+					<Item id="6804" name="ብጁ ምትኬ ማውጫ"/>
+					<Item id="6803" name="ማውጫ፡"/>
+				</Backup>
+
+				<AutoCompletion title="ራስ-ማጠናቀቅ">
+					<Item id="6807" name="ራስ-ማጠናቀቅ"/>
+					<Item id="6808" name="በእያንዳንዱ ግቤት ላይ ራስ-ማጠናቀቅን አንቃ"/>
+					<Item id="6809" name="ተግባር ማጠናቀቅ"/>
+					<Item id="6810" name="የቃል ፍፃሜ"/>
+					<Item id="6816" name="ተግባር እና ቃል ማጠናቀቅ"/>
+					<Item id="6869" name="ምርጫ አስገባ"/>
+					<Item id="6870" name="ታብ"/><!-- TAB key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6871" name="አስገባ"/><!-- ENTER key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6824" name="ቁጥሮችን ችላ በል"/>
+					<Item id="6811" name="ከ"/>
+					<Item id="6813" name="ኛ ገፀ ባህሪ"/>
+					<Item id="6872" name="ራስ-አጠናቅቅ ዝርዝር አጭር አድርግ"/>
+					<Item id="6815" name="የተግባር መለኪያዎች በግቤት ላይ ፍንጭ"/>
+					<Item id="6851" name="በራስ ሰር አስገባ"/>
+					<Item id="6857" name="html/xml የተጠጋ መለያ"/>
+					<Item id="6858" name="ክፍት"/>
+					<Item id="6859" name="ዝጋ"/>
+					<Item id="6860" name="የተጣመሩ ጥንድ 1:"/>
+					<Item id="6863" name="የተጣመሩ ጥንድ 2:"/>
+					<Item id="6866" name="የተጣመሩ ጥንድ 3:"/>
+				</AutoCompletion>
+
+				<MultiInstance title="ባለ ብዙ ምሳሌ ቀን">
+					<Item id="6151" name="ባለብዙ ምሳሌ ቅንብሮች *"/>
+					<Item id="6152" name="ክፍለ ጊዜን በአዲስ ምሳሌ ክፈት (እና በሚወጣበት ጊዜ ክፍለ-ጊዜን በራስ-ሰር ይቆጥቡ)"/>
+					<Item id="6153" name="ሁልጊዜ በባለብዙ ምሳሌ ሁነታ"/>
+					<Item id="6154" name="ነባሪ (ሞኖ-ምሳሌ)"/>
+					<Item id="6155" name="* የዚህ ቅንብር ማሻሻያ የማስታወሻ ደብተር++ እንደገና ማስጀመር ያስፈልገዋል"/>
+					<Item id="6171" name="የማስገቢያ ቀን ጊዜን አብጅ"/>
+					<Item id="6175" name="ነባሪ የቀን ጊዜ ቅደም ተከተል (አጭር ረጅም ቅርፀቶች)"/>
+					<Item id="6172" name="ብጁ ቅርጸት፡"/>
+					<Item id="6181" name="የፓነል ሁኔታ እና [-አፍንጫ] *"/>
+					<Item id="6182" name="የፓነል ሁኔታን ያስታውሱ (ፓነል ክፍት ነው) በሌሎች ሁኔታዎች (ባለብዙ-ኢንስታንስ ሁነታ) ወይም የትእዛዝ መስመር መለኪያን [-nosession] ሲጠቀሙ"/>
+					<Item id="6183" name="የቅንጥብ ሰሌዳ ታሪክ"/>
+					<Item id="6184" name="የሰነድ ዝርዝር"/>
+					<Item id="6185" name="የቁምፊ ፓነል"/>
+					<Item id="6186" name="አቃፊ እንደ የስራ ቦታ"/>
+					<Item id="6187" name="የፕሮጀክት ፓነሎች"/>
+					<Item id="6188" name="የሰነድ ካርታ"/>
+					<Item id="6189" name="የተግባር ዝርዝር"/>
+					<Item id="6190" name="ተሰኪ ፓነሎች"/>
+				</MultiInstance>
+
+				<Delimiter title="ገዳይ">
+					<Item id="6251" name="ገዳቢ ምርጫ መቼቶች (Ctrl + Mouse double click)"/>
+					<Item id="6252" name="ክፍት"/>
+					<Item id="6255" name="ዝጋ"/>
+					<Item id="6256" name="በበርካታ መስመሮች ፍቀድ"/>
+					<Item id="6161" name="የቃላት ባህሪ ዝርዝር"/>
+					<Item id="6162" name="ነባሪ የWord ቁምፊ ዝርዝር እንዳለ ተጠቀም"/>
+					<Item id="6163" name="ባህሪዎን እንደ የቃሉ አካል ያክሉት።
+(የምትሰራውን እስካላወቅክ ድረስ አትምረጠው)"/>
+				</Delimiter>
+
+				<Performance title="አፈጻጸም">
+					<Item id="7141" name="ትልቅ የፋይል ገደብ"/>
+					<Item id="7143" name="ትልቅ የፋይል ገደብ አንቃ (አገባብ ማድመቅ የለም)"/>
+					<Item id="7144" name="ትልቅ የፋይል መጠን ይግለጹ:"/>
+					<Item id="7146" name="MB (1 - 2046)"/>
+					<Item id="7147" name="የብሬስ ማዛመድን ፍቀድ"/>
+					<Item id="7148" name="ራስ-ማጠናቀቅ ፍቀድ"/>
+					<Item id="7149" name="ብልጥ ማድመቅን ፍቀድ"/>
+					<Item id="7150" name="የቃል ጥቅልን በአለምአቀፍ ደረጃ አቦዝን"/>
+					<Item id="7151" name="ሊንክ ሊንክ ዩአርኤል ፍቀድ"/>
+					<Item id="7152" name="≥2GB ፋይሎችን ሲከፍቱ ማስጠንቀቂያን ያፍኑ"/>
+				</Performance>
+
+				<Cloud title="Cloud Link">
+					<Item id="6262" name="በደመና ላይ ቅንብሮች"/>
+					<Item id="6263" name="ደመና የለም"/>
+					<Item id="6267" name="የደመና መገኛ መንገድዎን እዚህ ያዘጋጁ፡"/>
+					<Item id="6318" name="ሊጫኑ የሚችሉ የአገናኝ ቅንብሮች"/>
+					<Item id="6319" name="አንቃ"/>
+					<Item id="6320" name="ከስር የለም"/>
+					<Item id="6350" name="fullbox ሁነታን አንቃ"/>
+					<Item id="6264" name="URI ብጁ ዕቅዶች፡"/>
+				</Cloud>
+
+				<SearchEngine title="የፍለጋ ፕሮግራም">
+					<Item id="6271" name="የፍለጋ ሞተር (ለትእዛዝ &quot;በይነመረብ ላይ ፈልግ&quot;)"/>
+					<Item id="6272" name="ዳክዳክጎ"/>
+					<Item id="6273" name="ጎግል"/>
+					<Item id="6274" name="Bing"/>
+					<Item id="6275" name="ያሁ!"/>
+					<Item id="6276" name="የፍለጋ ሞተርዎን እዚህ ያዘጋጁ፡"/>
+					<!-- Don't change anything after Example: -->
+					<Item id="6278" name="ምሳሌ፡ https://www.google.com/search?q=$(CURRENT_WORD)"/>
+				</SearchEngine>
+
+				<MISC title="MISC">
+					<ComboBox id="6347">
+						<Element name="ለአሁኑ ፋይል አንቃ"/>
+						<Element name="ለሁሉም የተከፈቱ ፋይሎች አንቃ"/>
+						<Element name="አሰናክል"/>
+					</ComboBox>
+					<ComboBox id="6307">
+						<Element name="ላይ ምንም እርምጃ የለም"/>
+						<Element name="አሳንስ ወደ"/>
+						<Element name="ቅርብ ለ"/>
+						<Element name="አሳንስ / ቅርብ"/>
+					</ComboBox>
+					<ComboBox id="6362">
+						<Element name="GDI (በጣም የሚስማማ)"/>
+						<Element name="DirectWrite (ነባሪ)"/>
+						<Element name="ቀጥታ ጻፍ (ክፈፎችን ማቆየት)"/>
+						<Element name="DirectWrite (ወደ GDI DC ይሳሉ)"/>
+						<Element name="DirectWrite (DirectX 11)"/>
+					</ComboBox>
+					<ComboBox id="6364">
+						<Element name="አሰናክል"/>
+						<Element name="በማስታወሻ ደብተር++ ጅምር ላይ አንቃ"/>
+						<Element name="በማስታወሻ ደብተር++ መውጫ ላይ አንቃ"/>
+					</ComboBox>
+					<Item id="6308" name="የስርዓት ትሪ"/>
+					<Item id="6363" name="የማሳያ ሁነታ"/>
+					<Item id="6365" name="ራስ-አዘምን:"/>
+					<Item id="6312" name="የፋይል ሁኔታ ራስ-ማወቂያ"/>
+					<Item id="6313" name="ዝም ብለህ አዘምን"/>
+					<Item id="6325" name="ከዝማኔ በኋላ ወደ የመጨረሻው መስመር ይሸብልሉ"/>
+					<Item id="6322" name="የክፍለ ጊዜ ፋይል ext."/>
+					<Item id="6324" name="የሰነድ መቀየሪያ (Ctrl+TAB)"/>
+					<Item id="6331" name="በርዕስ አሞሌ ውስጥ የፋይል ስም ብቻ አሳይ"/>
+					<Item id="6334" name="የቁምፊ ኢንኮዲንግ በራስ ሰር ፈልግ"/>
+					<Item id="6337" name="የስራ ቦታ ፋይል ext."/>
+					<Item id="6114" name="አንቃ"/>
+					<Item id="6117" name="MRU ባህሪን አንቃ"/>
+					<Item id="6344" name="ሰነድ አመልካች"/>
+					<Item id="6345" name="ትር ላይ ይመልከቱ"/>
+					<Item id="6346" name="በሰነድ ካርታ ላይ ይመልከቱ"/>
+					<Item id="6360" name="ሁሉንም ድምጾች አጥፋ"/>
+					<Item id="6361" name="ሁሉንም አስቀምጥን አንቃ የማረጋገጫ ንግግር"/>
+				</MISC>
+			</Preference>
+			<MultiMacro title="ማክሮ ብዙ ጊዜ ያሂዱ">
+				<Item id="1" name="ሩጫ"/>
+				<Item id="2" name="ሰርዝ"/>
+				<Item id="8006" name="ማክሮ ለማሄድ"/>
+				<Item id="8001" name="ሩጫ"/>
+				<Item id="8005" name="ጊዜያት"/>
+				<Item id="8002" name="እስከ ፋይሉ መጨረሻ ድረስ ያሂዱ"/>
+			</MultiMacro>
+			<Window title="ዊንዶውስ">
+				<Item id="1" name="አግብር"/>
+				<Item id="2" name="እሺ"/>
+				<Item id="7002" name="አስቀምጥ"/>
+				<Item id="7003" name="መስኮት ዝጋ(ዎች)"/>
+				<Item id="7004" name="ትሮችን ደርድር"/>
+			</Window>
+			<ColumnEditor title="የአምድ አዘጋጅ">
+				<Item id="2023" name="የሚያስገባ ጽሑፍ"/>
+				<Item id="2033" name="የሚያስገባ ቁጥር"/>
+				<Item id="2030" name="የመጀመሪያ ቁጥር፡"/>
+				<Item id="2031" name="ጭማሪ፡"/>
+				<Item id="2038" name="እየመራ፡"/>
+				<ComboBox id="2039">
+					<Element name="የለም"/>
+					<Element name="ዜሮዎች"/>
+					<Element name="ቦታዎች"/>
+				</ComboBox>
+				<Item id="2036" name="ይድገሙ፡"/>
+				<Item id="2032" name="ቅርጸት"/>
+				<Item id="2024" name="ዲሴ"/>
+				<Item id="2025" name="ኦክቶ"/>
+				<Item id="2026" name="ሄክስ"/>
+				<Item id="2027" name="ቢን"/>
+				<Item id="1" name="እሺ"/>
+				<Item id="2" name="ሰርዝ"/>
+			</ColumnEditor>
+			<FindInFinder title="በፍለጋ ውጤቶች ውስጥ ያግኙ">
+				<Item id="1" name="ሁሉንም አግኝ"/>
+				<Item id="2" name="ዝጋ"/>
+				<Item id="1711" name="ምን አግኝ፡"/>
+				<Item id="1713" name="በተገኙ መስመሮች ብቻ ይፈልጉ"/>
+				<Item id="1714" name="ሙሉውን ቃል ብቻ አዛምድ"/>
+				<Item id="1715" name="የማዛመድ ጉዳይ"/>
+				<Item id="1716" name="የፍለጋ ሁነታ"/>
+				<Item id="1717" name="መደበኛ"/>
+				<Item id="1719" name="አዘውትሮ አገላለጽ"/>
+				<Item id="1718" name="የተራዘመ (\n, \r, \t, \0, \x...)"/>
+				<Item id="1720" name=".ግጥሚያዎች አዲስ መስመር"/>
+			</FindInFinder>
+			<DoSaveOrNot title="አስቀምጥ">
+				<Item id="1761" name="&quot;$STR_REPLACE$&quot; ፋይል ይቀመጥ?"/>
+				<Item id="6" name="አዎ"/>
+				<Item id="7" name="አይደለም"/>
+				<Item id="2" name="ሰርዝ"/>
+				<Item id="4" name="አዎ ለሁሉም"/>
+				<Item id="5" name="አይደለም ለሁሉም"/>
+			</DoSaveOrNot>
+			<DoSaveAll title="ሁሉንም ማረጋገጫ ያስቀምጡ">
+				<Item id="1766" name="እርግጠኛ ነዎት ሁሉንም የተሻሻሉ ሰነዶችን ማስቀመጥ ይፈልጋሉ?
+
+ይህንን ንግግር እንደገና ማየት ካልፈለጉ &quot;ሁልጊዜ አዎ&quot; ን ይምረጡ።
+ይህን ንግግር በኋላ ምርጫዎች ውስጥ እንደገና ማግበር ይችላሉ።"/>
+				<Item id="6" name="አዎ"/>
+				<Item id="7" name="አይደለም"/>
+				<Item id="4" name="ሁሌም አዎ"/>
+			</DoSaveAll><!-- HowToReproduce: Check the "Enable Save All confirm dialog" checkbox in Preference->MISC, now click "Save all" -->
+
+			<DebugInfo title="የማረም መረጃ">
+				<Item id="1752" name="የስህተት ማረም መረጃን ወደ ቅንጥብ ሰሌዳ ቅዳ"/>
+				<Item id="1" name="እሺ"/>
+			</DebugInfo>
+					<MacStrings>
+				<Item id="90001" name="የፍለጋ ውጤቶች"/>
+				<Item id="90002" name="የፍለጋ ውጤቶችን ዝጋ"/>
+				<Item id="90003" name="ሁሉንም አጽዳ"/>
+				<Item id="90004" name="ፓነልን ዝጋ"/>
+				<Item id="90005" name="የፕሮጀክት ፓነል"/>
+				<Item id="90006" name="ምንጭ ቁጥጥር"/>
+				<Item id="90007" name="ቁርጠኝነት"/>
+				<Item id="90008" name="ቁርጠኝነት አልተሳካም"/>
+				<Item id="90009" name="ምንም የgit ማከማቻ የለም\nሬፖ ለመክፈት Browseን ተጠቀም።"/>
+				<Item id="90010" name="መድረክ"/>
+				<Item id="90011" name="መድረክ ፈታ"/>
+				<Item id="90012" name="መድረክ ሁሉም"/>
+				<Item id="90013" name="ሁሉንም ፈታ"/>
+				<Item id="90014" name="መልእክት አስገባ\u2026"/>
+				<Item id="90015" name="ማከማቻን አስስ\u2026"/>
+				<Item id="90016" name="የgit ማከማቻ አቃፊ ይምረጡ"/>
+				<Item id="90017" name="(ምንም ማከማቻ የለም)"/>
+				<Item id="90018" name="(የተለየ)"/>
+				<Item id="90019" name="ያልታወቀ ስህተት"/>
+				<Item id="90020" name="ምንም ተግባራት አልተገኙም"/>
+				<Item id="90021" name="የፍለጋ ተግባር..."/>
+				<Item id="90022" name="ሁሉንም አስፋ"/>
+				<Item id="90023" name="የአሁኑን ፋይል ያግኙ"/>
+				<Item id="90024" name="አድስ"/>
+				<Item id="90025" name="ተግባራትን ደርድር (ከሀ እስከ ፐ)"/>
+				<Item id="90026" name="ውጤቶች"/>
+				<Item id="90027" name="አቁም"/>
+				<Item id="90028" name="ፍለጋ ቆሟል።"/>
+				<Item id="90029" name="ፍለጋ\u2026"/>
+				<Item id="90030" name="ለመፈለግ ጽሑፍ"/>
+				<Item id="90031" name="*.txt, *.cpp, \u2026"/>
+				<Item id="90032" name="ፍለጋ..."/>
+				<Item id="90033" name="ተካ፡"/>
+				<Item id="90034" name="ሙሉ ቃል"/>
+				<Item id="90035" name="ሙሉ ቃል"/>
+				<Item id="90036" name="መጠቅለል"/>
+				<Item id="90037" name="ባህሪ"/>
+				<Item id="90038" name="HTML ስም"/>
+				<Item id="90039" name="HTML አስርዮሽ"/>
+				<Item id="90040" name="HTML ሄክሳዴሲማል"/>
+				<Item id="90041" name="ዋጋ"/>
+				<Item id="90042" name="ባዶ ክፍለ ጊዜ"/>
+				<Item id="90043" name="የተመረጠው ክፍለ ጊዜ ፋይል ምንም ትሮች አልያዘም።"/>
+				<Item id="90044" name="የመጫኛ ክፍለ ጊዜ"/>
+				<Item id="90045" name="ክፍለ ጊዜ አስቀምጥ"/>
+				<Item id="90046" name="የቅርብ ጊዜ ፋይሎችን አጽዳ"/>
+				<Item id="90047" name="ፋይል አልተገኘም"/>
+				<Item id="90048" name="ምንም ማክሮ የተቀዳ"/>
+				<Item id="90049" name="መጀመሪያ መቅዳትን በመጠቀም ማክሮ ይቅረጹ።"/>
+				<Item id="90050" name="ምንም አቋራጭ ግጭቶች የሉም።"/>
+				<Item id="90051" name="የፋይል ስም"/>
+				<Item id="90052" name="አይነት"/>
+				<Item id="90053" name="መንገድ"/>
+				<Item id="90054" name="ወደ መስመር ሂድ"/>
+				<Item id="90055" name="ቀን/ሰዓት አስገባ"/>
+				<Item id="90056" name="ኢንኮዲንግ ለውጥ"/>
+				<Item id="90057" name="አንድ ቅጂ እንደ"/>
+				<Item id="90058" name="ወደ መጣያ ውሰድ"/>
+				<Item id="90059" name="Title ባር"/>
+				<Item id="90060" name="ሙሉ የፋይል መንገድን በርዕስ አሞሌ አሳይ"/>
+				<Item id="90061" name="የሁኔታ አሞሌ አሳይ"/>
+				<Item id="90062" name="የትር መጠን፡"/>
+				<Item id="90063" name="የካሬት ስፋት፡"/>
+				<Item id="90064" name="የእንክብካቤ ብልጭታ መጠን (ሚሴ)፦"/>
+				<Item id="90065" name="የፊደል አጻጻፍ፡"/>
+				<Item id="90066" name="ከፍተኛው የትር ስፋት (ፒክሰሎች)፡"/>
+				<Item id="90067" name="አቀባዊ ጠርዝ"/>
+				<Item id="90068" name="የጠርዝ ሁነታ፡"/>
+				<Item id="90069" name="የጠርዝ አምድ፡"/>
+				<Item id="90070" name="ተለዋዋጭ መስመር ቁጥር ስፋት"/>
+				<Item id="90071" name="ግራ፡"/>
+				<Item id="90072" name="ትክክል፡"/>
+				<Item id="90073" name="ነባሪ መስመር የሚያልቅ፡"/>
+				<Item id="90074" name="ነባሪ ኢንኮዲንግ፡"/>
+				<Item id="90075" name="ራስ-ምትኬን አንቃ"/>
+				<Item id="90076" name="የመጠባበቂያ ክፍተት (ሰከንዶች):"/>
+				<Item id="90077" name="የመጠባበቂያ ቦታ፡"/>
+				<Item id="90078" name="የቀለም ዘይቤ"/>
+				<Item id="90079" name="(ይወርሳል)"/>
+				<Item id="90080" name="የቅጥ ገጽታ"/>
+				<Item id="90081" name="ምድብ"/>
+				<Item id="90082" name="ለማጣራት ይተይቡ..."/>
+				<Item id="90083" name="ለዚህ ንጥል ምንም አቋራጭ ግጭት የለም።"/>
+				<Item id="90084" name="መሰካት"/>
+				<Item id="90085" name="ስሪት"/>
+				<Item id="90086" name="መጫኑ ተጠናቋል"/>
+				<Item id="90087" name="የተጫኑ ተሰኪዎችን ለመጫን መተግበሪያውን እንደገና ያስጀምሩ።"/>
+				<Item id="90088" name="ተሰኪዎችን ጫን"/>
+				<Item id="90089" name="ተሰኪዎችን አስወግድ"/>
+				<Item id="90090" name="ምንም ትዕዛዞች አልተገኙም"/>
+				<Item id="90091" name="ለመፈለግ ይተይቡ\u2026"/>
+				<Item id="90092" name="በተጠቃሚ የተገለጸ ቋንቋ v.2.1"/>
+				<Item id="90093" name="አዲስ ቋንቋ ፍጠር"/>
+				<Item id="90094" name="ስም አስገባ፡"/>
+				<Item id="90095" name="የፊት ቀለም፡"/>
+				<Item id="90096" name="የበስተጀርባ ቀለም፡"/>
+				<Item id="90097" name="አታስቀምጥ"/>
+				<Item id="90098" name="ተፈጸመ"/>
+				<Item id="90099" name="የቃላት መጠቅለያ ቀያይር"/>
+				<Item id="90100" name="ሁሉንም ቁምፊዎች አሳይ"/>
+				<Item id="90101" name="የቁምፊዎች አማራጮችን አሳይ"/>
+				<Item id="90102" name="የመግቢያ መመሪያን ቀያይር"/>
+				<Item id="90103" name="እስካሁን አልተተገበረም"/>
+				<Item id="90104" name="ከዲስክ እንደገና ይጫኑ"/>
+				<Item id="90105" name="የፍለጋ ፕሮግራም ቀይር"/>
+				<Item id="90106" name="አሂድ ስህተት"/>
+				<Item id="90107" name="የማስታወሻ ደብተር++ የመጫኛ ጊዜ"/>
+				<Item id="90108" name="ዝመናዎችን ማረጋገጥ አልተቻለም"/>
+				<Item id="90109" name="ዘምኗል"/>
+				<Item id="90110" name="Download"/>
+				<Item id="90111" name="የመልቀቂያ ገፅ"/>
+				<Item id="90112" name="በኋላ"/>
+				<Item id="90113" name="ተሰኪዎችን አጣራ\u2026"/>
+				<Item id="90114" name="ይገኛል"/>
+				<Item id="90115" name="ዝማኔዎች"/>
+				<Item id="90116" name="ተጭኗል"/>
+				<Item id="90117" name="የማይጣጣም"/>
+				<Item id="90118" name="መጫን አልተሳካም"/>
+				<Item id="90119" name="የሚከተሉት ተሰኪዎች ይወገዱ?"/>
+				<Item id="90120" name="የሚከተሉትን ተሰኪዎች ይጫኑ?"/>
+				<Item id="90121" name="ይህ የተሰኪ ፋይሎችን ይሰርዛል።"/>
+				<Item id="90122" name="ትዕዛዞችን ፈልግ\u2026"/>
+				<Item id="90123" name="የፊት ቀለም"/>
+				<Item id="90124" name="የበስተጀርባ ቀለም"/>
+				<Item id="90125" name="የማክሮ ስም"/>
+				<Item id="90126" name="የማክሮ ስም"/>
+				<Item id="90127" name="አሁን የተመዘገበ ማክሮ"/>
+				<Item id="90128" name="ማክሮ አስተዳዳሪ"/>
+				<Item id="90129" name="ምንም የተቀመጡ ማክሮዎች የሉም"/>
+				<Item id="90130" name="መጀመሪያ ማክሮ ይቅረጹ እና ያስቀምጡ።"/>
+				<Item id="90131" name="አቋራጭ ሰርዝ"/>
+				<Item id="90132" name="ዋና ምናሌ"/>
+				<Item id="90133" name="ማክሮስ"/>
+				<Item id="90134" name="ትዕዛዞችን አሂድ"/>
+				<Item id="90135" name="ተሰኪ ትዕዛዞች"/>
+				<Item id="90136" name="Scintilla ትዕዛዞች"/>
+				<Item id="90137" name="የትእዛዝ መስመር ክርክሮች"/>
+				<Item id="90138" name="የትእዛዝ ስም ለሩጫ ሜኑ"/>
+				<Item id="90139" name="ሁሉም ምልክቶች ጸድተዋል።"/>
+				<Item id="90140" name="ምልክት የተደረገበት ጽሑፍ ወደ ቅንጥብ ሰሌዳ ተቀድቷል።"/>
+				<Item id="90141" name="ለመቅዳት ምልክት የተደረገበት ጽሑፍ የለም።"/>
+				<Item id="90142" name="በመፈለግ ላይ... %ld hit(ዎች) \u2014 %@"/>
+				<Item id="90143" name="በፋይሎች መተካት..."/>
+				<Item id="90144" name="በፕሮጀክቶች ውስጥ ይተኩ፡ እስካሁን አልተገናኘም።"/>
+				<Item id="90145" name="በፕሮጀክቶች ውስጥ ያግኙ፡ እስካሁን ከፕሮጀክት ፓነል ፋይል ዝርዝር ጋር አልተገናኘም።"/>
+				<Item id="90146" name="የስራ ቦታው ተስተካክሏል።"/>
+				<Item id="90147" name="ለውጦችን ማስቀመጥ ይፈልጋሉ?"/>
+				<Item id="90148" name="የፍለጋ ውጤቶች"/>
+				<Item id="90149" name="የአሁኑን መስመር ያድምቁ"/>
+				<Item id="90150" name="የመስመር ቁጥሮችን አሳይ"/>
+				<Item id="90151" name="ነጭ ቦታን አሳይ"/>
+				<Item id="90152" name="የEOL ምልክቶችን አሳይ"/>
+				<Item id="90153" name="የዕልባት ህዳግ አሳይ"/>
+				<Item id="90154" name="ትሮችን ተጠቀም (ከቦታ ቦታ ይልቅ)"/>
+				<Item id="90155" name="ካለፈው መስመር በላይ ሸብልል"/>
+				<Item id="90156" name="ያለ ምርጫ መስመር ቅዳ/ቁረጥ"/>
+				<Item id="90157" name="የተመረጠውን ጽሑፍ ጎትት-መጣል አሰናክል"/>
+				<Item id="90158" name="ብልጥ ማድመቅን አንቃ"/>
+				<Item id="90159" name="ብልጥ ማድመቅ፡ ግጥሚያ መያዣ"/>
+				<Item id="90160" name="ብልጥ ማድመቅ፡ ሙሉ ቃል ብቻ"/>
+				<Item id="90161" name="ትር ለመዝጋት ሁለቴ ጠቅ ያድርጉ"/>
+				<Item id="90162" name="በትሮች ላይ የመዝጊያ ቁልፍ አሳይ"/>
+				<Item id="90163" name="የፓነል ታይነትን በሁሉም ክፍለ-ጊዜዎች አስታውስ"/>
+				<Item id="90164" name="በክፍለ-ጊዜ ውስጥ የሌሉ የፋይል ግቤቶችን ያቆዩ"/>
+				<Item id="90165" name="ሁሉንም ከማዳን በፊት ያረጋግጡ"/>
+				<Item id="90166" name="በክፍት ሰነዶች ውስጥ ሁሉንም መተካት ያረጋግጡ"/>
+				<Item id="90167" name="ተካ፡ ወደሚቀጥለው ክስተት አትሸጋገር"/>
+				<Item id="90168" name="መገናኛን ፈልግ ውስጥ ባለ አንድ ፊደል ተጠቀም"/>
+				<Item id="90169" name="በቀኝ ጠቅታ ምርጫን ይቀጥላል"/>
+				<Item id="90170" name="ነባሪ ቀን/ሰዓት ቅደም ተከተል"/>
+				<Item id="90171" name="በኤክስኤምኤል ላይ የተመሰረተ የተግባር ዝርዝር ተንታኞች ተጠቀም"/>
+				<Item id="90172" name="ራስ-ሰር ዝጋ ቅንፎች ( ) [ ] {}"/>
+				<Item id="90173" name="ከምቲ ባሕሪ፡"/>
+				<Item id="90174" name="የውስጠ-ምርጫ ራስ-ቼክ ጣራ (ባይት):"/>
+				<Item id="90175" name="የተራዘመ (\\n, \\r, \\t, \\ 0, \\ x...)"/>
+				<Item id="90176" name="አዘጋጅ"/>
+				<Item id="90177" name="ህዳግ"/>
+				<Item id="90178" name="ጨለማ"/>
+				<Item id="90179" name="ብርሃን"/>
+				<Item id="90180" name="ራስ-ሰር (ስርዓትን ተከተል)"/>
+				<Item id="90181" name="ቀጭን (1 ፒክስል)"/>
+				<Item id="90182" name="መካከለኛ (2 ፒክስል)"/>
+				<Item id="90183" name="ወፍራም (3 ፒክስል)"/>
+				<Item id="90184" name="ጠፍቷል"/>
+				<Item id="90185" name="ዳራ"/>
+				<Item id="90186" name="Antialiased"/>
+				<Item id="90187" name="LCD የተመቻቸ"/>
+				<Item id="90188" name="ቀላል +/-"/>
+				<Item id="90189" name="ዊንዶውስ (CRLF)"/>
+				<Item id="90190" name="ማክ (ሲአር)"/>
+				<Item id="90191" name="የተሰኪ ዝርዝር ማከማቻ"/>
+				<Item id="90192" name="ለማመልከት የማስታወሻ ደብተር++ ጭብጥ ኤክስኤምኤል ፋይል ይምረጡ"/>
+				<Item id="90193" name="አዲስ ፍጠር\u2026"/>
+				<Item id="90194" name="አስቀምጥ እንደ\u2026"/>
+				<Item id="90195" name="የተጠቃሚ ቋንቋ፡"/>
+				<Item id="90196" name="የቋንቋ ስም"/>
+				<Item id="90197" name="ፍጠር"/>
+				<Item id="90198" name="አስቀምጥ እንደ"/>
+				<Item id="90199" name="es"/>
+				<Item id="90200" name="በጠቅላላው ፋይል"/>
+				<Item id="90201" name="ኦፕሬተሮች ገዳቢዎች"/>
+				<Item id="90202" name="ልክ ያልሆነ ክልል"/>
+				<Item id="90203" name="የክልሎች እሴቶች ከ0-255 እና ጅምር &lt;= መጨረሻ መሆን አለባቸው።"/>
+				<Item id="90204" name="አውድ ሜኑ.xml አልተገኘም።"/>
+				<Item id="90205" name="Restart Notepad++ to regenerate the default contextMenu.xml."/>
+				<Item id="90206" name="The file has unsaved changes. Reloading with the new encoding will discard them. Continue?"/>
+				<Item id="90207" name="No response from server."/>
+				<Item id="90208" name="Server returned status"/>
+				<Item id="90209" name="The repository may be private."/>
+				<Item id="90210" name="is Available"/>
+				<Item id="90211" name="is the latest version."/>
+				<Item id="90212" name="You are currently running"/>
+				<Item id="90213" name="Finder Here"/>
+				<Item id="90214" name="Terminal Here"/>
+				<Item id="90215" name="Additional language files (.xml) can be placed in:"/>
+							<Item id="90216" name="Command Palette…"/>
+				<Item id="90217" name="Spell Check"/>
+				<Item id="90218" name="Type to search…"/>
+				<Item id="90219" name="New Window"/>
+				<Item id="90220" name="Skip Current amp; Go to Next Multi-select"/>
+				<Item id="90221" name="Locked Attribute (macOS)"/>
+				<Item id="90222" name="Check for Updates…"/>
+				<Item id="90223" name="Open Recent"/>
+			</MacStrings>
+		</Dialog>
+		<MessageBox>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<ContextMenuXmlEditWarning title="Editing contextMenu" message="አውድ ሜኑ.xml ማረም የማስታወሻ ደብተር++ ብቅ ባይ አውድ ሜኑ እንዲቀይሩ ይፈቅድልዎታል።
+አውድ ሜኑ.xmlን ካሻሻሉ በኋላ ተግባራዊ ለማድረግ የማስታወሻ ደብተርዎን++ እንደገና ማስጀመር አለቦት።"/>
+			<SaveCurrentModifWarning title="ወቅታዊ ማሻሻያ አስቀምጥ" message="አሁን ያለውን ለውጥ ማስቀመጥ አለብህ።
+ሁሉም የተቀመጡ ማሻሻያዎች ሊቀለበስ አይችሉም።
+
+ይቀጥል?"/><!-- HowToReproduce: when you openned file is modified but unsaved yet, and you are changing file encoding. -->
+			<LoseUndoAbilityWarning title="የመቀልበስ ችሎታ ማስጠንቀቂያ ያጡ" message="አሁን ያለውን ለውጥ ማስቀመጥ አለብህ።
+ሁሉም የተቀመጡ ማሻሻያዎች ሊቀለበስ አይችሉም።
+
+ይቀጥል?"/><!-- HowToReproduce: when you openned file is modified and saved, then you are changing file encoding. -->
+			<CannotMoveDoc title="ወደ አዲስ የማስታወሻ ደብተር++ ምሳሌ" message="ሰነዱ ተስተካክሏል፣ ያስቀምጡት ከዚያ እንደገና ይሞክሩ።"/><!-- HowToReproduce: From your Notepad++ drag & drop a clean (not dirty) file to outside of Notepad++, another instance of Notepad++ will be created. Then from your first Notepad++ drag & drop an unsaved file to the new instance. -->
+			<DocReloadWarning title="ዳግም ጫን" message="እርግጠኛ ነዎት የአሁኑን ፋይል እንደገና ለመጫን እና በ Notepad++ ውስጥ የተደረጉ ለውጦችን ማጣት ይፈልጋሉ?"/>
+			<FileLockedWarning title="ማስቀመጥ አልተሳካም" message="እባኮትን ይህ ፋይል በሌላ ፕሮግራም መከፈቱን ያረጋግጡ"/>
+			<FileAlreadyOpenedInNpp title="" message="ፋይሉ አስቀድሞ በ Notepad++ ውስጥ ተከፍቷል።"/><!-- HowToReproduce: Open a new document and open a file "c:/tmp/foo", save this new document by choosing "c:/tmp/foo" as file to save, reply the override popup "yes", then this message appears. -->
+			<RenameTabTemporaryNameAlreadyInUse title="ዳግም መሰየም አልተሳካም" message="የተገለጸው ስም አስቀድሞ በሌላ ትር ላይ ጥቅም ላይ ውሏል።"/><!-- HowToReproduce: Rename the tab of an untitled document and provide a name that is the same as an already-existing tab of an untitled document. -->
+			<RenameTabTemporaryNameIsEmpty title="ዳግም መሰየም አልተሳካም" message="የተገለጸው ስም ባዶ ሊሆን አይችልም፣ ወይም ባዶ(ቦታ(ዎች) ወይም TAB(ዎች) ብቻ ሊይዝ አይችልም።"/><!-- HowToReproduce: Rename the tab of an untitled document and provide an empty string or only some white speces. -->
+			<DeleteFileFailed title="ፋይል ሰርዝ" message="ፋይል መሰረዝ አልተሳካም"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+
+			<NbFileToOpenImportantWarning title="የሚከፈቱት የፋይሎች መጠን በጣም ትልቅ ነው" message="$INT_REPLACE$ files are about to be opened.
+Are you sure you want to open them?"/><!-- HowToReproduce: Check "Open all files of folder instead of launching Folder as Workspace on folder dropping" in "Default Directory" of Preferences dialog, then drop a folder which contains more then 200 files into Notepad++. -->
+			<SettingsOnCloudError title="በደመና ላይ ቅንብሮች" message="በደመና ላይ የቅንብሮች መንገድ በተነበበ ብቻ ድራይቭ ላይ የተቀናበረ ይመስላል ፣
+ወይም ለመጻፍ መዳረሻ መብት በሚያስፈልግ አቃፊ ላይ።
+በደመና ላይ ያሉ ቅንብሮችዎ ይሰረዛሉ።እባክዎ በምርጫ ንግግር በኩል አንድ ወጥ የሆነ እሴት ዳግም ያስጀምሩ።"/>
+			<FilePathNotFoundWarning title="ፋይል ክፈት" message="ለመክፈት እየሞከሩት ያለው ፋይል የለም።"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SessionFileInvalidError title="ክፍለ ጊዜ መጫን አልተቻለም" message="የክፍለ ጊዜው ፋይል ተበላሽቷል ወይም ትክክል አይደለም።"/><!-- HowToReproduce: Save current session via menu "File -> Save Session...", use another editor to modify the session you saved to make it an invalid xml file. Then load this invalid session via menu "File -> Load Session...". -->
+			<DroppingFolderAsProjectModeWarning title="ልክ ያልሆነ እርምጃ" message="ፋይሎችን ወይም ማህደሮችን ብቻ መጣል ይችላሉ ነገር ግን ሁለቱንም አይደሉም፣ ምክንያቱም አቃፊን እንደ ፕሮጄክት ሁነታ በመጣል ላይ ነዎት።
+ይህ አሰራር እንዲሰራ በ&quot;Default Directory&quot; የPreferences ዲያሎግ ክፍል ውስጥ &quot;አቃፊን እንደ የስራ ቦታ ከማስጀመር ይልቅ ሁሉንም የአቃፊ ፋይሎችን ክፈት&quot; ማድረግ አለቦት።"/>
+			<SortingError title="የመደርደር ስህተት" message="በመስመር $INT_REPLACE$ ምክንያት የቁጥር መደርደርን ማከናወን አልተቻለም።"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SortLocaleMultiple title="አልተደረገም" message="ብዙ ምርጫዎችን መደርደር አይደገፍም።"/><!-- HowToReproduce: Make a multiple selection and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<SortLocaleUnknown title="መደርደር አልተሳካም" message="ዝርዝሩ ያልተሳካበት ምክንያት ሊታወቅ አይችልም."/><!-- HowToReproduce: This condition is theoretical; it is unknown what could cause it. -->
+			<SortLocaleExcept title="መደርደር አልተሳካም" message="$STR_REPLACE$"/><!-- HowToReproduce: Open a large file, e.g. 500MB / 90k lines, in 32-bit Notepad++ and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<ColumnModeTip title="የአምድ ሁነታ ጠቃሚ ምክር" message="ወደ አምድ ምረጥ ሁነታ ለመቀየር 3 መንገዶች አሉ።
+
+1. (የቁልፍ ሰሌዳ እና መዳፊት) በግራ ጠቅታ በመጎተት Altን ይያዙ
+
+2. (የቁልፍ ሰሌዳ ብቻ) የቀስት ቁልፎችን ሲጠቀሙ Alt+Shiftን ይያዙ
+
+3. (የቁልፍ ሰሌዳ ወይም መዳፊት)
+በተፈለገው የአምድ ማገጃ ቦታ ላይ እንክብካቤን ያስቀምጡ ፣ ከዚያ
+&quot;በአምድ ሞድ ውስጥ ምረጥን ጀምር / ጨርስ&quot; የሚለውን ትዕዛዝ ያስፈጽም;
+እንክብካቤውን ወደሚፈለገው የአምድ ማገጃ ቦታ ያንቀሳቅሱ፣ ከዚያ
+&quot;በአምድ ሁነታ ምረጥ/ጨርስ&quot; የሚለውን ትዕዛዝ እንደገና ያስፈጽም"/>
+			<BufferInvalidWarning title="ማስቀመጥ አልተሳካም" message="ማስቀመጥ አይቻልም፡ ቋት ልክ ያልሆነ ነው።"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<DoCloseOrNot title="ነባር ፋይል ያቆዩ" message="የ«$STR_REPLACE$» ፋይል ከአሁን በኋላ የለም።
+ይህ ፋይል በአርታዒ ውስጥ ይቀመጥ?"/>
+			<DoDeleteOrNot title="ፋይል ሰርዝ" message="ፋይል &quot;$STR_REPLACE$&quot;
+ወደ ሪሳይክል ቢንዎ ይወሰድና ይህ ሰነድ ይዘጋል።
+ይቀጥል?"/>
+			<NoBackupDoSaveFile title="አስቀምጥ" message="የምትኬ ፋይልህ ሊገኝ አይችልም (ከውጭ ተሰርዟል)።
+ያስቀምጡት አለበለዚያ የእርስዎ ውሂብ ይጠፋል
+&quot;$STR_REPLACE$&quot; ፋይል ማስቀመጥ ይፈልጋሉ?"/>
+			<DoReloadOrNot title="ዳግም ጫን" message="&quot;$STR_REPLACE$&quot;
+
+ይህ ፋይል በሌላ ፕሮግራም ተስተካክሏል።
+እንደገና መጫን ይፈልጋሉ?"/>
+			<DoReloadOrNotAndLooseChange title="ዳግም ጫን" message="&quot;$STR_REPLACE$&quot;
+
+ይህ ፋይል በሌላ ፕሮግራም ተስተካክሏል።
+እንደገና ለመጫን እና በ Notepad++ ላይ የተደረጉ ለውጦችን ማጣት ይፈልጋሉ?"/>
+			<PrehistoricSystemDetected title="ቅድመ ታሪክ ስርዓት ተገኝቷል" message="አሁንም የቅድመ ታሪክ ሥርዓትን የምትጠቀም ይመስላል።ይህ ባህሪ የሚሰራው በዘመናዊ ስርዓት ላይ ብቻ ነው፣ ይቅርታ።"/><!-- HowToReproduce: Launch "Document Map" under Windows XP. -->
+			<XpUpdaterProblem title="ማስታወሻ ደብተር++ አዘምን" message="የማስታወሻ ደብተር++ ማዘመኛ ከኤክስፒ ጋር ተኳሃኝ አይደለም ምክንያቱም በ XP ስር ባለው ጊዜ ያለፈበት የደህንነት ሽፋን።
+የቅርብ ጊዜውን ስሪት ለማውረድ ወደ Notepad++ ገጽ መሄድ ይፈልጋሉ?"/><!-- HowToReproduce: Run menu "? -> Update Notepad++" under Windows XP. -->
+			<GUpProxyConfNeedAdminMode title="የተኪ ቅንብሮች" message="እባክህ ተኪን ለማዋቀር ኖትፓድ++ን በአስተዳዳሪ ሁነታ እንደገና ያስጀምሩ።"/>
+			<DocTooDirtyToMonitor title="የክትትል ችግር" message="ሰነዱ ቆሻሻ ነው።እባክዎን ከመከታተልዎ በፊት ማሻሻያውን ያስቀምጡ።"/>
+			<DocNoExistToMonitor title="የክትትል ችግር" message="ፋይሉ ለመከታተል መኖር አለበት።"/>
+			<FileTooBigToOpen title="የፋይል መጠን ችግር" message="ፋይሉ በNotepad++ እንዳይከፈት በጣም ትልቅ ነው።"/><!-- HowToReproduce: Try to open a 4GB file (it's not easy to reproduce, it depends on your system). -->
+			<FileLoadingException title="ልዩ ኮድ፡ $STR_REPLACE$" message="ፋይሉን በመጫን ላይ ስህተት አጋጥሟል!"/>
+			<WantToOpenHugeFile title="የተከፈተ ትልቅ የፋይል ማስጠንቀቂያ" message="2GB+ የሆነ ትልቅ ፋይል መክፈት ብዙ ደቂቃዎችን ሊወስድ ይችላል።
+መክፈት ትፈልጋለህ?"/>
+			<CreateNewFileOrNot title="አዲስ ፋይል ፍጠር" message="&quot;$STR_REPLACE$&quot; የለም።ይፍጠር?"/>
+			<CreateNewFileError title="አዲስ ፋይል ፍጠር" message="ፋይሉን &quot;$STR_REPLACE$&quot; መፍጠር አልተቻለም።"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<OpenFileError title="ስህተት" message="ፋይል &quot;$STR_REPLACE$&quot; መክፈት አይቻልም።"/>
+			<OpenFileNoFolderError title="ፋይል መክፈት አይቻልም" message="&quot;$STR_REPLACE1$&quot; ሊከፈት አይችልም፡
+&quot;$STR_REPLACE2$&quot; አቃፊ የለም።"/>
+			<FileBackupFailed title="የፋይል ምትኬ አልተሳካም" message="ቀዳሚው የፋይሉ ስሪት በ&quot;$STR_REPLACE$&quot; ላይ ባለው የመጠባበቂያ ማውጫ ውስጥ ሊቀመጥ አልቻለም።
+
+ለማንኛውም የአሁኑን ፋይል ማስቀመጥ ይፈልጋሉ?"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<LoadStylersFailed title="ስታይልተሮችን ጫን።xml አልተሳካም" message="&quot;$STR_REPLACE$&quot; መጫን አልተሳካም!"/>
+			<LoadLangsFailed title="አዋቅር" message="langs.xml ን መጫን አልተሳካም!
+የእርስዎን langs.xml መልሰው ማግኘት ይፈልጋሉ?"/><!-- HowToReproduce: Close Notepad++. Use another editor to remove all content of "langs.xml" (0 length) then save it. Open Notepad++. -->
+			<LoadLangsFailedFinal title="አዋቅር" message="langs.xml ን መጫን አልተሳካም!"/><!-- HowToReproduce: Close Notepad++. Use another editor to make "langs.xml" an invalid xml file then save it. Open Notepad++. -->
+			<FolderAsWorspaceSubfolderExists title="አቃፊ እንደ የስራ ቦታ የአቃፊን ችግር ማከል" message="ማከል የሚፈልጉት አቃፊ ንዑስ-አቃፊ አለ።
+አቃፊ &quot;$STR_REPLACE$&quot; ከማከልዎ በፊት እባክዎ ከፓነሉ ስር ያለውን ያስወግዱት።"/><!-- HowToReproduce: Add a folder like "c:\temp\aFolder\" into "Folder as Workspace" panel, then try to add "c:\temp\". -->
+
+			<ProjectPanelChanged title="$STR_REPLACE$" message="የስራ ቦታው ተስተካክሏል።ማስቀመጥ ትፈልጋለህ?"/>
+			<ProjectPanelSaveError title="$STR_REPLACE$" message="የስራ ቦታ ፋይልዎን በሚጽፉበት ጊዜ ስህተት አጋጥሟል።
+የስራ ቦታህ አልተቀመጠም።"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<ProjectPanelOpenDoSaveDirtyWsOrNot title="ክፍት የስራ ቦታ" message="አሁን ያለው የስራ ቦታ ተስተካክሏል።የአሁኑን ፕሮጀክት ማስቀመጥ ይፈልጋሉ?"/>
+			<ProjectPanelNewDoSaveDirtyWsOrNot title="አዲስ የስራ ቦታ" message="አሁን ያለው የስራ ቦታ ተስተካክሏል።የአሁኑን ፕሮጀክት ማስቀመጥ ይፈልጋሉ?"/>
+			<ProjectPanelOpenFailed title="ክፍት የስራ ቦታ" message="የስራ ቦታው ሊከፈት አልቻለም።
+የሚከፈተው ፋይል ልክ ያልሆነ የፕሮጀክት ፋይል ይመስላል።"/>
+			<ProjectPanelRemoveFolderFromProject title="ማህደሩን ከፕሮጀክት አስወግድ" message="ሁሉም ንዑስ እቃዎች ይወገዳሉ.
+እርግጠኛ ነዎት ይህን አቃፊ ከፕሮጀክቱ ማስወገድ ይፈልጋሉ?"/>
+			<ProjectPanelRemoveFileFromProject title="ፋይሉን ከፕሮጀክት አስወግድ" message="እርግጠኛ ነዎት ይህን ፋይል ከፕሮጀክቱ ማስወገድ ይፈልጋሉ?"/>
+			<ProjectPanelReloadError title="የስራ ቦታን ዳግም ጫን" message="ዳግም ለመጫን ፋይሉን ማግኘት አልተቻለም።"/>
+			<ProjectPanelReloadDirty title="የስራ ቦታን ዳግም ጫን" message="አሁን ያለው የስራ ቦታ ተስተካክሏል።ዳግም መጫን ሁሉንም ማሻሻያዎች ያስወግዳል።
+መቀጠል ትፈልጋለህ?"/>
+			<UDLNewNameError title="UDL ስህተት" message="ይህ ስም በሌላ ቋንቋ ጥቅም ላይ ይውላል ፣
+እባካችሁ ሌላ ስጡ።"/>
+			<UDLRemoveCurrentLang title="አሁን ያለውን ቋንቋ አስወግድ" message="ኧረ"/>
+			<UDL_importSuccessful title="በተጠቃሚ የተገለጸ ቋንቋ" message="ማስመጣት ተሳክቷል።"/>
+			<UDL_importFails title="በተጠቃሚ የተገለጸ ቋንቋ" message="ማስመጣት አልተሳካም።"/>
+			<UDL_saveBeforeImport title="በተጠቃሚ የተገለጸ ቋንቋ" message="ወደ ውጭ ከመላክዎ በፊት &quot;አስቀምጥ እንደ...&quot; ቁልፍን ጠቅ በማድረግ የቋንቋዎን ትርጉም ያስቀምጡ።"/> <!-- HowToReproduce: Choose "User Defined Language" in User Language combobox, then click on "Export... button". -->
+			<UDL_exportSuccessful title="በተጠቃሚ የተገለጸ ቋንቋ" message="ወደ ውጭ መላክ ተሳክቷል።"/>
+			<UDL_exportFails title="በተጠቃሚ የተገለጸ ቋንቋ" message="ወደ ውጭ መላክ አልተሳካም።"/>
+			<SCMapperDoDeleteOrNot title="ኧረ" message="እርግጠኛ ነዎት ይህን አቋራጭ መሰረዝ ይፈልጋሉ?"/>
+			<FindCharRangeValueError title="ክልል ዋጋ ችግር" message="በ0 እና 255 መካከል መተየብ አለቦት።"/> <!-- HowToReproduce: Search menu, then Find characters in range, select Custom range, enter 999 in either edit box, press Find. -->
+			<OpenInAdminMode title="ማስቀመጥ አልተሳካም" message="ፋይሉ ሊቀመጥ አይችልም እና ሊጠበቅ ይችላል.
+ኖትፓድ++ን በአስተዳዳሪ ሁነታ ማስጀመር ይፈልጋሉ?"/>
+			<OpenInAdminModeWithoutCloseCurrent title="ማስቀመጥ አልተሳካም" message="ፋይሉ ሊቀመጥ አይችልም እና ሊጠበቅ ይችላል.
+ኖትፓድ++ን በአስተዳዳሪ ሁነታ ማስጀመር ይፈልጋሉ?"/>
+			<OpenInAdminModeFailed title="በአስተዳዳሪ ሁነታ መክፈት አልተሳካም" message="ማስታወሻ ደብተር++ በአስተዳዳሪ ሁነታ ሊከፈት አይችልም።"/><!-- HowToReproduce: When you have no Admin privilege and you try to save a modified file in a protected location (for example: any file in sub-folder of "C:\Program Files\". This message will appear after replying "Yes" to "Open in Admin mode" dialog. -->
+			<ViewInBrowser title="የአሁኑን ፋይል በአሳሽ ውስጥ ይመልከቱ" message="መተግበሪያ በስርዓትዎ ውስጥ ሊገኝ አይችልም።"/>
+			<ExitToUpdatePlugins title="ማስታወሻ ደብተር++ ሊወጣ ነው" message="አዎ የሚለውን ጠቅ ካደረጉ ስራዎቹን ለመቀጠል ኖትፓድ++ን ያቆማሉ።
+ሁሉም ክዋኔዎች ከተቋረጡ በኋላ የማስታወሻ ደብተር++ እንደገና ይጀመራል።
+ይቀጥል?"/>
+			<NeedToRestartToLoadPlugins title="ማስታወሻ ደብተር++ እንደገና መጀመር አለበት" message="የጫኗቸውን ፕለጊኖች ለመጫን Notepad++ እንደገና ማስጀመር አለቦት።"/><!-- HowToReproduce: Import a plugin via menu "Settings->Import->Import Plugin(s)...". -->
+			<ChangeHistoryEnabledWarning title="ማስታወሻ ደብተር++ እንደገና መጀመር አለበት" message="ታሪክ ለውጥን ለማንቃት Notepad++ እንደገና ማስጀመር አለብህ።"/><!-- HowToReproduce: uncheck "Display Change History" via Preferences dialog "Marges/Border/Edge. -->
+			<WindowsSessionExit title="የማስታወሻ ደብተር++ - የዊንዶውስ ክፍለ ጊዜ መውጫ" message="የዊንዶውስ ክፍለ ጊዜ ሊቋረጥ ነው ነገር ግን የተወሰነ ያልተቀመጠ ውሂብ አለዎት።አሁን ከ Notepad++ መውጣት ይፈልጋሉ?"/>
+			<LanguageMenuCompactWarning title="የታመቀ የቋንቋ ምናሌ" message="ይህ አማራጭ በሚቀጥለው ጅምር ላይ ይቀየራል።"/><!-- HowToReproduce: toggle "Make language menu compact" via Preferences dialog "Language/Language Menu. -->
+			<SwitchUnsavedThemeWarning title="$STR_REPLACE$" message="ያልተቀመጡ ለውጦች ሊወገዱ ነው!
+ገጽታዎችን ከመቀየርዎ በፊት ለውጦችዎን ማስቀመጥ ይፈልጋሉ?"/><!-- HowToReproduce: In the Style Configurator dialog change some theme and switch to other theme without saving. -->
+			<MacroAndRunCmdlWarning title="የማክሮ እና አሂድ ትዕዛዞች ተኳሃኝነት" message="በማስታወሻ ደብተር++ v.8.5.2 (ወይም ከዚያ በላይ) የተቀመጡ የማክሮ እና አሂድ ትዕዛዞች ከአሁኑ የNotepad++ ስሪት ጋር ተኳሃኝ ላይሆኑ ይችላሉ።
+እባክህ እነዚያን ትእዛዞች ፈትናቸው እና ካስፈለገም እንደገና አርማቸው።
+
+በአማራጭ፣ ወደ ኖትፓድ++ v8.5.2 ዝቅ ማድረግ እና የቀደመ ውሂብዎን ወደነበረበት መመለስ ይችላሉ።
+የማስታወሻ ደብተር++ የድሮውን &quot;shortcuts.xml&quot; ምትኬ ያደርግና እንደ &quot;shortcuts.xml.v8.5.2.backup&quot; ያስቀምጣል።
+&quot;shortcuts.xml.v8.5.2.backup&quot; -&gt; &quot;shortcuts.xml&quot; በመሰየም ላይ ትእዛዞችህ ወደነበሩበት መመለስ እና በትክክል መስራት አለባቸው።"/><!-- HowToReproduce: Close Notepad++, remove shortcuts.xml.v8.5.2.backup & v852ShortcutsCompatibilityWarning.xml if present, relaunch Notepad++, delete or modify a shortcuts via Shortcut Mapper, close Notepad++, then the message will show up -->
+			<FullReadOnlySavingForbidden title="ማስቀመጥ አልተሳካም" message="ፋይል ማስቀመጥ አልተቻለም።
+የማስታወሻ ደብተር++ ሙሉ ተነባቢ-ብቻ ቁጠባ የተከለከለ ሁነታ ፋይሉ እንዳይቀመጥ ከልክሏል።"/>
+			<NotEnoughRoom4Saving title="ማስቀመጥ አልተሳካም።" message="ፋይል ማስቀመጥ አልተሳካም።
+ፋይሉን ለማስቀመጥ በዲስክ ላይ በቂ ቦታ ያለ አይመስልም።ፋይልህ አልተቀመጠም።"/>
+			<FileInaccessibleUserSession title="ፋይል የማይደረስበት" message="በእጅ ከተቀመጡት ክፍለ-ጊዜዎ «$STR_REPLACE$» አንዳንድ ፋይሎች የማይደረሱ ናቸው።እንደ ባዶ እና ተነባቢ-ብቻ ሰነዶች እንደ ቦታ ያዥ ሊከፈቱ ይችላሉ።
+
+እነዚያን ቦታ ያዥዎችን መፍጠር ይፈልጋሉ?
+
+ማሳሰቢያ፡ ቦታ ያዥዎችን ላለመፍጠር በመምረጥ ወይም በኋላ ላይ መዝጋት፣ በእጅ የተቀመጠ ክፍለ ጊዜዎ በመውጣት ላይ አይቀየርም።"/>
+			<FileInaccessibleDefaultSessionXml title="ፋይል የማይደረስበት" message="ያለፈው ክፍለ ጊዜዎ አንዳንድ ፋይሎች ተደራሽ አይደሉም።እንደ ባዶ እና ተነባቢ-ብቻ ሰነዶች እንደ ቦታ ያዥ ሊከፈቱ ይችላሉ።
+
+እነዚያን ቦታ ያዥዎችን መፍጠር ይፈልጋሉ?
+
+ማሳሰቢያ፡ ቦታ ያዥዎችን ላለመፍጠር በመምረጥ ወይም በኋላ ላይ መዝጋት፣ ክፍለ ጊዜዎ በሚወጣበት ጊዜ ይሻሻላል!የእርስዎን &quot;session.xml&quot; አሁኑኑ ምትኬ እንዲያደርጉ እንመክርዎታለን።"/>
+			<RTLvsDirectWrite title="RTL ማሄድ አይቻልም" message="RTL ከ DirectWrite ሁነታ ጋር ተኳሃኝ አይደለም።እባክዎ በMISC ውስጥ የDirectWrite ሁነታን ያሰናክሉ።የምርጫዎች መገናኛ ክፍል፣ እና ማስታወሻ ደብተር++ እንደገና ያስጀምሩ።"/>
+			<FileMemoryAllocationFailed title="ልዩ፡ የፋይል ማህደረ ትውስታ ድልድል አልተሳካም" message="በማስታወሻ ደብተር++ ለሚጫነው ፋይል በቂ ተከታታይ ነፃ ማህደረ ትውስታ ላይኖር ይችላል።"/><!-- HowToReproduce: Try to open multiple files with total size > ~700MB in the x86 Notepad++ (it will depend on the PC memory configuration and the current system memory usage...). -->
+			<FindRegexBackwardDisabled title="Regex ወደ ኋላ ፍለጋ ተሰናክሏል" message="በነባሪ ያልተጠበቁ ሊሆኑ በሚችሉ ውጤቶች ወደ ኋላ ሬጅክስ ፍለጋ ተሰናክሏል።ወደ ኋላ ፍለጋ ለማካሄድ፣ አግኝ መገናኛውን ይክፈቱ እና ከመደበኛ አገላለጽ ይልቅ መደበኛ ወይም የተራዘመ የፍለጋ ሁነታን ይምረጡ።
+የአግኙን ንግግር ለመክፈት እሺን ተጫን ወይም ትኩረትን በእሱ ላይ አስቀምጥ።
+
+የኋለኛውን regex ፍለጋ ባህሪ ከፈለጉ፣ እሱን ለማንቃት መመሪያዎችን ለማግኘት የተጠቃሚውን መመሪያ ያማክሩ።"/>
+			<PrintError title="0" message="የአታሚ ሰነድ መጀመር አልተቻለም።"/><!-- Use title="0" to use Windows OS default translated "Error" title. -->
+			<FindAutoChangeOfInSelectionWarning title="የፍለጋ ማስጠንቀቂያ" message="የ&quot;በምርጫ&quot; አመልካች ሳጥን ሁኔታ በራስ-ሰር ተስተካክሏል።
+እባክዎ እርምጃውን ከማድረግዎ በፊት የፍለጋውን ሁኔታ ያረጋግጡ።"/> <!-- HowToReproduce: https://github.com/notepad-plus-plus/notepad-plus-plus/issues/14897#issuecomment-2564316224 -->
+			<Need2Restart2ShowMenuShortcuts title="ማስታወሻ ደብተር++ እንደገና መጀመር አለበት" message="የቀኝ ምናሌ አቋራጮችን ለማሳየት Notepad++ እንደገና መጀመር አለበት።"/>
+			<NoAdminRight2ChangeReadOnlyFileAttribute title="የፋይል ተነባቢ-ብቻ ባህሪን መቀየር አልተሳካም" message="የፋይሉን ባህሪያት ለመለወጥ እባክዎ Notepad++ን እንደ አስተዳዳሪ ያሂዱ።"/>
+		</MessageBox>
+		<ClipboardHistory>
+			<PanelTitle name="የቅንጥብ ሰሌዳ ታሪክ"/>
+		</ClipboardHistory>
+		<DocList>
+			<PanelTitle name="የሰነድ ዝርዝር"/>
+			<ColumnName name="ስም"/>
+			<ColumnExt name="ኤክስት."/>
+			<ColumnPath name="መንገድ"/>
+			<ListGroups name="ቡድን በእይታ"/>
+		</DocList>
+		<WindowsDlg>
+			<ColumnName name="ስም"/>
+			<ColumnPath name="መንገድ"/>
+			<ColumnType name="አይነት"/>
+			<ColumnSize name="መጠን"/>
+			<ColumnDateTime name="የተሻሻለው ጊዜ"/>
+			<NbDocsTotal name="ጠቅላላ ሰነዶች፡"/>
+			<MenuCopyName name="ስም(ዎች) ቅዳ"/>
+			<MenuCopyPath name="የዱካ ስም(ዎች) ቅዳ"/>
+		</WindowsDlg>
+		<AsciiInsertion>
+			<PanelTitle name="ASCII ኮዶች ማስገቢያ ፓነል"/>
+			<ColumnVal name="ዋጋ"/>
+			<ColumnHex name="ሄክስ"/>
+			<ColumnChar name="ባህሪ"/>
+			<ColumnHtmlName name="HTML ስም"/>
+			<ColumnHtmlNumber name="HTML አስርዮሽ"/>
+			<ColumnHtmlHexNb name="HTML ሄክሳዴሲማል"/>
+		</AsciiInsertion>
+		<DocumentMap>
+			<PanelTitle name="የሰነድ ካርታ"/>
+		</DocumentMap>
+		<FunctionList>
+			<PanelTitle name="የተግባር ዝርዝር"/>
+			<SortTip name="ደርድር"/>
+			<ReloadTip name="ዳግም ጫን"/>
+			<PreferencesTip name="ምርጫዎች"/>
+			<PreferencesInitialSort name="ተግባራትን (ከA እስከ Z) በነባሪ ደርድር"/>
+		</FunctionList>
+		<FolderAsWorkspace>
+			<PanelTitle name="አቃፊ እንደ የስራ ቦታ"/>
+			<SelectFolderFromBrowserString name="በአቃፊ ውስጥ እንደ ዎርክስፔስ ፓነል የሚጨምሩትን አቃፊ ይምረጡ"/>
+			<ExpandAllFoldersTip name="ሁሉንም ይግለጡ"/>
+			<CollapseAllFoldersTip name="ሁሉንም እጠፍ"/>
+			<LocateCurrentFileTip name="የአሁኑን ፋይል ያግኙ"/>
+			<Menu>
+				<Item id="3511" name="አስወግድ"/>
+				<Item id="3512" name="ሁሉንም አስወግድ"/>
+				<Item id="3513" name="ጨምር"/>
+				<Item id="3514" name="በስርዓት አሂድ"/>
+				<Item id="3515" name="ክፍት"/>
+				<Item id="3516" name="ቅዳ መንገድ"/>
+				<Item id="3517" name="በፋይሎች ውስጥ ያግኙ..."/>
+				<Item id="3518" name="አሳሽ እዚህ"/>
+				<Item id="3519" name="CMD እዚህ"/>
+				<Item id="3520" name="የፋይል ስም ቅዳ"/>
+			</Menu>
+		</FolderAsWorkspace>
+		<ProjectManager>
+			<PanelTitle name="ፕሮጀክት"/>
+			<WorkspaceRootName name="የስራ ቦታ"/>
+			<NewProjectName name="የፕሮጀክት ስም"/>
+			<NewFolderName name="የአቃፊ ስም"/>
+			<Menus>
+				<Entries>
+					<Item id="0" name="የስራ ቦታ"/>
+					<Item id="1" name="አርትዕ"/>
+				</Entries>
+				<WorkspaceMenu>
+					<Item id="3122" name="አዲስ የስራ ቦታ"/>
+					<Item id="3123" name="ክፍት የስራ ቦታ"/>
+					<Item id="3124" name="የስራ ቦታን ዳግም ጫን"/>
+					<Item id="3125" name="አስቀምጥ"/>
+					<Item id="3126" name="አስቀምጥ እንደ..."/>
+					<Item id="3127" name="ቅጂ አስቀምጥ እንደ..."/>
+					<Item id="3121" name="አዲስ ፕሮጀክት ጨምር"/>
+					<Item id="3128" name="በፕሮጀክቶች ውስጥ ይፈልጉ..."/>
+				</WorkspaceMenu>
+				<ProjectMenu>
+					<Item id="3111" name="እንደገና ይሰይሙ"/>
+					<Item id="3112" name="አቃፊ አክል"/>
+					<Item id="3113" name="ፋይሎችን አክል..."/>
+					<Item id="3117" name="ፋይሎችን ከማውጫ አክል..."/>
+					<Item id="3114" name="አስወግድ"/>
+					<Item id="3118" name="ወደ ላይ ውሰድ"/>
+					<Item id="3119" name="ወደ ታች ውረድ"/>
+				</ProjectMenu>
+				<FolderMenu>
+					<Item id="3111" name="እንደገና ይሰይሙ"/>
+					<Item id="3112" name="አቃፊ አክል"/>
+					<Item id="3113" name="ፋይሎችን አክል..."/>
+					<Item id="3117" name="ፋይሎችን ከማውጫ አክል..."/>
+					<Item id="3114" name="አስወግድ"/>
+					<Item id="3118" name="ወደ ላይ ተንቀሳቀስ"/>
+					<Item id="3119" name="ወደ ታች ውረድ"/>
+				</FolderMenu>
+				<FileMenu>
+					<Item id="3111" name="እንደገና ይሰይሙ"/>
+					<Item id="3115" name="አስወግድ"/>
+					<Item id="3116" name="የፋይል ዱካ ቀይር"/>
+					<Item id="3118" name="ወደ ላይ ተንቀሳቀስ"/>
+					<Item id="3119" name="ወደ ታች ውረድ"/>
+				</FileMenu>
+			</Menus>
+		</ProjectManager>
+		<MiscStrings>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<word-chars-list-tip value="ይህ ለመምረጥ ሁለቴ ጠቅ ሲያደርጉ ወይም &quot;ሙሉ ቃልን ብቻ አዛምድ&quot; በሚለው አማራጭ ሲፈልጉ ተጨማሪ ቁምፊን ወደ የአሁኑ የቃላት ቁምፊዎች እንዲያካትቱ ያስችልዎታል።"/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, hover your mouse on the "?" button. -->
+
+			<!-- Don't translate "(&quot;EOL custom color&quot;)" -->
+			<eol-custom-color-tip value="ነባሪውን የEOL ብጁ ቀለም (&quot;EOL ብጁ ቀለም&quot;) ለመቀየር ወደ ስታይል ማዋቀሪያ ይሂዱ።..."/>
+
+			<word-chars-list-warning-begin value="አስተውል፡"/>
+			<word-chars-list-space-warning value="$INT_REPLACE$ space(s)"/>
+			<word-chars-list-tab-warning value="$INT_REPLACE$ TAB(s)"/>
+			<word-chars-list-warning-end value="በባህሪ ዝርዝርዎ ውስጥ።"/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, check "Add your character as part of word\r(don't choose it unless you know what you're doing)", then type a white-space in the text field. -->
+			<backup-select-folder value="ማህደርን እንደ ምትኬ ማውጫ ምረጥ"/><!-- HowToReproduce: Settings > Preferences > Backup > [...] -->
+			<cloud-invalid-warning value="ልክ ያልሆነ መንገድ።"/>
+			<cloud-restart-warning value="እባክዎን ተግባራዊ ለማድረግ Notepad++ን እንደገና ያስጀምሩ።"/>
+			<cloud-select-folder value="የማስታወሻ ደብተር++ ቅንብሩን የሚያነብ/የሚጽፍበት/ወደላይ ማህደር ምረጥ"/><!-- HowToReproduce: In "Cloud" section of Preferences dialog, check "Set your cloud location path here: ", then click the button "...". This message is displayed in the "Browse For Folder" dialog. -->
+			<default-open-save-select-folder value="ማህደርን እንደ ነባሪ ማውጫ ምረጥ"/><!-- HowToReproduce: Settings > Preferences > Default Directory > [...] -->
+			<shift-change-direction-tip value="በተቃራኒ አቅጣጫ ለመፈለግ Shift+Enterን ይጠቀሙ"/>
+			<two-find-buttons-tip value="2 የአዝራሮች ሁነታን ያግኙ"/>
+			<find-in-files-filter-tip value="በ cpp፣ cxx፣ h፣ hxx hpp ውስጥ ያግኙ፡
+*.cpp *.cxx *.ሸ *.hxx *.hpp
+
+ከ exe ፣ obj log በስተቀር በሁሉም ፋይሎች ውስጥ ይፈልጉ
+*.* !*.exe !*.obj !*.log
+
+በሁሉም ፋይሎች ውስጥ ያግኙ ነገር ግን የአቃፊዎች ሙከራዎችን አያካትቱ, bin bin64:
+*.* !\nፈተናዎች !\bin*
+
+በሁሉም ፋይሎች ውስጥ ይፈልጉ ነገር ግን ሁሉንም የአቃፊዎች ምዝግብ ማስታወሻዎች ወይም ምዝግብ ማስታወሻዎች በተከታታይ አያካትቱ፡
+*.* !+\log*"/><!-- HowToReproduce: Tip of mouse hovered on "Filters" label in "Find in Files" section of Find dialog. -->
+			<find-in-files-select-folder value="ከ"/><!-- HowToReproduce: Search > Find in Files > [...] -->
+			<find-in-files-dir-from-active-doc-tip value="ለመፈለግ አቃፊ ምረጥበነቃ ሰነድ ላይ በመመስረት የማውጫ መስኩን ሙላ"/><!-- HowToReproduce: Search > Find in Files > [<<] -->
+			<find-status-top-reached value="አግኝ፡ ሰነዱ መጀመሪያ ላይ ደርሷል፣ ከስር የመጀመሪያ ክስተት ተገኝቷል።"/>
+			<find-status-end-reached value="አግኝ፡ የሰነድ መጨረሻ ላይ ደርሷል፣ ከላይ የተገኘ የመጀመሪያ ክስተት።"/>
+			<find-status-replaceinfiles-1-replaced value="በፋይሎች ውስጥ ተካ፡ 1 ክስተት ተተክቷል"/>
+			<find-status-replaceinfiles-nb-replaced value="በፋይሎች ተካ፡ $INT_REPLACE$ ተክተዋል"/>
+			<find-status-replaceinopenedfiles-1-replaced value="በተከፈቱ ፋይሎች ውስጥ ተካ፡ 1 ክስተት ተተክቷል"/>
+			<find-status-replaceinopenedfiles-nb-replaced value="በተከፈቱ ፋይሎች ውስጥ ይተኩ፡ $INT_REPLACE$ ተክተዋል"/>
+			<find-status-invalid-re value="አግኝ፡ ልክ ያልሆነ መደበኛ አገላለጽ"/>
+			<find-status-search-failed value="አግኝ፡ ፍለጋ አልተሳካም"/>
+			<find-status-mark-1-match value="ምልክት፡ 1 ግጥሚያ"/>
+			<find-status-mark-nb-matches value="ምልክት፡ $INT_REPLACE$ ተዛማጆች"/>
+			<find-status-count-1-match value="ብዛት፡ 1 ግጥሚያ"/>
+			<find-status-count-nb-matches value="ብዛት፡ $INT_REPLACE$ ተዛማጆች"/>
+			<find-status-replaceall-1-replaced value="ሁሉንም ይተኩ፡ 1 ክስተት ተተክቷል።"/>
+			<find-status-replaceall-nb-replaced value="ሁሉንም ይተኩ፡ $INT_REPLACE$ ክስተቶች ተተክተዋል"/>
+			<find-status-replaceall-readonly value="ሁሉንም ይተኩ፡ ጽሑፍን መተካት አይቻልም።አሁን ያለው ሰነድ የሚነበበው"/>
+			<find-status-replace-end-reached value="ተካ፡ የሰነድ መጨረሻ ላይ ደርሷል፣ ከላይ ጀምሮ ተጀምሯል።"/>
+			<find-status-replace-top-reached value="ተካ፡ ሰነዱ በመጀመር ላይ፣ ከታች ጀምሮ ተጀምሯል።"/>
+			<find-status-replaced-next-found value="ተካ፡ 1 ክስተት ተተካ።የሚቀጥለው ክስተት ተገኝቷል."/>
+			<find-status-replaced-without-continuing value="ተካ፡ 1 ክስተት ተተካ።"/>
+			<find-status-replaced-next-not-found value="ተካ፡ 1 ክስተት ተተካ።ምንም ተጨማሪ ክስተቶች አልተገኙም።"/>
+			<find-status-replace-not-found value="ተካ፡ ምንም አይነት ክስተት አልተገኘም"/>
+			<find-status-replace-readonly value="ተካ፡ ጽሑፍን መተካት አይቻልም።አሁን ያለው ሰነድ የሚነበበው"/>
+			<find-status-cannot-find value="አግኝ፡ &quot;$STR_REPLACE$&quot; የሚለውን ጽሑፍ ማግኘት አልተቻለም"/>
+			<find-status-cannot-find-pebkac-maybe value="የተሰጠው ክስተት ሊገኝ አይችልም.&quot;መጠቅለል&quot; (ለማብራት)፣ &quot;ማዛመጃ መያዣ&quot; (ወደ ጠፍቷል) ወይም &quot;ሙሉውን ቃል ብቻ አዛምድ&quot; (ወደ አጥፋ) ማረጋገጥ ረስተውት ይሆናል።"/>
+			<find-status-scope-selection value="በተመረጠው ጽሑፍ"/>
+			<find-status-scope-all value="በጠቅላላው ፋይል"/>
+			<find-status-scope-backward value="ከፋይል መጀመሪያ ወደ እንክብካቤ"/>
+			<find-status-scope-forward value="ከእንክብካቤ እስከ ፋይል መጨረሻ"/>
+			<find-status-invisible-chars-findWhat value="በተለጠፈ &quot;ምን ፈልግ&quot; ወይም &quot;በተካው&quot; ይዘት ውስጥ የማይታዩ ቁምፊዎች"/>
+			<find-status-invisible-chars-findWhat-tip value="ማስጠንቀቂያ፡ በፍለጋ (ወይም በመተካት) መስክ ውስጥ የማይታዩ ቁምፊዎች።
+በዚህ መስክ ላይ የተለጠፈው ጽሑፍ የማይታዩ (ምናልባትም መስመር የሚጨርሱ) ቁምፊዎችን ያካትታል።እነሱን ሳይሰርዙ ከቀጠሉ በፍለጋ (ወይም በመተካት) ጽሑፍ ውስጥ ይካተታሉ።"/>
+			<finder-find-in-finder value="በእነዚህ የፍለጋ ውጤቶች ውስጥ ያግኙ..."/>
+			<finder-close-this value="እነዚህን የፍለጋ ውጤቶች ዝጋ"/>
+			<finder-collapse-all value="ሁሉንም እጠፍ"/>
+			<finder-uncollapse-all value="ሁሉንም ይግለጡ"/>
+			<finder-copy value="የተመረጠው መስመር(ዎች) ቅዳ"/>
+			<finder-copy-selected-paths value="የተመረጠውን የዱካ ስም(ዎች) ቅዳ"/>
+			<finder-clear-all value="ሁሉንም አጽዳ"/>
+			<finder-open-selected-paths value="የተመረጠ የዱካ ስም(ዎች) ክፈት"/>
+			<finder-purge-for-every-search value="ለእያንዳንዱ ፍለጋ ማፅዳት"/>
+			<finder-wrap-long-lines value="የቃላት መጠቅለያ ረጅም መስመሮች"/>
+			<common-ok value="እሺ"/>
+			<common-cancel value="ሰርዝ"/>
+			<common-name value="ስም"/>
+			<tabrename-title value="የአሁኑን ትር እንደገና ይሰይሙ"/>
+			<tabrename-newname value="አዲስ ስም"/>
+			<splitter-rotate-left value="ወደ ግራ አዙር"/>
+			<splitter-rotate-right value="ወደ ቀኝ አዙር"/>
+			<userdefined-title-new value="አዲስ ቋንቋ ፍጠር..."/>
+			<userdefined-title-save value="የአሁኑን ቋንቋ ስም አስቀምጥ እንደ..."/>
+			<userdefined-title-rename value="አሁን ያለውን የቋንቋ ስም እንደገና ይሰይሙ"/>
+			<summary value="ማጠቃለያ"/>
+			<summary-filepath value="ሙሉ የፋይል መንገድ፡"/>
+			<summary-filecreatetime value="የተፈጠረው፡-"/>
+			<summary-filemodifytime value="የተሻሻለው፡"/>
+			<summary-nbchar value="ገፀ-ባህሪያት (ያለ መስመር መጨረሻዎች):"/>
+			<summary-nbword value="ቃላት፡"/>
+			<summary-nbline value="መስመሮች፡"/>
+			<summary-nbbyte value="የሰነድ ርዝመት፡"/>
+			<summary-nbsel1 value="የተመረጡ ቁምፊዎች ("/>
+			<summary-nbsel2 value="ባይት) በ"/>
+			<summary-nbrange value="ክልሎች"/>
+			<progress-hits-title value="ይመታል፡"/>
+			<progress-cancel-info value="ኦፕሬሽንን በመሰረዝ ላይ፣ እባክዎ ይጠብቁ..."/>
+			<find-in-files-progress-title value="በፋይሎች ሂደት ውስጥ አግኝ..."/>
+			<replace-in-files-confirm-title value="ኧረ"/>
+			<replace-in-files-confirm-directory value="እርግጠኛ ነዎት ሁሉንም ክስተቶች በ፡"/>
+			<replace-in-files-confirm-filetype value="መተካት ይፈልጋሉለፋይል አይነት፡"/>
+			<replace-in-files-progress-title value="በፋይሎች ሂደት ውስጥ ተካ..."/>
+			<replace-in-projects-confirm-title value="ኧረ"/>
+			<replace-in-projects-confirm-message value="በተመረጠው የፕሮጀክት ፓነል (ዎች) ውስጥ በሁሉም ሰነዶች ውስጥ ያሉትን ሁሉንም ክስተቶች መተካት ይፈልጋሉ?"/>
+			<replace-in-open-docs-confirm-title value="ኧረ"/>
+			<replace-in-open-docs-confirm-message value="እርግጠኛ ነዎት በሁሉም ክፍት ሰነዶች ውስጥ ያሉትን ሁሉንም ክስተቶች መተካት ይፈልጋሉ?"/>
+			<find-result-caption value="የፍለጋ ውጤቶች"/>
+			<find-result-title value="ፍለጋ"/><!-- Must not begin with space or tab character -->
+			<find-result-title-info value="($INT_REPLACE1$ በ$INT_REPLACE2$ የ$INT_REPLACE3$ ፋይሎች ፈልገዋል)"/>
+			<find-result-title-info-selections value="($INT_REPLACE1$ በ$INT_REPLACE2$ የ$INT_REPLACE3$ ምርጫዎች ፈልገዋል)"/>
+			<find-result-title-info-options-searchmode-normal value="መደበኛ"/>
+			<find-result-title-info-options-searchmode-extended value="የተራዘመ"/>
+			<find-result-title-info-options-searchmode-regexp value="RegEx"/>
+			<find-result-title-info-options-case value="ጉዳይ"/>
+			<find-result-title-info-options-word value="ቃል"/>
+			<find-result-title-info-extra value="- የመስመር ማጣሪያ ሁነታ: የተጣራውን ውጤት ብቻ አሳይ"/>
+			<find-result-hits value="($INT_REPLACE$ hits)"/>
+			<find-result-line-prefix value="መስመር"/><!-- Must not begin with space or tab character -->
+			<find-regex-zero-length-match value="የዜሮ ርዝመት ግጥሚያ"/>
+			<session-save-folder-as-workspace value="አቃፊን እንደ የስራ ቦታ ያስቀምጡ"/>
+			<tab-untitled-string value="አዲስ"/>
+			<file-save-assign-type value="አባሪ ቅጥያ"/>
+			<close-panel-tip value="ዝጋ"/>
+			<IncrementalFind-FSFound value="$INT_REPLACE$ matches"/>
+			<IncrementalFind-FSNotFound value="ሀረግ አልተገኘም"/>
+			<IncrementalFind-FSTopReached value="የገፁ አናት ላይ ደረሰ፣ ከታች ቀጥሏል"/>
+			<IncrementalFind-FSEndReached value="የገጹ መጨረሻ ደርሷል፣ ከላይ የቀጠለ"/>
+			<contextMenu-styleAlloccurrencesOfToken value="ሁሉንም የማስመሰያ ክስተቶችን ቅጥ ያድርጉ"/>
+			<contextMenu-styleOneToken value="ስታይል አንድ ማስመሰያ"/>
+			<contextMenu-clearStyle value="ግልጽ ቅጥ"/>
+			<contextMenu-PluginCommands value="ተሰኪ ትዕዛዞች"/>
+			<largeFileRestriction-tip value="አንዳንድ ባህሪያት በትልልቅ ፋይሎች ውስጥ አፈጻጸምን ሊያዘገዩ ይችላሉ።እነዚህ ባህሪያት አንድ ትልቅ ፋይል ሲከፍቱ በራስ-ሰር ሊሰናከሉ ይችላሉ።እዚህ እነሱን ማበጀት ይችላሉ.
+
+ማስታወሻ፡-
+1. እዚህ አማራጮችን ማስተካከል ተገቢ ባህሪ ለማግኘት በአሁኑ ጊዜ የተከፈቱ ትላልቅ ፋይሎችን እንደገና መክፈት ያስፈልገዋል.
+
+2. &quot;Deactivate Word Wrap globally&quot; ከተመረጠ እና ትልቅ ፋይል ከከፈቱ &quot;Word Wrap&quot; ለሁሉም ፋይሎች ይሰናከላል።በሜኑ &quot;View-&gt;Word Wrap&quot; በኩል እንደገና ማንቃት ይችላሉ።"/>
+			<npcNote-tip value="የተመረጡ &quot;ASCII ያልሆኑ&quot; ነጭ ቦታ እና የማይታተም (ቁጥጥር) ቁምፊዎችን ውክልና.
+
+ማስታወሻ፡-
+ውክልና መጠቀም በጽሑፍ ላይ የቁምፊ ተጽእኖዎችን ያሰናክላል.
+
+ለተመረጡት የነጭ ቦታ እና የማይታተሙ ቁምፊዎች ሙሉ ዝርዝር የተጠቃሚ መመሪያን ይመልከቱ።
+
+በተጠቃሚ መመሪያ ድህረ ገጽ ለመክፈት ይህን ቁልፍ ይጫኑ።"/>
+			<npcAbbreviation-tip value="ምህጻረ ቃል: ስም
+ኤንቢኤስፒ: የማይሰበር ቦታ
+ZWSP: ዜሮ-ስፋት ቦታ
+ZWNBSP : ዜሮ-ወርድ የማይሰበር ቦታ
+
+ለሙሉ ዝርዝር የተጠቃሚ መመሪያን ይመልከቱ።
+&quot;?&quot; የሚለውን ይንኩ።በተጠቃሚ መመሪያ ድህረ ገጽ ለመክፈት በቀኝ በኩል ያለው አዝራር።"/>
+			<npcCodepoint-tip value="ኮድ ነጥብ: ስም
+U+00A0: የማይሰበር ቦታ
+U+200B: ዜሮ-ስፋት ቦታ
+U+FEFF፡ ዜሮ-ስፋት የማይሰበር ቦታ
+
+ለሙሉ ዝርዝር የተጠቃሚ መመሪያን ይመልከቱ።
+&quot;?&quot; የሚለውን ይንኩ።በተጠቃሚ መመሪያ ድህረ ገጽ ለመክፈት በቀኝ በኩል ያለው አዝራር።"/>
+
+			<!-- Don't translate "(&quot;Non-printing characters custom color&quot;)" -->
+			<npcCustomColor-tip value="ለተመረጡት ነጭ ቦታ እና ህትመቶች ላልሆኑ ቁምፊዎች (&quot;የህትመት ቁምፊዎች ብጁ ቀለም&quot;) ነባሪውን ብጁ ቀለም ለመቀየር ወደ የStyle Configurator ይሂዱ።"/>
+			<npcIncludeCcUniEol-tip value="የማይታተሙ ቁምፊዎችን ገጽታ ቅንጅቶችን ወደ C0፣ C1 መቆጣጠሪያ እና ዩኒኮድ ኢኦኤል (ቀጣይ መስመር፣ መስመር መለያ እና የአንቀጽ መለያ) ቁምፊዎችን ተግብር።"/>
+			<searchingInSelThresh-tip value="የአግኝ መገናኛው ሲነቃ &quot;በምርጫ&quot; አመልካች ሳጥኑ ላይ በራስ-ሰር ለመፈተሽ በአርትዖት ዞን ውስጥ ዝቅተኛው የተመረጡ ቁምፊዎች።ከፍተኛው ዋጋ $INT_REPLACE$ ነው።ራስ-ሰር ማረጋገጥን ለማሰናከል እሴቱን ወደ 0 ያቀናብሩ።"/>
+			<searchingFillFindWhat-tip value="Ctrl-F ሲቀሰቀስ &quot;ምን አግኝ&quot; መስኩን በራስ-ሰር ለመሙላት በአርትዖት ዞን ውስጥ ከፍተኛው የተመረጡ ቁምፊዎች ብዛት።ከፍተኛው ዋጋ $INT_REPLACE$ ነው፣ ይህም ከፍተኛው የ&quot;ምን አግኝ&quot; መስክ ነው፣ በስርዓቱ የተገደበ።"/>
+			<verticalEdge-tip value="ቦታውን በአስርዮሽ ቁጥር በማመልከት የአምድ ምልክት ማድረጊያዎን ያክሉ።የተለያዩ ቁጥሮችን ለመለየት ነጭ ቦታን በመጠቀም ብዙ የአምድ ምልክቶችን መግለጽ ይችላሉ።"/>
+			<fileSaveAsCopySaveButton-tip value="ካስቀመጡ በኋላ ቅጂውን ለመክፈት አስቀምጥን ሲጫኑ Shiftን ይያዙ።"/>
+			<autoIndentBasic-tip value="የአሁኑ መስመር መግባቱ (ማለትም የ ENTER ቁልፍን በመጫን የተፈጠረው አዲስ መስመር) ከቀዳሚው መስመር ውስጠት ጋር የሚዛመድ መሆኑን ያረጋግጡ።"/>
+			<autoIndentAdvanced-tip value="ለ&quot;C-like&quot; ቋንቋዎች እና ፓይዘን ዘመናዊ መግቢያን አንቃ።የ&quot;C-like&quot; ቋንቋዎች የሚከተሉትን ያካትታሉ:
+C፣ C++፣ Java፣ C#፣ Objective-C፣ PHP፣ JavaScript፣ JSP፣ CSS፣ Perl፣ Rust፣ PowerShell እና JSON
+
+የላቀ ሁነታን ከመረጡ ነገር ግን ከላይ በተጠቀሱት ቋንቋዎች ፋይሎችን ካላስተካከሉ, መግባቱ በመሠረታዊ ሁነታ ላይ ይቆያል."/>
+
+			<!-- Don't translate "Global override" and "Default Style" -->
+			<global-override-tip value="እዚህ &quot;አለምአቀፍ መሻር&quot;ን ማንቃት ያንን ልኬት በሁሉም የቋንቋ ዘይቤዎች ይሽራል።እርስዎ የሚፈልጉት ነገር በምትኩ የ&quot;Default Style&quot; መቼቶችን መጠቀም ነው"/>
+			<scintillaRenderingTechnology-tip value="የልዩ ቁምፊዎችን አተረጓጎም ሊያሻሽል ወይም አንዳንድ የግራፊክስ ችግሮችን ሊፈታ ይችላል፣ ለውጦቹን ተግባራዊ ለማድረግ Notepad++ን እንደገና ያስጀምሩ።"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'length' & 'lines' are much longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-length-lines value="ርዝመት፡ $STR_REPLACE1$ መስመሮች፡ $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Ln' & 'Col' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Ln-Col value="Ln: $STR_REPLACE1$ ቆላ: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Pos' & 'Sel' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Pos value="ፖስ፡"/>
+			<statusbar-Sel value="ሰለ፡"/>
+			<statusbar-Sel-number value="ሴል"/>
+			<toolbar-accent-tip value="ይህ አማራጭ የመሳሪያ አሞሌዎ አዶዎች የዊንዶውስ ሲስተም የአነጋገር ቀለም እንዲከተሉ ያደርጋቸዋል።የአነጋገር ቀለም በዊንዶውስ ውስጥ በአዝራሮች፣ ድንበሮች እና የጀምር ምናሌ ሰቆች ውስጥ ጥቅም ላይ የሚውለው የድምቀት ቀለም ነው።እሱን ለመቀየር ወደ ቅንብሮች &gt; ግላዊነት ማላበስ &gt; ቀለሞች ይሂዱ፣ ከዚያ የመረጡትን የአነጋገር ቀለም ይምረጡ።"/>
+			<len-limit-exceeded-tip value="የርዝማኔ ገደብ ታልፏል፡ የእርስዎ ግብአት ከሚፈቀደው ገደብ ሊያልፍ ይችላል እና ተቆርጦ ሊሆን ይችላል እና ለቀጣዩ ክፍለ ጊዜ አይቀመጥም."/>
+			<max-len-on-search-tip value="የእርስዎ ግቤት ከተፈቀደው ገደብ ሊያልፍ ይችላል እና ተቆርጦ ሊሆን ይችላል እና ለቀጣዩ ክፍለ ጊዜ አይቀመጥም."/>
+			<max-len-on-save-tip value="የግቤትዎ ርዝመት በጣም ረጅም ነው እና ለቀጣዩ ክፍለ ጊዜዎ ላይቀመጥ ይችላል።"/>
+			<goto-setting-tip value="ቅንብርዎን እዚህ ያግኙ"/>
+			<tabbar-tabcompactlabellen-tip value="የረጅም የትር ስሞች የሚታየውን ርዝመት ይገድባል።የተሰጠውን እሴት ለመተግበር አስገባ።የእሴት ክልል፡ 1-257 ቁምፊዎች (0 መቆራረጡን ያሰናክላል)።"/>
+		</MiscStrings>
+	</Native-Langue>
+</NotepadPlus>
+
+

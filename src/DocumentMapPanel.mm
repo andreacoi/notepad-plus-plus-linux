@@ -98,7 +98,7 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
     _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
     [self addSubview:_titleBar];
 
-    _titleLabel = [NSTextField labelWithString:@"Document Map"];
+    _titleLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Document Map"]];
     NSTextField *lbl = _titleLabel;
     lbl.translatesAutoresizingMaskIntoConstraints = NO;
     lbl.font = [NSFont boldSystemFontOfSize:11];

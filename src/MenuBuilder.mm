@@ -869,6 +869,7 @@ static NSMenu *buildLanguageMenu() {
 
     // ── Run ───────────────────────────────────────────────────────────────────
     NSMenuItem *runItem = [[NSMenuItem alloc] init];
+    runItem.tag = 9902; // used by rebuildRunMenu to find this menu
     [main addItem:runItem];
     NSMenu *runMenu = submenu(@"Run");
     runItem.submenu = runMenu;
@@ -946,8 +947,8 @@ static NSMenu *buildLanguageMenu() {
 
     [helpMenu addItem:item(@"Command Line Arguments…", @selector(showCLIHelp:), @"")];
     addSep(helpMenu);
-    [helpMenu addItem:item(@"Notepad++ Home",              @selector(openNppHome:),        @"")];
-    [helpMenu addItem:item(@"Notepad++ Project Page",      @selector(openNppProjectPage:), @"")];
+    [helpMenu addItem:item(@"Notepad++ macOS Home",              @selector(openNppHome:),        @"")];
+    [helpMenu addItem:item(@"Notepad++ macOS Project Page",      @selector(openNppProjectPage:), @"")];
     [helpMenu addItem:item(@"Notepad++ Online User Manual",@selector(openNppManual:),      @"")];
     [helpMenu addItem:item(@"Notepad++ Community (Forum)", @selector(openNppForum:),       @"")];
     addSep(helpMenu);

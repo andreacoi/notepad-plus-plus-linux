@@ -49,7 +49,7 @@ static const NSUInteger kMaxHistory = 30;
     _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
     [self addSubview:_titleBar];
 
-    _titleLabel = [NSTextField labelWithString:@"Clipboard History"];
+    _titleLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Clipboard History"]];
     NSTextField *titleLabel = _titleLabel;
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     titleLabel.font = [NSFont systemFontOfSize:12 weight:NSFontWeightMedium];

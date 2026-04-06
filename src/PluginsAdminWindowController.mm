@@ -1,5 +1,6 @@
 #import "PluginsAdminWindowController.h"
 #import "NppPluginManager.h"
+#import "NppLocalizer.h"
 #import <CommonCrypto/CommonDigest.h>
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -96,7 +97,7 @@ static NSString *const kPluginListVersion = @"0.1.0";
                             NSWindowStyleMaskResizable
                     backing:NSBackingStoreBuffered
                       defer:YES];
-    win.title = @"Plugins Admin";
+    win.title = [[NppLocalizer shared] translate:@"Plugins Admin"];
     win.minSize = NSMakeSize(600, 450);
     [win center];
 
@@ -134,43 +135,45 @@ static NSString *const kPluginListVersion = @"0.1.0";
     _tabView.tabViewType = NSTopTabsBezelBorder;
     _tabView.delegate = (id<NSTabViewDelegate>)self;
 
+    NppLocalizer *loc = [NppLocalizer shared];
+
     NSTabViewItem *t0 = [[NSTabViewItem alloc] initWithIdentifier:@"available"];
-    t0.label = @"Available";
+    t0.label = [loc translate:@"Available"];
     t0.view = [[NSView alloc] init];
     [_tabView addTabViewItem:t0];
 
     NSTabViewItem *t1 = [[NSTabViewItem alloc] initWithIdentifier:@"updates"];
-    t1.label = @"Updates";
+    t1.label = [loc translate:@"Updates"];
     t1.view = [[NSView alloc] init];
     [_tabView addTabViewItem:t1];
 
     NSTabViewItem *t2 = [[NSTabViewItem alloc] initWithIdentifier:@"installed"];
-    t2.label = @"Installed";
+    t2.label = [loc translate:@"Installed"];
     t2.view = [[NSView alloc] init];
     [_tabView addTabViewItem:t2];
 
     NSTabViewItem *t3 = [[NSTabViewItem alloc] initWithIdentifier:@"incompatible"];
-    t3.label = @"Incompatible";
+    t3.label = [loc translate:@"Incompatible"];
     t3.view = [[NSView alloc] init];
     [_tabView addTabViewItem:t3];
 
     [cv addSubview:_tabView];
 
     // ── Search row ──────────────────────────────────────────────────
-    NSTextField *searchLabel = [NSTextField labelWithString:@"Search:"];
+    NSTextField *searchLabel = [NSTextField labelWithString:[loc translate:@"Search:"]];
     searchLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [cv addSubview:searchLabel];
 
     _searchField = [[NSSearchField alloc] initWithFrame:NSZeroRect];
     _searchField.translatesAutoresizingMaskIntoConstraints = NO;
-    _searchField.placeholderString = @"Filter plugins…";
+    _searchField.placeholderString = [loc translate:@"Filter plugins…"];
     _searchField.target = self;
     _searchField.action = @selector(searchChanged:);
     // Also fire on every keystroke via delegate
     _searchField.delegate = (id<NSTextFieldDelegate>)self;
     [cv addSubview:_searchField];
 
-    _actionButton = [NSButton buttonWithTitle:@"Install" target:self action:@selector(actionPressed:)];
+    _actionButton = [NSButton buttonWithTitle:[loc translate:@"Install"] target:self action:@selector(actionPressed:)];
     _actionButton.translatesAutoresizingMaskIntoConstraints = NO;
     _actionButton.bezelStyle = NSBezelStyleRounded;
     [cv addSubview:_actionButton];
@@ -204,13 +207,13 @@ static NSString *const kPluginListVersion = @"0.1.0";
     [_tableView addTableColumn:checkCol];
 
     NSTableColumn *nameCol = [[NSTableColumn alloc] initWithIdentifier:@"plugin"];
-    nameCol.title = @"Plugin";
+    nameCol.title = [loc translate:@"Plugin"];
     nameCol.width = 280;
     nameCol.minWidth = 150;
     [_tableView addTableColumn:nameCol];
 
     NSTableColumn *verCol = [[NSTableColumn alloc] initWithIdentifier:@"version"];
-    verCol.title = @"Version";
+    verCol.title = [loc translate:@"Version"];
     verCol.width = 100;
     verCol.minWidth = 60;
     [_tableView addTableColumn:verCol];
@@ -240,12 +243,12 @@ static NSString *const kPluginListVersion = @"0.1.0";
     _versionLabel.textColor = NSColor.secondaryLabelColor;
     [cv addSubview:_versionLabel];
 
-    _repoLink = [NSButton buttonWithTitle:@"Plugin list repository"
+    _repoLink = [NSButton buttonWithTitle:[loc translate:@"Plugin list repository"]
                                    target:self action:@selector(openRepoLink:)];
     _repoLink.translatesAutoresizingMaskIntoConstraints = NO;
     _repoLink.bordered = NO;
     NSMutableAttributedString *linkStr = [[NSMutableAttributedString alloc]
-        initWithString:@"Plugin list repository"
+        initWithString:[loc translate:@"Plugin list repository"]
             attributes:@{
                 NSForegroundColorAttributeName: NSColor.linkColor,
                 NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
@@ -255,7 +258,7 @@ static NSString *const kPluginListVersion = @"0.1.0";
     [cv addSubview:_repoLink];
 
     // ── Close button ────────────────────────────────────────────────
-    _closeButton = [NSButton buttonWithTitle:@"Close" target:self action:@selector(closePressed:)];
+    _closeButton = [NSButton buttonWithTitle:[loc translate:@"Close"] target:self action:@selector(closePressed:)];
     _closeButton.translatesAutoresizingMaskIntoConstraints = NO;
     [_closeButton setKeyEquivalent:@"\033"];
     [cv addSubview:_closeButton];
@@ -480,9 +483,10 @@ static NSString *const kPluginListVersion = @"0.1.0";
     [_checkedPlugins removeAllObjects];
     [_filteredList removeAllObjects];
 
+    NppLocalizer *loc = [NppLocalizer shared];
     switch (_currentTab) {
         case PluginAdminTabAvailable:
-            _actionButton.title = @"Install";
+            _actionButton.title = [loc translate:@"Install"];
             _actionButton.hidden = NO;
             for (NppPluginEntry *pe in _allAvailable) {
                 if (!pe.isInstalled)
@@ -491,13 +495,13 @@ static NSString *const kPluginListVersion = @"0.1.0";
             break;
 
         case PluginAdminTabUpdates:
-            _actionButton.title = @"Update";
+            _actionButton.title = [loc translate:@"Update"];
             _actionButton.hidden = NO;
             // No updates mechanism yet — empty
             break;
 
         case PluginAdminTabInstalled:
-            _actionButton.title = @"Remove";
+            _actionButton.title = [loc translate:@"Remove"];
             _actionButton.hidden = NO;
             [_filteredList addObjectsFromArray:_installed];
             break;
@@ -684,14 +688,16 @@ static NSString *const kPluginListVersion = @"0.1.0";
     for (NppPluginEntry *pe in toInstall)
         [names addObject:pe.displayName];
 
+    NppLocalizer *loc = [NppLocalizer shared];
     NSAlert *confirm = [[NSAlert alloc] init];
-    confirm.messageText = @"Install Plugins";
+    confirm.messageText = [loc translate:@"Install Plugins"];
     confirm.informativeText = [NSString stringWithFormat:
-        @"Install the following plugins?\n\n%@\n\n"
-        @"Restart the application for changes to take effect.",
-        [names componentsJoinedByString:@"\n"]];
-    [confirm addButtonWithTitle:@"Install"];
-    [confirm addButtonWithTitle:@"Cancel"];
+        @"%@\n\n%@\n\n%@",
+        [loc translate:@"Install the following plugins?"],
+        [names componentsJoinedByString:@"\n"],
+        [loc translate:@"Restart the application for changes to take effect."]];
+    [confirm addButtonWithTitle:[loc translate:@"Install"]];
+    [confirm addButtonWithTitle:[loc translate:@"Cancel"]];
 
     [confirm beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse resp) {
         if (resp != NSAlertFirstButtonReturn) return;
@@ -711,9 +717,10 @@ static NSString *const kPluginListVersion = @"0.1.0";
                 pe.isInstalled = [inst containsObject:pe.folderName];
             [self refreshForCurrentTab];
 
+            NppLocalizer *loc = [NppLocalizer shared];
             NSAlert *done = [[NSAlert alloc] init];
-            done.messageText = @"Installation Complete";
-            done.informativeText = @"Restart the application to load the installed plugins.";
+            done.messageText = [loc translate:@"Installation Complete"];
+            done.informativeText = [loc translate:@"Restart the application to load the installed plugins."];
             [done beginSheetModalForWindow:self.window completionHandler:nil];
         });
         return;
@@ -825,7 +832,7 @@ static NSString *const kPluginListVersion = @"0.1.0";
 
 - (void)showInstallError:(NSString *)pluginName detail:(NSString *)detail {
     NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = [NSString stringWithFormat:@"Failed to Install %@", pluginName];
+    alert.messageText = [NSString stringWithFormat:@"%@ %@", [[NppLocalizer shared] translate:@"Failed to Install"], pluginName];
     alert.informativeText = detail;
     alert.alertStyle = NSAlertStyleWarning;
     [alert beginSheetModalForWindow:self.window completionHandler:nil];
@@ -833,13 +840,16 @@ static NSString *const kPluginListVersion = @"0.1.0";
 
 - (void)removeCheckedPlugins {
     NSString *names = [[_checkedPlugins allObjects] componentsJoinedByString:@", "];
+    NppLocalizer *loc = [NppLocalizer shared];
     NSAlert *confirm = [[NSAlert alloc] init];
-    confirm.messageText = @"Remove Plugins";
+    confirm.messageText = [loc translate:@"Remove Plugins"];
     confirm.informativeText = [NSString stringWithFormat:
-        @"Remove the following plugins?\n\n%@\n\nThis will delete the plugin files. "
-        @"Restart the application for changes to take effect.", names];
-    [confirm addButtonWithTitle:@"Remove"];
-    [confirm addButtonWithTitle:@"Cancel"];
+        @"%@\n\n%@\n\n%@ %@",
+        [loc translate:@"Remove the following plugins?"], names,
+        [loc translate:@"This will delete the plugin files."],
+        [loc translate:@"Restart the application for changes to take effect."]];
+    [confirm addButtonWithTitle:[loc translate:@"Remove"]];
+    [confirm addButtonWithTitle:[loc translate:@"Cancel"]];
     confirm.alertStyle = NSAlertStyleWarning;
 
     [confirm beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse resp) {

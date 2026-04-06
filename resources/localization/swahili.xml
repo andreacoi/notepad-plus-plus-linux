@@ -1,0 +1,2142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Swahili (Kiswahili) language file for Notepad++ macOS
+    Based on English template - community translations welcome
+    Created: 2026-04-04
+-->
+<NotepadPlus>
+	<Native-Langue name="Kiswahili" filename="swahili.xml" version="8.9">
+		<Menu>
+			<Main>
+				<!-- Main Menu Entries -->
+				<Entries>
+					<Item menuId="file" name="Faili"/>
+					<Item menuId="edit" name="Hariri"/>
+					<Item menuId="search" name="Tafuta"/>
+					<Item menuId="view" name="Tazama"/>
+					<Item menuId="encoding" name="Usimbaji"/>
+					<Item menuId="language" name="Lugha"/>
+					<Item menuId="settings" name="Mipangilio"/>
+					<Item menuId="tools" name="Zana"/>
+					<Item menuId="macro" name="Jumla"/>
+					<Item menuId="run" name="Endesha"/>
+					<Item menuId="Plugins" name="Programu-jalizi"/>
+					<Item menuId="Window" name="Dirisha"/>
+				</Entries>
+				<!-- Sub Menu Entries -->
+				<SubEntries>
+					<Item subMenuId="file-openFolder" name="Fungua Folda Yenye"/>
+					<Item subMenuId="file-closeMore" name="Funga Hati Nyingi"/>
+					<Item subMenuId="file-recentFiles" name="Faili za Hivi Punde"/>
+					<Item subMenuId="edit-insert" name="Ingiza"/>
+					<Item subMenuId="edit-copyToClipboard" name="Nakili kwenye Ubao wa kunakili"/>
+					<Item subMenuId="edit-indent" name="Sogeza"/>
+					<Item subMenuId="edit-convertCaseTo" name="Badilisha Kesi kuwa"/>
+					<Item subMenuId="edit-lineOperations" name="Uendeshaji wa Laini"/>
+					<Item subMenuId="edit-comment" name="Maoni/Toa maoni"/>
+					<Item subMenuId="edit-autoCompletion" name="Ukamilishaji-Otomatiki"/>
+					<Item subMenuId="edit-eolConversion" name="Uongofu wa EOL"/>
+					<Item subMenuId="edit-blankOperations" name="Operesheni Tupu"/>
+					<Item subMenuId="edit-pasteSpecial" name="Bandika Maalum"/>
+					<Item subMenuId="edit-onSelection" name="Kwenye Uchaguzi"/>
+					<Item subMenuId="edit-multiSelectALL" name="Chagua nyingi ZOTE"/>
+					<Item subMenuId="edit-multiSelectNext" name="Chagua mara nyingi Inayofuata"/>
+					<Item subMenuId="edit-readonlyInNotepad++" name="Soma-Pekee katika Notepad++"/>
+					<Item subMenuId="search-changeHistory" name="Badilisha Historia"/>
+					<Item subMenuId="search-markAll" name="Mtindo wa Matukio Yote ya Tokeni"/>
+					<Item subMenuId="search-markOne" name="Style One Token"/>
+					<Item subMenuId="search-unmarkAll" name="Futa Mtindo"/>
+					<Item subMenuId="search-jumpUp" name="Rukia Juu"/>
+					<Item subMenuId="search-jumpDown" name="Rukia Chini"/>
+					<Item subMenuId="search-copyStyledText" name="Nakili Maandishi Yenye Mtindo"/>
+					<Item subMenuId="search-bookmark" name="Alamisho"/>
+					<Item subMenuId="view-currentFileIn" name="Tazama Faili ya Sasa katika"/>
+					<Item subMenuId="view-showSymbol" name="Onyesha Alama"/>
+					<Item subMenuId="view-zoom" name="Kuza"/>
+					<Item subMenuId="view-moveCloneDocument" name="Hamisha/Funga Hati ya Sasa"/>
+					<Item subMenuId="view-tab" name="Kichupo"/>
+					<Item subMenuId="view-collapseLevel" name="Kiwango cha Kunja"/>
+					<Item subMenuId="view-uncollapseLevel" name="Fungua Kiwango"/>
+					<Item subMenuId="view-project" name="Mradi"/>
+					<Item subMenuId="encoding-characterSets" name="Seti ya Wahusika"/>
+					<Item subMenuId="encoding-arabic" name="Kiarabu"/>
+					<Item subMenuId="encoding-baltic" name="Baltiki"/>
+					<Item subMenuId="encoding-celtic" name="Celtic"/>
+					<Item subMenuId="encoding-cyrillic" name="Kisiriliki"/>
+					<Item subMenuId="encoding-centralEuropean" name="Ulaya ya Kati"/>
+					<Item subMenuId="encoding-chinese" name="Kichina"/>
+					<Item subMenuId="encoding-easternEuropean" name="Ulaya Mashariki"/>
+					<Item subMenuId="encoding-greek" name="Kigiriki"/>
+					<Item subMenuId="encoding-hebrew" name="Kiebrania"/>
+					<Item subMenuId="encoding-japanese" name="Kijapani"/>
+					<Item subMenuId="encoding-korean" name="Kikorea"/>
+					<Item subMenuId="encoding-northEuropean" name="Ulaya Kaskazini"/>
+					<Item subMenuId="encoding-thai" name="Thai"/>
+					<Item subMenuId="encoding-turkish" name="Kituruki"/>
+					<Item subMenuId="encoding-westernEuropean" name="Ulaya Magharibi"/>
+					<Item subMenuId="encoding-vietnamese" name="Kivietinamu"/>
+					<Item subMenuId="language-userDefinedLanguage" name="Lugha Iliyobainishwa na Mtumiaji"/>
+					<Item subMenuId="settings-import" name="Ingiza"/>
+					<Item subMenuId="tools-md5" name="MD5"/>
+					<Item subMenuId="tools-sha1" name="SHA-1"/>
+					<Item subMenuId="tools-sha256" name="SHA-256"/>
+					<Item subMenuId="tools-sha512" name="SHA-512"/>
+					<Item subMenuId="window-sortby" name="Panga Kwa"/>
+				</SubEntries>
+
+				<!-- all menu item -->
+				<Commands>
+					<Item id="41001" name="Mpya"/>
+					<Item id="41002" name="Fungua..."/>
+					<Item id="41019" name="Mgunduzi"/>
+					<Item id="41020" name="cmd"/>
+					<Item id="41025" name="Folda kama Nafasi ya Kazi"/>
+					<Item id="41003" name="Funga"/>
+					<Item id="41004" name="Funga Zote"/>
+					<Item id="41005" name="Funga Zote LAKINI Hati ya Sasa"/>
+					<Item id="41026" name="Funga Hati Zote LAKINI Zilizobandikwa"/>
+					<Item id="41009" name="Funga Zote kwa Kushoto"/>
+					<Item id="41018" name="Funga Zote kwa Kulia"/>
+					<Item id="41024" name="Funga Yote Haijabadilika"/>
+					<Item id="41006" name="Hifadhi"/>
+					<Item id="41007" name="Okoa Zote"/>
+					<Item id="41008" name="Hifadhi Kama..."/>
+					<Item id="41010" name="Chapisha..."/>
+					<Item id="1001" name="Chapisha Sasa"/>
+					<Item id="41011" name="Ondoka"/>
+					<Item id="41012" name="Pakia Kipindi..."/>
+					<Item id="41013" name="Hifadhi Kipindi..."/>
+					<Item id="41014" name="Pakia upya kutoka kwa Diski"/>
+					<Item id="41015" name="Hifadhi Nakala Kama..."/>
+					<Item id="41016" name="Hamisha hadi kwenye Recycle Bin"/>
+					<Item id="41017" name="Badilisha jina..."/>
+					<Item id="41021" name="Rejesha Faili Iliyofungwa Hivi Karibuni"/>
+					<Item id="41022" name="Fungua Folda kama Nafasi ya Kazi..."/>
+					<Item id="41023" name="Fungua katika Kitazamaji Chaguomsingi"/>
+					<Item id="42001" name="Kata"/>
+					<Item id="42002" name="Nakili"/>
+					<Item id="42003" name="Tendua"/>
+					<Item id="42004" name="Rudia"/>
+					<Item id="42005" name="Bandika"/>
+					<Item id="42006" name="Futa"/>
+					<Item id="42007" name="Chagua Zote"/>
+					<Item id="42020" name="Anza/Maliza Chagua"/>
+					<Item id="42089" name="Anza/Maliza Chagua katika Hali ya Safu"/>
+					<Item id="42084" name="Muda wa Tarehe (mfupi)"/>
+					<Item id="42085" name="Muda wa Tarehe (nde)"/>
+					<Item id="42086" name="Saa ya Tarehe (iliyobinafsishwa)"/>
+					<Item id="42008" name="Ongeza Ujongezaji wa Mstari"/>
+					<Item id="42009" name="Punguza Ujongezaji wa Mstari"/>
+					<Item id="42010" name="Nakala ya Mstari wa Sasa"/>
+					<Item id="42079" name="Ondoa Nakala za Mistari"/>
+					<Item id="42077" name="Ondoa Laini Nakala Zinazofuatana"/>
+					<Item id="42012" name="Gawanya Mistari"/>
+					<Item id="42013" name="Jiunge na Mistari"/>
+					<Item id="42014" name="Sogeza Juu Mstari wa Sasa"/>
+					<Item id="42015" name="Sogeza Chini Mstari wa Sasa"/>
+					<Item id="42059" name="Panga Mistari Inayopanda Kileksikografia"/>
+					<Item id="42060" name="Panga Mistari Inayoshuka Kileksikografia"/>
+					<Item id="42080" name="Panga Mistari Lex.Kesi ya Kupanda Kupuuza"/>
+					<Item id="42081" name="Panga Mistari Lex.Kesi ya Kushuka ya Kupuuza"/>
+					<Item id="42100" name="Panga Mistari Kwa Agizo la Lugha Inapanda"/>
+					<Item id="42101" name="Panga Mistari Katika Agizo la Lugha Inashuka"/>
+					<Item id="42104" name="Panga Mistari Kwa Kupanda Urefu"/>
+					<Item id="42105" name="Panga Mistari Kwa Kushuka kwa Urefu"/>
+					<Item id="42061" name="Panga Mistari Kama Nambari Zinazopanda"/>
+					<Item id="42062" name="Panga Mistari Kama Nambari Zikishuka"/>
+					<Item id="42063" name="Panga Mistari Kama Desimali (Koma) Inapanda"/>
+					<Item id="42064" name="Panga Mistari Kama Desimali (Koma) Ikishuka"/>
+					<Item id="42065" name="Panga Mistari Kama Desimali (Kitone) Inapanda"/>
+					<Item id="42066" name="Panga Mistari Kama Desimali (Kitone) Ikishuka"/>
+					<Item id="42083" name="Agizo la Mstari wa Nyuma"/>
+					<Item id="42078" name="Badili Agizo la Laini"/>
+					<Item id="42016" name="KUBWA"/>
+					<Item id="42017" name="herufi ndogo"/>
+					<Item id="42067" name="Kesi Sahihi"/>
+					<Item id="42068" name="Kesi Sahihi (mchanganyiko)"/>
+					<Item id="42069" name="Kesi ya sentensi"/>
+					<Item id="42070" name="Kesi ya sentensi (mchanganyiko)"/>
+					<Item id="42071" name="KESI ya inVERT"/>
+					<Item id="42072" name="RandDOm Kesi"/>
+					<Item id="42073" name="Fungua Faili"/>
+					<Item id="42074" name="Fungua Folda Yenye katika Kivinjari"/>
+					<Item id="42106" name="Uteuzi wa Kurekebisha █ (Shift: ●)"/>
+					<Item id="42075" name="Tafuta kwenye Mtandao"/>
+					<Item id="42076" name="Badilisha Injini ya Kutafuta..."/>
+					<Item id="42090" name="Puuza Kesi Neno Lote"/>
+					<Item id="42091" name="Kesi ya Kulingana Pekee"/>
+					<Item id="42092" name="Linganisha Neno Lote Pekee"/>
+					<Item id="42093" name="Kesi ya Kulinganisha Neno zima"/>
+					<Item id="42094" name="Puuza Kesi Neno Lote"/>
+					<Item id="42095" name="Kesi ya Kulingana Pekee"/>
+					<Item id="42096" name="Linganisha Neno Lote Pekee"/>
+					<Item id="42097" name="Kesi ya Kulinganisha Neno zima"/>
+					<Item id="42098" name="Tendua Uchaguzi Kadhaa Ulioongezwa Hivi Karibuni"/>
+					<Item id="42099" name="Ruka Ya Sasa Nenda kwa Chagua Multi-Ifuatayo"/>
+					<Item id="42018" name="Anza Kurekodi"/>
+					<Item id="42019" name="Acha Kurekodi"/>
+					<Item id="42021" name="Uchezaji"/>
+					<Item id="42022" name="Geuza Maoni ya Mstari Mmoja"/>
+					<Item id="42023" name="Zuia Maoni"/>
+					<Item id="42047" name="Zuia Kutoa maoni"/>
+					<Item id="42024" name="Punguza Nafasi ya Kufuatilia"/>
+					<Item id="42042" name="Punguza Nafasi ya Kuongoza"/>
+					<Item id="42043" name="Punguza Nafasi Inayoongoza na Inayofuata"/>
+					<Item id="42044" name="EOL hadi Nafasi"/>
+					<Item id="42045" name="Punguza zote mbili na EOL hadi Nafasi"/>
+					<Item id="42046" name="TAB hadi Nafasi"/>
+					<Item id="42054" name="Nafasi kwa TAB (Zote)"/>
+					<Item id="42053" name="Nafasi kwa TAB (Inayoongoza)"/>
+					<Item id="42038" name="Bandika Maudhui ya HTML"/>
+					<Item id="42039" name="Bandika Maudhui ya RTF"/>
+					<Item id="42048" name="Nakili Maudhui ya Binari"/>
+					<Item id="42049" name="Kata Maudhui ya Nambari"/>
+					<Item id="42050" name="Bandika Maudhui ya Nambari"/>
+					<Item id="42082" name="Nakili kiungo"/>
+					<Item id="42037" name="Hali ya Safu..."/>
+					<Item id="42034" name="Mhariri wa Safu..."/>
+					<Item id="42051" name="Jopo la Tabia"/>
+					<Item id="42052" name="Historia ya Ubao wa kunakili"/>
+					<Item id="42025" name="Okoa Macro Iliyorekodiwa Hivi Sasa..."/>
+					<Item id="42026" name="Mwelekeo wa Maandishi RTL"/>
+					<Item id="42027" name="Mwelekeo wa Maandishi LTR"/>
+					<Item id="42028" name="Soma-Pekee kwenye Hati ya Sasa"/>
+					<Item id="42102" name="Kusoma-Pekee kwa Hati Zote"/>
+					<Item id="42103" name="Futa Kusoma Pekee kwa Hati Zote"/>
+					<Item id="42029" name="Nakili Njia ya Sasa ya Faili"/>
+					<Item id="42030" name="Nakili Jina la Faili la Sasa"/>
+					<Item id="42031" name="Nakili Dir ya Sasa.Njia"/>
+					<Item id="42087" name="Nakili Majina Yote ya Faili"/>
+					<Item id="42088" name="Nakili Njia Zote za Faili"/>
+					<Item id="42032" name="Endesha Ukubwa Mara Nyingi..."/>
+					<Item id="42033" name="Sifa ya Kusoma Pekee katika Windows"/>
+					<Item id="42035" name="Maoni ya Mstari Mmoja"/>
+					<Item id="42036" name="Single Line Uncomment"/>
+					<Item id="42055" name="Ondoa Mistari Tupu"/>
+					<Item id="42056" name="Ondoa Mistari Tupu (Yenye vibambo tupu)"/>
+					<Item id="42057" name="Ingiza Mstari Tupu Juu ya Sasa"/>
+					<Item id="42058" name="Ingiza Laini Tupu Chini ya Sasa"/>
+					<Item id="43001" name="Tafuta..."/>
+					<Item id="43002" name="Tafuta Inayofuata"/>
+					<Item id="43003" name="Badilisha..."/>
+					<Item id="43004" name="Nenda kwa..."/>
+					<Item id="43005" name="Geuza Alamisho"/>
+					<Item id="43006" name="Alamisho Inayofuata"/>
+					<Item id="43007" name="Alamisho Iliyotangulia"/>
+					<Item id="43008" name="Futa Alamisho Zote"/>
+					<Item id="43018" name="Kata Mistari Zilizoalamishwa"/>
+					<Item id="43019" name="Nakili Mistari Zilizoalamishwa"/>
+					<Item id="43020" name="Bandika kwa (Badilisha) Mistari Zilizoalamishwa"/>
+					<Item id="43021" name="Ondoa Mistari Zilizoalamishwa"/>
+					<Item id="43051" name="Ondoa Mistari Isiyoalamishwa"/>
+					<Item id="43050" name="Alamisho Inverse"/>
+					<Item id="43052" name="Tafuta wahusika katika safu..."/>
+					<Item id="43053" name="Chagua Zote Kati ya {} [] au ()"/>
+					<Item id="43009" name="Nenda kwenye Brace Inayolingana"/>
+					<Item id="43010" name="Tafuta Iliyotangulia"/>
+					<Item id="43011" name="Utafutaji wa Kuongezeka"/>
+					<Item id="43013" name="Pata katika Faili"/>
+					<Item id="43014" name="Tafuta (Tete) Inayofuata"/>
+					<Item id="43015" name="Tafuta (Tete) Iliyotangulia"/>
+					<Item id="43022" name="Kwa kutumia Mtindo wa Kwanza"/>
+					<Item id="43023" name="Futa Mtindo wa Kwanza"/>
+					<Item id="43024" name="Kwa kutumia Mtindo wa Pili"/>
+					<Item id="43025" name="Futa Mtindo wa Pili"/>
+					<Item id="43026" name="Kwa kutumia Mtindo wa 3"/>
+					<Item id="43027" name="Futa Mtindo wa 3"/>
+					<Item id="43028" name="Kwa kutumia Mtindo wa 4"/>
+					<Item id="43029" name="Futa Mtindo wa 4"/>
+					<Item id="43030" name="Kwa kutumia Mtindo wa 5"/>
+					<Item id="43031" name="Futa Mtindo wa 5"/>
+					<Item id="43032" name="Futa Mitindo Yote"/>
+					<Item id="43033" name="Mtindo wa 1"/>
+					<Item id="43034" name="Mtindo wa 2"/>
+					<Item id="43035" name="Mtindo wa 3"/>
+					<Item id="43036" name="Mtindo wa 4"/>
+					<Item id="43037" name="Mtindo wa 5"/>
+					<Item id="43038" name="Tafuta Mtindo wa Alama"/>
+					<Item id="43039" name="Mtindo wa 1"/>
+					<Item id="43040" name="Mtindo wa 2"/>
+					<Item id="43041" name="Mtindo wa 3"/>
+					<Item id="43042" name="Mtindo wa 4"/>
+					<Item id="43043" name="Mtindo wa 5"/>
+					<Item id="43044" name="Tafuta Mtindo wa Alama"/>
+					<Item id="43055" name="Mtindo wa 1"/>
+					<Item id="43056" name="Mtindo wa 2"/>
+					<Item id="43057" name="Mtindo wa 3"/>
+					<Item id="43058" name="Mtindo wa 4"/>
+					<Item id="43059" name="Mtindo wa 5"/>
+					<Item id="43060" name="Mitindo Yote"/>
+					<Item id="43061" name="Tafuta Mtindo wa Alama"/>
+					<Item id="43062" name="Kwa kutumia Mtindo wa Kwanza"/>
+					<Item id="43063" name="Kwa kutumia Mtindo wa Pili"/>
+					<Item id="43064" name="Kwa kutumia Mtindo wa 3"/>
+					<Item id="43065" name="Kwa kutumia Mtindo wa 4"/>
+					<Item id="43066" name="Kwa kutumia Mtindo wa 5"/>
+					<Item id="43067" name="Nenda kwa Change Next"/>
+					<Item id="43068" name="Nenda kwa Mabadiliko Iliyotangulia"/>
+					<Item id="43069" name="Futa Historia ya Mabadiliko"/>
+					<Item id="43045" name="Dirisha la Matokeo ya Utafutaji"/>
+					<Item id="43046" name="Matokeo ya Utafutaji Inayofuata"/>
+					<Item id="43047" name="Matokeo ya Utafutaji ya awali"/>
+					<Item id="43048" name="Chagua na Tafuta Inayofuata"/>
+					<Item id="43049" name="Chagua na Upate Iliyotangulia"/>
+					<Item id="43054" name="Weka alama..."/>
+					<Item id="43501" name="Funga Zilizochaguliwa"/>
+					<Item id="43502" name="Funga Nyingine"/>
+					<Item id="43503" name="Nakili Majina Uliyochaguliwa"/>
+					<Item id="43504" name="Nakili Njia Zilizochaguliwa"/>
+					<Item id="44009" name="Chapisha"/>
+					<Item id="44010" name="Kunja Zote"/>
+					<Item id="44011" name="Hali Isiyo na Kuvuruga"/>
+					<Item id="44019" name="Onyesha Wahusika Wote"/>
+					<Item id="44020" name="Onyesha Mwongozo wa Kujongea"/>
+					<Item id="44022" name="Ufungaji wa maneno"/>
+					<Item id="44023" name="Vuta (Ctrl+Mouse Wheel Up)"/>
+					<Item id="44024" name="Vuta (Ctrl+Mouse Wheel Down)"/>
+					<Item id="44025" name="Onyesha Nafasi na Kichupo"/>
+					<Item id="44026" name="Onyesha Mwisho wa Mstari"/>
+					<Item id="44029" name="Fungua Zote"/>
+					<Item id="44030" name="Pinda Kiwango cha Sasa"/>
+					<Item id="44031" name="Fungua Kiwango cha Sasa"/>
+					<Item id="44049" name="Muhtasari..."/>
+					<Item id="44080" name="Ramani ya Hati"/>
+					<Item id="44070" name="Orodha ya Hati"/>
+					<Item id="44084" name="Orodha ya Kazi"/>
+					<Item id="44085" name="Folda kama Nafasi ya Kazi"/>
+					<Item id="44086" name="Kichupo cha 1"/>
+					<Item id="44087" name="Kichupo cha 2"/>
+					<Item id="44088" name="Kichupo cha 3"/>
+					<Item id="44089" name="Kichupo cha 4"/>
+					<Item id="44090" name="Kichupo cha 5"/>
+					<Item id="44091" name="Kichupo cha 6"/>
+					<Item id="44092" name="Kichupo cha 7"/>
+					<Item id="44093" name="Kichupo cha 8"/>
+					<Item id="44094" name="Kichupo cha 9"/>
+					<Item id="44116" name="Kichupo cha Kwanza"/>
+					<Item id="44117" name="Kichupo cha Mwisho"/>
+					<Item id="44095" name="Kichupo Kinachofuata"/>
+					<Item id="44096" name="Kichupo Kilichotangulia"/>
+					<Item id="44097" name="Ufuatiliaji (mkia -f)"/>
+					<Item id="44098" name="Sogeza Kichupo Mbele"/>
+					<Item id="44099" name="Sogeza Kichupo Nyuma"/>
+					<Item id="44110" name="Ondoa Rangi"/>
+					<Item id="44111" name="Weka Rangi 1"/>
+					<Item id="44112" name="Weka Rangi 2"/>
+					<Item id="44113" name="Weka Rangi 3"/>
+					<Item id="44114" name="Tumia Rangi 4"/>
+					<Item id="44115" name="Weka Rangi 5"/>
+					<Item id="44130" name="Onyesha Herufi Zisizochapisha"/>
+					<Item id="44131" name="Onyesha Herufi za Kudhibiti Unicode EOL"/>
+					<Item id="44032" name="Geuza Hali ya Skrini Kamili"/>
+					<Item id="44033" name="Rejesha Ukuza Chaguomsingi"/>
+					<Item id="44034" name="Daima Juu"/>
+					<Item id="44035" name="Sawazisha Usogezaji Wima"/>
+					<Item id="44036" name="Sawazisha Usogezaji Mlalo"/>
+					<Item id="44041" name="Onyesha Alama ya Kukunja"/>
+					<Item id="44072" name="Zingatia Mtazamo Mwingine"/>
+					<Item id="44081" name="Jopo la Mradi 1"/>
+					<Item id="44082" name="Paneli ya Mradi 2"/>
+					<Item id="44083" name="Paneli ya Mradi 3"/>
+					<Item id="45001" name="Windows (CR LF)"/>
+					<Item id="45002" name="Unix (LF)"/>
+					<Item id="45003" name="Macintosh (CR)"/>
+					<Item id="45004" name="ANSI"/>
+					<Item id="45005" name="UTF-8-BOM"/>
+					<Item id="45006" name="UTF-16 BE BOM"/>
+					<Item id="45007" name="UTF-16 LE BOM"/>
+					<Item id="45008" name="UTF-8"/>
+					<Item id="45009" name="Badilisha kuwa ANSI"/>
+					<Item id="45010" name="Badilisha hadi UTF-8"/>
+					<Item id="45011" name="Badilisha hadi UTF-8-BOM"/>
+					<Item id="45012" name="Badilisha hadi UTF-16 BE BOM"/>
+					<Item id="45013" name="Badilisha hadi UTF-16 LE BOM"/>
+					<Item id="45060" name="Big5 (Ya Jadi)"/>
+					<Item id="45061" name="GB2312 (Kilichorahisishwa)"/>
+					<Item id="45054" name="OEM 861: Kiaislandi"/>
+					<Item id="45057" name="OEM 865: Nordic"/>
+					<Item id="45053" name="OEM 860: Kireno"/>
+					<Item id="45056" name="OEM 863: Kifaransa"/>
+					<Item id="10001" name="Nenda kwa Mwonekano Mwingine"/>
+					<Item id="10002" name="Karibu na Mwonekano Mwingine"/>
+					<Item id="10003" name="Nenda kwa Tukio Mpya"/>
+					<Item id="10004" name="Fungua katika Tukio Mpya"/>
+					<Item id="10005" name="Hamisha hadi Anza"/>
+					<Item id="10006" name="Sogeza hadi Mwisho"/>
+					<Item id="46001" name="Kisanidi cha Mtindo..."/>
+					<Item id="46016" name="Hakuna (Maandishi ya Kawaida)"/>
+					<Item id="46250" name="Bainisha lugha yako..."/>
+					<Item id="46300" name="Fungua folda ya Lugha Iliyobainishwa na Mtumiaji..."/>
+					<Item id="46301" name="Mkusanyiko wa Lugha Zilizofafanuliwa za Mtumiaji Notepad++"/>
+					<Item id="46180" name="Imefafanuliwa na Mtumiaji"/>
+					<Item id="47000" name="Kuhusu Notepad++"/>
+					<Item id="47010" name="Hoja za Mstari wa Amri..."/>
+					<Item id="47001" name="Notepad++ Nyumbani"/>
+					<Item id="47002" name="Ukurasa wa Mradi wa Notepad++"/>
+					<Item id="47003" name="Notepad++ Mwongozo wa Mtumiaji wa Mtandao"/>
+					<Item id="47004" name="Jumuiya ya Notepad++ (Jukwaa)"/>
+					<Item id="47012" name="Maelezo ya Utatuzi..."/>
+					<Item id="47005" name="Pata Programu-jalizi Zaidi"/>
+					<Item id="47006" name="Sasisha Notepad++"/>
+					<Item id="47009" name="Weka Wakala wa Kisasishaji..."/>
+					<Item id="48005" name="Leta programu-jalizi..."/>
+					<Item id="48006" name="Leta mandhari ya mtindo..."/>
+					<Item id="48018" name="Hariri Muktadha Ibukizi"/>
+					<Item id="48009" name="Mchora ramani wa njia ya mkato..."/>
+					<Item id="48011" name="Mapendeleo..."/>
+					<Item id="48014" name="Fungua Folda ya Programu-jalizi..."/>
+					<Item id="48015" name="Msimamizi wa programu-jalizi..."/>
+					<Item id="48501" name="Tengeneza..."/>
+					<Item id="48502" name="Tengeneza kutoka kwa faili..."/>
+					<Item id="48503" name="Tengeneza kutoka kwa uteuzi hadi ubao wa kunakili"/>
+					<Item id="48504" name="Tengeneza..."/>
+					<Item id="48505" name="Tengeneza kutoka kwa faili..."/>
+					<Item id="48506" name="Tengeneza kutoka kwa uteuzi hadi ubao wa kunakili"/>
+					<Item id="48507" name="Tengeneza..."/>
+					<Item id="48508" name="Tengeneza kutoka kwa faili..."/>
+					<Item id="48509" name="Tengeneza kutoka kwa uteuzi hadi ubao wa kunakili"/>
+					<Item id="48510" name="Tengeneza..."/>
+					<Item id="48511" name="Tengeneza kutoka kwa faili..."/>
+					<Item id="48512" name="Tengeneza kutoka kwa uteuzi hadi ubao wa kunakili"/>
+					<Item id="49000" name="Endesha..."/>
+
+					<Item id="50000" name="Kukamilika kwa Kazi"/>
+					<Item id="50001" name="Ukamilishaji wa Neno"/>
+					<Item id="50002" name="Kidokezo cha Vigezo vya Kazi"/>
+					<Item id="50010" name="Vigezo vya Utendaji Kidokezo Iliyotangulia"/>
+					<Item id="50011" name="Vigezo vya Kazi Kidokezo Kinachofuata"/>
+					<Item id="50005" name="Geuza rekodi ya jumla"/>
+					<Item id="50006" name="Kukamilika kwa Njia"/>
+					<Item id="44042" name="Ficha Mistari"/>
+					<Item id="42040" name="Fungua Faili Zote za Hivi Punde"/>
+					<Item id="42041" name="Orodha ya Faili za Hivi Karibuni tupu"/>
+					<Item id="48016" name="Rekebisha Njia ya mkato/Futa Macro..."/>
+					<Item id="48017" name="Rekebisha Njia ya mkato/Futa Amri..."/>
+
+					<Item id="11001" name="Windows..."/>
+					<Item id="11002" name="Jina A hadi Z"/>
+					<Item id="11003" name="Taja Z hadi A"/>
+					<Item id="11004" name="Njia A hadi Z"/>
+					<Item id="11005" name="Njia ya Z hadi A"/>
+					<Item id="11006" name="Andika A hadi Z"/>
+					<Item id="11007" name="Andika Z hadi A"/>
+					<Item id="11008" name="Urefu wa Maudhui Unapanda"/>
+					<Item id="11009" name="Urefu wa Maudhui Unashuka"/>
+					<Item id="11010" name="Muda Uliorekebishwa wa Kupanda"/>
+					<Item id="11011" name="Wakati Uliorekebishwa Unashuka"/>
+				</Commands>
+			</Main>
+			<TabBar>
+				<Item CMDID="41003" name="Funga"/>
+				<Item CMDID="0" name="Funga Vichupo Vingi"/>
+				<Item CMDID="41005" name="Funga Yote LAKINI Hii"/>
+				<Item CMDID="41026" name="Funga Zote LAKINI Imebandikwa"/>
+				<Item CMDID="41009" name="Funga Zote Kushoto"/>
+				<Item CMDID="41018" name="Funga Zote kwa Kulia"/>
+				<Item CMDID="41024" name="Funga Yote Haijabadilika"/>
+				<Item CMDID="44048" name="Bandika Kichupo" alternativeName="Bandua Kichupo"/>
+				<Item CMDID="41006" name="Hifadhi"/>
+				<Item CMDID="41008" name="Hifadhi Kama..."/>
+				<Item CMDID="1" name="Fungua kwenye"/>
+				<Item CMDID="41019" name="Fungua Folda Yenye katika Kivinjari"/>
+				<Item CMDID="41020" name="Fungua Folda Yenye katika cmd"/>
+				<Item CMDID="41025" name="Fungua Folda Yenye kama Nafasi ya Kazi"/>
+				<Item CMDID="41023" name="Fungua katika Kitazamaji Chaguomsingi"/>
+				<Item CMDID="41017" name="Badilisha jina..."/>
+				<Item CMDID="41016" name="Hamisha hadi kwenye Recycle Bin"/>
+				<Item CMDID="41014" name="Pakia upya"/>
+				<Item CMDID="41010" name="Chapisha..."/>
+				<Item CMDID="42028" name="Soma-Pekee katika Notepad++"/>
+				<Item CMDID="42033" name="Sifa ya Kusoma Pekee katika Windows"/>
+				<Item CMDID="2" name="Nakili kwenye Ubao wa kunakili"/>
+				<Item CMDID="42029" name="Nakili Njia Kamili ya Faili"/>
+				<Item CMDID="42030" name="Nakili Jina la Faili"/>
+				<Item CMDID="42031" name="Nakili Dir ya Sasa.Njia"/>
+				<Item CMDID="3" name="Hamisha Hati"/>
+				<Item CMDID="10005" name="Hamisha hadi Anza"/>
+				<Item CMDID="10006" name="Sogeza hadi Mwisho"/>
+				<Item CMDID="10001" name="Nenda kwa Mwonekano Mwingine"/>
+				<Item CMDID="10002" name="Karibu na Mwonekano Mwingine"/>
+				<Item CMDID="10003" name="Nenda kwa Tukio Mpya"/>
+				<Item CMDID="10004" name="Fungua katika Tukio Mpya"/>
+				<Item CMDID="4" name="Weka Rangi kwenye Kichupo"/>
+				<Item CMDID="44111" name="Weka Rangi 1"/>
+				<Item CMDID="44112" name="Weka Rangi 2"/>
+				<Item CMDID="44113" name="Weka Rangi 3"/>
+				<Item CMDID="44114" name="Tumia Rangi 4"/>
+				<Item CMDID="44115" name="Weka Rangi 5"/>
+				<Item CMDID="44110" name="Ondoa Rangi"/>
+			</TabBar>
+			<TrayIcon>
+				<Item id="43101" name="Washa"/>
+				<Item id="43102" name="Mpya"/>
+				<Item id="43103" name="Mpya na Bandika"/>
+				<Item id="43104" name="Fungua..."/>
+				<Item id="43013" name="Tafuta katika Faili..."/>
+				<Item id="43105" name="Funga Aikoni ya Tray"/>
+			</TrayIcon>
+		</Menu>
+
+		<Dialog>
+			<Find title="" titleFind="Tafuta" titleReplace="Badilisha" titleFindInFiles="Tafuta katika Faili" titleFindInProjects="Tafuta katika Miradi" titleMark="Alama">
+				<Item id="1" name="Tafuta Inayofuata"/>
+				<Item id="1722" name="Mwelekeo wa nyuma"/>
+				<Item id="2" name="Funga"/>
+				<Item id="1620" name="Tafuta nini:"/>
+				<Item id="1603" name="Linganisha neno zima pekee"/>
+				<Item id="1604" name="Kesi ya mechi"/>
+				<Item id="1605" name="Usemi wa kawaida"/>
+				<Item id="1606" name="Funga"/>
+				<Item id="1614" name="Hesabu"/>
+				<Item id="1615" name="Tia Alama Zote"/>
+				<Item id="1616" name="Mstari wa alamisho"/>
+				<Item id="1618" name="Futa kwa kila utafutaji"/>
+				<Item id="1611" name="Badilisha na:"/>
+				<Item id="1608" name="Badilisha"/>
+				<Item id="1609" name="Badilisha Zote"/>
+				<Item id="1687" name="Juu ya kupoteza mwelekeo"/>
+				<Item id="1688" name="Daima"/>
+				<Item id="1632" name="Katika uteuzi"/>
+				<Item id="1633" name="Futa alama zote"/>
+				<Item id="1635" name="Badilisha Zote katika Hati Zote Zilizofunguliwa"/>
+				<Item id="1636" name="Pata Yote katika Hati Zote Zilizofunguliwa"/>
+				<Item id="1654" name="Vichujio:"/>
+				<Item id="1655" name="Saraka:"/>
+				<Item id="1656" name="Pata Wote"/>
+				<Item id="1658" name="Katika folda zote ndogo"/>
+				<Item id="1659" name="Katika folda zilizofichwa"/>
+				<Item id="1624" name="Hali ya utafutaji"/>
+				<Item id="1625" name="Kawaida"/>
+				<Item id="1626" name="Iliyoongezwa (\n, \r, \t, \0, \x...)"/>
+				<Item id="1660" name="Badilisha katika Faili"/>
+				<Item id="1665" name="Badilisha katika Miradi"/>
+				<Item id="1662" name="Paneli ya Mradi 1"/>
+				<Item id="1663" name="Paneli ya Mradi 2"/>
+				<Item id="1664" name="Paneli ya Mradi 3"/>
+				<Item id="1641" name="Pata Yote katika Hati ya Sasa"/>
+				<Item id="1686" name="Uwazi"/>
+				<Item id="1703" name=".inalingana na mstari mpya"/>
+				<Item id="1721" name="▲"/>
+				<Item id="1723" name="▼ Tafuta Inayofuata"/>
+				<Item id="1725" name="Nakili Maandishi Yenye Alama"/>
+				<Menu>
+					<Item id="1726" name="⇅ Badilisha Tafuta na Badilisha"/>
+					<Item id="1727" name="⤵ Nakili kutoka Tafuta hadi Badilisha"/>
+					<Item id="1728" name="⤴ Nakili kutoka kwa Badilisha ili Tafuta"/>
+				</Menu>
+			</Find>
+
+			<IncrementalFind title="">
+				<Item id="1681" name="Tafuta:"/>
+				<Item id="1685" name="Kesi ya mechi"/>
+				<Item id="1690" name="Angazia yote"/>
+			</IncrementalFind>
+
+			<FindCharsInRange title="Tafuta Herufi katika Masafa...">
+				<Item id="2" name="Funga"/>
+				<Item id="2901" name="Herufi zisizo za ASCII (128–255)"/>
+				<Item id="2902" name="Herufi za ASCII (0–127)"/>
+				<Item id="2903" name="Masafa maalum (0–255):"/>
+				<Item id="2906" name="Juu"/>
+				<Item id="2907" name="Chini"/>
+				<Item id="2908" name="Mwelekeo"/>
+				<Item id="2909" name="Funga"/>
+				<Item id="2910" name="Tafuta"/>
+			</FindCharsInRange>
+
+			<GoToLine title="Nenda kwa...">
+				<Item id="2007" name="Mstari"/>
+				<Item id="2008" name="Kukabiliana"/>
+				<Item id="1" name="Nenda"/>
+				<Item id="2" name="Siendi popote"/>
+				<Item id="2004" name="Uko hapa:"/>
+				<Item id="2005" name="Unataka kwenda kwa:"/>
+				<Item id="2006" name="Huwezi kwenda zaidi ya:"/>
+			</GoToLine>
+
+			<Run title="Endesha...">
+				<Item id="1903" name="Mpango wa Kuendesha"/>
+				<Item id="1" name="Endesha"/>
+				<Item id="2" name="Ghairi"/>
+				<Item id="1904" name="Hifadhi..."/>
+			</Run>
+
+			<MD5FromFilesDlg title="Tengeneza muhtasari wa MD5 kutoka kwa faili">
+				<Item id="1922" name="Chagua faili za kutengeneza MD5..."/>
+				<Item id="1924" name="Nakili kwenye Ubao wa kunakili"/>
+				<Item id="2" name="Funga"/>
+			</MD5FromFilesDlg>
+
+			<MD5FromTextDlg title="Tengeneza muhtasari wa MD5">
+				<Item id="1932" name="Chukua kila mstari kama mfuatano tofauti"/>
+				<Item id="1934" name="Nakili kwenye Ubao wa kunakili"/>
+				<Item id="2" name="Funga"/>
+			</MD5FromTextDlg>
+
+			<SHA256FromFilesDlg title="Tengeneza muhtasari wa SHA-256 kutoka faili">
+				<Item id="1922" name="Chagua faili za kutengeneza SHA-256..."/>
+				<Item id="1924" name="Nakili kwenye Ubao wa kunakili"/>
+				<Item id="2" name="Funga"/>
+			</SHA256FromFilesDlg>
+
+			<SHA256FromTextDlg title="Tengeneza muhtasari wa SHA-256">
+				<Item id="1932" name="Tibu kila mstari kama kamba tofauti"/>
+				<Item id="1934" name="Nakili kwenye Ubao wa kunakili"/>
+				<Item id="2" name="Funga"/>
+			</SHA256FromTextDlg>
+
+			<SHA1FromFilesDlg title="Tengeneza muhtasari wa SHA-1 kutoka kwa faili">
+				<Item id="1922" name="Chagua faili za kutengeneza SHA-1..."/>
+				<Item id="1924" name="Nakili kwenye Ubao wa kunakili"/>
+				<Item id="2" name="Funga"/>
+			</SHA1FromFilesDlg>
+
+			<SHA1FromTextDlg title="Tengeneza muhtasari wa SHA-1">
+				<Item id="1932" name="Chukua kila mstari kama mfuatano tofauti"/>
+				<Item id="1934" name="Nakili kwenye Ubao wa kunakili"/>
+				<Item id="2" name="Funga"/>
+			</SHA1FromTextDlg>
+
+			<SHA512FromFilesDlg title="Tengeneza muhtasari wa SHA-512 kutoka faili">
+				<Item id="1922" name="Chagua faili za kutengeneza SHA-512..."/>
+				<Item id="1924" name="Nakili kwenye Ubao wa kunakili"/>
+				<Item id="2" name="Funga"/>
+			</SHA512FromFilesDlg>
+
+			<SHA512FromTextDlg title="Tengeneza muhtasari wa SHA-512">
+				<Item id="1932" name="Chukua kila mstari kama mfuatano tofauti"/>
+				<Item id="1934" name="Nakili kwenye Ubao wa kunakili"/>
+				<Item id="2" name="Funga"/>
+			</SHA512FromTextDlg>
+			<PluginsAdminDlg title="Msimamizi wa programu-jalizi" titleAvailable="Available" titleUpdates="Updates" titleInstalled="Installed" titleIncompatible="Incompatible">
+				<ColumnPlugin name="Programu-jalizi"/>
+				<ColumnVersion name="Toleo"/>
+				<Item id="5501" name="Tafuta:"/>
+				<Item id="5503" name="Sakinisha"/>
+				<Item id="5504" name="Sasisha"/>
+				<Item id="5505" name="Ondoa"/>
+				<Item id="5508" name="Inayofuata"/>
+				<Item id="5509" name="Toleo la orodha ya programu-jalizi:"/>
+				<Item id="5511" name="Hazina ya orodha ya programu-jalizi"/>
+				<Item id="2" name="Funga"/>
+			</PluginsAdminDlg>
+
+			<StyleConfig title="Kisanidi cha Mtindo">
+				<Item id="2" name="Ghairi"/>
+				<Item id="2301" name="Hifadhi Funga"/>
+				<Item id="2303" name="Uwazi"/>
+				<Item id="2306" name="Chagua mandhari:"/>
+				<SubDialog>
+					<Item id="2204" name="Nyembamba"/>
+					<Item id="2205" name="Italic"/>
+					<Item id="2206" name="Rangi ya mbele"/>
+					<Item id="2207" name="Rangi ya usuli"/>
+					<Item id="2208" name="Jina la herufi:"/>
+					<Item id="2209" name="Ukubwa wa herufi:"/>
+					<Item id="2211" name="Mtindo:"/>
+					<Item id="2212" name="Mtindo wa Rangi"/>
+					<Item id="2213" name="Mtindo wa herufi"/>
+					<Item id="2214" name="Chaguo-msingi la ziada.:"/>
+					<Item id="2216" name="Mtumiaji wa ziada.:"/>
+					<Item id="2218" name="Piga mstari"/>
+					<Item id="2219" name="Manenomsingi chaguomsingi"/>
+					<Item id="2221" name="Maneno muhimu yaliyofafanuliwa na mtumiaji"/>
+					<Item id="2225" name="Lugha:"/>
+					<Item id="2226" name="Lazimisha rangi ya mandhari ya mbele kwa mitindo yote"/>
+					<Item id="2227" name="Lazimisha rangi ya mandharinyuma kwa mitindo yote"/>
+					<Item id="2228" name="Lazimisha uchaguzi wa fonti kwa mitindo yote"/>
+					<Item id="2229" name="Lazimisha chaguo la ukubwa wa fonti kwa mitindo yote"/>
+					<Item id="2230" name="Lazimisha chaguo la ujasiri kwa mitindo yote"/>
+					<Item id="2231" name="Lazimisha chaguo la italiki kwa mitindo yote"/>
+					<Item id="2232" name="Lazimisha chaguo la kupigia mstari kwa mitindo yote"/>
+					<Item id="2234" name="Nenda kwa mipangilio"/>
+					<!-- Don't translate "Global override" -->
+					<Item id="2235" name="Global override ni nini?"/>
+				</SubDialog>
+			</StyleConfig>
+
+			<ShortcutMapper title="Mchora ramani wa njia ya mkato">
+				<Item id="2602" name="Rekebisha"/>
+				<Item id="2603" name="Futa"/>
+				<Item id="2606" name="Futa"/>
+				<Item id="2607" name="Kichujio:"/>
+				<Item id="1" name="Funga"/>
+				<ColumnName name="Jina"/>
+				<ColumnShortcut name="Njia ya mkato"/>
+				<ColumnCategory name="Kategoria"/>
+				<ColumnPlugin name="Programu-jalizi"/>
+				<MainMenuTab name="Menyu kuu"/>
+				<MacrosTab name="Macro"/>
+				<RunCommandsTab name="Endesha amri"/>
+				<PluginCommandsTab name="Amri za programu-jalizi"/>
+				<ScintillaCommandsTab name="Amri za Scintilla"/>
+				<ConflictInfoOk name="Hakuna mizozo ya njia ya mkato ya kipengee hiki."/>
+				<ConflictInfoEditing name="Hakuna migogoro..."/>
+				<AboutCategory name="Kuhusu"/>
+				<ModifyContextMenu name="Rekebisha"/>
+				<DeleteContextMenu name="Futa"/>
+				<ClearContextMenu name="Futa"/>
+				<MainCommandNames>
+					<Item id="41019" name="Fungua folda iliyo na katika Explorer"/>
+					<Item id="41020" name="Fungua folda iliyo na Amri Prompt"/>
+					<Item id="41021" name="Rejesha Faili Iliyofungwa Hivi Karibuni"/>
+					<Item id="45001" name="Ubadilishaji wa EOL hadi Windows (CR LF)"/>
+					<Item id="45002" name="Kubadilisha EOL kwa Unix (LF)"/>
+					<Item id="45003" name="Ubadilishaji wa EOL hadi Macintosh (CR)"/>
+					<Item id="43022" name="Mtindo wote kwa kutumia mtindo wa 1"/>
+					<Item id="43024" name="Mtindo wote kwa kutumia mtindo wa 2"/>
+					<Item id="43026" name="Mtindo wote kwa kutumia mtindo wa 3"/>
+					<Item id="43028" name="Mtindo wote kwa kutumia mtindo wa 4"/>
+					<Item id="43030" name="Mtindo wote kwa kutumia mtindo wa 5"/>
+					<Item id="43062" name="Mtindo wa kwanza kwa kutumia mtindo wa 1"/>
+					<Item id="43063" name="Mtindo wa kwanza kwa kutumia mtindo wa 2"/>
+					<Item id="43064" name="Mtindo wa kwanza kwa kutumia mtindo wa 3"/>
+					<Item id="43065" name="Mtindo wa kwanza kwa kutumia mtindo wa 4"/>
+					<Item id="43066" name="Mtindo wa kwanza kwa kutumia mtindo wa 5"/>
+					<Item id="43023" name="Futa mtindo wa 1"/>
+					<Item id="43025" name="Futa mtindo wa 2"/>
+					<Item id="43027" name="Futa mtindo wa 3"/>
+					<Item id="43029" name="Futa mtindo wa 4"/>
+					<Item id="43031" name="Futa mtindo wa 5"/>
+					<Item id="43032" name="Futa mitindo yote"/>
+					<Item id="43033" name="Mtindo uliopita wa mtindo wa 1"/>
+					<Item id="43034" name="Mtindo uliopita wa mtindo wa pili"/>
+					<Item id="43035" name="Mtindo uliopita wa mtindo wa 3"/>
+					<Item id="43036" name="Mtindo uliopita wa mtindo wa 4"/>
+					<Item id="43037" name="Mtindo uliopita wa mtindo wa 5"/>
+					<Item id="43038" name="Mtindo uliopita wa mtindo wa Find Mark"/>
+					<Item id="43039" name="Mtindo unaofuata wa mtindo wa 1"/>
+					<Item id="43040" name="Mtindo unaofuata wa mtindo wa 2"/>
+					<Item id="43041" name="Mtindo unaofuata wa mtindo wa 3"/>
+					<Item id="43042" name="Mtindo unaofuata wa mtindo wa 4"/>
+					<Item id="43043" name="Mtindo unaofuata wa mtindo wa 5"/>
+					<Item id="43044" name="Mtindo unaofuata wa mtindo wa Find Mark"/>
+					<Item id="43055" name="Nakili Maandishi ya Mtindo ya Mtindo wa 1"/>
+					<Item id="43056" name="Nakili Maandishi ya Mtindo ya Mtindo wa Pili"/>
+					<Item id="43057" name="Nakili Maandishi yenye Mtindo ya Mtindo wa 3"/>
+					<Item id="43058" name="Nakili Maandishi ya Mtindo ya Mtindo wa 4"/>
+					<Item id="43059" name="Nakili Maandishi ya Mtindo ya Mtindo wa 5"/>
+					<Item id="43060" name="Nakili Maandishi ya Mitindo ya Mitindo Yote"/>
+					<Item id="43061" name="Nakili Maandishi ya Mtindo ya mtindo wa Tafuta Alama"/>
+					<Item id="44100" name="Tazama faili ya sasa katika Firefox"/>
+					<Item id="44101" name="Tazama faili ya sasa katika Chrome"/>
+					<Item id="44103" name="Tazama faili ya sasa katika IE"/>
+					<Item id="44102" name="Tazama faili ya sasa katika Edge"/>
+					<Item id="50003" name="Badili hadi hati iliyotangulia"/>
+					<Item id="50004" name="Badili hadi hati inayofuata"/>
+					<Item id="44051" name="Mara Kiwango cha 1"/>
+					<Item id="44052" name="Mara Kiwango cha 2"/>
+					<Item id="44053" name="Mara Kiwango cha 3"/>
+					<Item id="44054" name="Mara Kiwango cha 4"/>
+					<Item id="44055" name="Mara Kiwango cha 5"/>
+					<Item id="44056" name="Mara Kiwango cha 6"/>
+					<Item id="44057" name="Mara Kiwango cha 7"/>
+					<Item id="44058" name="Mara Kiwango cha 8"/>
+					<Item id="44061" name="Fungua Kiwango cha 1"/>
+					<Item id="44062" name="Fungua Kiwango cha 2"/>
+					<Item id="44063" name="Fungua Kiwango cha 3"/>
+					<Item id="44064" name="Fungua Kiwango cha 4"/>
+					<Item id="44065" name="Fungua Kiwango cha 5"/>
+					<Item id="44066" name="Fungua Kiwango cha 6"/>
+					<Item id="44067" name="Fungua Kiwango cha 7"/>
+					<Item id="44068" name="Fungua Kiwango cha 8"/>
+					<Item id="44081" name="Geuza Paneli ya Mradi 1"/>
+					<Item id="44082" name="Geuza Paneli ya Mradi 2"/>
+					<Item id="44083" name="Geuza Paneli ya Mradi 3"/>
+					<Item id="44085" name="Geuza Folda kama Nafasi ya Kazi"/>
+					<Item id="44080" name="Geuza Ramani ya Hati"/>
+					<Item id="44070" name="Geuza Orodha ya Hati"/>
+					<Item id="44084" name="Geuza Orodha ya Kazi"/>
+					<Item id="50005" name="Geuza kurekodi jumla"/>
+					<Item id="44104" name="Badili hadi Paneli ya Mradi 1"/>
+					<Item id="44105" name="Badili hadi Paneli ya Mradi 2"/>
+					<Item id="44106" name="Badili hadi Paneli ya Mradi 3"/>
+					<Item id="44107" name="Badili hadi kwenye Folda kama Nafasi ya Kazi"/>
+					<Item id="44109" name="Badili hadi Orodha ya Hati"/>
+					<Item id="44108" name="Badili hadi Orodha ya Kazi"/>
+					<Item id="44110" name="Ondoa Rangi ya Kichupo"/>
+					<Item id="44111" name="Weka Rangi ya Kichupo 1"/>
+					<Item id="44112" name="Weka Rangi ya Kichupo 2"/>
+					<Item id="44113" name="Weka Rangi ya Kichupo 3"/>
+					<Item id="44114" name="Weka Rangi ya Kichupo 4"/>
+					<Item id="44115" name="Weka Rangi ya Kichupo 5"/>
+					<Item id="11002" name="Panga kwa Jina A hadi Z"/>
+					<Item id="11003" name="Panga kwa Jina Z hadi A"/>
+					<Item id="11004" name="Panga kwa Njia A hadi Z"/>
+					<Item id="11005" name="Panga kwa Njia Z hadi A"/>
+					<Item id="11006" name="Panga kwa Aina A hadi Z"/>
+					<Item id="11007" name="Panga kwa Aina Z hadi A"/>
+					<Item id="11008" name="Panga kwa Urefu wa Maudhui Kupanda"/>
+					<Item id="11009" name="Panga kwa Urefu wa Maudhui Kushuka"/>
+				</MainCommandNames>
+			</ShortcutMapper>
+			<ShortcutMapperSubDialg title="Njia ya mkato">
+				<Item id="1" name="SAWA"/>
+				<Item id="2" name="Ghairi"/>
+				<Item id="5006" name="Jina"/>
+				<Item id="5008" name="Ongeza"/>
+				<Item id="5009" name="Ondoa"/>
+				<Item id="5010" name="Omba"/>
+				<Item id="5007" name="Hii itaondoa njia ya mkato kutoka kwa amri hii"/>
+				<Item id="5012" name="MIGOGORO IMEPATIKANA!"/>
+			</ShortcutMapperSubDialg>
+			<UserDefine title="Imefafanuliwa na Mtumiaji">
+				<Item id="20001" name="Gati"/>
+				<Item id="20002" name="Badilisha jina"/>
+				<Item id="20003" name="Unda mpya..."/>
+				<Item id="20004" name="Ondoa"/>
+				<Item id="20005" name="Hifadhi Kama..."/>
+				<Item id="20007" name="Lugha ya mtumiaji"/>
+				<Item id="20009" name="Ziada.:"/>
+				<Item id="20012" name="Puuza kesi"/>
+				<Item id="20011" name="Uwazi"/>
+				<Item id="20015" name="Leta..."/>
+				<Item id="20016" name="Hamisha..."/>
+				<Item id="20017" name="Tendua"/>
+				<StylerDialog title="Maongezi ya Styler">
+					<Item id="25030" name="Chaguo za fonti"/>
+					<Item id="25006" name="Rangi ya mbele"/>
+					<Item id="25007" name="Rangi ya usuli"/>
+					<Item id="25031" name="Jina:"/>
+					<Item id="25032" name="Ukubwa:"/>
+					<Item id="25001" name="Nyembamba"/>
+					<Item id="25002" name="Italiki"/>
+					<Item id="25003" name="Piga mstari"/>
+					<Item id="25029" name="Nesting"/>
+					<Item id="25008" name="Delimiter 1"/>
+					<Item id="25009" name="Delimiter 2"/>
+					<Item id="25010" name="Delimiter 3"/>
+					<Item id="25011" name="Delimiter 4"/>
+					<Item id="25012" name="Delimiter 5"/>
+					<Item id="25013" name="Delimiter 6"/>
+					<Item id="25014" name="Delimiter 7"/>
+					<Item id="25015" name="Delimiter 8"/>
+					<Item id="25018" name="Neno muhimu 1"/>
+					<Item id="25019" name="Neno muhimu 2"/>
+					<Item id="25020" name="Neno muhimu 3"/>
+					<Item id="25021" name="Neno muhimu 4"/>
+					<Item id="25022" name="Neno muhimu 5"/>
+					<Item id="25023" name="Neno muhimu 6"/>
+					<Item id="25024" name="Neno muhimu 7"/>
+					<Item id="25025" name="Neno muhimu 8"/>
+					<Item id="25016" name="Maoni"/>
+					<Item id="25017" name="Mstari wa maoni"/>
+					<Item id="25026" name="Opereta 1"/>
+					<Item id="25027" name="Opereta 2"/>
+					<Item id="25028" name="Nambari"/>
+					<Item id="25033" name="Uwazi"/>
+					<Item id="25034" name="Uwazi"/>
+					<Item id="1" name="SAWA"/>
+					<Item id="2" name="Ghairi"/>
+				</StylerDialog>
+				<Folder title="Folda Chaguomsingi">
+					<Item id="21101" name="Mtindo chaguomsingi"/>
+					<Item id="21102" name="Styler"/>
+					<Item id="21103" name="Usaidizi wa Lugha Zilizobainishwa na Mtumiaji mtandaoni"/>
+					<Item id="21105" name="Hati"/>
+					<Item id="21106" name="Kunja mkato (kunja mistari tupu pia)"/>
+					<Item id="21220" name="Kukunja kwa mtindo wa 1"/>
+					<Item id="21224" name="Fungua:"/>
+					<Item id="21225" name="Katikati:"/>
+					<Item id="21226" name="Funga:"/>
+					<Item id="21227" name="Styler"/>
+					<Item id="21320" name="Kukunja kwa mtindo wa misimbo 2 (vitenganishi vinahitajika)"/>
+					<Item id="21324" name="Fungua:"/>
+					<Item id="21325" name="Katikati:"/>
+					<Item id="21326" name="Funga:"/>
+					<Item id="21327" name="Styler"/>
+					<Item id="21420" name="Kukunja kwa mtindo wa maoni"/>
+					<Item id="21424" name="Fungua:"/>
+					<Item id="21425" name="Katikati:"/>
+					<Item id="21426" name="Funga:"/>
+					<Item id="21427" name="Styler"/>
+				</Folder>
+				<Keywords title="Orodha za Maneno Muhimu">
+					<Item id="22101" name="Kundi la 1"/>
+					<Item id="22201" name="Kikundi cha 2"/>
+					<Item id="22301" name="Kikundi cha 3"/>
+					<Item id="22401" name="Kundi la 4"/>
+					<Item id="22451" name="Kundi la 5"/>
+					<Item id="22501" name="Kikundi cha 6"/>
+					<Item id="22551" name="Kundi la 7"/>
+					<Item id="22601" name="Kikundi cha 8"/>
+					<Item id="22121" name="Hali ya kiambishi"/>
+					<Item id="22221" name="Hali ya kiambishi"/>
+					<Item id="22321" name="Hali ya kiambishi awali"/>
+					<Item id="22421" name="Hali ya kiambishi"/>
+					<Item id="22471" name="Hali ya kiambishi"/>
+					<Item id="22521" name="Hali ya kiambishi"/>
+					<Item id="22571" name="Hali ya kiambishi"/>
+					<Item id="22621" name="Hali ya kiambishi"/>
+					<Item id="22122" name="Styler"/>
+					<Item id="22222" name="Styler"/>
+					<Item id="22322" name="Styler"/>
+					<Item id="22422" name="Styler"/>
+					<Item id="22472" name="Styler"/>
+					<Item id="22522" name="Styler"/>
+					<Item id="22572" name="Styler"/>
+					<Item id="22622" name="Styler"/>
+				</Keywords>
+				<Comment title="Nambari ya Maoni">
+					<Item id="23003" name="Nafasi ya maoni ya mstari"/>
+					<Item id="23004" name="Ruhusu popote"/>
+					<Item id="23005" name="Lazimisha mwanzoni mwa mstari"/>
+					<Item id="23006" name="Ruhusu nafasi nyeupe iliyotangulia"/>
+					<Item id="23001" name="Ruhusu kukunja maoni"/>
+					<Item id="23326" name="Mtengenezaji mtindo"/>
+					<Item id="23323" name="Fungua"/>
+					<Item id="23324" name="Endelea herufi"/>
+					<Item id="23325" name="Funga"/>
+					<Item id="23301" name="Mtindo wa mstari wa maoni"/>
+					<Item id="23124" name="Styler"/>
+					<Item id="23122" name="Fungua"/>
+					<Item id="23123" name="Funga"/>
+					<Item id="23101" name="Mtindo wa maoni"/>
+					<Item id="23201" name="Mtindo wa nambari"/>
+					<Item id="23220" name="Styler"/>
+					<Item id="23230" name="Kiambishi awali 1"/>
+					<Item id="23232" name="Kiambishi awali 2"/>
+					<Item id="23234" name="Ziada 1"/>
+					<Item id="23236" name="Ziada 2"/>
+					<Item id="23238" name="Kiambishi tamati 1"/>
+					<Item id="23240" name="Kiambishi tamati 2"/>
+					<Item id="23242" name="Masafa:"/>
+					<Item id="23244" name="Kitenganishi cha decimal"/>
+					<Item id="23245" name="Nukta"/>
+					<Item id="23246" name="Koma"/>
+					<Item id="23247" name="Wote"/>
+				</Comment>
+				<Operator title="Delimiter ya Waendeshaji">
+					<Item id="24101" name="Mtindo wa waendeshaji"/>
+					<Item id="24113" name="Styler"/>
+					<Item id="24116" name="Waendeshaji 1"/>
+					<Item id="24117" name="Waendeshaji 2 (vitenganishi vinahitajika)"/>
+					<Item id="24201" name="Delimiter 1 style"/>
+					<Item id="24220" name="Fungua:"/>
+					<Item id="24221" name="Escape:"/>
+					<Item id="24222" name="Funga:"/>
+					<Item id="24223" name="Styler"/>
+					<Item id="24301" name="Delimiter 2 style"/>
+					<Item id="24320" name="Fungua:"/>
+					<Item id="24321" name="Escape:"/>
+					<Item id="24322" name="Funga:"/>
+					<Item id="24323" name="Styler"/>
+					<Item id="24401" name="Delimiter 3 style"/>
+					<Item id="24420" name="Fungua:"/>
+					<Item id="24421" name="Escape:"/>
+					<Item id="24422" name="Funga:"/>
+					<Item id="24423" name="Styler"/>
+					<Item id="24451" name="Delimiter 4 style"/>
+					<Item id="24470" name="Fungua:"/>
+					<Item id="24471" name="Escape:"/>
+					<Item id="24472" name="Funga:"/>
+					<Item id="24473" name="Styler"/>
+					<Item id="24501" name="Delimiter 5 style"/>
+					<Item id="24520" name="Fungua:"/>
+					<Item id="24521" name="Escape:"/>
+					<Item id="24522" name="Funga:"/>
+					<Item id="24523" name="Styler"/>
+					<Item id="24551" name="Delimiter 6 style"/>
+					<Item id="24570" name="Fungua:"/>
+					<Item id="24571" name="Escape:"/>
+					<Item id="24572" name="Funga:"/>
+					<Item id="24573" name="Styler"/>
+					<Item id="24601" name="Delimiter 7 style"/>
+					<Item id="24620" name="Fungua:"/>
+					<Item id="24621" name="Escape:"/>
+					<Item id="24622" name="Funga:"/>
+					<Item id="24623" name="Styler"/>
+					<Item id="24651" name="Delimiter 8 style"/>
+					<Item id="24670" name="Fungua:"/>
+					<Item id="24671" name="Escape:"/>
+					<Item id="24672" name="Funga:"/>
+					<Item id="24673" name="Styler"/>
+				</Operator>
+			</UserDefine>
+			<Preference title="Mapendeleo">
+				<Item id="6001" name="Funga"/>
+				<Global title="Mkuu">
+					<Item id="6123" name="Ujanibishaji"/>
+					<Item id="6131" name="Menyu"/>
+					<Item id="6122" name="Ficha (tumia kitufe cha Alt au F10 kugeuza)"/>
+					<Item id="6132" name="Ficha njia za mkato za kulia ＋ ▼ ✕"/>
+					<Item id="6133" name="Upau wa Hali"/>
+					<Item id="6134" name="Ficha"/>
+				</Global>
+
+				<Toolbar title="Upau wa vidhibiti">
+					<Item id="6102" name="Ficha"/>
+					<Item id="6103" name="UI Fasaha: ndogo"/>
+					<Item id="6104" name="UI Fasaha: kubwa"/>
+					<Item id="6129" name="UI iliyojaa Fasaha: ndogo"/>
+					<Item id="6130" name="UI Uliojaa Fasaha: kubwa"/>
+					<Item id="6105" name="Aikoni za kawaida: ndogo"/>
+					<Item id="6011" name="Uwekaji rangi"/>
+					<Item id="6012" name="Kamilisha"/>
+					<Item id="6013" name="Sehemu"/>
+					<Item id="6014" name="Chaguo la rangi"/>
+					<Item id="6015" name="Chaguomsingi"/>
+					<Item id="6016" name="Nyekundu"/>
+					<Item id="6017" name="Kijani"/>
+					<Item id="6018" name="Bluu"/>
+					<Item id="6019" name="Zambarau"/>
+					<Item id="6020" name="Cyan"/>
+					<Item id="6021" name="Zaituni"/>
+					<Item id="6022" name="Njano"/>
+					<Item id="6023" name="Lafudhi ya Mfumo"/>
+					<Item id="6024" name="Maalum"/>
+				</Toolbar>
+
+				<Tabbar title="Upau wa Kichupo">
+					<Item id="6107" name="Punguza"/>
+					<Item id="6108" name="Funga (hakuna kuburuta na kuangusha)"/>
+					<Item id="6109" name="Badilisha rangi ya kichupo kisichotumika"/>
+					<Item id="6110" name="Chora upau wa rangi kwenye kichupo kinachotumika"/>
+					<Item id="6111" name="Onyesha vitufe kwenye vichupo visivyotumika"/>
+					<Item id="6112" name="Onyesha kitufe cha kufunga"/>
+					<Item id="6113" name="Bofya mara mbili ili kufunga hati"/>
+					<Item id="6115" name="Washa kipengele cha kichupo cha pini"/>
+					<Item id="6135" name="Onyesha kitufe kilichobandikwa pekee"/>
+					<Item id="6118" name="Ficha"/>
+					<Item id="6119" name="Mistari mingi"/>
+					<Item id="6120" name="Wima"/>
+					<Item id="6121" name="Ondoka kwa funga kichupo cha mwisho"/>
+					<Item id="6128" name="Aikoni mbadala"/>
+					<Item id="6125" name="Tabia"/>
+					<Item id="6126" name="Angalia hisia"/>
+					<Item id="6136" name="Max.urefu wa lebo ya kichupo:"/>
+				</Tabbar>
+
+				<Scintillas title="Inahariri 1">
+					<Item id="6216" name="Mipangilio ya Kari"/>
+					<Item id="6217" name="Upana:"/>
+					<Item id="6219" name="Kiwango cha kupepesa macho:"/>
+					<Item id="6221" name="F"/>
+					<Item id="6222" name="S"/>
+					<Item id="6246" name="Fanya amri za kiwango cha sasa za kukunja/kunjuka ziweze kugeuzwa"/>
+					<Item id="6227" name="Ufungaji wa Mstari"/>
+					<Item id="6228" name="Chaguomsingi"/>
+					<Item id="6229" name="Imepangiliwa"/>
+					<Item id="6230" name="Sogeza"/>
+					<Item id="6234" name="Lemaza kipengele cha kusogeza cha kina kutokana na tatizo la padi ya kugusa"/>
+					<Item id="6215" name="Washa fonti laini"/>
+					<Item id="6236" name="Washa kusogeza zaidi ya mstari wa mwisho"/>
+					<Item id="6239" name="Weka chaguo unapobofya kulia nje ya chaguo"/>
+					<Item id="6245" name="Washa nafasi pepe"/>
+					<Item id="6214" name="Washa Mstari wa Nakili/Kata bila uteuzi"/>
+					<Item id="6225" name="Weka rangi maalum kwenye mandhari ya mbele ya maandishi uliyochagua"/>
+					<Item id="6651" name="Kiashiria cha Mstari wa Sasa"/>
+					<Item id="6652" name="Hakuna"/>
+					<Item id="6653" name="Angazia Mandharinyuma"/>
+					<Item id="6654" name="Fremu"/>
+					<Item id="6655" name="Upana:"/>
+				</Scintillas>
+
+				<Scintillas2 title="Kuhariri 2">
+					<Item id="6521" name="Uhariri-Nyingi"/>
+					<Item id="6522" name="Washa Uhariri-Nyingi (Ctrl+Mouse click/uteuzi)"/>
+					<Item id="6523" name="Washa Uteuzi wa Safu kwenye Uhariri wa Nyingi"/>
+					<Item id="6247" name="EOL (CRLF)"/><!-- Don't translate "(CRLF)" -->
+					<Item id="6248" name="Chaguomsingi"/>
+					<Item id="6249" name="Maandishi Sahihi"/>
+					<Item id="6250" name="Rangi Maalum"/>
+					<Item id="6252" name="Herufi Zisizochapisha"/>
+					<Item id="6260" name="Muonekano"/>
+					<Item id="6254" name="Ufupisho"/>
+					<Item id="6255" name="Codepoint"/>
+					<Item id="6256" name="Rangi Maalum"/>
+					<Item id="6258" name="Tekeleza mipangilio ya Mwonekano kwa C0, C1 Unicode EOL"/>
+					<Item id="6259" name="Zuia herufi ya kudhibiti (msimbo wa C0) kuandika kwenye hati"/>
+				</Scintillas2>
+
+				<DarkMode title="Hali ya Giza">
+					<Item id="7131" name="Hali ya mwanga"/>
+					<Item id="7132" name="Hali ya giza"/>
+					<Item id="7133" name="Fuata Windows"/>
+					<Item id="7102" name="Nyeusi"/>
+					<Item id="7103" name="Nyekundu"/>
+					<Item id="7104" name="Kijani"/>
+					<Item id="7105" name="Bluu"/>
+					<Item id="7107" name="Zambarau"/>
+					<Item id="7108" name="Cyan"/>
+					<Item id="7109" name="Zaituni"/>
+					<Item id="7115" name="Imebinafsishwa"/>
+					<Item id="7116" name="Mandharinyuma ya maudhui"/>
+					<Item id="7117" name="Kipengee cha wimbo maarufu"/>
+					<Item id="7118" name="Dhibiti usuli"/>
+					<Item id="7119" name="Mandharinyuma ya mazungumzo"/>
+					<Item id="7120" name="Hitilafu"/>
+					<Item id="7121" name="Maandishi"/>
+					<Item id="7122" name="Maandishi meusi zaidi"/>
+					<Item id="7123" name="Maandishi yaliyozimwa"/>
+					<Item id="7124" name="Ukingo"/>
+					<Item id="7125" name="Kiungo"/>
+					<Item id="7126" name="Kivutio kikubwa"/>
+					<Item id="7127" name="Ukingo umezimwa"/>
+					<Item id="7130" name="Weka upya"/>
+					<Item id="7135" name="Tani"/>
+				</DarkMode>
+
+				<MarginsBorderEdge title="Pambizo/Mpaka/Edge">
+					<Item id="6201" name="Mtindo wa Pambizo la Kukunja"/>
+					<Item id="6202" name="Rahisi"/>
+					<Item id="6203" name="Mshale"/>
+					<Item id="6204" name="Mti wa duara"/>
+					<Item id="6205" name="Mti wa sanduku"/>
+					<Item id="6226" name="Hakuna"/>
+					<Item id="6291" name="Nambari ya Mstari"/>
+					<Item id="6206" name="Onyesho"/>
+					<Item id="6292" name="Upana unaobadilika"/>
+					<Item id="6293" name="Upana wa kila mara"/>
+					<Item id="6207" name="Onyesha alamisho"/>
+					<Item id="6295" name="Badilisha Historia"/>
+					<Item id="6223" name="Onyesha ukingo"/>
+					<Item id="6296" name="Onyesha katika maandishi"/>
+					<Item id="6211" name="Mipangilio ya Ukingo Wima"/>
+					<Item id="6213" name="Hali ya usuli"/>
+					<Item id="6231" name="Upana wa Mpaka"/>
+					<Item id="6235" name="Hakuna makali"/>
+					<Item id="6208" name="Padding"/>
+					<Item id="6209" name="Kushoto"/>
+					<Item id="6210" name="Sawa"/>
+					<Item id="6212" name="Bila Kusumbua"/>
+				</MarginsBorderEdge>
+
+				<NewDoc title="Hati Mpya">
+					<Item id="6401" name="Umbizo (Mwisho wa mstari)"/>
+					<Item id="6402" name="Windows (CR LF)"/>
+					<Item id="6403" name="Unix (LF)"/>
+					<Item id="6404" name="Macintosh (CR)"/>
+					<Item id="6405" name="Usimbaji"/>
+					<Item id="6406" name="ANSI"/>
+					<Item id="6407" name="UTF-8"/>
+					<Item id="6408" name="UTF-8 pamoja na BOM"/>
+					<Item id="6409" name="UTF-16 Endian Kubwa yenye BOM"/>
+					<Item id="6410" name="UTF-16 Little Endian pamoja na BOM"/>
+					<Item id="6411" name="Lugha chaguo-msingi:"/>
+					<Item id="6419" name="Hati Mpya"/>
+					<Item id="6420" name="Tumia faili za ANSI"/>
+					<Item id="6432" name="Fungua hati mpya kila wakati kwa kuongeza wakati wa kuanza"/>
+					<Item id="6433" name="Tumia safu ya kwanza ya hati kama jina la kichupo lisilo na kichwa"/>
+				</NewDoc>
+
+				<DefaultDir title="Saraka Chaguomsingi">
+					<Item id="6413" name="Chaguomsingi Fungua/Hifadhi Saraka ya faili"/>
+					<Item id="6414" name="Fuata hati ya sasa"/>
+					<Item id="6415" name="Kumbuka saraka iliyotumika mwisho"/>
+					<Item id="6431" name="Fungua faili zote za folda badala ya kuzindua Folda kama Nafasi ya Kazi kwenye folda kudondosha"/>
+				</DefaultDir>
+
+				<FileAssoc title="Chama cha Faili">
+					<Item id="4008" name="Tafadhali ondoka kwenye Notepad++ na uzindue upya Notepad++ katika hali ya Msimamizi ili kutumia kipengele hiki."/>
+					<Item id="4009" name="Viendelezi vinavyotumika:"/>
+					<Item id="4010" name="Viendelezi vilivyosajiliwa:"/>
+				</FileAssoc>
+
+
+				<Language title="Lugha">
+					<Item id="6505" name="Bidhaa zinazopatikana"/>
+					<Item id="6506" name="Vipengee vilivyozimwa"/>
+					<Item id="6507" name="Fanya menyu ya lugha ifanane"/>
+					<Item id="6508" name="Menyu ya Lugha"/>
+					<Item id="6335" name="Chunguza backslash kama herufi ya kutoroka kwa SQL"/>
+				</Language>
+
+				<Indentation title="Ujongezaji">
+					<Item id="7161" name="Ingiza kiotomatiki"/>
+					<Item id="7162" name="Hakuna"/>
+					<Item id="7163" name="Msingi"/>
+					<Item id="7164" name="Ya Juu"/>
+					<Item id="6301" name="Mipangilio ya Jozi"/>
+					<Item id="6302" name="Wahusika wa nafasi"/>
+					<Item id="6303" name="Ukubwa wa ndani:"/>
+					<Item id="6310" name="Jozisha kwa kutumia:"/>
+					<Item id="6311" name="Herufi ya kichupo"/>
+					<Item id="6510" name="Tumia thamani chaguomsingi"/>
+					<Item id="6512" name="Vipunguzo vya vitufe vya Backspace badala ya kuondoa nafasi moja"/>
+				</Indentation>
+
+				<Highlighting title="Kuangazia">
+					<Item id="6351" name="Mtindo wa Matukio Yote ya Tokeni"/>
+					<Item id="6352" name="Kesi ya mechi"/>
+					<Item id="6353" name="Linganisha neno zima pekee"/>
+					<Item id="6333" name="Uangaziaji Mahiri"/>
+					<Item id="6326" name="Washa"/>
+					<Item id="6354" name="Inalingana"/>
+					<Item id="6332" name="Kesi ya mechi"/>
+					<Item id="6338" name="Linganisha neno zima pekee"/>
+					<Item id="6339" name="Tumia Pata mipangilio ya kidirisha"/>
+					<Item id="6340" name="Angazia mwonekano mwingine"/>
+					<Item id="6329" name="Angazia Lebo Zinazolingana"/>
+					<Item id="6327" name="Washa"/>
+					<Item id="6328" name="Angazia sifa za lebo"/>
+					<Item id="6330" name="Angazia maoni/php/asp zone"/>
+				</Highlighting>
+
+				<Print title="Chapisha">
+					<Item id="6601" name="Chapisha nambari ya laini"/>
+					<Item id="6602" name="Chaguo za Rangi"/>
+					<Item id="6603" name="WYSIWYG"/>
+					<Item id="6604" name="Geuza"/>
+					<Item id="6605" name="Nyeusi kwenye nyeupe"/>
+					<Item id="6606" name="Hakuna rangi ya mandharinyuma"/>
+					<Item id="6607" name="Mipangilio ya Pambizo (Kitengo:mm)"/>
+					<Item id="6612" name="Kushoto"/>
+					<Item id="6613" name="Juu"/>
+					<Item id="6614" name="Kulia"/>
+					<Item id="6615" name="Chini"/>
+					<Item id="6706" name="Nyembamba"/>
+					<Item id="6707" name="Italic"/>
+					<Item id="6708" name="Kichwa"/>
+					<Item id="6709" name="Sehemu ya kushoto"/>
+					<Item id="6710" name="Sehemu ya kati"/>
+					<Item id="6711" name="Sehemu ya kulia"/>
+					<Item id="6717" name="Nyembamba"/>
+					<Item id="6718" name="Italic"/>
+					<Item id="6719" name="Kijachini"/>
+					<Item id="6720" name="Sehemu ya kushoto"/>
+					<Item id="6721" name="Sehemu ya kati"/>
+					<Item id="6722" name="Sehemu ya kulia"/>
+					<Item id="6723" name="Ongeza"/>
+					<ComboBox id="6724">
+						<Element name="Njia kamili ya jina la faili"/>
+						<Element name="Jina la faili"/>
+						<Element name="Saraka ya faili"/>
+						<Element name="Ukurasa"/>
+						<Element name="Umbizo la tarehe fupi"/>
+						<Element name="Umbizo la tarehe ndefu"/>
+						<Element name="Wakati"/>
+					</ComboBox>
+					<Item id="6725" name="Kibadala:"/>
+					<Item id="6727" name="Hapa onyesha mipangilio yako ya kubadilika"/>
+					<Item id="6728" name="Kichwa na Kijachini"/>
+				</Print>
+
+				<Searching title="Inatafuta">
+					<Item id="6902" name="Tumia fonti iliyo na nafasi moja kwenye kidirisha cha Tafuta (Inahitaji kuwasha tena Notepad++)"/>
+					<Item id="6903" name="Kidirisha cha Tafuta kinasalia kufunguliwa baada ya utafutaji unaotoa kwenye dirisha la matokeo"/>
+					<Item id="6904" name="Thibitisha Badilisha Nafasi Zote katika Hati Zote Zilizofunguliwa"/>
+					<Item id="6905" name="Badilisha: Usihamie kwa tukio lifuatalo"/>
+					<Item id="6906" name="Dirisha la Matokeo ya Utafutaji: onyesha ingizo moja tu kwa kila mstari uliopatikana ikiwezekana"/>
+					<Item id="6907" name="Wakati Maongezi ya Tafuta yanapoalikwa"/>
+					<Item id="6908" name="Jaza Sehemu ya Tafuta na Maandishi Uliyochagua"/>
+					<Item id="6909" name="Chagua Neno Chini ya Caret wakati Hakuna Chochote Kilichochaguliwa"/>
+					<Item id="6910" name="Ukubwa wa Chini wa Kukagua Kiotomatiki &quot;Katika uteuzi&quot;:"/>
+					<Item id="6913" name="Jaza Tafuta katika Sehemu ya Saraka ya Faili Kulingana na Hati Inayotumika"/>
+					<Item id="6916" name=": Herufi za Juu za Kujaza Kiotomatiki Sehemu ya Tafuta kutoka kwa Uteuzi"/>
+				</Searching>
+
+				<RecentFilesHistory title="Historia ya Faili za Hivi Punde">
+					<Item id="6304" name="Historia ya Faili za Hivi Punde"/>
+					<Item id="6306" name="Max.idadi ya maingizo:"/>
+					<Item id="6305" name="Usiangalie wakati wa uzinduzi"/>
+					<Item id="6429" name="Onyesho"/>
+					<Item id="6424" name="Katika Menyu ndogo"/>
+					<Item id="6425" name="Jina la Faili Pekee"/>
+					<Item id="6426" name="Njia Kamili ya Jina la Faili"/>
+					<Item id="6427" name="Badilisha Urefu wa Juu Upendavyo:"/>
+				</RecentFilesHistory>
+
+				<Backup title="Hifadhi rudufu">
+					<Item id="6817" name="Muhtasari wa kipindi na hifadhi rudufu ya mara kwa mara"/>
+					<Item id="6818" name="Washa muhtasari wa kipindi na hifadhi rudufu ya mara kwa mara"/>
+					<Item id="6819" name="Anzisha nakala rudufu kwenye urekebishaji katika kila"/>
+					<Item id="6821" name="sekunde"/>
+					<Item id="6822" name="Njia mbadala:"/>
+					<Item id="6309" name="Kumbuka kipindi cha sasa kwa uzinduzi ujao"/>
+					<Item id="6825" name="Kumbuka faili zisizoweza kufikiwa za kipindi cha nyuma"/>
+					<Item id="6801" name="Hifadhi nakala kwenye hifadhi"/>
+					<Item id="6315" name="Hakuna"/>
+					<Item id="6316" name="Chelezo rahisi"/>
+					<Item id="6317" name="Hifadhi nakala ya kitenzi"/>
+					<Item id="6804" name="Saraka ya Hifadhi Nakala Maalum"/>
+					<Item id="6803" name="Saraka:"/>
+				</Backup>
+
+				<AutoCompletion title="Ukamilishaji-Otomatiki">
+					<Item id="6807" name="Ukamilishaji-Otomatiki"/>
+					<Item id="6808" name="Washa ukamilishaji-otomatiki kwa kila ingizo"/>
+					<Item id="6809" name="Kukamilika kwa kazi"/>
+					<Item id="6810" name="Ukamilishaji wa maneno"/>
+					<Item id="6816" name="Utendaji na ukamilishaji wa maneno"/>
+					<Item id="6869" name="Ingiza Uteuzi"/>
+					<Item id="6870" name="TAB"/><!-- TAB key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6871" name="INGIA"/><!-- ENTER key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6824" name="Puuza nambari"/>
+					<Item id="6811" name="Kutoka"/>
+					<Item id="6813" name="mhusika"/>
+					<Item id="6872" name="Fanya orodha ya kukamilisha kiotomatiki kwa ufupi"/>
+					<Item id="6815" name="Vigezo vya utendakazi vinadokeza kwenye ingizo"/>
+					<Item id="6851" name="Ingiza-Otomatiki"/>
+					<Item id="6857" name="html/xml funga tagi"/>
+					<Item id="6858" name="Fungua"/>
+					<Item id="6859" name="Funga"/>
+					<Item id="6860" name="Jozi inayolingana 1:"/>
+					<Item id="6863" name="Zilizolingana jozi 2:"/>
+					<Item id="6866" name="Jozi zinazolingana 3:"/>
+				</AutoCompletion>
+
+				<MultiInstance title="Tarehe ya matukio mengi">
+					<Item id="6151" name="Mipangilio ya matukio mengi *"/>
+					<Item id="6152" name="Fungua kipindi katika tukio jipya (na uhifadhi kipindi kiotomatiki unapotoka)"/>
+					<Item id="6153" name="Kila mara katika hali ya matukio mengi"/>
+					<Item id="6154" name="Chaguomsingi (mfano-mono)"/>
+					<Item id="6155" name="* Marekebisho ya mpangilio huu yanahitaji kuanzisha upya Notepad++"/>
+					<Item id="6171" name="Geuza kukufaa kuingiza Tarehe"/>
+					<Item id="6175" name="Badilisha mpangilio wa tarehe chaguomsingi (miundo fupi ndefu)"/>
+					<Item id="6172" name="Umbizo maalum:"/>
+					<Item id="6181" name="Hali ya Jopo na [-nosession] *"/>
+					<Item id="6182" name="Kumbuka hali ya paneli (jopo limefunguliwa) katika hali zingine (hali ya mifano mingi) au unapotumia kigezo cha mstari wa amri [-nosession]"/>
+					<Item id="6183" name="Historia ya Ubao wa kunakili"/>
+					<Item id="6184" name="Orodha ya Hati"/>
+					<Item id="6185" name="Paneli ya Wahusika"/>
+					<Item id="6186" name="Folda kama Nafasi ya Kazi"/>
+					<Item id="6187" name="Paneli za Mradi"/>
+					<Item id="6188" name="Ramani ya Hati"/>
+					<Item id="6189" name="Orodha ya Kazi"/>
+					<Item id="6190" name="Paneli za programu-jalizi"/>
+				</MultiInstance>
+
+				<Delimiter title="Delimiter">
+					<Item id="6251" name="Mipangilio ya uteuzi wa kikomo (Ctrl + Mouse bonyeza mara mbili)"/>
+					<Item id="6252" name="Fungua"/>
+					<Item id="6255" name="Funga"/>
+					<Item id="6256" name="Ruhusu kwenye mistari kadhaa"/>
+					<Item id="6161" name="Orodha ya herufi za maneno"/>
+					<Item id="6162" name="Tumia orodha ya herufi chaguomsingi ya Neno jinsi ilivyo"/>
+					<Item id="6163" name="Ongeza tabia yako kama sehemu ya neno
+(usiichague isipokuwa unajua unachofanya)"/>
+				</Delimiter>
+
+				<Performance title="Utendaji">
+					<Item id="7141" name="Kizuizi Kubwa cha Faili"/>
+					<Item id="7143" name="Washa Kizuizi Kubwa cha Faili (hakuna uangaziaji wa kisintaksia)"/>
+					<Item id="7144" name="Bainisha Ukubwa wa Faili Kubwa:"/>
+					<Item id="7146" name="MB (1 - 2046)"/>
+					<Item id="7147" name="Ruhusu Mechi ya Brace"/>
+					<Item id="7148" name="Ruhusu Kukamilishwa Kiotomatiki"/>
+					<Item id="7149" name="Ruhusu Uangaziaji Mahiri"/>
+					<Item id="7150" name="Zima Ufungaji wa Neno duniani"/>
+					<Item id="7151" name="Ruhusu Kiungo Kibofye cha URL"/>
+					<Item id="7152" name="Zuia onyo unapofungua ≥2GB faili"/>
+				</Performance>
+
+				<Cloud title="Kiungo cha Wingu">
+					<Item id="6262" name="Mipangilio kwenye wingu"/>
+					<Item id="6263" name="Hakuna Wingu"/>
+					<Item id="6267" name="Weka njia yako ya eneo la wingu hapa:"/>
+					<Item id="6318" name="Mipangilio ya Kiungo Inayobofya"/>
+					<Item id="6319" name="Washa"/>
+					<Item id="6320" name="Hakuna kupigia mstari"/>
+					<Item id="6350" name="Washa hali ya kisanduku kamili"/>
+					<Item id="6264" name="Miradi maalum ya URI:"/>
+				</Cloud>
+
+				<SearchEngine title="Injini ya Kutafuta">
+					<Item id="6271" name="Injini ya Utafutaji (kwa amri &quot;Tafuta kwenye Mtandao&quot;)"/>
+					<Item id="6272" name="DuckDuckGo"/>
+					<Item id="6273" name="Google"/>
+					<Item id="6274" name="Bing"/>
+					<Item id="6275" name="Yahoo!"/>
+					<Item id="6276" name="Weka injini yako ya utafutaji hapa:"/>
+					<!-- Don't change anything after Example: -->
+					<Item id="6278" name="Mfano: https://www.google.com/search?q=$(CURRENT_WORD)"/>
+				</SearchEngine>
+
+				<MISC title="MISC.">
+					<ComboBox id="6347">
+						<Element name="Washa kwa faili ya sasa"/>
+						<Element name="Washa kwa faili zote zilizofunguliwa"/>
+						<Element name="Zima"/>
+					</ComboBox>
+					<ComboBox id="6307">
+						<Element name="Hakuna kitendo kwenye"/>
+						<Element name="Punguza hadi"/>
+						<Element name="Karibu na"/>
+						<Element name="Punguza / Funga kwa"/>
+					</ComboBox>
+					<ComboBox id="6362">
+						<Element name="GDI (inayolingana zaidi)"/>
+						<Element name="DirectWrite (chaguo-msingi)"/>
+						<Element name="DirectWrite (hifadhi fremu)"/>
+						<Element name="DirectWrite (chora kwa GDI DC)"/>
+						<Element name="DirectWrite (DirectX 11)"/>
+					</ComboBox>
+					<ComboBox id="6364">
+						<Element name="Zima"/>
+						<Element name="Washa kwenye uanzishaji wa Notepad++"/>
+						<Element name="Washa kwenye Notepad++ kutoka"/>
+					</ComboBox>
+					<Item id="6308" name="trei ya mfumo"/>
+					<Item id="6363" name="hali ya uwasilishaji"/>
+					<Item id="6365" name="Kisasisho kiotomatiki:"/>
+					<Item id="6312" name="Utambuzi Kiotomatiki wa Hali ya Faili"/>
+					<Item id="6313" name="Sasisha kimya"/>
+					<Item id="6325" name="Sogeza hadi mstari wa mwisho baada ya kusasisha"/>
+					<Item id="6322" name="Faili ya kipindi cha ziada.:"/>
+					<Item id="6324" name="Kibadilisha Hati (Ctrl+TAB)"/>
+					<Item id="6331" name="Onyesha tu jina la faili katika upau wa kichwa"/>
+					<Item id="6334" name="Tambua usimbaji wa herufi kiotomatiki"/>
+					<Item id="6337" name="Faili ya nafasi ya kazi ext.:"/>
+					<Item id="6114" name="Washa"/>
+					<Item id="6117" name="Washa tabia ya MRU"/>
+					<Item id="6344" name="Hati Peeker"/>
+					<Item id="6345" name="Tazama kwenye kichupo"/>
+					<Item id="6346" name="Tazama kwenye ramani ya hati"/>
+					<Item id="6360" name="Zima sauti zote"/>
+					<Item id="6361" name="Washa kidirisha cha Kuhifadhi Wote"/>
+				</MISC>
+			</Preference>
+			<MultiMacro title="Endesha Macro Mara Nyingi">
+				<Item id="1" name="Endesha"/>
+				<Item id="2" name="Ghairi"/>
+				<Item id="8006" name="Macro ya kukimbia"/>
+				<Item id="8001" name="Endesha"/>
+				<Item id="8005" name="nyakati"/>
+				<Item id="8002" name="Endesha hadi mwisho wa faili"/>
+			</MultiMacro>
+			<Window title="Windows">
+				<Item id="1" name="Washa"/>
+				<Item id="2" name="SAWA"/>
+				<Item id="7002" name="Hifadhi"/>
+				<Item id="7003" name="Funga madirisha"/>
+				<Item id="7004" name="Panga vichupo"/>
+			</Window>
+			<ColumnEditor title="Kihariri Safu">
+				<Item id="2023" name="Maandishi ya Kuingiza"/>
+				<Item id="2033" name="Nambari ya Kuingiza"/>
+				<Item id="2030" name="Nambari ya kwanza:"/>
+				<Item id="2031" name="Ongeza kwa:"/>
+				<Item id="2038" name="Inaongoza:"/>
+				<ComboBox id="2039">
+					<Element name="Hakuna"/>
+					<Element name="Sufuri"/>
+					<Element name="Nafasi"/>
+				</ComboBox>
+				<Item id="2036" name="Rudia:"/>
+				<Item id="2032" name="Umbizo"/>
+				<Item id="2024" name="Desemba"/>
+				<Item id="2025" name="Oktoba"/>
+				<Item id="2026" name="Hex"/>
+				<Item id="2027" name="Bin"/>
+				<Item id="1" name="SAWA"/>
+				<Item id="2" name="Ghairi"/>
+			</ColumnEditor>
+			<FindInFinder title="Tafuta katika matokeo ya utafutaji">
+				<Item id="1" name="Pata Wote"/>
+				<Item id="2" name="Funga"/>
+				<Item id="1711" name="Tafuta nini:"/>
+				<Item id="1713" name="Tafuta tu katika mistari iliyopatikana"/>
+				<Item id="1714" name="Linganisha neno zima pekee"/>
+				<Item id="1715" name="Kesi ya mechi"/>
+				<Item id="1716" name="Hali ya Utafutaji"/>
+				<Item id="1717" name="Kawaida"/>
+				<Item id="1719" name="Usemi wa kawaida"/>
+				<Item id="1718" name="Iliyoongezwa (\n, \r, \t, \0, \x...)"/>
+				<Item id="1720" name=".inalingana na mstari mpya"/>
+			</FindInFinder>
+			<DoSaveOrNot title="Hifadhi">
+				<Item id="1761" name="Ungependa kuhifadhi faili &quot;$STR_REPLACE$&quot; ?"/>
+				<Item id="6" name="Ndiyo"/>
+				<Item id="7" name="Hapana"/>
+				<Item id="2" name="Ghairi"/>
+				<Item id="4" name="Ndiyo kwa wote"/>
+				<Item id="5" name="Hapana kwa wote"/>
+			</DoSaveOrNot>
+			<DoSaveAll title="Okoa Uthibitishaji Wote">
+				<Item id="1766" name="Je, una uhakika unataka kuhifadhi hati zote zilizorekebishwa?
+
+Chagua &quot;Ndiyo kila wakati&quot; ikiwa hutaki kuona mazungumzo haya tena.
+Unaweza kuwezesha tena kidirisha hiki katika Mapendeleo baadaye."/>
+				<Item id="6" name="Ndiyo"/>
+				<Item id="7" name="Hapana"/>
+				<Item id="4" name="Daima ndiyo"/>
+			</DoSaveAll><!-- HowToReproduce: Check the "Enable Save All confirm dialog" checkbox in Preference->MISC, now click "Save all" -->
+
+			<DebugInfo title="Maelezo ya Utatuzi">
+				<Item id="1752" name="Nakili maelezo ya utatuzi kwenye ubao wa kunakili"/>
+				<Item id="1" name="SAWA"/>
+			</DebugInfo>
+					<MacStrings>
+				<Item id="90001" name="Matokeo ya utafutaji"/>
+				<Item id="90002" name="Funga Matokeo ya Utafutaji"/>
+				<Item id="90003" name="Futa Yote"/>
+				<Item id="90004" name="Funga paneli"/>
+				<Item id="90005" name="Paneli ya Mradi"/>
+				<Item id="90006" name="Udhibiti wa Chanzo"/>
+				<Item id="90007" name="Ahadi"/>
+				<Item id="90008" name="Ahadi Imeshindwa"/>
+				<Item id="90009" name="Hakuna hazina ya git\nTumia Vinjari ili kufungua repo."/>
+				<Item id="90010" name="Jukwaa"/>
+				<Item id="90011" name="Fungua jukwaa"/>
+				<Item id="90012" name="Jukwaa Zote"/>
+				<Item id="90013" name="Onyesha Zote"/>
+				<Item id="90014" name="Ujumbe wa ahadi\u2026"/>
+				<Item id="90015" name="Vinjari hazina\u2026"/>
+				<Item id="90016" name="Chagua folda ya hazina ya git"/>
+				<Item id="90017" name="(hakuna hazina)"/>
+				<Item id="90018" name="(imetengwa)"/>
+				<Item id="90019" name="Hitilafu isiyojulikana"/>
+				<Item id="90020" name="Hakuna chaguo za kukokotoa zilizopatikana"/>
+				<Item id="90021" name="Tafuta kipengele..."/>
+				<Item id="90022" name="Panua Yote"/>
+				<Item id="90023" name="Tafuta Faili ya Sasa"/>
+				<Item id="90024" name="Onyesha upya"/>
+				<Item id="90025" name="Panga vitendaji (A hadi Z)"/>
+				<Item id="90026" name="Matokeo"/>
+				<Item id="90027" name="Acha"/>
+				<Item id="90028" name="Utafutaji umesimamishwa."/>
+				<Item id="90029" name="Inatafuta\u2026"/>
+				<Item id="90030" name="Maandishi ya kutafuta"/>
+				<Item id="90031" name="*.txt, *.cpp, \u2026"/>
+				<Item id="90032" name="Inatafuta..."/>
+				<Item id="90033" name="Badilisha:"/>
+				<Item id="90034" name="Neno zima"/>
+				<Item id="90035" name="Neno zima"/>
+				<Item id="90036" name="Funga"/>
+				<Item id="90037" name="Mhusika"/>
+				<Item id="90038" name="Jina la HTML"/>
+				<Item id="90039" name="Desimali ya HTML"/>
+				<Item id="90040" name="HTML Heksadesimali"/>
+				<Item id="90041" name="Thamani"/>
+				<Item id="90042" name="Kipindi Tupu"/>
+				<Item id="90043" name="Faili ya kipindi iliyochaguliwa haina vichupo."/>
+				<Item id="90044" name="Mzigo Kikao"/>
+				<Item id="90045" name="Hifadhi Kipindi"/>
+				<Item id="90046" name="Futa Faili za Hivi Punde"/>
+				<Item id="90047" name="Faili haijapatikana"/>
+				<Item id="90048" name="Hakuna Macro Iliyorekodiwa"/>
+				<Item id="90049" name="Rekodi makro kwanza kwa kutumia Anza Kurekodi."/>
+				<Item id="90050" name="Hakuna migongano ya njia za mkato."/>
+				<Item id="90051" name="Jina la Faili"/>
+				<Item id="90052" name="Aina"/>
+				<Item id="90053" name="Njia"/>
+				<Item id="90054" name="Nenda kwa Mstari"/>
+				<Item id="90055" name="Ingiza Tarehe/Saa"/>
+				<Item id="90056" name="Badilisha Usimbaji"/>
+				<Item id="90057" name="Hifadhi Nakala Kama"/>
+				<Item id="90058" name="Hamisha hadi kwenye Tupio"/>
+				<Item id="90059" name="Upau wa Kichwa"/>
+				<Item id="90060" name="Onyesha njia kamili ya faili katika upau wa kichwa"/>
+				<Item id="90061" name="Onyesha upau wa hali"/>
+				<Item id="90062" name="Ukubwa wa kichupo:"/>
+				<Item id="90063" name="Upana wa kengele:"/>
+				<Item id="90064" name="Kiwango cha kupepesa cha Caret (ms):"/>
+				<Item id="90065" name="Utoaji wa herufi:"/>
+				<Item id="90066" name="Upana wa juu wa kichupo (pikseli):"/>
+				<Item id="90067" name="Ukingo Wima"/>
+				<Item id="90068" name="Hali ya ukingo:"/>
+				<Item id="90069" name="Safu wima ya ukingo:"/>
+				<Item id="90070" name="Upana wa nambari ya laini"/>
+				<Item id="90071" name="Kushoto:"/>
+				<Item id="90072" name="Kulia:"/>
+				<Item id="90073" name="Mwisho wa mstari chaguomsingi:"/>
+				<Item id="90074" name="Usimbaji chaguomsingi:"/>
+				<Item id="90075" name="Washa kipengele cha kuhifadhi nakala kiotomatiki"/>
+				<Item id="90076" name="Muda wa kuhifadhi nakala (sekunde):"/>
+				<Item id="90077" name="Mahali pa kuhifadhi:"/>
+				<Item id="90078" name="Mtindo wa Rangi"/>
+				<Item id="90079" name="(kurithi)"/>
+				<Item id="90080" name="Ingiza Mandhari ya Mtindo"/>
+				<Item id="90081" name="Kategoria"/>
+				<Item id="90082" name="Andika ili kuchuja..."/>
+				<Item id="90083" name="Hakuna mizozo ya njia ya mkato ya kipengee hiki."/>
+				<Item id="90084" name="Programu-jalizi"/>
+				<Item id="90085" name="Toleo"/>
+				<Item id="90086" name="Usakinishaji Umekamilika"/>
+				<Item id="90087" name="Anzisha tena programu ili kupakia programu jalizi zilizosakinishwa."/>
+				<Item id="90088" name="Sakinisha Programu-jalizi"/>
+				<Item id="90089" name="Ondoa Programu-jalizi"/>
+				<Item id="90090" name="Hakuna amri zilizopatikana"/>
+				<Item id="90091" name="Andika ili kutafuta\u2026"/>
+				<Item id="90092" name="Lugha Iliyobainishwa na Mtumiaji v.2.1"/>
+				<Item id="90093" name="Unda Lugha Mpya"/>
+				<Item id="90094" name="Andika jina:"/>
+				<Item id="90095" name="Rangi ya mandhari ya mbele:"/>
+				<Item id="90096" name="Rangi ya usuli:"/>
+				<Item id="90097" name="Usihifadhi"/>
+				<Item id="90098" name="Imekamilika"/>
+				<Item id="90099" name="Geuza Ufungaji wa Neno"/>
+				<Item id="90100" name="Onyesha Wahusika Wote"/>
+				<Item id="90101" name="Onyesha Chaguo za Wahusika"/>
+				<Item id="90102" name="Geuza Mwongozo wa Kujongeza"/>
+				<Item id="90103" name="Bado Haijatekelezwa"/>
+				<Item id="90104" name="Pakia upya kutoka kwa Disk"/>
+				<Item id="90105" name="Badilisha Injini ya Kutafuta"/>
+				<Item id="90106" name="Hitilafu ya Kutekeleza"/>
+				<Item id="90107" name="Muda wa Kupakia Notepad++"/>
+				<Item id="90108" name="Imeshindwa Kuangalia Usasisho"/>
+				<Item id="90109" name="Umesasishwa"/>
+				<Item id="90110" name="Pakua"/>
+				<Item id="90111" name="Ukurasa wa Kutolewa"/>
+				<Item id="90112" name="Baadaye"/>
+				<Item id="90113" name="Chuja programu-jalizi\u2026"/>
+				<Item id="90114" name="Inapatikana"/>
+				<Item id="90115" name="Masasisho"/>
+				<Item id="90116" name="Imesakinishwa"/>
+				<Item id="90117" name="Haioani"/>
+				<Item id="90118" name="Imeshindwa Kusakinisha"/>
+				<Item id="90119" name="Ungependa kuondoa programu-jalizi zifuatazo?"/>
+				<Item id="90120" name="Sakinisha programu-jalizi zifuatazo?"/>
+				<Item id="90121" name="Hii itafuta faili za programu-jalizi."/>
+				<Item id="90122" name="Tafuta amri\u2026"/>
+				<Item id="90123" name="Rangi ya mbele"/>
+				<Item id="90124" name="Rangi ya usuli"/>
+				<Item id="90125" name="Jina la jumla"/>
+				<Item id="90126" name="Jina la Jumla"/>
+				<Item id="90127" name="Macro iliyorekodiwa kwa sasa"/>
+				<Item id="90128" name="Macro Manager"/>
+				<Item id="90129" name="Hakuna Macros Zilizohifadhiwa"/>
+				<Item id="90130" name="Rekodi na uhifadhi makro kwanza."/>
+				<Item id="90131" name="Futa Njia ya mkato"/>
+				<Item id="90132" name="Menyu kuu"/>
+				<Item id="90133" name="Macro"/>
+				<Item id="90134" name="Endesha amri"/>
+				<Item id="90135" name="Amri za programu-jalizi"/>
+				<Item id="90136" name="Amri za Scintilla"/>
+				<Item id="90137" name="Hoja za Mstari wa Amri"/>
+				<Item id="90138" name="Jina la amri kwa menyu ya Run"/>
+				<Item id="90139" name="Alama zote zimefutwa."/>
+				<Item id="90140" name="Maandishi yenye alama yamenakiliwa kwenye ubao wa kunakili."/>
+				<Item id="90141" name="Hakuna maandishi yaliyowekwa alama ya kunakili."/>
+				<Item id="90142" name="Inatafuta... %ld hit(vi)\u2014 %@"/>
+				<Item id="90143" name="Inabadilisha katika faili..."/>
+				<Item id="90144" name="Badilisha katika Miradi: Bado haijaunganishwa."/>
+				<Item id="90145" name="Pata katika Miradi: Bado haijaunganishwa kwenye orodha ya faili za Paneli ya Mradi."/>
+				<Item id="90146" name="Nafasi ya kazi ilirekebishwa."/>
+				<Item id="90147" name="Je, ungependa kuhifadhi mabadiliko?"/>
+				<Item id="90148" name="Matokeo ya utafutaji"/>
+				<Item id="90149" name="Angazia mstari wa sasa"/>
+				<Item id="90150" name="Onyesha nambari za laini"/>
+				<Item id="90151" name="Onyesha nafasi nyeupe"/>
+				<Item id="90152" name="Onyesha alama za EOL"/>
+				<Item id="90153" name="Onyesha ukingo wa alamisho"/>
+				<Item id="90154" name="Tumia vichupo (badala ya nafasi)"/>
+				<Item id="90155" name="Sogeza zaidi ya mstari wa mwisho"/>
+				<Item id="90156" name="Nakili/kata laini bila kuchagua"/>
+				<Item id="90157" name="Zima maandishi yaliyochaguliwa ya kuburuta"/>
+				<Item id="90158" name="Washa uangaziaji mahiri"/>
+				<Item id="90159" name="Uangaziaji mahiri: kipochi cha mechi"/>
+				<Item id="90160" name="Uangaziaji mahiri: neno zima pekee"/>
+				<Item id="90161" name="Bofya mara mbili ili kufunga kichupo"/>
+				<Item id="90162" name="Onyesha kitufe cha kufunga kwenye vichupo"/>
+				<Item id="90163" name="Kumbuka mwonekano wa paneli katika vipindi vyote"/>
+				<Item id="90164" name="Weka maingizo ya faili yasiyopo kwenye kipindi"/>
+				<Item id="90165" name="Thibitisha kabla ya Hifadhi Yote"/>
+				<Item id="90166" name="Thibitisha Badilisha Vyote katika hati wazi"/>
+				<Item id="90167" name="Badilisha: usihamie tukio linalofuata"/>
+				<Item id="90168" name="Tumia fonti iliyo na nafasi moja kwenye kidirisha cha Tafuta"/>
+				<Item id="90169" name="Bofya kulia huhifadhi uteuzi"/>
+				<Item id="90170" name="Badilisha tarehe/saa chaguo-msingi"/>
+				<Item id="90171" name="Tumia vichanganuzi vya orodha ya kukokotoa vinavyotokana na XML"/>
+				<Item id="90172" name="Funga mabano kiotomatiki ( ) [ ] { }"/>
+				<Item id="90173" name="Kutoka kwa mhusika Nth:"/>
+				<Item id="90174" name="Kiwango cha kukagua kiotomatiki katika uteuzi (baiti):"/>
+				<Item id="90175" name="Iliyoongezwa (\\n, \\r, \\t, \\0, \\x...)"/>
+				<Item id="90176" name="Mhariri"/>
+				<Item id="90177" name="Pembezoni"/>
+				<Item id="90178" name="Giza"/>
+				<Item id="90179" name="Mwanga"/>
+				<Item id="90180" name="Otomatiki (Fuata Mfumo)"/>
+				<Item id="90181" name="Nyembamba (px 1)"/>
+				<Item id="90182" name="Wastani (2px)"/>
+				<Item id="90183" name="Nene (px 3)"/>
+				<Item id="90184" name="Imezimwa"/>
+				<Item id="90185" name="Mandharinyuma"/>
+				<Item id="90186" name="Antialiased"/>
+				<Item id="90187" name="LCD Imeboreshwa"/>
+				<Item id="90188" name="Rahisi +/-"/>
+				<Item id="90189" name="Windows (CRLF)"/>
+				<Item id="90190" name="Mac (CR)"/>
+				<Item id="90191" name="Hazina ya orodha ya programu-jalizi"/>
+				<Item id="90192" name="Chagua faili ya XML ya mandhari ya Notepad++ ili kutumia"/>
+				<Item id="90193" name="Unda mpya\u2026"/>
+				<Item id="90194" name="Hifadhi kama\u2026"/>
+				<Item id="90195" name="Lugha ya mtumiaji:"/>
+				<Item id="90196" name="Jina la lugha"/>
+				<Item id="90197" name="Unda"/>
+				<Item id="90198" name="Hifadhi Kama"/>
+				<Item id="90199" name="es"/>
+				<Item id="90200" name="katika faili nzima"/>
+				<Item id="90201" name="Vikomo vya Waendeshaji"/>
+				<Item id="90202" name="Masafa Batili"/>
+				<Item id="90203" name="Thamani za safu lazima ziwe 0-255 na mwanzo lazima iwe &lt;= mwisho."/>
+				<Item id="90204" name="contextMenu.xml Haijapatikana"/>
+				<Item id="90205" name="Anzisha upya Notepad++ ili kuunda upya muktadha chaguo-msingiMenu.xml."/>
+				<Item id="90206" name="Faili ina mabadiliko ambayo hayajahifadhiwa.Kupakia upya kwa usimbaji mpya kutazitupa.Ungependa kuendelea?"/>
+				<Item id="90207" name="Hakuna jibu kutoka kwa seva."/>
+				<Item id="90208" name="Hali ya seva iliyorejeshwa"/>
+				<Item id="90209" name="Hifadhi inaweza kuwa ya faragha."/>
+				<Item id="90210" name="Inapatikana"/>
+				<Item id="90211" name="ni toleo la hivi punde."/>
+				<Item id="90212" name="Kwa sasa unaendesha"/>
+				<Item id="90213" name="Pata Hapa"/>
+				<Item id="90214" name="Kituo Hapa"/>
+				<Item id="90215" name="Faili za lugha ya ziada (.xml) zinaweza kuwekwa katika:"/>
+							<Item id="90216" name="Amri Palette…"/>
+				<Item id="90217" name="Ukaguzi wa Tahajia"/>
+				<Item id="90218" name="Andika ili kutafuta..."/>
+				<Item id="90219" name="Dirisha Jipya"/>
+				<Item id="90220" name="Ruka amp ya Sasa;Nenda kwa Ijayo Chagua nyingi"/>
+				<Item id="90221" name="Sifa Iliyofungwa (macOS)"/>
+				<Item id="90222" name="Angalia Usasisho…"/>
+				<Item id="90223" name="Fungua Hivi Karibuni"/>
+			</MacStrings>
+		</Dialog>
+		<MessageBox>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<ContextMenuXmlEditWarning title="Kuhariri muktadhaMenu" message="Kuhariri muktadhaMenu.xml hukuruhusu kurekebisha menyu ibukizi ya Notepad++ yako.
+Inabidi uanzishe tena Notepad++ yako ili ianze kutumika baada ya kurekebisha contextMenu.xml."/>
+			<SaveCurrentModifWarning title="Hifadhi Marekebisho ya Sasa" message="Unapaswa kuhifadhi urekebishaji wa sasa.
+Marekebisho yote yaliyohifadhiwa hayawezi kutenduliwa.
+
+Ungependa kuendelea?"/><!-- HowToReproduce: when you openned file is modified but unsaved yet, and you are changing file encoding. -->
+			<LoseUndoAbilityWarning title="Poteza Tendua Onyo la Uwezo" message="Unapaswa kuhifadhi urekebishaji wa sasa.
+Marekebisho yote yaliyohifadhiwa hayawezi kutenduliwa.
+
+Ungependa kuendelea?"/><!-- HowToReproduce: when you openned file is modified and saved, then you are changing file encoding. -->
+			<CannotMoveDoc title="Hamisha hadi kwenye Notepad++ mpya ya Instance" message="Hati imerekebishwa, ihifadhi kisha ujaribu tena."/><!-- HowToReproduce: From your Notepad++ drag & drop a clean (not dirty) file to outside of Notepad++, another instance of Notepad++ will be created. Then from your first Notepad++ drag & drop an unsaved file to the new instance. -->
+			<DocReloadWarning title="Pakia upya" message="Je, una uhakika unataka kupakia upya faili ya sasa na kupoteza mabadiliko yaliyofanywa katika Notepad++?"/>
+			<FileLockedWarning title="Imeshindwa kuhifadhi" message="Tafadhali angalia ikiwa faili hii imefunguliwa katika programu nyingine"/>
+			<FileAlreadyOpenedInNpp title="" message="Faili tayari imefunguliwa katika Notepad++."/><!-- HowToReproduce: Open a new document and open a file "c:/tmp/foo", save this new document by choosing "c:/tmp/foo" as file to save, reply the override popup "yes", then this message appears. -->
+			<RenameTabTemporaryNameAlreadyInUse title="Imeshindwa kubadilisha jina" message="Jina lililobainishwa tayari linatumika kwenye kichupo kingine."/><!-- HowToReproduce: Rename the tab of an untitled document and provide a name that is the same as an already-existing tab of an untitled document. -->
+			<RenameTabTemporaryNameIsEmpty title="Imeshindwa kubadilisha jina" message="Jina lililobainishwa haliwezi kuwa tupu, au haliwezi kuwa na nafasi au TAB pekee."/><!-- HowToReproduce: Rename the tab of an untitled document and provide an empty string or only some white speces. -->
+			<DeleteFileFailed title="Futa Faili" message="Imeshindwa kufuta Faili"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+
+			<NbFileToOpenImportantWarning title="Kiasi cha faili za kufungua ni kikubwa mno" message="$INT_REPLACE$ files are about to be opened.
+Are you sure you want to open them?"/><!-- HowToReproduce: Check "Open all files of folder instead of launching Folder as Workspace on folder dropping" in "Default Directory" of Preferences dialog, then drop a folder which contains more then 200 files into Notepad++. -->
+			<SettingsOnCloudError title="Mipangilio kwenye Cloud" message="Inaonekana njia ya mipangilio kwenye wingu imewekwa kwenye kiendeshi cha kusoma tu,
+au kwenye folda ilihitaji haki ya upendeleo kwa ufikiaji wa kuandika.
+Mipangilio yako kwenye wingu itaghairiwa.Tafadhali weka upya thamani thabiti kupitia kidirisha cha Mapendeleo."/>
+			<FilePathNotFoundWarning title="Faili Fungua" message="Faili unayojaribu kufungua haipo."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SessionFileInvalidError title="Haikuweza Kupakia Kipindi" message="Faili ya kipindi imeharibika au si sahihi."/><!-- HowToReproduce: Save current session via menu "File -> Save Session...", use another editor to modify the session you saved to make it an invalid xml file. Then load this invalid session via menu "File -> Load Session...". -->
+			<DroppingFolderAsProjectModeWarning title="Kitendo batili" message="Unaweza tu kudondosha faili au folda lakini si zote mbili, kwa sababu uko katika kudondosha Folda kama modi ya Mradi.
+Lazima uwashe &quot;Fungua faili zote za folda badala ya kuzindua Folda kama Nafasi ya Kazi kwenye kushuka kwa folda&quot; katika sehemu ya &quot;Saraka Chaguomsingi&quot; ya kidirisha cha Mapendeleo ili kufanya operesheni hii ifanye kazi."/>
+			<SortingError title="Hitilafu ya Kupanga" message="Imeshindwa kupanga nambari kwa sababu ya mstari $INT_REPLACE$."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SortLocaleMultiple title="Upangaji haujatekelezwa" message="Kupanga chaguo nyingi hakutumiki."/><!-- HowToReproduce: Make a multiple selection and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<SortLocaleUnknown title="Kupanga Haijafaulu" message="Sababu ya upangaji kushindwa haiwezi kubainishwa."/><!-- HowToReproduce: This condition is theoretical; it is unknown what could cause it. -->
+			<SortLocaleExcept title="Kupanga Haijafaulu" message="$STR_REPLACE$"/><!-- HowToReproduce: Open a large file, e.g. 500MB / 90k lines, in 32-bit Notepad++ and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<ColumnModeTip title="Kidokezo cha Hali ya Safu" message="Kuna njia 3 za kubadilisha hadi hali ya kuchagua safu:
+
+1. (Kibodi na Kipanya) Shikilia Alt huku ukiburuta kwa kubofya kushoto
+
+2. (Kibodi pekee) Shikilia Alt+Shift unapotumia vitufe vya vishale
+
+3. (Kibodi au Kipanya)
+Weka caret kwenye mwanzo unaotaka wa nafasi ya kuzuia safu wima, basi
+kutekeleza amri ya &quot;Anza / Mwisho Chagua katika Hali ya Safu&quot;;
+Sogeza caret hadi mwisho unaotaka wa nafasi ya kuzuia safu wima, kisha
+tekeleza amri ya &quot;Anza/Maliza Teua katika Hali ya Safu&quot;"/>
+			<BufferInvalidWarning title="Imeshindwa kuhifadhi" message="Haiwezi kuhifadhi: Buffer ni batili."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<DoCloseOrNot title="Weka faili ambayo haipo" message="Faili &quot;$STR_REPLACE$&quot; haipo tena.
+Je, ungependa kuhifadhi faili hii katika kihariri?"/>
+			<DoDeleteOrNot title="Futa faili" message="Faili &quot;$STR_REPLACE$&quot;
+itahamishwa hadi kwenye Recycle Bin yako na hati hii itafungwa.
+Ungependa kuendelea?"/>
+			<NoBackupDoSaveFile title="Hifadhi" message="Faili yako ya chelezo haiwezi kupatikana (iliyofutwa kutoka nje).
+Ihifadhi vinginevyo data yako itapotea
+Je, ungependa kuhifadhi faili &quot;$STR_REPLACE$&quot; ?"/>
+			<DoReloadOrNot title="Pakia upya" message="&quot;$STR_REPLACE$&quot;
+
+Faili hii imebadilishwa na programu nyingine.
+Je, ungependa kuipakia upya?"/>
+			<DoReloadOrNotAndLooseChange title="Pakia upya" message="&quot;$STR_REPLACE$&quot;
+
+Faili hii imebadilishwa na programu nyingine.
+Je, ungependa kuipakia upya na kupoteza mabadiliko yaliyofanywa katika Notepad++?"/>
+			<PrehistoricSystemDetected title="Mfumo wa kabla ya historia umegunduliwa" message="Inaonekana bado unatumia mfumo wa prehistoric.Kipengele hiki hufanya kazi tu kwenye mfumo wa kisasa, samahani."/><!-- HowToReproduce: Launch "Document Map" under Windows XP. -->
+			<XpUpdaterProblem title="Kisasisho cha Notepad++" message="Kisasisho cha Notepad++ hakioani na XP kwa sababu ya safu ya usalama ya kizamani chini ya XP.
+Je, ungependa kwenda kwenye ukurasa wa Notepad++ ili kupakua toleo jipya zaidi?"/><!-- HowToReproduce: Run menu "? -> Update Notepad++" under Windows XP. -->
+			<GUpProxyConfNeedAdminMode title="Mipangilio ya Seva" message="Tafadhali zindua upya Notepad++ katika hali ya Msimamizi ili kusanidi seva mbadala."/>
+			<DocTooDirtyToMonitor title="Tatizo la ufuatiliaji" message="Hati ni chafu.Tafadhali hifadhi marekebisho kabla ya kuyafuatilia."/>
+			<DocNoExistToMonitor title="Tatizo la ufuatiliaji" message="Faili inapaswa kuwepo ili kufuatiliwa."/>
+			<FileTooBigToOpen title="Tatizo la ukubwa wa faili" message="Faili ni kubwa sana kufunguliwa na Notepad++"/><!-- HowToReproduce: Try to open a 4GB file (it's not easy to reproduce, it depends on your system). -->
+			<FileLoadingException title="Msimbo wa ubaguzi: $STR_REPLACE$" message="Hitilafu imetokea wakati wa kupakia faili!"/>
+			<WantToOpenHugeFile title="Inafungua onyo kubwa la faili" message="Kufungua faili kubwa ya 2GB+ kunaweza kuchukua dakika kadhaa.
+Je, ungependa kuifungua?"/>
+			<CreateNewFileOrNot title="Unda faili mpya" message="&quot;$STR_REPLACE$&quot; haipo.Je, ungependa kuiunda?"/>
+			<CreateNewFileError title="Unda faili mpya" message="Haiwezi kuunda faili &quot;$STR_REPLACE$&quot;."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<OpenFileError title="HITILAFU" message="Haiwezi kufungua faili &quot;$STR_REPLACE$&quot;."/>
+			<OpenFileNoFolderError title="Haiwezi kufungua faili" message="&quot;$STR_REPLACE1$&quot; haiwezi kufunguliwa:
+Folda &quot;$STR_REPLACE2$&quot; haipo."/>
+			<FileBackupFailed title="Hifadhi Nakala ya Faili Imeshindwa" message="Toleo la awali la faili halikuweza kuhifadhiwa kwenye saraka ya chelezo katika &quot;$STR_REPLACE$&quot;.
+
+Je, ungependa kuhifadhi faili ya sasa hata hivyo?"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<LoadStylersFailed title="Pakia stylers.xml imeshindwa" message="Upakiaji &quot;$STR_REPLACE$&quot; haukufaulu!"/>
+			<LoadLangsFailed title="Kisanidi" message="Imeshindwa kupakia langs.xml!
+Je, ungependa kurejesha langs.xml yako?"/><!-- HowToReproduce: Close Notepad++. Use another editor to remove all content of "langs.xml" (0 length) then save it. Open Notepad++. -->
+			<LoadLangsFailedFinal title="Kisanidi" message="Imeshindwa kupakia langs.xml!"/><!-- HowToReproduce: Close Notepad++. Use another editor to make "langs.xml" an invalid xml file then save it. Open Notepad++. -->
+			<FolderAsWorspaceSubfolderExists title="Folda kama Nafasi ya kazi ya kuongeza tatizo la folda" message="Folda ndogo ya folda unayotaka kuongeza ipo.
+Tafadhali ondoa mzizi wake kwenye paneli kabla ya kuongeza folda &quot;$STR_REPLACE$&quot;."/><!-- HowToReproduce: Add a folder like "c:\temp\aFolder\" into "Folder as Workspace" panel, then try to add "c:\temp\". -->
+
+			<ProjectPanelChanged title="$STR_REPLACE$" message="Nafasi ya kazi ilirekebishwa.Je, ungependa kuihifadhi?"/>
+			<ProjectPanelSaveError title="$STR_REPLACE$" message="Hitilafu ilitokea wakati wa kuandika faili yako ya nafasi ya kazi.
+Nafasi yako ya kazi haijahifadhiwa."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<ProjectPanelOpenDoSaveDirtyWsOrNot title="Fungua Nafasi ya Kazi" message="Nafasi ya kazi ya sasa ilirekebishwa.Je, ungependa kuhifadhi mradi wa sasa?"/>
+			<ProjectPanelNewDoSaveDirtyWsOrNot title="Nafasi Mpya ya Kazi" message="Nafasi ya kazi ya sasa ilirekebishwa.Je, ungependa kuhifadhi mradi wa sasa?"/>
+			<ProjectPanelOpenFailed title="Fungua Nafasi ya Kazi" message="Nafasi ya kazi haikuweza kufunguliwa.
+Inaonekana faili ya kufungua sio faili halali ya mradi."/>
+			<ProjectPanelRemoveFolderFromProject title="Ondoa folda kutoka kwa mradi" message="Vipengee vidogo vyote vitaondolewa.
+Je, una uhakika unataka kuondoa folda hii kutoka kwa mradi?"/>
+			<ProjectPanelRemoveFileFromProject title="Ondoa faili kutoka kwa mradi" message="Je, una uhakika unataka kuondoa faili hii kutoka kwa mradi?"/>
+			<ProjectPanelReloadError title="Pakia upya Nafasi ya Kazi" message="Haiwezi kupata faili ya kupakia upya."/>
+			<ProjectPanelReloadDirty title="Pakia upya Nafasi ya Kazi" message="Nafasi ya kazi ya sasa ilirekebishwa.Kupakia upya kutatupa marekebisho yote.
+Je, ungependa kuendelea?"/>
+			<UDLNewNameError title="Hitilafu ya UDL" message="Jina hili hutumiwa na lugha nyingine,
+tafadhali nipe nyingine."/>
+			<UDLRemoveCurrentLang title="Ondoa lugha ya sasa" message="Je, una uhakika?"/>
+			<UDL_importSuccessful title="Lugha Iliyobainishwa na Mtumiaji" message="Imefaulu kuleta."/>
+			<UDL_importFails title="Lugha Iliyobainishwa na Mtumiaji" message="Imeshindwa kuleta."/>
+			<UDL_saveBeforeImport title="Lugha Iliyobainishwa na Mtumiaji" message="Kabla ya kuhamisha, hifadhi ufafanuzi wa lugha yako kwa kubofya kitufe cha &quot;Hifadhi Kama...&quot;."/> <!-- HowToReproduce: Choose "User Defined Language" in User Language combobox, then click on "Export... button". -->
+			<UDL_exportSuccessful title="Lugha Iliyobainishwa na Mtumiaji" message="Uhamishaji umefaulu."/>
+			<UDL_exportFails title="Lugha Iliyobainishwa na Mtumiaji" message="Imeshindwa kuhamisha."/>
+			<SCMapperDoDeleteOrNot title="Je, una uhakika?" message="Je, una uhakika unataka kufuta njia hii ya mkato?"/>
+			<FindCharRangeValueError title="Tatizo la Thamani ya Masafa" message="Unapaswa kuandika kati ya 0 na 255."/> <!-- HowToReproduce: Search menu, then Find characters in range, select Custom range, enter 999 in either edit box, press Find. -->
+			<OpenInAdminMode title="Imeshindwa kuhifadhi" message="Faili haiwezi kuhifadhiwa na inaweza kulindwa.
+Je, ungependa kuzindua Notepad++ katika hali ya Msimamizi?"/>
+			<OpenInAdminModeWithoutCloseCurrent title="Imeshindwa kuhifadhi" message="Faili haiwezi kuhifadhiwa na inaweza kulindwa.
+Je, ungependa kuzindua Notepad++ katika hali ya Msimamizi?"/>
+			<OpenInAdminModeFailed title="Imeshindwa kufungua katika hali ya Msimamizi" message="Notepad++ haiwezi kufunguliwa katika hali ya Msimamizi."/><!-- HowToReproduce: When you have no Admin privilege and you try to save a modified file in a protected location (for example: any file in sub-folder of "C:\Program Files\". This message will appear after replying "Yes" to "Open in Admin mode" dialog. -->
+			<ViewInBrowser title="Tazama Faili ya Sasa katika Kivinjari" message="Programu haiwezi kupatikana kwenye mfumo wako."/>
+			<ExitToUpdatePlugins title="Notepad++ inakaribia kuondoka" message="Ukibofya NDIYO, utaacha Notepad++ ili kuendelea na shughuli.
+Notepad++ itaanzishwa upya baada ya shughuli zote kukomeshwa.
+Ungependa kuendelea?"/>
+			<NeedToRestartToLoadPlugins title="Notepad++ inahitaji kuzinduliwa upya" message="Lazima uanzishe tena Notepad++ ili kupakia programu jalizi ulizosakinisha."/><!-- HowToReproduce: Import a plugin via menu "Settings->Import->Import Plugin(s)...". -->
+			<ChangeHistoryEnabledWarning title="Notepad++ inahitaji kuzinduliwa upya" message="Lazima uanzishe tena Notepad++ ili kuwezesha Historia ya Mabadiliko."/><!-- HowToReproduce: uncheck "Display Change History" via Preferences dialog "Marges/Border/Edge. -->
+			<WindowsSessionExit title="Notepad++ - Toka kwa kipindi cha Windows" message="Kipindi cha Windows kinakaribia kukomeshwa lakini una data fulani ambayo haijahifadhiwa.Je, ungependa kuondoka kwenye Notepad++ sasa?"/>
+			<LanguageMenuCompactWarning title="Menyu ya Lugha Compact" message="Chaguo hili litabadilishwa kwenye uzinduzi unaofuata."/><!-- HowToReproduce: toggle "Make language menu compact" via Preferences dialog "Language/Language Menu. -->
+			<SwitchUnsavedThemeWarning title="$STR_REPLACE$" message="Mabadiliko ambayo hayajahifadhiwa yanakaribia kutupwa!
+Je, ungependa kuhifadhi mabadiliko yako kabla ya kubadilisha mandhari?"/><!-- HowToReproduce: In the Style Configurator dialog change some theme and switch to other theme without saving. -->
+			<MacroAndRunCmdlWarning title="Utangamano wa Amri za Macro na Run" message="Amri zako za Macro na Run zilizohifadhiwa katika Notepad++ v.8.5.2 (au zaidi) huenda zisioanishwe na toleo la sasa la Notepad++.
+Tafadhali jaribu amri hizo na, ikihitajika, zihariri upya.
+
+Vinginevyo, unaweza kushusha gredi hadi Notepad++ v8.5.2 na kurejesha data yako ya awali.
+Notepad++ itahifadhi nakala ya &quot;shortcuts.xml&quot; yako ya zamani na kuihifadhi kama &quot;shortcuts.xml.v8.5.2.backup&quot;.
+Kubadilisha jina la &quot;shortcuts.xml.v8.5.2.backup&quot; -&gt; &quot;shortcuts.xml&quot;, amri zako zinapaswa kurejeshwa na kufanya kazi ipasavyo."/><!-- HowToReproduce: Close Notepad++, remove shortcuts.xml.v8.5.2.backup & v852ShortcutsCompatibilityWarning.xml if present, relaunch Notepad++, delete or modify a shortcuts via Shortcut Mapper, close Notepad++, then the message will show up -->
+			<FullReadOnlySavingForbidden title="Imeshindwa kuhifadhi" message="Haiwezi kuhifadhi faili.
+Notepad++ hali iliyokatazwa ya kuhifadhi kamili ya kusoma pekee ilizuia faili kuhifadhiwa."/>
+			<NotEnoughRoom4Saving title="Imeshindwa kuhifadhi" message="Imeshindwa kuhifadhi faili.
+Inaonekana hakuna nafasi ya kutosha kwenye diski kuhifadhi faili.Faili yako haijahifadhiwa."/>
+			<FileInaccessibleUserSession title="Faili haipatikani" message="Baadhi ya faili kutoka kwa kipindi ulichohifadhi kwa mikono &quot;$STR_REPLACE$&quot; hazipatikani.Zinaweza kufunguliwa kama hati tupu na za kusoma tu kama vishikilia nafasi.
+
+Je, ungependa kuunda vishika nafasi hivyo?
+
+KUMBUKA: Ukichagua kutounda vishikilia nafasi au kuvifunga baadaye, kipindi chako ulichohifadhi kwa mikono HATITArekebishwa unapotoka."/>
+			<FileInaccessibleDefaultSessionXml title="Faili haipatikani" message="Baadhi ya faili za kipindi chako cha awali hazipatikani.Zinaweza kufunguliwa kama hati tupu na za kusoma tu kama vishikilia nafasi.
+
+Je, ungependa kuunda vishika nafasi hivyo?
+
+KUMBUKA: Ukichagua kutounda vishikilia nafasi au kuvifunga baadaye, kipindi chako KITABADILISHWA UTAKAPOONDOKA!Tunapendekeza uhifadhi nakala ya &quot;session.xml&quot; yako sasa."/>
+			<RTLvsDirectWrite title="Haiwezi kuendesha RTL" message="RTL haioani na modi ya DirectWrite.Tafadhali zima hali ya DirectWrite katika MISC.sehemu ya mazungumzo ya Mapendeleo, na uanze tena Notepad++."/>
+			<FileMemoryAllocationFailed title="Isipokuwa: Ugawaji wa kumbukumbu ya faili haukufaulu" message="Labda hakuna kumbukumbu ya kutosha ya bure ya faili inayopakiwa na Notepad++."/><!-- HowToReproduce: Try to open multiple files with total size > ~700MB in the x86 Notepad++ (it will depend on the PC memory configuration and the current system memory usage...). -->
+			<FindRegexBackwardDisabled title="Utafutaji wa nyuma wa Regex umezimwa" message="Kwa chaguo-msingi, utafutaji wa nyuma wa regex umezimwa kutokana na uwezekano wa matokeo yasiyotarajiwa.Ili kufanya utafutaji wa nyuma, fungua kidirisha cha Tafuta na uchague hali ya utafutaji ya kawaida au iliyopanuliwa badala ya kujieleza mara kwa mara.
+Bonyeza kitufe cha Sawa ili kufungua kidirisha cha Tafuta au uweke umakini juu yake.
+
+Ikiwa unahitaji kipengele cha utafutaji cha nyuma cha regex, wasiliana na mwongozo wa mtumiaji kwa maagizo ya kuiwezesha."/>
+			<PrintError title="0" message="Haiwezi kuanzisha hati ya kichapishi."/><!-- Use title="0" to use Windows OS default translated "Error" title. -->
+			<FindAutoChangeOfInSelectionWarning title="Tafuta onyo" message="Hali ya kisanduku cha kuteua &quot;Katika uteuzi&quot; imebadilishwa kiotomatiki.
+Tafadhali thibitisha hali ya utafutaji kabla ya kutekeleza kitendo."/> <!-- HowToReproduce: https://github.com/notepad-plus-plus/notepad-plus-plus/issues/14897#issuecomment-2564316224 -->
+			<Need2Restart2ShowMenuShortcuts title="Notepad++ inahitaji kuwashwa upya" message="Notepad++ inahitaji kuwashwa upya ili kuonyesha mikato ya menyu ya kulia."/>
+			<NoAdminRight2ChangeReadOnlyFileAttribute title="Imeshindwa kubadilisha sifa ya kusoma tu ya faili" message="Tafadhali endesha Notepad++ kama msimamizi ili kubadilisha sifa za faili."/>
+		</MessageBox>
+		<ClipboardHistory>
+			<PanelTitle name="Historia ya Ubao wa kunakili"/>
+		</ClipboardHistory>
+		<DocList>
+			<PanelTitle name="Orodha ya Hati"/>
+			<ColumnName name="Jina"/>
+			<ColumnExt name="Ext."/>
+			<ColumnPath name="Njia"/>
+			<ListGroups name="Kundi kwa Mwonekano"/>
+		</DocList>
+		<WindowsDlg>
+			<ColumnName name="Jina"/>
+			<ColumnPath name="Njia"/>
+			<ColumnType name="Aina"/>
+			<ColumnSize name="Ukubwa"/>
+			<ColumnDateTime name="Wakati uliorekebishwa"/>
+			<NbDocsTotal name="jumla ya hati:"/>
+			<MenuCopyName name="Nakili Majina"/>
+			<MenuCopyPath name="Nakili Njia (ma)jina"/>
+		</WindowsDlg>
+		<AsciiInsertion>
+			<PanelTitle name="Paneli ya Kuingiza Misimbo ya ASCII"/>
+			<ColumnVal name="Thamani"/>
+			<ColumnHex name="Hex"/>
+			<ColumnChar name="Mhusika"/>
+			<ColumnHtmlName name="Jina la HTML"/>
+			<ColumnHtmlNumber name="Desimali ya HTML"/>
+			<ColumnHtmlHexNb name="HTML Heksadesimali"/>
+		</AsciiInsertion>
+		<DocumentMap>
+			<PanelTitle name="Ramani ya Hati"/>
+		</DocumentMap>
+		<FunctionList>
+			<PanelTitle name="Orodha ya Kazi"/>
+			<SortTip name="Panga"/>
+			<ReloadTip name="Pakia upya"/>
+			<PreferencesTip name="Mapendeleo"/>
+			<PreferencesInitialSort name="Panga vitendaji (A hadi Z) kwa chaguomsingi"/>
+		</FunctionList>
+		<FolderAsWorkspace>
+			<PanelTitle name="Folda kama Nafasi ya Kazi"/>
+			<SelectFolderFromBrowserString name="Chagua folda ya kuongeza kwenye Folda kama paneli ya Nafasi ya Kazi"/>
+			<ExpandAllFoldersTip name="Fungua zote"/>
+			<CollapseAllFoldersTip name="Kunja zote"/>
+			<LocateCurrentFileTip name="Tafuta faili ya sasa"/>
+			<Menu>
+				<Item id="3511" name="Ondoa"/>
+				<Item id="3512" name="Ondoa Zote"/>
+				<Item id="3513" name="Ongeza"/>
+				<Item id="3514" name="Endeshwa na mfumo"/>
+				<Item id="3515" name="Fungua"/>
+				<Item id="3516" name="Nakili njia"/>
+				<Item id="3517" name="Tafuta katika Faili..."/>
+				<Item id="3518" name="Mchunguzi hapa"/>
+				<Item id="3519" name="CMD hapa"/>
+				<Item id="3520" name="Nakili jina la faili"/>
+			</Menu>
+		</FolderAsWorkspace>
+		<ProjectManager>
+			<PanelTitle name="Mradi"/>
+			<WorkspaceRootName name="Nafasi ya kazi"/>
+			<NewProjectName name="Jina la Mradi"/>
+			<NewFolderName name="Jina la Folda"/>
+			<Menus>
+				<Entries>
+					<Item id="0" name="Nafasi ya kazi"/>
+					<Item id="1" name="Hariri"/>
+				</Entries>
+				<WorkspaceMenu>
+					<Item id="3122" name="Nafasi Mpya ya Kazi"/>
+					<Item id="3123" name="Fungua Nafasi ya Kazi"/>
+					<Item id="3124" name="Pakia upya Nafasi ya Kazi"/>
+					<Item id="3125" name="Hifadhi"/>
+					<Item id="3126" name="Hifadhi Kama..."/>
+					<Item id="3127" name="Hifadhi Nakala Kama..."/>
+					<Item id="3121" name="Ongeza Mradi Mpya"/>
+					<Item id="3128" name="Tafuta katika Miradi..."/>
+				</WorkspaceMenu>
+				<ProjectMenu>
+					<Item id="3111" name="Badilisha jina"/>
+					<Item id="3112" name="Ongeza Folda"/>
+					<Item id="3113" name="Ongeza Faili..."/>
+					<Item id="3117" name="Ongeza Faili kutoka kwa Saraka..."/>
+					<Item id="3114" name="Ondoa"/>
+					<Item id="3118" name="Sogeza Juu"/>
+					<Item id="3119" name="Sogeza Chini"/>
+				</ProjectMenu>
+				<FolderMenu>
+					<Item id="3111" name="Badilisha jina"/>
+					<Item id="3112" name="Ongeza Folda"/>
+					<Item id="3113" name="Ongeza Faili..."/>
+					<Item id="3117" name="Ongeza Faili kutoka kwa Saraka..."/>
+					<Item id="3114" name="Ondoa"/>
+					<Item id="3118" name="Sogeza Juu"/>
+					<Item id="3119" name="Sogeza Chini"/>
+				</FolderMenu>
+				<FileMenu>
+					<Item id="3111" name="Badilisha jina"/>
+					<Item id="3115" name="Ondoa"/>
+					<Item id="3116" name="Rekebisha Njia ya Faili"/>
+					<Item id="3118" name="Sogeza Juu"/>
+					<Item id="3119" name="Sogeza Chini"/>
+				</FileMenu>
+			</Menus>
+		</ProjectManager>
+		<MiscStrings>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<word-chars-list-tip value="Hii hukuruhusu kujumuisha herufi za ziada katika herufi za sasa za maneno huku ukibofya mara mbili kwa uteuzi au kutafuta na chaguo la &quot;Linganisha neno zima pekee&quot; limechaguliwa."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, hover your mouse on the "?" button. -->
+
+			<!-- Don't translate "(&quot;EOL custom color&quot;)" -->
+			<eol-custom-color-tip value="Nenda kwenye Kisanidi cha Mtindo ili kubadilisha rangi maalum ya EOL (&quot;rangi maalum ya EOL&quot;).."/>
+
+			<word-chars-list-warning-begin value="Fahamu:"/>
+			<word-chars-list-space-warning value="$INT_REPLACE$ space(s)"/>
+			<word-chars-list-tab-warning value="$INT_REPLACE$ TAB(s)"/>
+			<word-chars-list-warning-end value="katika orodha yako ya wahusika."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, check "Add your character as part of word\r(don't choose it unless you know what you're doing)", then type a white-space in the text field. -->
+			<backup-select-folder value="Chagua folda kama saraka ya chelezo"/><!-- HowToReproduce: Settings > Preferences > Backup > [...] -->
+			<cloud-invalid-warning value="Njia batili."/>
+			<cloud-restart-warning value="Tafadhali anzisha upya Notepad++ ili ianze kutumika."/>
+			<cloud-select-folder value="Chagua folda kutoka/ambapo Notepad++ inasoma/kuandika mipangilio yake"/><!-- HowToReproduce: In "Cloud" section of Preferences dialog, check "Set your cloud location path here: ", then click the button "...". This message is displayed in the "Browse For Folder" dialog. -->
+			<default-open-save-select-folder value="Chagua folda kama saraka chaguo-msingi"/><!-- HowToReproduce: Settings > Preferences > Default Directory > [...] -->
+			<shift-change-direction-tip value="Tumia Shift+Enter kutafuta upande tofauti"/>
+			<two-find-buttons-tip value="Njia 2 za kupata vitufe"/>
+			<find-in-files-filter-tip value="Tafuta katika cpp, cxx, h, hxx hpp:
+*.cpp *.cxx *.h *.hxx *.hpp
+
+Pata faili zote isipokuwa exe, obj log:
+*.* !*.exe !*.obj !*.logi
+
+Pata faili zote lakini usiondoe majaribio ya folda, bin bin64:
+*.* !\majaribio !\bin*
+
+Pata faili zote lakini usiondoe logi zote za folda au kumbukumbu kwa kujirudia:
+*.* !+\logi*"/><!-- HowToReproduce: Tip of mouse hovered on "Filters" label in "Find in Files" section of Find dialog. -->
+			<find-in-files-select-folder value="Teua folda ya kutafuta kutoka"/><!-- HowToReproduce: Search > Find in Files > [...] -->
+			<find-in-files-dir-from-active-doc-tip value="Jaza sehemu ya Saraka kulingana na hati inayotumika"/><!-- HowToReproduce: Search > Find in Files > [<<] -->
+			<find-status-top-reached value="Tafuta: Hati iliyofikiwa mwanzo, tukio la kwanza kutoka chini limepatikana."/>
+			<find-status-end-reached value="Tafuta: Hati iliyofikiwa mwisho, tukio la kwanza kutoka juu limepatikana."/>
+			<find-status-replaceinfiles-1-replaced value="Badilisha katika Faili: Tukio 1 lilibadilishwa"/>
+			<find-status-replaceinfiles-nb-replaced value="Badilisha katika Faili: Matukio $INT_REPLACE$ yalibadilishwa"/>
+			<find-status-replaceinopenedfiles-1-replaced value="Badilisha katika Faili Zilizofunguliwa: Tukio 1 lilibadilishwa"/>
+			<find-status-replaceinopenedfiles-nb-replaced value="Badilisha katika Faili Zilizofunguliwa: Matukio $INT_REPLACE$ yalibadilishwa"/>
+			<find-status-invalid-re value="Tafuta: usemi batili wa kawaida"/>
+			<find-status-search-failed value="Tafuta: Imeshindwa kutafuta"/>
+			<find-status-mark-1-match value="Alama: mechi 1"/>
+			<find-status-mark-nb-matches value="Alama: $INT_REPLACE$ inalingana"/>
+			<find-status-count-1-match value="Hesabu: mechi 1"/>
+			<find-status-count-nb-matches value="Hesabu: $INT_REPLACE$ inalingana"/>
+			<find-status-replaceall-1-replaced value="Badilisha Zote: Tukio 1 lilibadilishwa"/>
+			<find-status-replaceall-nb-replaced value="Badilisha Yote: Matukio $INT_REPLACE$ yalibadilishwa"/>
+			<find-status-replaceall-readonly value="Badilisha Zote: Haiwezi kubadilisha maandishi.Hati ya sasa inasomwa tu"/>
+			<find-status-replace-end-reached value="Badilisha: Hati iliyofikiwa mwisho, ilianza kutoka juu."/>
+			<find-status-replace-top-reached value="Badilisha: Hati iliyofikiwa mwanzo, ilianza kutoka chini."/>
+			<find-status-replaced-next-found value="Badilisha: Tukio 1 lilibadilishwa.Tukio lililofuata lilipatikana."/>
+			<find-status-replaced-without-continuing value="Badilisha: Tukio 1 lilibadilishwa."/>
+			<find-status-replaced-next-not-found value="Badilisha: Tukio 1 lilibadilishwa.Hakuna matukio zaidi yaliyopatikana."/>
+			<find-status-replace-not-found value="Badilisha: hakuna tukio lililopatikana"/>
+			<find-status-replace-readonly value="Badilisha: Haiwezi kubadilisha maandishi.Hati ya sasa inasomwa tu"/>
+			<find-status-cannot-find value="Tafuta: Haiwezi kupata maandishi &quot;$STR_REPLACE$&quot;"/>
+			<find-status-cannot-find-pebkac-maybe value="Tukio lililotolewa haliwezi kupatikana.Huenda umesahau kuangalia &quot;Funga karibu&quot; (ILI KUWASHA), &quot;Kesi ya kulinganisha&quot; (ILI KUZIMWA), au &quot;Linganisha neno zima pekee&quot; (ILI KUZIMWA)."/>
+			<find-status-scope-selection value="katika maandishi yaliyochaguliwa"/>
+			<find-status-scope-all value="katika faili nzima"/>
+			<find-status-scope-backward value="kutoka mwanzo wa faili hadi caret"/>
+			<find-status-scope-forward value="kutoka caret hadi mwisho wa faili"/>
+			<find-status-invisible-chars-findWhat value="Vibambo visivyoonekana vilivyobandikwa &quot;Pata nini&quot; au &quot;Badilisha na&quot; maudhui"/>
+			<find-status-invisible-chars-findWhat-tip value="Onyo: Herufi zisizoonekana katika sehemu ya utafutaji (au badilisha).
+Maandishi yaliyobandikwa kwenye sehemu hii yanajumuisha herufi zisizoonekana (labda zinazomaliza mstari).Ikiwa utaendelea bila kuzifuta, zitajumuishwa katika maandishi ya utafutaji (au kubadilisha)."/>
+			<finder-find-in-finder value="Tafuta katika matokeo haya ya utafutaji..."/>
+			<finder-close-this value="Funga matokeo haya ya utafutaji"/>
+			<finder-collapse-all value="Kunja zote"/>
+			<finder-uncollapse-all value="Fungua zote"/>
+			<finder-copy value="Nakili Mstari Uliochaguliwa"/>
+			<finder-copy-selected-paths value="Nakili Njia Zilizochaguliwa"/>
+			<finder-clear-all value="Futa zote"/>
+			<finder-open-selected-paths value="Fungua Njia Zilizochaguliwa"/>
+			<finder-purge-for-every-search value="Futa kwa kila utafutaji"/>
+			<finder-wrap-long-lines value="Mistari mirefu ya kufunga maneno"/>
+			<common-ok value="SAWA"/>
+			<common-cancel value="Ghairi"/>
+			<common-name value="Jina"/>
+			<tabrename-title value="Badilisha Jina la Kichupo Cha Sasa"/>
+			<tabrename-newname value="Jina jipya"/>
+			<splitter-rotate-left value="Zungusha kwenda kushoto"/>
+			<splitter-rotate-right value="Zungusha kulia"/>
+			<userdefined-title-new value="Unda Lugha Mpya..."/>
+			<userdefined-title-save value="Hifadhi Jina la Lugha ya Sasa Kama..."/>
+			<userdefined-title-rename value="Badilisha Jina la Lugha ya Sasa"/>
+			<summary value="Muhtasari"/>
+			<summary-filepath value="Njia kamili ya faili:"/>
+			<summary-filecreatetime value="Imeundwa:"/>
+			<summary-filemodifytime value="Iliyorekebishwa:"/>
+			<summary-nbchar value="Wahusika (bila miisho ya mstari):"/>
+			<summary-nbword value="Maneno:"/>
+			<summary-nbline value="Mistari:"/>
+			<summary-nbbyte value="Urefu wa hati:"/>
+			<summary-nbsel1 value="herufi zilizochaguliwa ("/>
+			<summary-nbsel2 value="baiti) katika"/>
+			<summary-nbrange value="safu"/>
+			<progress-hits-title value="Vibao:"/>
+			<progress-cancel-info value="Inaghairi operesheni, tafadhali subiri..."/>
+			<find-in-files-progress-title value="Maendeleo ya Tafuta Katika Faili..."/>
+			<replace-in-files-confirm-title value="Je, una uhakika?"/>
+			<replace-in-files-confirm-directory value="Je, una uhakika unataka kubadilisha matukio yote katika:"/>
+			<replace-in-files-confirm-filetype value="Kwa aina ya faili:"/>
+			<replace-in-files-progress-title value="Badilisha Katika Maendeleo ya Faili..."/>
+			<replace-in-projects-confirm-title value="Je, una uhakika?"/>
+			<replace-in-projects-confirm-message value="Je, ungependa kubadilisha matukio yote katika hati zote katika Paneli za Miradi zilizochaguliwa?"/>
+			<replace-in-open-docs-confirm-title value="Je, una uhakika?"/>
+			<replace-in-open-docs-confirm-message value="Je, una uhakika unataka kubadilisha matukio yote katika hati zote zilizo wazi?"/>
+			<find-result-caption value="Matokeo ya utafutaji"/>
+			<find-result-title value="Tafuta"/><!-- Must not begin with space or tab character -->
+			<find-result-title-info value="($INT_REPLACE1$ imegonga katika faili $INT_REPLACE2$ ya $INT_REPLACE3$ imetafutwa)"/>
+			<find-result-title-info-selections value="($INT_REPLACE1$ imetafutwa katika chaguzi $INT_REPLACE2$ kati ya $INT_REPLACE3$ zimetafutwa)"/>
+			<find-result-title-info-options-searchmode-normal value="Kawaida"/>
+			<find-result-title-info-options-searchmode-extended value="Imepanuliwa"/>
+			<find-result-title-info-options-searchmode-regexp value="RegEx"/>
+			<find-result-title-info-options-case value="Kesi"/>
+			<find-result-title-info-options-word value="Neno"/>
+			<find-result-title-info-extra value="- Hali ya Kichujio cha Mstari: onyesha tu matokeo yaliyochujwa"/>
+			<find-result-hits value="(Vibao vya $INT_REPLACE$)"/>
+			<find-result-line-prefix value="Mstari"/><!-- Must not begin with space or tab character -->
+			<find-regex-zero-length-match value="mechi ya urefu wa sifuri"/>
+			<session-save-folder-as-workspace value="Hifadhi Folda kama Nafasi ya Kazi"/>
+			<tab-untitled-string value="mpya"/>
+			<file-save-assign-type value="Ongeza kiendelezi"/>
+			<close-panel-tip value="Funga"/>
+			<IncrementalFind-FSFound value="$INT_REPLACE$ matches"/>
+			<IncrementalFind-FSNotFound value="Maneno hayapatikani"/>
+			<IncrementalFind-FSTopReached value="Imefikiwa juu ya ukurasa, iliendelea kutoka chini"/>
+			<IncrementalFind-FSEndReached value="Imefika mwisho wa ukurasa, iliendelea kutoka juu"/>
+			<contextMenu-styleAlloccurrencesOfToken value="Mtindo wa matukio yote ya ishara"/>
+			<contextMenu-styleOneToken value="Mtindo ishara moja"/>
+			<contextMenu-clearStyle value="Futa mtindo"/>
+			<contextMenu-PluginCommands value="Amri za programu-jalizi"/>
+			<largeFileRestriction-tip value="Baadhi ya vipengele vinaweza kupunguza utendakazi katika faili kubwa.Vipengele hivi vinaweza kulemazwa kiotomatiki wakati wa kufungua faili kubwa.Unaweza kubinafsisha hapa.
+
+KUMBUKA:
+1. Kurekebisha chaguo hapa kunahitaji kufungua tena faili kubwa zilizofunguliwa sasa ili kupata tabia ifaayo.
+
+2. Ikiwa &quot;Zimaza Ufungaji wa Neno duniani kote&quot; imechaguliwa na ukifungua faili kubwa, &quot;Kufunga kwa Neno&quot; kutazimwa kwa faili zote.Unaweza kuiwasha tena kupitia menyu ya &quot;Angalia-&gt; Ufungaji wa Neno&quot;."/>
+			<npcNote-tip value="Uwakilishi wa nafasi nyeupe iliyochaguliwa &quot;isiyo ya ASCII&quot; na herufi zisizo za uchapishaji (kudhibiti).
+
+KUMBUKA:
+Kutumia uwakilishi kutazima athari za herufi kwenye maandishi.
+
+Kwa orodha kamili ya nafasi nyeupe iliyochaguliwa na herufi zisizochapishwa angalia Mwongozo wa Mtumiaji.
+
+Bofya kwenye kitufe hiki ili kufungua tovuti na Mwongozo wa Mtumiaji."/>
+			<npcAbbreviation-tip value="Ufupisho: jina
+NBSP: nafasi isiyo na mapumziko
+ZWSP : nafasi ya upana wa sifuri
+ZWNBSP : nafasi isiyo na mapumziko ya upana wa sifuri
+
+Kwa orodha kamili angalia Mwongozo wa Mtumiaji.
+Bonyeza &quot;?&quot;kitufe kulia ili kufungua tovuti kwa kutumia Mwongozo wa Mtumiaji."/>
+			<npcCodepoint-tip value="Codepoint : jina
+U+00A0 : nafasi isiyo na mapumziko
+U+200B : nafasi ya upana wa sifuri
+U+FEFF : nafasi isiyo na mapumziko ya upana wa sifuri
+
+Kwa orodha kamili angalia Mwongozo wa Mtumiaji.
+Bonyeza &quot;?&quot;kitufe kulia ili kufungua tovuti kwa kutumia Mwongozo wa Mtumiaji."/>
+
+			<!-- Don't translate "(&quot;Non-printing characters custom color&quot;)" -->
+			<npcCustomColor-tip value="Nenda kwa Kisanidi cha Mtindo ili kubadilisha rangi maalum ya chaguo-msingi kwa nafasi nyeupe iliyochaguliwa na herufi zisizochapishwa (&quot;Rangi maalum ya herufi zisizochapisha&quot;)."/>
+			<npcIncludeCcUniEol-tip value="Tekeleza mipangilio ya mwonekano wa herufi zisizochapishwa kwa vibambo vya C0, C1 na Unicode EOL (mstari unaofuata, kitenganishi cha mstari na kitenganishi cha aya)."/>
+			<searchingInSelThresh-tip value="Idadi ya chini ya herufi zilizochaguliwa katika eneo la kuhariri ili kuteua kiotomatiki kisanduku cha kuteua cha &quot;Katika uteuzi&quot; kidirisha cha Tafuta kikiwashwa.Thamani ya juu zaidi ni $INT_REPLACE$.Weka thamani iwe 0 ili kuzima ukaguzi wa kiotomatiki."/>
+			<searchingFillFindWhat-tip value="Idadi ya juu zaidi ya herufi zilizochaguliwa katika eneo la kuhariri ili kujaza kiotomatiki sehemu ya &quot;Tafuta nini&quot; wakati Ctrl-F inapoanzishwa.Thamani ya juu zaidi ni $INT_REPLACE$, ambayo ni ukubwa wa juu zaidi wa sehemu ya &quot;Tafuta nini&quot;, iliyozuiliwa na mfumo."/>
+			<verticalEdge-tip value="Ongeza alama ya safu wima yako kwa kuonyesha mahali ilipo na nambari ya desimali.Unaweza kufafanua alama za safu wima kadhaa kwa kutumia nafasi nyeupe kutenganisha nambari tofauti."/>
+			<fileSaveAsCopySaveButton-tip value="Shikilia Shift huku ukibonyeza Hifadhi ili kufungua nakala baada ya kuhifadhi."/>
+			<autoIndentBasic-tip value="Hakikisha kwamba ujongezaji wa mstari wa sasa (yaani laini mpya iliyoundwa kwa kubonyeza kitufe cha ENTER) unalingana na ujongezaji wa mstari uliopita."/>
+			<autoIndentAdvanced-tip value="Washa ujongezaji mahiri kwa lugha za &quot;C-kama&quot; na Python.Lugha za &quot;C-kama&quot; ni pamoja na:
+C, C++, Java, C#, Objective-C, PHP, JavaScript, JSP, CSS, Perl, Rust, PowerShell na JSON.
+
+Ukichagua hali ya juu lakini usihariri faili katika lugha zilizotajwa hapo juu, ujongezaji utabaki katika hali ya msingi."/>
+
+			<!-- Don't translate "Global override" and "Default Style" -->
+			<global-override-tip value="Kuwasha &quot;ubatilishaji wa kimataifa&quot; hapa kutabatilisha kigezo hicho katika mitindo yote ya lugha.Unachotaka hasa ni kutumia mipangilio ya &quot;Mtindo Chaguomsingi&quot; badala yake"/>
+			<scintillaRenderingTechnology-tip value="Inaweza kuboresha uonyeshaji wa herufi maalum au kutatua masuala kadhaa ya michoro, anzisha tena Notepad++ ili kutekeleza mabadiliko."/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'length' & 'lines' are much longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-length-lines value="urefu: $STR_REPLACE1$ mistari: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Ln' & 'Col' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Ln-Col value="Ln: $STR_REPLACE1$ Kol: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Pos' & 'Sel' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Pos value="Pos:"/>
+			<statusbar-Sel value="Sel:"/>
+			<statusbar-Sel-number value="Sel"/>
+			<toolbar-accent-tip value="Chaguo hili hufanya aikoni za upau wako wa vidhibiti kufuata rangi ya lafudhi ya mfumo wa Windows.Rangi ya lafudhi ni rangi ya kuangazia inayotumiwa katika vitufe, mipaka na vigae vya menyu ya Anza katika Windows.Ili kuibadilisha, nenda kwenye Mipangilio &gt; Kubinafsisha &gt; Rangi, kisha uchague rangi ya lafudhi unayopendelea."/>
+			<len-limit-exceeded-tip value="Kikomo cha urefu kimepitwa: Ingizo lako linaweza kuzidi kikomo kinachoruhusiwa na linaweza kuwa limepunguzwa, na halitahifadhiwa kwa kipindi kijacho."/>
+			<max-len-on-search-tip value="Ingizo lako linaweza kuzidi kiwango kinachoruhusiwa na linaweza kuwa limepunguzwa, na halitahifadhiwa kwa kipindi kijacho."/>
+			<max-len-on-save-tip value="Urefu wa ingizo lako ni mrefu sana na huenda usihifadhiwe kwa kipindi chako kijacho."/>
+			<goto-setting-tip value="Tafuta mpangilio wako hapa"/>
+			<tabbar-tabcompactlabellen-tip value="Hupunguza urefu unaoonekana wa majina ya vichupo virefu.Ingiza ili kutumia thamani iliyotolewa.Kiwango cha thamani: vibambo 1-257 (0 huzima upunguzaji)."/>
+		</MiscStrings>
+	</Native-Langue>
+</NotepadPlus>
+
+

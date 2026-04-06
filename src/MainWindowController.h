@@ -13,6 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// The active editor in the currently focused pane (for plugin access).
 - (nullable EditorView *)currentEditor;
 
+/// Editor for a specific view: 0 = primary tab manager, 1 = secondary (vertical split).
+/// Returns nil if the secondary view has no tabs.
+- (nullable EditorView *)editorForPluginView:(int)viewId;
+
 /// Load a session file (plist format with tabs array).
 - (void)loadSessionFromPath:(NSString *)path;
 

@@ -1,0 +1,2142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Pashto (پښتو) language file for Notepad++ macOS
+    Based on English template - community translations welcome
+    Created: 2026-04-04
+-->
+<NotepadPlus>
+	<Native-Langue name="پښتو" filename="pashto.xml" RTL="yes" version="8.9">
+		<Menu>
+			<Main>
+				<!-- Main Menu Entries -->
+				<Entries>
+					<Item menuId="file" name="دوتنه"/>
+					<Item menuId="edit" name="سمون"/>
+					<Item menuId="search" name="لټون"/>
+					<Item menuId="view" name="وګورئ"/>
+					<Item menuId="encoding" name="کوډ کول"/>
+					<Item menuId="language" name="ژبه"/>
+					<Item menuId="settings" name="ترتیبات"/>
+					<Item menuId="tools" name="وسیلې"/>
+					<Item menuId="macro" name="میکرو"/>
+					<Item menuId="run" name="منډه کړه"/>
+					<Item menuId="Plugins" name="پلگ ان"/>
+					<Item menuId="Window" name="کړکۍ"/>
+				</Entries>
+				<!-- Sub Menu Entries -->
+				<SubEntries>
+					<Item subMenuId="file-openFolder" name="د لرونکی فولډر خلاص کړئ"/>
+					<Item subMenuId="file-closeMore" name="ډیری اسناد بند کړئ"/>
+					<Item subMenuId="file-recentFiles" name="وروستي فایلونه"/>
+					<Item subMenuId="edit-insert" name="داخل کړئ"/>
+					<Item subMenuId="edit-copyToClipboard" name="کلپ بورډ ته کاپي"/>
+					<Item subMenuId="edit-indent" name="انډینټ"/>
+					<Item subMenuId="edit-convertCaseTo" name="قضیه ته واړوئ"/>
+					<Item subMenuId="edit-lineOperations" name="د کرښې عملیات"/>
+					<Item subMenuId="edit-comment" name="تبصره/نه تبصره"/>
+					<Item subMenuId="edit-autoCompletion" name="په اتوماتيک ډول بشپړول"/>
+					<Item subMenuId="edit-eolConversion" name="د EOL تبادله"/>
+					<Item subMenuId="edit-blankOperations" name="خالي عملیات"/>
+					<Item subMenuId="edit-pasteSpecial" name="پیسټ ځانګړی"/>
+					<Item subMenuId="edit-onSelection" name="په انتخاب"/>
+					<Item subMenuId="edit-multiSelectALL" name="ټول وټاکئ"/>
+					<Item subMenuId="edit-multiSelectNext" name="ملټي انتخاب کړئ بل"/>
+					<Item subMenuId="edit-readonlyInNotepad++" name="یوازې په Notepad++ کې لوستل"/>
+					<Item subMenuId="search-changeHistory" name="تاریخ بدل کړئ"/>
+					<Item subMenuId="search-markAll" name="د ټوکن ټولې پیښې سټایل"/>
+					<Item subMenuId="search-markOne" name="سټایل یو ټوکن"/>
+					<Item subMenuId="search-unmarkAll" name="روښانه سټایل"/>
+					<Item subMenuId="search-jumpUp" name="پورته کود"/>
+					<Item subMenuId="search-jumpDown" name="ښکته کود"/>
+					<Item subMenuId="search-copyStyledText" name="د سټایل شوي متن کاپي کړئ"/>
+					<Item subMenuId="search-bookmark" name="بک مارک"/>
+					<Item subMenuId="view-currentFileIn" name="اوسنۍ فایل وګورئ"/>
+					<Item subMenuId="view-showSymbol" name="سمبول وښایاست"/>
+					<Item subMenuId="view-zoom" name="زوم"/>
+					<Item subMenuId="view-moveCloneDocument" name="اوسنی سند حرکت/کلون کړئ"/>
+					<Item subMenuId="view-tab" name="ټب"/>
+					<Item subMenuId="view-collapseLevel" name="د فولډ کچه"/>
+					<Item subMenuId="view-uncollapseLevel" name="سطحه ښکاره کول"/>
+					<Item subMenuId="view-project" name="پروژه"/>
+					<Item subMenuId="encoding-characterSets" name="د کرکټر ترتیب"/>
+					<Item subMenuId="encoding-arabic" name="عربي"/>
+					<Item subMenuId="encoding-baltic" name="بالتیک"/>
+					<Item subMenuId="encoding-celtic" name="کلتیک"/>
+					<Item subMenuId="encoding-cyrillic" name="سیریلیک"/>
+					<Item subMenuId="encoding-centralEuropean" name="مرکزي اروپا"/>
+					<Item subMenuId="encoding-chinese" name="چینایي"/>
+					<Item subMenuId="encoding-easternEuropean" name="شرقي اروپا"/>
+					<Item subMenuId="encoding-greek" name="یونانی"/>
+					<Item subMenuId="encoding-hebrew" name="عبراني"/>
+					<Item subMenuId="encoding-japanese" name="جاپاني"/>
+					<Item subMenuId="encoding-korean" name="کوریا"/>
+					<Item subMenuId="encoding-northEuropean" name="شمالي اروپا"/>
+					<Item subMenuId="encoding-thai" name="تای"/>
+					<Item subMenuId="encoding-turkish" name="ترکي"/>
+					<Item subMenuId="encoding-westernEuropean" name="لویدیځ اروپا"/>
+					<Item subMenuId="encoding-vietnamese" name="ويتنامي"/>
+					<Item subMenuId="language-userDefinedLanguage" name="د کارن تعریف شوې ژبه"/>
+					<Item subMenuId="settings-import" name="واردول"/>
+					<Item subMenuId="tools-md5" name="MD5"/>
+					<Item subMenuId="tools-sha1" name="SHA-1"/>
+					<Item subMenuId="tools-sha256" name="SHA-256"/>
+					<Item subMenuId="tools-sha512" name="SHA-512"/>
+					<Item subMenuId="window-sortby" name="په ترتیب سره"/>
+				</SubEntries>
+
+				<!-- all menu item -->
+				<Commands>
+					<Item id="41001" name="نوی"/>
+					<Item id="41002" name="خلاص..."/>
+					<Item id="41019" name="سپړونکی"/>
+					<Item id="41020" name="cmd"/>
+					<Item id="41025" name="د کاري ځای په توګه فولډر"/>
+					<Item id="41003" name="تړل"/>
+					<Item id="41004" name="ټول بند کړئ"/>
+					<Item id="41005" name="ټول بند کړئ مګر اوسني سند"/>
+					<Item id="41026" name="وتړئ مګر ټول پینډ شوي اسناد"/>
+					<Item id="41009" name="ټول کیڼ اړخ ته وتړئ"/>
+					<Item id="41018" name="ټول حق ته وتړئ"/>
+					<Item id="41024" name="ټول نه بدلیدونکي بند کړئ"/>
+					<Item id="41006" name="خوندي کړئ"/>
+					<Item id="41007" name="ټول خوندي کړئ"/>
+					<Item id="41008" name="په توګه خوندي کړئ ..."/>
+					<Item id="41010" name="چاپ..."/>
+					<Item id="1001" name="همدا اوس چاپ"/>
+					<Item id="41011" name="وتل"/>
+					<Item id="41012" name="سیشن پورته کول..."/>
+					<Item id="41013" name="سیشن خوندي کړئ..."/>
+					<Item id="41014" name="له ډیسک څخه بیا پورته کول"/>
+					<Item id="41015" name="یو کاپي لکه څنګه خوندي کړئ ..."/>
+					<Item id="41016" name="ریسایکل بن ته لاړشئ"/>
+					<Item id="41017" name="نوم بدل کړئ..."/>
+					<Item id="41021" name="وروستي تړل شوي فایل بیرته راګرځول"/>
+					<Item id="41022" name="فولډر د کاري ځای په توګه خلاص کړئ..."/>
+					<Item id="41023" name="په ډیفالټ لیدونکي کې خلاص کړئ"/>
+					<Item id="42001" name="کټ"/>
+					<Item id="42002" name="کاپي"/>
+					<Item id="42003" name="بیرته راګرځول"/>
+					<Item id="42004" name="ریډو"/>
+					<Item id="42005" name="پیسټ"/>
+					<Item id="42006" name="ړنګول"/>
+					<Item id="42007" name="ټول وټاکئ"/>
+					<Item id="42020" name="پیل/پای انتخاب"/>
+					<Item id="42089" name="په کالم حالت کې پیل / پای انتخاب کړئ"/>
+					<Item id="42084" name="د نیټې وخت (لنډ)"/>
+					<Item id="42085" name="د نیټې وخت (اوږده)"/>
+					<Item id="42086" name="د نیټې وخت (مستقبل)"/>
+					<Item id="42008" name="لاین انډینټ زیات کړئ"/>
+					<Item id="42009" name="د کرښې انډینټ کم کړئ"/>
+					<Item id="42010" name="نقل اوسنۍ کرښه"/>
+					<Item id="42079" name="نقل شوي کرښې لرې کړئ"/>
+					<Item id="42077" name="پرله پسې نقل شوي کرښې لرې کړئ"/>
+					<Item id="42012" name="د وېش کرښې"/>
+					<Item id="42013" name="لاینونو سره یوځای شئ"/>
+					<Item id="42014" name="اوسنۍ کرښه پورته کړئ"/>
+					<Item id="42015" name="د اوسنۍ کرښې لاندې حرکت وکړئ"/>
+					<Item id="42059" name="لینونه په لیکسيکوګرافیک ډول ترتیب کړئ"/>
+					<Item id="42060" name="لینونه په لیکسيکوګرافیک ډول ښکته کول"/>
+					<Item id="42080" name="د لین لیکس ترتیب کړئ.د غوراوي قضیه"/>
+					<Item id="42081" name="د لین لیکس ترتیب کړئ.د نزول د نظر اندازې قضیه"/>
+					<Item id="42100" name="لینونه په محلي ترتیب کې ترتیب کړئ د لوړتیا"/>
+					<Item id="42101" name="لینونه په محلي ترتیب کې ترتیب کړئ د ښکته کیدو"/>
+					<Item id="42104" name="لینونه د اوږدوالي په واسطه ترتیب کړئ"/>
+					<Item id="42105" name="لینونه د اوږدوالی د ښکته کیدو له مخې ترتیب کړئ"/>
+					<Item id="42061" name="لینونه د عدد په ډول ترتیب کړئ لکه څنګه چې پورته کیږي"/>
+					<Item id="42062" name="لینونه د عدد په توګه ترتیب کړئ د ښکته کېدونکي"/>
+					<Item id="42063" name="لینونه د لسیزو (کوما) په څیر ترتیب کړئ"/>
+					<Item id="42064" name="لینونه د لسیزو (کوما) د ښکته کیدو په توګه ترتیب کړئ"/>
+					<Item id="42065" name="لینونه د لسیزو (دقط) په څیر ترتیب کړئ"/>
+					<Item id="42066" name="لینونه د لسیزو (ډیټ) د ښکته کیدو په توګه ترتیب کړئ"/>
+					<Item id="42083" name="د ریورس لاین ترتیب"/>
+					<Item id="42078" name="تصادفي کرښه ترتیب"/>
+					<Item id="42016" name="لوړ کیسه"/>
+					<Item id="42017" name="کوچنۍ کیسه"/>
+					<Item id="42067" name="مناسبه قضیه"/>
+					<Item id="42068" name="مناسبه قضیه (مختلط)"/>
+					<Item id="42069" name="د سزا قضیه"/>
+					<Item id="42070" name="د جملې قضیه (مختلط)"/>
+					<Item id="42071" name="invert کیس"/>
+					<Item id="42072" name="تصادفي قضیه"/>
+					<Item id="42073" name="دوتنې خلاصې"/>
+					<Item id="42074" name="په اکسپلورر کې د لرونکی فولډر خلاص کړئ"/>
+					<Item id="42106" name="ټاکنه اصالح کړئ █ (Shift: ●)"/>
+					<Item id="42075" name="په انټرنیټ کې لټون"/>
+					<Item id="42076" name="د لټون انجن بدل کړئ..."/>
+					<Item id="42090" name="د قضیې ټول کلمه له پامه غورځول"/>
+					<Item id="42091" name="یوازې د میچ کیس"/>
+					<Item id="42092" name="یوازې د ټول کلمې سره سمون خوري"/>
+					<Item id="42093" name="د کیسه ټوله کلمه میچ کړئ"/>
+					<Item id="42094" name="د قضیې ټول کلمه له پامه غورځول"/>
+					<Item id="42095" name="یوازې د میچ کیس"/>
+					<Item id="42096" name="یوازې د ټول کلمې سره سمون خوري"/>
+					<Item id="42097" name="د کیسه ټوله کلمه میچ کړئ"/>
+					<Item id="42098" name="وروستي اضافه شوي ملټي انتخاب بیرته راګرځوئ"/>
+					<Item id="42099" name="اوسنی پریږدئ بل څو انتخاب ته لاړ شئ"/>
+					<Item id="42018" name="ریکارډ کول پیل کړئ"/>
+					<Item id="42019" name="ریکارډ کول بند کړئ"/>
+					<Item id="42021" name="پلې بیک"/>
+					<Item id="42022" name="واحد کرښه تبصره بدل کړئ"/>
+					<Item id="42023" name="تبصره بنده کړئ"/>
+					<Item id="42047" name="ناڅرګندتیا بنده کړئ"/>
+					<Item id="42024" name="د تعقیب ځای کم کړئ"/>
+					<Item id="42042" name="مخکښ ځای ټریم"/>
+					<Item id="42043" name="مخکښ او شاته ځاې پرې کړئ"/>
+					<Item id="42044" name="EOL فضا ته"/>
+					<Item id="42045" name="فضا ته EOL او دواړه ټرم کړئ"/>
+					<Item id="42046" name="TAB فضا ته"/>
+					<Item id="42054" name="TAB ته ځای (ټول)"/>
+					<Item id="42053" name="TAB ته ځای (لومړی)"/>
+					<Item id="42038" name="د HTML منځپانګې پیسټ کړئ"/>
+					<Item id="42039" name="د RTF منځپانګه پیسټ کړئ"/>
+					<Item id="42048" name="د بائنري منځپانګې کاپي"/>
+					<Item id="42049" name="د بائنري منځپانګې کټ کړئ"/>
+					<Item id="42050" name="د بائنري منځپانګې پیسټ کړئ"/>
+					<Item id="42082" name="لینک کاپي"/>
+					<Item id="42037" name="د کالم حالت..."/>
+					<Item id="42034" name="د کالم مدیر..."/>
+					<Item id="42051" name="د کرکټر پینل"/>
+					<Item id="42052" name="د کلیپ بورډ تاریخ"/>
+					<Item id="42025" name="اوس مهال ثبت شوی میکرو خوندي کړئ..."/>
+					<Item id="42026" name="د متن لارښوونه RTL"/>
+					<Item id="42027" name="د متن لار LTR"/>
+					<Item id="42028" name="یوازې په اوسني سند کې لوستل"/>
+					<Item id="42102" name="یوازې د ټولو اسنادو لپاره لوستل"/>
+					<Item id="42103" name="د ټولو اسنادو لپاره یوازې لوستل پاک کړئ"/>
+					<Item id="42029" name="د اوسنۍ فایل لاره کاپي"/>
+					<Item id="42030" name="د اوسني فایل نوم کاپي"/>
+					<Item id="42031" name="کاپي اوسنۍ ډایرکټر.لاره"/>
+					<Item id="42087" name="د ټولو فایلونو نومونه کاپي کړئ"/>
+					<Item id="42088" name="د دوتنې ټولې لارې کاپي"/>
+					<Item id="42032" name="یو میکرو څو ځله چلول ..."/>
+					<Item id="42033" name="په وینډوز کې یوازې د لوستلو ځانګړتیا"/>
+					<Item id="42035" name="یو کرښه تبصره"/>
+					<Item id="42036" name="واحد کرښه ناخبره"/>
+					<Item id="42055" name="خالي کرښې لرې کړئ"/>
+					<Item id="42056" name="خالي کرښو لرې کړئ (د خالي حروفو لرونکی)"/>
+					<Item id="42057" name="د اوسني پورته خالي کرښه داخل کړئ"/>
+					<Item id="42058" name="د اوسني لاندې خالي کرښه دننه کړئ"/>
+					<Item id="43001" name="ومومئ..."/>
+					<Item id="43002" name="بل ومومئ"/>
+					<Item id="43003" name="بدله..."/>
+					<Item id="43004" name="ته لاړ شه..."/>
+					<Item id="43005" name="بک مارک بدل کړئ"/>
+					<Item id="43006" name="بل نښه نښه"/>
+					<Item id="43007" name="مخکینی بک مارک"/>
+					<Item id="43008" name="ټول بک مارکونه پاک کړئ"/>
+					<Item id="43018" name="د بک مارک شوي کرښې پرې کړئ"/>
+					<Item id="43019" name="د بک مارک شوي لینکونه کاپي"/>
+					<Item id="43020" name="په نښه شوي کرښو ته (بدلون) پیسټ کړئ"/>
+					<Item id="43021" name="د بک مارک شوي کرښې لرې کړئ"/>
+					<Item id="43051" name="غیر بک مارک شوي کرښې لرې کړئ"/>
+					<Item id="43050" name="معکوس بک مارکونه"/>
+					<Item id="43052" name="په لړ کې کرکټرونه ومومئ..."/>
+					<Item id="43053" name="په منځ کې ټول وټاکئ {} [] یا ()"/>
+					<Item id="43009" name="د میچینګ بریس ته لاړ شئ"/>
+					<Item id="43010" name="مخکینی ومومئ"/>
+					<Item id="43011" name="زیاتیدونکي لټون"/>
+					<Item id="43013" name="په فایلونو کې ومومئ"/>
+					<Item id="43014" name="ومومئ (بې ثباته) بل"/>
+					<Item id="43015" name="موندل (بې ثباته) مخکینی"/>
+					<Item id="43022" name="د لومړي سټایل کارول"/>
+					<Item id="43023" name="لومړی سټایل پاک کړئ"/>
+					<Item id="43024" name="د دوهم سټایل کارول"/>
+					<Item id="43025" name="پاک 2nd سټایل"/>
+					<Item id="43026" name="د دریم سټایل کارول"/>
+					<Item id="43027" name="دریم سټایل پاک کړئ"/>
+					<Item id="43028" name="د څلورم سټایل کارول"/>
+					<Item id="43029" name="څلورم سټایل پاک کړئ"/>
+					<Item id="43030" name="د پنځم سټایل کارول"/>
+					<Item id="43031" name="د پنځم سټایل روښانه کول"/>
+					<Item id="43032" name="ټول سټایلونه پاک کړئ"/>
+					<Item id="43033" name="لومړی سټایل"/>
+					<Item id="43034" name="دوهم سټایل"/>
+					<Item id="43035" name="دریم سټایل"/>
+					<Item id="43036" name="څلورم سټایل"/>
+					<Item id="43037" name="پنځم سټایل"/>
+					<Item id="43038" name="د مارک سټایل ومومئ"/>
+					<Item id="43039" name="لومړی سټایل"/>
+					<Item id="43040" name="دوهم سټایل"/>
+					<Item id="43041" name="دریم سټایل"/>
+					<Item id="43042" name="څلورم سټایل"/>
+					<Item id="43043" name="پنځم سټایل"/>
+					<Item id="43044" name="د مارک سټایل ومومئ"/>
+					<Item id="43055" name="لومړی سټایل"/>
+					<Item id="43056" name="دوهم سټایل"/>
+					<Item id="43057" name="دریم سټایل"/>
+					<Item id="43058" name="څلورم سټایل"/>
+					<Item id="43059" name="پنځم سټایل"/>
+					<Item id="43060" name="ټول سټایلونه"/>
+					<Item id="43061" name="د مارک سټایل ومومئ"/>
+					<Item id="43062" name="د لومړي سټایل کارول"/>
+					<Item id="43063" name="د دوهم سټایل کارول"/>
+					<Item id="43064" name="د دریم سټایل کارول"/>
+					<Item id="43065" name="د څلورم سټایل کارول"/>
+					<Item id="43066" name="د پنځم سټایل کارول"/>
+					<Item id="43067" name="بل بدلون ته لاړ شئ"/>
+					<Item id="43068" name="مخکینی بدلون ته لاړ شئ"/>
+					<Item id="43069" name="د بدلون تاریخ پاک کړئ"/>
+					<Item id="43045" name="د لټون د پایلو کړکۍ"/>
+					<Item id="43046" name="د بل لټون پایله"/>
+					<Item id="43047" name="د مخکني لټون پایله"/>
+					<Item id="43048" name="وټاکئ او بل ومومئ"/>
+					<Item id="43049" name="غوره کړئ او پخوانی ومومئ"/>
+					<Item id="43054" name="مارک..."/>
+					<Item id="43501" name="تړلی انتخاب شوی"/>
+					<Item id="43502" name="نور وتړئ"/>
+					<Item id="43503" name="غوره شوي نومونه کاپي"/>
+					<Item id="43504" name="کاپي غوره شوي لارې نومونه"/>
+					<Item id="44009" name="وروسته یې"/>
+					<Item id="44010" name="ټول وخورئ"/>
+					<Item id="44011" name="د ګډوډۍ وړیا حالت"/>
+					<Item id="44019" name="ټول کرکټرونه ښکاره کړئ"/>
+					<Item id="44020" name="د انډینټ لارښود وښایاست"/>
+					<Item id="44022" name="د کلمې پټول"/>
+					<Item id="44023" name="زوم ان (Ctrl+Mouse Wheel Up)"/>
+					<Item id="44024" name="زوم اوټ (Ctrl+Mouse Wheel Down)"/>
+					<Item id="44025" name="ځای او ټب وښایاست"/>
+					<Item id="44026" name="د کرښې پای ښکاره کړئ"/>
+					<Item id="44029" name="ټول ښکاره کړئ"/>
+					<Item id="44030" name="د اوسنۍ کچې فولډ"/>
+					<Item id="44031" name="اوسنۍ کچه ښکاره کړئ"/>
+					<Item id="44049" name="لنډیز..."/>
+					<Item id="44080" name="د سند نقشه"/>
+					<Item id="44070" name="د اسنادو لیست"/>
+					<Item id="44084" name="د فعالیت لیست"/>
+					<Item id="44085" name="د کاري ځای په توګه فولډر"/>
+					<Item id="44086" name="لومړی ټب"/>
+					<Item id="44087" name="دوهم ټب"/>
+					<Item id="44088" name="دریم ټب"/>
+					<Item id="44089" name="څلورم ټب"/>
+					<Item id="44090" name="پنځم ټب"/>
+					<Item id="44091" name="شپږم ټب"/>
+					<Item id="44092" name="اووم ټب"/>
+					<Item id="44093" name="اتم ټب"/>
+					<Item id="44094" name="نهم ټب"/>
+					<Item id="44116" name="لومړی ټب"/>
+					<Item id="44117" name="وروستی ټب"/>
+					<Item id="44095" name="بل ټب"/>
+					<Item id="44096" name="پخوانی ټب"/>
+					<Item id="44097" name="څارنه (tail-f)"/>
+					<Item id="44098" name="ټب مخ په وړاندې حرکت وکړئ"/>
+					<Item id="44099" name="ټب شاته حرکت وکړئ"/>
+					<Item id="44110" name="رنګ لرې کړئ"/>
+					<Item id="44111" name="رنګ 1 پلي کړئ"/>
+					<Item id="44112" name="رنګ 2 پلي کړئ"/>
+					<Item id="44113" name="رنګ 3 پلي کړئ"/>
+					<Item id="44114" name="رنګ پلي کړئ 4"/>
+					<Item id="44115" name="رنګ 5 پلي کړئ"/>
+					<Item id="44130" name="غیر چاپ شوي کرکټرونه وښایاست"/>
+					<Item id="44131" name="د کنټرول کرکټرونه ښکاره کړئ یونیکوډ EOL"/>
+					<Item id="44032" name="د بشپړ سکرین حالت بدل کړئ"/>
+					<Item id="44033" name="ډیفالټ زوم بحال کړئ"/>
+					<Item id="44034" name="تل په سر کې"/>
+					<Item id="44035" name="عمودی سکرول همغږی کول"/>
+					<Item id="44036" name="افقي سکرول همغږي کول"/>
+					<Item id="44041" name="د ریپ سمبول ښکاره کړئ"/>
+					<Item id="44072" name="په بل لید باندې تمرکز وکړئ"/>
+					<Item id="44081" name="د پروژې پینل 1"/>
+					<Item id="44082" name="د پروژې پینل 2"/>
+					<Item id="44083" name="د پروژې پینل 3"/>
+					<Item id="45001" name="وینډوز (CR LF)"/>
+					<Item id="45002" name="یونیکس (LF)"/>
+					<Item id="45003" name="مکینتوش (CR)"/>
+					<Item id="45004" name="ANSI"/>
+					<Item id="45005" name="UTF-8-BOM"/>
+					<Item id="45006" name="UTF-16 BE BOM"/>
+					<Item id="45007" name="UTF-16 LE BOM"/>
+					<Item id="45008" name="UTF-8"/>
+					<Item id="45009" name="ANSI ته واړوئ"/>
+					<Item id="45010" name="UTF-8 ته واړوئ"/>
+					<Item id="45011" name="UTF-8-BOM ته واړوئ"/>
+					<Item id="45012" name="UTF-16 BE BOM ته واړوئ"/>
+					<Item id="45013" name="UTF-16 LE BOM ته واړوئ"/>
+					<Item id="45060" name="Big5 (دودیز)"/>
+					<Item id="45061" name="GB2312 (ساده)"/>
+					<Item id="45054" name="OEM 861: آیسلینډی"/>
+					<Item id="45057" name="OEM 865: نورډیک"/>
+					<Item id="45053" name="OEM 860: پرتګالي"/>
+					<Item id="45056" name="OEM 863: فرانسوی"/>
+					<Item id="10001" name="بل لید ته لاړشئ"/>
+					<Item id="10002" name="کلون بل لید ته"/>
+					<Item id="10003" name="نوي مثال ته لاړ شه"/>
+					<Item id="10004" name="په نوي مثال کې خلاص کړئ"/>
+					<Item id="10005" name="پیل ته لاړشئ"/>
+					<Item id="10006" name="پای ته لاړشئ"/>
+					<Item id="46001" name="د سټایل ترتیب کوونکی..."/>
+					<Item id="46016" name="هیڅ نه (نورمال متن)"/>
+					<Item id="46250" name="خپله ژبه تعریف کړئ..."/>
+					<Item id="46300" name="د کارونکي تعریف شوي ژبې فولډر خلاص کړئ ..."/>
+					<Item id="46301" name="نوټ پیډ++ د کارن تعریف شوي ژبو ټولګه"/>
+					<Item id="46180" name="د کارونکي تعریف"/>
+					<Item id="47000" name="د Notepad++ په اړه"/>
+					<Item id="47010" name="د کمانډ لاین دلیلونه..."/>
+					<Item id="47001" name="نوټ پیډ++ کور"/>
+					<Item id="47002" name="Notepad++ د پروژې پاڼه"/>
+					<Item id="47003" name="Notepad++ آنلاین کارن لارښود"/>
+					<Item id="47004" name="Notepad++ ټولنه (فورم)"/>
+					<Item id="47012" name="دبګ معلومات..."/>
+					<Item id="47005" name="نور پلگ انونه ترلاسه کړئ"/>
+					<Item id="47006" name="نوټ پیډ ++ تازه کړئ"/>
+					<Item id="47009" name="د اپډیټر پراکسي تنظیم کړئ..."/>
+					<Item id="48005" name="پلگ ان وارد کړئ..."/>
+					<Item id="48006" name="د سټایل موضوع(موضوعات) وارد کړئ..."/>
+					<Item id="48018" name="د پاپ اپ ContextMenu ایډیټ کړئ"/>
+					<Item id="48009" name="شارټ کټ نقشه..."/>
+					<Item id="48011" name="غوره توبونه..."/>
+					<Item id="48014" name="د پلگ ان فولډر خلاص کړئ..."/>
+					<Item id="48015" name="د پلگ ان اډمین..."/>
+					<Item id="48501" name="پیدا کول..."/>
+					<Item id="48502" name="د فایلونو څخه جوړ کړئ ..."/>
+					<Item id="48503" name="له انتخاب څخه په کلپ بورډ کې پیدا کړئ"/>
+					<Item id="48504" name="پیدا کول..."/>
+					<Item id="48505" name="د فایلونو څخه جوړ کړئ ..."/>
+					<Item id="48506" name="له انتخاب څخه په کلپ بورډ کې پیدا کړئ"/>
+					<Item id="48507" name="پیدا کول..."/>
+					<Item id="48508" name="د فایلونو څخه جوړ کړئ ..."/>
+					<Item id="48509" name="له انتخاب څخه په کلپ بورډ کې پیدا کړئ"/>
+					<Item id="48510" name="پیدا کړئ..."/>
+					<Item id="48511" name="د فایلونو څخه جوړ کړئ ..."/>
+					<Item id="48512" name="له انتخاب څخه په کلپ بورډ کې پیدا کړئ"/>
+					<Item id="49000" name="منډه کړه..."/>
+
+					<Item id="50000" name="د فعالیت بشپړول"/>
+					<Item id="50001" name="د کلمې بشپړول"/>
+					<Item id="50002" name="د فعالیت پیرامیټونه اشاره"/>
+					<Item id="50010" name="د فعالیت پیرامیټونه مخکینی اشاره"/>
+					<Item id="50011" name="د فعالیت پیرامیټونه بل اشاره"/>
+					<Item id="50005" name="د میکرو ریکارډ بدلول"/>
+					<Item id="50006" name="د لارې بشپړول"/>
+					<Item id="44042" name="پټې کرښې"/>
+					<Item id="42040" name="ټول وروستي فایلونه خلاص کړئ"/>
+					<Item id="42041" name="د وروستیو فایلونو لیست خالي کړئ"/>
+					<Item id="48016" name="شارټ کټ بدل کړئ / میکرو ړنګ کړئ..."/>
+					<Item id="48017" name="شارټ کټ بدل کړئ / کمانډ حذف کړئ..."/>
+
+					<Item id="11001" name="وینډوز..."/>
+					<Item id="11002" name="نوم A to Z"/>
+					<Item id="11003" name="نوم Z ته A"/>
+					<Item id="11004" name="لاره A تر Z"/>
+					<Item id="11005" name="لاره Z ته A"/>
+					<Item id="11006" name="A to Z ډول"/>
+					<Item id="11007" name="د Z څخه A ډول"/>
+					<Item id="11008" name="د منځپانګې اوږدوالی لوړېدل"/>
+					<Item id="11009" name="د منځپانګې اوږدوالی کمیدل"/>
+					<Item id="11010" name="تعدیل شوی وخت لوړیدونکی"/>
+					<Item id="11011" name="تعدیل شوی وخت ښکته کیدل"/>
+				</Commands>
+			</Main>
+			<TabBar>
+				<Item CMDID="41003" name="تړل"/>
+				<Item CMDID="0" name="ډیری ټبونه بند کړئ"/>
+				<Item CMDID="41005" name="ټول بند کړئ مګر دا"/>
+				<Item CMDID="41026" name="ټول بند کړئ مګر پنډ شوي"/>
+				<Item CMDID="41009" name="ټول چپ طرف ته وتړئ"/>
+				<Item CMDID="41018" name="ټول حق ته وتړئ"/>
+				<Item CMDID="41024" name="ټول نه بدلیدونکي بند کړئ"/>
+				<Item CMDID="44048" name="پین ټب" alternativeName="ټب خلاص کړئ"/>
+				<Item CMDID="41006" name="خوندي کړئ"/>
+				<Item CMDID="41008" name="په توګه خوندي کړئ ..."/>
+				<Item CMDID="1" name="په"/>
+				<Item CMDID="41019" name="په اکسپلورر کې د لرونکی فولډر خلاص کړئ"/>
+				<Item CMDID="41020" name="په cmd کې لرونکی فولډر خلاص کړئ"/>
+				<Item CMDID="41025" name="لرونکی فولډر د کاري ځای په توګه خلاص کړئ"/>
+				<Item CMDID="41023" name="په ډیفالټ لیدونکي کې خلاص کړئ"/>
+				<Item CMDID="41017" name="نوم بدل کړئ..."/>
+				<Item CMDID="41016" name="د ریسایکل بن ته لاړشئ"/>
+				<Item CMDID="41014" name="بیا پورته کول"/>
+				<Item CMDID="41010" name="چاپ..."/>
+				<Item CMDID="42028" name="یوازې په Notepad++ کې لوستل"/>
+				<Item CMDID="42033" name="په وینډوز کې یوازې د لوستلو ځانګړتیا"/>
+				<Item CMDID="2" name="کلپ بورډ ته کاپي کړئ"/>
+				<Item CMDID="42029" name="د بشپړ فایل لاره کاپي کړئ"/>
+				<Item CMDID="42030" name="د فایل نوم کاپي کړئ"/>
+				<Item CMDID="42031" name="کاپي اوسنۍ ډایرکټر.لاره"/>
+				<Item CMDID="3" name="د سند حرکت"/>
+				<Item CMDID="10005" name="پیل ته حرکت وکړئ"/>
+				<Item CMDID="10006" name="پای ته ورسوئ"/>
+				<Item CMDID="10001" name="بل لید ته لاړشئ"/>
+				<Item CMDID="10002" name="نورو لید ته کلون کړئ"/>
+				<Item CMDID="10003" name="نوي مثال ته لاړشئ"/>
+				<Item CMDID="10004" name="په نوي مثال کې خلاص کړئ"/>
+				<Item CMDID="4" name="ټب ته رنګ تطبیق کړئ"/>
+				<Item CMDID="44111" name="رنګ 1 پلي کړئ"/>
+				<Item CMDID="44112" name="رنګ 2 پلي کړئ"/>
+				<Item CMDID="44113" name="رنګ 3 پلي کړئ"/>
+				<Item CMDID="44114" name="رنګ پلي کړئ 4"/>
+				<Item CMDID="44115" name="رنګ 5 پلي کړئ"/>
+				<Item CMDID="44110" name="رنګ لرې کړئ"/>
+			</TabBar>
+			<TrayIcon>
+				<Item id="43101" name="فعالول"/>
+				<Item id="43102" name="نوی"/>
+				<Item id="43103" name="نوی او پیسټ"/>
+				<Item id="43104" name="خلاص..."/>
+				<Item id="43013" name="په فایلونو کې ومومئ ..."/>
+				<Item id="43105" name="د ټری آیکون بند کړئ"/>
+			</TrayIcon>
+		</Menu>
+
+		<Dialog>
+			<Find title="" titleFind="ومومئ" titleReplace="بدله" titleFindInFiles="په فایلونو کې ومومئ" titleFindInProjects="په پروژو کې ومومئ" titleMark="مارک">
+				<Item id="1" name="بل ومومئ"/>
+				<Item id="1722" name="شاته لوري"/>
+				<Item id="2" name="تړل"/>
+				<Item id="1620" name="څه ومومئ:"/>
+				<Item id="1603" name="یوازې د ټولې کلمې سره سمون خوري"/>
+				<Item id="1604" name="د میچ قضیه"/>
+				<Item id="1605" name="منظم بیان"/>
+				<Item id="1606" name="شاوخوا وتړئ"/>
+				<Item id="1614" name="شمېر"/>
+				<Item id="1615" name="ټول په نښه کړئ"/>
+				<Item id="1616" name="د بک مارک کرښه"/>
+				<Item id="1618" name="د هر لټون لپاره پاکول"/>
+				<Item id="1611" name="سره بدل کړئ:"/>
+				<Item id="1608" name="بدله"/>
+				<Item id="1609" name="ټول بدل کړئ"/>
+				<Item id="1687" name="د تمرکز له لاسه ورکولو په اړه"/>
+				<Item id="1688" name="تل"/>
+				<Item id="1632" name="په انتخاب کې"/>
+				<Item id="1633" name="ټولې نښې پاکې کړئ"/>
+				<Item id="1635" name="په ټولو پرانیستل شویو اسنادو کې ټول بدل کړئ"/>
+				<Item id="1636" name="په ټولو پرانیستل شویو اسنادو کې ټول ومومئ"/>
+				<Item id="1654" name="فلټرونه:"/>
+				<Item id="1655" name="لارښود:"/>
+				<Item id="1656" name="ټول ومومئ"/>
+				<Item id="1658" name="په ټولو فرعي فولډرو کې"/>
+				<Item id="1659" name="په پټو فولډرو کې"/>
+				<Item id="1624" name="د لټون حالت"/>
+				<Item id="1625" name="نورمال"/>
+				<Item id="1626" name="تمدید شوی (\n, \r, \t, \0, \x...)"/>
+				<Item id="1660" name="په فایلونو کې بدل کړئ"/>
+				<Item id="1665" name="په پروژو کې ځای په ځای کړئ"/>
+				<Item id="1662" name="د پروژې پینل 1"/>
+				<Item id="1663" name="د پروژې پینل 2"/>
+				<Item id="1664" name="د پروژې پینل 3"/>
+				<Item id="1641" name="ټول په اوسني سند کې ومومئ"/>
+				<Item id="1686" name="روڼتیا"/>
+				<Item id="1703" name=".د نوي لاین سره سمون خوري"/>
+				<Item id="1721" name="▲"/>
+				<Item id="1723" name="▼ بل ومومئ"/>
+				<Item id="1725" name="په نښه شوي متن کاپي"/>
+				<Menu>
+					<Item id="1726" name="⇅ د بدلولو سره ومومئ"/>
+					<Item id="1727" name="⤵ د بدلولو لپاره له موندلو څخه کاپي"/>
+					<Item id="1728" name="⤴ د موندلو لپاره له ځای څخه کاپي"/>
+				</Menu>
+			</Find>
+
+			<IncrementalFind title="">
+				<Item id="1681" name="موندل:"/>
+				<Item id="1685" name="د میچ قضیه"/>
+				<Item id="1690" name="ټول روښانه کړئ"/>
+			</IncrementalFind>
+
+			<FindCharsInRange title="په سلسله کې کرکټرونه ومومئ...">
+				<Item id="2" name="تړل"/>
+				<Item id="2901" name="غیر ASCII حروف (128-255)"/>
+				<Item id="2902" name="ASCII حروف (0-127)"/>
+				<Item id="2903" name="ګمرکي حد (0-255):"/>
+				<Item id="2906" name="پورته"/>
+				<Item id="2907" name="ښکته"/>
+				<Item id="2908" name="هدایت"/>
+				<Item id="2909" name="شاوخوا وتړئ"/>
+				<Item id="2910" name="ومومئ"/>
+			</FindCharsInRange>
+
+			<GoToLine title="ته لاړ شه...">
+				<Item id="2007" name="کرښه"/>
+				<Item id="2008" name="آفسیټ"/>
+				<Item id="1" name="لاړ شه"/>
+				<Item id="2" name="زه هیڅ ځای نه ځم"/>
+				<Item id="2004" name="تاسو دلته یاست:"/>
+				<Item id="2005" name="تاسو غواړئ چې لاړ شئ:"/>
+				<Item id="2006" name="تاسو نشئ کولی له دې څخه نور لاړ شئ:"/>
+			</GoToLine>
+
+			<Run title="منډه کړه...">
+				<Item id="1903" name="د چلولو پروګرام"/>
+				<Item id="1" name="منډه کړه"/>
+				<Item id="2" name="لغوه کول"/>
+				<Item id="1904" name="خوندي کړئ..."/>
+			</Run>
+
+			<MD5FromFilesDlg title="د فایلونو څخه MD5 هضم تولید کړئ">
+				<Item id="1922" name="د MD5 جوړولو لپاره فایلونه غوره کړئ..."/>
+				<Item id="1924" name="کلپ بورډ ته کاپي"/>
+				<Item id="2" name="تړل"/>
+			</MD5FromFilesDlg>
+
+			<MD5FromTextDlg title="MD5 هضم پیدا کړئ">
+				<Item id="1932" name="هره کرښه د جلا تار په توګه چلند وکړئ"/>
+				<Item id="1934" name="کلپ بورډ ته کاپي"/>
+				<Item id="2" name="تړل"/>
+			</MD5FromTextDlg>
+
+			<SHA256FromFilesDlg title="د فایلونو څخه SHA-256 هضم تولید کړئ">
+				<Item id="1922" name="د SHA-256 د جوړولو لپاره فایلونه غوره کړئ..."/>
+				<Item id="1924" name="کلپ بورډ ته کاپي"/>
+				<Item id="2" name="تړل"/>
+			</SHA256FromFilesDlg>
+
+			<SHA256FromTextDlg title="SHA-256 هضم پیدا کړئ">
+				<Item id="1932" name="هره کرښه د جلا تار په توګه درملنه وکړئ"/>
+				<Item id="1934" name="کلپ بورډ ته کاپي"/>
+				<Item id="2" name="تړل"/>
+			</SHA256FromTextDlg>
+
+			<SHA1FromFilesDlg title="د فایلونو څخه SHA-1 هضم تولید کړئ">
+				<Item id="1922" name="د SHA-1 د جوړولو لپاره فایلونه غوره کړئ..."/>
+				<Item id="1924" name="کلپ بورډ ته کاپي"/>
+				<Item id="2" name="تړل"/>
+			</SHA1FromFilesDlg>
+
+			<SHA1FromTextDlg title="SHA-1 هضم پیدا کړئ">
+				<Item id="1932" name="هره کرښه د جلا تار په توګه چلند وکړئ"/>
+				<Item id="1934" name="کلپ بورډ ته کاپي"/>
+				<Item id="2" name="تړل"/>
+			</SHA1FromTextDlg>
+
+			<SHA512FromFilesDlg title="د فایلونو څخه SHA-512 هضم تولید کړئ">
+				<Item id="1922" name="د SHA-512 جوړولو لپاره فایلونه غوره کړئ..."/>
+				<Item id="1924" name="کلپ بورډ ته کاپي"/>
+				<Item id="2" name="تړل"/>
+			</SHA512FromFilesDlg>
+
+			<SHA512FromTextDlg title="SHA-512 هضم پیدا کړئ">
+				<Item id="1932" name="هره کرښه د جلا تار په توګه چلند وکړئ"/>
+				<Item id="1934" name="کلپ بورډ ته کاپي"/>
+				<Item id="2" name="تړل"/>
+			</SHA512FromTextDlg>
+			<PluginsAdminDlg title="د پلگ ان اډمین" titleAvailable="Available" titleUpdates="Updates" titleInstalled="Installed" titleIncompatible="Incompatible">
+				<ColumnPlugin name="نښلول"/>
+				<ColumnVersion name="نسخه"/>
+				<Item id="5501" name="لټون:"/>
+				<Item id="5503" name="نصب کړئ"/>
+				<Item id="5504" name="تازه کول"/>
+				<Item id="5505" name="لرې کړئ"/>
+				<Item id="5508" name="بل"/>
+				<Item id="5509" name="د پلگ ان لیست نسخه:"/>
+				<Item id="5511" name="د پلگ ان لیست ذخیره"/>
+				<Item id="2" name="تړل"/>
+			</PluginsAdminDlg>
+
+			<StyleConfig title="سټایل ترتیب کوونکی">
+				<Item id="2" name="لغوه کول"/>
+				<Item id="2301" name="تړل خوندي کړئ"/>
+				<Item id="2303" name="روڼتیا"/>
+				<Item id="2306" name="موضوع وټاکئ:"/>
+				<SubDialog>
+					<Item id="2204" name="بولډ"/>
+					<Item id="2205" name="ایټالی"/>
+					<Item id="2206" name="مخکینۍ رنګ"/>
+					<Item id="2207" name="د شاليد رنګ"/>
+					<Item id="2208" name="د فونټ نوم:"/>
+					<Item id="2209" name="د فونټ اندازه:"/>
+					<Item id="2211" name="سټایل:"/>
+					<Item id="2212" name="د رنګ سټایل"/>
+					<Item id="2213" name="د فونټ سټایل"/>
+					<Item id="2214" name="ډیفالټ Ext.:"/>
+					<Item id="2216" name="د کارن توسیع:"/>
+					<Item id="2218" name="لاندې کرښه"/>
+					<Item id="2219" name="اصلي کلیدي کلمې"/>
+					<Item id="2221" name="د کارونکي تعریف شوي کلیدي کلمې"/>
+					<Item id="2225" name="ژبه:"/>
+					<Item id="2226" name="د ټولو سټایلونو لپاره مخکینۍ رنګ مجبور کړئ"/>
+					<Item id="2227" name="د ټولو سټایلونو لپاره د شالید رنګ مجبور کړئ"/>
+					<Item id="2228" name="د ټولو سټایلونو لپاره د فونټ انتخاب مجبور کړئ"/>
+					<Item id="2229" name="د ټولو سټایلونو لپاره د فونټ اندازه انتخاب مجبور کړئ"/>
+					<Item id="2230" name="د ټولو سټایلونو لپاره زړور انتخاب مجبور کړئ"/>
+					<Item id="2231" name="د ټولو سټایلونو لپاره ایټالیک انتخاب مجبور کړئ"/>
+					<Item id="2232" name="د ټولو سټایلونو لپاره د انډر لاین انتخاب مجبور کړئ"/>
+					<Item id="2234" name="ترتیبات ته لاړ شئ"/>
+					<!-- Don't translate "Global override" -->
+					<Item id="2235" name="Global override څه شی دی؟"/>
+				</SubDialog>
+			</StyleConfig>
+
+			<ShortcutMapper title="شارټ کټ نقشه">
+				<Item id="2602" name="تعدیل"/>
+				<Item id="2603" name="ړنګول"/>
+				<Item id="2606" name="روښانه"/>
+				<Item id="2607" name="فلټر:"/>
+				<Item id="1" name="تړل"/>
+				<ColumnName name="نوم"/>
+				<ColumnShortcut name="شارټ کټ"/>
+				<ColumnCategory name="کټګورۍ"/>
+				<ColumnPlugin name="پلگ ان"/>
+				<MainMenuTab name="اصلي مینو"/>
+				<MacrosTab name="ماکرو"/>
+				<RunCommandsTab name="امرونه چلول"/>
+				<PluginCommandsTab name="د پلگ ان امرونه"/>
+				<ScintillaCommandsTab name="د سکینټیلا امرونه"/>
+				<ConflictInfoOk name="د دې توکي لپاره هیڅ شارټ کټ شخړه نشته."/>
+				<ConflictInfoEditing name="هیڅ شخړه نشته..."/>
+				<AboutCategory name="په اړه"/>
+				<ModifyContextMenu name="تعدیل"/>
+				<DeleteContextMenu name="ړنګول"/>
+				<ClearContextMenu name="روښانه"/>
+				<MainCommandNames>
+					<Item id="41019" name="په اکسپلورر کې لرونکی فولډر خلاص کړئ"/>
+					<Item id="41020" name="په کمانډ پرامپټ کې فولډر خلاص کړئ"/>
+					<Item id="41021" name="وروستي تړل شوي فایل بیرته راګرځول"/>
+					<Item id="45001" name="وینډوز ته د EOL تبادله (CR LF)"/>
+					<Item id="45002" name="یونیکس (LF) ته د EOL تبادله"/>
+					<Item id="45003" name="مکینتوش (CR) ته د EOL تبادله"/>
+					<Item id="43022" name="سټایل ټول د لومړي سټایل په کارولو سره"/>
+					<Item id="43024" name="سټایل ټول د دوهم سټایل په کارولو سره"/>
+					<Item id="43026" name="سټایل ټول د دریم سټایل په کارولو سره"/>
+					<Item id="43028" name="سټایل ټول د څلورم سټایل په کارولو سره"/>
+					<Item id="43030" name="سټایل ټول د 5th سټایل په کارولو سره"/>
+					<Item id="43062" name="د لومړي سټایل په کارولو سره یو سټایل"/>
+					<Item id="43063" name="یو سټایل د دوهم سټایل په کارولو سره"/>
+					<Item id="43064" name="یو سټایل د دریم سټایل په کارولو سره"/>
+					<Item id="43065" name="یو سټایل د څلورم سټایل په کارولو سره"/>
+					<Item id="43066" name="یو سټایل د پنځم سټایل په کارولو سره"/>
+					<Item id="43023" name="واضح 1st سټایل"/>
+					<Item id="43025" name="پاک 2nd سټایل"/>
+					<Item id="43027" name="روښانه دریم سټایل"/>
+					<Item id="43029" name="پاک څلورم سټایل"/>
+					<Item id="43031" name="د پنځم سټایل پاک کړئ"/>
+					<Item id="43032" name="ټول سټایلونه پاک کړئ"/>
+					<Item id="43033" name="د لومړي سټایل پخوانی سټایل"/>
+					<Item id="43034" name="د دوهم سټایل پخوانی سټایل"/>
+					<Item id="43035" name="د دریم سټایل پخوانی سټایل"/>
+					<Item id="43036" name="د څلورم سټایل پخوانی سټایل"/>
+					<Item id="43037" name="د پنځم سټایل پخوانی سټایل"/>
+					<Item id="43038" name="د موندلو مارک سټایل پخوانی سټایل"/>
+					<Item id="43039" name="د لومړي سټایل بل سټایل"/>
+					<Item id="43040" name="د دوهم سټایل راتلونکی سټایل"/>
+					<Item id="43041" name="د دریم سټایل راتلونکی سټایل"/>
+					<Item id="43042" name="د څلورم سټایل راتلونکی سټایل"/>
+					<Item id="43043" name="د پنځم سټایل راتلونکی سټایل"/>
+					<Item id="43044" name="د موندلو مارک سټایل بل سټایل"/>
+					<Item id="43055" name="د لومړي سټایل متن کاپي کړئ"/>
+					<Item id="43056" name="د دوهم سټایل متن کاپي کړئ"/>
+					<Item id="43057" name="د دریم سټایل متن کاپي کړئ"/>
+					<Item id="43058" name="د څلورم سټایل سټایل شوی متن کاپي کړئ"/>
+					<Item id="43059" name="د پنځم سټایل متن کاپي کړئ"/>
+					<Item id="43060" name="د ټولو سټایلونو سټایل شوي متن کاپي کړئ"/>
+					<Item id="43061" name="د موندلو مارک سټایل سټایل شوي متن کاپي کړئ"/>
+					<Item id="44100" name="په فایرفوکس کې اوسنی فایل وګورئ"/>
+					<Item id="44101" name="په کروم کې اوسنی فایل وګورئ"/>
+					<Item id="44103" name="اوسنۍ فایل په IE کې وګورئ"/>
+					<Item id="44102" name="په څنډه کې اوسنی فایل وګورئ"/>
+					<Item id="50003" name="پخواني سند ته واړوئ"/>
+					<Item id="50004" name="بل سند ته لاړشئ"/>
+					<Item id="44051" name="د فولډ کچه 1"/>
+					<Item id="44052" name="د فولډ کچه 2"/>
+					<Item id="44053" name="د فولډ کچه 3"/>
+					<Item id="44054" name="د فولډ کچه 4"/>
+					<Item id="44055" name="د فولډ کچه 5"/>
+					<Item id="44056" name="د فولډ کچه 6"/>
+					<Item id="44057" name="د فولډ کچه 7"/>
+					<Item id="44058" name="د فولډ کچه 8"/>
+					<Item id="44061" name="کچه 1 ښکاره کړئ"/>
+					<Item id="44062" name="کچه 2 ښکاره کول"/>
+					<Item id="44063" name="دریمه کچه ښکاره کول"/>
+					<Item id="44064" name="څلورمه کچه ښکاره کول"/>
+					<Item id="44065" name="5 کچه ښکاره کړئ"/>
+					<Item id="44066" name="د 6 کچه ښکاره کړئ"/>
+					<Item id="44067" name="7 کچه ښکاره کول"/>
+					<Item id="44068" name="8 کچه ښکاره کول"/>
+					<Item id="44081" name="د پروژې پینل 1 بدل کړئ"/>
+					<Item id="44082" name="د پروژې پینل 2 بدل کړئ"/>
+					<Item id="44083" name="د پروژې پینل 3 بدل کړئ"/>
+					<Item id="44085" name="فولډر د کاري ځای په توګه بدل کړئ"/>
+					<Item id="44080" name="د سند نقشه بدلول"/>
+					<Item id="44070" name="د اسنادو لیست بدل کړئ"/>
+					<Item id="44084" name="د فعالیت لیست بدل کړئ"/>
+					<Item id="50005" name="د میکرو ثبت کول بدل کړئ"/>
+					<Item id="44104" name="د پروژې پینل 1 ته لاړشئ"/>
+					<Item id="44105" name="د پروژې پینل 2 ته لاړشئ"/>
+					<Item id="44106" name="د پروژې پینل 3 ته لاړشئ"/>
+					<Item id="44107" name="د کاري ځای په توګه فولډر ته واړوئ"/>
+					<Item id="44109" name="د اسنادو لیست ته واړوئ"/>
+					<Item id="44108" name="د فعالیت لیست ته واړوئ"/>
+					<Item id="44110" name="د ټب رنګ لرې کړئ"/>
+					<Item id="44111" name="د ټب رنګ 1 پلي کړئ"/>
+					<Item id="44112" name="د ټب رنګ 2 پلي کړئ"/>
+					<Item id="44113" name="د ټب رنګ 3 پلي کړئ"/>
+					<Item id="44114" name="د ټب رنګ 4 پلي کړئ"/>
+					<Item id="44115" name="د ټب رنګ 5 پلي کړئ"/>
+					<Item id="11002" name="د A څخه Z په نوم ترتیب کړئ"/>
+					<Item id="11003" name="د نوم Z څخه تر A"/>
+					<Item id="11004" name="د A څخه Z پورې د لارې ترتیب کړئ"/>
+					<Item id="11005" name="د لارې Z څخه تر A"/>
+					<Item id="11006" name="د ډول A څخه Z پورې ترتیب کړئ"/>
+					<Item id="11007" name="د ډول Z څخه A"/>
+					<Item id="11008" name="د منځپانګې د اوږدوالي له مخې ترتیبول"/>
+					<Item id="11009" name="د منځپانګې د اوږدوالي د ښکته کیدو له مخې ترتیب کړئ"/>
+				</MainCommandNames>
+			</ShortcutMapper>
+			<ShortcutMapperSubDialg title="شارټ کټ">
+				<Item id="1" name="سمه ده"/>
+				<Item id="2" name="لغوه کول"/>
+				<Item id="5006" name="نوم"/>
+				<Item id="5008" name="اضافه کول"/>
+				<Item id="5009" name="لرې کړئ"/>
+				<Item id="5010" name="درخواست وکړئ"/>
+				<Item id="5007" name="دا به د دې کمانډ څخه شارټ کټ لرې کړي"/>
+				<Item id="5012" name="شخړه وموندل شوه!"/>
+			</ShortcutMapperSubDialg>
+			<UserDefine title="د کارونکي تعریف شوی">
+				<Item id="20001" name="ډاک"/>
+				<Item id="20002" name="نوم بدل کړئ"/>
+				<Item id="20003" name="نوی جوړ کړئ..."/>
+				<Item id="20004" name="لرې کړئ"/>
+				<Item id="20005" name="په توګه خوندي کړئ ..."/>
+				<Item id="20007" name="د کارن ژبه"/>
+				<Item id="20009" name="Ext.:"/>
+				<Item id="20012" name="قضیه له پامه غورځول"/>
+				<Item id="20011" name="روڼتیا"/>
+				<Item id="20015" name="واردول..."/>
+				<Item id="20016" name="صادرات..."/>
+				<Item id="20017" name="خلاصول"/>
+				<StylerDialog title="د سټایلر ډیالوګ">
+					<Item id="25030" name="د فونټ اختیارونه"/>
+					<Item id="25006" name="مخکینۍ رنګ"/>
+					<Item id="25007" name="د شاليد رنګ"/>
+					<Item id="25031" name="نوم:"/>
+					<Item id="25032" name="اندازه:"/>
+					<Item id="25001" name="بولډ"/>
+					<Item id="25002" name="ایټالوی"/>
+					<Item id="25003" name="لاندې کرښه"/>
+					<Item id="25029" name="ځړول"/>
+					<Item id="25008" name="محدودونکی 1"/>
+					<Item id="25009" name="ډیلیمیټر 2"/>
+					<Item id="25010" name="محدودونکی 3"/>
+					<Item id="25011" name="ډیلیمیټر 4"/>
+					<Item id="25012" name="ډیلیمیټر 5"/>
+					<Item id="25013" name="ډیلیمیټر 6"/>
+					<Item id="25014" name="محدودونکی 7"/>
+					<Item id="25015" name="ډیلیمیټر 8"/>
+					<Item id="25018" name="کلیدي کلمه 1"/>
+					<Item id="25019" name="کلیدي کلمه 2"/>
+					<Item id="25020" name="کلیدي کلمه 3"/>
+					<Item id="25021" name="کلیدي کلمه 4"/>
+					<Item id="25022" name="کلیدي کلمه 5"/>
+					<Item id="25023" name="کلیدي کلمه 6"/>
+					<Item id="25024" name="کلیدي کلمه 7"/>
+					<Item id="25025" name="کلیدي کلمه 8"/>
+					<Item id="25016" name="تبصره"/>
+					<Item id="25017" name="د تبصرې کرښه"/>
+					<Item id="25026" name="چلوونکی 1"/>
+					<Item id="25027" name="آپریټر 2"/>
+					<Item id="25028" name="شمېرې"/>
+					<Item id="25033" name="شفاف"/>
+					<Item id="25034" name="شفاف"/>
+					<Item id="1" name="سمه ده"/>
+					<Item id="2" name="لغوه کول"/>
+				</StylerDialog>
+				<Folder title="د فولډر ډیفالټ">
+					<Item id="21101" name="ډیفالټ سټایل"/>
+					<Item id="21102" name="سټایلر"/>
+					<Item id="21103" name="د کارن تعریف شوي ژبې آنلاین مرسته"/>
+					<Item id="21105" name="اسناد"/>
+					<Item id="21106" name="فولډ کمپیکٹ (خالي لیکې هم فولډ کړئ)"/>
+					<Item id="21220" name="د کوډ 1 سټایل کې پوښل"/>
+					<Item id="21224" name="خلاص:"/>
+					<Item id="21225" name="منځنی:"/>
+					<Item id="21226" name="تړل:"/>
+					<Item id="21227" name="سټایلر"/>
+					<Item id="21320" name="د کوډ 2 سټایل کې فولډ کول (جلاکارانو ته اړتیا ده)"/>
+					<Item id="21324" name="خلاص:"/>
+					<Item id="21325" name="منځنی:"/>
+					<Item id="21326" name="تړل:"/>
+					<Item id="21327" name="سټایلر"/>
+					<Item id="21420" name="د تبصرې په انداز کې پوښل"/>
+					<Item id="21424" name="خلاص:"/>
+					<Item id="21425" name="منځنی:"/>
+					<Item id="21426" name="تړل:"/>
+					<Item id="21427" name="سټایلر"/>
+				</Folder>
+				<Keywords title="د کلیدي کلمو لیست">
+					<Item id="22101" name="لومړۍ ډله"/>
+					<Item id="22201" name="دوهمه ډله"/>
+					<Item id="22301" name="دریمه ډله"/>
+					<Item id="22401" name="څلورمه ډله"/>
+					<Item id="22451" name="پنځمه ډله"/>
+					<Item id="22501" name="شپږمه ډله"/>
+					<Item id="22551" name="اووم ګروپ"/>
+					<Item id="22601" name="اتمه ډله"/>
+					<Item id="22121" name="مخکینی حالت"/>
+					<Item id="22221" name="مخکینی حالت"/>
+					<Item id="22321" name="مخکینی حالت"/>
+					<Item id="22421" name="مخکینی حالت"/>
+					<Item id="22471" name="مخکینی حالت"/>
+					<Item id="22521" name="مخکینی حالت"/>
+					<Item id="22571" name="مخکینی حالت"/>
+					<Item id="22621" name="مخکینی حالت"/>
+					<Item id="22122" name="سټایلر"/>
+					<Item id="22222" name="سټایلر"/>
+					<Item id="22322" name="سټایلر"/>
+					<Item id="22422" name="سټایلر"/>
+					<Item id="22472" name="سټایلر"/>
+					<Item id="22522" name="سټایلر"/>
+					<Item id="22572" name="سټایلر"/>
+					<Item id="22622" name="سټایلر"/>
+				</Keywords>
+				<Comment title="د نظر شمیره">
+					<Item id="23003" name="د کرښې تبصره موقعیت"/>
+					<Item id="23004" name="هرچیرې اجازه راکړئ"/>
+					<Item id="23005" name="د کرښې په پیل کې ځواک"/>
+					<Item id="23006" name="مخکینی سپین ځای ته اجازه ورکړئ"/>
+					<Item id="23001" name="د نظرونو پوښلو ته اجازه ورکړئ"/>
+					<Item id="23326" name="سټایلر"/>
+					<Item id="23323" name="خلاص"/>
+					<Item id="23324" name="کرکټر ته دوام ورکړئ"/>
+					<Item id="23325" name="تړل"/>
+					<Item id="23301" name="د تبصرې کرښې سټایل"/>
+					<Item id="23124" name="سټایلر"/>
+					<Item id="23122" name="خلاص"/>
+					<Item id="23123" name="تړل"/>
+					<Item id="23101" name="د نظر انداز"/>
+					<Item id="23201" name="د شمېرې سټایل"/>
+					<Item id="23220" name="سټایلر"/>
+					<Item id="23230" name="مخفف 1"/>
+					<Item id="23232" name="مخفف 2"/>
+					<Item id="23234" name="اضافي 1"/>
+					<Item id="23236" name="اضافي 2"/>
+					<Item id="23238" name="مخفف 1"/>
+					<Item id="23240" name="مخفف 2"/>
+					<Item id="23242" name="لړۍ:"/>
+					<Item id="23244" name="لسیزه جلا کوونکی"/>
+					<Item id="23245" name="ټکی"/>
+					<Item id="23246" name="کوما"/>
+					<Item id="23247" name="دواړه"/>
+				</Comment>
+				<Operator title="آپریټرز ډیلیمیټر">
+					<Item id="24101" name="د چلوونکو سټایل"/>
+					<Item id="24113" name="سټایلر"/>
+					<Item id="24116" name="چلونکي 1"/>
+					<Item id="24117" name="آپریټر 2 (جلا کوونکی اړین دی)"/>
+					<Item id="24201" name="ډیلیمیټر 1 سټایل"/>
+					<Item id="24220" name="خلاص:"/>
+					<Item id="24221" name="فرار:"/>
+					<Item id="24222" name="تړل:"/>
+					<Item id="24223" name="سټایلر"/>
+					<Item id="24301" name="ډیلیمیټر 2 سټایل"/>
+					<Item id="24320" name="خلاص:"/>
+					<Item id="24321" name="فرار:"/>
+					<Item id="24322" name="تړل:"/>
+					<Item id="24323" name="سټایلر"/>
+					<Item id="24401" name="ډیلیمیټر 3 سټایل"/>
+					<Item id="24420" name="خلاص:"/>
+					<Item id="24421" name="فرار:"/>
+					<Item id="24422" name="تړل:"/>
+					<Item id="24423" name="سټایلر"/>
+					<Item id="24451" name="ډیلیمیټر 4 سټایل"/>
+					<Item id="24470" name="خلاص:"/>
+					<Item id="24471" name="فرار:"/>
+					<Item id="24472" name="تړل:"/>
+					<Item id="24473" name="سټایلر"/>
+					<Item id="24501" name="ډیلیمیټر 5 سټایل"/>
+					<Item id="24520" name="خلاص:"/>
+					<Item id="24521" name="فرار:"/>
+					<Item id="24522" name="تړل:"/>
+					<Item id="24523" name="سټایلر"/>
+					<Item id="24551" name="ډیلیمیټر 6 سټایل"/>
+					<Item id="24570" name="خلاص:"/>
+					<Item id="24571" name="فرار:"/>
+					<Item id="24572" name="تړل:"/>
+					<Item id="24573" name="سټایلر"/>
+					<Item id="24601" name="ډیلیمیټر 7 سټایل"/>
+					<Item id="24620" name="خلاص:"/>
+					<Item id="24621" name="فرار:"/>
+					<Item id="24622" name="تړل:"/>
+					<Item id="24623" name="سټایلر"/>
+					<Item id="24651" name="ډیلیمیټر 8 سټایل"/>
+					<Item id="24670" name="خلاص:"/>
+					<Item id="24671" name="فرار:"/>
+					<Item id="24672" name="تړل:"/>
+					<Item id="24673" name="سټایلر"/>
+				</Operator>
+			</UserDefine>
+			<Preference title="غوره توبونه">
+				<Item id="6001" name="تړل"/>
+				<Global title="جنرال">
+					<Item id="6123" name="ځایی کول"/>
+					<Item id="6131" name="مینو"/>
+					<Item id="6122" name="پټول (د بدلولو لپاره Alt یا F10 کیلي وکاروئ)"/>
+					<Item id="6132" name="ښي شارټ کټونه پټ کړئ ＋ ▼ ✕"/>
+					<Item id="6133" name="د حالت بار"/>
+					<Item id="6134" name="پټ کړه"/>
+				</Global>
+
+				<Toolbar title="تولپټ">
+					<Item id="6102" name="پټ کړه"/>
+					<Item id="6103" name="روان UI: کوچنی"/>
+					<Item id="6104" name="روان UI: لوی"/>
+					<Item id="6129" name="ډک شوی روانی UI: کوچنی"/>
+					<Item id="6130" name="ډک شوی روانی UI: لوی"/>
+					<Item id="6105" name="معیاري عکسونه: کوچني"/>
+					<Item id="6011" name="رنګ کول"/>
+					<Item id="6012" name="بشپړ"/>
+					<Item id="6013" name="جزوی"/>
+					<Item id="6014" name="د رنګ انتخاب"/>
+					<Item id="6015" name="ډیفالټ"/>
+					<Item id="6016" name="سور"/>
+					<Item id="6017" name="شنه"/>
+					<Item id="6018" name="نیلي"/>
+					<Item id="6019" name="ارغواني"/>
+					<Item id="6020" name="سیان"/>
+					<Item id="6021" name="زیتون"/>
+					<Item id="6022" name="ژیړ"/>
+					<Item id="6023" name="د سیسټم تلفظ"/>
+					<Item id="6024" name="دود"/>
+				</Toolbar>
+
+				<Tabbar title="ټب بار">
+					<Item id="6107" name="کمول"/>
+					<Item id="6108" name="لاک (نه ډریګ او ډراپ)"/>
+					<Item id="6109" name="د غیر فعال ټب رنګ بدل کړئ"/>
+					<Item id="6110" name="په فعال ټب کې یو رنګه بار رسم کړئ"/>
+					<Item id="6111" name="په غیر فعال ټبونو کې تڼۍ ښکاره کړئ"/>
+					<Item id="6112" name="د تړلو تڼۍ ښکاره کړئ"/>
+					<Item id="6113" name="د سند بندولو لپاره دوه ځله کلیک وکړئ"/>
+					<Item id="6115" name="د پن ټب فیچر فعال کړئ"/>
+					<Item id="6135" name="یوازې پنډ شوی تڼۍ وښایاست"/>
+					<Item id="6118" name="پټ کړه"/>
+					<Item id="6119" name="څو کرښې"/>
+					<Item id="6120" name="عمودی"/>
+					<Item id="6121" name="د وروستي ټب په تړلو کې وتل"/>
+					<Item id="6128" name="بدیل شبیه"/>
+					<Item id="6125" name="چلند"/>
+					<Item id="6126" name="احساس وګورئ"/>
+					<Item id="6136" name="Max.د ټب لیبل اوږدوالی:"/>
+				</Tabbar>
+
+				<Scintillas title="ترمیم 1">
+					<Item id="6216" name="د کارټ ترتیبات"/>
+					<Item id="6217" name="عرض:"/>
+					<Item id="6219" name="د ړنګیدو نرخ:"/>
+					<Item id="6221" name="ف"/>
+					<Item id="6222" name="س"/>
+					<Item id="6246" name="د اوسني کچې فولډ کولو/انفول کولو کمانډونه د بدلون وړ کړئ"/>
+					<Item id="6227" name="لاین ریپ"/>
+					<Item id="6228" name="ډیفالټ"/>
+					<Item id="6229" name="یو ځای شوی"/>
+					<Item id="6230" name="انډینټ"/>
+					<Item id="6234" name="د ټچ پیډ مسلې له امله د پرمختللي سکرول کولو خصوصیت غیر فعال کړئ"/>
+					<Item id="6215" name="اسانه فونټ فعال کړئ"/>
+					<Item id="6236" name="د وروستۍ کرښې هاخوا سکرول کول فعال کړئ"/>
+					<Item id="6239" name="انتخاب وساتئ کله چې د انتخاب څخه بهر ښیې کلیک وکړئ"/>
+					<Item id="6245" name="مجازی ځای فعال کړئ"/>
+					<Item id="6214" name="پرته له انتخاب څخه کاپي / کټ لاین فعال کړئ"/>
+					<Item id="6225" name="غوره شوي متن مخکینۍ ته دودیز رنګ پلي کړئ"/>
+					<Item id="6651" name="د اوسنۍ کرښې شاخص"/>
+					<Item id="6652" name="هیڅ نه"/>
+					<Item id="6653" name="پس منظر روښانه کړئ"/>
+					<Item id="6654" name="چوکاټ"/>
+					<Item id="6655" name="عرض:"/>
+				</Scintillas>
+
+				<Scintillas2 title="ترمیم 2">
+					<Item id="6521" name="څو ایډیټ کول"/>
+					<Item id="6522" name="ملټي ایډیټ کول فعال کړئ (Ctrl + ماوس کلیک/انتخاب)"/>
+					<Item id="6523" name="د څو ایډیټ کولو لپاره د کالم انتخاب فعال کړئ"/>
+					<Item id="6247" name="EOL (CRLF)"/><!-- Don't translate "(CRLF)" -->
+					<Item id="6248" name="ډیفالټ"/>
+					<Item id="6249" name="ساده متن"/>
+					<Item id="6250" name="دودیز رنګ"/>
+					<Item id="6252" name="غیر چاپ شوي کرکټرونه"/>
+					<Item id="6260" name="بڼه"/>
+					<Item id="6254" name="لنډیز"/>
+					<Item id="6255" name="کوډپوائنټ"/>
+					<Item id="6256" name="دودیز رنګ"/>
+					<Item id="6258" name="C0، C1 یونیکوډ EOL"/>
+					<Item id="6259" name="ته د ظاهري ترتیبات پلي کړئپه سند کې د کنټرول کرکټر (C0 کوډ) ټایپ کولو مخه ونیسئ"/>
+				</Scintillas2>
+
+				<DarkMode title="تیاره حالت">
+					<Item id="7131" name="رڼا حالت"/>
+					<Item id="7132" name="تیاره حالت"/>
+					<Item id="7133" name="وینډوز تعقیب کړئ"/>
+					<Item id="7102" name="تور"/>
+					<Item id="7103" name="سور"/>
+					<Item id="7104" name="شنه"/>
+					<Item id="7105" name="آبي"/>
+					<Item id="7107" name="ارغواني"/>
+					<Item id="7108" name="سیان"/>
+					<Item id="7109" name="زیتون"/>
+					<Item id="7115" name="دودیز"/>
+					<Item id="7116" name="د منځپانګې پس منظر"/>
+					<Item id="7117" name="ګرم ټریک توکي"/>
+					<Item id="7118" name="د کنټرول پس منظر"/>
+					<Item id="7119" name="د ډیالوګ پس منظر"/>
+					<Item id="7120" name="تېروتنه"/>
+					<Item id="7121" name="متن"/>
+					<Item id="7122" name="تور متن"/>
+					<Item id="7123" name="غیر فعال متن"/>
+					<Item id="7124" name="څنډه"/>
+					<Item id="7125" name="لینک"/>
+					<Item id="7126" name="څنډه روښانه"/>
+					<Item id="7127" name="څنډه غیر فعاله"/>
+					<Item id="7130" name="بیا تنظیم کړئ"/>
+					<Item id="7135" name="ټون"/>
+				</DarkMode>
+
+				<MarginsBorderEdge title="حاشې/سرحد/څنډه">
+					<Item id="6201" name="فولډ مارجین سټایل"/>
+					<Item id="6202" name="ساده"/>
+					<Item id="6203" name="تیر"/>
+					<Item id="6204" name="د حلقې ونه"/>
+					<Item id="6205" name="د بکس ونه"/>
+					<Item id="6226" name="هیڅ نه"/>
+					<Item id="6291" name="د کرښې شمېره"/>
+					<Item id="6206" name="ښکاره کول"/>
+					<Item id="6292" name="متحرک پلنوالی"/>
+					<Item id="6293" name="دوامداره عرض"/>
+					<Item id="6207" name="بک مارک ښکاره کړئ"/>
+					<Item id="6295" name="د تاریخ بدلون"/>
+					<Item id="6223" name="په حاشیه کې ښکاره کړئ"/>
+					<Item id="6296" name="په متن کې ښودل"/>
+					<Item id="6211" name="عمودی څنډې ترتیبات"/>
+					<Item id="6213" name="د شاليد حالت"/>
+					<Item id="6231" name="د سرحد پلنوالی"/>
+					<Item id="6235" name="هیڅ څنډه نشته"/>
+					<Item id="6208" name="پیډینګ"/>
+					<Item id="6209" name="کیڼ"/>
+					<Item id="6210" name="سمه ده"/>
+					<Item id="6212" name="بې تفاوته"/>
+				</MarginsBorderEdge>
+
+				<NewDoc title="نوی سند">
+					<Item id="6401" name="بڼه (د کرښې پای)"/>
+					<Item id="6402" name="وینډوز (CR LF)"/>
+					<Item id="6403" name="یونیکس (LF)"/>
+					<Item id="6404" name="مکینتوش (CR)"/>
+					<Item id="6405" name="کوډ کول"/>
+					<Item id="6406" name="ANSI"/>
+					<Item id="6407" name="UTF-8"/>
+					<Item id="6408" name="UTF-8 د BOM سره"/>
+					<Item id="6409" name="UTF-16 لوی انډیان د BOM سره"/>
+					<Item id="6410" name="UTF-16 کوچنی انډیان د BOM سره"/>
+					<Item id="6411" name="اصلي ژبه:"/>
+					<Item id="6419" name="نوی سند"/>
+					<Item id="6420" name="خلاص شوي ANSI فایلونو ته درخواست وکړئ"/>
+					<Item id="6432" name="د پیل په وخت کې تل یو نوی سند خلاص کړئ"/>
+					<Item id="6433" name="د سند لومړۍ کرښه د بې سرلیک ټب نوم په توګه وکاروئ"/>
+				</NewDoc>
+
+				<DefaultDir title="Default Directory">
+					<Item id="6413" name="د ډیفالټ خلاص / خوندي فایل لارښود"/>
+					<Item id="6414" name="اوسنی سند تعقیب کړئ"/>
+					<Item id="6415" name="وروستی کارول شوی لارښود په یاد ولرئ"/>
+					<Item id="6431" name="د فولډر ټول فایلونه پرانیزئ د دې پرځای چې فولډر د ورک سپیس په توګه د فولډر ډراپ پیل کړئ"/>
+				</DefaultDir>
+
+				<FileAssoc title="د فایل ټولنه">
+					<Item id="4008" name="مهرباني وکړئ د نوټ پیډ++ څخه وځئ او د دې خصوصیت کارولو لپاره په مدیر حالت کې نوټ پیډ++ بیا پیل کړئ."/>
+					<Item id="4009" name="ملاتړ شوي توسیعونه:"/>
+					<Item id="4010" name="ثبت شوي توسیعونه:"/>
+				</FileAssoc>
+
+
+				<Language title="ژبه">
+					<Item id="6505" name="شته توکي"/>
+					<Item id="6506" name="معیوب شوي توکي"/>
+					<Item id="6507" name="د ژبې مینو کمپیکٹ کړئ"/>
+					<Item id="6508" name="د ژبې مینو"/>
+					<Item id="6335" name="بیک سلیش د SQL لپاره د فرار کرکټر په توګه چلند وکړئ"/>
+				</Language>
+
+				<Indentation title="انډینټیشن">
+					<Item id="7161" name="په اتوماتیک ډول"/>
+					<Item id="7162" name="هیڅ نه"/>
+					<Item id="7163" name="اساسی"/>
+					<Item id="7164" name="پرمختللی"/>
+					<Item id="6301" name="د انډینټ ترتیبات"/>
+					<Item id="6302" name="فضايي کرکټرونه"/>
+					<Item id="6303" name="د انډنټ اندازه:"/>
+					<Item id="6310" name="انډینټ په کارولو سره:"/>
+					<Item id="6311" name="د ټب کرکټر"/>
+					<Item id="6510" name="ډیفالټ ارزښت وکاروئ"/>
+					<Item id="6512" name="د بیک اسپیس کلیدي د واحد ځای لرې کولو پرځای خلاصول"/>
+				</Indentation>
+
+				<Highlighting title="روښانه کول">
+					<Item id="6351" name="د ټوکن ټولې پیښې سټایل"/>
+					<Item id="6352" name="د میچ قضیه"/>
+					<Item id="6353" name="یوازې د ټولې کلمې سره سمون خوري"/>
+					<Item id="6333" name="سمارټ روښانه کول"/>
+					<Item id="6326" name="فعال کړئ"/>
+					<Item id="6354" name="سمون"/>
+					<Item id="6332" name="د میچ قضیه"/>
+					<Item id="6338" name="یوازې د ټولې کلمې سره سمون خوري"/>
+					<Item id="6339" name="د موندلو ډیالوګ ترتیبات وکاروئ"/>
+					<Item id="6340" name="بل نظر روښانه کړئ"/>
+					<Item id="6329" name="د سمون ټګونه روښانه کړئ"/>
+					<Item id="6327" name="فعال کړئ"/>
+					<Item id="6328" name="د ټګ ځانګړتیاوې روښانه کړئ"/>
+					<Item id="6330" name="تبصره/php/asp زون روښانه کړئ"/>
+				</Highlighting>
+
+				<Print title="چاپ">
+					<Item id="6601" name="د کرښې شمیره چاپ کړئ"/>
+					<Item id="6602" name="د رنګ اختیارونه"/>
+					<Item id="6603" name="د ‏‎WYSIWYG‎‏ پاڼې اړوند نور معلومات په فسبوک کې اوګورئ"/>
+					<Item id="6604" name="بدلول"/>
+					<Item id="6605" name="تور پر سپین"/>
+					<Item id="6606" name="د شاليد رنګ نشته"/>
+					<Item id="6607" name="د حاشیې ترتیبات (یونټ:mm)"/>
+					<Item id="6612" name="کیڼ"/>
+					<Item id="6613" name="پورته"/>
+					<Item id="6614" name="سمه ده"/>
+					<Item id="6615" name="لاندې"/>
+					<Item id="6706" name="بولډ"/>
+					<Item id="6707" name="ایټالوی"/>
+					<Item id="6708" name="سرلیک"/>
+					<Item id="6709" name="چپه برخه"/>
+					<Item id="6710" name="منځنۍ برخه"/>
+					<Item id="6711" name="سمه برخه"/>
+					<Item id="6717" name="بولډ"/>
+					<Item id="6718" name="ایټالوی"/>
+					<Item id="6719" name="فوټر"/>
+					<Item id="6720" name="چپه برخه"/>
+					<Item id="6721" name="منځنۍ برخه"/>
+					<Item id="6722" name="سمه برخه"/>
+					<Item id="6723" name="اضافه کول"/>
+					<ComboBox id="6724">
+						<Element name="د بشپړ فایل نوم لاره"/>
+						<Element name="د دوتنې نوم"/>
+						<Element name="د دوتنې لارښود"/>
+						<Element name="پاڼه"/>
+						<Element name="د لنډې نیټې بڼه"/>
+						<Element name="د اوږدې نیټې بڼه"/>
+						<Element name="وخت"/>
+					</ComboBox>
+					<Item id="6725" name="متغیر:"/>
+					<Item id="6727" name="دلته خپل متغیر ترتیبات ښکاره کړئ"/>
+					<Item id="6728" name="سرلیک او فوټر"/>
+				</Print>
+
+				<Searching title="لټون">
+					<Item id="6902" name="د مونو اسپیس فونټ د موندلو په ډیالوګ کې وکاروئ (د نوټ پیډ++ بیا پیلولو ته اړتیا لرئ)"/>
+					<Item id="6903" name="د موندلو ډیالوګ د لټون وروسته خلاص پاتې کیږي چې د پایلو کړکۍ ته راځي"/>
+					<Item id="6904" name="په ټولو پرانیستل شویو اسنادو کې د ټولو بدلول تایید کړئ"/>
+					<Item id="6905" name="ځای په ځای کول: لاندې پیښې ته مه ځئ"/>
+					<Item id="6906" name="د لټون پایلې کړکۍ: د امکان په صورت کې په هر موندل شوي کرښه کې یوازې یوه ننوتل ښکاره کړئ"/>
+					<Item id="6907" name="کله چې د موندلو ډیالوګ غوښتنه کیږي"/>
+					<Item id="6908" name="د موندلو ساحه د ټاکل شوي متن سره ډک کړئ"/>
+					<Item id="6909" name="د کارټ لاندې کلمه غوره کړئ کله چې هیڅ شی نه وي غوره شوی"/>
+					<Item id="6910" name="د اتوماتیک چک کولو لپاره لږترلږه اندازه &quot;په انتخاب کې&quot;:"/>
+					<Item id="6913" name="د فعال سند پر بنسټ د فایلونو ډایرکټرۍ ساحه کې موندل ډک کړئ"/>
+					<Item id="6916" name=": د انتخاب څخه د ساحې موندلو لپاره د اتوماتیک ډکولو لپاره اعظمي کرکټرونه"/>
+				</Searching>
+
+				<RecentFilesHistory title="د وروستیو فایلونو تاریخ">
+					<Item id="6304" name="د وروستیو فایلونو تاریخ"/>
+					<Item id="6306" name="Max.د ننوتلو شمیر:"/>
+					<Item id="6305" name="د لانچ په وخت کې مه ګورئ"/>
+					<Item id="6429" name="ښکاره کول"/>
+					<Item id="6424" name="په فرعي مینو کې"/>
+					<Item id="6425" name="یوازې د دوتنې نوم"/>
+					<Item id="6426" name="د بشپړ فایل نوم لاره"/>
+					<Item id="6427" name="اعظمي اوږدوالی حسب کړئ:"/>
+				</RecentFilesHistory>
+
+				<Backup title="بیک اپ">
+					<Item id="6817" name="د سیشن سنیپ شاټ او دوره ای بیک اپ"/>
+					<Item id="6818" name="د سیشن سنیپ شاټ او دوره ای بیک اپ فعال کړئ"/>
+					<Item id="6819" name="په هر"/>
+					<Item id="6821" name="ثانیې"/>
+					<Item id="6822" name="د بیک اپ لاره:"/>
+					<Item id="6309" name="د راتلونکي لانچ لپاره اوسنۍ ناسته په یاد ولرئ"/>
+					<Item id="6825" name="د تیرې ناستې څخه د لاسرسي وړ فایلونه په یاد ولرئ"/>
+					<Item id="6801" name="په خوندي کولو کې بیک اپ"/>
+					<Item id="6315" name="هیڅ نه"/>
+					<Item id="6316" name="ساده بیک اپ"/>
+					<Item id="6317" name="لفظي بیک اپ"/>
+					<Item id="6804" name="د ګمرک بیک اپ لارښود"/>
+					<Item id="6803" name="لارښود:"/>
+				</Backup>
+
+				<AutoCompletion title="په اتوماتيک ډول بشپړول">
+					<Item id="6807" name="په اتوماتيک ډول بشپړول"/>
+					<Item id="6808" name="په هر آخذه کې د اتوماتیک تکمیل فعالول"/>
+					<Item id="6809" name="د فعالیت بشپړول"/>
+					<Item id="6810" name="د کلمې بشپړول"/>
+					<Item id="6816" name="دنده او د کلمو بشپړول"/>
+					<Item id="6869" name="انتخاب داخل کړئ"/>
+					<Item id="6870" name="TAB"/><!-- TAB key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6871" name="داخل شه"/><!-- ENTER key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6824" name="شمیرې له پامه غورځول"/>
+					<Item id="6811" name="څخه"/>
+					<Item id="6813" name="دریم کرکټر"/>
+					<Item id="6872" name="د اتوماتیک بشپړولو لیست لنډ کړئ"/>
+					<Item id="6815" name="د فنکشن پیرامیټرې په آخذه کې اشاره"/>
+					<Item id="6851" name="اتومات داخلول"/>
+					<Item id="6857" name="html/xml تړل ټاګ"/>
+					<Item id="6858" name="خلاص"/>
+					<Item id="6859" name="تړل"/>
+					<Item id="6860" name="جوړه جوړه 1:"/>
+					<Item id="6863" name="جوړه جوړه 2:"/>
+					<Item id="6866" name="جوړه جوړه 3:"/>
+				</AutoCompletion>
+
+				<MultiInstance title="د څو مثالونو نیټه">
+					<Item id="6151" name="د څو مثالونو ترتیبات *"/>
+					<Item id="6152" name="په یوه نوي مثال کې سیشن خلاص کړئ (او سیشن په اوتومات ډول د وتلو پرمهال خوندي کړئ)"/>
+					<Item id="6153" name="تل په څو مثالونو کې"/>
+					<Item id="6154" name="ډیفالټ (مونو مثال)"/>
+					<Item id="6155" name="* د دې ترتیب تعدیل اړتیا لري نوټ پیډ ++ بیا پیل کړي"/>
+					<Item id="6171" name="د نیټې نیټې وخت تنظیم کړئ"/>
+					<Item id="6175" name="د ډیفالټ نیټې وخت ترتیب (لنډ اوږد فارمیټ)"/>
+					<Item id="6172" name="دودیز بڼه:"/>
+					<Item id="6181" name="د پینل ریاست او [-ناسیسیشن] *"/>
+					<Item id="6182" name="د پینل حالت په یاد ولرئ (پینل خلاص دی) په نورو مثالونو کې (ملټي انسټانس حالت) یا کله چې د کمانډ لاین پیرامیټر وکاروئ [-nosession]"/>
+					<Item id="6183" name="د کلیپ بورډ تاریخ"/>
+					<Item id="6184" name="د اسنادو لیست"/>
+					<Item id="6185" name="د کرکټر پینل"/>
+					<Item id="6186" name="د کاري ځای په توګه فولډر"/>
+					<Item id="6187" name="د پروژې تختې"/>
+					<Item id="6188" name="د سند نقشه"/>
+					<Item id="6189" name="د فعالیت لیست"/>
+					<Item id="6190" name="پلگ ان پینل"/>
+				</MultiInstance>
+
+				<Delimiter title="محدود کونکی">
+					<Item id="6251" name="د ډیلیمیټر انتخاب ترتیبات (Ctrl + ماوس دوه ځله کلیک)"/>
+					<Item id="6252" name="خلاص"/>
+					<Item id="6255" name="تړل"/>
+					<Item id="6256" name="په څو کرښو کې اجازه راکړئ"/>
+					<Item id="6161" name="د کلمې کرکټر لیست"/>
+					<Item id="6162" name="د ډیفالټ کلمې کرکټر لیست وکاروئ لکه څنګه چې دا دی"/>
+					<Item id="6163" name="خپل کرکټر د کلمې د یوې برخې په توګه اضافه کړئ
+(دا انتخاب مه کوئ پرته لدې چې تاسو پوه شئ چې تاسو څه کوئ)"/>
+				</Delimiter>
+
+				<Performance title="فعالیت">
+					<Item id="7141" name="د لوی فایل محدودیت"/>
+					<Item id="7143" name="د لوی فایل محدودیت فعال کړئ (نه ترکیب روښانه کول)"/>
+					<Item id="7144" name="د لوی فایل اندازه تعریف کړئ:"/>
+					<Item id="7146" name="MB (1 - 2046)"/>
+					<Item id="7147" name="د بریس میچ ته اجازه ورکړئ"/>
+					<Item id="7148" name="د اتوماتیک تکمیل ته اجازه ورکړئ"/>
+					<Item id="7149" name="د سمارټ روښانه کولو ته اجازه ورکړئ"/>
+					<Item id="7150" name="په نړیواله کچه د کلمې لفاف غیر فعال کړئ"/>
+					<Item id="7151" name="د URL د کلیک کولو وړ لینک ته اجازه ورکړئ"/>
+					<Item id="7152" name="د ≥2GB فایلونو خلاصولو پر مهال خبرداری فشار ورکړئ"/>
+				</Performance>
+
+				<Cloud title="بادل لینک">
+					<Item id="6262" name="په بادل کې ترتیبات"/>
+					<Item id="6263" name="نه بادل"/>
+					<Item id="6267" name="د خپل بادل ځای لاره دلته تنظیم کړئ:"/>
+					<Item id="6318" name="د کلیک کولو وړ لینک ترتیبات"/>
+					<Item id="6319" name="فعال کړئ"/>
+					<Item id="6320" name="هیڅ زیرمه نشته"/>
+					<Item id="6350" name="د بشپړ بکس حالت فعال کړئ"/>
+					<Item id="6264" name="د URI تخصیص شوی سکیمونه:"/>
+				</Cloud>
+
+				<SearchEngine title="د لټون انجن">
+					<Item id="6271" name="د لټون انجن (د قوماندې لپاره &quot;په انټرنیټ کې لټون&quot;)"/>
+					<Item id="6272" name="DuckDuckGo"/>
+					<Item id="6273" name="ګوګل"/>
+					<Item id="6274" name="Bing"/>
+					<Item id="6275" name="یاهو!"/>
+					<Item id="6276" name="خپل د لټون انجن دلته تنظیم کړئ:"/>
+					<!-- Don't change anything after Example: -->
+					<Item id="6278" name="بېلګه: https://www.google.com/search?q=$(CURRENT_WORD)"/>
+				</SearchEngine>
+
+				<MISC title="MISC.">
+					<ComboBox id="6347">
+						<Element name="د اوسني فایل لپاره فعال کړئ"/>
+						<Element name="د ټولو پرانیستل شویو فایلونو لپاره فعال کړئ"/>
+						<Element name="غیر فعال"/>
+					</ComboBox>
+					<ComboBox id="6307">
+						<Element name="په اړه هیڅ اقدام نشته"/>
+						<Element name="لږ تر لږه"/>
+						<Element name="ته نږدې"/>
+						<Element name="لږ کړئ / ته نږدې"/>
+					</ComboBox>
+					<ComboBox id="6362">
+						<Element name="GDI (ډیر مناسب)"/>
+						<Element name="DirectWrite (ډیفالټ)"/>
+						<Element name="DirectWrite (د چوکاټونو ساتل)"/>
+						<Element name="DirectWrite (GDI DC ته رسم کړئ)"/>
+						<Element name="DirectWrite (DirectX 11)"/>
+					</ComboBox>
+					<ComboBox id="6364">
+						<Element name="غیر فعال"/>
+						<Element name="په نوټ پیډ++ پیل کې فعال کړئ"/>
+						<Element name="په Notepad++ وتلو کې فعال کړئ"/>
+					</ComboBox>
+					<Item id="6308" name="د سیسټم ټری"/>
+					<Item id="6363" name="د وړاندې کولو حالت"/>
+					<Item id="6365" name="اتوماتیک اپډیټر:"/>
+					<Item id="6312" name="د فایل حالت اتوماتیک کشف"/>
+					<Item id="6313" name="په خاموشۍ سره تازه کړئ"/>
+					<Item id="6325" name="د تازه کولو وروسته وروستۍ کرښې ته سکرول کړئ"/>
+					<Item id="6322" name="د سیشن فایل توسیع:"/>
+					<Item id="6324" name="د سند بدلونکی (Ctrl+TAB)"/>
+					<Item id="6331" name="په سرلیک بار کې یوازې د فایل نوم وښایاست"/>
+					<Item id="6334" name="د کرکټر کوډ کولو اتوماتیک کشف"/>
+					<Item id="6337" name="د کاري ځای فایل توسیع:"/>
+					<Item id="6114" name="فعال کړئ"/>
+					<Item id="6117" name="د MRU چلند فعال کړئ"/>
+					<Item id="6344" name="د اسنادو کتنه"/>
+					<Item id="6345" name="په ټب کې وګورئ"/>
+					<Item id="6346" name="د سند په نقشه کې وګورئ"/>
+					<Item id="6360" name="ټول غږونه خاموش کړئ"/>
+					<Item id="6361" name="د ټولو خوندي کولو تایید ډیالوګ فعال کړئ"/>
+				</MISC>
+			</Preference>
+			<MultiMacro title="یو میکرو څو ځله چل کړئ">
+				<Item id="1" name="منډه کړه"/>
+				<Item id="2" name="لغوه کول"/>
+				<Item id="8006" name="د چلولو لپاره میکرو"/>
+				<Item id="8001" name="منډه کړه"/>
+				<Item id="8005" name="وختونه"/>
+				<Item id="8002" name="د فایل تر پایه پورې وګرځئ"/>
+			</MultiMacro>
+			<Window title="وینډوز">
+				<Item id="1" name="فعالول"/>
+				<Item id="2" name="سمه ده"/>
+				<Item id="7002" name="خوندي کړئ"/>
+				<Item id="7003" name="کړکۍ بنده کړئ"/>
+				<Item id="7004" name="ټبونه ترتیب کړئ"/>
+			</Window>
+			<ColumnEditor title="د کالم مدیر">
+				<Item id="2023" name="د داخلولو لپاره متن"/>
+				<Item id="2033" name="د داخلولو شمیره"/>
+				<Item id="2030" name="لومړنۍ شمېره:"/>
+				<Item id="2031" name="زیاتول:"/>
+				<Item id="2038" name="مخکښ:"/>
+				<ComboBox id="2039">
+					<Element name="هیڅ نه"/>
+					<Element name="زیرو"/>
+					<Element name="ځایونه"/>
+				</ComboBox>
+				<Item id="2036" name="تکرار:"/>
+				<Item id="2032" name="بڼه"/>
+				<Item id="2024" name="دسمبر"/>
+				<Item id="2025" name="اکتوبر"/>
+				<Item id="2026" name="هیکس"/>
+				<Item id="2027" name="بن"/>
+				<Item id="1" name="سمه ده"/>
+				<Item id="2" name="لغوه کول"/>
+			</ColumnEditor>
+			<FindInFinder title="د لټون پایلو کې ومومئ">
+				<Item id="1" name="ټول ومومئ"/>
+				<Item id="2" name="تړل"/>
+				<Item id="1711" name="څه ومومئ:"/>
+				<Item id="1713" name="یوازې په موندل شویو کرښو کې لټون وکړئ"/>
+				<Item id="1714" name="یوازې د ټولې کلمې سره سمون خوري"/>
+				<Item id="1715" name="د میچ قضیه"/>
+				<Item id="1716" name="د لټون حالت"/>
+				<Item id="1717" name="نورمال"/>
+				<Item id="1719" name="منظم بیان"/>
+				<Item id="1718" name="تمدید شوی (\n, \r, \t, \0, \x...)"/>
+				<Item id="1720" name=".د نوي لاین سره سمون خوري"/>
+			</FindInFinder>
+			<DoSaveOrNot title="خوندي کړئ">
+				<Item id="1761" name="د &quot;$STR_REPLACE$&quot; فایل خوندي کړئ؟"/>
+				<Item id="6" name="هو"/>
+				<Item id="7" name="نه"/>
+				<Item id="2" name="لغوه کول"/>
+				<Item id="4" name="هو ټولو ته"/>
+				<Item id="5" name="نه ټولو ته"/>
+			</DoSaveOrNot>
+			<DoSaveAll title="ټول تایید خوندي کړئ">
+				<Item id="1766" name="ایا تاسو ډاډه یاست چې تاسو غواړئ ټول بدل شوي اسناد خوندي کړئ؟
+
+&quot;تل هو&quot; غوره کړئ که تاسو نه غواړئ دا ډیالوګ بیا وګورئ.
+تاسو کولی شئ دا ډیالوګ بیا وروسته په غوره توبونو کې فعال کړئ."/>
+				<Item id="6" name="هو"/>
+				<Item id="7" name="نه"/>
+				<Item id="4" name="تل هو"/>
+			</DoSaveAll><!-- HowToReproduce: Check the "Enable Save All confirm dialog" checkbox in Preference->MISC, now click "Save all" -->
+
+			<DebugInfo title="دبګ معلومات">
+				<Item id="1752" name="د ډیبګ معلومات کلپ بورډ ته کاپي"/>
+				<Item id="1" name="سمه ده"/>
+			</DebugInfo>
+					<MacStrings>
+				<Item id="90001" name="د لټون پایلې"/>
+				<Item id="90002" name="د لټون پایلې بند کړئ"/>
+				<Item id="90003" name="ټول پاک کړئ"/>
+				<Item id="90004" name="پینل بند کړئ"/>
+				<Item id="90005" name="د پروژې پینل"/>
+				<Item id="90006" name="د سرچینې کنټرول"/>
+				<Item id="90007" name="ژمن"/>
+				<Item id="90008" name="ژمنه ناکامه شوه"/>
+				<Item id="90009" name="د ګیټ ذخیره نشته\nد ریپو خلاصولو لپاره براوز وکاروئ."/>
+				<Item id="90010" name="مرحله"/>
+				<Item id="90011" name="بې ځایه"/>
+				<Item id="90012" name="مرحله ټول"/>
+				<Item id="90013" name="ټول ړنګ کړئ"/>
+				<Item id="90014" name="د ژمنې پیغام\u2026"/>
+				<Item id="90015" name="د ذخیره کولو لپاره لټون وکړئ\u2026"/>
+				<Item id="90016" name="د git ذخیره کولو فولډر غوره کړئ"/>
+				<Item id="90017" name="(نه ذخیره)"/>
+				<Item id="90018" name="(بې ځایه)"/>
+				<Item id="90019" name="نامعلومه تېروتنه"/>
+				<Item id="90020" name="هیڅ فعالیت ونه موندل شو"/>
+				<Item id="90021" name="د لټون فعالیت..."/>
+				<Item id="90022" name="ټول پراخ کړئ"/>
+				<Item id="90023" name="اوسنۍ دوتنه پیدا کړئ"/>
+				<Item id="90024" name="تازه کړئ"/>
+				<Item id="90025" name="افعال ترتیب کړئ (A to Z)"/>
+				<Item id="90026" name="پایلې"/>
+				<Item id="90027" name="ودریږه"/>
+				<Item id="90028" name="لټون ودرول شو."/>
+				<Item id="90029" name="لټون کول\u2026"/>
+				<Item id="90030" name="د لټون لپاره متن"/>
+				<Item id="90031" name="*.txt, *.cpp, \u2026"/>
+				<Item id="90032" name="لټون کول..."/>
+				<Item id="90033" name="ځای په ځای کول:"/>
+				<Item id="90034" name="ټوله کلمه"/>
+				<Item id="90035" name="ټوله کلمه"/>
+				<Item id="90036" name="ورپ"/>
+				<Item id="90037" name="کرکټر"/>
+				<Item id="90038" name="HTML نوم"/>
+				<Item id="90039" name="HTML ډیسیمال"/>
+				<Item id="90040" name="HTML هیکساډیسیمل"/>
+				<Item id="90041" name="ارزښت"/>
+				<Item id="90042" name="خالي ناسته"/>
+				<Item id="90043" name="د ټاکل شوي سیشن فایل هیڅ ټب نلري."/>
+				<Item id="90044" name="سیشن پورته کول"/>
+				<Item id="90045" name="سیشن خوندي کړئ"/>
+				<Item id="90046" name="وروستي فایلونه پاک کړئ"/>
+				<Item id="90047" name="دوتنه ونه موندل شوه"/>
+				<Item id="90048" name="هیڅ میکرو نه ثبت شوی"/>
+				<Item id="90049" name="د سټارټ ریکارډ په کارولو سره لومړی میکرو ثبت کړئ."/>
+				<Item id="90050" name="هیڅ شارټ کټ شخړې نشته."/>
+				<Item id="90051" name="د دوتنې نوم"/>
+				<Item id="90052" name="ډول"/>
+				<Item id="90053" name="لاره"/>
+				<Item id="90054" name="لاین ته لاړ شئ"/>
+				<Item id="90055" name="نیټه/وخت داخل کړئ"/>
+				<Item id="90056" name="د کوډ کولو بدلون"/>
+				<Item id="90057" name="یو کاپي لکه څنګه خوندي کړئ"/>
+				<Item id="90058" name="کثافاتو ته لاړشئ"/>
+				<Item id="90059" name="د سرلیک بار"/>
+				<Item id="90060" name="په سرلیک بار کې د فایل بشپړ لاره وښایاست"/>
+				<Item id="90061" name="د حالت بار ښکاره کړئ"/>
+				<Item id="90062" name="د ټب اندازه:"/>
+				<Item id="90063" name="د کارټ عرض:"/>
+				<Item id="90064" name="د کارټ د ړنګیدو نرخ (ms):"/>
+				<Item id="90065" name="د فونټ وړاندې کول:"/>
+				<Item id="90066" name="د ټب اعظمي حد (پکسل):"/>
+				<Item id="90067" name="عمودی څنډه"/>
+				<Item id="90068" name="څنډه حالت:"/>
+				<Item id="90069" name="څنډه کالم:"/>
+				<Item id="90070" name="د متحرک کرښې شمیره عرض"/>
+				<Item id="90071" name="کیڼ:"/>
+				<Item id="90072" name="حق:"/>
+				<Item id="90073" name="د اصلي کرښې پای:"/>
+				<Item id="90074" name="ډیفالټ کوډ کول:"/>
+				<Item id="90075" name="د اتوماتیک بیک اپ فعال کړئ"/>
+				<Item id="90076" name="د بیک اپ وقفه (ثانوي):"/>
+				<Item id="90077" name="د بیک اپ ځای:"/>
+				<Item id="90078" name="د رنګ سټایل"/>
+				<Item id="90079" name="(میراث)"/>
+				<Item id="90080" name="د سټایل موضوع وارد کړئ"/>
+				<Item id="90081" name="کټګورۍ"/>
+				<Item id="90082" name="د فلټر کولو لپاره ټایپ کړئ..."/>
+				<Item id="90083" name="د دې توکي لپاره هیڅ شارټ کټ شخړه نشته."/>
+				<Item id="90084" name="نښلول"/>
+				<Item id="90085" name="نسخه"/>
+				<Item id="90086" name="نصب کول بشپړ شول"/>
+				<Item id="90087" name="د نصب شوي پلگ انونو د پورته کولو لپاره غوښتنلیک بیا پیل کړئ."/>
+				<Item id="90088" name="پلگ ان نصب کړئ"/>
+				<Item id="90089" name="پلگ انونه لرې کړئ"/>
+				<Item id="90090" name="هیڅ کمانډ ونه موندل شو"/>
+				<Item id="90091" name="د لټون لپاره ټایپ کړئ\u2026"/>
+				<Item id="90092" name="د کارن تعریف شوې ژبه v.2.1"/>
+				<Item id="90093" name="نوې ژبه جوړه کړئ"/>
+				<Item id="90094" name="نوم ولیکئ:"/>
+				<Item id="90095" name="مخکینۍ رنګ:"/>
+				<Item id="90096" name="د شاليد رنګ:"/>
+				<Item id="90097" name="مه ساتئ"/>
+				<Item id="90098" name="بشپړ شو"/>
+				<Item id="90099" name="د کلمې لپاه بدل کړئ"/>
+				<Item id="90100" name="ټول کرکټرونه ښکاره کړئ"/>
+				<Item id="90101" name="د کرکټرونو اختیارونه وښایاست"/>
+				<Item id="90102" name="د انډینټ لارښود بدل کړئ"/>
+				<Item id="90103" name="تراوسه نه دی پلی شوی"/>
+				<Item id="90104" name="له ډیسک څخه بیا پورته کول"/>
+				<Item id="90105" name="د لټون انجن بدل کړئ"/>
+				<Item id="90106" name="د چلولو تېروتنه"/>
+				<Item id="90107" name="Notepad++ د بارولو وخت"/>
+				<Item id="90108" name="د تازه معلوماتو لپاره د چک کولو توان نلري"/>
+				<Item id="90109" name="تاسو تازه یاست"/>
+				<Item id="90110" name="ډاونلوډ کړئ"/>
+				<Item id="90111" name="د خپریدو پاڼه"/>
+				<Item id="90112" name="وروسته"/>
+				<Item id="90113" name="فلټر پلگ ان\u2026"/>
+				<Item id="90114" name="شته"/>
+				<Item id="90115" name="تازه معلومات"/>
+				<Item id="90116" name="نصب شوی"/>
+				<Item id="90117" name="ناموافق"/>
+				<Item id="90118" name="په نصبولو کې پاتې راغلی"/>
+				<Item id="90119" name="لاندې پلگ انونه لرې کړئ؟"/>
+				<Item id="90120" name="لاندې پلگ انونه نصب کړئ؟"/>
+				<Item id="90121" name="دا به د پلگ ان فایلونه حذف کړي."/>
+				<Item id="90122" name="د لټون امر\u2026"/>
+				<Item id="90123" name="مخکینۍ رنګ"/>
+				<Item id="90124" name="د شاليد رنګ"/>
+				<Item id="90125" name="میکرو نوم"/>
+				<Item id="90126" name="میکرو نوم"/>
+				<Item id="90127" name="اوسنی ثبت شوی میکرو"/>
+				<Item id="90128" name="د میکرو مدیر"/>
+				<Item id="90129" name="نه خوندي شوی میکرو"/>
+				<Item id="90130" name="لومړی میکرو ثبت او خوندي کړئ."/>
+				<Item id="90131" name="شارټ کټ ړنګ کړئ"/>
+				<Item id="90132" name="اصلي مینو"/>
+				<Item id="90133" name="ماکرو"/>
+				<Item id="90134" name="امرونه چلول"/>
+				<Item id="90135" name="د پلگ ان امرونه"/>
+				<Item id="90136" name="د سکینټیلا امرونه"/>
+				<Item id="90137" name="د کمانډ لاین دلیلونه"/>
+				<Item id="90138" name="د چلولو مینو لپاره د کمانډ نوم"/>
+				<Item id="90139" name="ټولې نښې پاکې شوې."/>
+				<Item id="90140" name="نښه شوی متن کلپ بورډ ته کاپي شوی."/>
+				<Item id="90141" name="د کاپي کولو لپاره نښه شوي متن نشته."/>
+				<Item id="90142" name="لټون کول... %ld ټکان\u2014 %@"/>
+				<Item id="90143" name="په فایلونو کې ځای په ځای کول..."/>
+				<Item id="90144" name="په پروژو کې ځای په ځای کول: تر ​​اوسه پورې تړلي ندي."/>
+				<Item id="90145" name="په پروژو کې ومومئ: تراوسه د پروژې پینل فایل لیست سره ندي تړل شوي."/>
+				<Item id="90146" name="د کار ځای بدل شوی."/>
+				<Item id="90147" name="ایا تاسو غواړئ بدلونونه خوندي کړئ؟"/>
+				<Item id="90148" name="د لټون پایلې"/>
+				<Item id="90149" name="اوسنۍ کرښه روښانه کړئ"/>
+				<Item id="90150" name="د کرښې شمیرې ښکاره کړئ"/>
+				<Item id="90151" name="سپینه ځای ښکاره کړئ"/>
+				<Item id="90152" name="د EOL مارکرونه وښایاست"/>
+				<Item id="90153" name="د بک مارک مارجن ښکاره کړئ"/>
+				<Item id="90154" name="ټبونه وکاروئ (د ځای پرځای)"/>
+				<Item id="90155" name="د وروستۍ کرښې هاخوا سکرول"/>
+				<Item id="90156" name="پرته له انتخاب څخه کرښه کاپي/کټ کړه"/>
+				<Item id="90157" name="د ټاکل شوي متن ډریګ ډراپ غیر فعال کړئ"/>
+				<Item id="90158" name="سمارټ روښانه کول فعال کړئ"/>
+				<Item id="90159" name="سمارټ روښانه کول: د میچ قضیه"/>
+				<Item id="90160" name="سمارټ روښانه کول: یوازې ټوله کلمه"/>
+				<Item id="90161" name="د ټب بندولو لپاره دوه ځله کلیک وکړئ"/>
+				<Item id="90162" name="په ټبونو کې د نږدې تڼۍ ښودل"/>
+				<Item id="90163" name="د غونډو په اوږدو کې د پینل لید یاد وساتئ"/>
+				<Item id="90164" name="په ناسته کې د غیر حاضر فایل ثبتونه وساتئ"/>
+				<Item id="90165" name="د ټولو خوندي کولو دمخه تایید کړئ"/>
+				<Item id="90166" name="تایید کړئ چې ټول په خلاص اسنادو کې ځای په ځای کړئ"/>
+				<Item id="90167" name="ځای په ځای کول: راتلونکي پیښې ته مه ځئ"/>
+				<Item id="90168" name="د مونو اسپیس فونټ د موندلو په ډیالوګ کې وکاروئ"/>
+				<Item id="90169" name="ښي کلیک انتخاب ساتي"/>
+				<Item id="90170" name="د ډیفالټ نیټې/وخت ترتیب بیرته راګرځول"/>
+				<Item id="90171" name="د XML پر بنسټ د فعالیت لیست پارسر وکاروئ"/>
+				<Item id="90172" name="په اتوماتيک ډول تړل بریکٹ ( ) [ ] { }"/>
+				<Item id="90173" name="د نهم کرکټر څخه:"/>
+				<Item id="90174" name="په انتخاب کې د اتوماتیک چک حد (بایټ):"/>
+				<Item id="90175" name="تمدید شوی (\\n, \\r, \\t, \\0, \\x...)"/>
+				<Item id="90176" name="ایډیټر"/>
+				<Item id="90177" name="حاشيې"/>
+				<Item id="90178" name="تیاره"/>
+				<Item id="90179" name="رڼا"/>
+				<Item id="90180" name="اتومات (سسټم تعقیب کړئ)"/>
+				<Item id="90181" name="پتلی (1px)"/>
+				<Item id="90182" name="منځنی (2px)"/>
+				<Item id="90183" name="غټ (3px)"/>
+				<Item id="90184" name="بند"/>
+				<Item id="90185" name="پس منظر"/>
+				<Item id="90186" name="Antialiased"/>
+				<Item id="90187" name="LCD اصلاح شوی"/>
+				<Item id="90188" name="ساده +/-"/>
+				<Item id="90189" name="وینډوز (CRLF)"/>
+				<Item id="90190" name="ماک (CR)"/>
+				<Item id="90191" name="د پلگ ان لیست ذخیره"/>
+				<Item id="90192" name="د پلي کولو لپاره د نوټ پیډ ++ موضوع XML فایل غوره کړئ"/>
+				<Item id="90193" name="نوی جوړ کړئ\u2026"/>
+				<Item id="90194" name="په توګه خوندي کړئ\u2026"/>
+				<Item id="90195" name="د کارونکي ژبه:"/>
+				<Item id="90196" name="د ژبې نوم"/>
+				<Item id="90197" name="جوړ کړئ"/>
+				<Item id="90198" name="په توګه خوندي کړئ"/>
+				<Item id="90199" name="es"/>
+				<Item id="90200" name="په ټوله فایل کې"/>
+				<Item id="90201" name="آپریټرونه محدودونکي"/>
+				<Item id="90202" name="ناباوره سلسله"/>
+				<Item id="90203" name="د حد ارزښتونه باید 0-255 وي او پیل باید &lt;= پای وي."/>
+				<Item id="90204" name="contextMenu.xml ونه موندل شو"/>
+				<Item id="90205" name="د ډیفالټ contextMenu.xml د بیا رامینځته کولو لپاره Notepad++ بیا پیل کړئ."/>
+				<Item id="90206" name="دوتنې نه خوندي شوي بدلونونه لري.د نوي کوډ کولو سره بیا پورته کول به دوی رد کړي.ادامه ورکوئ؟"/>
+				<Item id="90207" name="د سرور څخه هیڅ ځواب نشته."/>
+				<Item id="90208" name="سرور بیرته راستون شوی حالت"/>
+				<Item id="90209" name="ذخیره ممکن شخصي وي."/>
+				<Item id="90210" name="شتون لري"/>
+				<Item id="90211" name="وروستۍ نسخه ده."/>
+				<Item id="90212" name="تاسو اوس روان یاست"/>
+				<Item id="90213" name="دلته موندونکی"/>
+				<Item id="90214" name="ټرمینل دلته"/>
+				<Item id="90215" name="د ژبې اضافي فایلونه (.xml) په دې کې کیښودل کیدی شي:"/>
+							<Item id="90216" name="د کمانډ پیلټ…"/>
+				<Item id="90217" name="املا چیک"/>
+				<Item id="90218" name="د لټون لپاره ټایپ کړئ…"/>
+				<Item id="90219" name="نوې کړکۍ"/>
+				<Item id="90220" name="اوسنی amp پریږدئ؛بل څو انتخاب ته لاړ شئ"/>
+				<Item id="90221" name="تړل شوی خاصیت (macOS)"/>
+				<Item id="90222" name="د تازه معلوماتو لپاره وګورئ ..."/>
+				<Item id="90223" name="وروستی خلاص کړئ"/>
+			</MacStrings>
+		</Dialog>
+		<MessageBox>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<ContextMenuXmlEditWarning title="د شرایطو مینو ترمیم کول" message="د contextMenu.xml ایډیټ کول تاسو ته اجازه درکوي خپل نوټ پیډ ++ پاپ اپ متن مینو بدل کړئ.
+تاسو باید خپل نوټ پیډ ++ بیا پیل کړئ ترڅو د contextMenu.xml بدلولو وروسته اغیزمن شي."/>
+			<SaveCurrentModifWarning title="اوسنی تعدیل خوندي کړئ" message="تاسو باید اوسنی تعدیل خوندي کړئ.
+ټول خوندي شوي تعدیلونه بیرته نشي ایستل کیدی.
+
+ادامه ورکوئ؟"/><!-- HowToReproduce: when you openned file is modified but unsaved yet, and you are changing file encoding. -->
+			<LoseUndoAbilityWarning title="د بیرته راوستلو وړتیا له لاسه ورکولو خبرداری" message="تاسو باید اوسنی تعدیل خوندي کړئ.
+ټول خوندي شوي تعدیلونه بیرته نشي ایستل کیدی.
+
+ادامه ورکوئ؟"/><!-- HowToReproduce: when you openned file is modified and saved, then you are changing file encoding. -->
+			<CannotMoveDoc title="نوي نوټ پیډ ++ مثال ته لاړشئ" message="سند بدل شوی، خوندي یې کړئ بیا بیا هڅه وکړئ."/><!-- HowToReproduce: From your Notepad++ drag & drop a clean (not dirty) file to outside of Notepad++, another instance of Notepad++ will be created. Then from your first Notepad++ drag & drop an unsaved file to the new instance. -->
+			<DocReloadWarning title="بیا پورته کول" message="ایا تاسو ډاډه یاست چې اوسنۍ فایل بیا پورته کول غواړئ او په Notepad++ کې شوي بدلونونه له لاسه ورکړئ؟"/>
+			<FileLockedWarning title="خوندي کول ناکام شول" message="مهرباني وکړئ وګورئ چې ایا دا فایل په بل برنامه کې خلاص شوی دی"/>
+			<FileAlreadyOpenedInNpp title="" message="فایل لا دمخه په Notepad++ کې خلاص شوی."/><!-- HowToReproduce: Open a new document and open a file "c:/tmp/foo", save this new document by choosing "c:/tmp/foo" as file to save, reply the override popup "yes", then this message appears. -->
+			<RenameTabTemporaryNameAlreadyInUse title="نوم بدلول ناکام شو" message="ټاکل شوی نوم لا دمخه په بل ټب کې کارول کیږي."/><!-- HowToReproduce: Rename the tab of an untitled document and provide a name that is the same as an already-existing tab of an untitled document. -->
+			<RenameTabTemporaryNameIsEmpty title="نوم بدلول ناکام شو" message="ټاکل شوی نوم خالي نه وي، یا دا یوازې ځای (s) یا TAB (s) نلري."/><!-- HowToReproduce: Rename the tab of an untitled document and provide an empty string or only some white speces. -->
+			<DeleteFileFailed title="فایل ړنګ کړئ" message="دوتنې ړنګول ناکام شول"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+
+			<NbFileToOpenImportantWarning title="د خلاصولو لپاره د فایلونو مقدار خورا لوی دی" message="$INT_REPLACE$ files are about to be opened.
+Are you sure you want to open them?"/><!-- HowToReproduce: Check "Open all files of folder instead of launching Folder as Workspace on folder dropping" in "Default Directory" of Preferences dialog, then drop a folder which contains more then 200 files into Notepad++. -->
+			<SettingsOnCloudError title="په کلاوډ کې تنظیمات" message="داسې بریښي چې په بادل کې د تنظیماتو لاره یوازې د لوستلو ډرایو کې تنظیم شوې ،
+یا په فولډر کې د لیکلو لاسرسي لپاره د امتیاز حق ته اړتیا ده.
+په بادل کې ستاسو تنظیمات به لغوه شي.مهرباني وکړئ د ترجیح ډیالوګ له لارې همغږي ارزښت بیا تنظیم کړئ."/>
+			<FilePathNotFoundWarning title="دوتنې خلاصې" message="هغه فایل چې تاسو یې د خلاصولو هڅه کوئ شتون نلري."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SessionFileInvalidError title="سیشن نشي پورته کولی" message="د سیشن فایل یا فاسد دی یا اعتبار نلري."/><!-- HowToReproduce: Save current session via menu "File -> Save Session...", use another editor to modify the session you saved to make it an invalid xml file. Then load this invalid session via menu "File -> Load Session...". -->
+			<DroppingFolderAsProjectModeWarning title="ناسم عمل" message="تاسو کولی شئ یوازې فایلونه یا فولډرونه پریږدئ مګر دواړه نه ، ځکه چې تاسو د پروژې حالت په توګه فولډر پریښودو کې یاست.
+تاسو باید د دې عملیاتو کار کولو لپاره د غوره توب ډیالوګ په &quot;ډیفالټ ډایرکټر&quot; برخه کې د فولډر ډراپ کولو په اړه د فولډر په توګه د فولډر لانچ کولو پرځای د فولډر ټولې فایلونه خلاص کړئ."/>
+			<SortingError title="د ترتیب کولو تېروتنه" message="د لاین $INT_REPLACE$ له امله د عددي ترتیب کولو توان نلري."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SortLocaleMultiple title="ترتیب نه دی ترسره شوی" message="د ډیری انتخابونو ترتیب کول ملاتړ نه کوي."/><!-- HowToReproduce: Make a multiple selection and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<SortLocaleUnknown title="ترتیب ناکام شو" message="د ترتیب د ناکامۍ لامل نشي ټاکل کیدی."/><!-- HowToReproduce: This condition is theoretical; it is unknown what could cause it. -->
+			<SortLocaleExcept title="ترتیب ناکام شو" message="$STR_REPLACE$"/><!-- HowToReproduce: Open a large file, e.g. 500MB / 90k lines, in 32-bit Notepad++ and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<ColumnModeTip title="د کالم حالت لارښوونه" message="د کالم انتخاب حالت ته د بدلولو لپاره 3 لارې شتون لري:
+
+1. (کیبورډ او ماوس) د کیڼ کلیک کولو پرمهال Alt ونیسئ
+
+2. (یوازې کیبورډ) د تیر کیلي کارولو پرمهال Alt+Shift ونیسئ
+
+3. (کیبورډ یا موږک)
+بیا د کالم بلاک موقعیت کې مطلوب پیل کې کیریټ واچوئ
+&quot;په کالم حالت کې پیل / پای انتخاب&quot; کمانډ اجرا کړئ؛
+کیریټ د کالم بلاک موقعیت مطلوب پای ته واستوئ، بیا
+&quot;په کالم حالت کې پیل / پای انتخاب&quot; کمانډ بیا اجرا کړئ"/>
+			<BufferInvalidWarning title="خوندي کول ناکام شول" message="خوندي نشي کولی: بفر ناسم دی."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<DoCloseOrNot title="غیر موجود فایل وساتئ" message="د &quot;$STR_REPLACE$&quot; دوتنه نور شتون نلري.
+دا فایل په مدیر کې وساتئ؟"/>
+			<DoDeleteOrNot title="فایل ړنګ کړئ" message="دوتنه &quot;$STR_REPLACE$&quot;
+ستاسو د ریسایکل بن ته لیږدول کیږي او دا سند به وتړل شي.
+ادامه ورکوئ؟"/>
+			<NoBackupDoSaveFile title="خوندي کړئ" message="ستاسو د بیک اپ فایل نشي موندلی (له بهر څخه حذف شوی).
+دا خوندي کړئ که نه نو ستاسو معلومات به ورک شي
+ایا تاسو غواړئ چې د &quot;$STR_REPLACE$&quot; فایل خوندي کړئ؟"/>
+			<DoReloadOrNot title="بیا پورته کول" message="&quot;$STR_REPLACE$&quot;
+
+دا فایل د بل پروګرام لخوا بدل شوی.
+ایا تاسو غواړئ دا بیا پورته کړئ؟"/>
+			<DoReloadOrNotAndLooseChange title="بیا پورته کول" message="&quot;$STR_REPLACE$&quot;
+
+دا فایل د بل پروګرام لخوا بدل شوی.
+ایا تاسو غواړئ دا بیا پورته کړئ او په Notepad++ کې شوي بدلونونه له لاسه ورکړئ؟"/>
+			<PrehistoricSystemDetected title="مخکنۍ تاریخي سیسټم کشف شو" message="داسې ښکاري چې تاسو لاهم د تاریخي سیسټم کاروئ.دا فیچر یوازې په عصري سیسټم کې کار کوي، بخښنه."/><!-- HowToReproduce: Launch "Document Map" under Windows XP. -->
+			<XpUpdaterProblem title="Notepad++ Updater" message="نوټ پیډ ++ اپډیټر د XP لاندې د ناپاک امنیت پرت له امله د XP سره مطابقت نلري.
+ایا تاسو غواړئ د نوټ پیډ++ پاڼې ته لاړ شئ ترڅو وروستۍ نسخه ډاونلوډ کړئ؟"/><!-- HowToReproduce: Run menu "? -> Update Notepad++" under Windows XP. -->
+			<GUpProxyConfNeedAdminMode title="د پراکسي ترتیبات" message="مهرباني وکړئ نوټ پیډ ++ په اډمین حالت کې د پراکسي تنظیم کولو لپاره بیا پیل کړئ."/>
+			<DocTooDirtyToMonitor title="د څارنې ستونزه" message="سند ناپاک دی.مهرباني وکړئ د څارنې دمخه ترمیم خوندي کړئ."/>
+			<DocNoExistToMonitor title="د څارنې ستونزه" message="فایل باید د څارنې لپاره شتون ولري."/>
+			<FileTooBigToOpen title="د فایل اندازه ستونزه" message="فایل خورا لوی دی چې د Notepad++ لخوا پرانیستل شي"/><!-- HowToReproduce: Try to open a 4GB file (it's not easy to reproduce, it depends on your system). -->
+			<FileLoadingException title="د استثنا کوډ: $STR_REPLACE$" message="د دوتنې د پورته کولو په وخت کې یوه تېروتنه رامنځته شوه!"/>
+			<WantToOpenHugeFile title="د لوی فایل خلاصول خبرداری" message="د 2GB+ لوی فایل خلاصول څو دقیقې وخت نیسي.
+ایا تاسو غواړئ چې دا خلاص کړئ؟"/>
+			<CreateNewFileOrNot title="نوې فایل جوړ کړئ" message="&quot;$STR_REPLACE$&quot; شتون نلري.جوړ یې کړئ؟"/>
+			<CreateNewFileError title="نوې فایل جوړ کړئ" message="&quot;$STR_REPLACE$&quot; فایل نشي جوړولی."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<OpenFileError title="تېروتنه" message="د &quot;$STR_REPLACE$&quot; فایل نشي خلاصولی."/>
+			<OpenFileNoFolderError title="دوتنې نه خلاصیږي" message="&quot;$STR_REPLACE1$&quot; نشي خلاصیدلی:
+فولډر &quot;$STR_REPLACE2$&quot; شتون نلري."/>
+			<FileBackupFailed title="د فایل بیک اپ ناکام شو" message="د دوتنې پخوانۍ نسخه په &quot;$STR_REPLACE$&quot; کې په بیک اپ ډایرکټر کې خوندي نشوه.
+
+ایا تاسو غواړئ اوسنی فایل په هر حال کې وساتئ؟"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<LoadStylersFailed title="د stylers.xml لوډ کول ناکام شو" message="لوډ &quot;$STR_REPLACE$&quot; ناکام شو!"/>
+			<LoadLangsFailed title="ترتیب کوونکی" message="لوډ langs.xml ناکام شو!
+ایا تاسو غواړئ خپل langs.xml بیرته ترلاسه کړئ؟"/><!-- HowToReproduce: Close Notepad++. Use another editor to remove all content of "langs.xml" (0 length) then save it. Open Notepad++. -->
+			<LoadLangsFailedFinal title="ترتیب کوونکی" message="لوډ langs.xml ناکام شو!"/><!-- HowToReproduce: Close Notepad++. Use another editor to make "langs.xml" an invalid xml file then save it. Open Notepad++. -->
+			<FolderAsWorspaceSubfolderExists title="د کاري ځای په توګه فولډر اضافه کول د فولډر ستونزه" message="د هغه فولډر فرعي فولډر شتون لري چې تاسو یې اضافه کول غواړئ.
+مخکې له دې چې تاسو &quot;$STR_REPLACE$&quot; فولډر اضافه کړئ مهرباني وکړئ د هغې ریښه له پینل څخه لیرې کړئ."/><!-- HowToReproduce: Add a folder like "c:\temp\aFolder\" into "Folder as Workspace" panel, then try to add "c:\temp\". -->
+
+			<ProjectPanelChanged title="$STR_REPLACE$" message="د کار ځای بدل شوی.ایا تاسو غواړئ دا خوندي کړئ؟"/>
+			<ProjectPanelSaveError title="$STR_REPLACE$" message="ستاسو د کاري ځای فایل لیکلو پرمهال یوه تېروتنه رامنځته شوه.
+ستاسو د کار ځای نه دی خوندي شوی."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<ProjectPanelOpenDoSaveDirtyWsOrNot title="د کار ځای خلاص" message="اوسنی کاري ځای بدل شوی.ایا تاسو غواړئ اوسنی پروژه خوندي کړئ؟"/>
+			<ProjectPanelNewDoSaveDirtyWsOrNot title="نوی کاري ځای" message="اوسنی کاري ځای بدل شوی.ایا تاسو غواړئ اوسنی پروژه خوندي کړئ؟"/>
+			<ProjectPanelOpenFailed title="د کار ځای خلاص" message="د کار ځای خلاص نه شو.
+داسې ښکاري چې د خلاصولو فایل د اعتبار وړ پروژې فایل ندی."/>
+			<ProjectPanelRemoveFolderFromProject title="له پروژې څخه فولډر لرې کړئ" message="ټول فرعي توکي به لرې شي.
+ایا تاسو ډاډه یاست چې دا فولډر له پروژې څخه لرې کول غواړئ؟"/>
+			<ProjectPanelRemoveFileFromProject title="د پروژې څخه فایل لرې کړئ" message="ایا تاسو ډاډه یاست چې دا فایل له پروژې څخه لرې کول غواړئ؟"/>
+			<ProjectPanelReloadError title="د کار ځای بیا پورته کول" message="د بیا پورته کولو لپاره فایل نشي موندلی."/>
+			<ProjectPanelReloadDirty title="د کار ځای بیا پورته کول" message="اوسنی کاري ځای بدل شوی.بیا بار کول به ټول تعدیلات رد کړي.
+ایا تاسو غواړئ دوام ورکړئ؟"/>
+			<UDLNewNameError title="د UDL تېروتنه" message="دا نوم د بلې ژبې لخوا کارول کیږي،
+مهرباني وکړئ یو بل ورکړئ."/>
+			<UDLRemoveCurrentLang title="اوسنۍ ژبه لرې کړئ" message="ایا تاسو ډاډه یاست؟"/>
+			<UDL_importSuccessful title="د کارن تعریف شوې ژبه" message="واردول بریالی."/>
+			<UDL_importFails title="د کارن تعریف شوې ژبه" message="په واردولو کې پاتې راغلی."/>
+			<UDL_saveBeforeImport title="د کارن تعریف شوې ژبه" message="د صادرولو دمخه، د &quot;Save As...&quot; تڼۍ په کلیک کولو سره د خپلې ژبې تعریف خوندي کړئ."/> <!-- HowToReproduce: Choose "User Defined Language" in User Language combobox, then click on "Export... button". -->
+			<UDL_exportSuccessful title="د کارن تعریف شوې ژبه" message="بریالي صادرات."/>
+			<UDL_exportFails title="د کارن تعریف شوې ژبه" message="په صادرولو کې پاتې راغلی."/>
+			<SCMapperDoDeleteOrNot title="ایا تاسو ډاډه یاست؟" message="ایا تاسو ډاډه یاست چې دا شارټ کټ حذف کول غواړئ؟"/>
+			<FindCharRangeValueError title="د حد ارزښت ستونزه" message="تاسو باید د 0 او 255 ترمنځ ټایپ کړئ."/> <!-- HowToReproduce: Search menu, then Find characters in range, select Custom range, enter 999 in either edit box, press Find. -->
+			<OpenInAdminMode title="خوندي کول ناکام شول" message="فایل نشي خوندي کیدی او ممکن خوندي شي.
+ایا تاسو غواړئ په اداري حالت کې Notepad++ پیل کړئ؟"/>
+			<OpenInAdminModeWithoutCloseCurrent title="خوندي کول ناکام شول" message="فایل نشي خوندي کیدی او ممکن خوندي شي.
+ایا تاسو غواړئ په اداري حالت کې Notepad++ پیل کړئ؟"/>
+			<OpenInAdminModeFailed title="په مدیر حالت کې خلاصول ناکام شو" message="نوټ پیډ ++ د مدیر حالت کې نشي خلاصیدلی."/><!-- HowToReproduce: When you have no Admin privilege and you try to save a modified file in a protected location (for example: any file in sub-folder of "C:\Program Files\". This message will appear after replying "Yes" to "Open in Admin mode" dialog. -->
+			<ViewInBrowser title="اوسنۍ فایل په براوزر کې وګورئ" message="غوښتنلیک ستاسو په سیسټم کې نشي موندل کیدی."/>
+			<ExitToUpdatePlugins title="Notepad++ د وتلو په حال کې دی" message="که تاسو په هو کلیک وکړئ نو تاسو به د عملیاتو دوام لپاره نوټ پیډ ++ پریږدئ.
+نوټ پیډ ++ به د ټولو عملیاتو پای ته رسیدو وروسته بیا پیل شي.
+ادامه ورکوئ؟"/>
+			<NeedToRestartToLoadPlugins title="نوټ پیډ ++ باید بیا پیل شي" message="تاسو باید د نوټ پیډ ++ بیا پیل کړئ ترڅو پلګ انونه پورته کړئ چې تاسو نصب کړي."/><!-- HowToReproduce: Import a plugin via menu "Settings->Import->Import Plugin(s)...". -->
+			<ChangeHistoryEnabledWarning title="نوټ پیډ ++ باید بیا پیل شي" message="تاسو باید د بدلون تاریخ فعالولو لپاره نوټ پیډ ++ بیا پیل کړئ."/><!-- HowToReproduce: uncheck "Display Change History" via Preferences dialog "Marges/Border/Edge. -->
+			<WindowsSessionExit title="Notepad++ - د وینډوز سیشن وتل" message="د وینډوز سیشن د پای ته رسیدو په حال کې دی مګر تاسو ځینې معلومات خوندي نه دي.ایا تاسو غواړئ چې همدا اوس د Notepad++ څخه بهر شئ؟"/>
+			<LanguageMenuCompactWarning title="د تړون ژبې مینو" message="دا اختیار به په راتلونکي لانچ کې بدل شي."/><!-- HowToReproduce: toggle "Make language menu compact" via Preferences dialog "Language/Language Menu. -->
+			<SwitchUnsavedThemeWarning title="$STR_REPLACE$" message="نه خوندي شوي بدلونونه د ردولو په حال کې دي!
+ایا تاسو غواړئ د موضوعاتو بدلولو دمخه خپل بدلونونه خوندي کړئ؟"/><!-- HowToReproduce: In the Style Configurator dialog change some theme and switch to other theme without saving. -->
+			<MacroAndRunCmdlWarning title="د میکرو او چلولو کمانډ مطابقت" message="ستاسو د میکرو او چلولو کمانډونه چې په Notepad++ v.8.5.2 (یا زاړه) کې خوندي شوي ممکن د Notepad++ اوسنۍ نسخې سره مطابقت ونلري.
+مهرباني وکړئ دا حکمونه و ازموئ او که اړتیا وي نو بیا یې ترمیم کړئ.
+
+په بدیل سره، تاسو کولی شئ نوټ پیډ ++ v8.5.2 ته ښکته کړئ او خپل پخوانی ډاټا بیرته راوباسئ.
+نوټ پیډ++ به ستاسو زوړ &quot;shortcuts.xml&quot; بیک اپ کړي او د &quot;shortcuts.xml.v8.5.2.backup&quot; په توګه به یې خوندي کړي.
+د &quot;shortcuts.xml.v8.5.2.backup&quot; -&gt; &quot;shortcuts.xml&quot; نوم بدلول، ستاسو کمانډونه باید بحال شي او په سمه توګه کار وکړي."/><!-- HowToReproduce: Close Notepad++, remove shortcuts.xml.v8.5.2.backup & v852ShortcutsCompatibilityWarning.xml if present, relaunch Notepad++, delete or modify a shortcuts via Shortcut Mapper, close Notepad++, then the message will show up -->
+			<FullReadOnlySavingForbidden title="خوندي کول ناکام شول" message="فایل نشي خوندي کولی.
+نوټ پیډ ++ د بشپړ لوستلو یوازې خوندي کولو منع شوي حالت د فایل خوندي کیدو مخه ونیوله."/>
+			<NotEnoughRoom4Saving title="خوندي کول ناکام شول" message="د فایل خوندي کولو کې پاتې راغلی.
+داسې ښکاري چې په ډیسک کې د فایل خوندي کولو لپاره کافي ځای نشته.ستاسو فایل خوندي شوی نه دی."/>
+			<FileInaccessibleUserSession title="دوتنه د لاسرسي وړ نه ده" message="ستاسو د لاسي خوندي شوي ناستې &quot;$STR_REPLACE$&quot; ځینې فایلونه د لاسرسي وړ ندي.دوی د ځای لرونکي په توګه د خالي او یوازې لوستلو اسنادو په توګه خلاص کیدی شي.
+
+ایا تاسو غواړئ دا ځای لرونکي جوړ کړئ؟
+
+نوټ: د ځای لرونکي نه رامینځته کول یا وروسته بندول غوره کول ، ستاسو په لاسي ډول خوندي شوې ناسته به د وتلو پرمهال نه بدلیږي."/>
+			<FileInaccessibleDefaultSessionXml title="دوتنه د لاسرسي وړ نه ده" message="ستاسو د تیرې ناستې ځینې فایلونه د لاسرسي وړ ندي.دوی د ځای لرونکي په توګه د خالي او یوازې لوستلو اسنادو په توګه خلاص کیدی شي.
+
+ایا تاسو غواړئ دا ځای لرونکي جوړ کړئ؟
+
+نوټ: د ځای لرونکو د جوړولو نه غوره کول یا وروسته یې بندول، ستاسو ناسته به د وتلو په وخت کې تعدیل شي!موږ تاسو ته وړاندیز کوو چې همدا اوس خپل &quot;session.xml&quot; بیک اپ کړئ."/>
+			<RTLvsDirectWrite title="RTL نشي چلولی" message="RTL د DirectWrite حالت سره مطابقت نلري.مهرباني وکړئ په MISC کې د DirectWrite حالت غیر فعال کړئ.د غوره توبونو ډیالوګ برخه، او نوټ پیډ ++ بیا پیل کړئ."/>
+			<FileMemoryAllocationFailed title="استثنا: د فایل حافظه تخصیص ناکام شو" message="د نوټ پیډ ++ لخوا پورته شوي فایل لپاره شاید کافي وړیا حافظه شتون نلري."/><!-- HowToReproduce: Try to open multiple files with total size > ~700MB in the x86 Notepad++ (it will depend on the PC memory configuration and the current system memory usage...). -->
+			<FindRegexBackwardDisabled title="د ریجیکس شاته لټون غیر فعال شو" message="په ډیفالټ ډول، د شاته ریجیکس لټون د احتمالي غیر متوقع پایلو له امله غیر فعال دی.د شاته لټون د ترسره کولو لپاره، د موندلو ډیالوګ پرانیزئ او د عادي بیان پر ځای نورمال یا پراخ شوي لټون حالت غوره کړئ.
+د موندلو ډیالوګ خلاصولو لپاره د OK تڼۍ فشار ورکړئ یا په دې تمرکز وکړئ.
+
+که تاسو د شاته ریجیکس لټون کولو ځانګړتیا ته اړتیا لرئ، د دې د فعالولو په اړه د لارښوونو لپاره د کاروونکي لارښود سره مشوره وکړئ."/>
+			<PrintError title="0" message="د چاپګر سند پیل نشي."/><!-- Use title="0" to use Windows OS default translated "Error" title. -->
+			<FindAutoChangeOfInSelectionWarning title="د لټون خبرداری" message="د &quot;انتخاب کې&quot; د چک بکس حالت په اوتومات ډول بدل شوی.
+مهرباني وکړئ د عمل ترسره کولو دمخه د لټون حالت تصدیق کړئ."/> <!-- HowToReproduce: https://github.com/notepad-plus-plus/notepad-plus-plus/issues/14897#issuecomment-2564316224 -->
+			<Need2Restart2ShowMenuShortcuts title="نوټ پیډ ++ بیا پیل کولو ته اړتیا لري" message="نوټ پیډ ++ د سم مینو شارټ کټونو ښودلو لپاره بیا پیل کولو ته اړتیا لري."/>
+			<NoAdminRight2ChangeReadOnlyFileAttribute title="د فایل یوازې لوستلو ځانګړتیا بدلول ناکام شول" message="مهرباني وکړئ نوټ پیډ ++ د مدیر په توګه چل کړئ ترڅو د فایل ځانګړتیاوې بدل کړئ."/>
+		</MessageBox>
+		<ClipboardHistory>
+			<PanelTitle name="د کلیپ بورډ تاریخ"/>
+		</ClipboardHistory>
+		<DocList>
+			<PanelTitle name="د اسنادو لیست"/>
+			<ColumnName name="نوم"/>
+			<ColumnExt name="Ext."/>
+			<ColumnPath name="لاره"/>
+			<ListGroups name="د لید له مخې ډله"/>
+		</DocList>
+		<WindowsDlg>
+			<ColumnName name="نوم"/>
+			<ColumnPath name="لاره"/>
+			<ColumnType name="ډول"/>
+			<ColumnSize name="اندازه"/>
+			<ColumnDateTime name="بدل شوی وخت"/>
+			<NbDocsTotal name="ټول اسناد:"/>
+			<MenuCopyName name="کاپي نومونه"/>
+			<MenuCopyPath name="د لارې نوم کاپي"/>
+		</WindowsDlg>
+		<AsciiInsertion>
+			<PanelTitle name="د ASCII کوډونو داخلولو پینل"/>
+			<ColumnVal name="ارزښت"/>
+			<ColumnHex name="هیکس"/>
+			<ColumnChar name="کرکټر"/>
+			<ColumnHtmlName name="HTML نوم"/>
+			<ColumnHtmlNumber name="HTML ډیسیمال"/>
+			<ColumnHtmlHexNb name="HTML هیکساډیسیمل"/>
+		</AsciiInsertion>
+		<DocumentMap>
+			<PanelTitle name="د سند نقشه"/>
+		</DocumentMap>
+		<FunctionList>
+			<PanelTitle name="د فعالیت لیست"/>
+			<SortTip name="ترتیب"/>
+			<ReloadTip name="بیا پورته کول"/>
+			<PreferencesTip name="غوره توبونه"/>
+			<PreferencesInitialSort name="په ډیفالټ ډول افعال (A to Z) ترتیب کړئ"/>
+		</FunctionList>
+		<FolderAsWorkspace>
+			<PanelTitle name="د کاري ځای په توګه فولډر"/>
+			<SelectFolderFromBrowserString name="په فولډر کې د ورک سپیس پینل په توګه اضافه کولو لپاره فولډر غوره کړئ"/>
+			<ExpandAllFoldersTip name="ټول افشا کړه"/>
+			<CollapseAllFoldersTip name="ټول وخورئ"/>
+			<LocateCurrentFileTip name="اوسنۍ فایل ومومئ"/>
+			<Menu>
+				<Item id="3511" name="لرې کړئ"/>
+				<Item id="3512" name="ټول لرې کړئ"/>
+				<Item id="3513" name="اضافه کول"/>
+				<Item id="3514" name="د سیسټم لخوا چلول"/>
+				<Item id="3515" name="خلاص"/>
+				<Item id="3516" name="کاپي لاره"/>
+				<Item id="3517" name="په فایلونو کې ومومئ ..."/>
+				<Item id="3518" name="دلته سپړونکی"/>
+				<Item id="3519" name="CMD دلته"/>
+				<Item id="3520" name="د فایل نوم کاپي کړئ"/>
+			</Menu>
+		</FolderAsWorkspace>
+		<ProjectManager>
+			<PanelTitle name="پروژه"/>
+			<WorkspaceRootName name="د کار ځای"/>
+			<NewProjectName name="د پروژې نوم"/>
+			<NewFolderName name="د فولډر نوم"/>
+			<Menus>
+				<Entries>
+					<Item id="0" name="د کار ځای"/>
+					<Item id="1" name="سمون"/>
+				</Entries>
+				<WorkspaceMenu>
+					<Item id="3122" name="نوی کاري ځای"/>
+					<Item id="3123" name="د کار ځای خلاص"/>
+					<Item id="3124" name="د کار ځای بیا پورته کول"/>
+					<Item id="3125" name="خوندي کړئ"/>
+					<Item id="3126" name="په توګه خوندي کړئ ..."/>
+					<Item id="3127" name="یو کاپي لکه څنګه خوندي کړئ ..."/>
+					<Item id="3121" name="نوې پروژه اضافه کړئ"/>
+					<Item id="3128" name="په پروژو کې ومومئ..."/>
+				</WorkspaceMenu>
+				<ProjectMenu>
+					<Item id="3111" name="نوم بدل کړئ"/>
+					<Item id="3112" name="فولډر اضافه کړئ"/>
+					<Item id="3113" name="فایلونه اضافه کړئ..."/>
+					<Item id="3117" name="له لارښود څخه فایلونه اضافه کړئ..."/>
+					<Item id="3114" name="لرې کړئ"/>
+					<Item id="3118" name="پورته حرکت وکړئ"/>
+					<Item id="3119" name="ښکته لاړ شه"/>
+				</ProjectMenu>
+				<FolderMenu>
+					<Item id="3111" name="نوم بدل کړئ"/>
+					<Item id="3112" name="فولډر اضافه کړئ"/>
+					<Item id="3113" name="فایلونه اضافه کړئ..."/>
+					<Item id="3117" name="له لارښود څخه فایلونه اضافه کړئ..."/>
+					<Item id="3114" name="لرې کړئ"/>
+					<Item id="3118" name="پورته شه"/>
+					<Item id="3119" name="ښکته لاړ شه"/>
+				</FolderMenu>
+				<FileMenu>
+					<Item id="3111" name="نوم بدل کړئ"/>
+					<Item id="3115" name="لرې کړئ"/>
+					<Item id="3116" name="د فایل لاره بدله کړئ"/>
+					<Item id="3118" name="پورته شه"/>
+					<Item id="3119" name="ښکته لاړ شه"/>
+				</FileMenu>
+			</Menus>
+		</ProjectManager>
+		<MiscStrings>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<word-chars-list-tip value="دا تاسو ته اجازه درکوي اضافي کرکټرونه د اوسني کلمې حروفونو کې شامل کړئ پداسې حال کې چې د انتخاب لپاره دوه ځله کلیک کول یا د &quot;یوازې ټول کلمې میچ&quot; انتخاب چیک شوي سره لټون کول."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, hover your mouse on the "?" button. -->
+
+			<!-- Don't translate "(&quot;EOL custom color&quot;)" -->
+			<eol-custom-color-tip value="د ډیفالټ EOL دودیز رنګ بدلولو لپاره سټایل تنظیم کونکي ته لاړشئ (&quot;EOL دودیز رنګ&quot;).."/>
+
+			<word-chars-list-warning-begin value="خبر اوسئ:"/>
+			<word-chars-list-space-warning value="$INT_REPLACE$ space(s)"/>
+			<word-chars-list-tab-warning value="$INT_REPLACE$ TAB(s)"/>
+			<word-chars-list-warning-end value="ستاسو د کرکټرونو په لیست کې."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, check "Add your character as part of word\r(don't choose it unless you know what you're doing)", then type a white-space in the text field. -->
+			<backup-select-folder value="د بیک اپ لارښود په توګه فولډر غوره کړئ"/><!-- HowToReproduce: Settings > Preferences > Backup > [...] -->
+			<cloud-invalid-warning value="ناسمه لاره."/>
+			<cloud-restart-warning value="مهرباني وکړئ د اغیزمن کیدو لپاره نوټ پیډ ++ بیا پیل کړئ."/>
+			<cloud-select-folder value="له هغه ځای څخه یو فولډر غوره کړئ چیرې چې نوټ پیډ ++ خپل تنظیمات لوستل / لیکي"/><!-- HowToReproduce: In "Cloud" section of Preferences dialog, check "Set your cloud location path here: ", then click the button "...". This message is displayed in the "Browse For Folder" dialog. -->
+			<default-open-save-select-folder value="د ډیفالټ لارښود په توګه فولډر غوره کړئ"/><!-- HowToReproduce: Settings > Preferences > Default Directory > [...] -->
+			<shift-change-direction-tip value="په مخالف لوري کې د لټون لپاره Shift+Enter وکاروئ"/>
+			<two-find-buttons-tip value="2 د بټن موډ ومومئ"/>
+			<find-in-files-filter-tip value="په cpp، cxx، h، hxx hpp کې ومومئ:
+*.cpp *.cxx *.h *.hxx *.hpp
+
+په ټولو فایلونو کې ومومئ پرته له exe، obj log:
+*.* !*.exe !*.obj !*.log
+
+په ټولو فایلونو کې ومومئ مګر د فولډر ازموینې خارج کړئ، بن bin64:
+*.* !\ tests !\bin*
+
+په ټولو فایلونو کې ومومئ مګر ټول فولډر لاګ یا لاګ په تکراري ډول خارج کړئ:
+*.* !+\log*"/><!-- HowToReproduce: Tip of mouse hovered on "Filters" label in "Find in Files" section of Find dialog. -->
+			<find-in-files-select-folder value="د لټون لپاره فولډر غوره کړئ"/><!-- HowToReproduce: Search > Find in Files > [...] -->
+			<find-in-files-dir-from-active-doc-tip value="د فعال سند پراساس د لارښود ساحه ډکه کړئ"/><!-- HowToReproduce: Search > Find in Files > [<<] -->
+			<find-status-top-reached value="موندنه: د لاسوند پیل ته رسیدل، لومړی واقع له ښکته څخه وموندل شو."/>
+			<find-status-end-reached value="موندنه: د سند پای ته رسیدل، د پورته څخه لومړی پیښه وموندل شوه."/>
+			<find-status-replaceinfiles-1-replaced value="په فایلونو کې ځای په ځای کول: 1 پیښه بدله شوه"/>
+			<find-status-replaceinfiles-nb-replaced value="په فایلونو کې ځای په ځای کړئ: $INT_REPLACE$ پیښې ځای په ځای شوي"/>
+			<find-status-replaceinopenedfiles-1-replaced value="په پرانیستل شویو فایلونو کې ځای په ځای کړئ: 1 پیښه بدله شوه"/>
+			<find-status-replaceinopenedfiles-nb-replaced value="په خلاص شوي فایلونو کې ځای په ځای کړئ: $INT_REPLACE$ پیښې ځای په ځای شوي"/>
+			<find-status-invalid-re value="موندنه: ناسم منظم بیان"/>
+			<find-status-search-failed value="موندنه: لټون ناکام شو"/>
+			<find-status-mark-1-match value="نښه: 1 لوبه"/>
+			<find-status-mark-nb-matches value="نښه: $INT_REPLACE$ میچونه"/>
+			<find-status-count-1-match value="شمېرنه: 1 لوبه"/>
+			<find-status-count-nb-matches value="شمېر: $INT_REPLACE$ میچونه"/>
+			<find-status-replaceall-1-replaced value="ټول بدل کړئ: 1 پیښه بدله شوه"/>
+			<find-status-replaceall-nb-replaced value="ټول بدل کړئ: $INT_REPLACE$ پیښې ځای په ځای شوي"/>
+			<find-status-replaceall-readonly value="ټول بدل کړئ: متن نشي بدلولی.اوسنی سند یوازې لوستل کیږي"/>
+			<find-status-replace-end-reached value="ځای په ځای کول: د سند پای ته رسیدلی، له پورته څخه پیل شوی."/>
+			<find-status-replace-top-reached value="ځای په ځای کول: پای ته رسیدلي سند پیل، له ښکته څخه پیل شوی."/>
+			<find-status-replaced-next-found value="ځای په ځای کول: 1 پیښه بدله شوه.راتلونکی پیښه وموندل شوه."/>
+			<find-status-replaced-without-continuing value="ځای په ځای کول: 1 پیښه بدله شوه."/>
+			<find-status-replaced-next-not-found value="ځای په ځای کول: 1 پیښه بدله شوه.نور پیښې ندي موندل شوي."/>
+			<find-status-replace-not-found value="ځای په ځای کول: هیڅ پیښه ونه موندل شوه"/>
+			<find-status-replace-readonly value="ځای په ځای کول: متن نشي بدلولی.اوسنی سند یوازې لوستل کیږي"/>
+			<find-status-cannot-find value="موندنه: د &quot;$STR_REPLACE$&quot; متن نشي موندلی"/>
+			<find-status-cannot-find-pebkac-maybe value="ورکړل شوی پیښه نشي موندل کیدی.تاسو ممکن هیر شوي وي چې د &quot;په شاوخوا کې لپاسه&quot; (د چا لپاره)، &quot;د میچ قضیه&quot; (د بند لپاره) یا &quot;یوازې ټول کلمه میچ کړئ&quot; (بند ته)."/>
+			<find-status-scope-selection value="په ټاکل شوي متن کې"/>
+			<find-status-scope-all value="په ټوله فایل کې"/>
+			<find-status-scope-backward value="د دوتنې له پیل څخه کیریټ ته"/>
+			<find-status-scope-forward value="له کارټ څخه د فایل پای ته"/>
+			<find-status-invisible-chars-findWhat value="په پیسټ شوي &quot;څه ومومئ&quot; یا &quot;د سره بدل کړئ&quot; مینځپانګې کې ناڅرګند حروف"/>
+			<find-status-invisible-chars-findWhat-tip value="خبرداری: د لټون (یا ځای په ځای کولو) ساحه کې ناڅرګند حروف.
+په دې ساحه کې پټ شوي متن کې د نه لید (شاید د کرښې پای ته رسیدونکي) حروف شامل دي.که تاسو د دوی له مینځه وړلو پرته پرمخ ځئ، دوی به په لټون (یا بدلولو) متن کې شامل شي."/>
+			<finder-find-in-finder value="په دې لټون پایلو کې ومومئ ..."/>
+			<finder-close-this value="دا د لټون پایلې بند کړئ"/>
+			<finder-collapse-all value="ټول وخورئ"/>
+			<finder-uncollapse-all value="ټول افشا کړه"/>
+			<finder-copy value="کاپي غوره شوې کرښې"/>
+			<finder-copy-selected-paths value="د ټاکل شوي لارې نوم کاپي"/>
+			<finder-clear-all value="ټول پاک کړئ"/>
+			<finder-open-selected-paths value="د ټاکل شوي لارې نوم خلاص کړئ"/>
+			<finder-purge-for-every-search value="د هر لټون لپاره پاکول"/>
+			<finder-wrap-long-lines value="د کلمې اوږدې کرښې"/>
+			<common-ok value="سمه ده"/>
+			<common-cancel value="لغوه کول"/>
+			<common-name value="نوم"/>
+			<tabrename-title value="د اوسني ټب نوم بدل کړئ"/>
+			<tabrename-newname value="نوی نوم"/>
+			<splitter-rotate-left value="کیڼ لور ته وګرځئ"/>
+			<splitter-rotate-right value="ښي خوا ته وګرځئ"/>
+			<userdefined-title-new value="نوې ژبه جوړه کړئ..."/>
+			<userdefined-title-save value="د اوسنۍ ژبې نوم په دې توګه خوندي کړئ..."/>
+			<userdefined-title-rename value="د اوسنۍ ژبې نوم بدل کړئ"/>
+			<summary value="لنډیز"/>
+			<summary-filepath value="د بشپړ فایل لاره:"/>
+			<summary-filecreatetime value="جوړ شوی:"/>
+			<summary-filemodifytime value="تعدیل شوی:"/>
+			<summary-nbchar value="کرکټرونه (پرته د کرښې پای):"/>
+			<summary-nbword value="ټکي:"/>
+			<summary-nbline value="کرښې:"/>
+			<summary-nbbyte value="د سند اوږدوالی:"/>
+			<summary-nbsel1 value="غوره شوي حروف ("/>
+			<summary-nbsel2 value="بایټ) په"/>
+			<summary-nbrange value="کېسلسلې"/>
+			<progress-hits-title value="ټکي:"/>
+			<progress-cancel-info value="عملیات لغوه کول، مهرباني وکړئ انتظار وکړئ..."/>
+			<find-in-files-progress-title value="د فایلونو پرمختګ کې ومومئ ..."/>
+			<replace-in-files-confirm-title value="ایا تاسو ډاډه یاست؟"/>
+			<replace-in-files-confirm-directory value="ایا تاسو ډاډه یاست چې تاسو په دې کې ټولې پیښې ځای په ځای کول غواړئ:"/>
+			<replace-in-files-confirm-filetype value="د فایل ډول لپاره:"/>
+			<replace-in-files-progress-title value="د فایلونو په پرمختګ کې ځای په ځای کړئ..."/>
+			<replace-in-projects-confirm-title value="ایا تاسو ډاډه یاست؟"/>
+			<replace-in-projects-confirm-message value="ایا تاسو غواړئ د پروژې په ټاکل شوي پینل کې په ټولو اسنادو کې ټولې پیښې ځای په ځای کړئ؟"/>
+			<replace-in-open-docs-confirm-title value="ایا تاسو ډاډه یاست؟"/>
+			<replace-in-open-docs-confirm-message value="ایا تاسو ډاډه یاست چې تاسو غواړئ په ټولو خلاص اسنادو کې ټولې پیښې ځای په ځای کړئ؟"/>
+			<find-result-caption value="د لټون پایلې"/>
+			<find-result-title value="لټون"/><!-- Must not begin with space or tab character -->
+			<find-result-title-info value="($INT_REPLACE1$ په $INT_REPLACE2$ فایلونو کې د $INT_REPLACE3$ لټون شوي)"/>
+			<find-result-title-info-selections value="($INT_REPLACE1$ په $INT_REPLACE2$ کې د $INT_REPLACE3$ لټون شوي انتخابونو کې هټ شوي)"/>
+			<find-result-title-info-options-searchmode-normal value="نورمال"/>
+			<find-result-title-info-options-searchmode-extended value="پراخ شوی"/>
+			<find-result-title-info-options-searchmode-regexp value="RegEx"/>
+			<find-result-title-info-options-case value="قضیه"/>
+			<find-result-title-info-options-word value="کلمه"/>
+			<find-result-title-info-extra value="- د لاین فلټر حالت: یوازې د فلټر شوي پایلې ښکاره کړئ"/>
+			<find-result-hits value="($INT_REPLACE$ هټونه)"/>
+			<find-result-line-prefix value="کرښه"/><!-- Must not begin with space or tab character -->
+			<find-regex-zero-length-match value="صفر اوږدوالی لوبه"/>
+			<session-save-folder-as-workspace value="فولډر د کاري ځای په توګه خوندي کړئ"/>
+			<tab-untitled-string value="نوی"/>
+			<file-save-assign-type value="تمدید ضمیمه"/>
+			<close-panel-tip value="تړل"/>
+			<IncrementalFind-FSFound value="$INT_REPLACE$ matches"/>
+			<IncrementalFind-FSNotFound value="جمله ونه موندل شوه"/>
+			<IncrementalFind-FSTopReached value="د پاڼې سر ته ورسید، له لاندې څخه دوام"/>
+			<IncrementalFind-FSEndReached value="د پاڼې پای ته ورسید، له پورته څخه دوام"/>
+			<contextMenu-styleAlloccurrencesOfToken value="د نښې ټولې پیښې سټایل کړئ"/>
+			<contextMenu-styleOneToken value="سټایل یو نښه"/>
+			<contextMenu-clearStyle value="روښانه سټایل"/>
+			<contextMenu-PluginCommands value="د پلگ ان امرونه"/>
+			<largeFileRestriction-tip value="ځینې ​​​​ځانګړتیاوې ممکن په لویو فایلونو کې فعالیت ورو کړي.دا ځانګړتیاوې د لوی فایل په خلاصولو کې په اتوماتيک ډول غیر فعال کیدی شي.تاسو کولی شئ دوی دلته دودیز کړئ.
+
+یادونه:
+1. دلته د انتخابونو بدلول د سم چلند ترلاسه کولو لپاره اوس مهال پرانستل شوي لوی فایلونه بیا خلاصولو ته اړتیا لري.
+
+2. که &quot;د نړۍ په کچه د ورډ ریپ غیر فعال کړئ&quot; چک شوی او تاسو لوی فایل خلاص کړئ ، د ټولو فایلونو لپاره به &quot;ورډ ریپ&quot; غیر فعال شي.تاسو کولی شئ دا د مینو &quot;View-&gt;Word Wrap&quot; له لارې بیا فعال کړئ."/>
+			<npcNote-tip value="د غوره شوي &quot;غیر ASCII&quot; سپین ځای او غیر چاپ کولو (کنټرول) حروفونو استازیتوب.
+
+یادونه:
+د نمایش کارول به په متن کې د کرکټر اغیزې غیر فعال کړي.
+
+د غوره شوي سپینې ځای او غیر چاپ شوي حروفونو بشپړ لیست لپاره د کارن لارښود وګورئ.
+
+د کارن لارښود سره د ویب پاڼې د خلاصولو لپاره په دې تڼۍ کلیک وکړئ."/>
+			<npcAbbreviation-tip value="لنډیز: نوم
+NBSP: د نه وقفې ځای
+ZWSP: د صفر پلن ځای
+ZWNBSP: د صفر پلن پرته د وقفې ځای
+
+د بشپړ لیست لپاره د کارونکي لارښود وګورئ.
+په &quot;؟&quot; کلیک وکړئ.د کارن لارښود سره د ویب پاڼې خلاصولو لپاره په ښي خوا کې تڼۍ."/>
+			<npcCodepoint-tip value="کوډ ټکی: نوم
+U+00A0: د نه وقفې ځای
+U+200B: د صفر چوک ځای
+U+FEFF: صفر-پوړوالی نه وقفه ځای
+
+د بشپړ لیست لپاره د کارونکي لارښود وګورئ.
+په &quot;؟&quot; کلیک وکړئ.د کارن لارښود سره د ویب پاڼې خلاصولو لپاره په ښي خوا کې تڼۍ."/>
+
+			<!-- Don't translate "(&quot;Non-printing characters custom color&quot;)" -->
+			<npcCustomColor-tip value="د سټایل تنظیم کونکي ته لاړشئ ترڅو د ټاکل شوي سپینې ځای او غیر چاپ شوي حروفونو لپاره د ډیفالټ دودیز رنګ بدل کړئ (&quot;د چاپ نه کولو حروف دودیز رنګ&quot;)."/>
+			<npcIncludeCcUniEol-tip value="د C0، C1 کنټرول او یونیکوډ EOL (بل کرښه، د کرښې جلا کوونکی او پراګراف جلا کوونکی) حروفونو کې د غیر چاپ شوي حروف ظاهري ترتیبات پلي کړئ."/>
+			<searchingInSelThresh-tip value="د سمون په زون کې د ټاکل شوي حروفونو لږترلږه شمیره په اتوماتيک ډول د &quot;انتخاب کې&quot; چیک باکس چیک کولو لپاره کله چې د موندلو ډیالوګ فعال شي.اعظمي ارزښت $INT_REPLACE$ دی.د اتوماتیک چک کولو غیر فعالولو لپاره ارزښت 0 ته وټاکئ."/>
+			<searchingFillFindWhat-tip value="د سمون په زون کې د ټاکل شوي حروفونو اعظمي شمیره په اتوماتيک ډول د &quot;څه موندل&quot; ساحه ډکولو لپاره کله چې Ctrl-F پیل شي.اعظمي ارزښت $INT_REPLACE$ دی، کوم چې د &quot;څه موندلو&quot; ساحې اعظمي اندازه ده، د سیسټم لخوا محدود دی."/>
+			<verticalEdge-tip value="خپل د کالم مارکر د لسیزې شمیرې سره د هغې موقعیت په ګوته کولو سره اضافه کړئ.تاسو کولی شئ د مختلف شمیرو جلا کولو لپاره د سپینې ځای په کارولو سره د څو کالم مارکر تعریف کړئ."/>
+			<fileSaveAsCopySaveButton-tip value="د خوندي کولو وروسته د کاپي خلاصولو لپاره Save فشارولو پرمهال شفټ ونیسئ."/>
+			<autoIndentBasic-tip value="ډاډ ترلاسه کړئ چې د اوسنۍ کرښې نښه کول (د بیلګې په توګه نوې کرښه چې د ENTER کیلي په فشارولو سره رامینځته شوې) د پخوانۍ کرښې سره سمون لري."/>
+			<autoIndentAdvanced-tip value="د &quot;C-like&quot; ژبو او Python لپاره سمارټ انډینټیشن فعال کړئ.د &quot;C-like&quot; ژبو کې شامل دي:
+C، C++، Java، C#، Objective-C، PHP، JavaScript، JSP، CSS، Perl، Rust، PowerShell او JSON.
+
+که تاسو پرمختللی حالت وټاکئ مګر په پورته ذکر شویو ژبو کې فایلونه مه ایډیټ کړئ، نو انډیټینشن به په بنسټیز حالت کې پاتې شي."/>
+
+			<!-- Don't translate "Global override" and "Default Style" -->
+			<global-override-tip value="دلته د &quot;Global override&quot; فعالول به په ټولو ژبو سټایلونو کې دا پیرامیټر پورته کړي.هغه څه چې تاسو شاید واقعیا غواړئ د دې پرځای د &quot;ډیفالټ سټایل&quot; ترتیبات وکاروئ"/>
+			<scintillaRenderingTechnology-tip value="کیدای شي د ځانګړو کرکټرونو رینډریشن ته وده ورکړي یا د ګرافیک ځینې مسلې حل کړي، نوټ پیډ ++ د بدلونونو پلي کولو لپاره بیا پیل کړئ."/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'length' & 'lines' are much longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-length-lines value="اوږدوالی: $STR_REPLACE1$ کرښې: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Ln' & 'Col' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Ln-Col value="Ln: $STR_REPLACE1$ کول: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Pos' & 'Sel' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Pos value="پوسټ:"/>
+			<statusbar-Sel value="سیل:"/>
+			<statusbar-Sel-number value="سیل"/>
+			<toolbar-accent-tip value="دا اختیار ستاسو د وسیلې پټې عکسونه د وینډوز سیسټم تلفظ رنګ تعقیبوي.د اکسنټ رنګ هغه روښانه رنګ دی چې په وینډوز کې په بټونو، سرحدونو، او سټارټ مینو ټایلونو کې کارول کیږي.د دې بدلولو لپاره، ترتیبات&gt; شخصي کول&gt; رنګونو ته لاړ شئ، بیا د خپل غوره تلفظ رنګ غوره کړئ."/>
+			<len-limit-exceeded-tip value="د اوږدوالي حد تیر شو: ستاسو انډول ممکن د اجازه شوي حد څخه ډیر وي او کیدای شي لنډ شوی وي، او دا به د راتلونکي ناستې لپاره خوندي نشي."/>
+			<max-len-on-search-tip value="ستاسو آخذه ممکن د اجازه شوي حد څخه ډیر وي او کیدای شي لنډ شوی وي، او دا به د راتلونکي ناستې لپاره خوندي نشي."/>
+			<max-len-on-save-tip value="ستاسو د ننوتلو اوږدوالی خورا اوږد دی او ممکن ستاسو د راتلونکي ناستې لپاره خوندي نشي."/>
+			<goto-setting-tip value="خپل ترتیب دلته ومومئ"/>
+			<tabbar-tabcompactlabellen-tip value="د اوږد ټب نومونو د لید اوږدوالی محدودوي.د ورکړل شوي ارزښت پلي کولو لپاره دننه شئ.د ارزښت سلسله: 1-257 حروف (0 د تخریب غیر فعالوي)."/>
+		</MiscStrings>
+	</Native-Langue>
+</NotepadPlus>
+
+

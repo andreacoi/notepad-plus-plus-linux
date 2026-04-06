@@ -120,6 +120,8 @@ static const CGFloat kFormHeight = 178.0;
     _wholeWordBox.title         = [loc translate:@"Whole word"];
     _searchBtn.title            = [loc translate:@"Search"];
     _stopBtn.title              = [loc translate:@"Stop"];
+    _searchField.placeholderString  = [loc translate:@"Text to search for"];
+    _filterField.placeholderString  = [loc translate:@"*.txt, *.cpp, …"];
     for (NSTableColumn *c in _outlineView.tableColumns) {
         if ([c.identifier isEqualToString:@"result"]) c.title = [loc translate:@"Results"];
         else if ([c.identifier isEqualToString:@"line"]) c.title = [loc translate:@"Line"];
@@ -189,7 +191,7 @@ static const CGFloat kFormHeight = 178.0;
     _searchLabel = [self labelIn:form at:NSMakeRect(10, y+4, 65, 18) text:@"Search:"];
     [form addSubview:_searchLabel];
     _searchField = [self fieldIn:form frame:NSMakeRect(80, y, winW - 90, 22)
-                     placeholder:@"Text to search for"];
+                     placeholder:[[NppLocalizer shared] translate:@"Text to search for"]];
     y -= 30;
 
     // Directory
@@ -207,7 +209,7 @@ static const CGFloat kFormHeight = 178.0;
     // Filter
     _filterLabel = [self labelIn:form at:NSMakeRect(10, y+4, 65, 18) text:@"Filter:"];
     [form addSubview:_filterLabel];
-    _filterField = [self fieldIn:form frame:NSMakeRect(80, y, 200, 22) placeholder:@"*.txt, *.cpp, …"];
+    _filterField = [self fieldIn:form frame:NSMakeRect(80, y, 200, 22) placeholder:[[NppLocalizer shared] translate:@"*.txt, *.cpp, …"]];
     _filterField.stringValue = @"*.*";
     y -= 28;
 
@@ -281,7 +283,7 @@ static const CGFloat kFormHeight = 178.0;
     _searchBtn.enabled       = NO;
     _stopBtn.enabled         = YES;
     _searching               = YES;
-    _statusLabel.stringValue = @"Searching…";
+    _statusLabel.stringValue = [[NppLocalizer shared] translate:@"Searching…"];
 
     NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^{
         [self searchDirectory:dir pattern:text filter:filter matchCase:matchCase wholeWord:wholeWord];
@@ -291,7 +293,7 @@ static const CGFloat kFormHeight = 178.0;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!weakOp.isCancelled)
                 self->_statusLabel.stringValue = [NSString stringWithFormat:
-                    @"Found %ld match(es) in %ld file(s).",
+                    [[NppLocalizer shared] translate:@"Found %ld match(es) in %ld file(s)."],
                     (long)self->_matchCount, (long)self->_results.count];
             self->_searchBtn.enabled = YES;
             self->_stopBtn.enabled   = NO;
@@ -305,7 +307,7 @@ static const CGFloat kFormHeight = 178.0;
     [_searchQueue cancelAllOperations];
     _searchBtn.enabled       = YES;
     _stopBtn.enabled         = NO;
-    _statusLabel.stringValue = @"Search stopped.";
+    _statusLabel.stringValue = [[NppLocalizer shared] translate:@"Search stopped."];
 }
 
 - (void)searchDirectory:(NSString *)dir
@@ -388,7 +390,7 @@ static const CGFloat kFormHeight = 178.0;
                 [self->_outlineView reloadData];
                 [self->_outlineView expandItem:fileNode];
                 self->_statusLabel.stringValue = [NSString stringWithFormat:
-                    @"Searching… %ld match(es) so far", (long)self->_matchCount];
+                    [[NppLocalizer shared] translate:@"Searching… %ld match(es) so far"], (long)self->_matchCount];
             });
         }
     }
@@ -461,9 +463,10 @@ static const CGFloat kFormHeight = 178.0;
     if ([ident isEqualToString:@"result"]) {
         if ([item isKindOfClass:[FIFFileNode class]]) {
             FIFFileNode *node = item;
-            cell.stringValue = [NSString stringWithFormat:@"%@ (%ld match%@)",
+            cell.stringValue = [NSString stringWithFormat:
+                [[NppLocalizer shared] translate:@"%@ (%ld match%@)"],
                 node.displayName, (long)node.lines.count,
-                node.lines.count == 1 ? @"" : @"es"];
+                node.lines.count == 1 ? @"" : [[NppLocalizer shared] translate:@"es"]];
             cell.font = [NSFont boldSystemFontOfSize:12];
         } else {
             cell.stringValue = ((FIFLineNode *)item).lineText;

@@ -1,0 +1,2142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Yoruba (Yorùbá) language file for Notepad++ macOS
+    Based on English template - community translations welcome
+    Created: 2026-04-04
+-->
+<NotepadPlus>
+	<Native-Langue name="Yorùbá" filename="yoruba.xml" version="8.9">
+		<Menu>
+			<Main>
+				<!-- Main Menu Entries -->
+				<Entries>
+					<Item menuId="file" name="Faili"/>
+					<Item menuId="edit" name="Ṣatunkọ"/>
+					<Item menuId="search" name="Wa"/>
+					<Item menuId="view" name="Wo"/>
+					<Item menuId="encoding" name="Ayipada"/>
+					<Item menuId="language" name="Ede"/>
+					<Item menuId="settings" name="Eto"/>
+					<Item menuId="tools" name="Awọn irinṣẹ"/>
+					<Item menuId="macro" name="Makiro"/>
+					<Item menuId="run" name="Ṣiṣe"/>
+					<Item menuId="Plugins" name="Awọn afikun"/>
+					<Item menuId="Window" name="Ferese"/>
+				</Entries>
+				<!-- Sub Menu Entries -->
+				<SubEntries>
+					<Item subMenuId="file-openFolder" name="Ṣii folda ti o ni ninu"/>
+					<Item subMenuId="file-closeMore" name="Pade Awọn iwe aṣẹ pupọ"/>
+					<Item subMenuId="file-recentFiles" name="Awọn faili aipẹ"/>
+					<Item subMenuId="edit-insert" name="Fi sii"/>
+					<Item subMenuId="edit-copyToClipboard" name="Daakọ si Agekuru"/>
+					<Item subMenuId="edit-indent" name="Indent"/>
+					<Item subMenuId="edit-convertCaseTo" name="Yi Ọran pada si"/>
+					<Item subMenuId="edit-lineOperations" name="Awọn iṣẹ ila"/>
+					<Item subMenuId="edit-comment" name="Ọrọìwòye / Uncomment"/>
+					<Item subMenuId="edit-autoCompletion" name="Ipari Aifọwọyi"/>
+					<Item subMenuId="edit-eolConversion" name="EOL Iyipada"/>
+					<Item subMenuId="edit-blankOperations" name="Awọn iṣẹ òfo"/>
+					<Item subMenuId="edit-pasteSpecial" name="Lẹẹmọ Pataki"/>
+					<Item subMenuId="edit-onSelection" name="Lori Yiyan"/>
+					<Item subMenuId="edit-multiSelectALL" name="Multi-yan GBOGBO"/>
+					<Item subMenuId="edit-multiSelectNext" name="Multi-yan Next"/>
+					<Item subMenuId="edit-readonlyInNotepad++" name="Ka-Nikan ni Notepad++"/>
+					<Item subMenuId="search-changeHistory" name="Yi itan pada"/>
+					<Item subMenuId="search-markAll" name="Style Gbogbo Awọn iṣẹlẹ ti Tokini"/>
+					<Item subMenuId="search-markOne" name="Ara Ọkan Tokini"/>
+					<Item subMenuId="search-unmarkAll" name="Ko Style"/>
+					<Item subMenuId="search-jumpUp" name="Fo soke"/>
+					<Item subMenuId="search-jumpDown" name="Sokale"/>
+					<Item subMenuId="search-copyStyledText" name="Daakọ Ọrọ Styled"/>
+					<Item subMenuId="search-bookmark" name="Bukumaaki"/>
+					<Item subMenuId="view-currentFileIn" name="Wo faili lọwọlọwọ ni"/>
+					<Item subMenuId="view-showSymbol" name="Ṣe afihan Aami"/>
+					<Item subMenuId="view-zoom" name="Sun-un"/>
+					<Item subMenuId="view-moveCloneDocument" name="Gbe / Apanilẹrin Iwe Iroyin lọwọlọwọ"/>
+					<Item subMenuId="view-tab" name="Taabu"/>
+					<Item subMenuId="view-collapseLevel" name="Agbo Ipele"/>
+					<Item subMenuId="view-uncollapseLevel" name="Ṣiṣii Ipele"/>
+					<Item subMenuId="view-project" name="Ise agbese"/>
+					<Item subMenuId="encoding-characterSets" name="Eto kikọ"/>
+					<Item subMenuId="encoding-arabic" name="Larubawa"/>
+					<Item subMenuId="encoding-baltic" name="Baltic"/>
+					<Item subMenuId="encoding-celtic" name="Celtic"/>
+					<Item subMenuId="encoding-cyrillic" name="Cyrillic"/>
+					<Item subMenuId="encoding-centralEuropean" name="Central European"/>
+					<Item subMenuId="encoding-chinese" name="Chinese"/>
+					<Item subMenuId="encoding-easternEuropean" name="Ila-oorun Yuroopu"/>
+					<Item subMenuId="encoding-greek" name="Giriki"/>
+					<Item subMenuId="encoding-hebrew" name="Heberu"/>
+					<Item subMenuId="encoding-japanese" name="Japanese"/>
+					<Item subMenuId="encoding-korean" name="Korean"/>
+					<Item subMenuId="encoding-northEuropean" name="Ariwa European"/>
+					<Item subMenuId="encoding-thai" name="Thai"/>
+					<Item subMenuId="encoding-turkish" name="Turkish"/>
+					<Item subMenuId="encoding-westernEuropean" name="Western European"/>
+					<Item subMenuId="encoding-vietnamese" name="Vietnamese"/>
+					<Item subMenuId="language-userDefinedLanguage" name="Ede Itumọ olumulo"/>
+					<Item subMenuId="settings-import" name="Gbe wọle"/>
+					<Item subMenuId="tools-md5" name="MD5"/>
+					<Item subMenuId="tools-sha1" name="SHA-1"/>
+					<Item subMenuId="tools-sha256" name="SHA-256"/>
+					<Item subMenuId="tools-sha512" name="SHA-512"/>
+					<Item subMenuId="window-sortby" name="Too Nipa"/>
+				</SubEntries>
+
+				<!-- all menu item -->
+				<Commands>
+					<Item id="41001" name="Tuntun"/>
+					<Item id="41002" name="Ṣii..."/>
+					<Item id="41019" name="Explorer"/>
+					<Item id="41020" name="cmd"/>
+					<Item id="41025" name="Folda bi Workspace"/>
+					<Item id="41003" name="Pade"/>
+					<Item id="41004" name="Pade Gbogbo"/>
+					<Item id="41005" name="Pa Gbogbo BUT Iwe lọwọlọwọ"/>
+					<Item id="41026" name="Pa gbogbo awọn iwe aṣẹ Pinned"/>
+					<Item id="41009" name="Pa Gbogbo rẹ si Osi"/>
+					<Item id="41018" name="Pa Gbogbo si ọtun"/>
+					<Item id="41024" name="Pa Gbogbo Ayiyipada"/>
+					<Item id="41006" name="Fipamọ"/>
+					<Item id="41007" name="Fi Gbogbo Gba"/>
+					<Item id="41008" name="Fipamọ Bi..."/>
+					<Item id="41010" name="Titẹ..."/>
+					<Item id="1001" name="Tẹjade Bayi"/>
+					<Item id="41011" name="Jade"/>
+					<Item id="41012" name="Ikoni fifuye..."/>
+					<Item id="41013" name="Fi Ikoni pamọ..."/>
+					<Item id="41014" name="Ṣe igbasilẹ lati Disk"/>
+					<Item id="41015" name="Fi ẹda kan pamọ Bi..."/>
+					<Item id="41016" name="Gbe lọ si Atunlo Bin"/>
+					<Item id="41017" name="Tunrukọ..."/>
+					<Item id="41021" name="Mu pada Faili Titiipade Laipẹ"/>
+					<Item id="41022" name="Ṣii folda bi aaye iṣẹ..."/>
+					<Item id="41023" name="Ṣii ni Oluwo Aiyipada"/>
+					<Item id="42001" name="Ge"/>
+					<Item id="42002" name="Daakọ"/>
+					<Item id="42003" name="Yipada"/>
+					<Item id="42004" name="Tunṣe"/>
+					<Item id="42005" name="Lẹẹmọ"/>
+					<Item id="42006" name="Paarẹ"/>
+					<Item id="42007" name="Yan Gbogbo"/>
+					<Item id="42020" name="Bẹrẹ/Ipari Yan"/>
+					<Item id="42089" name="Bẹrẹ/Pari Yan ni Ipo Ọwọ"/>
+					<Item id="42084" name="Ọjọ Aago (kukuru)"/>
+					<Item id="42085" name="Akoko Ọjọ (gun)"/>
+					<Item id="42086" name="Akoko Ọjọ (adani)"/>
+					<Item id="42008" name="Alekun ila Indent"/>
+					<Item id="42009" name="Indent Laini Dinkun"/>
+					<Item id="42010" name="Pidánpidán Laini lọwọlọwọ"/>
+					<Item id="42079" name="Yọ Awọn Laini Duplicate kuro"/>
+					<Item id="42077" name="Yọ Awọn Laini Duplicate Titẹle"/>
+					<Item id="42012" name="Awọn ila Pipin"/>
+					<Item id="42013" name="Darapọ mọ Awọn Laini"/>
+					<Item id="42014" name="Gbe Soke Laini lọwọlọwọ"/>
+					<Item id="42015" name="Gbe Si isalẹ Laini lọwọlọwọ"/>
+					<Item id="42059" name="Too awọn ila Lexicographically Ascending"/>
+					<Item id="42060" name="Too Lines Lexicographically Sokale"/>
+					<Item id="42080" name="Too Lines Lex.Igoke Idojukọ Ọran"/>
+					<Item id="42081" name="Too Lines Lex.Sokale Ni Fojusi Ọran"/>
+					<Item id="42100" name="Awọn Laini Too Ni Ilọsiwaju Ibere ​​Agbegbe"/>
+					<Item id="42101" name="Awọn Laini Too Ni Isokale Ibere ​​Agbegbe"/>
+					<Item id="42104" name="Awọn Laini Too Nipa Igoke Gigun"/>
+					<Item id="42105" name="Awọn Laini Too Nipa Ilọkalẹ Gigun"/>
+					<Item id="42061" name="Awọn Laini Too Bi Awọn Odidi Ngoke"/>
+					<Item id="42062" name="Awọn Laini Too Bi Odidi Ti Nlọkalẹ"/>
+					<Item id="42063" name="Awọn Laini Too Bi Awọn eleemewa (Koma) ti n lọ soke"/>
+					<Item id="42064" name="Awọn Laini Too Bi Awọn eleemewa (Koma) ti n sọkalẹ"/>
+					<Item id="42065" name="Awọn Laini Too Bi Awọn eleemewa (Dot) ti n lọ soke"/>
+					<Item id="42066" name="Awọn Laini Too Bi Awọn eleemewa (Dot) ti n sọkalẹ"/>
+					<Item id="42083" name="Yiyipada Line Bere fun"/>
+					<Item id="42078" name="Ibere ​​Laini Laileto"/>
+					<Item id="42016" name="OKE"/>
+					<Item id="42017" name="kekere"/>
+					<Item id="42067" name="Idi ti o yẹ"/>
+					<Item id="42068" name="Dara Case (adapo)"/>
+					<Item id="42069" name="Idajọ gbolohun"/>
+					<Item id="42070" name="Ọran gbolohun ọrọ (dapọ)"/>
+					<Item id="42071" name="inNVERT nla"/>
+					<Item id="42072" name="ranDOm Case"/>
+					<Item id="42073" name="Ṣii Faili"/>
+					<Item id="42074" name="Ṣii folda ti o ni ninu Explorer"/>
+					<Item id="42106" name="Yiyan Yiyan █ (Iyipada: ●)"/>
+					<Item id="42075" name="Wa lori Intanẹẹti"/>
+					<Item id="42076" name="Yi ẹrọ wiwa pada..."/>
+					<Item id="42090" name="Foju Case Gbogbo Ọrọ"/>
+					<Item id="42091" name="Ọran Baramu Nikan"/>
+					<Item id="42092" name="Baramu Gbogbo Ọrọ Nikan"/>
+					<Item id="42093" name="Baramu Case Gbogbo Ọrọ"/>
+					<Item id="42094" name="Foju Case Gbogbo Ọrọ"/>
+					<Item id="42095" name="Ọran Baramu Nikan"/>
+					<Item id="42096" name="Baramu Gbogbo Ọrọ Nikan"/>
+					<Item id="42097" name="Baramu Case Gbogbo Ọrọ"/>
+					<Item id="42098" name="Mu Tuntun Fikun Olona-Yan"/>
+					<Item id="42099" name="Rekọja lọwọlọwọ Lọ si Next Multi-yan"/>
+					<Item id="42018" name="Bẹrẹ Gbigbasilẹ"/>
+					<Item id="42019" name="Duro Gbigbasilẹ"/>
+					<Item id="42021" name="Sisisẹsẹhin"/>
+					<Item id="42022" name="Yipada Ọrọìwòye Laini Nikan"/>
+					<Item id="42023" name="Ọrọìwòye Àkọsílẹ"/>
+					<Item id="42047" name="Àkọsílẹ Uncomment"/>
+					<Item id="42024" name="Gee Trailing Space"/>
+					<Item id="42042" name="Gee aaye asiwaju"/>
+					<Item id="42043" name="Gee itọsọna ati aaye itọpa"/>
+					<Item id="42044" name="EOL si Space"/>
+					<Item id="42045" name="Gee mejeeji ati EOL si Space"/>
+					<Item id="42046" name="TAB si aaye"/>
+					<Item id="42054" name="Aye si TAB (Gbogbo)"/>
+					<Item id="42053" name="Aye si TAB (Asiwaju)"/>
+					<Item id="42038" name="Lẹẹmọ akoonu HTML"/>
+					<Item id="42039" name="Lẹẹmọ Akoonu RTF"/>
+					<Item id="42048" name="Daakọ akoonu alakomeji"/>
+					<Item id="42049" name="Ge Akoonu Alakomeji"/>
+					<Item id="42050" name="Lẹẹmọ Akoonu Alakomeji"/>
+					<Item id="42082" name="Daakọ ọna asopọ"/>
+					<Item id="42037" name="Ipo iwe..."/>
+					<Item id="42034" name="Olootu iwe..."/>
+					<Item id="42051" name="Ohun kikọ Panel"/>
+					<Item id="42052" name="Itan agekuru"/>
+					<Item id="42025" name="Fipamọ Makiro ti o gbasilẹ Lọwọlọwọ..."/>
+					<Item id="42026" name="Itọsọna Ọrọ RTL"/>
+					<Item id="42027" name="Itọsọna Ọrọ LTR"/>
+					<Item id="42028" name="Ka-Nikan lori Iwe-ipamọ lọwọlọwọ"/>
+					<Item id="42102" name="Ka-Nikan fun Gbogbo Awọn iwe-aṣẹ"/>
+					<Item id="42103" name="Ko kika-Nikan kuro fun Gbogbo Awọn iwe aṣẹ"/>
+					<Item id="42029" name="Daakọ Ọna Faili lọwọlọwọ"/>
+					<Item id="42030" name="Daakọ Orukọ faili lọwọlọwọ"/>
+					<Item id="42031" name="Daakọ Dir lọwọlọwọ.Ona"/>
+					<Item id="42087" name="Daakọ Gbogbo Filenames"/>
+					<Item id="42088" name="Daakọ Gbogbo Awọn Ona Faili"/>
+					<Item id="42032" name="Ṣiṣe Makiro Multiple Times..."/>
+					<Item id="42033" name="Iwa Ka-nikan ni Windows"/>
+					<Item id="42035" name="Ọrọìwòye Laini Nikan"/>
+					<Item id="42036" name="Uncomment Laini Nikan"/>
+					<Item id="42055" name="Yọ Awọn Laini Sofo kuro"/>
+					<Item id="42056" name="Yọ Awọn Laini Sofo (Ti o ni awọn ohun kikọ Ofo ti o ni)"/>
+					<Item id="42057" name="Fi Laini Ofo sii Loke Lọwọlọwọ"/>
+					<Item id="42058" name="Fi Laini Ofo si isalẹ lọwọlọwọ"/>
+					<Item id="43001" name="Wa..."/>
+					<Item id="43002" name="Wa Next"/>
+					<Item id="43003" name="Ropo..."/>
+					<Item id="43004" name="Lọ si..."/>
+					<Item id="43005" name="Yi Bukumaaki Yipada"/>
+					<Item id="43006" name="Bukumaaki tókàn"/>
+					<Item id="43007" name="Bukumaaki ti tẹlẹ"/>
+					<Item id="43008" name="Ko Gbogbo Awọn bukumaaki kuro"/>
+					<Item id="43018" name="Ge Awọn Laini Bukumaaki"/>
+					<Item id="43019" name="Daakọ Awọn Laini Bukumaaki"/>
+					<Item id="43020" name="Lẹẹmọ si (Rọpo) Awọn laini Bukumaaki"/>
+					<Item id="43021" name="Yọ Awọn Laini Bukumaaki"/>
+					<Item id="43051" name="Yọ Awọn Laini Ti kii ṣe Bukumaaki"/>
+					<Item id="43050" name="Awọn bukumaaki onidakeji"/>
+					<Item id="43052" name="Wa awọn ohun kikọ silẹ ni sakani..."/>
+					<Item id="43053" name="Yan Gbogbo Laarin {} [] tabi ()"/>
+					<Item id="43009" name="Lọ si Àmúró ibamu"/>
+					<Item id="43010" name="Wa Ti tẹlẹ"/>
+					<Item id="43011" name="Iwadi Ilọsiwaju"/>
+					<Item id="43013" name="Wa ninu Awọn faili"/>
+					<Item id="43014" name="Wa (Iyipada) Next"/>
+					<Item id="43015" name="Wa (Iyipada) Ti tẹlẹ"/>
+					<Item id="43022" name="Lilo 1st Style"/>
+					<Item id="43023" name="Ko 1st Style"/>
+					<Item id="43024" name="Lilo 2nd Style"/>
+					<Item id="43025" name="Ko 2nd Style"/>
+					<Item id="43026" name="Lilo 3rd Style"/>
+					<Item id="43027" name="Ko 3rd Style"/>
+					<Item id="43028" name="Lilo 4th Style"/>
+					<Item id="43029" name="Ko 4th Style"/>
+					<Item id="43030" name="Lilo 5th Style"/>
+					<Item id="43031" name="Ko Aṣa 5th kuro"/>
+					<Item id="43032" name="Ko Gbogbo Awọn aṣa kuro"/>
+					<Item id="43033" name="ara 1st"/>
+					<Item id="43034" name="2nd ara"/>
+					<Item id="43035" name="ara 3rd"/>
+					<Item id="43036" name="ara 4th"/>
+					<Item id="43037" name="ara 5th"/>
+					<Item id="43038" name="Wa Mark Style"/>
+					<Item id="43039" name="1st ara"/>
+					<Item id="43040" name="2nd ara"/>
+					<Item id="43041" name="ara 3rd"/>
+					<Item id="43042" name="ara 4th"/>
+					<Item id="43043" name="ara 5th"/>
+					<Item id="43044" name="Wa Mark Style"/>
+					<Item id="43055" name="Aṣa 1st"/>
+					<Item id="43056" name="2nd Style"/>
+					<Item id="43057" name="Aṣa 3rd"/>
+					<Item id="43058" name="Aṣa 4th"/>
+					<Item id="43059" name="Aṣa 5th"/>
+					<Item id="43060" name="Gbogbo Styles"/>
+					<Item id="43061" name="Wa Mark Style"/>
+					<Item id="43062" name="Lilo 1st Style"/>
+					<Item id="43063" name="Lilo 2nd Style"/>
+					<Item id="43064" name="Lilo 3rd Style"/>
+					<Item id="43065" name="Lilo 4th Style"/>
+					<Item id="43066" name="Lilo 5th Style"/>
+					<Item id="43067" name="Lọ si Next Change"/>
+					<Item id="43068" name="Lọ si Iyipada Išaaju"/>
+					<Item id="43069" name="Ko Itan Iyipada kuro"/>
+					<Item id="43045" name="Window esi iwadi"/>
+					<Item id="43046" name="Abajade wiwa ti o tẹle"/>
+					<Item id="43047" name="Abajade wiwa iṣaaju"/>
+					<Item id="43048" name="Yan ati Wa Next"/>
+					<Item id="43049" name="Yan ati Wa Ti tẹlẹ"/>
+					<Item id="43054" name="Mark..."/>
+					<Item id="43501" name="Pade ti a ti yan"/>
+					<Item id="43502" name="Pade Awọn ẹlomiran"/>
+					<Item id="43503" name="Da awọn orukọ ti o yan"/>
+					<Item id="43504" name="Daakọ Awọn orukọ ipa-ọna ti a yan"/>
+					<Item id="44009" name="Post-It"/>
+					<Item id="44010" name="Agbo Gbogbo"/>
+					<Item id="44011" name="Ipo Ọfẹ Iyapa"/>
+					<Item id="44019" name="Ṣe afihan Gbogbo Awọn lẹta"/>
+					<Item id="44020" name="Ṣe afihan Itọsọna Indent"/>
+					<Item id="44022" name="Ipari ọrọ"/>
+					<Item id="44023" name="Sun-un sinu (Ctrl+Mouse Wheel Up)"/>
+					<Item id="44024" name="Sun-un jade (Konturolu+Mouse Kẹkẹ Isalẹ)"/>
+					<Item id="44025" name="Ṣe afihan aaye ati Taabu"/>
+					<Item id="44026" name="Ṣe afihan Ipari Laini"/>
+					<Item id="44029" name="Unfold Gbogbo"/>
+					<Item id="44030" name="Agbo Ipele Lọwọlọwọ"/>
+					<Item id="44031" name="Ṣii silẹ Ipele Lọwọlọwọ"/>
+					<Item id="44049" name="Akopọ..."/>
+					<Item id="44080" name="Maapu iwe"/>
+					<Item id="44070" name="Akojọ iwe"/>
+					<Item id="44084" name="Akojọ iṣẹ"/>
+					<Item id="44085" name="Folda bi Workspace"/>
+					<Item id="44086" name="Taabu 1st"/>
+					<Item id="44087" name="2nd Taabu"/>
+					<Item id="44088" name="Taabu 3rd"/>
+					<Item id="44089" name="4th Taabu"/>
+					<Item id="44090" name="Taabu karun"/>
+					<Item id="44091" name="Taabu 6"/>
+					<Item id="44092" name="7th Taabu"/>
+					<Item id="44093" name="8th Taabu"/>
+					<Item id="44094" name="Taabu 9th"/>
+					<Item id="44116" name="Taabu akọkọ"/>
+					<Item id="44117" name="Taabu kẹhin"/>
+					<Item id="44095" name="Next Taabu"/>
+					<Item id="44096" name="Taabu ti tẹlẹ"/>
+					<Item id="44097" name="Abojuto (iru -f)"/>
+					<Item id="44098" name="Gbe Taabu Siwaju"/>
+					<Item id="44099" name="Gbe Taabu Sẹhin"/>
+					<Item id="44110" name="Yọ Awọ"/>
+					<Item id="44111" name="Waye Awọ 1"/>
+					<Item id="44112" name="Waye Awọ 2"/>
+					<Item id="44113" name="Waye Awọ 3"/>
+					<Item id="44114" name="Waye Awọ 4"/>
+					<Item id="44115" name="Waye Awọ 5"/>
+					<Item id="44130" name="Ṣe afihan Awọn ohun kikọ ti kii ṣe Titẹwe"/>
+					<Item id="44131" name="Ṣe afihan Awọn ohun kikọ Iṣakoso Unicode EOL"/>
+					<Item id="44032" name="Yipada Ipo Iboju Kikun"/>
+					<Item id="44033" name="Pada Sún Aiyipada pada"/>
+					<Item id="44034" name="Nigbagbogbo lori Top"/>
+					<Item id="44035" name="Mimuuṣiṣẹpọ Yi lọ inaro"/>
+					<Item id="44036" name="Mu Yi lọ Petele ṣiṣẹpọ"/>
+					<Item id="44041" name="Ṣe afihan Aami ipari"/>
+					<Item id="44072" name="Fojusi lori Wiwo Miiran"/>
+					<Item id="44081" name="Igbimo ise agbese 1"/>
+					<Item id="44082" name="Igbimo ise agbese 2"/>
+					<Item id="44083" name="Igbimo ise agbese 3"/>
+					<Item id="45001" name="Windows (CR LF)"/>
+					<Item id="45002" name="Unix (LF)"/>
+					<Item id="45003" name="Macintosh (CR)"/>
+					<Item id="45004" name="ANSI"/>
+					<Item id="45005" name="UTF-8-BOM"/>
+					<Item id="45006" name="UTF-16 BE BOM"/>
+					<Item id="45007" name="UTF-16 LE BOM"/>
+					<Item id="45008" name="UTF-8"/>
+					<Item id="45009" name="Iyipada si ANSI"/>
+					<Item id="45010" name="Iyipada si UTF-8"/>
+					<Item id="45011" name="Iyipada si UTF-8-BOM"/>
+					<Item id="45012" name="Iyipada si UTF-16 BE BOM"/>
+					<Item id="45013" name="Iyipada si UTF-16 LE BOM"/>
+					<Item id="45060" name="Big5 (Aṣa)"/>
+					<Item id="45061" name="GB2312 (Simplified)"/>
+					<Item id="45054" name="OEM 861: Icelandic"/>
+					<Item id="45057" name="OEM 865: Nordic"/>
+					<Item id="45053" name="OEM 860: Portuguese"/>
+					<Item id="45056" name="OEM 863: Faranse"/>
+					<Item id="10001" name="Gbe lọ si Wiwo Omiiran"/>
+					<Item id="10002" name="Clone to Miiran Wiwo"/>
+					<Item id="10003" name="Gbe lọ si Apeere Tuntun"/>
+					<Item id="10004" name="Ṣii ni Apeere Tuntun"/>
+					<Item id="10005" name="Gbe lọ si Bẹrẹ"/>
+					<Item id="10006" name="Gbe lọ si Ipari"/>
+					<Item id="46001" name="Oluṣeto ara..."/>
+					<Item id="46016" name="Ko si (ọrọ deede)"/>
+					<Item id="46250" name="Setumo ede rẹ..."/>
+					<Item id="46300" name="Ṣii folda Ede asọye Olumulo..."/>
+					<Item id="46301" name="Notepad++ Akojọpọ Awọn ede Itumọ Olumulo"/>
+					<Item id="46180" name="Olumulo-itumọ"/>
+					<Item id="47000" name="Nipa Notepad++"/>
+					<Item id="47010" name="Awọn ariyanjiyan Laini aṣẹ..."/>
+					<Item id="47001" name="Notepad++ Home"/>
+					<Item id="47002" name="Notepad++ Oju-iwe Ise agbese"/>
+					<Item id="47003" name="Notepad++ Afọwọṣe Olumulo Ayelujara"/>
+					<Item id="47004" name="Notepad++ Community (Forum)"/>
+					<Item id="47012" name="Alaye yokokoro..."/>
+					<Item id="47005" name="Gba Awọn afikun diẹ sii"/>
+					<Item id="47006" name="Ṣe imudojuiwọn Akọsilẹ Akọsilẹ++"/>
+					<Item id="47009" name="Ṣeto Aṣoju Imudojuiwọn..."/>
+					<Item id="48005" name="Awọn afikun (awọn) gbe wọle..."/>
+					<Item id="48006" name="Akori(s) ara agbewọle..."/>
+					<Item id="48018" name="Ṣatunkọ Agbejade ContextMenu"/>
+					<Item id="48009" name="Ọna abuja Mapper..."/>
+					<Item id="48011" name="Awọn ayanfẹ..."/>
+					<Item id="48014" name="Ṣii Folda Plugins..."/>
+					<Item id="48015" name="Plugins Admin..."/>
+					<Item id="48501" name="Ṣẹda..."/>
+					<Item id="48502" name="Ṣe ina lati awọn faili..."/>
+					<Item id="48503" name="Ṣe ipilẹṣẹ lati yiyan sinu agekuru agekuru"/>
+					<Item id="48504" name="Ṣẹda..."/>
+					<Item id="48505" name="Ṣe ina lati awọn faili..."/>
+					<Item id="48506" name="Ṣe ipilẹṣẹ lati yiyan sinu agekuru agekuru"/>
+					<Item id="48507" name="Ṣẹda..."/>
+					<Item id="48508" name="Ṣe ina lati awọn faili..."/>
+					<Item id="48509" name="Ṣe ipilẹṣẹ lati yiyan sinu agekuru agekuru"/>
+					<Item id="48510" name="Ṣe ina..."/>
+					<Item id="48511" name="Ṣe ina lati awọn faili..."/>
+					<Item id="48512" name="Ṣe ipilẹṣẹ lati yiyan sinu agekuru agekuru"/>
+					<Item id="49000" name="Run..."/>
+
+					<Item id="50000" name="Ipari iṣẹ"/>
+					<Item id="50001" name="Ipari Ọrọ"/>
+					<Item id="50002" name="Italolobo Awọn paramita iṣẹ"/>
+					<Item id="50010" name="Awọn paramita Iṣẹ iṣe Itoju Ti tẹlẹ"/>
+					<Item id="50011" name="Awọn paramita Iṣẹ-ṣiṣe Itoju Next"/>
+					<Item id="50005" name="Yipada igbasilẹ Makiro"/>
+					<Item id="50006" name="Ipari Ona"/>
+					<Item id="44042" name="Tọju Awọn Laini"/>
+					<Item id="42040" name="Ṣii Gbogbo Awọn faili aipẹ"/>
+					<Item id="42041" name="Ṣofo Akojọ Awọn faili aipẹ"/>
+					<Item id="48016" name="Ṣatunṣe Ọna abuja/Pa Makiro kuro..."/>
+					<Item id="48017" name="Ṣatunṣe Ọna abuja/Pa Aṣẹ Paarẹ..."/>
+
+					<Item id="11001" name="Windows..."/>
+					<Item id="11002" name="Orukọ A si Z"/>
+					<Item id="11003" name="Orukọ Z si A"/>
+					<Item id="11004" name="Ona A si Z"/>
+					<Item id="11005" name="Ọna Z si A"/>
+					<Item id="11006" name="Tẹ A si Z"/>
+					<Item id="11007" name="Tẹ Z si A"/>
+					<Item id="11008" name="Gigun Akoonu Ngoke"/>
+					<Item id="11009" name="Isokale Gigun Akoonu"/>
+					<Item id="11010" name="Títúnṣe Time Ascending"/>
+					<Item id="11011" name="Títúnṣe Time Sokale"/>
+				</Commands>
+			</Main>
+			<TabBar>
+				<Item CMDID="41003" name="Pade"/>
+				<Item CMDID="0" name="Pa Ọpọ Awọn taabu"/>
+				<Item CMDID="41005" name="Pa Gbogbo Sugbon Eyi"/>
+				<Item CMDID="41026" name="Pa Gbogbo BUT Pinned"/>
+				<Item CMDID="41009" name="Pa Gbogbo Rẹ si Osi"/>
+				<Item CMDID="41018" name="Pa Gbogbo si ọtun"/>
+				<Item CMDID="41024" name="Pa Gbogbo Ayiyipada"/>
+				<Item CMDID="44048" name="Pin Taabu" alternativeName="Unpin Taabu"/>
+				<Item CMDID="41006" name="Fipamọ"/>
+				<Item CMDID="41008" name="Fipamọ Bi..."/>
+				<Item CMDID="1" name="Ṣii sinu"/>
+				<Item CMDID="41019" name="Ṣii folda ti o ni ninu Explorer"/>
+				<Item CMDID="41020" name="Ṣii folda ti o ni ninu cmd"/>
+				<Item CMDID="41025" name="Ṣii folda ti o ni ninu bi aaye iṣẹ"/>
+				<Item CMDID="41023" name="Ṣii ni Oluwo Aiyipada"/>
+				<Item CMDID="41017" name="Tunrukọ..."/>
+				<Item CMDID="41016" name="Gbe lọ si Atunlo Bin"/>
+				<Item CMDID="41014" name="Tun gbee"/>
+				<Item CMDID="41010" name="Titẹ..."/>
+				<Item CMDID="42028" name="Ka-Nikan ni Notepad++"/>
+				<Item CMDID="42033" name="Iwa Ka-nikan ni Windows"/>
+				<Item CMDID="2" name="Daakọ si Agekuru"/>
+				<Item CMDID="42029" name="Daakọ Ọna Faili ni kikun"/>
+				<Item CMDID="42030" name="Daakọ Orukọ faili"/>
+				<Item CMDID="42031" name="Daakọ Dir lọwọlọwọ.Ona"/>
+				<Item CMDID="3" name="Gbe iwe"/>
+				<Item CMDID="10005" name="Gbe lọ si Bẹrẹ"/>
+				<Item CMDID="10006" name="Gbe lọ si Ipari"/>
+				<Item CMDID="10001" name="Gbe lọ si Wiwo Omiiran"/>
+				<Item CMDID="10002" name="Clone to Miiran Wiwo"/>
+				<Item CMDID="10003" name="Gbe lọ si Apeere Tuntun"/>
+				<Item CMDID="10004" name="Ṣii ni Apeere Tuntun"/>
+				<Item CMDID="4" name="Waye Awọ si Taabu"/>
+				<Item CMDID="44111" name="Waye Awọ 1"/>
+				<Item CMDID="44112" name="Waye Awọ 2"/>
+				<Item CMDID="44113" name="Waye Awọ 3"/>
+				<Item CMDID="44114" name="Waye Awọ 4"/>
+				<Item CMDID="44115" name="Waye Awọ 5"/>
+				<Item CMDID="44110" name="Yọ Awọ"/>
+			</TabBar>
+			<TrayIcon>
+				<Item id="43101" name="Mu ṣiṣẹ"/>
+				<Item id="43102" name="Tuntun"/>
+				<Item id="43103" name="Tuntun ati Lẹẹmọ"/>
+				<Item id="43104" name="Ṣii..."/>
+				<Item id="43013" name="Wa ninu Awọn faili..."/>
+				<Item id="43105" name="Pa Atẹ Aami Aami"/>
+			</TrayIcon>
+		</Menu>
+
+		<Dialog>
+			<Find title="" titleFind="Wa" titleReplace="Rọpo" titleFindInFiles="Wa ninu awọn faili" titleFindInProjects="Wa ninu Awọn iṣẹ akanṣe" titleMark="Samisi">
+				<Item id="1" name="Wa Next"/>
+				<Item id="1722" name="Itọsọna sẹhin"/>
+				<Item id="2" name="Sunmọ"/>
+				<Item id="1620" name="Wa ohun ti:"/>
+				<Item id="1603" name="Baramu gbogbo ọrọ nikan"/>
+				<Item id="1604" name="Ọran baramu"/>
+				<Item id="1605" name="Ikosile deede"/>
+				<Item id="1606" name="Fi ipari si"/>
+				<Item id="1614" name="Ka"/>
+				<Item id="1615" name="Samisi Gbogbo"/>
+				<Item id="1616" name="Laini bukumaaki"/>
+				<Item id="1618" name="Purge fun wiwa kọọkan"/>
+				<Item id="1611" name="Ropo pẹlu:"/>
+				<Item id="1608" name="Rọpo"/>
+				<Item id="1609" name="Ropo Gbogbo"/>
+				<Item id="1687" name="Lori sisọnu idojukọ"/>
+				<Item id="1688" name="Nigbagbogbo"/>
+				<Item id="1632" name="Ninu yiyan"/>
+				<Item id="1633" name="Ko gbogbo awọn ami kuro"/>
+				<Item id="1635" name="Rọpo Gbogbo ni Gbogbo Awọn iwe aṣẹ Ṣii"/>
+				<Item id="1636" name="Wa Gbogbo Ninu Gbogbo Awọn iwe aṣẹ Ṣii"/>
+				<Item id="1654" name="Ajọ:"/>
+				<Item id="1655" name="Itọsọna:"/>
+				<Item id="1656" name="Wa Gbogbo"/>
+				<Item id="1658" name="Ninu gbogbo awọn folda inu awọn faili"/>
+				<Item id="1659" name="Ni farasin awọn folda"/>
+				<Item id="1624" name="Ipo wiwa"/>
+				<Item id="1625" name="Deede"/>
+				<Item id="1626" name="Tesiwaju (\n, \r, \t, \0, \x...)"/>
+				<Item id="1660" name="Rọpo ni Awọn faili"/>
+				<Item id="1665" name="Rọpo ni Awọn iṣẹ akanṣe"/>
+				<Item id="1662" name="Igbimo ise agbese 1"/>
+				<Item id="1663" name="Igbimo ise agbese 2"/>
+				<Item id="1664" name="Igbimo ise agbese 3"/>
+				<Item id="1641" name="Wa Gbogbo rẹ ninu Iwe-ipamọ lọwọlọwọ"/>
+				<Item id="1686" name="Ifarabalẹ"/>
+				<Item id="1703" name=".ibaamu newline"/>
+				<Item id="1721" name="▲"/>
+				<Item id="1723" name="▼ Wa Next"/>
+				<Item id="1725" name="Daakọ Ọrọ Ti samisi"/>
+				<Menu>
+					<Item id="1726" name="⇅ Siwopu Wa pẹlu Rọpo"/>
+					<Item id="1727" name="⤵ Daakọ lati Wa lati Rọpo"/>
+					<Item id="1728" name="⤴ Daakọ lati Rọpo lati Wa"/>
+				</Menu>
+			</Find>
+
+			<IncrementalFind title="">
+				<Item id="1681" name="Wa:"/>
+				<Item id="1685" name="Ọran baramu"/>
+				<Item id="1690" name="Saami gbogbo"/>
+			</IncrementalFind>
+
+			<FindCharsInRange title="Wa Awọn ohun kikọ ni Ibiti o wa...">
+				<Item id="2" name="Pade"/>
+				<Item id="2901" name="Awọn ami ASCII ti kii ṣe (128–255)"/>
+				<Item id="2902" name="Awọn ami ASCII (0–127)"/>
+				<Item id="2903" name="Ibiti aṣa (0-255):"/>
+				<Item id="2906" name="Soke"/>
+				<Item id="2907" name="Isalẹ"/>
+				<Item id="2908" name="Itọsọna"/>
+				<Item id="2909" name="Fi ipari si"/>
+				<Item id="2910" name="Wa"/>
+			</FindCharsInRange>
+
+			<GoToLine title="Lọ si...">
+				<Item id="2007" name="Laini"/>
+				<Item id="2008" name="Aiṣedeede"/>
+				<Item id="1" name="Lọ"/>
+				<Item id="2" name="Emi ko lọ nibikibi"/>
+				<Item id="2004" name="O wa nibi:"/>
+				<Item id="2005" name="O fẹ lati lọ si:"/>
+				<Item id="2006" name="O ko le lọ siwaju ju:"/>
+			</GoToLine>
+
+			<Run title="Run...">
+				<Item id="1903" name="Eto naa lati Ṣiṣe"/>
+				<Item id="1" name="Ṣiṣe"/>
+				<Item id="2" name="Fagilee"/>
+				<Item id="1904" name="Fipamọ..."/>
+			</Run>
+
+			<MD5FromFilesDlg title="Ṣe ina MD5 daijesti lati awọn faili">
+				<Item id="1922" name="Yan awọn faili lati ṣe ina MD5..."/>
+				<Item id="1924" name="Daakọ si Agekuru"/>
+				<Item id="2" name="Pade"/>
+			</MD5FromFilesDlg>
+
+			<MD5FromTextDlg title="Ṣe ina MD5 daijesti">
+				<Item id="1932" name="Toju laini kọọkan bi okun lọtọ"/>
+				<Item id="1934" name="Daakọ si Agekuru"/>
+				<Item id="2" name="Pade"/>
+			</MD5FromTextDlg>
+
+			<SHA256FromFilesDlg title="Ṣe ina SHA-256 daijesti lati awọn faili">
+				<Item id="1922" name="Yan awọn faili lati ṣe ina SHA-256..."/>
+				<Item id="1924" name="Daakọ si Agekuru"/>
+				<Item id="2" name="Pade"/>
+			</SHA256FromFilesDlg>
+
+			<SHA256FromTextDlg title="Ṣe ina SHA-256 digest">
+				<Item id="1932" name="Ṣe itọju laini kọọkan bi okun lọtọ"/>
+				<Item id="1934" name="Daakọ si Agekuru"/>
+				<Item id="2" name="Pade"/>
+			</SHA256FromTextDlg>
+
+			<SHA1FromFilesDlg title="Ṣe ina SHA-1 daijesti lati awọn faili">
+				<Item id="1922" name="Yan awọn faili lati ṣe ina SHA-1..."/>
+				<Item id="1924" name="Daakọ si Agekuru"/>
+				<Item id="2" name="Pade"/>
+			</SHA1FromFilesDlg>
+
+			<SHA1FromTextDlg title="Ṣe ina SHA-1 daijesti">
+				<Item id="1932" name="Toju laini kọọkan bi okun lọtọ"/>
+				<Item id="1934" name="Daakọ si Agekuru"/>
+				<Item id="2" name="Pade"/>
+			</SHA1FromTextDlg>
+
+			<SHA512FromFilesDlg title="Ṣe ina SHA-512 daijesti lati awọn faili">
+				<Item id="1922" name="Yan awọn faili lati ṣe ina SHA-512..."/>
+				<Item id="1924" name="Daakọ si Agekuru"/>
+				<Item id="2" name="Pade"/>
+			</SHA512FromFilesDlg>
+
+			<SHA512FromTextDlg title="Ṣe ina SHA-512 daijesti">
+				<Item id="1932" name="Toju laini kọọkan bi okun lọtọ"/>
+				<Item id="1934" name="Daakọ si Agekuru"/>
+				<Item id="2" name="Pade"/>
+			</SHA512FromTextDlg>
+			<PluginsAdminDlg title="Plugins Admin" titleAvailable="Available" titleUpdates="Updates" titleInstalled="Installed" titleIncompatible="Incompatible">
+				<ColumnPlugin name="Ohun itanna"/>
+				<ColumnVersion name="Ẹya"/>
+				<Item id="5501" name="Àwárí:"/>
+				<Item id="5503" name="Fi sori ẹrọ"/>
+				<Item id="5504" name="Imudojuiwọn"/>
+				<Item id="5505" name="Yọ"/>
+				<Item id="5508" name="Next"/>
+				<Item id="5509" name="Ẹya atokọ ohun itanna:"/>
+				<Item id="5511" name="Ibi ipamọ akojọ ohun itanna"/>
+				<Item id="2" name="Pade"/>
+			</PluginsAdminDlg>
+
+			<StyleConfig title="Oluṣeto ara">
+				<Item id="2" name="Fagilee"/>
+				<Item id="2301" name="Fipamọ Sunmọ"/>
+				<Item id="2303" name="Ifarabalẹ"/>
+				<Item id="2306" name="Yan akori:"/>
+				<SubDialog>
+					<Item id="2204" name="Igboya"/>
+					<Item id="2205" name="Italic"/>
+					<Item id="2206" name="Awọ iwaju"/>
+					<Item id="2207" name="Awọ abẹlẹ"/>
+					<Item id="2208" name="Orukọ Font:"/>
+					<Item id="2209" name="Iwọn fonti:"/>
+					<Item id="2211" name="Ara:"/>
+					<Item id="2212" name="Awọ Awọ"/>
+					<Item id="2213" name="Aṣa Font"/>
+					<Item id="2214" name="Aiyipada ext.:"/>
+					<Item id="2216" name="Olumulo ext.:"/>
+					<Item id="2218" name="Underline"/>
+					<Item id="2219" name="Awọn koko-ọrọ aiyipada"/>
+					<Item id="2221" name="Awọn koko-ọrọ asọye olumulo"/>
+					<Item id="2225" name="Ede:"/>
+					<Item id="2226" name="Fi agbara mu awọ iwaju iwaju fun gbogbo awọn aza"/>
+					<Item id="2227" name="Fi agbara mu awọ abẹlẹ fun gbogbo awọn aza"/>
+					<Item id="2228" name="Fi agbara mu yiyan fonti fun gbogbo awọn aza"/>
+					<Item id="2229" name="Fi agbara mu yiyan iwọn fonti fun gbogbo awọn aza"/>
+					<Item id="2230" name="Fi agbara mu yiyan igboya fun gbogbo awọn aza"/>
+					<Item id="2231" name="Fi agbara mu yiyan italic fun gbogbo awọn aza"/>
+					<Item id="2232" name="Fi agbara mu aṣayan abẹlẹ fun gbogbo awọn aza"/>
+					<Item id="2234" name="Lọ si awọn eto"/>
+					<!-- Don't translate "Global override" -->
+					<Item id="2235" name="Kini ifasilẹ agbaye?"/>
+				</SubDialog>
+			</StyleConfig>
+
+			<ShortcutMapper title="Ọna abuja Mapper">
+				<Item id="2602" name="Ṣatunṣe"/>
+				<Item id="2603" name="Paarẹ"/>
+				<Item id="2606" name="Ko o"/>
+				<Item id="2607" name="Ajọ:"/>
+				<Item id="1" name="Pade"/>
+				<ColumnName name="Orukọ"/>
+				<ColumnShortcut name="Ọna abuja"/>
+				<ColumnCategory name="Ẹka"/>
+				<ColumnPlugin name="Ohun itanna"/>
+				<MainMenuTab name="Akojọ aṣyn akọkọ"/>
+				<MacrosTab name="Makiro"/>
+				<RunCommandsTab name="Ṣiṣe awọn aṣẹ"/>
+				<PluginCommandsTab name="Awọn pipaṣẹ ohun itanna"/>
+				<ScintillaCommandsTab name="Awọn aṣẹ Scintilla"/>
+				<ConflictInfoOk name="Ko si ija ọna abuja fun nkan yii."/>
+				<ConflictInfoEditing name="Ko si awọn ija..."/>
+				<AboutCategory name="Nipa"/>
+				<ModifyContextMenu name="Ṣatunṣe"/>
+				<DeleteContextMenu name="Paarẹ"/>
+				<ClearContextMenu name="Ko o"/>
+				<MainCommandNames>
+					<Item id="41019" name="Ṣii folda ti o ni ninu Explorer"/>
+					<Item id="41020" name="Ṣii folda ti o ni ninu aṣẹ Tọ"/>
+					<Item id="41021" name="Mu pada Faili Titiipade Laipẹ"/>
+					<Item id="45001" name="Iyipada EOL si Windows (CR LF)"/>
+					<Item id="45002" name="Iyipada EOL si Unix (LF)"/>
+					<Item id="45003" name="Iyipada EOL si Macintosh (CR)"/>
+					<Item id="43022" name="Ara gbogbo lilo ara 1st"/>
+					<Item id="43024" name="Ara gbogbo lilo 2nd ara"/>
+					<Item id="43026" name="Ara gbogbo lilo 3rd ara"/>
+					<Item id="43028" name="Ara gbogbo lilo 4th ara"/>
+					<Item id="43030" name="Ara gbogbo lilo 5th ara"/>
+					<Item id="43062" name="Ara ọkan lilo ara 1st"/>
+					<Item id="43063" name="Ara ọkan lilo 2nd ara"/>
+					<Item id="43064" name="Ara ọkan lilo 3rd ara"/>
+					<Item id="43065" name="Ara ọkan lilo 4th ara"/>
+					<Item id="43066" name="Ara ọkan lilo 5th ara"/>
+					<Item id="43023" name="Ko ara 1st"/>
+					<Item id="43025" name="Ko ara 2nd"/>
+					<Item id="43027" name="Ko ara 3rd"/>
+					<Item id="43029" name="Ko ara 4th"/>
+					<Item id="43031" name="Ko ara 5th kuro"/>
+					<Item id="43032" name="Ko gbogbo awọn aṣa kuro"/>
+					<Item id="43033" name="Ti tẹlẹ ara ti 1st ara"/>
+					<Item id="43034" name="Ti tẹlẹ ara 2nd ara"/>
+					<Item id="43035" name="Aṣa ti iṣaaju ti ara 3rd"/>
+					<Item id="43036" name="Ti tẹlẹ ara ti 4th ara"/>
+					<Item id="43037" name="Ti tẹlẹ ara ti 5th ara"/>
+					<Item id="43038" name="Ti tẹlẹ ara ti Wa Mark ara"/>
+					<Item id="43039" name="Aṣa ti o tẹle ti ara 1st"/>
+					<Item id="43040" name="Aṣa keji ti ara keji"/>
+					<Item id="43041" name="Aṣa keji ti ara 3rd"/>
+					<Item id="43042" name="Aṣa ti o tẹle ti ara 4th"/>
+					<Item id="43043" name="Aṣa atẹle ti ara 5th"/>
+					<Item id="43044" name="Next ara ti Wa Mark ara"/>
+					<Item id="43055" name="Daakọ Text Styled ti 1st Style"/>
+					<Item id="43056" name="Daakọ Text Styled ti 2nd Style"/>
+					<Item id="43057" name="Daakọ Text Styled ti 3rd Style"/>
+					<Item id="43058" name="Daakọ Text Styled ti 4th Style"/>
+					<Item id="43059" name="Daakọ Text Styled ti 5th Style"/>
+					<Item id="43060" name="Daakọ Ọrọ Styled ti Gbogbo Awọn aṣa"/>
+					<Item id="43061" name="Daakọ Styled Text ti Wa Mark ara"/>
+					<Item id="44100" name="Wo faili lọwọlọwọ ni Firefox"/>
+					<Item id="44101" name="Wo faili lọwọlọwọ ni Chrome"/>
+					<Item id="44103" name="Wo faili lọwọlọwọ ni IE"/>
+					<Item id="44102" name="Wo faili lọwọlọwọ ni Edge"/>
+					<Item id="50003" name="Yipada si iwe iṣaaju"/>
+					<Item id="50004" name="Yipada si iwe atẹle"/>
+					<Item id="44051" name="Agbo Ipele 1"/>
+					<Item id="44052" name="Agbo Ipele 2"/>
+					<Item id="44053" name="Agbo Ipele 3"/>
+					<Item id="44054" name="Agbo Ipele 4"/>
+					<Item id="44055" name="Agbo Ipele 5"/>
+					<Item id="44056" name="Agbo Ipele 6"/>
+					<Item id="44057" name="Agbo Ipele 7"/>
+					<Item id="44058" name="Agbo Ipele 8"/>
+					<Item id="44061" name="Ṣiṣii Ipele 1"/>
+					<Item id="44062" name="Ṣiṣii Ipele 2"/>
+					<Item id="44063" name="Ṣiṣii Ipele 3"/>
+					<Item id="44064" name="Ṣiṣii Ipele 4"/>
+					<Item id="44065" name="Ṣiṣii Ipele 5"/>
+					<Item id="44066" name="Ilọsiwaju Ipele 6"/>
+					<Item id="44067" name="Ṣiṣii Ipele 7"/>
+					<Item id="44068" name="Ṣiṣii Ipele 8"/>
+					<Item id="44081" name="Yipada Panel Project 1"/>
+					<Item id="44082" name="Yipada Panel Project 2"/>
+					<Item id="44083" name="Yipada Panel Project 3"/>
+					<Item id="44085" name="Yi Folda pada bi Ibi-iṣẹ"/>
+					<Item id="44080" name="Yipada Map Iwe-ipamọ"/>
+					<Item id="44070" name="Yipada Akojọ Iwe-ipamọ"/>
+					<Item id="44084" name="Yiyipada Akojọ Iṣẹ"/>
+					<Item id="50005" name="Yipada gbigbasilẹ Makiro"/>
+					<Item id="44104" name="Yipada si Igbimọ Ise agbese 1"/>
+					<Item id="44105" name="Yipada si Igbimọ Ise agbese 2"/>
+					<Item id="44106" name="Yipada si Igbimo ise agbese 3"/>
+					<Item id="44107" name="Yipada si Folda bi Workspace"/>
+					<Item id="44109" name="Yipada si Akojọ Iwe-ipamọ"/>
+					<Item id="44108" name="Yipada si Akojọ iṣẹ"/>
+					<Item id="44110" name="Yọ Taabu Awọ"/>
+					<Item id="44111" name="Waye Taabu Awọ 1"/>
+					<Item id="44112" name="Waye Taabu Awọ 2"/>
+					<Item id="44113" name="Waye Awọ Taabu 3"/>
+					<Item id="44114" name="Waye Taabu Awọ 4"/>
+					<Item id="44115" name="Waye Taabu Awọ 5"/>
+					<Item id="11002" name="Too nipasẹ Orukọ A si Z"/>
+					<Item id="11003" name="Too nipa Orukọ Z si A"/>
+					<Item id="11004" name="Too nipasẹ Ona A si Z"/>
+					<Item id="11005" name="Too nipasẹ Ona Z si A"/>
+					<Item id="11006" name="Too nipasẹ Iru A si Z"/>
+					<Item id="11007" name="Too nipasẹ Iru Z si A"/>
+					<Item id="11008" name="Too nipasẹ Gigun Akoonu Ngoke"/>
+					<Item id="11009" name="Too nipasẹ Gigun Akoonu Sokale"/>
+				</MainCommandNames>
+			</ShortcutMapper>
+			<ShortcutMapperSubDialg title="Ọna abuja">
+				<Item id="1" name="O DARA"/>
+				<Item id="2" name="Fagilee"/>
+				<Item id="5006" name="Orukọ"/>
+				<Item id="5008" name="Fikun"/>
+				<Item id="5009" name="Yọ"/>
+				<Item id="5010" name="Waye"/>
+				<Item id="5007" name="Eyi yoo yọ ọna abuja kuro ni aṣẹ yii"/>
+				<Item id="5012" name="RÍ RÀRÀN!"/>
+			</ShortcutMapperSubDialg>
+			<UserDefine title="Olumulo-telẹ">
+				<Item id="20001" name="Ibi iduro"/>
+				<Item id="20002" name="Fun lorukọmii"/>
+				<Item id="20003" name="Ṣẹda titun..."/>
+				<Item id="20004" name="Yọ"/>
+				<Item id="20005" name="Fipamọ Bi..."/>
+				<Item id="20007" name="Ede olumulo"/>
+				<Item id="20009" name="Ext.:"/>
+				<Item id="20012" name="Foju ọran"/>
+				<Item id="20011" name="Ifarabalẹ"/>
+				<Item id="20015" name="Akowọle..."/>
+				<Item id="20016" name="Okeere..."/>
+				<Item id="20017" name="Undock"/>
+				<StylerDialog title="Ibanisọrọ Styler">
+					<Item id="25030" name="Awọn aṣayan Font"/>
+					<Item id="25006" name="Awọ iwaju"/>
+					<Item id="25007" name="Awọ abẹlẹ"/>
+					<Item id="25031" name="Oruko:"/>
+					<Item id="25032" name="Iwon:"/>
+					<Item id="25001" name="Igboya"/>
+					<Item id="25002" name="Italic"/>
+					<Item id="25003" name="Underline"/>
+					<Item id="25029" name="Itẹle"/>
+					<Item id="25008" name="Delimiter 1"/>
+					<Item id="25009" name="Delimiter 2"/>
+					<Item id="25010" name="Delimiter 3"/>
+					<Item id="25011" name="Delimiter 4"/>
+					<Item id="25012" name="Delimiter 5"/>
+					<Item id="25013" name="Delimiter 6"/>
+					<Item id="25014" name="Delimiter 7"/>
+					<Item id="25015" name="Delimiter 8"/>
+					<Item id="25018" name="Koko 1"/>
+					<Item id="25019" name="Koko 2"/>
+					<Item id="25020" name="Koko 3"/>
+					<Item id="25021" name="Koko 4"/>
+					<Item id="25022" name="Koko 5"/>
+					<Item id="25023" name="Koko 6"/>
+					<Item id="25024" name="Koko 7"/>
+					<Item id="25025" name="Koko 8"/>
+					<Item id="25016" name="Ọrọìwòye"/>
+					<Item id="25017" name="Ọrọ asọye"/>
+					<Item id="25026" name="Onišẹ 1"/>
+					<Item id="25027" name="Onišẹ 2"/>
+					<Item id="25028" name="Awọn nọmba"/>
+					<Item id="25033" name="Sihin"/>
+					<Item id="25034" name="Sihin"/>
+					<Item id="1" name="O DARA"/>
+					<Item id="2" name="Fagilee"/>
+				</StylerDialog>
+				<Folder title="Ayipada folda">
+					<Item id="21101" name="ara aiyipada"/>
+					<Item id="21102" name="Styler"/>
+					<Item id="21103" name="Awọn ede Itumọ olumulo lori ayelujara iranlọwọ"/>
+					<Item id="21105" name="Akosile"/>
+					<Item id="21106" name="Agbo iwapọ (agbo awọn laini ofo paapaa)"/>
+					<Item id="21220" name="Agbo ni koodu 1 ara"/>
+					<Item id="21224" name="Ṣii:"/>
+					<Item id="21225" name="Aarin:"/>
+					<Item id="21226" name="Pade:"/>
+					<Item id="21227" name="Styler"/>
+					<Item id="21320" name="Agbo ni koodu 2 ara (awọn oluyapa nilo)"/>
+					<Item id="21324" name="Ṣii:"/>
+					<Item id="21325" name="Aarin:"/>
+					<Item id="21326" name="Pade:"/>
+					<Item id="21327" name="Styler"/>
+					<Item id="21420" name="Agbo ni ara asọye"/>
+					<Item id="21424" name="Ṣii:"/>
+					<Item id="21425" name="Aarin:"/>
+					<Item id="21426" name="Pade:"/>
+					<Item id="21427" name="Styler"/>
+				</Folder>
+				<Keywords title="Awọn akojọ Awọn Koko-ọrọ">
+					<Item id="22101" name="Ẹgbẹ akọkọ"/>
+					<Item id="22201" name="Ẹgbẹ keji"/>
+					<Item id="22301" name="Ẹgbẹ kẹta"/>
+					<Item id="22401" name="Ẹgbẹ kẹrin"/>
+					<Item id="22451" name="Egbe Karun"/>
+					<Item id="22501" name="Ẹgbẹ 6"/>
+					<Item id="22551" name="Ẹgbẹ 7"/>
+					<Item id="22601" name="Ẹgbẹ 8"/>
+					<Item id="22121" name="Ipo ìpele"/>
+					<Item id="22221" name="Ipo ìpele"/>
+					<Item id="22321" name="Ipo ìpele"/>
+					<Item id="22421" name="Ipo ìpele"/>
+					<Item id="22471" name="Ipo ìpele"/>
+					<Item id="22521" name="Ipo ìpele"/>
+					<Item id="22571" name="Ipo ìpele"/>
+					<Item id="22621" name="Ipo ìpele"/>
+					<Item id="22122" name="Styler"/>
+					<Item id="22222" name="Styler"/>
+					<Item id="22322" name="Styler"/>
+					<Item id="22422" name="Styler"/>
+					<Item id="22472" name="Styler"/>
+					<Item id="22522" name="Styler"/>
+					<Item id="22572" name="Styler"/>
+					<Item id="22622" name="Styler"/>
+				</Keywords>
+				<Comment title="Ọrọìwòye Number">
+					<Item id="23003" name="Laini ọrọìwòye ipo"/>
+					<Item id="23004" name="Gba laaye nibikibi"/>
+					<Item id="23005" name="Ipa ni ibẹrẹ laini"/>
+					<Item id="23006" name="Gba aaye funfun ṣaaju"/>
+					<Item id="23001" name="Gba kika awọn asọye"/>
+					<Item id="23326" name="Styler"/>
+					<Item id="23323" name="Ṣii"/>
+					<Item id="23324" name="Tesiwaju ohun kikọ"/>
+					<Item id="23325" name="Pade"/>
+					<Item id="23301" name="Ọrọìwòye ara ila"/>
+					<Item id="23124" name="Styler"/>
+					<Item id="23122" name="Ṣii"/>
+					<Item id="23123" name="Pade"/>
+					<Item id="23101" name="Ọrọìwòye ara"/>
+					<Item id="23201" name="Nọmba ara"/>
+					<Item id="23220" name="Styler"/>
+					<Item id="23230" name="Ipilẹṣẹ 1"/>
+					<Item id="23232" name="Ipilẹṣẹ 2"/>
+					<Item id="23234" name="Awọn afikun 1"/>
+					<Item id="23236" name="Awọn afikun 2"/>
+					<Item id="23238" name="Isunmọ 1"/>
+					<Item id="23240" name="Isunmọ 2"/>
+					<Item id="23242" name="Ibiti:"/>
+					<Item id="23244" name="Iyapa eleemewa"/>
+					<Item id="23245" name="Aami"/>
+					<Item id="23246" name="Koma"/>
+					<Item id="23247" name="Mejeeji"/>
+				</Comment>
+				<Operator title="Awọn oniṣẹ Delimiter">
+					<Item id="24101" name="Awọn oniṣẹ ara"/>
+					<Item id="24113" name="Styler"/>
+					<Item id="24116" name="Awọn oniṣẹ 1"/>
+					<Item id="24117" name="Awọn oniṣẹ 2 (separators beere)"/>
+					<Item id="24201" name="Delimiter 1 ara"/>
+					<Item id="24220" name="Ṣii:"/>
+					<Item id="24221" name="Sa:"/>
+					<Item id="24222" name="Pade:"/>
+					<Item id="24223" name="Styler"/>
+					<Item id="24301" name="Delimiter 2 ara"/>
+					<Item id="24320" name="Ṣii:"/>
+					<Item id="24321" name="Sa:"/>
+					<Item id="24322" name="Pade:"/>
+					<Item id="24323" name="Styler"/>
+					<Item id="24401" name="Delimiter 3 ara"/>
+					<Item id="24420" name="Ṣii:"/>
+					<Item id="24421" name="Sa:"/>
+					<Item id="24422" name="Pade:"/>
+					<Item id="24423" name="Styler"/>
+					<Item id="24451" name="Delimiter 4 ara"/>
+					<Item id="24470" name="Ṣii:"/>
+					<Item id="24471" name="Sa:"/>
+					<Item id="24472" name="Pade:"/>
+					<Item id="24473" name="Styler"/>
+					<Item id="24501" name="Delimiter 5 ara"/>
+					<Item id="24520" name="Ṣii:"/>
+					<Item id="24521" name="Sa:"/>
+					<Item id="24522" name="Pade:"/>
+					<Item id="24523" name="Styler"/>
+					<Item id="24551" name="Delimiter 6 ara"/>
+					<Item id="24570" name="Ṣii:"/>
+					<Item id="24571" name="Sa:"/>
+					<Item id="24572" name="Pade:"/>
+					<Item id="24573" name="Styler"/>
+					<Item id="24601" name="Delimiter 7 ara"/>
+					<Item id="24620" name="Ṣii:"/>
+					<Item id="24621" name="Sa:"/>
+					<Item id="24622" name="Pade:"/>
+					<Item id="24623" name="Styler"/>
+					<Item id="24651" name="Delimiter 8 ara"/>
+					<Item id="24670" name="Ṣii:"/>
+					<Item id="24671" name="Sa:"/>
+					<Item id="24672" name="Pade:"/>
+					<Item id="24673" name="Styler"/>
+				</Operator>
+			</UserDefine>
+			<Preference title="Awọn ayanfẹ">
+				<Item id="6001" name="Pade"/>
+				<Global title="Gbogbogbo">
+					<Item id="6123" name="Ibi isọdi"/>
+					<Item id="6131" name="Akojọ aṣyn"/>
+					<Item id="6122" name="Tọju (lo alt tabi bọtini F10 lati yi pada)"/>
+					<Item id="6132" name="Tọju awọn ọna abuja ọtun＋ ▼ ✕"/>
+					<Item id="6133" name="Pẹpẹ Ipo"/>
+					<Item id="6134" name="Tọju"/>
+				</Global>
+
+				<Toolbar title="Ọpa irinṣẹ">
+					<Item id="6102" name="Tọju"/>
+					<Item id="6103" name="Fluent UI: kekere"/>
+					<Item id="6104" name="Fluent UI: nla"/>
+					<Item id="6129" name="Kun Fluent UI: kekere"/>
+					<Item id="6130" name="Kun Fluent UI: nla"/>
+					<Item id="6105" name="Standard aami: kekere"/>
+					<Item id="6011" name="Awọ-awọ"/>
+					<Item id="6012" name="Pari"/>
+					<Item id="6013" name="Apakan"/>
+					<Item id="6014" name="Aṣayan awọ"/>
+					<Item id="6015" name="Aiyipada"/>
+					<Item id="6016" name="Pupa"/>
+					<Item id="6017" name="Alawọ ewe"/>
+					<Item id="6018" name="Buluu"/>
+					<Item id="6019" name="eleyi ti"/>
+					<Item id="6020" name="Cyan"/>
+					<Item id="6021" name="Olifi"/>
+					<Item id="6022" name="Yellow"/>
+					<Item id="6023" name="Ohun System"/>
+					<Item id="6024" name="Aṣa"/>
+				</Toolbar>
+
+				<Tabbar title="Pẹpẹ Tab">
+					<Item id="6107" name="Din"/>
+					<Item id="6108" name="Titiipa (ko si fa ati ju silẹ)"/>
+					<Item id="6109" name="Yi awọ taabu aiṣiṣẹ pada"/>
+					<Item id="6110" name="Ya igi awọ kan lori taabu ti nṣiṣe lọwọ"/>
+					<Item id="6111" name="Ṣe afihan awọn bọtini lori awọn taabu aiṣiṣẹ"/>
+					<Item id="6112" name="Ṣe afihan bọtini isunmọ"/>
+					<Item id="6113" name="Tẹ lẹẹmeji lati pa iwe-ipamọ"/>
+					<Item id="6115" name="Mu ẹya taabu pin ṣiṣẹ"/>
+					<Item id="6135" name="Ṣafihan bọtini pinni nikan"/>
+					<Item id="6118" name="Tọju"/>
+					<Item id="6119" name="Olona-ila"/>
+					<Item id="6120" name="Inaro"/>
+					<Item id="6121" name="Jade lori sunmọ awọn ti o kẹhin taabu"/>
+					<Item id="6128" name="Awọn aami miiran"/>
+					<Item id="6125" name="Iwa"/>
+					<Item id="6126" name="Wo lero"/>
+					<Item id="6136" name="O pọju.ipari aami taabu:"/>
+				</Tabbar>
+
+				<Scintillas title="Ṣatunkọ 1">
+					<Item id="6216" name="Abojuto Eto"/>
+					<Item id="6217" name="Ìbú:"/>
+					<Item id="6219" name="Oṣuwọn afọju:"/>
+					<Item id="6221" name="F"/>
+					<Item id="6222" name="S"/>
+					<Item id="6246" name="Ṣe awọn pipaṣẹ kika/siyi ipele lọwọlọwọ toggle"/>
+					<Item id="6227" name="Ipari ila"/>
+					<Item id="6228" name="Aiyipada"/>
+					<Item id="6229" name="Ni ibamu"/>
+					<Item id="6230" name="Indent"/>
+					<Item id="6234" name="Pa ẹya-ara lilọ kiri ni ilọsiwaju nitori ọran ifọwọkan"/>
+					<Item id="6215" name="Mu fonti dandan ṣiṣẹ"/>
+					<Item id="6236" name="Jeki yiyi lọ kọja laini to kẹhin"/>
+					<Item id="6239" name="Jeki aṣayan nigba tite-ọtun ni ita yiyan"/>
+					<Item id="6245" name="Mu aaye foju ṣiṣẹ"/>
+					<Item id="6214" name="Mu Daakọ/Ge Laini ṣiṣẹ laisi yiyan"/>
+					<Item id="6225" name="Waye awọ aṣa si iwaju ọrọ ti o yan"/>
+					<Item id="6651" name="Atọka Laini lọwọlọwọ"/>
+					<Item id="6652" name="Ko si"/>
+					<Item id="6653" name="Isalẹ abẹlẹ"/>
+					<Item id="6654" name="Fireemu"/>
+					<Item id="6655" name="Ìbú:"/>
+				</Scintillas>
+
+				<Scintillas2 title="Ṣatunkọ 2">
+					<Item id="6521" name="Olona-Ṣatunkọ"/>
+					<Item id="6522" name="Mu ṣiṣatunṣe pupọ ṣiṣẹ (Ctrl+Mouse tẹ/aṣayan)"/>
+					<Item id="6523" name="Mu Aṣayan Ẹka ṣiṣẹ si Ṣatunkọ-ọpọlọpọ"/>
+					<Item id="6247" name="EOL (CRLF)"/><!-- Don't translate "(CRLF)" -->
+					<Item id="6248" name="Aiyipada"/>
+					<Item id="6249" name="Ọrọ Itele"/>
+					<Item id="6250" name="Awọ aṣa"/>
+					<Item id="6252" name="Awọn ohun kikọ ti kii ṣe Titẹ"/>
+					<Item id="6260" name="Ifarahan"/>
+					<Item id="6254" name="Kukuru"/>
+					<Item id="6255" name="Codepoint"/>
+					<Item id="6256" name="Awọ aṣa"/>
+					<Item id="6258" name="Waye awọn eto Irisi si C0, C1 Unicode EOL"/>
+					<Item id="6259" name="Dena ohun kikọ iṣakoso (koodu C0) titẹ sinu iwe"/>
+				</Scintillas2>
+
+				<DarkMode title="Ipo Dudu">
+					<Item id="7131" name="Ipo ina"/>
+					<Item id="7132" name="Ipo dudu"/>
+					<Item id="7133" name="Tẹle Windows"/>
+					<Item id="7102" name="Dudu"/>
+					<Item id="7103" name="Pupa"/>
+					<Item id="7104" name="Alawọ ewe"/>
+					<Item id="7105" name="Buluu"/>
+					<Item id="7107" name="eleyi ti"/>
+					<Item id="7108" name="Cyan"/>
+					<Item id="7109" name="Olifi"/>
+					<Item id="7115" name="Adani"/>
+					<Item id="7116" name="Ipilẹ akoonu"/>
+					<Item id="7117" name="Ohun orin gbigbona"/>
+					<Item id="7118" name="Iṣakoso abẹlẹ"/>
+					<Item id="7119" name="Ibanisọrọ isale"/>
+					<Item id="7120" name="Aṣiṣe"/>
+					<Item id="7121" name="Ọrọ"/>
+					<Item id="7122" name="Ọrọ dudu"/>
+					<Item id="7123" name="Ọrọ alaabo"/>
+					<Item id="7124" name="Eti"/>
+					<Item id="7125" name="Ọna asopọ"/>
+					<Item id="7126" name="Ifojusi eti"/>
+					<Item id="7127" name="Eti alaabo"/>
+					<Item id="7130" name="Tunto"/>
+					<Item id="7135" name="Awọn ohun orin ipe"/>
+				</DarkMode>
+
+				<MarginsBorderEdge title="Ala/Aala/Eti">
+					<Item id="6201" name="Agbo ala Style"/>
+					<Item id="6202" name="Rọrun"/>
+					<Item id="6203" name="Ọfà"/>
+					<Item id="6204" name="Igi Circle"/>
+					<Item id="6205" name="Igi apoti"/>
+					<Item id="6226" name="Ko si"/>
+					<Item id="6291" name="Nọmba Laini"/>
+					<Item id="6206" name="Ifihan"/>
+					<Item id="6292" name="Ìmúdàgba iwọn"/>
+					<Item id="6293" name="Ibakan iwọn"/>
+					<Item id="6207" name="Ṣe afihan bukumaaki"/>
+					<Item id="6295" name="Yi itan pada"/>
+					<Item id="6223" name="Fihan ni ala"/>
+					<Item id="6296" name="Fihan ninu ọrọ"/>
+					<Item id="6211" name="Eto eti inaro"/>
+					<Item id="6213" name="Ipo abẹlẹ"/>
+					<Item id="6231" name="Iwọn Aala"/>
+					<Item id="6235" name="Ko si eti"/>
+					<Item id="6208" name="Padding"/>
+					<Item id="6209" name="Osi"/>
+					<Item id="6210" name="Ọtun"/>
+					<Item id="6212" name="Idamu Ọfẹ"/>
+				</MarginsBorderEdge>
+
+				<NewDoc title="Iwe Tuntun">
+					<Item id="6401" name="Ọna kika (Ipari ila)"/>
+					<Item id="6402" name="Windows (CR LF)"/>
+					<Item id="6403" name="Unix (LF)"/>
+					<Item id="6404" name="Macintosh (CR)"/>
+					<Item id="6405" name="Ayipada"/>
+					<Item id="6406" name="ANSI"/>
+					<Item id="6407" name="UTF-8"/>
+					<Item id="6408" name="UTF-8 pẹlu BOM"/>
+					<Item id="6409" name="UTF-16 Big Endian pẹlu BOM"/>
+					<Item id="6410" name="UTF-16 Little Endian pẹlu BOM"/>
+					<Item id="6411" name="Èdè aiyipada:"/>
+					<Item id="6419" name="Iwe Tuntun"/>
+					<Item id="6420" name="Waye si ṣiṣi awọn faili ANSI"/>
+					<Item id="6432" name="Nigbagbogbo ṣii iwe titun ni afikun ni ibẹrẹ"/>
+					<Item id="6433" name="Lo laini akọkọ ti iwe bi orukọ taabu ti a ko ni akole"/>
+				</NewDoc>
+
+				<DefaultDir title="Itọsọna Aiyipada">
+					<Item id="6413" name="Ṣii/Fipamọ Itọsọna Faili aiyipada"/>
+					<Item id="6414" name="Tẹle iwe lọwọlọwọ"/>
+					<Item id="6415" name="Ranti kẹhin lo liana"/>
+					<Item id="6431" name="Ṣii gbogbo awọn faili ti folda dipo ifilọlẹ Folda bi aaye iṣẹ lori sisọ folda"/>
+				</DefaultDir>
+
+				<FileAssoc title="Ẹgbẹ faili">
+					<Item id="4008" name="Jọwọ jade kuro ni Notepad++ ki o tun bẹrẹ Notepad++ ni ipo Alakoso lati lo ẹya yii."/>
+					<Item id="4009" name="Awọn amugbooro atilẹyin:"/>
+					<Item id="4010" name="Iforukọsilẹ awọn amugbooro:"/>
+				</FileAssoc>
+
+
+				<Language title="Ede">
+					<Item id="6505" name="Awọn nkan to wa"/>
+					<Item id="6506" name="Awọn nkan alaabo"/>
+					<Item id="6507" name="Ṣe akojọ aṣayan ede ni iwapọ"/>
+					<Item id="6508" name="Akojọ ede"/>
+					<Item id="6335" name="Ṣe itọju ifẹhinti bi iwa abayo fun SQL"/>
+				</Language>
+
+				<Indentation title="Indentation">
+					<Item id="7161" name="Indent-laifọwọyi"/>
+					<Item id="7162" name="Ko si"/>
+					<Item id="7163" name="Ipilẹ"/>
+					<Item id="7164" name="To ti ni ilọsiwaju"/>
+					<Item id="6301" name="Eto Indent"/>
+					<Item id="6302" name="Ohun kikọ (s) aaye"/>
+					<Item id="6303" name="Iwọn indent:"/>
+					<Item id="6310" name="Indent lilo:"/>
+					<Item id="6311" name="Ohun kikọ Taabu"/>
+					<Item id="6510" name="Lo aiyipada iye"/>
+					<Item id="6512" name="Bọtini aaye ẹhin awọn aisọ dipo yiyọkuro aaye ẹyọkan"/>
+				</Indentation>
+
+				<Highlighting title="Ifojusi">
+					<Item id="6351" name="Style Gbogbo Awọn iṣẹlẹ ti Tokini"/>
+					<Item id="6352" name="Ọran baramu"/>
+					<Item id="6353" name="Baramu gbogbo ọrọ nikan"/>
+					<Item id="6333" name="Smart Highlighting"/>
+					<Item id="6326" name="Mu ṣiṣẹ"/>
+					<Item id="6354" name="Ibamu"/>
+					<Item id="6332" name="Ọran baramu"/>
+					<Item id="6338" name="Baramu gbogbo ọrọ nikan"/>
+					<Item id="6339" name="Lo Wa awọn eto ajọṣọ"/>
+					<Item id="6340" name="Ṣe afihan wiwo miiran"/>
+					<Item id="6329" name="Saami ibamu Tags"/>
+					<Item id="6327" name="Mu ṣiṣẹ"/>
+					<Item id="6328" name="Ṣe afihan awọn abuda ami si"/>
+					<Item id="6330" name="Ṣe afihan asọye/php/agbegbe asp"/>
+				</Highlighting>
+
+				<Print title="Titẹ sita">
+					<Item id="6601" name="Nọmba ila titẹjade"/>
+					<Item id="6602" name="Awọn aṣayan Awọ"/>
+					<Item id="6603" name="WYSIWYG"/>
+					<Item id="6604" name="Yipada"/>
+					<Item id="6605" name="Dudu lori funfun"/>
+					<Item id="6606" name="Ko si abẹlẹ awọ"/>
+					<Item id="6607" name="Awọn Eto Ala (Ẹyọ: mm)"/>
+					<Item id="6612" name="Osi"/>
+					<Item id="6613" name="Oke"/>
+					<Item id="6614" name="Ọtun"/>
+					<Item id="6615" name="Isalẹ"/>
+					<Item id="6706" name="Igboya"/>
+					<Item id="6707" name="Italic"/>
+					<Item id="6708" name="Akọsori"/>
+					<Item id="6709" name="Apa osi"/>
+					<Item id="6710" name="Aarin apakan"/>
+					<Item id="6711" name="Apa ọtun"/>
+					<Item id="6717" name="Igboya"/>
+					<Item id="6718" name="Italic"/>
+					<Item id="6719" name="Ẹlẹsẹ"/>
+					<Item id="6720" name="Apa osi"/>
+					<Item id="6721" name="Aarin apakan"/>
+					<Item id="6722" name="Apa ọtun"/>
+					<Item id="6723" name="Fikun"/>
+					<ComboBox id="6724">
+						<Element name="Ọna orukọ faili ni kikun"/>
+						<Element name="Orukọ faili"/>
+						<Element name="Ilana faili"/>
+						<Element name="Oju-iwe"/>
+						<Element name="Ọna kika ọjọ kukuru"/>
+						<Element name="Ọna kika ọjọ gigun"/>
+						<Element name="Akoko"/>
+					</ComboBox>
+					<Item id="6725" name="Ayipada:"/>
+					<Item id="6727" name="Nibi ṣe afihan awọn eto oniyipada rẹ"/>
+					<Item id="6728" name="Akọsori ati ẹlẹsẹ"/>
+				</Print>
+
+				<Searching title="Wiwa">
+					<Item id="6902" name="Lo fonti monospaced ni Wa ajọṣọ (Nilo lati tun Notepad++ bẹrẹ)"/>
+					<Item id="6903" name="Wa ọrọ sisọ ṣi silẹ lẹhin wiwa ti o jade si window awọn abajade"/>
+					<Item id="6904" name="Jẹrisi Rọpo Gbogbo ni Gbogbo Awọn iwe aṣẹ Ṣii"/>
+					<Item id="6905" name="Rọpo: Maṣe gbe si iṣẹlẹ atẹle"/>
+					<Item id="6906" name="Ferese abajade wiwa: ṣafihan titẹsi kan ṣoṣo fun laini ri ti o ba ṣeeṣe"/>
+					<Item id="6907" name="Nigbati Wa Ifọrọranṣẹ ti wa ni pe"/>
+					<Item id="6908" name="Kun aaye Wa pẹlu Ọrọ ti o yan"/>
+					<Item id="6909" name="Yan Ọrọ Labẹ Itọju nigbati Ko si Yan Ohunkan"/>
+					<Item id="6910" name="Iwon Kere fun Ṣiṣayẹwo Aifọwọyi &quot;Ninu yiyan&quot;:"/>
+					<Item id="6913" name="Fọwọsi Wa ninu Awọn aaye Itọsọna Awọn faili Da Lori Iwe Iroyin ti nṣiṣe lọwọ"/>
+					<Item id="6916" name=": Max Awọn ohun kikọ si Aifọwọyi-Kun Wa aaye lati Yiyan"/>
+				</Searching>
+
+				<RecentFilesHistory title="Itan Awọn faili aipẹ">
+					<Item id="6304" name="Itan Awọn faili aipẹ"/>
+					<Item id="6306" name="O pọju.nọmba ti awọn titẹ sii:"/>
+					<Item id="6305" name="Maṣe ṣayẹwo ni akoko ifilọlẹ"/>
+					<Item id="6429" name="Ifihan"/>
+					<Item id="6424" name="Ninu Akojọ aṣyn"/>
+					<Item id="6425" name="Orukọ faili nikan"/>
+					<Item id="6426" name="Ona Orukọ Faili ni kikun"/>
+					<Item id="6427" name="Ṣe akanṣe Gigun O pọju:"/>
+				</RecentFilesHistory>
+
+				<Backup title="Afẹyinti">
+					<Item id="6817" name="Aworan aworan igba ati afẹyinti igbakọọkan"/>
+					<Item id="6818" name="Mu aworan igba ṣiṣẹ ati afẹyinti igbakọọkan"/>
+					<Item id="6819" name="Nfa afẹyinti lori iyipada ni gbogbo"/>
+					<Item id="6821" name="iṣẹju-aaya"/>
+					<Item id="6822" name="Ona Afẹyinti:"/>
+					<Item id="6309" name="Ranti igba lọwọlọwọ fun ifilọlẹ atẹle"/>
+					<Item id="6825" name="Ranti awọn faili ti ko wọle si lati igba ti o kọja"/>
+					<Item id="6801" name="Afẹyinti lori fifipamọ"/>
+					<Item id="6315" name="Ko si"/>
+					<Item id="6316" name="Afẹyinti ti o rọrun"/>
+					<Item id="6317" name="Verbose afẹyinti"/>
+					<Item id="6804" name="Aṣa Afẹyinti Itọsọna"/>
+					<Item id="6803" name="Itọsọna:"/>
+				</Backup>
+
+				<AutoCompletion title="Ipari Aifọwọyi">
+					<Item id="6807" name="Ipari Aifọwọyi"/>
+					<Item id="6808" name="Jeki Ipari-laifọwọyi ṣiṣẹ lori titẹ sii kọọkan"/>
+					<Item id="6809" name="Ipari iṣẹ"/>
+					<Item id="6810" name="Ipari ọrọ"/>
+					<Item id="6816" name="Ipari iṣẹ ati ọrọ"/>
+					<Item id="6869" name="Fi Aṣayan sii"/>
+					<Item id="6870" name="TAB"/><!-- TAB key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6871" name="WOLE"/><!-- ENTER key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6824" name="Foju awọn nọmba"/>
+					<Item id="6811" name="Lati"/>
+					<Item id="6813" name="th ohun kikọ"/>
+					<Item id="6872" name="Ṣe atokọ ipari-laifọwọyi ni kukuru"/>
+					<Item id="6815" name="Awọn paramita iṣẹ-itọkasi lori titẹ sii"/>
+					<Item id="6851" name="Fi sii laifọwọyi"/>
+					<Item id="6857" name="html/xml tag isunmọ"/>
+					<Item id="6858" name="Ṣii"/>
+					<Item id="6859" name="Pade"/>
+					<Item id="6860" name="Tọkọtaya ti o baamu 1:"/>
+					<Item id="6863" name="Tọkọtaya 2:"/>
+					<Item id="6866" name="Tọkọtaya ti o baamu 3:"/>
+				</AutoCompletion>
+
+				<MultiInstance title="Olona-Apeere Ọjọ">
+					<Item id="6151" name="Awọn eto apẹẹrẹ pupọ *"/>
+					<Item id="6152" name="Ṣii igba ni apẹẹrẹ titun (ati fi igba pamọ laifọwọyi ni ijade)"/>
+					<Item id="6153" name="Nigbagbogbo ni ipo ọpọ-apeere"/>
+					<Item id="6154" name="Aiyipada (ọkan-apeere)"/>
+					<Item id="6155" name="* Iyipada eto yii nilo lati tun Notepad++ bẹrẹ"/>
+					<Item id="6171" name="Ṣe akanṣe Aago Ọjọ Fi sii"/>
+					<Item id="6175" name="Yiyipada akoko akoko aiyipada aiyipada (awọn ọna kika gigun kukuru)"/>
+					<Item id="6172" name="Aṣa kika:"/>
+					<Item id="6181" name="Ipinle igbimọ ati [-nosession] *"/>
+					<Item id="6182" name="Ranti ipinle nronu (igbimọ wa ni sisi) ni awọn igba miiran (ipo-ọpọlọpọ) tabi nigba lilo pipaṣẹ laini paramita [-nosession]"/>
+					<Item id="6183" name="Itan agekuru"/>
+					<Item id="6184" name="Akojọ iwe"/>
+					<Item id="6185" name="Igbimo ohun kikọ"/>
+					<Item id="6186" name="Folda bi Workspace"/>
+					<Item id="6187" name="Awọn Paneli Ise agbese"/>
+					<Item id="6188" name="Maapu iwe"/>
+					<Item id="6189" name="Akojọ iṣẹ"/>
+					<Item id="6190" name="Awọn panẹli itanna"/>
+				</MultiInstance>
+
+				<Delimiter title="Delimiter">
+					<Item id="6251" name="Awọn eto yiyan apinpin (Ctrl + Asin tẹ lẹmeji)"/>
+					<Item id="6252" name="Ṣii"/>
+					<Item id="6255" name="Pade"/>
+					<Item id="6256" name="Gba laaye lori awọn laini pupọ"/>
+					<Item id="6161" name="Akojọ kikọ ọrọ"/>
+					<Item id="6162" name="Lo atokọ ohun kikọ Ọrọ aiyipada bi o ti jẹ"/>
+					<Item id="6163" name="Ṣafikun ohun kikọ rẹ gẹgẹbi apakan ti ọrọ
+(maṣe yan rẹ ayafi ti o ba mọ ohun ti o n ṣe)"/>
+				</Delimiter>
+
+				<Performance title="Išẹ">
+					<Item id="7141" name="Ihamọ Faili nla"/>
+					<Item id="7143" name="Mu Ihamọ Faili Nla ṣiṣẹ (ko si afihan sintasi)"/>
+					<Item id="7144" name="Setumo Iwon Faili nla:"/>
+					<Item id="7146" name="MB (1 - 2046)"/>
+					<Item id="7147" name="Gba Àmúró Àmúró"/>
+					<Item id="7148" name="Gba Ipari Laifọwọyi"/>
+					<Item id="7149" name="Gba Smart Highlighting"/>
+					<Item id="7150" name="Mu Ipari Ọrọ ṣiṣẹ ni agbaye"/>
+					<Item id="7151" name="Gba URL Tẹ Ọna asopọ"/>
+					<Item id="7152" name="Ikilọ idinku nigba ṣiṣi awọn faili ≥2GB"/>
+				</Performance>
+
+				<Cloud title="Awọsanma Ọna asopọ">
+					<Item id="6262" name="Eto lori awọsanma"/>
+					<Item id="6263" name="Ko si Awọsanma"/>
+					<Item id="6267" name="Ṣeto ọna ipo awọsanma rẹ nibi:"/>
+					<Item id="6318" name="Awọn Eto Ọna asopọ ti o tẹ"/>
+					<Item id="6319" name="Mu ṣiṣẹ"/>
+					<Item id="6320" name="Ko si abẹlẹ"/>
+					<Item id="6350" name="Mu ipo kikun apoti ṣiṣẹ"/>
+					<Item id="6264" name="URI ti adani Siso:"/>
+				</Cloud>
+
+				<SearchEngine title="Ẹrọ wiwa">
+					<Item id="6271" name="Ẹrọ wiwa (fun pipaṣẹ &quot;Ṣawari lori Intanẹẹti&quot;)"/>
+					<Item id="6272" name="DuckDuckGo"/>
+					<Item id="6273" name="Google"/>
+					<Item id="6274" name="Bing"/>
+					<Item id="6275" name="Yahoo!"/>
+					<Item id="6276" name="Ṣeto ẹrọ wiwa rẹ nibi:"/>
+					<!-- Don't change anything after Example: -->
+					<Item id="6278" name="Apeere: https://www.google.com/search?q=$(CURRENT_WORD)"/>
+				</SearchEngine>
+
+				<MISC title="MISC.">
+					<ComboBox id="6347">
+						<Element name="Mu ṣiṣẹ fun faili lọwọlọwọ"/>
+						<Element name="Mu ṣiṣẹ fun gbogbo awọn faili ṣiṣi"/>
+						<Element name="Pa"/>
+					</ComboBox>
+					<ComboBox id="6307">
+						<Element name="Ko si igbese lori"/>
+						<Element name="Gbe si"/>
+						<Element name="Sunmọ"/>
+						<Element name="Gbe / Sunmọ"/>
+					</ComboBox>
+					<ComboBox id="6362">
+						<Element name="GDI (ibaramu julọ)"/>
+						<Element name="DirectWrite (aiyipada)"/>
+						<Element name="DirectWrite (idaduro awọn fireemu)"/>
+						<Element name="DirectWrite (ya si GDI DC)"/>
+						<Element name="DirectWrite (DirectX 11)"/>
+					</ComboBox>
+					<ComboBox id="6364">
+						<Element name="Pa"/>
+						<Element name="Mu ṣiṣẹ lori ibẹrẹ Akọsilẹ ++"/>
+						<Element name="Mu ṣiṣẹ lori Akọsilẹ Akọsilẹ++ ijade"/>
+					</ComboBox>
+					<Item id="6308" name="atẹ eto"/>
+					<Item id="6363" name="mode Rendering"/>
+					<Item id="6365" name="Atunṣe laifọwọyi:"/>
+					<Item id="6312" name="Ipo Faili Wiwa Aifọwọyi"/>
+					<Item id="6313" name="Ṣe imudojuiwọn ni idakẹjẹ"/>
+					<Item id="6325" name="Yi lọ si laini kẹhin lẹhin imudojuiwọn"/>
+					<Item id="6322" name="Faili igba ext.:"/>
+					<Item id="6324" name="Yipada iwe aṣẹ (Ctrl+TAB)"/>
+					<Item id="6331" name="Ṣe afihan orukọ faili nikan ni ọpa akọle"/>
+					<Item id="6334" name="Ṣe idanimọ ohun kikọ silẹ laifọwọyi"/>
+					<Item id="6337" name="Faili aaye iṣẹ ext.:"/>
+					<Item id="6114" name="Mu ṣiṣẹ"/>
+					<Item id="6117" name="Mu ihuwasi MRU ṣiṣẹ"/>
+					<Item id="6344" name="Peeker iwe"/>
+					<Item id="6345" name="Wo lori taabu"/>
+					<Item id="6346" name="Wo lori maapu iwe"/>
+					<Item id="6360" name="Pa gbogbo awọn ohun rẹ dun"/>
+					<Item id="6361" name="Jeki Fipamọ Gbogbo jẹrisi ajọṣọ"/>
+				</MISC>
+			</Preference>
+			<MultiMacro title="Ṣiṣe Makiro Multiple Times">
+				<Item id="1" name="Ṣiṣe"/>
+				<Item id="2" name="Fagilee"/>
+				<Item id="8006" name="Makiro lati ṣiṣe"/>
+				<Item id="8001" name="Ṣiṣe"/>
+				<Item id="8005" name="igba"/>
+				<Item id="8002" name="Ṣiṣe titi ipari faili"/>
+			</MultiMacro>
+			<Window title="Windows">
+				<Item id="1" name="Mu ṣiṣẹ"/>
+				<Item id="2" name="O DARA"/>
+				<Item id="7002" name="Fipamọ"/>
+				<Item id="7003" name="Pa window (s)"/>
+				<Item id="7004" name="Too awọn taabu"/>
+			</Window>
+			<ColumnEditor title="Olootu iwe">
+				<Item id="2023" name="Ọrọ lati Fi sii"/>
+				<Item id="2033" name="Nọmba lati Fi sii"/>
+				<Item id="2030" name="Nọmba akọkọ:"/>
+				<Item id="2031" name="Alekun nipasẹ:"/>
+				<Item id="2038" name="Asiwaju:"/>
+				<ComboBox id="2039">
+					<Element name="Ko si"/>
+					<Element name="Awọn odo"/>
+					<Element name="Awọn aaye"/>
+				</ComboBox>
+				<Item id="2036" name="Tun:"/>
+				<Item id="2032" name="Ọna kika"/>
+				<Item id="2024" name="Oṣu kejila"/>
+				<Item id="2025" name="Oṣu Kẹwa"/>
+				<Item id="2026" name="Hex"/>
+				<Item id="2027" name="Bin"/>
+				<Item id="1" name="O DARA"/>
+				<Item id="2" name="Fagilee"/>
+			</ColumnEditor>
+			<FindInFinder title="Wa ninu awọn esi wiwa">
+				<Item id="1" name="Wa Gbogbo"/>
+				<Item id="2" name="Pade"/>
+				<Item id="1711" name="Wa ohun ti:"/>
+				<Item id="1713" name="Ṣewadii nikan ni awọn laini ti a rii"/>
+				<Item id="1714" name="Baramu gbogbo ọrọ nikan"/>
+				<Item id="1715" name="Ọran baramu"/>
+				<Item id="1716" name="Ipo wiwa"/>
+				<Item id="1717" name="Deede"/>
+				<Item id="1719" name="Ikosile deede"/>
+				<Item id="1718" name="Tesiwaju (\n, \r, \t, \0, \ x...)"/>
+				<Item id="1720" name=".ibaamu newline"/>
+			</FindInFinder>
+			<DoSaveOrNot title="Fipamọ">
+				<Item id="1761" name="Fi faili pamọ &quot;$STR_REPLACE$&quot;?"/>
+				<Item id="6" name="Bẹẹni"/>
+				<Item id="7" name="Ko si"/>
+				<Item id="2" name="Fagilee"/>
+				<Item id="4" name="Bẹẹni si gbogbo"/>
+				<Item id="5" name="Rara si gbogbo"/>
+			</DoSaveOrNot>
+			<DoSaveAll title="Fi Gbogbo Ìmúdájú">
+				<Item id="1766" name="Ṣe o da ọ loju pe o fẹ fipamọ gbogbo awọn iwe aṣẹ ti a tunṣe?
+
+Yan &quot;Nigbagbogbo bẹẹni&quot; ti o ko ba fẹ lati ri ibaraẹnisọrọ yii lẹẹkansi.
+O le tun mu ibaraẹnisọrọ yii ṣiṣẹ ni Awọn ayanfẹ nigbamii."/>
+				<Item id="6" name="Bẹẹni"/>
+				<Item id="7" name="Ko si"/>
+				<Item id="4" name="Nigbagbogbo bẹẹni"/>
+			</DoSaveAll><!-- HowToReproduce: Check the "Enable Save All confirm dialog" checkbox in Preference->MISC, now click "Save all" -->
+
+			<DebugInfo title="Alaye atunkọ">
+				<Item id="1752" name="Daakọ alaye atunkọ si agekuru agekuru"/>
+				<Item id="1" name="O DARA"/>
+			</DebugInfo>
+					<MacStrings>
+				<Item id="90001" name="Awọn abajade wiwa"/>
+				<Item id="90002" name="Pade awọn abajade wiwa"/>
+				<Item id="90003" name="Ko Gbogbo rẹ kuro"/>
+				<Item id="90004" name="Pa nronu"/>
+				<Item id="90005" name="Igbimo ise agbese"/>
+				<Item id="90006" name="Iṣakoso orisun"/>
+				<Item id="90007" name="Ṣe adehun"/>
+				<Item id="90008" name="Ti kuna"/>
+				<Item id="90009" name="Ko si ibi ipamọ git\nLo Ṣawakiri lati ṣii ibi ipamọ kan."/>
+				<Item id="90010" name="Ipele"/>
+				<Item id="90011" name="Unstage"/>
+				<Item id="90012" name="Ipele Gbogbo"/>
+				<Item id="90013" name="Unstage Gbogbo"/>
+				<Item id="90014" name="Fi ifiranṣẹ ranṣẹ\u2026"/>
+				<Item id="90015" name="Ṣawakiri fun ibi ipamọ\u2026"/>
+				<Item id="90016" name="Yan folda ibi ipamọ git"/>
+				<Item id="90017" name="(ko si ibi ipamọ)"/>
+				<Item id="90018" name="(sisọ)"/>
+				<Item id="90019" name="Aṣiṣe aimọ"/>
+				<Item id="90020" name="Ko si awọn iṣẹ ti a rii"/>
+				<Item id="90021" name="Iṣẹ wiwa..."/>
+				<Item id="90022" name="Faagun Gbogbo"/>
+				<Item id="90023" name="Wa Faili lọwọlọwọ"/>
+				<Item id="90024" name="Tuntun"/>
+				<Item id="90025" name="Awọn iṣẹ to lẹsẹsẹ (A si Z)"/>
+				<Item id="90026" name="Esi"/>
+				<Item id="90027" name="Duro"/>
+				<Item id="90028" name="Wiwa duro."/>
+				<Item id="90029" name="Ṣiṣawari\u2026"/>
+				<Item id="90030" name="Ọrọ lati wa"/>
+				<Item id="90031" name="* .txt, * .cpp, \ u2026"/>
+				<Item id="90032" name="Wiwa..."/>
+				<Item id="90033" name="Rọpo:"/>
+				<Item id="90034" name="Odidi Oro"/>
+				<Item id="90035" name="Gbogbo oro"/>
+				<Item id="90036" name="Fi ipari si"/>
+				<Item id="90037" name="Ohun kikọ"/>
+				<Item id="90038" name="Orukọ HTML"/>
+				<Item id="90039" name="HTML eleemewa"/>
+				<Item id="90040" name="HTML Hexadecimal"/>
+				<Item id="90041" name="Iye"/>
+				<Item id="90042" name="Igba Ofo"/>
+				<Item id="90043" name="Faili igba ti a yan ko ni awọn taabu ninu."/>
+				<Item id="90044" name="Akokọ fifuye"/>
+				<Item id="90045" name="Fipamọ Igba"/>
+				<Item id="90046" name="Ko awọn faili aipẹ kuro"/>
+				<Item id="90047" name="A ko ri faili"/>
+				<Item id="90048" name="Ko si Makiro ti o gbasilẹ"/>
+				<Item id="90049" name="Ṣe igbasilẹ Makiro ni akọkọ nipa lilo Ibẹrẹ Gbigbasilẹ."/>
+				<Item id="90050" name="Ko si awọn ija ọna abuja."/>
+				<Item id="90051" name="Orukọ faili"/>
+				<Item id="90052" name="Iru"/>
+				<Item id="90053" name="Ona"/>
+				<Item id="90054" name="Lọ si Line"/>
+				<Item id="90055" name="Fi Ọjọ/Aago"/>
+				<Item id="90056" name="Iyipada koodu"/>
+				<Item id="90057" name="Fi ẹda kan pamọ Bi"/>
+				<Item id="90058" name="Gbe lọ si Idọti"/>
+				<Item id="90059" name="Pẹpẹ akọle"/>
+				<Item id="90060" name="Ṣe afihan ọna faili ni kikun ni ọpa akọle"/>
+				<Item id="90061" name="Ṣe afihan ọpa ipo"/>
+				<Item id="90062" name="Taabu iwọn:"/>
+				<Item id="90063" name="Abojuto iwọn:"/>
+				<Item id="90064" name="Oṣuwọn afọju abojuto (ms):"/>
+				<Item id="90065" name="Ifiweranṣẹ Font:"/>
+				<Item id="90066" name="Iwọn taabu ti o pọju (awọn piksẹli):"/>
+				<Item id="90067" name="Eti inaro"/>
+				<Item id="90068" name="Ipo eti:"/>
+				<Item id="90069" name="Egbe eti:"/>
+				<Item id="90070" name="Ìmúdàgba nọmba laini iwọn"/>
+				<Item id="90071" name="Osi:"/>
+				<Item id="90072" name="otun:"/>
+				<Item id="90073" name="Ipari laini aiyipada:"/>
+				<Item id="90074" name="Iyipada aiyipada:"/>
+				<Item id="90075" name="Mu afẹyinti laifọwọyi ṣiṣẹ"/>
+				<Item id="90076" name="Aarin afẹyinti (aaya):"/>
+				<Item id="90077" name="Ipo afẹyinti:"/>
+				<Item id="90078" name="Awọ Awọ"/>
+				<Item id="90079" name="(jogun)"/>
+				<Item id="90080" name="Akori Ara Wọle"/>
+				<Item id="90081" name="Ẹka"/>
+				<Item id="90082" name="Tẹ lati ṣe àlẹmọ..."/>
+				<Item id="90083" name="Ko si ija ọna abuja fun nkan yii."/>
+				<Item id="90084" name="Ohun itanna"/>
+				<Item id="90085" name="Ẹya"/>
+				<Item id="90086" name="Fifi sori Pari"/>
+				<Item id="90087" name="Tun ohun elo bẹrẹ lati ṣajọpọ awọn afikun ti a fi sii."/>
+				<Item id="90088" name="Fi sori ẹrọ Awọn afikun"/>
+				<Item id="90089" name="Yọ Awọn afikun kuro"/>
+				<Item id="90090" name="Ko si awọn aṣẹ ti a rii"/>
+				<Item id="90091" name="Tẹ lati wa\u2026"/>
+				<Item id="90092" name="Ede Itumọ olumulo v.2.1"/>
+				<Item id="90093" name="Ṣẹda Èdè Tuntun"/>
+				<Item id="90094" name="Tẹ orukọ sii:"/>
+				<Item id="90095" name="Awọ iwaju:"/>
+				<Item id="90096" name="Awọ abẹlẹ:"/>
+				<Item id="90097" name="Maṣe Fipamọ"/>
+				<Item id="90098" name="Ti ṣe"/>
+				<Item id="90099" name="Yipada Ipari Ọrọ"/>
+				<Item id="90100" name="Ṣe afihan Gbogbo Awọn lẹta"/>
+				<Item id="90101" name="Ṣe afihan Awọn aṣayan Awọn kikọ"/>
+				<Item id="90102" name="Yipada Itọsọna Indent"/>
+				<Item id="90103" name="Ko Si Iṣeṣe"/>
+				<Item id="90104" name="Tun gbee lati Disk"/>
+				<Item id="90105" name="Yi ẹrọ wiwa pada"/>
+				<Item id="90106" name="Ṣiṣe aṣiṣe"/>
+				<Item id="90107" name="Notepad++ Akoko ikojọpọ"/>
+				<Item id="90108" name="Ko le Ṣayẹwo fun Awọn imudojuiwọn"/>
+				<Item id="90109" name="O ti wa ni imudojuiwọn"/>
+				<Item id="90110" name="Download"/>
+				<Item id="90111" name="Oju-iwe Tu"/>
+				<Item id="90112" name="Nigbamii"/>
+				<Item id="90113" name="Àlẹmọ awọn afikun\u2026"/>
+				<Item id="90114" name="Wa"/>
+				<Item id="90115" name="Awọn imudojuiwọn"/>
+				<Item id="90116" name="Ti fi sori ẹrọ"/>
+				<Item id="90117" name="Aibaramu"/>
+				<Item id="90118" name="Kuna lati Fi sori ẹrọ"/>
+				<Item id="90119" name="Yọ awọn afikun wọnyi kuro?"/>
+				<Item id="90120" name="Fi sori ẹrọ awọn afikun wọnyi bi?"/>
+				<Item id="90121" name="Eyi yoo pa awọn faili itanna rẹ."/>
+				<Item id="90122" name="Awọn aṣẹ wiwa\u2026"/>
+				<Item id="90123" name="Awọ iwaju"/>
+				<Item id="90124" name="Awọ abẹlẹ"/>
+				<Item id="90125" name="Orukọ Makiro"/>
+				<Item id="90126" name="Orukọ Makiro"/>
+				<Item id="90127" name="Makiro ti o gbasilẹ lọwọlọwọ"/>
+				<Item id="90128" name="Oluṣakoso Makiro"/>
+				<Item id="90129" name="Ko si Macros ti a fipamọ"/>
+				<Item id="90130" name="Gba silẹ ati fi Makiro pamọ lakọkọ."/>
+				<Item id="90131" name="Paarẹ Ọna abuja"/>
+				<Item id="90132" name="Akojọ aṣyn akọkọ"/>
+				<Item id="90133" name="Makiro"/>
+				<Item id="90134" name="Ṣiṣe awọn aṣẹ"/>
+				<Item id="90135" name="Awọn pipaṣẹ ohun itanna"/>
+				<Item id="90136" name="Awọn aṣẹ Scintilla"/>
+				<Item id="90137" name="Awọn ariyanjiyan Laini aṣẹ"/>
+				<Item id="90138" name="Orukọ aṣẹ fun Ṣiṣe akojọ aṣayan"/>
+				<Item id="90139" name="Gbogbo awọn ami ti nso."/>
+				<Item id="90140" name="Ọrọ ti o samisi daakọ si agekuru agekuru."/>
+				<Item id="90141" name="Ko si ọrọ ti o samisi lati daakọ."/>
+				<Item id="90142" name="Wiwa... %ld lu(s) \u2014 %@"/>
+				<Item id="90143" name="Rirọpo ni awọn faili..."/>
+				<Item id="90144" name="Rọpo ni Awọn iṣẹ akanṣe: Ko ti sopọ sibẹsibẹ."/>
+				<Item id="90145" name="Wa ninu Awọn iṣẹ akanṣe: Ko tii sopọ si atokọ faili Igbimọ Project."/>
+				<Item id="90146" name="A ṣe atunṣe aaye iṣẹ."/>
+				<Item id="90147" name="Ṣe o fẹ lati fi awọn ayipada pamọ?"/>
+				<Item id="90148" name="Awọn abajade wiwa"/>
+				<Item id="90149" name="Ṣe afihan laini lọwọlọwọ"/>
+				<Item id="90150" name="Ṣe afihan awọn nọmba laini"/>
+				<Item id="90151" name="Ṣe afihan aaye funfun"/>
+				<Item id="90152" name="Ṣe afihan awọn asami EOL"/>
+				<Item id="90153" name="Ṣe afihan ala bukumaaki"/>
+				<Item id="90154" name="Lo awọn taabu (dipo awọn alafo)"/>
+				<Item id="90155" name="Yi lọ kọja laini to kẹhin"/>
+				<Item id="90156" name="Daakọ/ge ila laisi yiyan"/>
+				<Item id="90157" name="Pa a ti yan ọrọ fa-ju"/>
+				<Item id="90158" name="Jeki smart afihan"/>
+				<Item id="90159" name="Smart afihan: baramu irú"/>
+				<Item id="90160" name="Smart afihan: odidi ọrọ nikan"/>
+				<Item id="90161" name="Tẹ lẹẹmeji lati tii taabu"/>
+				<Item id="90162" name="Ṣe afihan bọtini isunmọ lori awọn taabu"/>
+				<Item id="90163" name="Ranti hihan nronu kọja awọn akoko"/>
+				<Item id="90164" name="Jeki awọn titẹ sii faili ti ko si ni igba"/>
+				<Item id="90165" name="Jẹrisi ṣaaju Fi Gbogbo Rẹ pamọ"/>
+				<Item id="90166" name="Jẹrisi Rọpo Gbogbo ni awọn iwe aṣẹ ṣiṣi"/>
+				<Item id="90167" name="Rọpo: maṣe gbe si iṣẹlẹ atẹle"/>
+				<Item id="90168" name="Lo fonti monospaced ni Wa ajọṣọ"/>
+				<Item id="90169" name="Titẹ-ọtun ntọju aṣayan"/>
+				<Item id="90170" name="Yiyipada ọjọ aiyipada / aṣẹ akoko"/>
+				<Item id="90171" name="Lo awọn itupalẹ atokọ iṣẹ orisun-XML"/>
+				<Item id="90172" name="Awọn biraketi-laifọwọyi ( ) [ ] {}"/>
+				<Item id="90173" name="Lati iwa Nth:"/>
+				<Item id="90174" name="Ni-aṣayan idojukọ-ṣayẹwo ala (baiti):"/>
+				<Item id="90175" name="Tesiwaju (\\n, \\r, \\t, \\ 0, \\ x...)"/>
+				<Item id="90176" name="Olootu"/>
+				<Item id="90177" name="Ala"/>
+				<Item id="90178" name="Dudu"/>
+				<Item id="90179" name="Imọlẹ"/>
+				<Item id="90180" name="Aifọwọyi (Tẹle Eto)"/>
+				<Item id="90181" name="Tinrin (1px)"/>
+				<Item id="90182" name="Alabọde (2px)"/>
+				<Item id="90183" name="Nipọn (3px)"/>
+				<Item id="90184" name="Paa"/>
+				<Item id="90185" name="abẹlẹ"/>
+				<Item id="90186" name="Antialiased"/>
+				<Item id="90187" name="LCD Iṣapeye"/>
+				<Item id="90188" name="Rọrun +/-"/>
+				<Item id="90189" name="Windows (CRLF)"/>
+				<Item id="90190" name="Mac (CR)"/>
+				<Item id="90191" name="Ibi ipamọ akojọ ohun itanna"/>
+				<Item id="90192" name="Yan akori XML Notepad++ kan lati lo"/>
+				<Item id="90193" name="Ṣẹda titun\u2026"/>
+				<Item id="90194" name="Fipamọ bi\u2026"/>
+				<Item id="90195" name="Ede olumulo:"/>
+				<Item id="90196" name="Orukọ ede"/>
+				<Item id="90197" name="Ṣẹda"/>
+				<Item id="90198" name="Fipamọ Bi"/>
+				<Item id="90199" name="es"/>
+				<Item id="90200" name="ni gbogbo faili"/>
+				<Item id="90201" name="Awọn oniṣẹ ẹrọ Delimiters"/>
+				<Item id="90202" name="Ibiti aiṣedeede"/>
+				<Item id="90203" name="Awọn iye iwọn gbọdọ jẹ 0-255 ati pe ibẹrẹ gbọdọ jẹ &lt;= opin."/>
+				<Item id="90204" name="contextMenu.xml Ko ri"/>
+				<Item id="90205" name="Tun Notepad++ bẹrẹ lati tun ipilẹ contextMenu.xml pada."/>
+				<Item id="90206" name="Faili naa ni awọn ayipada ti a ko fipamọ.Ṣiṣatunkun pẹlu fifi koodu titun yoo sọ wọn nù.Tesiwaju bi?"/>
+				<Item id="90207" name="Ko si esi lati olupin."/>
+				<Item id="90208" name="Ipo olupin pada"/>
+				<Item id="90209" name="Ibi ipamọ le jẹ ikọkọ."/>
+				<Item id="90210" name="O wa"/>
+				<Item id="90211" name="ni titun ti ikede."/>
+				<Item id="90212" name="O nṣiṣẹ lọwọlọwọ"/>
+				<Item id="90213" name="Oluwari Nibi"/>
+				<Item id="90214" name="Ebute Nibi"/>
+				<Item id="90215" name="Awọn faili ede ni afikun (.xml) ni a le fi si:"/>
+							<Item id="90216" name="Paleti aṣẹ…"/>
+				<Item id="90217" name="Ayẹwo lọkọọkan"/>
+				<Item id="90218" name="Tẹ lati wa…"/>
+				<Item id="90219" name="Ferese Tuntun"/>
+				<Item id="90220" name="Rekọja amp;Lọ si Next Multi-yan"/>
+				<Item id="90221" name="Titiipa abuda (macOS)"/>
+				<Item id="90222" name="Ṣayẹwo fun awọn imudojuiwọn…"/>
+				<Item id="90223" name="Ṣii Laipe"/>
+			</MacStrings>
+		</Dialog>
+		<MessageBox>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<ContextMenuXmlEditWarning title="Nsatunkọ awọn contextMenu" message="Nsatunkọ awọn contextMenu.xml faye gba o lati yi Notepad++ agbejade rẹ akojọ aṣayan.
+O ni lati tun Notepad++ bẹrẹ lati ṣiṣẹ lẹhin ti o yipada contextMenu.xml."/>
+			<SaveCurrentModifWarning title="Fipamọ Iyipada lọwọlọwọ" message="O yẹ ki o fipamọ iyipada lọwọlọwọ.
+Gbogbo awọn iyipada ti a fipamọ ko le ṣe tunṣe.
+
+Tesiwaju bi?"/><!-- HowToReproduce: when you openned file is modified but unsaved yet, and you are changing file encoding. -->
+			<LoseUndoAbilityWarning title="Padanu Ikilọ Agbara Yipada" message="O yẹ ki o fipamọ iyipada lọwọlọwọ.
+Gbogbo awọn iyipada ti a fipamọ ko le ṣe tunṣe.
+
+Tesiwaju bi?"/><!-- HowToReproduce: when you openned file is modified and saved, then you are changing file encoding. -->
+			<CannotMoveDoc title="Gbe si titun Notepad++ Apeere" message="Iwe-ipamọ ti yipada, fipamọ lẹhinna gbiyanju lẹẹkansi."/><!-- HowToReproduce: From your Notepad++ drag & drop a clean (not dirty) file to outside of Notepad++, another instance of Notepad++ will be created. Then from your first Notepad++ drag & drop an unsaved file to the new instance. -->
+			<DocReloadWarning title="Tun gbee" message="Ṣe o da ọ loju pe o fẹ gbe faili lọwọlọwọ pada ki o padanu awọn ayipada ti a ṣe ni Notepad++?"/>
+			<FileLockedWarning title="Fipamọ kuna" message="Jọwọ ṣayẹwo boya ti faili yii ba ṣii ni eto miiran"/>
+			<FileAlreadyOpenedInNpp title="" message="Faili naa ti ṣii tẹlẹ ni Notepad++."/><!-- HowToReproduce: Open a new document and open a file "c:/tmp/foo", save this new document by choosing "c:/tmp/foo" as file to save, reply the override popup "yes", then this message appears. -->
+			<RenameTabTemporaryNameAlreadyInUse title="Lorukọmii kuna" message="Orukọ pàtó ti wa ni lilo tẹlẹ lori taabu miiran."/><!-- HowToReproduce: Rename the tab of an untitled document and provide a name that is the same as an already-existing tab of an untitled document. -->
+			<RenameTabTemporaryNameIsEmpty title="Lorukọmii kuna" message="Orukọ pàtó kan ko le jẹ ofo, tabi ko le ni aaye nikan ninu tabi TAB(s)."/><!-- HowToReproduce: Rename the tab of an untitled document and provide an empty string or only some white speces. -->
+			<DeleteFileFailed title="Pa faili rẹ" message="Paarẹ Faili kuna"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+
+			<NbFileToOpenImportantWarning title="Iye awọn faili lati ṣii ti tobi ju" message="$INT_REPLACE$ files are about to be opened.
+Are you sure you want to open them?"/><!-- HowToReproduce: Check "Open all files of folder instead of launching Folder as Workspace on folder dropping" in "Default Directory" of Preferences dialog, then drop a folder which contains more then 200 files into Notepad++. -->
+			<SettingsOnCloudError title="Eto lori Awọsanma" message="O dabi pe ọna ti awọn eto lori awọsanma ti ṣeto lori awakọ kika nikan,
+tabi lori folda ti o nilo ẹtọ ẹtọ fun wiwọle kikọ.
+Awọn eto rẹ lori awọsanma yoo paarẹ.Jọwọ tunto iye isomọ nipasẹ ajọṣọrọ Ayanfẹ."/>
+			<FilePathNotFoundWarning title="Ṣii Faili" message="Faili ti o n gbiyanju lati ṣii ko si."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SessionFileInvalidError title="Ko le Kojọpọ Ikoni" message="Faili igba ti bajẹ tabi ko wulo."/><!-- HowToReproduce: Save current session via menu "File -> Save Session...", use another editor to modify the session you saved to make it an invalid xml file. Then load this invalid session via menu "File -> Load Session...". -->
+			<DroppingFolderAsProjectModeWarning title="Ise ti ko tọ" message="O le ju awọn faili tabi awọn folda silẹ nikan ṣugbọn kii ṣe mejeeji, nitori pe o wa ni sisọ Folda bi ipo Ise agbese.
+O ni lati mu ṣiṣẹ &quot;Ṣi gbogbo awọn faili ti folda dipo ifilọlẹ Folda bi Ibi-iṣẹ lori sisọ folda” ni apakan “Atọka Aiyipada” ti ibaraẹnisọrọ Awọn ayanfẹ lati jẹ ki iṣẹ ṣiṣe ṣiṣẹ."/>
+			<SortingError title="Aṣiṣe lẹsẹsẹ" message="Ko le ṣe tito lẹsẹsẹ nọmba nitori laini $INT_REPLACE$."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SortLocaleMultiple title="Too ko ṣe" message="Tito awọn aṣayan pupọ ko ni atilẹyin."/><!-- HowToReproduce: Make a multiple selection and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<SortLocaleUnknown title="Ti kuna" message="Idi ti too kuna ko le ṣe ipinnu."/><!-- HowToReproduce: This condition is theoretical; it is unknown what could cause it. -->
+			<SortLocaleExcept title="Ti kuna" message="$STR_REPLACE$"/><!-- HowToReproduce: Open a large file, e.g. 500MB / 90k lines, in 32-bit Notepad++ and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<ColumnModeTip title="Italolobo Ipo Ọwọn" message="Awọn ọna mẹta lo wa lati yipada si ipo ọwọ-yan:
+
+1. (Kọtẹọdù ati Asin) Mu alt mu lakoko fifa-osi titẹ
+
+2. (Kọtini nikan) Mu Alt + Shift lakoko lilo awọn bọtini itọka
+
+3. ( Keyboard tabi Asin)
+Fi abojuto ni ibẹrẹ ti o fẹ ti ipo idina ọwọn, lẹhinna
+ṣiṣẹ pipaṣẹ “Bẹrẹ/Pari Yan ni Ipo Ọwọ”;
+Gbe itọju lọ si opin ti o fẹ ti ipo idina ọwọn, lẹhinna
+ṣiṣẹ &quot;Bẹrẹ/Ipari Yan ni Ipo Ọwọn&quot; aṣẹ lẹẹkansi"/>
+			<BufferInvalidWarning title="Fipamọ kuna" message="Ko le fipamọ: Ifipamọ ko wulo."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<DoCloseOrNot title="Jeki faili ti ko wa tẹlẹ" message="Faili &quot;$STR_REPLACE$&quot; ko si mọ.
+Jeki faili yii wa ni olootu bi?"/>
+			<DoDeleteOrNot title="Pa faili rẹ" message="Faili &quot;$STR_REPLACE$&quot;
+yoo gbe lọ si Ibi atunlo rẹ ati pe iwe yii yoo wa ni pipade.
+Tesiwaju bi?"/>
+			<NoBackupDoSaveFile title="Fipamọ" message="Faili afẹyinti rẹ ko le ri (parẹ lati ita).
+Fipamọ bibẹẹkọ, data rẹ yoo sọnu
+Ṣe o fẹ lati fipamọ faili &quot;$STR_REPLACE$&quot;?"/>
+			<DoReloadOrNot title="Tun gbee" message="&quot;$STR_REPLACE$&quot;
+
+Faili yii ti jẹ atunṣe nipasẹ eto miiran.
+Ṣe o fẹ lati tun gbee si?"/>
+			<DoReloadOrNotAndLooseChange title="Tun gbee" message="&quot;$STR_REPLACE$&quot;
+
+Faili yii ti jẹ atunṣe nipasẹ eto miiran.
+Ṣe o fẹ tun gbee si ki o padanu awọn ayipada ti a ṣe ni Notepad++?"/>
+			<PrehistoricSystemDetected title="Ti ṣe awari eto itan-iṣaaju" message="O dabi pe o tun lo eto itan-akọọlẹ kan.Ẹya yii ṣiṣẹ nikan lori eto igbalode, binu."/><!-- HowToReproduce: Launch "Document Map" under Windows XP. -->
+			<XpUpdaterProblem title="Notepad++ Updater" message="Notepad++ imudojuiwọn ko ni ibamu pẹlu XP nitori ti atijo aabo Layer labẹ XP.
+Ṣe o fẹ lọ si oju-iwe Notepad++ lati ṣe igbasilẹ ẹya tuntun bi?"/><!-- HowToReproduce: Run menu "? -> Update Notepad++" under Windows XP. -->
+			<GUpProxyConfNeedAdminMode title="Awọn Eto Aṣoju" message="Jọwọ tun bẹrẹ Notepad++ ni ipo Abojuto lati tunto aṣoju."/>
+			<DocTooDirtyToMonitor title="Iṣoro abojuto" message="Iwe naa jẹ idọti.Jọwọ ṣafipamọ iyipada ṣaaju ṣiṣe abojuto rẹ."/>
+			<DocNoExistToMonitor title="Iṣoro abojuto" message="Faili yẹ ki o wa lati ṣe abojuto."/>
+			<FileTooBigToOpen title="Iṣoro iwọn faili" message="Faili ti tobi ju lati ṣii nipasẹ Notepad++"/><!-- HowToReproduce: Try to open a 4GB file (it's not easy to reproduce, it depends on your system). -->
+			<FileLoadingException title="Koodu iyasoto: $STR_REPLACE$" message="Aṣiṣe waye lakoko ikojọpọ faili naa!"/>
+			<WantToOpenHugeFile title="Ṣiṣii ikilọ faili nla" message="Ṣii faili nla ti 2GB+ le gba awọn iṣẹju pupọ.
+Ṣe o fẹ ṣii rẹ?"/>
+			<CreateNewFileOrNot title="Ṣẹda titun faili" message="&quot;$STR_REPLACE$&quot; ko si.Ṣẹda rẹ?"/>
+			<CreateNewFileError title="Ṣẹda titun faili" message="Ko le ṣẹda faili &quot;$STR_REPLACE$&quot;."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<OpenFileError title="Asise" message="Ko le ṣi faili &quot;$STR_REPLACE$&quot;."/>
+			<OpenFileNoFolderError title="Ko le ṣi faili" message="&quot;$STR_REPLACE1$&quot; ko le ṣe ṣi silẹ:
+Folda &quot;$STR_REPLACE2$&quot; ko si."/>
+			<FileBackupFailed title="Afẹyinti Faili kuna" message="Ẹya iṣaaju ti faili naa ko le ṣe ifipamọ sinu itọsọna afẹyinti ni &quot;$STR_REPLACE$&quot;.
+
+Ṣe o fẹ lati fipamọ faili lọwọlọwọ lonakona?"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<LoadStylersFailed title="Load stylers.xml kuna" message="Kojọpọ &quot;$STR_REPLACE$&quot; kuna!"/>
+			<LoadLangsFailed title="Configurator" message="Fifuye langs.xml kuna!
+Ṣe o fẹ lati gba pada rẹ langs.xml?"/><!-- HowToReproduce: Close Notepad++. Use another editor to remove all content of "langs.xml" (0 length) then save it. Open Notepad++. -->
+			<LoadLangsFailedFinal title="Configurator" message="Fifuye langs.xml kuna!"/><!-- HowToReproduce: Close Notepad++. Use another editor to make "langs.xml" an invalid xml file then save it. Open Notepad++. -->
+			<FolderAsWorspaceSubfolderExists title="Folda bi Workspace fifi isoro folda" message="Apo-apo folda ti o fẹ fikun wa.
+Jọ̀wọ́ yọ gbòǹgbò rẹ̀ kúrò nínú pánẹ́ẹ̀lì kí o tó ṣàfikún fódà &quot;$STR_REPLACE$&quot;."/><!-- HowToReproduce: Add a folder like "c:\temp\aFolder\" into "Folder as Workspace" panel, then try to add "c:\temp\". -->
+
+			<ProjectPanelChanged title="$STR_REPLACE$" message="A ṣe atunṣe aaye iṣẹ.Ṣe o fẹ lati fipamọ?"/>
+			<ProjectPanelSaveError title="$STR_REPLACE$" message="Aṣiṣe waye lakoko kikọ faili aaye iṣẹ rẹ.
+Aaye iṣẹ rẹ ko ti wa ni ipamọ."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<ProjectPanelOpenDoSaveDirtyWsOrNot title="Ṣii aaye iṣẹ" message="A ṣe atunṣe aaye iṣẹ lọwọlọwọ.Ṣe o fẹ lati ṣafipamọ iṣẹ akanṣe lọwọlọwọ?"/>
+			<ProjectPanelNewDoSaveDirtyWsOrNot title="Tuntun Workspace" message="A ṣe atunṣe aaye iṣẹ lọwọlọwọ.Ṣe o fẹ lati ṣafipamọ iṣẹ akanṣe lọwọlọwọ?"/>
+			<ProjectPanelOpenFailed title="Ṣii aaye iṣẹ" message="A ko le ṣi aaye iṣẹ naa.
+O dabi pe faili lati ṣii kii ṣe faili iṣẹ akanṣe to wulo."/>
+			<ProjectPanelRemoveFolderFromProject title="Yọ folda kuro ni iṣẹ akanṣe" message="Gbogbo awọn nkan-ipin yoo yọkuro.
+Ṣe o da ọ loju pe o fẹ yọ folda yii kuro ni iṣẹ akanṣe naa?"/>
+			<ProjectPanelRemoveFileFromProject title="Yọ faili kuro ni iṣẹ akanṣe" message="Ṣe o da ọ loju pe o fẹ yọ faili yii kuro ni iṣẹ akanṣe naa?"/>
+			<ProjectPanelReloadError title="Tun gbee si aaye iṣẹ" message="Ko le ri faili lati tun gbee si."/>
+			<ProjectPanelReloadDirty title="Tun gbee si aaye iṣẹ" message="A ṣe atunṣe aaye iṣẹ lọwọlọwọ.Gbigbasilẹ yoo sọ gbogbo awọn iyipada kuro.
+Ṣe o fẹ tẹsiwaju bi?"/>
+			<UDLNewNameError title="Aṣiṣe UDL" message="Orúkọ yìí jẹ́ èdè míràn,
+jọwọ fun miiran."/>
+			<UDLRemoveCurrentLang title="Yọ ede ti o wa lọwọlọwọ kuro" message="Ṣe o da ọ loju?"/>
+			<UDL_importSuccessful title="Ede Itumọ olumulo" message="Aṣeyọri gbe wọle."/>
+			<UDL_importFails title="Ede Itumọ olumulo" message="Kuna lati gbe wọle."/>
+			<UDL_saveBeforeImport title="Ede Itumọ olumulo" message="Ṣaaju ki o to okeere, fi itumọ ede rẹ pamọ nipa tite &quot;Fipamọ Bi...&quot; bọtini."/> <!-- HowToReproduce: Choose "User Defined Language" in User Language combobox, then click on "Export... button". -->
+			<UDL_exportSuccessful title="Ede Itumọ olumulo" message="Aṣeyọri okeere."/>
+			<UDL_exportFails title="Ede Itumọ olumulo" message="Kuna lati okeere."/>
+			<SCMapperDoDeleteOrNot title="Ṣe o da ọ loju?" message="Ṣe o da ọ loju pe o fẹ pa ọna abuja yii rẹ bi?"/>
+			<FindCharRangeValueError title="Isoro iye ibiti o" message="O yẹ ki o tẹ laarin 0 ati 255."/> <!-- HowToReproduce: Search menu, then Find characters in range, select Custom range, enter 999 in either edit box, press Find. -->
+			<OpenInAdminMode title="Fipamọ kuna" message="Faili naa ko le wa ni fipamọ ati pe o le ni aabo.
+Ṣe o fẹ lati ṣe ifilọlẹ Notepad++ ni ipo Alakoso?"/>
+			<OpenInAdminModeWithoutCloseCurrent title="Fipamọ kuna" message="Faili naa ko le wa ni fipamọ ati pe o le ni aabo.
+Ṣe o fẹ lati ṣe ifilọlẹ Notepad++ ni ipo Alakoso?"/>
+			<OpenInAdminModeFailed title="Ṣii ni Ipo Alakoso kuna" message="Notepad++ ko le ṣii ni ipo Alakoso."/><!-- HowToReproduce: When you have no Admin privilege and you try to save a modified file in a protected location (for example: any file in sub-folder of "C:\Program Files\". This message will appear after replying "Yes" to "Open in Admin mode" dialog. -->
+			<ViewInBrowser title="Wo Faili lọwọlọwọ ni Aṣàwákiri" message="Ohun elo ko le rii ninu eto rẹ."/>
+			<ExitToUpdatePlugins title="Notepad++ ti fẹrẹ jade" message="Ti o ba tẹ BẸẸNI, iwọ yoo jáwọ́ Notepad++ lati tẹsiwaju awọn iṣẹ ṣiṣe.
+Notepad++ yoo tun bẹrẹ lẹhin ti gbogbo awọn iṣẹ ti pari.
+Tesiwaju bi?"/>
+			<NeedToRestartToLoadPlugins title="Paadi++ nilo lati tun bẹrẹ" message="O ni lati tun Notepad++ bẹrẹ lati gbe awọn afikun ti o fi sii."/><!-- HowToReproduce: Import a plugin via menu "Settings->Import->Import Plugin(s)...". -->
+			<ChangeHistoryEnabledWarning title="Paadi++ nilo lati tun bẹrẹ" message="O ni lati tun Notepad++ bẹrẹ lati mu Iyipada Itan ṣiṣẹ."/><!-- HowToReproduce: uncheck "Display Change History" via Preferences dialog "Marges/Border/Edge. -->
+			<WindowsSessionExit title="Notepad++ - Windows igba ijade" message="Igba Windows fẹrẹ pari ṣugbọn o ni diẹ ninu awọn data ti a ko fi pamọ.Ṣe o fẹ lati jade Notepad++ bayi?"/>
+			<LanguageMenuCompactWarning title="Akojọ ede Iwapọ" message="Aṣayan yii yoo yipada ni ifilọlẹ atẹle."/><!-- HowToReproduce: toggle "Make language menu compact" via Preferences dialog "Language/Language Menu. -->
+			<SwitchUnsavedThemeWarning title="$STR_REPLACE$" message="Awọn ayipada ti a ko fipamọ ti fẹrẹ parẹ!
+Ṣe o fẹ lati ṣafipamọ awọn ayipada rẹ ṣaaju yiyipada awọn akori bi?"/><!-- HowToReproduce: In the Style Configurator dialog change some theme and switch to other theme without saving. -->
+			<MacroAndRunCmdlWarning title="Makiro ati Ṣiṣe Awọn aṣẹ ibamu" message="Awọn pipaṣẹ Makiro ati Ṣiṣe rẹ ti o fipamọ ni Notepad++ v.8.5.2 (tabi agbalagba) le ma ni ibaramu pẹlu ẹya lọwọlọwọ ti Notepad++.
+Jọwọ ṣe idanwo awọn aṣẹ wọnyẹn ati, ti o ba nilo, tun ṣe atunṣe wọn.
+
+Ni omiiran, o le dinku si Notepad ++ v8.5.2 ati mu pada data iṣaaju rẹ pada.
+Notepad++ yoo ṣe afẹyinti atijọ rẹ &quot;shortcuts.xml&quot; ati fi sii bi &quot;shortcuts.xml.v8.5.2.backup&quot;.
+Ṣe atunṣe &quot;shortcuts.xml.v8.5.2.backup&quot; -&gt; &quot;shortcuts.xml&quot;, awọn aṣẹ rẹ yẹ ki o tun pada ki o ṣiṣẹ daradara."/><!-- HowToReproduce: Close Notepad++, remove shortcuts.xml.v8.5.2.backup & v852ShortcutsCompatibilityWarning.xml if present, relaunch Notepad++, delete or modify a shortcuts via Shortcut Mapper, close Notepad++, then the message will show up -->
+			<FullReadOnlySavingForbidden title="Fipamọ kuna" message="Ko le fi faili pamọ.
+Akọsilẹ Akọsilẹ ++ ni kikun kika-nikan fifipamọ ipo eewọ ṣe idiwọ faili lati wa ni fipamọ."/>
+			<NotEnoughRoom4Saving title="Fipamọ kuna" message="Kuna lati fi faili pamọ.
+O dabi pe ko si aaye to lori disk lati fi faili pamọ.Faili rẹ ko ni ipamọ."/>
+			<FileInaccessibleUserSession title="Faili ko le wọle si" message="Diẹ ninu awọn faili lati igba fifipamọ pẹlu ọwọ rẹ &quot;$STR_REPLACE$&quot; ko ṣe wọle.Wọn le ṣii bi ofo ati awọn iwe-kika-nikan bi awọn oniduro.
+
+Ṣe o fẹ lati ṣẹda awọn oniduro wọnyẹn?
+
+AKIYESI: Yiyan lati ma ṣẹda awọn aaye tabi pipade wọn nigbamii, igba ti o fipamọ pẹlu ọwọ kii yoo ṣe atunṣe ni ijade."/>
+			<FileInaccessibleDefaultSessionXml title="Faili ko le wọle si" message="Diẹ ninu awọn faili lati igba rẹ ti o kọja ko ṣe iraye si.Wọn le ṣii bi ofo ati awọn iwe-kika-nikan bi awọn oniduro.
+
+Ṣe o fẹ lati ṣẹda awọn oniduro wọnyẹn?
+
+AKIYESI: Yiyan lati ma ṣẹda awọn oniduro tabi pipade wọn nigbamii, igba rẹ YOO ṢE ṢE ṢE tunṣe NIPA Ijade!A daba pe ki o ṣe afẹyinti &quot;session.xml&quot; rẹ ni bayi."/>
+			<RTLvsDirectWrite title="Ko le ṣiṣe RTL" message="RTL ko ni ibamu pẹlu DirectWrite mode.Jọwọ mu ipo DirectWrite kuro ni MISC.apakan ti ibaraẹnisọrọ Awọn ayanfẹ, ki o tun bẹrẹ Notepad++."/>
+			<FileMemoryAllocationFailed title="Iyatọ: Pipin iranti faili kuna" message="O ṣee ṣe ko si iranti ọfẹ ti o ni contiguous fun faili ti o kojọpọ nipasẹ Notepad++."/><!-- HowToReproduce: Try to open multiple files with total size > ~700MB in the x86 Notepad++ (it will depend on the PC memory configuration and the current system memory usage...). -->
+			<FindRegexBackwardDisabled title="Regex sẹhin wiwa alaabo" message="Nipa aiyipada, wiwa regex sẹhin jẹ alaabo nitori awọn abajade airotẹlẹ ti o lagbara.Lati ṣe wiwa sẹhin, ṣii ọrọ sisọ Wa ki o yan boya deede tabi ipo wiwa ti o gbooro dipo ikosile deede.
+Tẹ bọtini O dara lati ṣii Wa ọrọ sisọ tabi ṣeto idojukọ lori rẹ.
+
+Ti o ba nilo ẹya wiwa regex sẹhin, kan si iwe afọwọkọ olumulo fun awọn ilana lori muu ṣiṣẹ."/>
+			<PrintError title="0" message="Ko le bẹrẹ iwe itẹwe."/><!-- Use title="0" to use Windows OS default translated "Error" title. -->
+			<FindAutoChangeOfInSelectionWarning title="Ìkìlọ àwárí" message="Ipo apoti ayẹwo &quot;Ninu aṣayan&quot; ti jẹ atunṣe laifọwọyi.
+Jọwọ ṣayẹwo ipo wiwa ṣaaju ṣiṣe iṣe naa."/> <!-- HowToReproduce: https://github.com/notepad-plus-plus/notepad-plus-plus/issues/14897#issuecomment-2564316224 -->
+			<Need2Restart2ShowMenuShortcuts title="Notepad++ nilo lati tun bẹrẹ" message="Notepad++ nilo lati tun bẹrẹ lati ṣafihan awọn ọna abuja akojọ aṣayan ọtun."/>
+			<NoAdminRight2ChangeReadOnlyFileAttribute title="Iyipada abuda kika-nikan faili kuna" message="Jọwọ ṣiṣẹ Notepad++ bi olutọju lati yi awọn abuda faili pada."/>
+		</MessageBox>
+		<ClipboardHistory>
+			<PanelTitle name="Itan agekuru"/>
+		</ClipboardHistory>
+		<DocList>
+			<PanelTitle name="Akojọ iwe"/>
+			<ColumnName name="Orukọ"/>
+			<ColumnExt name="Ext."/>
+			<ColumnPath name="Ona"/>
+			<ListGroups name="Ẹgbẹ nipasẹ Wo"/>
+		</DocList>
+		<WindowsDlg>
+			<ColumnName name="Orukọ"/>
+			<ColumnPath name="Ona"/>
+			<ColumnType name="Iru"/>
+			<ColumnSize name="Iwọn"/>
+			<ColumnDateTime name="Àkókò títúnṣe"/>
+			<NbDocsTotal name="lapapọ awọn iwe aṣẹ:"/>
+			<MenuCopyName name="Daakọ Orukọ(s)"/>
+			<MenuCopyPath name="Daakọ Oruko(s) Ona"/>
+		</WindowsDlg>
+		<AsciiInsertion>
+			<PanelTitle name="Igbimọ ifibọ Awọn koodu ASCII"/>
+			<ColumnVal name="Iye"/>
+			<ColumnHex name="Hex"/>
+			<ColumnChar name="Ohun kikọ"/>
+			<ColumnHtmlName name="Orukọ HTML"/>
+			<ColumnHtmlNumber name="HTML eleemewa"/>
+			<ColumnHtmlHexNb name="HTML Hexadecimal"/>
+		</AsciiInsertion>
+		<DocumentMap>
+			<PanelTitle name="Map iwe"/>
+		</DocumentMap>
+		<FunctionList>
+			<PanelTitle name="Akojọ iṣẹ"/>
+			<SortTip name="Too"/>
+			<ReloadTip name="Tun gbee"/>
+			<PreferencesTip name="Awọn ayanfẹ"/>
+			<PreferencesInitialSort name="Awọn iṣẹ to lẹsẹsẹ (A si Z) nipasẹ aiyipada"/>
+		</FunctionList>
+		<FolderAsWorkspace>
+			<PanelTitle name="Folda bi Workspace"/>
+			<SelectFolderFromBrowserString name="Yan folda kan lati ṣafikun ni Folda bi nronu Workspace"/>
+			<ExpandAllFoldersTip name="Ṣii silẹ gbogbo"/>
+			<CollapseAllFoldersTip name="Agbo gbogbo"/>
+			<LocateCurrentFileTip name="Wa faili lọwọlọwọ"/>
+			<Menu>
+				<Item id="3511" name="Yọ"/>
+				<Item id="3512" name="Yọ Gbogbo rẹ kuro"/>
+				<Item id="3513" name="Fikun"/>
+				<Item id="3514" name="Ṣiṣe nipasẹ eto"/>
+				<Item id="3515" name="Ṣii"/>
+				<Item id="3516" name="Daakọ ona"/>
+				<Item id="3517" name="Wa ninu Awọn faili..."/>
+				<Item id="3518" name="Explorer nibi"/>
+				<Item id="3519" name="CMD nibi"/>
+				<Item id="3520" name="Daakọ orukọ faili"/>
+			</Menu>
+		</FolderAsWorkspace>
+		<ProjectManager>
+			<PanelTitle name="Ise agbese"/>
+			<WorkspaceRootName name="Aaye iṣẹ"/>
+			<NewProjectName name="Oruko ise agbese"/>
+			<NewFolderName name="Orukọ folda"/>
+			<Menus>
+				<Entries>
+					<Item id="0" name="Aaye iṣẹ"/>
+					<Item id="1" name="Ṣatunkọ"/>
+				</Entries>
+				<WorkspaceMenu>
+					<Item id="3122" name="Tuntun Workspace"/>
+					<Item id="3123" name="Ṣii aaye iṣẹ"/>
+					<Item id="3124" name="Tun gbee si aaye iṣẹ"/>
+					<Item id="3125" name="Fipamọ"/>
+					<Item id="3126" name="Fipamọ Bi..."/>
+					<Item id="3127" name="Fi ẹda kan pamọ Bi..."/>
+					<Item id="3121" name="Fi New Project"/>
+					<Item id="3128" name="Wa ninu Awọn iṣẹ akanṣe..."/>
+				</WorkspaceMenu>
+				<ProjectMenu>
+					<Item id="3111" name="Fun lorukọmii"/>
+					<Item id="3112" name="Fi Folda"/>
+					<Item id="3113" name="Ṣafikun Awọn faili..."/>
+					<Item id="3117" name="Ṣafikun Awọn faili lati Itọsọna..."/>
+					<Item id="3114" name="Yọ"/>
+					<Item id="3118" name="Gbe soke"/>
+					<Item id="3119" name="Gbe Si isalẹ"/>
+				</ProjectMenu>
+				<FolderMenu>
+					<Item id="3111" name="Fun lorukọmii"/>
+					<Item id="3112" name="Fi Folda"/>
+					<Item id="3113" name="Ṣafikun Awọn faili..."/>
+					<Item id="3117" name="Ṣafikun Awọn faili lati Itọsọna..."/>
+					<Item id="3114" name="Yọ"/>
+					<Item id="3118" name="Gbe soke"/>
+					<Item id="3119" name="Gbe Si isalẹ"/>
+				</FolderMenu>
+				<FileMenu>
+					<Item id="3111" name="Fun lorukọmii"/>
+					<Item id="3115" name="Yọ"/>
+					<Item id="3116" name="Ṣatunṣe Ọna Faili"/>
+					<Item id="3118" name="Gbe soke"/>
+					<Item id="3119" name="Gbe Si isalẹ"/>
+				</FileMenu>
+			</Menus>
+		</ProjectManager>
+		<MiscStrings>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<word-chars-list-tip value="Eyi n gba ọ laaye lati ni afikun ohun kikọ sinu awọn ohun kikọ ọrọ lọwọlọwọ lakoko tite lẹẹmeji fun yiyan tabi wiwa pẹlu aṣayan “baramu gbogbo ọrọ nikan” ti ṣayẹwo."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, hover your mouse on the "?" button. -->
+
+			<!-- Don't translate "(&quot;EOL custom color&quot;)" -->
+			<eol-custom-color-tip value="Lọ si Oluṣeto ara lati yi awọ aṣa EOL aiyipada pada (&quot;Awọ aṣa EOL&quot;).."/>
+
+			<word-chars-list-warning-begin value="Ṣọra:"/>
+			<word-chars-list-space-warning value="$INT_REPLACE$ space(s)"/>
+			<word-chars-list-tab-warning value="$INT_REPLACE$ TAB(s)"/>
+			<word-chars-list-warning-end value="ninu rẹ kikọ akojọ."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, check "Add your character as part of word\r(don't choose it unless you know what you're doing)", then type a white-space in the text field. -->
+			<backup-select-folder value="Yan folda kan bi itọsọna afẹyinti"/><!-- HowToReproduce: Settings > Preferences > Backup > [...] -->
+			<cloud-invalid-warning value="Ọna ti ko tọ."/>
+			<cloud-restart-warning value="Jọwọ tun Notepad++ bẹrẹ lati mu ṣiṣẹ."/>
+			<cloud-select-folder value="Yan folda kan lati/si ibi ti Notepad++ ti ka/kọ awọn eto rẹ"/><!-- HowToReproduce: In "Cloud" section of Preferences dialog, check "Set your cloud location path here: ", then click the button "...". This message is displayed in the "Browse For Folder" dialog. -->
+			<default-open-save-select-folder value="Yan folda kan gẹgẹbi itọsọna aiyipada"/><!-- HowToReproduce: Settings > Preferences > Default Directory > [...] -->
+			<shift-change-direction-tip value="Lo Shift+Tẹ lati wa ni ọna idakeji"/>
+			<two-find-buttons-tip value="2 wa awọn bọtini mode"/>
+			<find-in-files-filter-tip value="Wa ninu cpp, cxx, h, hxx hpp:
+* .cpp * .cxx * .h * .hxx * .hpp
+
+Wa ninu gbogbo awọn faili ayafi exe, obj log:
+*.* !*.exe !*.obj !*.log
+
+Wa ninu gbogbo awọn faili ṣugbọn yọkuro awọn idanwo awọn folda, bin bin64:
+*.* !\awọn idanwo!\bin*
+
+Wa ninu gbogbo awọn faili ṣugbọn yọkuro gbogbo awọn akọọlẹ folda tabi awọn iforukọsilẹ leralera:
+*.* !+\log*"/><!-- HowToReproduce: Tip of mouse hovered on "Filters" label in "Find in Files" section of Find dialog. -->
+			<find-in-files-select-folder value="Yan folda kan lati wa lati"/><!-- HowToReproduce: Search > Find in Files > [...] -->
+			<find-in-files-dir-from-active-doc-tip value="Kun aaye Itọsọna ti o da lori iwe ti nṣiṣe lọwọ"/><!-- HowToReproduce: Search > Find in Files > [<<] -->
+			<find-status-top-reached value="Wa: Iwe ti o de bẹrẹ, iṣẹlẹ akọkọ lati isalẹ ti a rii."/>
+			<find-status-end-reached value="Wa: Ti de opin iwe aṣẹ, iṣẹlẹ akọkọ lati oke ti a rii."/>
+			<find-status-replaceinfiles-1-replaced value="Rọpo ni Awọn faili: 1 iṣẹlẹ ti rọpo"/>
+			<find-status-replaceinfiles-nb-replaced value="Rọpo ni Awọn faili: $INT_REPLACE$ awọn iṣẹlẹ ti rọpo"/>
+			<find-status-replaceinopenedfiles-1-replaced value="Rọpo ni Awọn faili Ṣiṣii: 1 iṣẹlẹ ti rọpo"/>
+			<find-status-replaceinopenedfiles-nb-replaced value="Rọpo ni Awọn faili Ṣiṣii: $INT_REPLACE$ awọn iṣẹlẹ ti rọpo"/>
+			<find-status-invalid-re value="Wa: Ọrọ sisọ deede ti ko tọ"/>
+			<find-status-search-failed value="Wa: Wa kuna"/>
+			<find-status-mark-1-match value="Mark: 1 baramu"/>
+			<find-status-mark-nb-matches value="Samisi: $INT_REPLACE$ ibaamu"/>
+			<find-status-count-1-match value="Nọmba: 1 baramu"/>
+			<find-status-count-nb-matches value="Kika: $INT_REPLACE$ ibaamu"/>
+			<find-status-replaceall-1-replaced value="Rọpo Gbogbo: 1 iṣẹlẹ ti rọpo"/>
+			<find-status-replaceall-nb-replaced value="Rọpo Gbogbo: $INT_REPLACE$ awọn iṣẹlẹ ti rọpo"/>
+			<find-status-replaceall-readonly value="Rọpo Gbogbo: Ko le ropo ọrọ.Iwe ti isiyi jẹ kika nikan"/>
+			<find-status-replace-end-reached value="Rọpo: De opin iwe aṣẹ, bẹrẹ lati oke."/>
+			<find-status-replace-top-reached value="Rọpo: Iwe aṣẹ ti o bẹrẹ, bẹrẹ lati isalẹ."/>
+			<find-status-replaced-next-found value="Rọpo: 1 iṣẹlẹ ti rọpo.Nigbamii ti iṣẹlẹ ri."/>
+			<find-status-replaced-without-continuing value="Rọpo: 1 iṣẹlẹ ti rọpo."/>
+			<find-status-replaced-next-not-found value="Rọpo: 1 iṣẹlẹ ti rọpo.Ko si awọn iṣẹlẹ diẹ sii ti a rii."/>
+			<find-status-replace-not-found value="Rọpo: ko si iṣẹlẹ ti a rii"/>
+			<find-status-replace-readonly value="Rọpo: Ko le ropo ọrọ.Iwe ti isiyi jẹ kika nikan"/>
+			<find-status-cannot-find value="Wa: Ko le ri ọrọ &quot;$STR_REPLACE$&quot;"/>
+			<find-status-cannot-find-pebkac-maybe value="Iṣẹlẹ ti a fun ni ko le rii.O le ti gbagbe lati ṣayẹwo &quot;Fi ipari si&quot; (si ON), &quot;Ọran baramu&quot; (lati PA), tabi &quot;Bara gbogbo ọrọ nikan&quot; (lati PA)."/>
+			<find-status-scope-selection value="ninu ọrọ ti o yan"/>
+			<find-status-scope-all value="ni gbogbo faili"/>
+			<find-status-scope-backward value="lati ibere-faili si abojuto"/>
+			<find-status-scope-forward value="lati abojuto si opin-faili"/>
+			<find-status-invisible-chars-findWhat value="Awọn ohun kikọ ti a ko rii ni titọmọ “Wa kini” tabi “Rọpo pẹlu” akoonu"/>
+			<find-status-invisible-chars-findWhat-tip value="Ikilọ: Awọn ohun kikọ alaihan ni wiwa (tabi rọpo) aaye.
+Ọrọ ti a fi si aaye yii pẹlu awọn ohun kikọ ti a ko rii (boya ila-ipari) pẹlu.Ti o ba tẹsiwaju laisi piparẹ wọn, wọn yoo wa ninu wiwa (tabi rọpo) ọrọ."/>
+			<finder-find-in-finder value="Wa ninu awọn esi wiwa wọnyi..."/>
+			<finder-close-this value="Pade awọn esi wiwa wọnyi"/>
+			<finder-collapse-all value="Pa gbogbo rẹ pọ"/>
+			<finder-uncollapse-all value="Ṣii silẹ gbogbo"/>
+			<finder-copy value="Daakọ Laini (awọn) ti a yan"/>
+			<finder-copy-selected-paths value="Daakọ Oruko(s) ti a ti yan"/>
+			<finder-clear-all value="Ko gbogbo rẹ kuro"/>
+			<finder-open-selected-paths value="Ṣii Orukọ Awọn ọna ti a yan"/>
+			<finder-purge-for-every-search value="Purge fun gbogbo wiwa"/>
+			<finder-wrap-long-lines value="Ọrọ ipari awọn laini gigun"/>
+			<common-ok value="O DARA"/>
+			<common-cancel value="Fagilee"/>
+			<common-name value="Orukọ"/>
+			<tabrename-title value="Tun lorukọ Taabu lọwọlọwọ"/>
+			<tabrename-newname value="Oruko Tuntun"/>
+			<splitter-rotate-left value="Yipada si osi"/>
+			<splitter-rotate-right value="Yipada si ọtun"/>
+			<userdefined-title-new value="Ṣẹda Ede Tuntun..."/>
+			<userdefined-title-save value="Fipamọ Orukọ Ede lọwọlọwọ Bi..."/>
+			<userdefined-title-rename value="Fun lorukọmii Orukọ Ede lọwọlọwọ"/>
+			<summary value="Akopọ"/>
+			<summary-filepath value="Ona faili ni kikun:"/>
+			<summary-filecreatetime value="Ti a ṣẹda:"/>
+			<summary-filemodifytime value="Títúnṣe:"/>
+			<summary-nbchar value="Awọn ohun kikọ (laisi awọn ipari laini):"/>
+			<summary-nbword value="Awọn ọrọ:"/>
+			<summary-nbline value="Awọn ila:"/>
+			<summary-nbbyte value="Gigun iwe:"/>
+			<summary-nbsel1 value="awọn ohun kikọ ti a yan ("/>
+			<summary-nbsel2 value="awọn baiti) ni"/>
+			<summary-nbrange value="awọn sakani"/>
+			<progress-hits-title value="Deba:"/>
+			<progress-cancel-info value="Ifagile isẹ, jọwọ duro..."/>
+			<find-in-files-progress-title value="Wa Ni ilọsiwaju awọn faili..."/>
+			<replace-in-files-confirm-title value="Ṣe o da ọ loju?"/>
+			<replace-in-files-confirm-directory value="Ṣe o da ọ loju pe o fẹ rọpo gbogbo awọn iṣẹlẹ ni:"/>
+			<replace-in-files-confirm-filetype value="Fun iru faili:"/>
+			<replace-in-files-progress-title value="Rọpo Ni ilọsiwaju Awọn faili..."/>
+			<replace-in-projects-confirm-title value="Ṣe o da ọ loju?"/>
+			<replace-in-projects-confirm-message value="Ṣe o fẹ lati ropo gbogbo awọn iṣẹlẹ ni gbogbo awọn iwe aṣẹ ninu awọn ti o yan Panel (s) Project?"/>
+			<replace-in-open-docs-confirm-title value="Ṣe o da ọ loju?"/>
+			<replace-in-open-docs-confirm-message value="Ṣe o da ọ loju pe o fẹ rọpo gbogbo awọn iṣẹlẹ ni gbogbo awọn iwe aṣẹ ṣiṣi bi?"/>
+			<find-result-caption value="Awọn abajade wiwa"/>
+			<find-result-title value="Wa"/><!-- Must not begin with space or tab character -->
+			<find-result-title-info value="($INT_REPLACE1$ deba ni $INT_REPLACE2$ awọn faili ti $INT_REPLACE3$ ti a wa)"/>
+			<find-result-title-info-selections value="($INT_REPLACE1$ deba ni $INT_REPLACE2$ yiyan $INT_REPLACE3$ wa)"/>
+			<find-result-title-info-options-searchmode-normal value="Deede"/>
+			<find-result-title-info-options-searchmode-extended value="Tesiwaju"/>
+			<find-result-title-info-options-searchmode-regexp value="RegEx"/>
+			<find-result-title-info-options-case value="Ọran"/>
+			<find-result-title-info-options-word value="Ọrọ"/>
+			<find-result-title-info-extra value="- Ipo Ajọ Laini: ṣe afihan awọn abajade ti a yan nikan"/>
+			<find-result-hits value="($INT_REPLACE$ deba)"/>
+			<find-result-line-prefix value="Laini"/><!-- Must not begin with space or tab character -->
+			<find-regex-zero-length-match value="odo gigun baramu"/>
+			<session-save-folder-as-workspace value="Fi folda pamọ bi aaye iṣẹ"/>
+			<tab-untitled-string value="titun"/>
+			<file-save-assign-type value="Afikun itẹsiwaju"/>
+			<close-panel-tip value="Pade"/>
+			<IncrementalFind-FSFound value="$INT_REPLACE$ matches"/>
+			<IncrementalFind-FSNotFound value="A ko ri gbolohun ọrọ"/>
+			<IncrementalFind-FSTopReached value="Ti de oke oju-iwe, tẹsiwaju lati isalẹ"/>
+			<IncrementalFind-FSEndReached value="Ti de opin oju-iwe, tẹsiwaju lati oke"/>
+			<contextMenu-styleAlloccurrencesOfToken value="Style gbogbo awọn iṣẹlẹ ti àmi"/>
+			<contextMenu-styleOneToken value="Àmi ara kan"/>
+			<contextMenu-clearStyle value="Ko ara"/>
+			<contextMenu-PluginCommands value="Awọn pipaṣẹ ohun itanna"/>
+			<largeFileRestriction-tip value="Diẹ ninu awọn ẹya le fa fifalẹ iṣẹ ni awọn faili nla.Awọn ẹya wọnyi le jẹ alaabo aifọwọyi lori ṣiṣi faili nla kan.O le ṣe akanṣe wọn nibi.
+
+AKIYESI:
+1. Awọn aṣayan iyipada nibi nilo tun-ṣii awọn faili nla ti o ṣii lọwọlọwọ lati gba ihuwasi to dara.
+
+2. Ti o ba ti ṣayẹwo &quot;Deactivate Word Wrap agbaye&quot; ati pe o ṣii faili nla kan, &quot;Word Wrap&quot; yoo jẹ alaabo fun gbogbo awọn faili.O le tun mu ṣiṣẹ nipasẹ akojọ aṣayan &quot;Wo-&gt; Ipari Ọrọ&quot;."/>
+			<npcNote-tip value="Aṣoju ti aaye funfun “ti kii-ASCII” ti a yan ati awọn kikọ ti kii ṣe titẹ sita (Iṣakoso).
+
+AKIYESI:
+Lilo asoju yoo mu awọn ipa kikọ kuro lori ọrọ.
+
+Fun atokọ ni kikun ti aaye funfun ti a yan ati awọn kikọ ti kii ṣe titẹ sita ṣayẹwo Itọsọna olumulo.
+
+Tẹ bọtini yii lati ṣii oju opo wẹẹbu pẹlu Afowoyi olumulo."/>
+			<npcAbbreviation-tip value="Kukuru: orukọ
+NBSP: ko si-break aaye
+ZWSP: aaye iwọn-odo
+ZWNBSP: ko si-fifẹ aaye
+
+Fun atokọ ni kikun ṣayẹwo Itọsọna olumulo.
+Tẹ lori &quot;?&quot;bọtini ni apa ọtun lati ṣii oju opo wẹẹbu pẹlu Itọsọna olumulo."/>
+			<npcCodepoint-tip value="Codepoint: orukọ
+U+00A0: ko si isinmi
+U+200B: aaye iwọn-odo
+U+FEFF: aaye ko si isinmi-iwọn
+
+Fun atokọ ni kikun ṣayẹwo Itọsọna olumulo.
+Tẹ lori &quot;?&quot;bọtini ni apa ọtun lati ṣii oju opo wẹẹbu pẹlu Itọsọna olumulo."/>
+
+			<!-- Don't translate "(&quot;Non-printing characters custom color&quot;)" -->
+			<npcCustomColor-tip value="Lọ si Oluṣeto ara lati yi awọ aṣa aiyipada pada fun aaye funfun ti a yan ati awọn kikọ ti kii ṣe titẹ (&quot;Awọ aṣa awọn kikọ ti kii ṣe titẹ&quot;)."/>
+			<npcIncludeCcUniEol-tip value="Waye awọn eto ifarahan awọn ohun kikọ ti kii ṣe titẹ si C0, iṣakoso C1 ati Unicode EOL (ila ti o tẹle, oluyapa ila ati iyapa paragira) awọn ohun kikọ."/>
+			<searchingInSelThresh-tip value="Nọmba ti o kere ju ti awọn ohun kikọ ti a yan ni agbegbe satunkọ lati ṣayẹwo laifọwọyi apoti “Ninu yiyan” nigba ti Wa ibanisọrọ ti muu ṣiṣẹ.Iye ti o pọju jẹ $INT_REPLACE$.Ṣeto iye si 0 lati mu ayẹwo-laifọwọyi ṣiṣẹ."/>
+			<searchingFillFindWhat-tip value="Nọmba ti o pọju ti awọn ohun kikọ ti o yan ni agbegbe satunkọ lati kun aaye laifọwọyi &quot;Wa kini&quot; nigbati Konturolu-F ti wa ni okunfa.Iye to pọ julọ jẹ $INT_REPLACE$, eyiti o jẹ iwọn to pọ julọ ti aaye “Wa kini”, ni opin nipasẹ eto."/>
+			<verticalEdge-tip value="Ṣafikun asami ọwọn rẹ nipa fifi ipo rẹ han pẹlu nọmba eleemewa kan.O le setumo orisirisi awọn ami ọwọn nipa lilo aaye funfun lati ya awọn nọmba oriṣiriṣi."/>
+			<fileSaveAsCopySaveButton-tip value="Mu Yi lọ yi bọ nigba titẹ Fipamọ lati ṣii ẹda naa lẹhin fifipamọ."/>
+			<autoIndentBasic-tip value="Rii daju pe ifakalẹ ti laini lọwọlọwọ (ie laini tuntun ti a ṣẹda nipasẹ titẹ bọtini ENTER) baamu ifọsi ti laini iṣaaju."/>
+			<autoIndentAdvanced-tip value="Mu indentation smart ṣiṣẹ fun awọn ede “C-like” ati Python.Awọn ede &quot;C-like&quot; pẹlu:
+C, C++, Java, C #, Objective-C, PHP, JavaScript, JSP, CSS, Perl, Rust, PowerShell ati JSON.
+
+Ti o ba yan ipo to ti ni ilọsiwaju ṣugbọn ko ṣatunkọ awọn faili ni awọn ede ti a mẹnuba tẹlẹ, indentation yoo wa ni ipo ipilẹ."/>
+
+			<!-- Don't translate "Global override" and "Default Style" -->
+			<global-override-tip value="Muu ṣiṣẹ &quot;Idaju agbaye&quot; nibi yoo dojuiwọn paramita yẹn ni gbogbo awọn aṣa ede.Ohun ti o ṣee ṣe fẹ gaan ni lati lo awọn eto “Aṣa Aiyipada” dipo"/>
+			<scintillaRenderingTechnology-tip value="Ṣe atunṣe awọn ohun kikọ pataki tabi yanju diẹ ninu awọn ọran eya aworan, tun Notepad ++ bẹrẹ lati lo awọn ayipada."/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'length' & 'lines' are much longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-length-lines value="ipari: $STR_REPLACE1$ ila: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Ln' & 'Col' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Ln-Col value="Ln: $STR_REPLACE1$ Kol: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Pos' & 'Sel' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Pos value="Ipo:"/>
+			<statusbar-Sel value="Seli:"/>
+			<statusbar-Sel-number value="Sel"/>
+			<toolbar-accent-tip value="Aṣayan yii jẹ ki awọn aami ọpa irinṣẹ rẹ tẹle awọ asẹnti eto Windows.Awọ arosọ jẹ awọ afihan ti a lo ninu awọn bọtini, awọn aala, ati awọn alẹmọ akojọ aṣayan Bẹrẹ ni Windows.Lati yi pada, lọ si Eto&gt; Ti ara ẹni&gt; Awọn awọ, lẹhinna yan awọ asẹnti ti o fẹ."/>
+			<len-limit-exceeded-tip value="Iwọn ipari ti kọja: Iṣawọle rẹ le kọja opin ti a gba laaye ati pe o le ti ge, ati pe kii yoo wa ni fipamọ fun igba atẹle."/>
+			<max-len-on-search-tip value="Iṣawọle rẹ le kọja opin ti a gba laaye ati pe o ti ge ge, ati pe kii yoo wa ni fipamọ fun igba to nbọ."/>
+			<max-len-on-save-tip value="Gigun ti titẹ sii rẹ gun pupọ ati pe o le ma wa ni fipamọ fun igba atẹle rẹ."/>
+			<goto-setting-tip value="Wa eto rẹ nibi"/>
+			<tabbar-tabcompactlabellen-tip value="Fi opin si ipari ti o han ti awọn orukọ taabu gigun.Tẹ sii lati lo iye ti a fun.Iwọn iye: awọn ohun kikọ 1-257 (0 pa gige kuro)."/>
+		</MiscStrings>
+	</Native-Langue>
+</NotepadPlus>
+
+

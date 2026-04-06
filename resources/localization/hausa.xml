@@ -1,0 +1,2142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Hausa (Hausa) language file for Notepad++ macOS
+    Based on English template - community translations welcome
+    Created: 2026-04-04
+-->
+<NotepadPlus>
+	<Native-Langue name="Hausa" filename="hausa.xml" version="8.9">
+		<Menu>
+			<Main>
+				<!-- Main Menu Entries -->
+				<Entries>
+					<Item menuId="file" name="File"/>
+					<Item menuId="edit" name="Tace"/>
+					<Item menuId="search" name="Bincike"/>
+					<Item menuId="view" name="Duba"/>
+					<Item menuId="encoding" name="Encoding"/>
+					<Item menuId="language" name="Harshe"/>
+					<Item menuId="settings" name="Saituna"/>
+					<Item menuId="tools" name="Kayan aiki"/>
+					<Item menuId="macro" name="Macro"/>
+					<Item menuId="run" name="Gudu"/>
+					<Item menuId="Plugins" name="Plugins"/>
+					<Item menuId="Window" name="Taga"/>
+				</Entries>
+				<!-- Sub Menu Entries -->
+				<SubEntries>
+					<Item subMenuId="file-openFolder" name="Bude Jaka Mai Kuɗi"/>
+					<Item subMenuId="file-closeMore" name="Rufe Takardu da yawa"/>
+					<Item subMenuId="file-recentFiles" name="Fayilolin Kwanan nan"/>
+					<Item subMenuId="edit-insert" name="Saka"/>
+					<Item subMenuId="edit-copyToClipboard" name="Kwafi zuwa Clipboard"/>
+					<Item subMenuId="edit-indent" name="Indent"/>
+					<Item subMenuId="edit-convertCaseTo" name="Maida Harka zuwa"/>
+					<Item subMenuId="edit-lineOperations" name="Ayyukan Layi"/>
+					<Item subMenuId="edit-comment" name="Sharhi/Rashin Magana"/>
+					<Item subMenuId="edit-autoCompletion" name="Kammala Kai tsaye"/>
+					<Item subMenuId="edit-eolConversion" name="Canjin EOL"/>
+					<Item subMenuId="edit-blankOperations" name="Ayyukan Banda"/>
+					<Item subMenuId="edit-pasteSpecial" name="Manna Na Musamman"/>
+					<Item subMenuId="edit-onSelection" name="Akan Zabi"/>
+					<Item subMenuId="edit-multiSelectALL" name="Multi-zaɓi DUKA"/>
+					<Item subMenuId="edit-multiSelectNext" name="Multi-zaɓi Gaba"/>
+					<Item subMenuId="edit-readonlyInNotepad++" name="Karanta-kawai a cikin Notepad++"/>
+					<Item subMenuId="search-changeHistory" name="Canja Tarihi"/>
+					<Item subMenuId="search-markAll" name="Salo Duk abubuwan da suka faru na Token"/>
+					<Item subMenuId="search-markOne" name="Alamar Salo Daya"/>
+					<Item subMenuId="search-unmarkAll" name="Shafi Salo"/>
+					<Item subMenuId="search-jumpUp" name="Tsalle"/>
+					<Item subMenuId="search-jumpDown" name="Jump Down"/>
+					<Item subMenuId="search-copyStyledText" name="Kwafi Salon Rubutun"/>
+					<Item subMenuId="search-bookmark" name="Alamar"/>
+					<Item subMenuId="view-currentFileIn" name="Duba Fayil na Yanzu a cikin"/>
+					<Item subMenuId="view-showSymbol" name="Nuna Alama"/>
+					<Item subMenuId="view-zoom" name="Zuƙowa"/>
+					<Item subMenuId="view-moveCloneDocument" name="Matsar da Takardu na Yanzu"/>
+					<Item subMenuId="view-tab" name="Tabbata"/>
+					<Item subMenuId="view-collapseLevel" name="Matakin ninka"/>
+					<Item subMenuId="view-uncollapseLevel" name="Matsayin Buɗewa"/>
+					<Item subMenuId="view-project" name="Aikin"/>
+					<Item subMenuId="encoding-characterSets" name="Saitin Halaye"/>
+					<Item subMenuId="encoding-arabic" name="Larabci"/>
+					<Item subMenuId="encoding-baltic" name="Baltic"/>
+					<Item subMenuId="encoding-celtic" name="Celtic"/>
+					<Item subMenuId="encoding-cyrillic" name="Cyrillic"/>
+					<Item subMenuId="encoding-centralEuropean" name="Tsakiyar Turai"/>
+					<Item subMenuId="encoding-chinese" name="Sinanci"/>
+					<Item subMenuId="encoding-easternEuropean" name="Gabashin Turai"/>
+					<Item subMenuId="encoding-greek" name="Girki"/>
+					<Item subMenuId="encoding-hebrew" name="Yahudanci"/>
+					<Item subMenuId="encoding-japanese" name="Jafananci"/>
+					<Item subMenuId="encoding-korean" name="Koriya"/>
+					<Item subMenuId="encoding-northEuropean" name="Arewacin Turai"/>
+					<Item subMenuId="encoding-thai" name="Thai"/>
+					<Item subMenuId="encoding-turkish" name="Baturke"/>
+					<Item subMenuId="encoding-westernEuropean" name="Yammacin Turai"/>
+					<Item subMenuId="encoding-vietnamese" name="Vietnamese"/>
+					<Item subMenuId="language-userDefinedLanguage" name="Harshen Ƙa'idar Mai Amfani"/>
+					<Item subMenuId="settings-import" name="Shigo"/>
+					<Item subMenuId="tools-md5" name="MD5"/>
+					<Item subMenuId="tools-sha1" name="SHA-1"/>
+					<Item subMenuId="tools-sha256" name="SHA-256"/>
+					<Item subMenuId="tools-sha512" name="SHA-512"/>
+					<Item subMenuId="window-sortby" name="Tsare Ta"/>
+				</SubEntries>
+
+				<!-- all menu item -->
+				<Commands>
+					<Item id="41001" name="Sabo"/>
+					<Item id="41002" name="Bude..."/>
+					<Item id="41019" name="Explorer"/>
+					<Item id="41020" name="cmd"/>
+					<Item id="41025" name="Jaka azaman Wurin Aiki"/>
+					<Item id="41003" name="Rufe"/>
+					<Item id="41004" name="Rufe Duk"/>
+					<Item id="41005" name="Rufe Duk Sai dai Takardu na Yanzu"/>
+					<Item id="41026" name="Rufe Duk Takardun Takaddun da Aka Fita AMMA"/>
+					<Item id="41009" name="Rufe Duk Zuwa Hagu"/>
+					<Item id="41018" name="Rufe Duk Zuwa Dama"/>
+					<Item id="41024" name="Rufe Duk Baya Canza"/>
+					<Item id="41006" name="Ajiye"/>
+					<Item id="41007" name="Ajiye Duk"/>
+					<Item id="41008" name="Ajiye As..."/>
+					<Item id="41010" name="Buga..."/>
+					<Item id="1001" name="Buga Yanzu"/>
+					<Item id="41011" name="Fita"/>
+					<Item id="41012" name="Zama Load..."/>
+					<Item id="41013" name="Ajiye Zama..."/>
+					<Item id="41014" name="Sake saukewa daga Disk"/>
+					<Item id="41015" name="Ajiye Kwafi Kamar yadda..."/>
+					<Item id="41016" name="Matsar zuwa Maimaita Bin"/>
+					<Item id="41017" name="Sake suna..."/>
+					<Item id="41021" name="Mayar da Fayil ɗin da aka Rufe Kwanan nan"/>
+					<Item id="41022" name="Buɗe Jaka azaman Wurin Aiki..."/>
+					<Item id="41023" name="Buɗe a cikin Default Viewer"/>
+					<Item id="42001" name="Yanke"/>
+					<Item id="42002" name="Kwafi"/>
+					<Item id="42003" name="Gyara"/>
+					<Item id="42004" name="Maimaita"/>
+					<Item id="42005" name="Manna"/>
+					<Item id="42006" name="Share"/>
+					<Item id="42007" name="Zaɓi Duk"/>
+					<Item id="42020" name="Fara/Ƙarshe Zaɓi"/>
+					<Item id="42089" name="Fara/Ƙarshen Zaɓi a Yanayin Rumbun"/>
+					<Item id="42084" name="Lokacin Kwanan wata (gajeren)"/>
+					<Item id="42085" name="Kwanan wata (dogon)"/>
+					<Item id="42086" name="Lokacin Kwanan wata (na musamman)"/>
+					<Item id="42008" name="Ƙara Layin Layi"/>
+					<Item id="42009" name="Rage Layin Layi"/>
+					<Item id="42010" name="Kwafi Layin Yanzu"/>
+					<Item id="42079" name="Cire Kwafin Layukan"/>
+					<Item id="42077" name="Cire Layukan Kwafi a Jere"/>
+					<Item id="42012" name="Layi Rarrabe"/>
+					<Item id="42013" name="Shiga Layi"/>
+					<Item id="42014" name="Matsar da Layin Yanzu"/>
+					<Item id="42015" name="Matsar da Layin Yanzu"/>
+					<Item id="42059" name="Rarraba Layukan Lexicographically Hauwa"/>
+					<Item id="42060" name="Rarraba Layukan Lexicographically Saukowa"/>
+					<Item id="42080" name="Layin Layi Lex.Hawan Yin watsi da Harka"/>
+					<Item id="42081" name="Layin Layi Lex.Saukowa Rashin Kula da Harka"/>
+					<Item id="42100" name="Tsare-tsare Layi A cikin oda na gida yana hawan"/>
+					<Item id="42101" name="Tsare-tsare Layi A cikin Tsarin Gida yana Saukowa"/>
+					<Item id="42104" name="Rarraba Layuka Ta Tsawon Hawan Hawa"/>
+					<Item id="42105" name="Rarraba Layi Ta Tsawon Saukowa"/>
+					<Item id="42061" name="Rarraba Layukan Kamar Yadda Integers suke Haura"/>
+					<Item id="42062" name="Rarraba Layi Kamar Yadda Integers ke Saukowa"/>
+					<Item id="42063" name="Layin Layi Kamar yadda Ma'aunin Decimal (Waƙafi) ke hawa"/>
+					<Item id="42064" name="Rarraba Layukan Kamar Yadda Waƙafi (Waƙafi) Saukowa"/>
+					<Item id="42065" name="Layin Layuka Kamar yadda Ma'aunin Decimal (Dot) ke hawa"/>
+					<Item id="42066" name="Rarraba Layukan Kamar Yadda Dikiyoyi (Dot) suke saukowa"/>
+					<Item id="42083" name="Umarnin Layin Juya"/>
+					<Item id="42078" name="Bazuwar odar Layi"/>
+					<Item id="42016" name="KYAUTA"/>
+					<Item id="42017" name="karami"/>
+					<Item id="42067" name="Shari'ar Dace"/>
+					<Item id="42068" name="Cakuda Dace (haɗe)"/>
+					<Item id="42069" name="Shari'ar Jumla"/>
+					<Item id="42070" name="Shari'ar jumla (haɗe)"/>
+					<Item id="42071" name="INVERT CASE"/>
+					<Item id="42072" name="ranDOm Case"/>
+					<Item id="42073" name="Bude fayil"/>
+					<Item id="42074" name="Buɗe Jaka Mai Ƙunshe a cikin Explorer"/>
+					<Item id="42106" name="Sake Zaɓin █ (Shift: ●)"/>
+					<Item id="42075" name="Bincika akan Intanet"/>
+					<Item id="42076" name="Canza Injin Bincike..."/>
+					<Item id="42090" name="Yi watsi da Harka Gabaɗayan Kalma"/>
+					<Item id="42091" name="Match Case Kawai"/>
+					<Item id="42092" name="Daidaita Gabaɗayan Kalma Kawai"/>
+					<Item id="42093" name="Match Case Gabaɗayan Kalma"/>
+					<Item id="42094" name="Yi watsi da Harka Gabaɗayan Kalma"/>
+					<Item id="42095" name="Match Case Kawai"/>
+					<Item id="42096" name="Daidaita Gabaɗayan Kalma Kawai"/>
+					<Item id="42097" name="Match Case Gabaɗayan Kalma"/>
+					<Item id="42098" name="Gyara Sabbin Ƙara Multi-Zaɓi"/>
+					<Item id="42099" name="Tsallake Yanzu Je zuwa Multi-zaɓi na gaba"/>
+					<Item id="42018" name="Fara Rikodi"/>
+					<Item id="42019" name="Dakatar da Rikodi"/>
+					<Item id="42021" name="sake kunnawa"/>
+					<Item id="42022" name="Juya Sharhin Layi Guda Daya"/>
+					<Item id="42023" name="Toshe Sharhi"/>
+					<Item id="42047" name="Toshe Rashin Magana"/>
+					<Item id="42024" name="Gyara Sararin Biyu"/>
+					<Item id="42042" name="Gyara sararin Jagoranci"/>
+					<Item id="42043" name="Gyara Jagoranci da Sararin Biyu"/>
+					<Item id="42044" name="EOL zuwa Sarari"/>
+					<Item id="42045" name="Gyara duka biyu da EOL zuwa Sarari"/>
+					<Item id="42046" name="TAB zuwa sarari"/>
+					<Item id="42054" name="Space zuwa TAB (Dukkan)"/>
+					<Item id="42053" name="Space zuwa TAB (Jagora)"/>
+					<Item id="42038" name="Manna Abubuwan HTML"/>
+					<Item id="42039" name="Manna Abubuwan RTF"/>
+					<Item id="42048" name="Kwafi Abubuwan Binary"/>
+					<Item id="42049" name="Yanke Abun Binary"/>
+					<Item id="42050" name="Manna abun ciki na binary"/>
+					<Item id="42082" name="Kwafi mahada"/>
+					<Item id="42037" name="Yanayin Rukunin..."/>
+					<Item id="42034" name="Editan Rukunin..."/>
+					<Item id="42051" name="Ƙungiyar Halaye"/>
+					<Item id="42052" name="Tarihin allo"/>
+					<Item id="42025" name="Ajiye Macro da Aka Rikodi A halin yanzu..."/>
+					<Item id="42026" name="Hanyar Rubutu RTL"/>
+					<Item id="42027" name="Hanyar Rubutu LTR"/>
+					<Item id="42028" name="Karanta-Kawai akan Takardun Yanzu"/>
+					<Item id="42102" name="Karanta-Kawai don Duk Takardu"/>
+					<Item id="42103" name="Share-Karanta kawai don Duk Takardu"/>
+					<Item id="42029" name="Kwafi Hanyar Fayil na Yanzu"/>
+					<Item id="42030" name="Kwafi Sunan Fayil na Yanzu"/>
+					<Item id="42031" name="Kwafi Dir na yanzu.Tafarki"/>
+					<Item id="42087" name="Kwafi Duk Sunayen Fayil"/>
+					<Item id="42088" name="Kwafi Duk Hanyar Fayil"/>
+					<Item id="42032" name="Gudu Sau da yawa Macro..."/>
+					<Item id="42033" name="Siffar Karatu-kawai a cikin Windows"/>
+					<Item id="42035" name="Sharhin Layi Daya"/>
+					<Item id="42036" name="Rashin Bayanin Layi Daya"/>
+					<Item id="42055" name="Cire Layukan Matattu"/>
+					<Item id="42056" name="Cire Layukan da Ba komai (Dauke da Haruffa Marubuciya)"/>
+					<Item id="42057" name="Saka Blank Line Sama Na Yanzu"/>
+					<Item id="42058" name="Saka Blank Line A Kasa Na Yanzu"/>
+					<Item id="43001" name="Nemo..."/>
+					<Item id="43002" name="Nemo Na Gaba"/>
+					<Item id="43003" name="Sauya..."/>
+					<Item id="43004" name="Je zuwa..."/>
+					<Item id="43005" name="Juya Alamar"/>
+					<Item id="43006" name="Alamar Gaba"/>
+					<Item id="43007" name="Alamar Baya"/>
+					<Item id="43008" name="Share Duk Alamomin"/>
+					<Item id="43018" name="Yanke Layi Masu Alama"/>
+					<Item id="43019" name="Kwafi Layukan da aka yiwa alama"/>
+					<Item id="43020" name="Manna zuwa (Maye gurbin) Layukan da aka yiwa alama"/>
+					<Item id="43021" name="Cire Layukan Maɗaukaki"/>
+					<Item id="43051" name="Cire Layukan da Ba Masu Alama ba"/>
+					<Item id="43050" name="Littattafan Juyawa"/>
+					<Item id="43052" name="Nemo haruffa a cikin kewayon..."/>
+					<Item id="43053" name="Zaɓi Duk Tsakanin {} [] ko ()"/>
+					<Item id="43009" name="Je zuwa Matching Brace"/>
+					<Item id="43010" name="Nemo Baya"/>
+					<Item id="43011" name="Binciken Ƙarfafa"/>
+					<Item id="43013" name="Nemo a cikin Fayiloli"/>
+					<Item id="43014" name="Nemo (Volatile) Na Gaba"/>
+					<Item id="43015" name="Nemo (Volatile) Na Baya"/>
+					<Item id="43022" name="Amfani Da Salo Na Farko"/>
+					<Item id="43023" name="Share Salo Na Farko"/>
+					<Item id="43024" name="Amfani Da Salo Na Biyu"/>
+					<Item id="43025" name="Share Salo Na Biyu"/>
+					<Item id="43026" name="Amfani Da Salo Na Uku"/>
+					<Item id="43027" name="Share Salo Na Uku"/>
+					<Item id="43028" name="Amfani Da Salo Na Hudu"/>
+					<Item id="43029" name="Share Salo Na Hudu"/>
+					<Item id="43030" name="Amfani Da Salo Na Biyar"/>
+					<Item id="43031" name="Share Salo Na Biyar"/>
+					<Item id="43032" name="Share Duk Salo"/>
+					<Item id="43033" name="Salo Na Farko"/>
+					<Item id="43034" name="Salo Na Biyu"/>
+					<Item id="43035" name="Salo Na Uku"/>
+					<Item id="43036" name="Salo Na Hudu"/>
+					<Item id="43037" name="Salo Na Biyar"/>
+					<Item id="43038" name="Nemo Mark Style"/>
+					<Item id="43039" name="Salo na farko"/>
+					<Item id="43040" name="Salo Na Biyu"/>
+					<Item id="43041" name="Salo Na Uku"/>
+					<Item id="43042" name="Salo Na Hudu"/>
+					<Item id="43043" name="Salo Na Biyar"/>
+					<Item id="43044" name="Nemo Mark Style"/>
+					<Item id="43055" name="Salo Na Farko"/>
+					<Item id="43056" name="Salo Na Biyu"/>
+					<Item id="43057" name="Salo Na Uku"/>
+					<Item id="43058" name="Salo Na Hudu"/>
+					<Item id="43059" name="Salo Na Biyar"/>
+					<Item id="43060" name="Duk Salo"/>
+					<Item id="43061" name="Nemo Mark Style"/>
+					<Item id="43062" name="Amfani Da Salo Na Farko"/>
+					<Item id="43063" name="Amfani Da Salo Na Biyu"/>
+					<Item id="43064" name="Amfani Da Salo Na Uku"/>
+					<Item id="43065" name="Amfani Da Salo Na Hudu"/>
+					<Item id="43066" name="Amfani Da Salo Na Biyar"/>
+					<Item id="43067" name="Je zuwa Canji na Gaba"/>
+					<Item id="43068" name="Tafi Canjin Baya"/>
+					<Item id="43069" name="Share Tarihin Canji"/>
+					<Item id="43045" name="Tagan Sakamakon Bincike"/>
+					<Item id="43046" name="Sakamakon Bincike na Gaba"/>
+					<Item id="43047" name="Sakamakon Neman Baya"/>
+					<Item id="43048" name="Zaɓi kuma Nemo Gaba"/>
+					<Item id="43049" name="Zaɓi kuma Nemo Gaba"/>
+					<Item id="43054" name="Markus..."/>
+					<Item id="43501" name="Rufe Zaba"/>
+					<Item id="43502" name="Rufe Wasu"/>
+					<Item id="43503" name="Kwafi Zaɓaɓɓun Sunaye"/>
+					<Item id="43504" name="Kwafi Zaɓaɓɓen Sunayen Hanyoyi"/>
+					<Item id="44009" name="Bayan-Shi"/>
+					<Item id="44010" name="Ninke Duk"/>
+					<Item id="44011" name="Yanayi Kyauta"/>
+					<Item id="44019" name="Nuna Duk Haruffa"/>
+					<Item id="44020" name="Nuna Jagorar Indent"/>
+					<Item id="44022" name="Rubutun kalmomi"/>
+					<Item id="44023" name="Zuƙowa (Ctrl+Mouse Wheel Up)"/>
+					<Item id="44024" name="Zuƙowa (Ctrl+Mouse Wheel Down)"/>
+					<Item id="44025" name="Nuna Sarari da Tab"/>
+					<Item id="44026" name="Nuna Ƙarshen Layi"/>
+					<Item id="44029" name="Buɗe Duk"/>
+					<Item id="44030" name="Ninke Matsayin Yanzu"/>
+					<Item id="44031" name="Buɗe Matsayin Yanzu"/>
+					<Item id="44049" name="Takaitacciyar..."/>
+					<Item id="44080" name="Taswirar Takardu"/>
+					<Item id="44070" name="Jerin Takardu"/>
+					<Item id="44084" name="Jerin Ayyuka"/>
+					<Item id="44085" name="Jaka azaman Wurin Aiki"/>
+					<Item id="44086" name="Tabbata ta 1"/>
+					<Item id="44087" name="Shafi Na Biyu"/>
+					<Item id="44088" name="Tabbatacce 3"/>
+					<Item id="44089" name="Tabbatacce 4"/>
+					<Item id="44090" name="Shafi Na Biyar"/>
+					<Item id="44091" name="Tabbatacce 6"/>
+					<Item id="44092" name="Tabbatacce 7"/>
+					<Item id="44093" name="Tabbatacce 8"/>
+					<Item id="44094" name="Tabbatacce 9"/>
+					<Item id="44116" name="Tabar Farko"/>
+					<Item id="44117" name="Tabbatacce"/>
+					<Item id="44095" name="Tab na gaba"/>
+					<Item id="44096" name="Tabbatacce"/>
+					<Item id="44097" name="Saka idanu (wutsiya -f)"/>
+					<Item id="44098" name="Matsa Gaba"/>
+					<Item id="44099" name="Matsar da Tab Baya"/>
+					<Item id="44110" name="Cire Launi"/>
+					<Item id="44111" name="Aiwatar da Launi 1"/>
+					<Item id="44112" name="Aiwatar da Launi 2"/>
+					<Item id="44113" name="Aiwatar da Launi 3"/>
+					<Item id="44114" name="Aiwatar da Launi 4"/>
+					<Item id="44115" name="Aiwatar da Launi 5"/>
+					<Item id="44130" name="Nuna Haruffa Mara Buga"/>
+					<Item id="44131" name="Nuna Haruffa Sarrafa Unicode EOL"/>
+					<Item id="44032" name="Juya Yanayin Cikakken allo"/>
+					<Item id="44033" name="Mayar da Tsohuwar Zuƙowa"/>
+					<Item id="44034" name="Koyaushe Kan Sama"/>
+					<Item id="44035" name="Aiki tare a tsaye gungura"/>
+					<Item id="44036" name="Aiki tare da gungurawa a kwance"/>
+					<Item id="44041" name="Nuna Alamar Rufe"/>
+					<Item id="44072" name="Mayar da hankali kan Wani Ra'ayi"/>
+					<Item id="44081" name="Panel Project 1"/>
+					<Item id="44082" name="Tashar Ayyuka 2"/>
+					<Item id="44083" name="Tashar Ayyuka 3"/>
+					<Item id="45001" name="Windows (CR LF)"/>
+					<Item id="45002" name="Unix (LF)"/>
+					<Item id="45003" name="Macintosh (CR)"/>
+					<Item id="45004" name="ANSI"/>
+					<Item id="45005" name="UTF-8-BOM"/>
+					<Item id="45006" name="UTF-16 BE BOM"/>
+					<Item id="45007" name="UTF-16 LE BOM"/>
+					<Item id="45008" name="UTF-8"/>
+					<Item id="45009" name="Tukar ANSI"/>
+					<Item id="45010" name="Juya zuwa UTF-8"/>
+					<Item id="45011" name="Juya zuwa UTF-8-BOM"/>
+					<Item id="45012" name="Juya zuwa UTF-16 BE BOM"/>
+					<Item id="45013" name="Juya zuwa UTF-16 LE BOM"/>
+					<Item id="45060" name="Babban5 (Na Gargajiya)"/>
+					<Item id="45061" name="GB2312 (Sauƙaƙe)"/>
+					<Item id="45054" name="OEM 861: Icelandic"/>
+					<Item id="45057" name="OEM 865: Nordic"/>
+					<Item id="45053" name="OEM 860: Portuguese"/>
+					<Item id="45056" name="OEM 863: Faransanci"/>
+					<Item id="10001" name="Matsar zuwa Wani Duban"/>
+					<Item id="10002" name="Clone zuwa Wani Duban"/>
+					<Item id="10003" name="Matsar zuwa Sabon Misali"/>
+					<Item id="10004" name="Bude a Sabon Misali"/>
+					<Item id="10005" name="Matsa zuwa Fara"/>
+					<Item id="10006" name="Matsa zuwa Ƙarshe"/>
+					<Item id="46001" name="Mai tsara Salo..."/>
+					<Item id="46016" name="Babu (Rubutun Al'ada)"/>
+					<Item id="46250" name="ayyana harshen ku..."/>
+					<Item id="46300" name="Buɗe Fayil ɗin Harshen Ƙa'idar Mai Amfani..."/>
+					<Item id="46301" name="Tarin Ma'anar Harsunan Mai Amfani da Notepad++"/>
+					<Item id="46180" name="Ma'anar Mai Amfani"/>
+					<Item id="47000" name="Game da Notepad++"/>
+					<Item id="47010" name="Hujja Layin Umurni..."/>
+					<Item id="47001" name="Notepad++ Home"/>
+					<Item id="47002" name="Shafin aikin Notepad++"/>
+					<Item id="47003" name="Notepad++ Manual mai amfani ta kan layi"/>
+					<Item id="47004" name="Notepad++ Community (Forum)"/>
+					<Item id="47012" name="Bayanin gyara kuskure..."/>
+					<Item id="47005" name="Samun Ƙarin Abubuwan Haɓakawa"/>
+					<Item id="47006" name="Sabunta Notepad++"/>
+					<Item id="47009" name="Saita Proxy Updater..."/>
+					<Item id="48005" name="Shigo da plugin(s)..."/>
+					<Item id="48006" name="Shigo da jigo (s) salo..."/>
+					<Item id="48018" name="Shirya Popup ContextMenu"/>
+					<Item id="48009" name="Gajerar Taswirar..."/>
+					<Item id="48011" name="Abubuwan da ake so..."/>
+					<Item id="48014" name="Bude Fayil na Plugins..."/>
+					<Item id="48015" name="Plugins Admin..."/>
+					<Item id="48501" name="Ƙarfafa..."/>
+					<Item id="48502" name="Ƙirƙira daga fayiloli..."/>
+					<Item id="48503" name="Ƙirƙira daga zaɓi zuwa allo"/>
+					<Item id="48504" name="Ƙarfafa..."/>
+					<Item id="48505" name="Ƙirƙira daga fayiloli..."/>
+					<Item id="48506" name="Ƙirƙira daga zaɓi zuwa allo"/>
+					<Item id="48507" name="Ƙarfafa..."/>
+					<Item id="48508" name="Ƙirƙira daga fayiloli..."/>
+					<Item id="48509" name="Ƙirƙira daga zaɓi zuwa allo"/>
+					<Item id="48510" name="Ƙirƙira..."/>
+					<Item id="48511" name="Ƙirƙira daga fayiloli..."/>
+					<Item id="48512" name="Ƙirƙira daga zaɓi zuwa allo"/>
+					<Item id="49000" name="Gudu..."/>
+
+					<Item id="50000" name="Kammala Aiki"/>
+					<Item id="50001" name="Kammala Kalma"/>
+					<Item id="50002" name="Alamar Ma'aunin Aiki"/>
+					<Item id="50010" name="Ma'auni na Aiki na baya Alamu"/>
+					<Item id="50011" name="Ma'auni na Aiki Alamu na gaba"/>
+					<Item id="50005" name="Juya rikodin macro"/>
+					<Item id="50006" name="Kammala Tafarki"/>
+					<Item id="44042" name="Boye Layi"/>
+					<Item id="42040" name="Bude Duk Fayilolin Kwanan nan"/>
+					<Item id="42041" name="Ba komai Jerin Fayilolin Kwanan nan"/>
+					<Item id="48016" name="Gyara Gajerar hanya/Goge Macro..."/>
+					<Item id="48017" name="Gyara Gajerar hanya/Share Umarni..."/>
+
+					<Item id="11001" name="Windows..."/>
+					<Item id="11002" name="Sunan A zuwa Z"/>
+					<Item id="11003" name="Sunan Z zuwa A"/>
+					<Item id="11004" name="Hanyar A zuwa Z"/>
+					<Item id="11005" name="Hanyar Z zuwa A"/>
+					<Item id="11006" name="Nau'in A zuwa Z"/>
+					<Item id="11007" name="Rubuta Z zuwa A"/>
+					<Item id="11008" name="Tsawon Abun ciki Yana Haura"/>
+					<Item id="11009" name="Tsawon Abun ciki yana saukowa"/>
+					<Item id="11010" name="Canjin Lokaci Yana Hawa"/>
+					<Item id="11011" name="Saukarwa Lokacin Saukowa"/>
+				</Commands>
+			</Main>
+			<TabBar>
+				<Item CMDID="41003" name="Rufe"/>
+				<Item CMDID="0" name="Rufe Shafuka Masu Yawa"/>
+				<Item CMDID="41005" name="Rufe Duka AMMA Wannan"/>
+				<Item CMDID="41026" name="Rufe Duk AMMA Pinned"/>
+				<Item CMDID="41009" name="Rufe Duk Zuwa Hagu"/>
+				<Item CMDID="41018" name="Rufe Duk Zuwa Dama"/>
+				<Item CMDID="41024" name="Rufe Duk Baya Canza"/>
+				<Item CMDID="44048" name="Pin Tab" alternativeName="Cire Tab"/>
+				<Item CMDID="41006" name="Ajiye"/>
+				<Item CMDID="41008" name="Ajiye As..."/>
+				<Item CMDID="1" name="Bude cikin"/>
+				<Item CMDID="41019" name="Buɗe Jaka Mai Ƙunshe a cikin Explorer"/>
+				<Item CMDID="41020" name="Buɗe Jaka Mai Ƙunshe a cikin cmd"/>
+				<Item CMDID="41025" name="Buɗe Jaka Mai Ƙunshe A Matsayin Wurin Aiki"/>
+				<Item CMDID="41023" name="Buɗe a cikin Default Viewer"/>
+				<Item CMDID="41017" name="Sake suna..."/>
+				<Item CMDID="41016" name="Matsar zuwa Maimaita Bin"/>
+				<Item CMDID="41014" name="Sake saukewa"/>
+				<Item CMDID="41010" name="Buga..."/>
+				<Item CMDID="42028" name="Karanta-kawai a cikin Notepad++"/>
+				<Item CMDID="42033" name="Siffar Karatu-kawai a cikin Windows"/>
+				<Item CMDID="2" name="Kwafi zuwa Clipboard"/>
+				<Item CMDID="42029" name="Kwafi Cikakken Hanyar Fayil"/>
+				<Item CMDID="42030" name="Kwafi Sunan Fayil"/>
+				<Item CMDID="42031" name="Kwafi Dir na yanzu.Tafarki"/>
+				<Item CMDID="3" name="Takarda Matsar"/>
+				<Item CMDID="10005" name="Matsa zuwa Fara"/>
+				<Item CMDID="10006" name="Matsa zuwa Ƙarshe"/>
+				<Item CMDID="10001" name="Matsar zuwa Wani Duban"/>
+				<Item CMDID="10002" name="Clone zuwa Wani Duban"/>
+				<Item CMDID="10003" name="Matsar zuwa Sabon Misali"/>
+				<Item CMDID="10004" name="Bude a Sabon Misali"/>
+				<Item CMDID="4" name="Aiwatar da Launi zuwa Tab"/>
+				<Item CMDID="44111" name="Aiwatar da Launi 1"/>
+				<Item CMDID="44112" name="Aiwatar da Launi 2"/>
+				<Item CMDID="44113" name="Aiwatar da Launi 3"/>
+				<Item CMDID="44114" name="Aiwatar da Launi 4"/>
+				<Item CMDID="44115" name="Aiwatar da Launi 5"/>
+				<Item CMDID="44110" name="Cire Launi"/>
+			</TabBar>
+			<TrayIcon>
+				<Item id="43101" name="Kunna"/>
+				<Item id="43102" name="Sabo"/>
+				<Item id="43103" name="Sabo da Manna"/>
+				<Item id="43104" name="Bude..."/>
+				<Item id="43013" name="Nemo cikin Fayiloli..."/>
+				<Item id="43105" name="Rufe Tire icon"/>
+			</TrayIcon>
+		</Menu>
+
+		<Dialog>
+			<Find title="" titleFind="Nemo" titleReplace="Sauya" titleFindInFiles="Nemo cikin Fayiloli" titleFindInProjects="Nemo a cikin Ayyuka" titleMark="Markus">
+				<Item id="1" name="Nemo Na Gaba"/>
+				<Item id="1722" name="Hanyar Komawa"/>
+				<Item id="2" name="Kusa"/>
+				<Item id="1620" name="Nemo abin:"/>
+				<Item id="1603" name="Daidaita duka kalmar kawai"/>
+				<Item id="1604" name="Shari'ar wasa"/>
+				<Item id="1605" name="Magana akai-akai"/>
+				<Item id="1606" name="Kunna"/>
+				<Item id="1614" name="Kidaya"/>
+				<Item id="1615" name="Mark All"/>
+				<Item id="1616" name="Layin Alamar"/>
+				<Item id="1618" name="Cire don kowane bincike"/>
+				<Item id="1611" name="Sauya da:"/>
+				<Item id="1608" name="Sauya"/>
+				<Item id="1609" name="Sauya Duk"/>
+				<Item id="1687" name="Kan rasa hankali"/>
+				<Item id="1688" name="Kullum"/>
+				<Item id="1632" name="A cikin zabi"/>
+				<Item id="1633" name="Share duk alamomi"/>
+				<Item id="1635" name="Sauya Duk a cikin Duk Takardun Buɗe"/>
+				<Item id="1636" name="Nemo Duk Cikin Duk Takardun Buɗe"/>
+				<Item id="1654" name="Tace:"/>
+				<Item id="1655" name="Jagora:"/>
+				<Item id="1656" name="Nemo Duk"/>
+				<Item id="1658" name="A cikin dukkan manyan fayiloli"/>
+				<Item id="1659" name="A boye manyan fayiloli"/>
+				<Item id="1624" name="Yanayin bincike"/>
+				<Item id="1625" name="Al'ada"/>
+				<Item id="1626" name="Ƙaddara (\n, \r, \t, \0, \x...)"/>
+				<Item id="1660" name="Sauya a Fayiloli"/>
+				<Item id="1665" name="Sauya a cikin Ayyuka"/>
+				<Item id="1662" name="Kwamitin Ayyuka 1"/>
+				<Item id="1663" name="Tashar Ayyuka 2"/>
+				<Item id="1664" name="Tashar Ayyuka 3"/>
+				<Item id="1641" name="Nemo Duk a cikin Takardun Yanzu"/>
+				<Item id="1686" name="Gaskiya"/>
+				<Item id="1703" name=".matches sabon layi"/>
+				<Item id="1721" name="▲"/>
+				<Item id="1723" name="▼ Nemo Na Gaba"/>
+				<Item id="1725" name="Kwafi Alamar Rubutu"/>
+				<Menu>
+					<Item id="1726" name="⇅ Canja Nemo tare da Sauyawa"/>
+					<Item id="1727" name="⤵ Kwafi daga Nemo don Sauya"/>
+					<Item id="1728" name="⤴ Kwafi daga Sauya don Nemo"/>
+				</Menu>
+			</Find>
+
+			<IncrementalFind title="">
+				<Item id="1681" name="Nemo:"/>
+				<Item id="1685" name="Shari'ar wasa"/>
+				<Item id="1690" name="Haskaka duka"/>
+			</IncrementalFind>
+
+			<FindCharsInRange title="Nemo Haruffa a cikin Range...">
+				<Item id="2" name="Rufe"/>
+				<Item id="2901" name="Haruffa marasa ASCII (128-255)"/>
+				<Item id="2902" name="Haruffan ASCII (0–127)"/>
+				<Item id="2903" name="Kewayo na al'ada (0-255):"/>
+				<Item id="2906" name="Up"/>
+				<Item id="2907" name="Kasa"/>
+				<Item id="2908" name="Hanyar"/>
+				<Item id="2909" name="Kunna"/>
+				<Item id="2910" name="Nemo"/>
+			</FindCharsInRange>
+
+			<GoToLine title="Je zuwa...">
+				<Item id="2007" name="Layi"/>
+				<Item id="2008" name="Kashe"/>
+				<Item id="1" name="Go"/>
+				<Item id="2" name="Ba zan tafi ba"/>
+				<Item id="2004" name="Kuna nan:"/>
+				<Item id="2005" name="Kuna so ku je zuwa:"/>
+				<Item id="2006" name="Ba za ku iya wuce gaba ba:"/>
+			</GoToLine>
+
+			<Run title="Gudu...">
+				<Item id="1903" name="Shirin Gudu"/>
+				<Item id="1" name="Gudu"/>
+				<Item id="2" name="Soke"/>
+				<Item id="1904" name="Ajiye..."/>
+			</Run>
+
+			<MD5FromFilesDlg title="Ƙirƙirar narkar da MD5 daga fayiloli">
+				<Item id="1922" name="Zaɓi fayiloli don samar da MD5..."/>
+				<Item id="1924" name="Kwafi zuwa Clipboard"/>
+				<Item id="2" name="Rufe"/>
+			</MD5FromFilesDlg>
+
+			<MD5FromTextDlg title="Ƙirƙirar MD5 narkewa">
+				<Item id="1932" name="Bi da kowane layi a matsayin kirtani daban"/>
+				<Item id="1934" name="Kwafi zuwa Clipboard"/>
+				<Item id="2" name="Rufe"/>
+			</MD5FromTextDlg>
+
+			<SHA256FromFilesDlg title="Ƙirƙirar SHA-256 narkewa daga fayiloli">
+				<Item id="1922" name="Zaɓi fayiloli don samar da SHA-256..."/>
+				<Item id="1924" name="Kwafi zuwa Clipboard"/>
+				<Item id="2" name="Rufe"/>
+			</SHA256FromFilesDlg>
+
+			<SHA256FromTextDlg title="Ƙirƙirar SHA-256 narkewa">
+				<Item id="1932" name="Bi da kowane layi azaman keɓaɓɓen kirtani"/>
+				<Item id="1934" name="Kwafi zuwa Clipboard"/>
+				<Item id="2" name="Rufe"/>
+			</SHA256FromTextDlg>
+
+			<SHA1FromFilesDlg title="Ƙirƙirar narkar da SHA-1 daga fayiloli">
+				<Item id="1922" name="Zaɓi fayiloli don samar da SHA-1..."/>
+				<Item id="1924" name="Kwafi zuwa Clipboard"/>
+				<Item id="2" name="Rufe"/>
+			</SHA1FromFilesDlg>
+
+			<SHA1FromTextDlg title="Ƙirƙirar SHA-1 narkewa">
+				<Item id="1932" name="Bi da kowane layi a matsayin kirtani daban"/>
+				<Item id="1934" name="Kwafi zuwa Clipboard"/>
+				<Item id="2" name="Rufe"/>
+			</SHA1FromTextDlg>
+
+			<SHA512FromFilesDlg title="Ƙirƙirar SHA-512 narkewa daga fayiloli">
+				<Item id="1922" name="Zaɓi fayiloli don samar da SHA-512..."/>
+				<Item id="1924" name="Kwafi zuwa Clipboard"/>
+				<Item id="2" name="Rufe"/>
+			</SHA512FromFilesDlg>
+
+			<SHA512FromTextDlg title="Ƙirƙirar SHA-512 narkewa">
+				<Item id="1932" name="Bi da kowane layi a matsayin kirtani daban"/>
+				<Item id="1934" name="Kwafi zuwa Clipboard"/>
+				<Item id="2" name="Rufe"/>
+			</SHA512FromTextDlg>
+			<PluginsAdminDlg title="Plugins Admin" titleAvailable="Available" titleUpdates="Updates" titleInstalled="Installed" titleIncompatible="Incompatible">
+				<ColumnPlugin name="Plugin"/>
+				<ColumnVersion name="Shafin"/>
+				<Item id="5501" name="Bincike:"/>
+				<Item id="5503" name="Shigar"/>
+				<Item id="5504" name="Sabuntawa"/>
+				<Item id="5505" name="Cire"/>
+				<Item id="5508" name="Na Gaba"/>
+				<Item id="5509" name="Sigar lissafin plugin:"/>
+				<Item id="5511" name="Ma'ajiyar lissafin plugin"/>
+				<Item id="2" name="Rufe"/>
+			</PluginsAdminDlg>
+
+			<StyleConfig title="Mai tsara Salo">
+				<Item id="2" name="Soke"/>
+				<Item id="2301" name="Ajiye Kusa"/>
+				<Item id="2303" name="Gaskiya"/>
+				<Item id="2306" name="Zaɓi jigo:"/>
+				<SubDialog>
+					<Item id="2204" name="Karfafa"/>
+					<Item id="2205" name="Italic"/>
+					<Item id="2206" name="Launin gaba"/>
+					<Item id="2207" name="Kalar bango"/>
+					<Item id="2208" name="Sunan rubutu:"/>
+					<Item id="2209" name="Girman rubutu:"/>
+					<Item id="2211" name="Salo:"/>
+					<Item id="2212" name="Salon Launi"/>
+					<Item id="2213" name="Salon Harafi"/>
+					<Item id="2214" name="Default ext.:"/>
+					<Item id="2216" name="Mai amfani ext.:"/>
+					<Item id="2218" name="Karkashin Jagoranci"/>
+					<Item id="2219" name="Tsoffin kalmomin shiga"/>
+					<Item id="2221" name="Mahimman kalmomi masu amfani"/>
+					<Item id="2225" name="Harshe:"/>
+					<Item id="2226" name="Ƙaddamar da launi na gaba don kowane salo"/>
+					<Item id="2227" name="Ƙaddamar da launi na baya don kowane salo"/>
+					<Item id="2228" name="Tilasta zaɓin font ga kowane salo"/>
+					<Item id="2229" name="Tilasta girman girman font ga kowane salo"/>
+					<Item id="2230" name="Ƙarfafa zaɓi mai ƙarfi don kowane salo"/>
+					<Item id="2231" name="Tilasta zaɓin rubutun ga kowane salo"/>
+					<Item id="2232" name="Ƙaddamar da zaɓi don kowane salo"/>
+					<Item id="2234" name="Je zuwa saituna"/>
+					<!-- Don't translate "Global override" -->
+					<Item id="2235" name="Menene override na Duniya?"/>
+				</SubDialog>
+			</StyleConfig>
+
+			<ShortcutMapper title="Gajerun Taswira">
+				<Item id="2602" name="Gyara"/>
+				<Item id="2603" name="Share"/>
+				<Item id="2606" name="Share"/>
+				<Item id="2607" name="Tace:"/>
+				<Item id="1" name="Rufe"/>
+				<ColumnName name="Suna"/>
+				<ColumnShortcut name="Gajerar hanya"/>
+				<ColumnCategory name="Category"/>
+				<ColumnPlugin name="Plugin"/>
+				<MainMenuTab name="Babban menu"/>
+				<MacrosTab name="Macros"/>
+				<RunCommandsTab name="Gudun umarni"/>
+				<PluginCommandsTab name="Umarnin plugin"/>
+				<ScintillaCommandsTab name="Umarnin Scintilla"/>
+				<ConflictInfoOk name="Babu cin karo da gajeriyar hanya don wannan abun."/>
+				<ConflictInfoEditing name="Babu rikici ..."/>
+				<AboutCategory name="Game da"/>
+				<ModifyContextMenu name="Gyara"/>
+				<DeleteContextMenu name="Share"/>
+				<ClearContextMenu name="Share"/>
+				<MainCommandNames>
+					<Item id="41019" name="Bude babban fayil mai ƙunshe a cikin Explorer"/>
+					<Item id="41020" name="Bude babban fayil mai ƙunshe a cikin Command Prompt"/>
+					<Item id="41021" name="Mayar da Fayil ɗin da aka Rufe Kwanan nan"/>
+					<Item id="45001" name="Canza EOL zuwa Windows (CR LF)"/>
+					<Item id="45002" name="Canza EOL zuwa Unix (LF)"/>
+					<Item id="45003" name="Canza EOL zuwa Macintosh (CR)"/>
+					<Item id="43022" name="Salo duk ta amfani da salo na farko"/>
+					<Item id="43024" name="Salo duk ta amfani da salo na biyu"/>
+					<Item id="43026" name="Salo duk ta amfani da salo na 3"/>
+					<Item id="43028" name="Salo duk ta amfani da salo na hudu"/>
+					<Item id="43030" name="Salo duk ta amfani da salo na 5"/>
+					<Item id="43062" name="Salo na daya ta amfani da salo na farko"/>
+					<Item id="43063" name="Salo na daya ta amfani da salo na biyu"/>
+					<Item id="43064" name="Salo na daya ta hanyar amfani da salo na uku"/>
+					<Item id="43065" name="Salo na daya ta hanyar amfani da salo na hudu"/>
+					<Item id="43066" name="Salo na daya ta hanyar amfani da salo na 5"/>
+					<Item id="43023" name="Shafi Salo Na Farko"/>
+					<Item id="43025" name="Salo Na Biyu Tsallake"/>
+					<Item id="43027" name="Salo Na Uku Shafi"/>
+					<Item id="43029" name="Salo Na Hudu Shafi"/>
+					<Item id="43031" name="Share salo na 5"/>
+					<Item id="43032" name="Share dukkan salo"/>
+					<Item id="43033" name="Salo na baya na salo na farko"/>
+					<Item id="43034" name="Salo na baya na salo na biyu"/>
+					<Item id="43035" name="Salo na baya na salo na uku"/>
+					<Item id="43036" name="Salo na baya na salo na hudu"/>
+					<Item id="43037" name="Salo na baya na salo na 5"/>
+					<Item id="43038" name="Salon da ya gabata na Find Mark style"/>
+					<Item id="43039" name="Salo Na Gaba Na Salo Na Farko"/>
+					<Item id="43040" name="Salo Na Gaba Na Salo Na Biyu"/>
+					<Item id="43041" name="Salo Na Gaba Na Salo Na Uku"/>
+					<Item id="43042" name="Salo Na Gaba Na Salo Na Hudu"/>
+					<Item id="43043" name="Salo Na Gaba Na Salo Na Biyar"/>
+					<Item id="43044" name="Salo na gaba na Nemo salon Mark"/>
+					<Item id="43055" name="Kwafi Salon Rubutun Salo Na Farko"/>
+					<Item id="43056" name="Kwafi Salon Rubutun Salo Na Biyu"/>
+					<Item id="43057" name="Kwafi Salon Rubutu Na Salo Na Uku"/>
+					<Item id="43058" name="Kwafi Salon Rubutun Salo Na Hudu"/>
+					<Item id="43059" name="Kwafi Salon Rubutun Salo Na Biyar"/>
+					<Item id="43060" name="Kwafi Salon Rubutun Duk Salo"/>
+					<Item id="43061" name="Kwafi Salon Rubutun Nemo Salon Alama"/>
+					<Item id="44100" name="Duba fayil na yanzu a Firefox"/>
+					<Item id="44101" name="Duba fayil na yanzu a cikin Chrome"/>
+					<Item id="44103" name="Duba fayil na yanzu a cikin IE"/>
+					<Item id="44102" name="Duba fayil na yanzu a Edge"/>
+					<Item id="50003" name="Canja zuwa takardar da ta gabata"/>
+					<Item id="50004" name="Canja zuwa takarda na gaba"/>
+					<Item id="44051" name="Ninke Level 1"/>
+					<Item id="44052" name="Ninke Level 2"/>
+					<Item id="44053" name="Ninke Level 3"/>
+					<Item id="44054" name="Ninke Level 4"/>
+					<Item id="44055" name="Ninke Level 5"/>
+					<Item id="44056" name="Ninke Level 6"/>
+					<Item id="44057" name="Ninke Level 7"/>
+					<Item id="44058" name="Ninke Level 8"/>
+					<Item id="44061" name="Bude Level 1"/>
+					<Item id="44062" name="Bude Level 2"/>
+					<Item id="44063" name="Bude Level 3"/>
+					<Item id="44064" name="Bude Level 4"/>
+					<Item id="44065" name="Bude Level 5"/>
+					<Item id="44066" name="Bude Level 6"/>
+					<Item id="44067" name="Bude Level 7"/>
+					<Item id="44068" name="Bude Level 8"/>
+					<Item id="44081" name="Canza Panel Project 1"/>
+					<Item id="44082" name="Canza Panel Project 2"/>
+					<Item id="44083" name="Canza Panel Project 3"/>
+					<Item id="44085" name="Juya Jaka azaman Wurin Aiki"/>
+					<Item id="44080" name="Juya Taswirar Takardu"/>
+					<Item id="44070" name="Juya Jerin Takardu"/>
+					<Item id="44084" name="Juya Jerin Ayyuka"/>
+					<Item id="50005" name="Juya rikodin macro"/>
+					<Item id="44104" name="Canja zuwa Panel Project 1"/>
+					<Item id="44105" name="Canja zuwa Panel Project 2"/>
+					<Item id="44106" name="Canja zuwa Panel na Ayyuka 3"/>
+					<Item id="44107" name="Canja zuwa Jaka azaman Wurin Aiki"/>
+					<Item id="44109" name="Canja zuwa Jerin Takardu"/>
+					<Item id="44108" name="Canja zuwa Jerin Ayyuka"/>
+					<Item id="44110" name="Cire Launin Tab"/>
+					<Item id="44111" name="Aiwatar da Launin Tab 1"/>
+					<Item id="44112" name="Aiwatar da launi Tab 2"/>
+					<Item id="44113" name="Aiwatar da Launin Tab 3"/>
+					<Item id="44114" name="A shafa Launi na 4"/>
+					<Item id="44115" name="Aiwatar da launi Tab 5"/>
+					<Item id="11002" name="Tsare da Suna A zuwa Z"/>
+					<Item id="11003" name="Tsara da Sunan Z zuwa A"/>
+					<Item id="11004" name="Tsara Ta Hanyar A zuwa Z"/>
+					<Item id="11005" name="Tsara ta Hanyar Z zuwa A"/>
+					<Item id="11006" name="Nau'in A zuwa Z"/>
+					<Item id="11007" name="Tsara ta Nau'in Z zuwa A"/>
+					<Item id="11008" name="Tsare ta hanyar Tsawon Abun ciki yana Hauwa"/>
+					<Item id="11009" name="Tsare ta hanyar Tsawon Abun ciki yana saukowa"/>
+				</MainCommandNames>
+			</ShortcutMapper>
+			<ShortcutMapperSubDialg title="Gajerar hanya">
+				<Item id="1" name="OK"/>
+				<Item id="2" name="Soke"/>
+				<Item id="5006" name="Suna"/>
+				<Item id="5008" name="Ƙara"/>
+				<Item id="5009" name="Cire"/>
+				<Item id="5010" name="Aiwatar"/>
+				<Item id="5007" name="Wannan zai cire gajeriyar hanya daga wannan umarni"/>
+				<Item id="5012" name="AN SAMU RIKICI!"/>
+			</ShortcutMapperSubDialg>
+			<UserDefine title="Ƙayyadaddun mai amfani">
+				<Item id="20001" name="Doka"/>
+				<Item id="20002" name="Sake suna"/>
+				<Item id="20003" name="Ƙirƙiri sabuwa..."/>
+				<Item id="20004" name="Cire"/>
+				<Item id="20005" name="Ajiye As..."/>
+				<Item id="20007" name="Harshen mai amfani"/>
+				<Item id="20009" name="Ext.:"/>
+				<Item id="20012" name="Yi watsi da harka"/>
+				<Item id="20011" name="Gaskiya"/>
+				<Item id="20015" name="Shigowa..."/>
+				<Item id="20016" name="Fitarwa..."/>
+				<Item id="20017" name="Bugawa"/>
+				<StylerDialog title="Maganar Styler">
+					<Item id="25030" name="Zaɓuɓɓukan rubutu"/>
+					<Item id="25006" name="Launin gaba"/>
+					<Item id="25007" name="Kalar bango"/>
+					<Item id="25031" name="Suna:"/>
+					<Item id="25032" name="Girma:"/>
+					<Item id="25001" name="Karfafa"/>
+					<Item id="25002" name="Italic"/>
+					<Item id="25003" name="Karkashin Jagoranci"/>
+					<Item id="25029" name="Gurasa"/>
+					<Item id="25008" name="Iyaka 1"/>
+					<Item id="25009" name="Iyaka 2"/>
+					<Item id="25010" name="Iyaka 3"/>
+					<Item id="25011" name="Iyaka 4"/>
+					<Item id="25012" name="Iyaka 5"/>
+					<Item id="25013" name="Iyaka 6"/>
+					<Item id="25014" name="Iyaka 7"/>
+					<Item id="25015" name="Iyaka 8"/>
+					<Item id="25018" name="Muhimman kalmomi 1"/>
+					<Item id="25019" name="Muhimman kalmomi 2"/>
+					<Item id="25020" name="Muhimman kalmomi 3"/>
+					<Item id="25021" name="Muhimman kalmomi 4"/>
+					<Item id="25022" name="Muhimman kalmomi 5"/>
+					<Item id="25023" name="Muhimman kalmomi 6"/>
+					<Item id="25024" name="Muhimman kalmomi 7"/>
+					<Item id="25025" name="Muhimman kalmomi 8"/>
+					<Item id="25016" name="Sharhi"/>
+					<Item id="25017" name="Layin sharhi"/>
+					<Item id="25026" name="Mai aiki 1"/>
+					<Item id="25027" name="Mai aiki 2"/>
+					<Item id="25028" name="Lambobi"/>
+					<Item id="25033" name="Fassara"/>
+					<Item id="25034" name="Fassara"/>
+					<Item id="1" name="OK"/>
+					<Item id="2" name="Soke"/>
+				</StylerDialog>
+				<Folder title="Tsohuwar Jaka">
+					<Item id="21101" name="Salo na asali"/>
+					<Item id="21102" name="Styler"/>
+					<Item id="21103" name="Taimakon Harsunan Mai Amfani akan layi"/>
+					<Item id="21105" name="Takardun"/>
+					<Item id="21106" name="Ninka m (ninka layukan wofi kuma)"/>
+					<Item id="21220" name="Lanƙwasa a cikin code 1 style"/>
+					<Item id="21224" name="Bude:"/>
+					<Item id="21225" name="Tsakiya:"/>
+					<Item id="21226" name="Rufe:"/>
+					<Item id="21227" name="Styler"/>
+					<Item id="21320" name="Lanƙwasa cikin salo na lamba 2 (masu rarrabawa da ake buƙata)"/>
+					<Item id="21324" name="Bude:"/>
+					<Item id="21325" name="Tsakiya:"/>
+					<Item id="21326" name="Rufe:"/>
+					<Item id="21327" name="Styler"/>
+					<Item id="21420" name="Nadewa cikin salon sharhi"/>
+					<Item id="21424" name="Bude:"/>
+					<Item id="21425" name="Tsakiya:"/>
+					<Item id="21426" name="Rufe:"/>
+					<Item id="21427" name="Styler"/>
+				</Folder>
+				<Keywords title="Jerin Mahimman kalmomi">
+					<Item id="22101" name="Rukuni na daya"/>
+					<Item id="22201" name="Rukuni Na Biyu"/>
+					<Item id="22301" name="Rukuni Na Uku"/>
+					<Item id="22401" name="Rukuni Na Hudu"/>
+					<Item id="22451" name="Rukuni Na Biyar"/>
+					<Item id="22501" name="Rukuni Na Shida"/>
+					<Item id="22551" name="Rukuni Na Bakwai"/>
+					<Item id="22601" name="Rukuni Na 8"/>
+					<Item id="22121" name="Yanayin prefix"/>
+					<Item id="22221" name="Yanayin prefix"/>
+					<Item id="22321" name="Yanayin prefix"/>
+					<Item id="22421" name="Yanayin prefix"/>
+					<Item id="22471" name="Yanayin prefix"/>
+					<Item id="22521" name="Yanayin prefix"/>
+					<Item id="22571" name="Yanayin prefix"/>
+					<Item id="22621" name="Yanayin prefix"/>
+					<Item id="22122" name="Styler"/>
+					<Item id="22222" name="Styler"/>
+					<Item id="22322" name="Styler"/>
+					<Item id="22422" name="Styler"/>
+					<Item id="22472" name="Styler"/>
+					<Item id="22522" name="Styler"/>
+					<Item id="22572" name="Styler"/>
+					<Item id="22622" name="Styler"/>
+				</Keywords>
+				<Comment title="Lambar Sharhi">
+					<Item id="23003" name="Matsayin sharhin layi"/>
+					<Item id="23004" name="Izinin a ko'ina"/>
+					<Item id="23005" name="Karfi a farkon layin"/>
+					<Item id="23006" name="Bada izinin gabacin sararin samaniya"/>
+					<Item id="23001" name="Bada damar naɗewa da sharhi"/>
+					<Item id="23326" name="Styler"/>
+					<Item id="23323" name="Bude"/>
+					<Item id="23324" name="Ci gaba da hali"/>
+					<Item id="23325" name="Rufe"/>
+					<Item id="23301" name="Salon layi na sharhi"/>
+					<Item id="23124" name="Styler"/>
+					<Item id="23122" name="Bude"/>
+					<Item id="23123" name="Rufe"/>
+					<Item id="23101" name="Salon sharhi"/>
+					<Item id="23201" name="Salon lamba"/>
+					<Item id="23220" name="Styler"/>
+					<Item id="23230" name="Gabatarwa 1"/>
+					<Item id="23232" name="Gabatarwa 2"/>
+					<Item id="23234" name="Karin bayani 1"/>
+					<Item id="23236" name="Kari na 2"/>
+					<Item id="23238" name="Karin Bayani na 1"/>
+					<Item id="23240" name="Karin Bayani na 2"/>
+					<Item id="23242" name="Rage:"/>
+					<Item id="23244" name="Mai raba Decimal"/>
+					<Item id="23245" name="Dot"/>
+					<Item id="23246" name="Wakafi"/>
+					<Item id="23247" name="Duka"/>
+				</Comment>
+				<Operator title="Iyakar Ma'aikata">
+					<Item id="24101" name="Salon Ma'aikata"/>
+					<Item id="24113" name="Styler"/>
+					<Item id="24116" name="Masu aiki 1"/>
+					<Item id="24117" name="Masu aiki 2 (masu rarrabawa ana buƙata)"/>
+					<Item id="24201" name="Salo Mai iyaka 1"/>
+					<Item id="24220" name="Bude:"/>
+					<Item id="24221" name="Gudu:"/>
+					<Item id="24222" name="Rufe:"/>
+					<Item id="24223" name="Styler"/>
+					<Item id="24301" name="Salo Mai iyaka 2"/>
+					<Item id="24320" name="Bude:"/>
+					<Item id="24321" name="Gudu:"/>
+					<Item id="24322" name="Rufe:"/>
+					<Item id="24323" name="Styler"/>
+					<Item id="24401" name="Salo Mai Iyaka 3"/>
+					<Item id="24420" name="Bude:"/>
+					<Item id="24421" name="Gudu:"/>
+					<Item id="24422" name="Rufe:"/>
+					<Item id="24423" name="Styler"/>
+					<Item id="24451" name="Salo Mai Iyaka 4"/>
+					<Item id="24470" name="Bude:"/>
+					<Item id="24471" name="Gudu:"/>
+					<Item id="24472" name="Rufe:"/>
+					<Item id="24473" name="Styler"/>
+					<Item id="24501" name="Matsakaici 5 salo"/>
+					<Item id="24520" name="Bude:"/>
+					<Item id="24521" name="Gudu:"/>
+					<Item id="24522" name="Rufe:"/>
+					<Item id="24523" name="Styler"/>
+					<Item id="24551" name="Matsakaici 6 salo"/>
+					<Item id="24570" name="Bude:"/>
+					<Item id="24571" name="Gudu:"/>
+					<Item id="24572" name="Rufe:"/>
+					<Item id="24573" name="Styler"/>
+					<Item id="24601" name="Silo 7 mai iyaka"/>
+					<Item id="24620" name="Bude:"/>
+					<Item id="24621" name="Gudu:"/>
+					<Item id="24622" name="Rufe:"/>
+					<Item id="24623" name="Styler"/>
+					<Item id="24651" name="Salo Mai Iyaka 8"/>
+					<Item id="24670" name="Bude:"/>
+					<Item id="24671" name="Gudu:"/>
+					<Item id="24672" name="Rufe:"/>
+					<Item id="24673" name="Styler"/>
+				</Operator>
+			</UserDefine>
+			<Preference title="Zabi">
+				<Item id="6001" name="Rufe"/>
+				<Global title="Gabaɗaya">
+					<Item id="6123" name="Matsakaici"/>
+					<Item id="6131" name="Menu"/>
+					<Item id="6122" name="Boye (amfani da maɓallin Alt ko F10 don kunnawa)"/>
+					<Item id="6132" name="Boye gajerun hanyoyin dama ＋ ▼ ✕"/>
+					<Item id="6133" name="Matsayin Bar"/>
+					<Item id="6134" name="Boye"/>
+				</Global>
+
+				<Toolbar title="Toolbar">
+					<Item id="6102" name="Boye"/>
+					<Item id="6103" name="M UI: ƙarami"/>
+					<Item id="6104" name="UI mai fa'ida: babba"/>
+					<Item id="6129" name="Cika Fluent UI: ƙarami"/>
+					<Item id="6130" name="Cika Fluent UI: babba"/>
+					<Item id="6105" name="Madaidaitan gumaka: ƙananan"/>
+					<Item id="6011" name="Launi"/>
+					<Item id="6012" name="Cikakku"/>
+					<Item id="6013" name="Bangaranci"/>
+					<Item id="6014" name="Zabin launi"/>
+					<Item id="6015" name="Default"/>
+					<Item id="6016" name="Ja"/>
+					<Item id="6017" name="Kore"/>
+					<Item id="6018" name="Blue"/>
+					<Item id="6019" name="Purple"/>
+					<Item id="6020" name="Cyan"/>
+					<Item id="6021" name="Zaitun"/>
+					<Item id="6022" name="Yellow"/>
+					<Item id="6023" name="Lafazin Tsarin"/>
+					<Item id="6024" name="Custom"/>
+				</Toolbar>
+
+				<Tabbar title="Tab Bar">
+					<Item id="6107" name="Rage"/>
+					<Item id="6108" name="Kulle (ba ja da sauke)"/>
+					<Item id="6109" name="Canja launi shafin mara aiki"/>
+					<Item id="6110" name="Zana mashaya mai launi akan shafin aiki"/>
+					<Item id="6111" name="Nuna maɓallan akan shafuka marasa aiki"/>
+					<Item id="6112" name="Nuna makullin kusa"/>
+					<Item id="6113" name="Danna sau biyu don rufe daftarin aiki"/>
+					<Item id="6115" name="Kunna fasalin shafin pin"/>
+					<Item id="6135" name="Nuna maɓallan manne kawai"/>
+					<Item id="6118" name="Boye"/>
+					<Item id="6119" name="Layi da yawa"/>
+					<Item id="6120" name="A tsaye"/>
+					<Item id="6121" name="Fita a kusa da shafin karshe"/>
+					<Item id="6128" name="Madadin gumaka"/>
+					<Item id="6125" name="Halayyar"/>
+					<Item id="6126" name="Duba ji"/>
+					<Item id="6136" name="Max.Tsawon lakabin tab:"/>
+				</Tabbar>
+
+				<Scintillas title="Gyaran 1">
+					<Item id="6216" name="Saitunan Kula"/>
+					<Item id="6217" name="Nisa:"/>
+					<Item id="6219" name="Yawan kiftawa:"/>
+					<Item id="6221" name="F"/>
+					<Item id="6222" name="S"/>
+					<Item id="6246" name="Sanya umarnin nadawa/bayyana matakin yanzu ana iya jujjuyawa"/>
+					<Item id="6227" name="Layin Layi"/>
+					<Item id="6228" name="Default"/>
+					<Item id="6229" name="Daidaitawa"/>
+					<Item id="6230" name="Indent"/>
+					<Item id="6234" name="Kashe fasalin gungurawa na ci gaba saboda matsalar taɓarɓarewa"/>
+					<Item id="6215" name="Kunna rubutu mai santsi"/>
+					<Item id="6236" name="Kunna gungurawa sama da layin ƙarshe"/>
+					<Item id="6239" name="Ci gaba da zaɓi lokacin danna dama a waje na zaɓi"/>
+					<Item id="6245" name="Kunna sararin sararin samaniya"/>
+					<Item id="6214" name="Kunna Kwafi/Yanke Layi ba tare da zaɓi ba"/>
+					<Item id="6225" name="Aiwatar da launi na al'ada zuwa zaɓaɓɓen rubutun gaba"/>
+					<Item id="6651" name="Alamar Layin Yanzu"/>
+					<Item id="6652" name="Babu"/>
+					<Item id="6653" name="Bayanin Bayani"/>
+					<Item id="6654" name="Frame"/>
+					<Item id="6655" name="Nisa:"/>
+				</Scintillas>
+
+				<Scintillas2 title="Gyara 2">
+					<Item id="6521" name="Multi-Editing"/>
+					<Item id="6522" name="Kunna Multi-Editing (Ctrl+Mouse danna/zaɓi)"/>
+					<Item id="6523" name="Kunna Zaɓin Rukunin Rubuce-rubucen zuwa Gyarawa da yawa"/>
+					<Item id="6247" name="EOL (CRLF)"/><!-- Don't translate "(CRLF)" -->
+					<Item id="6248" name="Default"/>
+					<Item id="6249" name="Rubutun Filaye"/>
+					<Item id="6250" name="Launi na Musamman"/>
+					<Item id="6252" name="Haruffa Mara Buga"/>
+					<Item id="6260" name="Bayyanar"/>
+					<Item id="6254" name="Gajarce"/>
+					<Item id="6255" name="Codepoint"/>
+					<Item id="6256" name="Launi na Musamman"/>
+					<Item id="6258" name="Aiwatar da saitunan bayyanar zuwa C0, C1 Unicode EOL"/>
+					<Item id="6259" name="Hana halayen sarrafawa (lambar C0) buga cikin daftarin aiki"/>
+				</Scintillas2>
+
+				<DarkMode title="Yanayin Duhu">
+					<Item id="7131" name="Yanayin Haske"/>
+					<Item id="7132" name="Yanayin duhu"/>
+					<Item id="7133" name="Bi Windows"/>
+					<Item id="7102" name="Bakar"/>
+					<Item id="7103" name="Ja"/>
+					<Item id="7104" name="Kore"/>
+					<Item id="7105" name="Blue"/>
+					<Item id="7107" name="Purple"/>
+					<Item id="7108" name="Cyan"/>
+					<Item id="7109" name="Zaitun"/>
+					<Item id="7115" name="Musamman"/>
+					<Item id="7116" name="Bayanin abun ciki"/>
+					<Item id="7117" name="Abu mai zafi"/>
+					<Item id="7118" name="Bayanin sarrafawa"/>
+					<Item id="7119" name="Bayanan maganganu"/>
+					<Item id="7120" name="Kuskure"/>
+					<Item id="7121" name="Rubutu"/>
+					<Item id="7122" name="Dubi rubutu"/>
+					<Item id="7123" name="An kashe rubutu"/>
+					<Item id="7124" name="Gaba"/>
+					<Item id="7125" name="Link"/>
+					<Item id="7126" name="Gashi mai haske"/>
+					<Item id="7127" name="An kashe Edge"/>
+					<Item id="7130" name="Sake saita"/>
+					<Item id="7135" name="Sautuna"/>
+				</DarkMode>
+
+				<MarginsBorderEdge title="Margins/Border/Lege">
+					<Item id="6201" name="Ninka Margin Salon"/>
+					<Item id="6202" name="Sauƙaƙe"/>
+					<Item id="6203" name="Kibiya"/>
+					<Item id="6204" name="Bishiyar da'ira"/>
+					<Item id="6205" name="Akwatin itace"/>
+					<Item id="6226" name="Babu"/>
+					<Item id="6291" name="Layin Layi"/>
+					<Item id="6206" name="Nuna"/>
+					<Item id="6292" name="Tsayin faɗin"/>
+					<Item id="6293" name="Tsayin nisa"/>
+					<Item id="6207" name="Nuna alamar shafi"/>
+					<Item id="6295" name="Canja Tarihi"/>
+					<Item id="6223" name="Nuna a gefe"/>
+					<Item id="6296" name="Nuna a cikin rubutu"/>
+					<Item id="6211" name="Saitunan Gefen Tsaye"/>
+					<Item id="6213" name="Yanayin bango"/>
+					<Item id="6231" name="Fadin Iyaka"/>
+					<Item id="6235" name="Babu baki"/>
+					<Item id="6208" name="Padding"/>
+					<Item id="6209" name="Hagu"/>
+					<Item id="6210" name="Dama"/>
+					<Item id="6212" name="Rarraba Kyauta"/>
+				</MarginsBorderEdge>
+
+				<NewDoc title="Sabon Takardu">
+					<Item id="6401" name="Tsarin (Layin Ƙarshen)"/>
+					<Item id="6402" name="Windows (CR LF)"/>
+					<Item id="6403" name="Unix (LF)"/>
+					<Item id="6404" name="Macintosh (CR)"/>
+					<Item id="6405" name="Encoding"/>
+					<Item id="6406" name="ANSI"/>
+					<Item id="6407" name="UTF-8"/>
+					<Item id="6408" name="UTF-8 tare da BOM"/>
+					<Item id="6409" name="UTF-16 Babban Endian tare da BOM"/>
+					<Item id="6410" name="UTF-16 Ƙananan Endian tare da BOM"/>
+					<Item id="6411" name="Tsoffin harshe:"/>
+					<Item id="6419" name="Sabon Takardu"/>
+					<Item id="6420" name="Aiwatar don buɗe fayilolin ANSI"/>
+					<Item id="6432" name="Koyaushe buɗe sabon daftarin aiki ƙari a farawa"/>
+					<Item id="6433" name="Yi amfani da layin farko na daftarin aiki azaman sunan shafin mara taken"/>
+				</NewDoc>
+
+				<DefaultDir title="Default Directory">
+					<Item id="6413" name="Buɗewa/Ajiye Tsohuwar Jagorar Fayil"/>
+					<Item id="6414" name="Bi daftarin aiki na yanzu"/>
+					<Item id="6415" name="Tuna littafin da aka yi amfani da shi na ƙarshe"/>
+					<Item id="6431" name="Bude duk fayilolin babban fayil maimakon ƙaddamar da Jaka azaman Wurin aiki akan sauke babban fayil"/>
+				</DefaultDir>
+
+				<FileAssoc title="Ƙungiyar Fayil">
+					<Item id="4008" name="Da fatan za a fita daga Notepad++ kuma sake kunna Notepad++ a yanayin Mai gudanarwa don amfani da wannan fasalin."/>
+					<Item id="4009" name="Ƙwayoyin tallafi:"/>
+					<Item id="4010" name="Sabuntawa mai rijista:"/>
+				</FileAssoc>
+
+
+				<Language title="Harshe">
+					<Item id="6505" name="Abubuwan da ake samu"/>
+					<Item id="6506" name="Abubuwan da aka kashe"/>
+					<Item id="6507" name="Sanya menu na harshe mai ƙarfi"/>
+					<Item id="6508" name="Menun Harshe"/>
+					<Item id="6335" name="Bi da koma baya a matsayin halin tserewa ga SQL"/>
+				</Language>
+
+				<Indentation title="Shiga">
+					<Item id="7161" name="Shigar da atomatik"/>
+					<Item id="7162" name="Babu"/>
+					<Item id="7163" name="Basic"/>
+					<Item id="7164" name="Na ci gaba"/>
+					<Item id="6301" name="Saitunan Ciki"/>
+					<Item id="6302" name="Hali (s) sarari"/>
+					<Item id="6303" name="Girman ciki:"/>
+					<Item id="6310" name="Indent ta amfani da:"/>
+					<Item id="6311" name="Halin Tab"/>
+					<Item id="6510" name="Yi amfani da ƙima ta asali"/>
+					<Item id="6512" name="Maɓallin sararin baya baya ɓoyewa maimakon cire sarari ɗaya"/>
+				</Indentation>
+
+				<Highlighting title="Haskakawa">
+					<Item id="6351" name="Salo Duk abubuwan da suka faru na Token"/>
+					<Item id="6352" name="Shari'ar wasa"/>
+					<Item id="6353" name="Daidaita duka kalmar kawai"/>
+					<Item id="6333" name="Haskakawa Mai Wayo"/>
+					<Item id="6326" name="Kunna"/>
+					<Item id="6354" name="Daidaitawa"/>
+					<Item id="6332" name="Shari'ar wasa"/>
+					<Item id="6338" name="Daidaita duka kalmar kawai"/>
+					<Item id="6339" name="Yi amfani da Nemo saitunan maganganu"/>
+					<Item id="6340" name="Haska wani ra'ayi"/>
+					<Item id="6329" name="Haskaka Tags masu daidaitawa"/>
+					<Item id="6327" name="Kunna"/>
+					<Item id="6328" name="Haskaka halayen halayen"/>
+					<Item id="6330" name="Haskaka sharhi/php/asp zone"/>
+				</Highlighting>
+
+				<Print title="Buga">
+					<Item id="6601" name="Buga lambar layin"/>
+					<Item id="6602" name="Zaɓuɓɓukan Launi"/>
+					<Item id="6603" name="WYSIWYG"/>
+					<Item id="6604" name="Juyawa"/>
+					<Item id="6605" name="Bakar fata"/>
+					<Item id="6606" name="Babu kalar bango"/>
+					<Item id="6607" name="Saitunan Margin (Raka'a:mm)"/>
+					<Item id="6612" name="Hagu"/>
+					<Item id="6613" name="Top"/>
+					<Item id="6614" name="Dama"/>
+					<Item id="6615" name="Kasa"/>
+					<Item id="6706" name="Karfafa"/>
+					<Item id="6707" name="Italic"/>
+					<Item id="6708" name="Kai"/>
+					<Item id="6709" name="Bangaren Hagu"/>
+					<Item id="6710" name="Bangaren tsakiya"/>
+					<Item id="6711" name="Bangaren Dama"/>
+					<Item id="6717" name="Karfafa"/>
+					<Item id="6718" name="Italic"/>
+					<Item id="6719" name="Kafa"/>
+					<Item id="6720" name="Bangaren Hagu"/>
+					<Item id="6721" name="Bangaren tsakiya"/>
+					<Item id="6722" name="Bangaren Dama"/>
+					<Item id="6723" name="Ƙara"/>
+					<ComboBox id="6724">
+						<Element name="Cikakken sunan fayil hanya"/>
+						<Element name="Sunan fayil"/>
+						<Element name="Fayil directory"/>
+						<Element name="Shafi"/>
+						<Element name="Tsarin kwanan wata"/>
+						<Element name="Tsarin kwanan wata"/>
+						<Element name="Lokaci"/>
+					</ComboBox>
+					<Item id="6725" name="Mai canzawa:"/>
+					<Item id="6727" name="Anan nuna saitunanku masu canzawa"/>
+					<Item id="6728" name="Kai da Kafa"/>
+				</Print>
+
+				<Searching title="Neman">
+					<Item id="6902" name="Yi amfani da rubutu guda ɗaya a Nemo maganganu (Bukatar sake kunna Notepad++)"/>
+					<Item id="6903" name="Nemo maganganu yana buɗewa bayan binciken da ke fitowa zuwa taga sakamako"/>
+					<Item id="6904" name="Tabbatar da Sauya Duk a cikin Duk Takardun Buɗe"/>
+					<Item id="6905" name="Sauya: Kar a matsa zuwa abin da ke biyo baya"/>
+					<Item id="6906" name="Tagan sakamakon bincike: nuna shigarwa ɗaya kawai akan kowane layin da aka samo idan zai yiwu"/>
+					<Item id="6907" name="Lokacin Nemo Magana aka Kira"/>
+					<Item id="6908" name="Cika Filin Nemo tare da Zaɓin Rubutun"/>
+					<Item id="6909" name="Zaɓi Kalma Ƙarƙashin Kulawa lokacin da Ba'a Zaɓan Komai"/>
+					<Item id="6910" name="Mafi qarancin Girma don dubawa ta atomatik &quot;A cikin zaɓi&quot;:"/>
+					<Item id="6913" name="Cika Nemo Filin Fayilolin Fayiloli Dangane da Takardu Mai Aiki"/>
+					<Item id="6916" name=": Matsakaicin Haruffa don Cika Filin Neman Kai tsaye daga Zaɓi"/>
+				</Searching>
+
+				<RecentFilesHistory title="Tarihin Fayilolin Kwanan nan">
+					<Item id="6304" name="Tarihin Fayilolin Kwanan nan"/>
+					<Item id="6306" name="Max.adadin shigarwar:"/>
+					<Item id="6305" name="Kada ku duba a lokacin ƙaddamarwa"/>
+					<Item id="6429" name="Nuna"/>
+					<Item id="6424" name="A Submenu"/>
+					<Item id="6425" name="Sunan Fayil Kawai"/>
+					<Item id="6426" name="Cikakken Hanyar Sunan Fayil"/>
+					<Item id="6427" name="Keɓance Matsakaicin Tsayin:"/>
+				</RecentFilesHistory>
+
+				<Backup title="Ajiyayyen">
+					<Item id="6817" name="Hoton zama da madadin lokaci-lokaci"/>
+					<Item id="6818" name="Kunna hoton zaman da kuma madadin lokaci-lokaci"/>
+					<Item id="6819" name="Haɓaka madadin akan gyare-gyare a kowane"/>
+					<Item id="6821" name="seconds"/>
+					<Item id="6822" name="Hanyar Ajiyayyen:"/>
+					<Item id="6309" name="Tuna zaman yau don ƙaddamarwa na gaba"/>
+					<Item id="6825" name="Tuna fayilolin da ba za su iya shiga ba daga zaman da ya gabata"/>
+					<Item id="6801" name="Ajiye akan ajiyewa"/>
+					<Item id="6315" name="Babu"/>
+					<Item id="6316" name="Sauƙaƙe madadin"/>
+					<Item id="6317" name="Ajiyayyen Verbose"/>
+					<Item id="6804" name="Littafin Ajiyayyen Custom"/>
+					<Item id="6803" name="Littafin:"/>
+				</Backup>
+
+				<AutoCompletion title="Kammala Kai tsaye">
+					<Item id="6807" name="Kammala Kai tsaye"/>
+					<Item id="6808" name="Kunna cikawa ta atomatik akan kowane shigarwa"/>
+					<Item id="6809" name="Aiki Kammala"/>
+					<Item id="6810" name="Kammala Kalma"/>
+					<Item id="6816" name="Aiki da kammala kalma"/>
+					<Item id="6869" name="Saka Zabi"/>
+					<Item id="6870" name="TAB"/><!-- TAB key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6871" name="SHIGA"/><!-- ENTER key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6824" name="Yi watsi da lambobi"/>
+					<Item id="6811" name="Daga"/>
+					<Item id="6813" name="th hali"/>
+					<Item id="6872" name="Yi lissafin kammalawa ta atomatik a takaice"/>
+					<Item id="6815" name="Alamomin aiki suna nuni akan shigarwa"/>
+					<Item id="6851" name="Saka Kai tsaye"/>
+					<Item id="6857" name="html/xml tag"/>
+					<Item id="6858" name="Bude"/>
+					<Item id="6859" name="Rufe"/>
+					<Item id="6860" name="Ma'aurata guda 1:"/>
+					<Item id="6863" name="Ma'aurata guda 2:"/>
+					<Item id="6866" name="Ma'aurata guda 3:"/>
+				</AutoCompletion>
+
+				<MultiInstance title="Kwanan Matsaloli da yawa">
+					<Item id="6151" name="Saitunan misali da yawa *"/>
+					<Item id="6152" name="Bude zama a cikin sabon misali (kuma ajiye zaman ta atomatik lokacin fita)"/>
+					<Item id="6153" name="Koyaushe cikin yanayin misali da yawa"/>
+					<Item id="6154" name="Default (mono-misali)"/>
+					<Item id="6155" name="* Gyaran wannan saitin yana buƙatar sake kunna Notepad++"/>
+					<Item id="6171" name="Keɓance Lokacin Saka Kwanan Wata"/>
+					<Item id="6175" name="Juya tsarin lokacin kwanan wata (gajerun dogon tsari)"/>
+					<Item id="6172" name="Tsarin al'ada:"/>
+					<Item id="6181" name="Jihar Panel da [-nosession] *"/>
+					<Item id="6182" name="Tuna yanayin panel (panel yana buɗewa) a wasu lokuta (yanayin misali da yawa) ko lokacin amfani da sigar layin umarni [-nosession]"/>
+					<Item id="6183" name="Tarihin allo"/>
+					<Item id="6184" name="Jerin Takardu"/>
+					<Item id="6185" name="Tambarin Haruffa"/>
+					<Item id="6186" name="Jaka azaman Wurin Aiki"/>
+					<Item id="6187" name="Panels Project"/>
+					<Item id="6188" name="Taswirar Takardu"/>
+					<Item id="6189" name="Jerin Ayyuka"/>
+					<Item id="6190" name="Plugin Panels"/>
+				</MultiInstance>
+
+				<Delimiter title="Delimiter">
+					<Item id="6251" name="Saitunan zaɓi mai iyaka (Ctrl + Mouse danna sau biyu)"/>
+					<Item id="6252" name="Bude"/>
+					<Item id="6255" name="Rufe"/>
+					<Item id="6256" name="Bada kan layi da yawa"/>
+					<Item id="6161" name="Jerin halayen kalmomi"/>
+					<Item id="6162" name="Yi amfani da tsohuwar lissafin haruffan Kalma kamar yadda yake"/>
+					<Item id="6163" name="Ƙara halin ku a matsayin ɓangaren kalma
+(kada ku zabe shi sai kun san me kuke yi)"/>
+				</Delimiter>
+
+				<Performance title="Aiki">
+					<Item id="7141" name="Babban Ƙuntata Fayil"/>
+					<Item id="7143" name="Kunna Babban Ƙuntatawar Fayil (babu nuna alama)"/>
+					<Item id="7144" name="Ƙayyade Babban Girman Fayil:"/>
+					<Item id="7146" name="MB (1 - 2046)"/>
+					<Item id="7147" name="Bada Matsayin takalmin gyaran kafa"/>
+					<Item id="7148" name="Izinin Kammala Kai tsaye"/>
+					<Item id="7149" name="Bada Haskakawa Mai Wayo"/>
+					<Item id="7150" name="Kashe Rubutun Kalmomi a duniya"/>
+					<Item id="7151" name="Bada hanyar haɗin yanar gizon URL"/>
+					<Item id="7152" name="Mayar da gargaɗi lokacin buɗe fayilolin ≥2GB"/>
+				</Performance>
+
+				<Cloud title="Cloud Link">
+					<Item id="6262" name="Saituna akan gajimare"/>
+					<Item id="6263" name="Babu Gajimare"/>
+					<Item id="6267" name="Saita hanyar wurin girgijen ku anan:"/>
+					<Item id="6318" name="Saitunan hanyar haɗin da ake dannawa"/>
+					<Item id="6319" name="Kunna"/>
+					<Item id="6320" name="Babu layi"/>
+					<Item id="6350" name="Kunna yanayin cikakken akwatin"/>
+					<Item id="6264" name="Shirye-shiryen musamman na URI:"/>
+				</Cloud>
+
+				<SearchEngine title="Injin Bincike">
+					<Item id="6271" name="Injin Bincike (don umarni &quot;Bincike akan Intanet&quot;)"/>
+					<Item id="6272" name="DuckDuckGo"/>
+					<Item id="6273" name="Google"/>
+					<Item id="6274" name="Bing"/>
+					<Item id="6275" name="Yahoo!"/>
+					<Item id="6276" name="Saita injin bincikenku anan:"/>
+					<!-- Don't change anything after Example: -->
+					<Item id="6278" name="Misali: https://www.google.com/search?q=$(CURRENT_WORD)"/>
+				</SearchEngine>
+
+				<MISC title="MISC.">
+					<ComboBox id="6347">
+						<Element name="Kunna don fayil na yanzu"/>
+						<Element name="Kunna duk fayilolin da aka buɗe"/>
+						<Element name="Kashe"/>
+					</ComboBox>
+					<ComboBox id="6307">
+						<Element name="Babu aiki akan"/>
+						<Element name="Rage girman zuwa"/>
+						<Element name="Kusa da"/>
+						<Element name="Rage / Kusa da"/>
+					</ComboBox>
+					<ComboBox id="6362">
+						<Element name="GDI (mafi dacewa)"/>
+						<Element name="DirectWrite (tsoho)"/>
+						<Element name="DirectWrite (riƙe firam)"/>
+						<Element name="DirectWrite (zana zuwa GDI DC)"/>
+						<Element name="DirectWrite (DirectX 11)"/>
+					</ComboBox>
+					<ComboBox id="6364">
+						<Element name="Kashe"/>
+						<Element name="Kunna kan Notepad++ farawa"/>
+						<Element name="Kunna kan hanyar Notepad++"/>
+					</ComboBox>
+					<Item id="6308" name="tsarin tray"/>
+					<Item id="6363" name="yanayin ma'ana"/>
+					<Item id="6365" name="Mai sabunta ta atomatik:"/>
+					<Item id="6312" name="Gano Matsayin Fayil ta atomatik"/>
+					<Item id="6313" name="Sabunta shiru"/>
+					<Item id="6325" name="Gungura zuwa layi na ƙarshe bayan sabuntawa"/>
+					<Item id="6322" name="Fayil ɗin zama ext.:"/>
+					<Item id="6324" name="Document Switcher (Ctrl+TAB)"/>
+					<Item id="6331" name="Nuna sunan fayil kawai a mashaya take"/>
+					<Item id="6334" name="Ganowa ta atomatik shigar da haruffa"/>
+					<Item id="6337" name="Fayil filin aiki ext.:"/>
+					<Item id="6114" name="Kunna"/>
+					<Item id="6117" name="Kunna halin MRU"/>
+					<Item id="6344" name="Document Peeker"/>
+					<Item id="6345" name="Lek on tab"/>
+					<Item id="6346" name="Duba kan taswirar takarda"/>
+					<Item id="6360" name="A kashe duk sauti"/>
+					<Item id="6361" name="Kunna Ajiye Duk Tabbatar Magana"/>
+				</MISC>
+			</Preference>
+			<MultiMacro title="Gudun Macro Multiple Times">
+				<Item id="1" name="Gudu"/>
+				<Item id="2" name="Soke"/>
+				<Item id="8006" name="Macro zai gudu"/>
+				<Item id="8001" name="Gudu"/>
+				<Item id="8005" name="lokuta"/>
+				<Item id="8002" name="Gudu har zuwa karshen fayil"/>
+			</MultiMacro>
+			<Window title="Windows">
+				<Item id="1" name="Kunna"/>
+				<Item id="2" name="OK"/>
+				<Item id="7002" name="Ajiye"/>
+				<Item id="7003" name="Rufe taga(s)"/>
+				<Item id="7004" name="Tsara Shafukan"/>
+			</Window>
+			<ColumnEditor title="Editan Rukunin">
+				<Item id="2023" name="Rubutu don Saka"/>
+				<Item id="2033" name="Lamba don Saka"/>
+				<Item id="2030" name="Lambar farko:"/>
+				<Item id="2031" name="Ƙara ta:"/>
+				<Item id="2038" name="Jagora:"/>
+				<ComboBox id="2039">
+					<Element name="Babu"/>
+					<Element name="Sifili"/>
+					<Element name="Wurare"/>
+				</ComboBox>
+				<Item id="2036" name="Maimaita:"/>
+				<Item id="2032" name="Tsarin"/>
+				<Item id="2024" name="Dec"/>
+				<Item id="2025" name="Oct"/>
+				<Item id="2026" name="Hex"/>
+				<Item id="2027" name="Bin"/>
+				<Item id="1" name="OK"/>
+				<Item id="2" name="Soke"/>
+			</ColumnEditor>
+			<FindInFinder title="Nemo a cikin sakamakon bincike">
+				<Item id="1" name="Nemo Duk"/>
+				<Item id="2" name="Rufe"/>
+				<Item id="1711" name="Nemo abin:"/>
+				<Item id="1713" name="Bincika a cikin layukan da aka samo kawai"/>
+				<Item id="1714" name="Daidaita duka kalmar kawai"/>
+				<Item id="1715" name="Shari'ar wasa"/>
+				<Item id="1716" name="Yanayin Bincike"/>
+				<Item id="1717" name="Al'ada"/>
+				<Item id="1719" name="Magana akai-akai"/>
+				<Item id="1718" name="Ƙaddara (\n, \r, \t, \0, \ x...)"/>
+				<Item id="1720" name=".matches sabon layi"/>
+			</FindInFinder>
+			<DoSaveOrNot title="Ajiye">
+				<Item id="1761" name="Ajiye fayil &quot;$STR_REPLACE$&quot;?"/>
+				<Item id="6" name="Da"/>
+				<Item id="7" name="Babu"/>
+				<Item id="2" name="Soke"/>
+				<Item id="4" name="Eh ga kowa"/>
+				<Item id="5" name="A'a ga kowa"/>
+			</DoSaveOrNot>
+			<DoSaveAll title="Ajiye Duk Tabbatarwa">
+				<Item id="1766" name="Shin kun tabbata kuna son adana duk takaddun da aka gyara?
+
+Zaɓi &quot;Koyaushe eh&quot; idan ba kwa son sake ganin wannan maganganun.
+Kuna iya sake kunna wannan maganganun a cikin Zaɓuɓɓuka daga baya."/>
+				<Item id="6" name="Da"/>
+				<Item id="7" name="Babu"/>
+				<Item id="4" name="A koda yaushe"/>
+			</DoSaveAll><!-- HowToReproduce: Check the "Enable Save All confirm dialog" checkbox in Preference->MISC, now click "Save all" -->
+
+			<DebugInfo title="Bayanin gyara kuskure">
+				<Item id="1752" name="Kwafi bayanin gyara kuskure zuwa allo"/>
+				<Item id="1" name="OK"/>
+			</DebugInfo>
+					<MacStrings>
+				<Item id="90001" name="Sakamakon bincike"/>
+				<Item id="90002" name="Rufe Sakamakon Bincike"/>
+				<Item id="90003" name="Share Duk"/>
+				<Item id="90004" name="Rufe panel"/>
+				<Item id="90005" name="Panel Project"/>
+				<Item id="90006" name="Sarrafa tushen"/>
+				<Item id="90007" name="Kasawa"/>
+				<Item id="90008" name="An Kasa Kasawa"/>
+				<Item id="90009" name="Babu ma'ajiyar git\nYi amfani da Binciko don buɗe wurin ajiya."/>
+				<Item id="90010" name="Mataki"/>
+				<Item id="90011" name="Unstage"/>
+				<Item id="90012" name="Mataki Duk"/>
+				<Item id="90013" name="Unstage All"/>
+				<Item id="90014" name="Aiwatar da sako\u2026"/>
+				<Item id="90015" name="Nemo wurin ajiya\u2026"/>
+				<Item id="90016" name="Zaɓi babban fayil ɗin ajiya na git"/>
+				<Item id="90017" name="(babu ajiya)"/>
+				<Item id="90018" name="(a ware)"/>
+				<Item id="90019" name="Kuskuren da ba a sani ba"/>
+				<Item id="90020" name="Babu ayyuka da aka samu"/>
+				<Item id="90021" name="Aikin nema..."/>
+				<Item id="90022" name="Fadada Duk"/>
+				<Item id="90023" name="Nemo Fayil na Yanzu"/>
+				<Item id="90024" name="Sake sabuntawa"/>
+				<Item id="90025" name="Tsara Ayyuka (A zuwa Z)"/>
+				<Item id="90026" name="Sakamako"/>
+				<Item id="90027" name="Tsaya"/>
+				<Item id="90028" name="Bincike ya tsaya."/>
+				<Item id="90029" name="Neman\u2026"/>
+				<Item id="90030" name="Rubutun don neman"/>
+				<Item id="90031" name="*.txt, *.cpp, \u2026"/>
+				<Item id="90032" name="Neman..."/>
+				<Item id="90033" name="Sauya:"/>
+				<Item id="90034" name="Gabaɗaya Kalma"/>
+				<Item id="90035" name="Gabaɗaya kalma"/>
+				<Item id="90036" name="Rufe"/>
+				<Item id="90037" name="Hali"/>
+				<Item id="90038" name="Sunan HTML"/>
+				<Item id="90039" name="HTML Decimal"/>
+				<Item id="90040" name="HTML Hexadecimal"/>
+				<Item id="90041" name="Daraja"/>
+				<Item id="90042" name="Zama mara komai"/>
+				<Item id="90043" name="Fayil ɗin zaman da aka zaɓa ya ƙunshi babu shafuka."/>
+				<Item id="90044" name="Load Zaman"/>
+				<Item id="90045" name="Ajiye Zama"/>
+				<Item id="90046" name="Share Fayilolin Kwanan nan"/>
+				<Item id="90047" name="Ba a samo fayil ɗin ba"/>
+				<Item id="90048" name="Babu Macro Recorded"/>
+				<Item id="90049" name="Yi rikodin macro da farko ta amfani da Fara Rikodi."/>
+				<Item id="90050" name="Babu rikice-rikice na gajeriyar hanya."/>
+				<Item id="90051" name="Sunan Fayil"/>
+				<Item id="90052" name="Nau'in"/>
+				<Item id="90053" name="Tafarki"/>
+				<Item id="90054" name="Je zuwa Layi"/>
+				<Item id="90055" name="Saka Kwanan wata/Lokaci"/>
+				<Item id="90056" name="Canjin Rubutu"/>
+				<Item id="90057" name="Ajiye Kwafi azaman"/>
+				<Item id="90058" name="Matsar zuwa Shara"/>
+				<Item id="90059" name="Title Bar"/>
+				<Item id="90060" name="Nuna cikakken hanyar fayil a mashaya take"/>
+				<Item id="90061" name="Nuna matsayi bar"/>
+				<Item id="90062" name="Girman Tab:"/>
+				<Item id="90063" name="Faɗin kulawa:"/>
+				<Item id="90064" name="Yawan kiftawar kulawa (ms):"/>
+				<Item id="90065" name="Rubutun rubutu:"/>
+				<Item id="90066" name="Matsakaicin faɗin shafin (pixels):"/>
+				<Item id="90067" name="Gefen Tsaye"/>
+				<Item id="90068" name="Yanayin gefen:"/>
+				<Item id="90069" name="Rumbun bakin:"/>
+				<Item id="90070" name="Faɗin layin lamba mai ƙarfi"/>
+				<Item id="90071" name="Hagu:"/>
+				<Item id="90072" name="Dama:"/>
+				<Item id="90073" name="Ƙarshen layin da aka saba:"/>
+				<Item id="90074" name="Tsohuwar ɓoyewa:"/>
+				<Item id="90075" name="Kunna atomatik madadin"/>
+				<Item id="90076" name="Tazarar Ajiyayyen (dakika):"/>
+				<Item id="90077" name="Wurin Ajiye:"/>
+				<Item id="90078" name="Salon Launi"/>
+				<Item id="90079" name="(gado)"/>
+				<Item id="90080" name="Jigon Salon Shigo"/>
+				<Item id="90081" name="Category"/>
+				<Item id="90082" name="Buga don tace..."/>
+				<Item id="90083" name="Babu cin karo da gajeriyar hanya don wannan abun."/>
+				<Item id="90084" name="Plugin"/>
+				<Item id="90085" name="Shafin"/>
+				<Item id="90086" name="An Kammala Shigarwa"/>
+				<Item id="90087" name="Sake kunna aikace-aikacen don loda plugins ɗin da aka shigar."/>
+				<Item id="90088" name="Shigar Plugins"/>
+				<Item id="90089" name="Cire Plugins"/>
+				<Item id="90090" name="Babu umarni da aka samu"/>
+				<Item id="90091" name="Buga don bincika\u2026"/>
+				<Item id="90092" name="Siffar Harshen Mai Amfani v.2.1"/>
+				<Item id="90093" name="Ƙirƙiri Sabon Harshe"/>
+				<Item id="90094" name="Shigar da suna:"/>
+				<Item id="90095" name="Launi na gaba:"/>
+				<Item id="90096" name="Kalar bango:"/>
+				<Item id="90097" name="Kar a Ajiye"/>
+				<Item id="90098" name="Anyi"/>
+				<Item id="90099" name="Juya Rubutun Kalma"/>
+				<Item id="90100" name="Nuna Duk Haruffa"/>
+				<Item id="90101" name="Nuna Zaɓuɓɓukan Haruffa"/>
+				<Item id="90102" name="Juya Jagorar Indent"/>
+				<Item id="90103" name="Har Yanzu Ba a Aiwatar da"/>
+				<Item id="90104" name="Sake saukewa daga Disk"/>
+				<Item id="90105" name="Canza Injin Bincike"/>
+				<Item id="90106" name="Kuskuren Gudu"/>
+				<Item id="90107" name="Notepad++ Load Time"/>
+				<Item id="90108" name="Rashin iya Duba Sabuntawa"/>
+				<Item id="90109" name="Kuna Da Sabunta"/>
+				<Item id="90110" name="Download"/>
+				<Item id="90111" name="Shafin Saki"/>
+				<Item id="90112" name="Daga baya"/>
+				<Item id="90113" name="Tace plugins\u2026"/>
+				<Item id="90114" name="Akwai"/>
+				<Item id="90115" name="Sabuntawa"/>
+				<Item id="90116" name="Shigar"/>
+				<Item id="90117" name="Rashin jituwa"/>
+				<Item id="90118" name="An kasa Shigar"/>
+				<Item id="90119" name="Cire plugins masu zuwa?"/>
+				<Item id="90120" name="Shigar da plugins masu zuwa?"/>
+				<Item id="90121" name="Wannan zai share fayilolin plugin ɗin."/>
+				<Item id="90122" name="Neman umarni\u2026"/>
+				<Item id="90123" name="Launin gaba"/>
+				<Item id="90124" name="Kalar bango"/>
+				<Item id="90125" name="Sunan Macro"/>
+				<Item id="90126" name="Sunan Macro"/>
+				<Item id="90127" name="Macro na yanzu da aka rubuta"/>
+				<Item id="90128" name="Macro Manager"/>
+				<Item id="90129" name="Babu Macros Ajiye"/>
+				<Item id="90130" name="Yi rikodin kuma ajiye macro tukuna."/>
+				<Item id="90131" name="Share Gajerun hanyoyi"/>
+				<Item id="90132" name="Babban menu"/>
+				<Item id="90133" name="Macros"/>
+				<Item id="90134" name="Gudun umarni"/>
+				<Item id="90135" name="Umarnin plugin"/>
+				<Item id="90136" name="Umarnin Scintilla"/>
+				<Item id="90137" name="Hujja Layin Umurni"/>
+				<Item id="90138" name="Sunan umarni don menu na Run"/>
+				<Item id="90139" name="An share duk alamun."/>
+				<Item id="90140" name="Alama rubutu an kwafi zuwa allo."/>
+				<Item id="90141" name="Babu rubutu mai alama don kwafa."/>
+				<Item id="90142" name="Neman... %ld buga(s) \u2014 %@"/>
+				<Item id="90143" name="Sauyawa cikin fayiloli..."/>
+				<Item id="90144" name="Sauya a cikin Ayyuka: Har yanzu ba a haɗa ba."/>
+				<Item id="90145" name="Nemo a cikin Ayyuka: Har yanzu ba a haɗa shi zuwa jerin fayil ɗin Panel Panel ba."/>
+				<Item id="90146" name="An gyara filin aiki."/>
+				<Item id="90147" name="Kuna son adana canje-canje?"/>
+				<Item id="90148" name="Sakamakon bincike"/>
+				<Item id="90149" name="Haskaka layin yanzu"/>
+				<Item id="90150" name="Nuna lambobin layi"/>
+				<Item id="90151" name="Nuna farin sarari"/>
+				<Item id="90152" name="Nuna alamomin EOL"/>
+				<Item id="90153" name="Nuna alamar alamar shafi"/>
+				<Item id="90154" name="Yi amfani da shafuka (maimakon sarari)"/>
+				<Item id="90155" name="Gungura bayan layin karshe"/>
+				<Item id="90156" name="Kwafi/yanke layi ba tare da zaɓi ba"/>
+				<Item id="90157" name="Kashe zaɓaɓɓen rubutun ja-drop"/>
+				<Item id="90158" name="Kunna haske mai wayo"/>
+				<Item id="90159" name="Mai haskakawa mai hankali: shari'ar wasa"/>
+				<Item id="90160" name="Haske mai wayo: gabaɗayan kalma kawai"/>
+				<Item id="90161" name="Danna sau biyu don rufe shafin"/>
+				<Item id="90162" name="Nuna makullin rufewa akan shafuka"/>
+				<Item id="90163" name="Tuna ganin panel a duk zaman"/>
+				<Item id="90164" name="Ci gaba da shigar da fayil ba ya nan a cikin zama"/>
+				<Item id="90165" name="Tabbatar kafin Ajiye Duk"/>
+				<Item id="90166" name="Tabbatar da Sauya Duk a buɗaɗɗen takaddun"/>
+				<Item id="90167" name="Sauya: kar a matsa zuwa abin da ya faru na gaba"/>
+				<Item id="90168" name="Yi amfani da rubutu guda ɗaya a Nemo maganganu"/>
+				<Item id="90169" name="Danna dama yana kiyaye zaɓi"/>
+				<Item id="90170" name="Juya tsarin kwanan wata/lokaci na tsoho"/>
+				<Item id="90171" name="Yi amfani da masu fassarori na tushen aikin XML"/>
+				<Item id="90172" name="Maɓallan rufewa ta atomatik ( ) [ ] {}"/>
+				<Item id="90173" name="Daga Nth hali:"/>
+				<Item id="90174" name="A-zaɓi madaidaicin bincika ta atomatik (bytes):"/>
+				<Item id="90175" name="Yawaita (\\n, \\r, \\t, \\0, \\ x...)"/>
+				<Item id="90176" name="Edita"/>
+				<Item id="90177" name="Margin"/>
+				<Item id="90178" name="Duhu"/>
+				<Item id="90179" name="Haske"/>
+				<Item id="90180" name="Auto (Bi Tsari)"/>
+				<Item id="90181" name="Bakin ciki (1px)"/>
+				<Item id="90182" name="Matsakaici (2px)"/>
+				<Item id="90183" name="Kauri (3px)"/>
+				<Item id="90184" name="Kashe"/>
+				<Item id="90185" name="Bayanin"/>
+				<Item id="90186" name="Antialiased"/>
+				<Item id="90187" name="An Inganta LCD"/>
+				<Item id="90188" name="Sauƙaƙe +/-"/>
+				<Item id="90189" name="Windows (CRLF)"/>
+				<Item id="90190" name="Mac (CR)"/>
+				<Item id="90191" name="Ma'ajiyar lissafin plugin"/>
+				<Item id="90192" name="Zaɓi fayil ɗin XML na Notepad++ don amfani"/>
+				<Item id="90193" name="Ƙirƙiri sabuwa\u2026"/>
+				<Item id="90194" name="Ajiye azaman\u2026"/>
+				<Item id="90195" name="Harshen mai amfani:"/>
+				<Item id="90196" name="Sunan Harshe"/>
+				<Item id="90197" name="Ƙirƙiri"/>
+				<Item id="90198" name="Ajiye As"/>
+				<Item id="90199" name="e"/>
+				<Item id="90200" name="cikin dukan fayil"/>
+				<Item id="90201" name="Ma'aikata Takaita"/>
+				<Item id="90202" name="Rage mara inganci"/>
+				<Item id="90203" name="Dole ne ƙimar kewa ta zama 0-255 kuma farawa dole ne &lt;= ƙarewa."/>
+				<Item id="90204" name="mahallinMenu.xml Ba a samo shi ba"/>
+				<Item id="90205" name="Sake kunna Notepad++ don sake farfado da tsohowar mahallinMenu.xml."/>
+				<Item id="90206" name="Fayil ɗin yana da canje-canje marasa adanawa.Sake loda tare da sabon rikodi zai watsar da su.Ci gaba?"/>
+				<Item id="90207" name="Babu amsa daga uwar garken."/>
+				<Item id="90208" name="Matsayin uwar garken ya dawo"/>
+				<Item id="90209" name="Wurin ajiya na iya zama na sirri."/>
+				<Item id="90210" name="Akwai"/>
+				<Item id="90211" name="shine sabon sigar."/>
+				<Item id="90212" name="A halin yanzu kuna gudana"/>
+				<Item id="90213" name="Nemo Anan"/>
+				<Item id="90214" name="Terminal Anan"/>
+				<Item id="90215" name="Ana iya sanya ƙarin fayilolin harshe (.xml) a cikin:"/>
+							<Item id="90216" name="Palette Command…"/>
+				<Item id="90217" name="Duba Haruffa"/>
+				<Item id="90218" name="Buga don bincika…"/>
+				<Item id="90219" name="Sabuwar Taga"/>
+				<Item id="90220" name="Tsallake amp na yanzu;Je zuwa Multi-zaɓi na gaba"/>
+				<Item id="90221" name="Siffar Kulle (macOS)"/>
+				<Item id="90222" name="Duba Sabuntawa…"/>
+				<Item id="90223" name="Bude Kwanan nan"/>
+			</MacStrings>
+		</Dialog>
+		<MessageBox>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<ContextMenuXmlEditWarning title="Editan mahallin Menu" message="Gyara mahallinMenu.xml yana ba ku damar canza menu na mahallin bugu na Notepad++.
+Dole ne ku sake kunna faifan rubutu ++ don fara aiki bayan gyara mahallinMenu.xml."/>
+			<SaveCurrentModifWarning title="Ajiye Canjin Yanzu" message="Ya kamata ku ajiye canjin na yanzu.
+Duk gyare-gyaren da aka ajiye ba za a iya soke su ba.
+
+Ci gaba?"/><!-- HowToReproduce: when you openned file is modified but unsaved yet, and you are changing file encoding. -->
+			<LoseUndoAbilityWarning title="Rasa Gargadin Ƙarfin Ƙarfi" message="Ya kamata ku ajiye canjin na yanzu.
+Duk gyare-gyaren da aka ajiye ba za a iya soke su ba.
+
+Ci gaba?"/><!-- HowToReproduce: when you openned file is modified and saved, then you are changing file encoding. -->
+			<CannotMoveDoc title="Matsar zuwa sabon Notepad++ Misali" message="An gyara daftarin aiki, ajiye shi sannan a sake gwadawa."/><!-- HowToReproduce: From your Notepad++ drag & drop a clean (not dirty) file to outside of Notepad++, another instance of Notepad++ will be created. Then from your first Notepad++ drag & drop an unsaved file to the new instance. -->
+			<DocReloadWarning title="Sake saukewa" message="Shin kun tabbata kuna son sake loda fayil ɗin na yanzu kuma ku rasa sauye-sauyen da aka yi a Notepad++?"/>
+			<FileLockedWarning title="Ajiye kasa" message="Da fatan za a duba ko an buɗe wannan fayil ɗin a cikin wani shirin"/>
+			<FileAlreadyOpenedInNpp title="" message="An riga an buɗe fayil ɗin a cikin Notepad++."/><!-- HowToReproduce: Open a new document and open a file "c:/tmp/foo", save this new document by choosing "c:/tmp/foo" as file to save, reply the override popup "yes", then this message appears. -->
+			<RenameTabTemporaryNameAlreadyInUse title="An kasa sake suna" message="An riga an yi amfani da ƙayyadadden suna a wani shafin."/><!-- HowToReproduce: Rename the tab of an untitled document and provide a name that is the same as an already-existing tab of an untitled document. -->
+			<RenameTabTemporaryNameIsEmpty title="An kasa sake suna" message="Sunan da aka ƙayyade ba zai iya zama fanko ba, ko kuma ba zai iya ƙunsar sarari(s) ko TAB kawai ba."/><!-- HowToReproduce: Rename the tab of an untitled document and provide an empty string or only some white speces. -->
+			<DeleteFileFailed title="Goge Fayil" message="Goge Fayil ya gaza"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+
+			<NbFileToOpenImportantWarning title="Adadin fayilolin da za a buɗe ya yi girma da yawa" message="$INT_REPLACE$ files are about to be opened.
+Are you sure you want to open them?"/><!-- HowToReproduce: Check "Open all files of folder instead of launching Folder as Workspace on folder dropping" in "Default Directory" of Preferences dialog, then drop a folder which contains more then 200 files into Notepad++. -->
+			<SettingsOnCloudError title="Saituna akan Cloud" message="Da alama an saita hanyar saitunan akan gajimare akan abin karantawa kawai,
+ko a babban fayil da ake buƙata dama ga dama don samun damar rubutawa.
+Za a soke saitunan ku akan gajimare.Da fatan za a sake saita ƙima mai daidaituwa ta hanyar maganganu na zaɓi."/>
+			<FilePathNotFoundWarning title="Bude fayil" message="Fayil ɗin da kuke ƙoƙarin buɗewa babu shi."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SessionFileInvalidError title="An kasa Loda Zama" message="Fayil ɗin zama ko dai ya lalace ko baya aiki."/><!-- HowToReproduce: Save current session via menu "File -> Save Session...", use another editor to modify the session you saved to make it an invalid xml file. Then load this invalid session via menu "File -> Load Session...". -->
+			<DroppingFolderAsProjectModeWarning title="Aiki mara inganci" message="Zaku iya sauke fayiloli ko manyan fayiloli kawai amma ba duka biyu ba, saboda kuna cikin zubar da Jaka azaman yanayin aikin.
+Dole ne ku kunna &quot;Buɗe duk fayiloli na babban fayil maimakon ƙaddamar da Jaka azaman Wurin aiki akan sauke babban fayil&quot; a cikin sashin &quot;Default Directory&quot; na maganganun Zaɓuɓɓuka don sa wannan aikin yayi aiki."/>
+			<SortingError title="Kuskuren Rarraba" message="An kasa yin rarrabuwar lambobi saboda layin $INT_REPLACE$."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SortLocaleMultiple title="Ba a yi tsari ba" message="Ba a tallafawa rarrabuwa da yawa."/><!-- HowToReproduce: Make a multiple selection and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<SortLocaleUnknown title="Ba a Yi Nasara ba" message="Ba za a iya tantance dalilin da ya sa tsarin ya gaza ba."/><!-- HowToReproduce: This condition is theoretical; it is unknown what could cause it. -->
+			<SortLocaleExcept title="Ba a Yi Nasara ba" message="$STR_REPLACE$"/><!-- HowToReproduce: Open a large file, e.g. 500MB / 90k lines, in 32-bit Notepad++ and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<ColumnModeTip title="Tukwici Yanayin Rukunin" message="Akwai hanyoyi 3 don canzawa zuwa yanayin zaɓin shafi:
+
+1. (Keyboard da Mouse) Rike Alt yayin da kake latsa hagu
+
+2. (Allon madannai kaɗai) Riƙe Alt+ Shift yayin amfani da maɓallin kibiya
+
+3. (Keyboard ko Mouse)
+Sanya kulawa a farkon farkon toshe ginshiƙi, sannan
+aiwatar da &quot;Fara/Ƙarshen Zaɓi a Yanayin Rukunin&quot; umurnin;
+Matsar da kulawa zuwa ƙarshen da ake so na matsayin toshe ginshiƙi, sannan
+sake aiwatar da &quot;Fara/Ƙarshen Zaɓi a Yanayin Rukunin&quot; kuma"/>
+			<BufferInvalidWarning title="Ajiye kasa" message="Ba za a iya ajiyewa: Buffer ba daidai ba ne."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<DoCloseOrNot title="Ajiye fayil ɗin da ba ya wanzu" message="Fayil &quot;$STR_REPLACE$&quot; babu kuma.
+A ajiye wannan fayil ɗin a cikin edita?"/>
+			<DoDeleteOrNot title="Share fayil" message="Fayil ɗin &quot;$STR_REPLACE$&quot;
+za a matsar da shi zuwa Maimaita Binta kuma wannan takarda za a rufe.
+Ci gaba?"/>
+			<NoBackupDoSaveFile title="Ajiye" message="Ba za a iya samun fayil ɗin ajiyar ku ba (an share daga waje).
+Ajiye shi in ba haka ba za a rasa bayanan ku
+Kuna son adana fayil &quot;$STR_REPLACE$&quot;?"/>
+			<DoReloadOrNot title="Sake saukewa" message="&quot;$STR_REPLACE$&quot;
+
+Wani shirin ya canza wannan fayil ɗin.
+Kuna son sake loda shi?"/>
+			<DoReloadOrNotAndLooseChange title="Sake saukewa" message="&quot;$STR_REPLACE$&quot;
+
+Wani shirin ya canza wannan fayil ɗin.
+Kuna so ku sake loda shi kuma ku rasa sauye-sauyen da aka yi a Notepad++?"/>
+			<PrehistoricSystemDetected title="An gano tsarin tarihi na tarihi" message="Da alama har yanzu kuna amfani da tsarin kafin tarihi.Wannan fasalin yana aiki ne kawai akan tsarin zamani, hakuri."/><!-- HowToReproduce: Launch "Document Map" under Windows XP. -->
+			<XpUpdaterProblem title="Notepad++ Updater" message="Sabunta Notepad++ bai dace da XP ba saboda tsayayyen Layer tsaro a ƙarƙashin XP.
+Kuna son zuwa shafin Notepad++ don saukar da sabon sigar?"/><!-- HowToReproduce: Run menu "? -> Update Notepad++" under Windows XP. -->
+			<GUpProxyConfNeedAdminMode title="Saitunan wakili" message="Da fatan za a sake kunna Notepad++ a cikin yanayin Admin don saita wakili."/>
+			<DocTooDirtyToMonitor title="Matsalar sa ido" message="Takardar ta datti.Da fatan za a ajiye gyaran kafin saka idanu."/>
+			<DocNoExistToMonitor title="Matsalar sa ido" message="Ya kamata fayil ɗin ya wanzu don a sa ido."/>
+			<FileTooBigToOpen title="Matsalar girman fayil" message="Fayil ya yi girma da yawa don buɗe shi ta Notepad++"/><!-- HowToReproduce: Try to open a 4GB file (it's not easy to reproduce, it depends on your system). -->
+			<FileLoadingException title="Lambar keɓaɓɓen: $STR_REPLACE$" message="An sami kuskure yayin loda fayil ɗin!"/>
+			<WantToOpenHugeFile title="Bude katon fayil gargadi" message="Bude babban fayil na 2GB+ na iya ɗaukar mintuna da yawa.
+Kuna son bude shi?"/>
+			<CreateNewFileOrNot title="Ƙirƙiri sabon fayil" message="&quot;$STR_REPLACE$&quot; babu.Ƙirƙiri shi?"/>
+			<CreateNewFileError title="Ƙirƙiri sabon fayil" message="Ba za a iya ƙirƙirar fayil ɗin &quot;$STR_REPLACE$&quot; ba."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<OpenFileError title="KUSKURE" message="Ba za a iya buɗe fayil &quot;$STR_REPLACE$&quot; ba."/>
+			<OpenFileNoFolderError title="Ba za a iya buɗe fayil" message="Ba za a iya buɗe &quot;$STR_REPLACE1$&quot; ba:
+Jakar &quot;$STR_REPLACE2$&quot; babu shi."/>
+			<FileBackupFailed title="Ajiyayyen Fayil ya kasa" message="Ba za a iya adana sigar fayil ɗin da ta gabata ba cikin kundin adireshin ajiya a &quot;$STR_REPLACE$&quot;.
+
+Shin kuna son adana fayil ɗin na yanzu ko ta yaya?"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<LoadStylersFailed title="Load stylers.xml kasa" message="Load &quot;$STR_REPLACE$&quot; ya kasa!"/>
+			<LoadLangsFailed title="Configurator" message="Load langs.xml ya kasa!
+Kuna so ku dawo da langs.xml naku?"/><!-- HowToReproduce: Close Notepad++. Use another editor to remove all content of "langs.xml" (0 length) then save it. Open Notepad++. -->
+			<LoadLangsFailedFinal title="Configurator" message="Load langs.xml ya kasa!"/><!-- HowToReproduce: Close Notepad++. Use another editor to make "langs.xml" an invalid xml file then save it. Open Notepad++. -->
+			<FolderAsWorspaceSubfolderExists title="Jaka azaman Wurin aiki yana ƙara matsalar babban fayil" message="Akwai ƙaramin babban fayil ɗin babban fayil ɗin da kake son ƙarawa.
+Da fatan za a cire tushen sa daga rukunin kafin ku ƙara babban fayil &quot;$STR_REPLACE$&quot;."/><!-- HowToReproduce: Add a folder like "c:\temp\aFolder\" into "Folder as Workspace" panel, then try to add "c:\temp\". -->
+
+			<ProjectPanelChanged title="$STR_REPLACE$" message="An gyara filin aiki.Kuna so ku ajiye shi?"/>
+			<ProjectPanelSaveError title="$STR_REPLACE$" message="An sami kuskure yayin rubuta fayil ɗin filin aikin ku.
+Ba a adana filin aikin ku ba."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<ProjectPanelOpenDoSaveDirtyWsOrNot title="Bude Wurin Aiki" message="An gyara filin aiki na yanzu.Kuna so ku ajiye aikin na yanzu?"/>
+			<ProjectPanelNewDoSaveDirtyWsOrNot title="Sabon Wurin Aiki" message="An gyara filin aiki na yanzu.Kuna so ku ajiye aikin na yanzu?"/>
+			<ProjectPanelOpenFailed title="Bude Wurin Aiki" message="Ba a iya buɗe filin aiki ba.
+Da alama fayil ɗin da zai buɗe ba ingantaccen fayil ɗin aikin bane."/>
+			<ProjectPanelRemoveFolderFromProject title="Cire babban fayil daga aikin" message="Za a cire duk ƙananan abubuwan.
+Shin kun tabbata kuna son cire wannan babban fayil ɗin daga aikin?"/>
+			<ProjectPanelRemoveFileFromProject title="Cire fayil daga aikin" message="Shin kun tabbata kuna son cire wannan fayil ɗin daga aikin?"/>
+			<ProjectPanelReloadError title="Sake Sanya Wurin Aiki" message="Ba za a iya samun fayil ɗin da za a sake lodawa ba."/>
+			<ProjectPanelReloadDirty title="Sake Sanya Wurin Aiki" message="An gyara filin aiki na yanzu.Sake lodi zai watsar da duk gyare-gyare.
+Kuna so ku ci gaba?"/>
+			<UDLNewNameError title="Kuskuren UDL" message="Ana amfani da wannan sunan ta wani harshe,
+don Allah a ba da wani."/>
+			<UDLRemoveCurrentLang title="Cire yaren yanzu" message="Ka tabbata?"/>
+			<UDL_importSuccessful title="Harshen Ƙa'idar Mai Amfani" message="An yi nasarar shigo da shi."/>
+			<UDL_importFails title="Harshen Ƙa'idar Mai Amfani" message="An kasa shigo da shi."/>
+			<UDL_saveBeforeImport title="Harshen Ƙa'idar Mai Amfani" message="Kafin fitarwa, adana ma'anar yaren ku ta danna &quot;Ajiye As...&quot; maballin."/> <!-- HowToReproduce: Choose "User Defined Language" in User Language combobox, then click on "Export... button". -->
+			<UDL_exportSuccessful title="Harshen Ƙa'idar Mai Amfani" message="An yi nasara fitarwa."/>
+			<UDL_exportFails title="Harshen Ƙa'idar Mai Amfani" message="An kasa fitarwa."/>
+			<SCMapperDoDeleteOrNot title="Ka tabbata?" message="Shin kun tabbata kuna son share wannan gajeriyar hanya?"/>
+			<FindCharRangeValueError title="Matsalolin Ƙimar Range" message="Ka rubuta tsakanin 0 da 255."/> <!-- HowToReproduce: Search menu, then Find characters in range, select Custom range, enter 999 in either edit box, press Find. -->
+			<OpenInAdminMode title="Ajiye kasa" message="Ba za a iya ajiye fayil ɗin ba kuma ana iya kiyaye shi.
+Shin kuna son ƙaddamar da Notepad++ a cikin yanayin Gudanarwa?"/>
+			<OpenInAdminModeWithoutCloseCurrent title="Ajiye kasa" message="Ba za a iya ajiye fayil ɗin ba kuma ana iya kiyaye shi.
+Shin kuna son ƙaddamar da Notepad++ a cikin yanayin Gudanarwa?"/>
+			<OpenInAdminModeFailed title="Bude a Yanayin Gudanarwa ya kasa" message="Ba za a iya buɗe faifan rubutu ++ a yanayin Mai gudanarwa ba."/><!-- HowToReproduce: When you have no Admin privilege and you try to save a modified file in a protected location (for example: any file in sub-folder of "C:\Program Files\". This message will appear after replying "Yes" to "Open in Admin mode" dialog. -->
+			<ViewInBrowser title="Duba Fayil na Yanzu a cikin Mai Binciken Bincike" message="Ba za a iya samun aikace-aikacen a cikin tsarin ku ba."/>
+			<ExitToUpdatePlugins title="Notepad++ yana shirin fita" message="Idan ka danna YES, za ka bar Notepad++ don ci gaba da ayyukan.
+Notepad++ za a sake farawa bayan an ƙare duk ayyukan.
+Ci gaba?"/>
+			<NeedToRestartToLoadPlugins title="Notepad++ yana buƙatar sake buɗewa" message="Dole ne ku sake kunna Notepad++ don loda plugins ɗin da kuka shigar."/><!-- HowToReproduce: Import a plugin via menu "Settings->Import->Import Plugin(s)...". -->
+			<ChangeHistoryEnabledWarning title="Notepad++ yana buƙatar sake buɗewa" message="Dole ne ku sake kunna Notepad++ don kunna Canja Tarihi."/><!-- HowToReproduce: uncheck "Display Change History" via Preferences dialog "Marges/Border/Edge. -->
+			<WindowsSessionExit title="Notepad++ - Fitar zaman Windows" message="Za a ƙare zaman Windows amma kuna da wasu bayanan da ba a adana su ba.Shin kuna son fita Notepad++ yanzu?"/>
+			<LanguageMenuCompactWarning title="Karamin Menu na Harshe" message="Za a canza wannan zaɓi a ƙaddamarwa na gaba."/><!-- HowToReproduce: toggle "Make language menu compact" via Preferences dialog "Language/Language Menu. -->
+			<SwitchUnsavedThemeWarning title="$STR_REPLACE$" message="Canje-canjen da ba a ajiye su na gab da yin watsi da su!
+Kuna so ku adana canje-canjenku kafin canza jigogi?"/><!-- HowToReproduce: In the Style Configurator dialog change some theme and switch to other theme without saving. -->
+			<MacroAndRunCmdlWarning title="Macro da Gudun Dokokin Daidaitawa" message="Dokokin Macro da Run da aka adana a cikin Notepad++ v.8.5.2 (ko mafi girma) ƙila ba su dace da sigar Notepad++ na yanzu ba.
+Da fatan za a gwada waɗannan umarni kuma, idan an buƙata, sake gyara su.
+
+A madadin, zaku iya rage darajar zuwa Notepad++ v8.5.2 kuma ku dawo da bayanan ku na baya.
+Notepad++ zai ajiye tsoffin &quot;shortcuts.xml&quot; kuma ya adana shi azaman &quot;shortcuts.xml.v8.5.2.backup&quot;.
+Sake suna &quot;shortcuts.xml.v8.5.2.backup&quot; -&gt; &quot;shortcuts.xml&quot;, ya kamata a dawo da umarninku kuma suyi aiki yadda ya kamata."/><!-- HowToReproduce: Close Notepad++, remove shortcuts.xml.v8.5.2.backup & v852ShortcutsCompatibilityWarning.xml if present, relaunch Notepad++, delete or modify a shortcuts via Shortcut Mapper, close Notepad++, then the message will show up -->
+			<FullReadOnlySavingForbidden title="Ajiye kasa" message="Ba za a iya ajiye fayil ba.
+Cikakken bayanin kula ++ yanayin da aka hana adanawa kawai ya hana ajiye fayil ɗin."/>
+			<NotEnoughRoom4Saving title="Ajiye ya kasa" message="An kasa ajiye fayil
+Da alama babu isasshen sarari akan faifai don adana fayil.Ba a adana fayil ɗin ku ba."/>
+			<FileInaccessibleUserSession title="Ba a iya samun fayil" message="Wasu fayiloli daga zaman da aka adana da hannu &quot;$STR_REPLACE$&quot; ba su da samuwa.Ana iya buɗe su a matsayin fanko da takaddun karatu kawai azaman masu riƙe da wuri.
+
+Kuna so ku ƙirƙiri waɗannan masu riƙewa?
+
+NOTE: Zaɓin kar a ƙirƙiri masu riƙe wuri ko rufe su daga baya, ba za a canza zaman ku da hannu ba yayin fita."/>
+			<FileInaccessibleDefaultSessionXml title="Ba a iya samun fayil" message="Wasu fayiloli daga zaman ku na baya ba su iya shiga.Ana iya buɗe su a matsayin fanko da takaddun karatu kawai azaman masu riƙe da wuri.
+
+Kuna so ku ƙirƙiri waɗannan masu riƙewa?
+
+NOTE: Zaɓin kar a ƙirƙiri masu riƙewa ko rufe su daga baya, ZA'A GYARA zaman ku KAN FITA!Muna ba da shawarar ku ajiye &quot;session.xml&quot; ɗinku yanzu."/>
+			<RTLvsDirectWrite title="Ba za a iya gudu RTL" message="RTL bai dace da yanayin DirectWrite ba.Da fatan za a kashe yanayin DirectWrite a MISC.sashe na maganganun Preferences, kuma sake kunna Notepad++."/>
+			<FileMemoryAllocationFailed title="Banda: Rarraba ƙwaƙwalwar ajiyar fayil ya gaza" message="Wataƙila babu isassun ƙwaƙwalwar ajiyar kyauta don fayil ɗin da Notepad++ ke lodawa."/><!-- HowToReproduce: Try to open multiple files with total size > ~700MB in the x86 Notepad++ (it will depend on the PC memory configuration and the current system memory usage...). -->
+			<FindRegexBackwardDisabled title="An kashe bincike na baya na Regex" message="Ta hanyar tsoho, an kashe binciken regex na baya saboda yiwuwar sakamakon da ba a zata ba.Don yin bincike na baya, buɗe maganganun Nemo kuma zaɓi ko dai yanayin bincike na al'ada ko tsawo maimakon magana ta yau da kullun.
+Danna maɓallin Ok don buɗe maganganun Nemo ko saita mayar da hankali akansa.
+
+Idan kuna buƙatar fasalin neman regex na baya, tuntuɓi littafin mai amfani don umarni kan kunna shi."/>
+			<PrintError title="0" message="Ba za a iya fara daftarin aiki firinta ba."/><!-- Use title="0" to use Windows OS default translated "Error" title. -->
+			<FindAutoChangeOfInSelectionWarning title="Neman gargadi" message="Yanayin akwatin &quot;A zaɓi&quot; an canza ta atomatik.
+Da fatan za a tabbatar da yanayin bincike kafin yin aikin."/> <!-- HowToReproduce: https://github.com/notepad-plus-plus/notepad-plus-plus/issues/14897#issuecomment-2564316224 -->
+			<Need2Restart2ShowMenuShortcuts title="Notepad++ yana buƙatar sake kunnawa" message="Notepad++ yana buƙatar sake kunnawa don nuna gajerun hanyoyin menu na dama."/>
+			<NoAdminRight2ChangeReadOnlyFileAttribute title="Canza fasalin karatun fayil kawai ya kasa" message="Da fatan za a gudanar da Notepad++ azaman mai gudanarwa don canza halayen fayil."/>
+		</MessageBox>
+		<ClipboardHistory>
+			<PanelTitle name="Tarihin allo"/>
+		</ClipboardHistory>
+		<DocList>
+			<PanelTitle name="Jerin Takardu"/>
+			<ColumnName name="Suna"/>
+			<ColumnExt name="Ext."/>
+			<ColumnPath name="Tafarki"/>
+			<ListGroups name="Rukuni ta Duba"/>
+		</DocList>
+		<WindowsDlg>
+			<ColumnName name="Suna"/>
+			<ColumnPath name="Tafarki"/>
+			<ColumnType name="Nau'in"/>
+			<ColumnSize name="Girman"/>
+			<ColumnDateTime name="Canjin lokaci"/>
+			<NbDocsTotal name="jimlar takardun:"/>
+			<MenuCopyName name="Kwafi Suna (s)"/>
+			<MenuCopyPath name="Kwafi Suna (s)"/>
+		</WindowsDlg>
+		<AsciiInsertion>
+			<PanelTitle name="Kwamitin Shigar Lambobin ASCII"/>
+			<ColumnVal name="Daraja"/>
+			<ColumnHex name="Hex"/>
+			<ColumnChar name="Hali"/>
+			<ColumnHtmlName name="Sunan HTML"/>
+			<ColumnHtmlNumber name="HTML Decimal"/>
+			<ColumnHtmlHexNb name="HTML Hexadecimal"/>
+		</AsciiInsertion>
+		<DocumentMap>
+			<PanelTitle name="Taswirar daftarin aiki"/>
+		</DocumentMap>
+		<FunctionList>
+			<PanelTitle name="Jerin Ayyuka"/>
+			<SortTip name="Nau'i"/>
+			<ReloadTip name="Sake saukewa"/>
+			<PreferencesTip name="Zabi"/>
+			<PreferencesInitialSort name="Tsara Ayyuka (A zuwa Z) ta tsohuwa"/>
+		</FunctionList>
+		<FolderAsWorkspace>
+			<PanelTitle name="Jaka azaman Wurin Aiki"/>
+			<SelectFolderFromBrowserString name="Zaɓi babban fayil don ƙarawa a cikin Jaka azaman Panel Aiki"/>
+			<ExpandAllFoldersTip name="Bude duka"/>
+			<CollapseAllFoldersTip name="Ninke duka"/>
+			<LocateCurrentFileTip name="Nemo fayil na yanzu"/>
+			<Menu>
+				<Item id="3511" name="Cire"/>
+				<Item id="3512" name="Cire Duk"/>
+				<Item id="3513" name="Ƙara"/>
+				<Item id="3514" name="Gudanar da tsarin"/>
+				<Item id="3515" name="Bude"/>
+				<Item id="3516" name="Hanyar Kwafi"/>
+				<Item id="3517" name="Nemo cikin Fayiloli..."/>
+				<Item id="3518" name="Explorer nan"/>
+				<Item id="3519" name="CMD nan"/>
+				<Item id="3520" name="Kwafi sunan fayil"/>
+			</Menu>
+		</FolderAsWorkspace>
+		<ProjectManager>
+			<PanelTitle name="Aikin"/>
+			<WorkspaceRootName name="Wurin Aiki"/>
+			<NewProjectName name="Sunan Aikin"/>
+			<NewFolderName name="Sunan Jaka"/>
+			<Menus>
+				<Entries>
+					<Item id="0" name="Wurin Aiki"/>
+					<Item id="1" name="Tace"/>
+				</Entries>
+				<WorkspaceMenu>
+					<Item id="3122" name="Sabon Wurin Aiki"/>
+					<Item id="3123" name="Bude Wurin Aiki"/>
+					<Item id="3124" name="Sake Sanya Wurin Aiki"/>
+					<Item id="3125" name="Ajiye"/>
+					<Item id="3126" name="Ajiye As..."/>
+					<Item id="3127" name="Ajiye Kwafi Kamar yadda..."/>
+					<Item id="3121" name="Ƙara Sabon Aiki"/>
+					<Item id="3128" name="Nemo cikin Ayyuka..."/>
+				</WorkspaceMenu>
+				<ProjectMenu>
+					<Item id="3111" name="Sake suna"/>
+					<Item id="3112" name="Ƙara Jaka"/>
+					<Item id="3113" name="Ƙara Fayiloli..."/>
+					<Item id="3117" name="Ƙara Fayiloli daga Directory..."/>
+					<Item id="3114" name="Cire"/>
+					<Item id="3118" name="Matsar Sama"/>
+					<Item id="3119" name="Sauke Kasa"/>
+				</ProjectMenu>
+				<FolderMenu>
+					<Item id="3111" name="Sake suna"/>
+					<Item id="3112" name="Ƙara Jaka"/>
+					<Item id="3113" name="Ƙara Fayiloli..."/>
+					<Item id="3117" name="Ƙara Fayiloli daga Directory..."/>
+					<Item id="3114" name="Cire"/>
+					<Item id="3118" name="Motsa Sama"/>
+					<Item id="3119" name="Sauke Kasa"/>
+				</FolderMenu>
+				<FileMenu>
+					<Item id="3111" name="Sake suna"/>
+					<Item id="3115" name="Cire"/>
+					<Item id="3116" name="Gyara Hanyar Fayil"/>
+					<Item id="3118" name="Motsa Sama"/>
+					<Item id="3119" name="Sauke Kasa"/>
+				</FileMenu>
+			</Menus>
+		</ProjectManager>
+		<MiscStrings>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<word-chars-list-tip value="Wannan yana ba ku damar haɗa ƙarin haruffa cikin haruffan kalmomin yanzu yayin danna sau biyu don zaɓi ko bincika tare da zaɓin &quot;Match gaba ɗaya kalma kawai&quot; zaɓi."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, hover your mouse on the "?" button. -->
+
+			<!-- Don't translate "(&quot;EOL custom color&quot;)" -->
+			<eol-custom-color-tip value="Je zuwa Salon Configurator don canza tsohuwar launi ta al'ada ta EOL (&quot;launi na al'ada EOL&quot;).."/>
+
+			<word-chars-list-warning-begin value="Ku sani:"/>
+			<word-chars-list-space-warning value="$INT_REPLACE$ space(s)"/>
+			<word-chars-list-tab-warning value="$INT_REPLACE$ TAB(s)"/>
+			<word-chars-list-warning-end value="a cikin jerin halayenku."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, check "Add your character as part of word\r(don't choose it unless you know what you're doing)", then type a white-space in the text field. -->
+			<backup-select-folder value="Zaɓi babban fayil azaman madadin adireshi"/><!-- HowToReproduce: Settings > Preferences > Backup > [...] -->
+			<cloud-invalid-warning value="Hanya mara inganci."/>
+			<cloud-restart-warning value="Da fatan za a sake kunna Notepad++ don fara aiki."/>
+			<cloud-select-folder value="Zaɓi babban fayil daga/zuwa inda Notepad++ ke karantawa/ rubuta saitunan sa"/><!-- HowToReproduce: In "Cloud" section of Preferences dialog, check "Set your cloud location path here: ", then click the button "...". This message is displayed in the "Browse For Folder" dialog. -->
+			<default-open-save-select-folder value="Zaɓi babban fayil azaman tsoho directory"/><!-- HowToReproduce: Settings > Preferences > Default Directory > [...] -->
+			<shift-change-direction-tip value="Yi amfani da Shift+Enter don bincika akasin shugabanci"/>
+			<two-find-buttons-tip value="2 nemo yanayin maɓalli"/>
+			<find-in-files-filter-tip value="Nemo cikin cpp, cxx, h, hxx hpp:
+*.cpp *.cxx *.h *.hxx *.hpp
+
+Nemo cikin duk fayiloli banda exe, obj log:
+*.* !*.exe !*.obj !*.log
+
+Nemo cikin duk fayiloli amma ban da gwaje-gwajen manyan fayiloli, bin bin64:
+*.* !\ gwaje-gwaje !\bin*
+
+Nemo cikin duk fayiloli amma a ware duk log ɗin manyan fayiloli ko rajistan ayyukan akai-akai:
+*.* !+\log*"/><!-- HowToReproduce: Tip of mouse hovered on "Filters" label in "Find in Files" section of Find dialog. -->
+			<find-in-files-select-folder value="Zaɓi babban fayil don bincika daga"/><!-- HowToReproduce: Search > Find in Files > [...] -->
+			<find-in-files-dir-from-active-doc-tip value="Cika filin Directory bisa aiki mai aiki"/><!-- HowToReproduce: Search > Find in Files > [<<] -->
+			<find-status-top-reached value="Nemo: Daftarin aiki da aka fara farawa, farkon abin da ya faru daga ƙasa ya samo."/>
+			<find-status-end-reached value="Nemo: Ƙarshen daftarin aiki, abin da ya faru na farko daga saman da aka samo."/>
+			<find-status-replaceinfiles-1-replaced value="Sauya a cikin Fayiloli: An maye gurbin abin da ya faru 1"/>
+			<find-status-replaceinfiles-nb-replaced value="Sauya a cikin Fayiloli: An maye gurbin abubuwan da suka faru $INT_REPLACE$"/>
+			<find-status-replaceinopenedfiles-1-replaced value="Sauya a Buɗe Fayilolin: An maye gurbin abin da ya faru 1"/>
+			<find-status-replaceinopenedfiles-nb-replaced value="Sauya a Buɗe Fayilolin: $INT_REPLACE$ an maye gurbin abubuwan da suka faru"/>
+			<find-status-invalid-re value="Nemo: Magana na yau da kullun mara inganci"/>
+			<find-status-search-failed value="Nemo: Bincike ya kasa"/>
+			<find-status-mark-1-match value="Alama: 1 wasa"/>
+			<find-status-mark-nb-matches value="Alama: $INT_REPLACE$ matches"/>
+			<find-status-count-1-match value="Kidaya: wasa 1"/>
+			<find-status-count-nb-matches value="Ƙidaya: $INT_REPLACE$ matches"/>
+			<find-status-replaceall-1-replaced value="Sauya Duk: An maye gurbin abin da ya faru 1"/>
+			<find-status-replaceall-nb-replaced value="Sauya Duk: An maye gurbin abubuwan da suka faru $INT_REPLACE$"/>
+			<find-status-replaceall-readonly value="Sauya Duk: Ba za a iya maye gurbin rubutu ba.Daftarin aiki na yanzu ana karantawa kawai"/>
+			<find-status-replace-end-reached value="Sauya: Ƙarshen takaddar da aka kai, an fara daga sama."/>
+			<find-status-replace-top-reached value="Sauya: Takaddun da aka kai farawa, farawa daga ƙasa."/>
+			<find-status-replaced-next-found value="Sauya: An maye gurbin abin da ya faru 1.An samo abin da ya faru na gaba."/>
+			<find-status-replaced-without-continuing value="Sauya: An maye gurbin abin da ya faru 1."/>
+			<find-status-replaced-next-not-found value="Sauya: An maye gurbin abin da ya faru 1.Ba a sake samun wasu abubuwan da suka faru ba."/>
+			<find-status-replace-not-found value="Sauya: ba a sami abin da ya faru ba"/>
+			<find-status-replace-readonly value="Sauya: Ba za a iya maye gurbin rubutu ba.Daftarin aiki na yanzu ana karantawa kawai"/>
+			<find-status-cannot-find value="Nemo: Ba a iya samun rubutun &quot;$STR_REPLACE$&quot;"/>
+			<find-status-cannot-find-pebkac-maybe value="Ba za a iya samun abin da ya faru ba.Wataƙila kun manta don duba &quot;Kunnade&quot; (zuwa ON), &quot;Match case&quot; (zuwa KASHE), ko &quot;Match gaba ɗaya kalma kawai&quot; (zuwa KASHE)."/>
+			<find-status-scope-selection value="a zababben rubutu"/>
+			<find-status-scope-all value="cikin dukan fayil"/>
+			<find-status-scope-backward value="daga farkon fayil zuwa kulawa"/>
+			<find-status-scope-forward value="daga kulawa zuwa ƙarshen-fayil"/>
+			<find-status-invisible-chars-findWhat value="Haruffa marasa ganuwa a cikin manna &quot;Nemi me&quot; ko &quot;Maye gurbinsu da&quot; abun ciki"/>
+			<find-status-invisible-chars-findWhat-tip value="Gargaɗi: Haruffa marasa ganuwa a filin nema (ko maye gurbin).
+Rubutun da aka liƙa a cikin wannan filin ya haɗa da haruffa marasa ganuwa (wataƙila masu ƙare layi).Idan kun ci gaba ba tare da share su ba, za a haɗa su a cikin rubutun bincike (ko maye gurbin)."/>
+			<finder-find-in-finder value="Nemo a cikin waɗannan sakamakon binciken..."/>
+			<finder-close-this value="Rufe wadannan sakamakon bincike"/>
+			<finder-collapse-all value="Ninka duka"/>
+			<finder-uncollapse-all value="Bude duka"/>
+			<finder-copy value="Kwafi Zaɓaɓɓen Layin (s)"/>
+			<finder-copy-selected-paths value="Kwafi Sunan Tafarki (s) da aka zaɓa"/>
+			<finder-clear-all value="Share duk"/>
+			<finder-open-selected-paths value="Bude Sunan Tafarki (s) Zaɓaɓɓen"/>
+			<finder-purge-for-every-search value="Tsaftace don kowane bincike"/>
+			<finder-wrap-long-lines value="Kalma nade dogayen layi"/>
+			<common-ok value="OK"/>
+			<common-cancel value="Soke"/>
+			<common-name value="Suna"/>
+			<tabrename-title value="Sake suna Tab ɗin Yanzu"/>
+			<tabrename-newname value="Sabon suna"/>
+			<splitter-rotate-left value="Juyawa zuwa hagu"/>
+			<splitter-rotate-right value="Juyawa zuwa dama"/>
+			<userdefined-title-new value="Ƙirƙiri Sabon Harshe..."/>
+			<userdefined-title-save value="Ajiye Sunan Harshen Yanzu Kamar yadda..."/>
+			<userdefined-title-rename value="Sake suna Sunan Harshen Yanzu"/>
+			<summary value="Takaitawa"/>
+			<summary-filepath value="Cikakken hanyar fayil:"/>
+			<summary-filecreatetime value="An ƙirƙira:"/>
+			<summary-filemodifytime value="Gyara:"/>
+			<summary-nbchar value="Haruffa (ba tare da ƙarewar layi ba):"/>
+			<summary-nbword value="Kalmomi:"/>
+			<summary-nbline value="Layi:"/>
+			<summary-nbbyte value="Tsawon takarda:"/>
+			<summary-nbsel1 value="zaɓaɓɓun haruffa ("/>
+			<summary-nbsel2 value="bytes) a cikin"/>
+			<summary-nbrange value="zango"/>
+			<progress-hits-title value="Bugawa:"/>
+			<progress-cancel-info value="Soke aiki, da fatan za a jira..."/>
+			<find-in-files-progress-title value="Nemo Ci gaban Fayiloli..."/>
+			<replace-in-files-confirm-title value="Ka tabbata?"/>
+			<replace-in-files-confirm-directory value="Shin kun tabbata kuna son maye gurbin duk abubuwan da suka faru a cikin:"/>
+			<replace-in-files-confirm-filetype value="Domin nau'in fayil:"/>
+			<replace-in-files-progress-title value="Sauya A Ci gaban Fayiloli..."/>
+			<replace-in-projects-confirm-title value="Ka tabbata?"/>
+			<replace-in-projects-confirm-message value="Kuna son maye gurbin duk abubuwan da suka faru a cikin duk takaddun da ke cikin zaɓaɓɓun Panel(s) na Ayyukan?"/>
+			<replace-in-open-docs-confirm-title value="Ka tabbata?"/>
+			<replace-in-open-docs-confirm-message value="Shin kun tabbata kuna son maye gurbin duk abubuwan da suka faru a duk buɗaɗɗen takardu?"/>
+			<find-result-caption value="Sakamakon bincike"/>
+			<find-result-title value="Bincike"/><!-- Must not begin with space or tab character -->
+			<find-result-title-info value="($INT_REPLACE1$ ya buge a cikin $INT_REPLACE2$ fayilolin $INT_REPLACE3$ da aka nema)"/>
+			<find-result-title-info-selections value="($INT_REPLACE1$ ya buge a cikin $INT_REPLACE2$ zaɓin $INT_REPLACE3$ aka nema)"/>
+			<find-result-title-info-options-searchmode-normal value="Al'ada"/>
+			<find-result-title-info-options-searchmode-extended value="Tsawaita"/>
+			<find-result-title-info-options-searchmode-regexp value="RegEx"/>
+			<find-result-title-info-options-case value="Harka"/>
+			<find-result-title-info-options-word value="Kalma"/>
+			<find-result-title-info-extra value="- Yanayin Tacewar Layi: kawai nuna sakamakon da aka tace"/>
+			<find-result-hits value="($INT_REPLACE$ hits)"/>
+			<find-result-line-prefix value="Layi"/><!-- Must not begin with space or tab character -->
+			<find-regex-zero-length-match value="Tsawon sifilin wasa"/>
+			<session-save-folder-as-workspace value="Ajiye Jaka azaman Wurin Aiki"/>
+			<tab-untitled-string value="sabuwa"/>
+			<file-save-assign-type value="Karin bayani"/>
+			<close-panel-tip value="Rufe"/>
+			<IncrementalFind-FSFound value="$INT_REPLACE$ matches"/>
+			<IncrementalFind-FSNotFound value="Ba a samo jumla ba"/>
+			<IncrementalFind-FSTopReached value="Ya kai saman shafi, ya ci gaba daga kasa"/>
+			<IncrementalFind-FSEndReached value="An kai ƙarshen shafi, ci gaba daga sama"/>
+			<contextMenu-styleAlloccurrencesOfToken value="Salon duk abubuwan da suka faru na alama"/>
+			<contextMenu-styleOneToken value="Salo daya alama"/>
+			<contextMenu-clearStyle value="Salo mai tsabta"/>
+			<contextMenu-PluginCommands value="Umarnin plugin"/>
+			<largeFileRestriction-tip value="Wasu fasalulluka na iya rage aiki a manyan fayiloli.Ana iya kashe waɗannan fasalulluka ta atomatik akan buɗe babban fayil.Kuna iya keɓance su anan.
+
+NOTE:
+1. Gyara zaɓuɓɓuka a nan yana buƙatar sake buɗe manyan fayiloli a halin yanzu don samun halayen da suka dace.
+
+2. Idan aka duba &quot;Deactivate Word Wrap a duniya&quot; kuma ka bude babban fayil, &quot;Word Wrap&quot; za a kashe duk fayiloli.Kuna iya sake kunna ta ta hanyar menu &quot;Duba-&gt; Kundin Kalma&quot;."/>
+			<npcNote-tip value="Wakilin zaɓaɓɓen &quot;marasa ASCII&quot; fararen sararin samaniya da haruffa marasa bugu ( sarrafawa).
+
+NOTE:
+Yin amfani da wakilci zai kashe tasirin haruffa akan rubutu.
+
+Don cikakken jerin zaɓaɓɓun sararin sarari da haruffa marasa bugu duba Jagorar mai amfani.
+
+Danna kan wannan maɓallin don buɗe gidan yanar gizon tare da littafin mai amfani."/>
+			<npcAbbreviation-tip value="Gaggawa : suna
+NBSP: sarari babu hutu
+ZWSP: sarari sifili
+ZWNBSP: sarari mara fa'ida-sifili
+
+Don cikakken lissafin duba Jagoran mai amfani.
+Danna kan &quot;?&quot;maballin dama don buɗe gidan yanar gizon tare da littafin mai amfani."/>
+			<npcCodepoint-tip value="Codepoint: suna
+U+00A0: sarari babu hutu
+U+200B: sarari sifili
+U+FEFF : Sifili-nisa ba-karye sarari
+
+Don cikakken lissafin duba Jagoran mai amfani.
+Danna kan &quot;?&quot;maballin dama don buɗe gidan yanar gizon tare da littafin mai amfani."/>
+
+			<!-- Don't translate "(&quot;Non-printing characters custom color&quot;)" -->
+			<npcCustomColor-tip value="Je zuwa Salon Configurator don canza tsoffin launi na al'ada don zaɓin farar wuri da haruffa marasa bugawa (&quot;Launi na al'ada na haruffa marasa bugawa&quot;)."/>
+			<npcIncludeCcUniEol-tip value="Aiwatar da saitunan bayyanar haruffa marasa bugawa zuwa C0, sarrafawar C1 da Unicode EOL (layi na gaba, mai raba layi da mai raba sakin layi)."/>
+			<searchingInSelThresh-tip value="Mafi ƙarancin adadin haruffan da aka zaɓa a yankin gyara don bincika akwatin rajista ta atomatik lokacin da aka kunna Nemo maganganu.Matsakaicin ƙimar shine $INT_REPLACE$.Saita ƙima zuwa 0 don kashe dubawa ta atomatik."/>
+			<searchingFillFindWhat-tip value="Matsakaicin adadin haruffan da aka zaɓa a yankin gyara don cike filin &quot;Nemi menene&quot; ta atomatik lokacin da aka kunna Ctrl-F.Matsakaicin ƙimar shine $INT_REPLACE$, wanda shine matsakaicin girman filin &quot;Nemi menene&quot;, tsarin iyaka."/>
+			<verticalEdge-tip value="Ƙara alamar shafi ta hanyar nuna matsayinsa tare da lamba goma.Kuna iya ayyana alamomin shafi da yawa ta amfani da farin sarari don raba lambobi daban-daban."/>
+			<fileSaveAsCopySaveButton-tip value="Riƙe Shift yayin latsa Ajiye don buɗe kwafin bayan ajiyewa."/>
+			<autoIndentBasic-tip value="Tabbatar cewa shigar da layin na yanzu (watau sabon layin da aka ƙirƙira ta latsa maɓallin ENTER) yayi daidai da shigar layin da ya gabata."/>
+			<autoIndentAdvanced-tip value="Kunna shigar da wayo don harsuna &quot;C-like&quot; da Python.Harsunan &quot;C-like&quot; sun haɗa da:
+C, C++, Java, C#, Objective-C, PHP, JavaScript, JSP, CSS, Perl, Rust, PowerShell da JSON.
+
+Idan ka zaɓi yanayin ci gaba amma ba ka gyara fayiloli a cikin yarukan da aka ambata ba, shigarwar za ta kasance a cikin ainihin yanayin."/>
+
+			<!-- Don't translate "Global override" and "Default Style" -->
+			<global-override-tip value="Ƙaddamar da &quot;Global override&quot; a nan zai ƙetare wannan siga a duk salon harshe.Abinda da gaske kuke so shine amfani da saitunan &quot;Default Style&quot; maimakon"/>
+			<scintillaRenderingTechnology-tip value="Yana iya inganta ma'anar haruffa na musamman ko warware wasu al'amurran da suka shafi zane, sake kunna Notepad++ don amfani da canje-canje."/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'length' & 'lines' are much longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-length-lines value="tsayi: $STR_REPLACE1$ layi: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Ln' & 'Col' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Ln-Col value="Ln: $STR_REPLACE1$ Col: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Pos' & 'Sel' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Pos value="Matsayi:"/>
+			<statusbar-Sel value="Sel:"/>
+			<statusbar-Sel-number value="Sel"/>
+			<toolbar-accent-tip value="Wannan zaɓi yana sa gumakan kayan aikin ku su bi launin lafazin tsarin Windows.Launin lafazi shine launi mai haske da ake amfani dashi a cikin maɓalli, iyakoki, da fale-falen menu na Fara a cikin Windows.Don canza shi, je zuwa Saituna &gt; Keɓantawa &gt; Launuka, sannan zaɓi launin lafazin da kuka fi so."/>
+			<len-limit-exceeded-tip value="Iyakar tsayi: shigarwar ku na iya wuce iyakar da aka yarda kuma ana iya yanke shi, kuma ba za a adana shi ba don zama na gaba."/>
+			<max-len-on-search-tip value="Shigar da shigar ku na iya wuce iyakar da aka yarda kuma ana iya yanke shi, kuma ba za a adana shi ba don zama na gaba."/>
+			<max-len-on-save-tip value="Tsawon shigarwar ku yana da tsayi sosai kuma maiyuwa ba za a adana shi don zama na gaba ba."/>
+			<goto-setting-tip value="Nemo saitin ku anan"/>
+			<tabbar-tabcompactlabellen-tip value="Yana iyakance tsayin bayyane na dogon sunaye shafin.Shigar don amfani da ƙimar da aka bayar.Kewayon ƙimar: 1-257 haruffa (0 yana hana yanke)."/>
+		</MiscStrings>
+	</Native-Langue>
+</NotepadPlus>
+
+

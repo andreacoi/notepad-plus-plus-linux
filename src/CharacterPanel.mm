@@ -240,7 +240,7 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
     titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
     [self addSubview:titleBar];
 
-    _titleLabel = [NSTextField labelWithString:@"ASCII Codes Insertion Panel"];
+    _titleLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Character Panel"]];
     NSTextField *titleLabel = _titleLabel;
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     titleLabel.font = [NSFont boldSystemFontOfSize:11];
@@ -294,14 +294,15 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
     _tableView.columnAutoresizingStyle = NSTableViewLastColumnOnlyAutoresizingStyle;
 
     // Column specs: identifier, title, width, fixed?
+    NppLocalizer *loc = [NppLocalizer shared];
     struct ColSpec { NSString *ident; NSString *title; CGFloat w; BOOL fixed; };
     ColSpec cols[] = {
-        { kColVal,  @"Value",            45,  YES },
-        { kColHex,  @"Hex",              45,  YES },
-        { kColChar, @"Character",        70,  YES },
-        { kColName, @"HTML Name",       100,  YES },
-        { kColDec,  @"HTML Decimal",    110,  YES },
-        { kColXHex, @"HTML Hexadecimal", 0,   NO  },  // last: autoresize
+        { kColVal,  [loc translate:@"Value"],            45,  YES },
+        { kColHex,  [loc translate:@"Hex"],              45,  YES },
+        { kColChar, [loc translate:@"Character"],        70,  YES },
+        { kColName, [loc translate:@"HTML Name"],       100,  YES },
+        { kColDec,  [loc translate:@"HTML Decimal"],    110,  YES },
+        { kColXHex, [loc translate:@"HTML Hexadecimal"], 0,   NO  },  // last: autoresize
     };
     NSUInteger nCols = sizeof(cols) / sizeof(cols[0]);
     for (NSUInteger i = 0; i < nCols; i++) {

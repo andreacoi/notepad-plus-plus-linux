@@ -1,4 +1,5 @@
 #import "UDLStylerDialog.h"
+#import "NppLocalizer.h"
 
 // ── Helper: convert hex "RRGGBB" to NSColor ──────────────────────────────────
 static NSColor *colorFromHex(NSString *hex) {
@@ -55,7 +56,8 @@ static NSString *hexFromColor(NSColor *c) {
         initWithContentRect:NSMakeRect(0, 0, W, H)
                   styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable
                     backing:NSBackingStoreBuffered defer:NO];
-    panel.title = @"Styler Dialog";
+    NppLocalizer *loc = [NppLocalizer shared];
+    panel.title = [loc translate:@"Styler Dialog"];
     panel.level = NSModalPanelWindowLevel;
     panel.delegate = helper;
     if (parentWindow) {
@@ -70,13 +72,13 @@ static NSString *hexFromColor(NSColor *c) {
 
     // ── Font Options group ───────────────────────────────────────────────
     NSBox *fontBox = [[NSBox alloc] initWithFrame:NSMakeRect(12, H - 190, W - 24, 175)];
-    fontBox.title = @"Font options"; fontBox.titlePosition = NSAtTop;
+    fontBox.title = [loc translate:@"Font options"]; fontBox.titlePosition = NSAtTop;
     [root addSubview:fontBox];
     NSView *fv = fontBox.contentView;
     CGFloat fvH = 155; // approximate content height
 
     // Name dropdown
-    NSTextField *nameL = [NSTextField labelWithString:@"Name:"];
+    NSTextField *nameL = [NSTextField labelWithString:[loc translate:@"Name:"]];
     nameL.frame = NSMakeRect(20, fvH - 35, 45, 16);
     [fv addSubview:nameL];
 
@@ -91,7 +93,7 @@ static NSString *hexFromColor(NSColor *c) {
     [fv addSubview:fontPop];
 
     // Size dropdown
-    NSTextField *sizeL = [NSTextField labelWithString:@"Size:"];
+    NSTextField *sizeL = [NSTextField labelWithString:[loc translate:@"Size:"]];
     sizeL.frame = NSMakeRect(20, fvH - 70, 45, 16);
     [fv addSubview:sizeL];
 
@@ -103,43 +105,43 @@ static NSString *hexFromColor(NSColor *c) {
 
     // Bold / Italic / Underline
     int fontStyle = [style[@"fontStyle"] intValue];
-    NSButton *boldCk = [NSButton checkboxWithTitle:@"Bold" target:nil action:nil];
+    NSButton *boldCk = [NSButton checkboxWithTitle:[loc translate:@"Bold"] target:nil action:nil];
     boldCk.frame = NSMakeRect(300, fvH - 30, 80, 18);
     boldCk.state = (fontStyle & 1) ? NSControlStateValueOn : NSControlStateValueOff;
-    NSButton *italicCk = [NSButton checkboxWithTitle:@"Italic" target:nil action:nil];
+    NSButton *italicCk = [NSButton checkboxWithTitle:[loc translate:@"Italic"] target:nil action:nil];
     italicCk.frame = NSMakeRect(300, fvH - 52, 80, 18);
     italicCk.state = (fontStyle & 2) ? NSControlStateValueOn : NSControlStateValueOff;
-    NSButton *underCk = [NSButton checkboxWithTitle:@"Underline" target:nil action:nil];
+    NSButton *underCk = [NSButton checkboxWithTitle:[loc translate:@"Underline"] target:nil action:nil];
     underCk.frame = NSMakeRect(300, fvH - 74, 100, 18);
     underCk.state = (fontStyle & 4) ? NSControlStateValueOn : NSControlStateValueOff;
     [fv addSubview:boldCk]; [fv addSubview:italicCk]; [fv addSubview:underCk];
 
     // Foreground color
-    NSTextField *fgL = [NSTextField labelWithString:@"Foreground color:"];
+    NSTextField *fgL = [NSTextField labelWithString:[loc translate:@"Foreground color:"]];
     fgL.frame = NSMakeRect(20, fvH - 105, 115, 16);
     [fv addSubview:fgL];
     NSColorWell *fgWell = [[NSColorWell alloc] initWithFrame:NSMakeRect(140, fvH - 110, 30, 24)];
     fgWell.color = colorFromHex(style[@"fgColor"] ?: @"000000");
     [fv addSubview:fgWell];
-    NSButton *fgTrans = [NSButton checkboxWithTitle:@"Transparent" target:nil action:nil];
+    NSButton *fgTrans = [NSButton checkboxWithTitle:[loc translate:@"Transparent"] target:nil action:nil];
     fgTrans.frame = NSMakeRect(20, fvH - 132, 120, 18);
     [fv addSubview:fgTrans];
 
     // Background color
-    NSTextField *bgL = [NSTextField labelWithString:@"Background color:"];
+    NSTextField *bgL = [NSTextField labelWithString:[loc translate:@"Background color:"]];
     bgL.frame = NSMakeRect(260, fvH - 105, 120, 16);
     [fv addSubview:bgL];
     NSColorWell *bgWell = [[NSColorWell alloc] initWithFrame:NSMakeRect(385, fvH - 110, 30, 24)];
     bgWell.color = colorFromHex(style[@"bgColor"] ?: @"FFFFFF");
     [fv addSubview:bgWell];
-    NSButton *bgTrans = [NSButton checkboxWithTitle:@"Transparent" target:nil action:nil];
+    NSButton *bgTrans = [NSButton checkboxWithTitle:[loc translate:@"Transparent"] target:nil action:nil];
     bgTrans.frame = NSMakeRect(260, fvH - 132, 120, 18);
     [fv addSubview:bgTrans];
 
     // ── Nesting group (only for delimiters/comments) ─────────────────────
     if (enableNesting) {
         NSBox *nestBox = [[NSBox alloc] initWithFrame:NSMakeRect(12, 50, W - 24, 280)];
-        nestBox.title = @"Nesting"; nestBox.titlePosition = NSAtTop;
+        nestBox.title = [loc translate:@"Nesting"]; nestBox.titlePosition = NSAtTop;
         [root addSubview:nestBox];
         NSView *nv = nestBox.contentView;
 
@@ -169,12 +171,12 @@ static NSString *hexFromColor(NSColor *c) {
     }
 
     // ── OK / Cancel buttons ──────────────────────────────────────────────
-    NSButton *okBtn = [NSButton buttonWithTitle:@"OK" target:helper action:@selector(okClicked:)];
+    NSButton *okBtn = [NSButton buttonWithTitle:[loc translate:@"OK"] target:helper action:@selector(okClicked:)];
     okBtn.frame = NSMakeRect(W/2 - 90, 12, 80, 28);
     okBtn.keyEquivalent = @"\r";
     [root addSubview:okBtn];
 
-    NSButton *cancelBtn = [NSButton buttonWithTitle:@"Cancel" target:helper action:@selector(cancelClicked:)];
+    NSButton *cancelBtn = [NSButton buttonWithTitle:[loc translate:@"Cancel"] target:helper action:@selector(cancelClicked:)];
     cancelBtn.frame = NSMakeRect(W/2 + 10, 12, 80, 28);
     cancelBtn.keyEquivalent = @"\033";
     [root addSubview:cancelBtn];

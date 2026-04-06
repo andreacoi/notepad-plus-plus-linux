@@ -1,0 +1,2142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Odia (ଓଡ଼ିଆ) language file for Notepad++ macOS
+    Based on English template - community translations welcome
+    Created: 2026-04-04
+-->
+<NotepadPlus>
+	<Native-Langue name="ଓଡ଼ିଆ" filename="odia.xml" version="8.9">
+		<Menu>
+			<Main>
+				<!-- Main Menu Entries -->
+				<Entries>
+					<Item menuId="file" name="ଫାଇଲ୍ |"/>
+					<Item menuId="edit" name="ସଂପାଦନା କରନ୍ତୁ |"/>
+					<Item menuId="search" name="ସନ୍ଧାନ କର |"/>
+					<Item menuId="view" name="ଦର୍ଶନ କରନ୍ତୁ |"/>
+					<Item menuId="encoding" name="ଏନକୋଡିଂ"/>
+					<Item menuId="language" name="ଭାଷା"/>
+					<Item menuId="settings" name="ସେଟିଂସମୂହ"/>
+					<Item menuId="tools" name="ସାଧନଗୁଡ଼ିକ |"/>
+					<Item menuId="macro" name="ମାକ୍ରୋ |"/>
+					<Item menuId="run" name="ଚଲାନ୍ତୁ |"/>
+					<Item menuId="Plugins" name="ପ୍ଲଗଇନ୍ |"/>
+					<Item menuId="Window" name="ୱିଣ୍ଡୋ |"/>
+				</Entries>
+				<!-- Sub Menu Entries -->
+				<SubEntries>
+					<Item subMenuId="file-openFolder" name="ଧାରଣକାରୀ ଫୋଲ୍ଡର ଖୋଲନ୍ତୁ |"/>
+					<Item subMenuId="file-closeMore" name="ଏକାଧିକ ଡକ୍ୟୁମେଣ୍ଟ୍ ବନ୍ଦ କରନ୍ତୁ |"/>
+					<Item subMenuId="file-recentFiles" name="ସାମ୍ପ୍ରତିକ ଫାଇଲଗୁଡିକ"/>
+					<Item subMenuId="edit-insert" name="ସନ୍ନିବେଶ କରନ୍ତୁ |"/>
+					<Item subMenuId="edit-copyToClipboard" name="କ୍ଲିପବୋର୍ଡକୁ କପି କରନ୍ତୁ |"/>
+					<Item subMenuId="edit-indent" name="ଇଣ୍ଡେଣ୍ଟ୍ |"/>
+					<Item subMenuId="edit-convertCaseTo" name="କେସ୍ କୁ ରୂପାନ୍ତର କରନ୍ତୁ |"/>
+					<Item subMenuId="edit-lineOperations" name="ରେଖା ଅପରେସନ୍"/>
+					<Item subMenuId="edit-comment" name="ମନ୍ତବ୍ୟ / ଅସନ୍ତୋଷ"/>
+					<Item subMenuId="edit-autoCompletion" name="ଅଟୋ-ସମାପ୍ତି"/>
+					<Item subMenuId="edit-eolConversion" name="EOL ରୂପାନ୍ତର"/>
+					<Item subMenuId="edit-blankOperations" name="ଖାଲି ଅପରେସନ୍"/>
+					<Item subMenuId="edit-pasteSpecial" name="ସ୍ୱତନ୍ତ୍ର ଲେପନ କରନ୍ତୁ"/>
+					<Item subMenuId="edit-onSelection" name="ଚୟନ ଉପରେ"/>
+					<Item subMenuId="edit-multiSelectALL" name="ସମସ୍ତ ମଲ୍ଟି-ସିଲେକ୍ଟ"/>
+					<Item subMenuId="edit-multiSelectNext" name="ପରବର୍ତ୍ତୀ ମଲ୍ଟି-ସିଲେକ୍ଟ"/>
+					<Item subMenuId="edit-readonlyInNotepad++" name="କେବଳ ନୋଟପ୍ୟାଡ୍ ++ ରେ ପ Read ଼ନ୍ତୁ"/>
+					<Item subMenuId="search-changeHistory" name="ଇତିହାସ ପରିବର୍ତ୍ତନ କରନ୍ତୁ"/>
+					<Item subMenuId="search-markAll" name="ଟୋକେନ୍ ର ସମସ୍ତ ଘଟଣା ଶ Style ଳୀ"/>
+					<Item subMenuId="search-markOne" name="ଷ୍ଟାଇଲ୍ ୱାନ୍ ଟୋକେନ୍"/>
+					<Item subMenuId="search-unmarkAll" name="ଶ Style ଳୀ ସଫା କରନ୍ତୁ"/>
+					<Item subMenuId="search-jumpUp" name="ଡେଇଁପଡ"/>
+					<Item subMenuId="search-jumpDown" name="ତଳକୁ ଡେଇଁ"/>
+					<Item subMenuId="search-copyStyledText" name="ଷ୍ଟାଇଲ୍ ଟେକ୍ସଟ୍ କପି କରନ୍ତୁ"/>
+					<Item subMenuId="search-bookmark" name="ବୁକମାର୍କ"/>
+					<Item subMenuId="view-currentFileIn" name=""/>
+					<Item subMenuId="view-showSymbol" name="ରେ ସାମ୍ପ୍ରତିକ ଫାଇଲ୍ ଦେଖନ୍ତୁ |ପ୍ରତୀକ ଦେଖାନ୍ତୁ |"/>
+					<Item subMenuId="view-zoom" name="ଜୁମ୍"/>
+					<Item subMenuId="view-moveCloneDocument" name="ସାମ୍ପ୍ରତିକ ଡକ୍ୟୁମେଣ୍ଟ୍ ଘୁଞ୍ଚାନ୍ତୁ / କ୍ଲୋନ୍ କରନ୍ତୁ"/>
+					<Item subMenuId="view-tab" name="ଟ୍ୟାବ୍"/>
+					<Item subMenuId="view-collapseLevel" name="ଫୋଲ୍ଡ ସ୍ତର"/>
+					<Item subMenuId="view-uncollapseLevel" name="ଅନାବୃତ ସ୍ତର"/>
+					<Item subMenuId="view-project" name="ପ୍ରକଳ୍ପ"/>
+					<Item subMenuId="encoding-characterSets" name="ଅକ୍ଷର ସେଟ୍"/>
+					<Item subMenuId="encoding-arabic" name="ଆରବୀ"/>
+					<Item subMenuId="encoding-baltic" name="ବାଲ୍ଟିକ୍"/>
+					<Item subMenuId="encoding-celtic" name="ସେଲ୍ଟିକ୍"/>
+					<Item subMenuId="encoding-cyrillic" name="ସିରିଲିକ୍"/>
+					<Item subMenuId="encoding-centralEuropean" name="କେନ୍ଦ୍ରୀୟ ୟୁରୋପୀୟ"/>
+					<Item subMenuId="encoding-chinese" name="ଚାଇନିଜ୍"/>
+					<Item subMenuId="encoding-easternEuropean" name="ପୂର୍ବ ୟୁରୋପୀୟ"/>
+					<Item subMenuId="encoding-greek" name="ଗ୍ରୀକ୍"/>
+					<Item subMenuId="encoding-hebrew" name="ହିବ୍ରୁ"/>
+					<Item subMenuId="encoding-japanese" name="ଜାପାନିଜ"/>
+					<Item subMenuId="encoding-korean" name="କୋରିଆନ୍"/>
+					<Item subMenuId="encoding-northEuropean" name="ଉତ୍ତର ୟୁରୋପୀୟ"/>
+					<Item subMenuId="encoding-thai" name="ଥାଇ"/>
+					<Item subMenuId="encoding-turkish" name="ତୁର୍କୀ"/>
+					<Item subMenuId="encoding-westernEuropean" name="ପଶ୍ଚିମ ୟୁରୋପୀୟ"/>
+					<Item subMenuId="encoding-vietnamese" name="ଭିଏତନାମ"/>
+					<Item subMenuId="language-userDefinedLanguage" name="ଉପଯୋଗକର୍ତ୍ତା ପରିଭାଷିତ ଭାଷା"/>
+					<Item subMenuId="settings-import" name="ଆମଦାନି"/>
+					<Item subMenuId="tools-md5" name="MD5"/>
+					<Item subMenuId="tools-sha1" name="SHA-1"/>
+					<Item subMenuId="tools-sha256" name="SHA-256"/>
+					<Item subMenuId="tools-sha512" name="SHA-512"/>
+					<Item subMenuId="window-sortby" name="ଦ୍ୱାରା ସର୍ଟ କରନ୍ତୁ"/>
+				</SubEntries>
+
+				<!-- all menu item -->
+				<Commands>
+					<Item id="41001" name="ନୂତନ"/>
+					<Item id="41002" name="ଖୋଲ ..."/>
+					<Item id="41019" name="ଏକ୍ସପ୍ଲୋରର"/>
+					<Item id="41020" name="cmd"/>
+					<Item id="41025" name="କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଭାବରେ ଫୋଲ୍ଡର"/>
+					<Item id="41003" name="ବନ୍ଦ"/>
+					<Item id="41004" name="ସମସ୍ତ ବନ୍ଦ କରନ୍ତୁ"/>
+					<Item id="41005" name="ସମସ୍ତ BUT ସାମ୍ପ୍ରତିକ ଡକ୍ୟୁମେଣ୍ଟ୍ ବନ୍ଦ କରନ୍ତୁ"/>
+					<Item id="41026" name="ସମସ୍ତ BUT ପିନ୍ ହୋଇଥିବା ଡକ୍ୟୁମେଣ୍ଟ୍ ବନ୍ଦ କରନ୍ତୁ"/>
+					<Item id="41009" name="ସମସ୍ତ ବାମକୁ ବନ୍ଦ କରନ୍ତୁ |"/>
+					<Item id="41018" name="ସମସ୍ତଙ୍କୁ ଡାହାଣକୁ ବନ୍ଦ କରନ୍ତୁ"/>
+					<Item id="41024" name="ସମସ୍ତ ଅପରିବର୍ତ୍ତିତ ବନ୍ଦ କରନ୍ତୁ"/>
+					<Item id="41006" name="ସଞ୍ଚୟ କରନ୍ତୁ"/>
+					<Item id="41007" name="ସମସ୍ତ ସଞ୍ଚୟ କରନ୍ତୁ"/>
+					<Item id="41008" name="ଯେପରି ସେଭ୍ କରନ୍ତୁ ..."/>
+					<Item id="41010" name="ମୁଦ୍ରଣ ..."/>
+					<Item id="1001" name="ବର୍ତ୍ତମାନ ମୁଦ୍ରଣ କରନ୍ତୁ"/>
+					<Item id="41011" name="ପ୍ରସ୍ଥାନ"/>
+					<Item id="41012" name="ଅଧିବେଶନ ଲୋଡ୍ ..."/>
+					<Item id="41013" name="ଅଧିବେଶନ ସଞ୍ଚୟ କରନ୍ତୁ ..."/>
+					<Item id="41014" name="ଡିସ୍କରୁ ପୁନ elo ଲୋଡ୍ କରନ୍ତୁ"/>
+					<Item id="41015" name="ଯେପରି ଏକ କପି ସଞ୍ଚୟ କରନ୍ତୁ ..."/>
+					<Item id="41016" name="ରିସାଇକ୍ଲି ବିନ୍ କୁ ଯାଆନ୍ତୁ"/>
+					<Item id="41017" name="ପୁନ ame ନାମ କରନ୍ତୁ ..."/>
+					<Item id="41021" name="ସମ୍ପ୍ରତି ବନ୍ଦ ଫାଇଲ୍ ପୁନରୁଦ୍ଧାର କରନ୍ତୁ"/>
+					<Item id="41022" name="କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଭାବରେ ଫୋଲ୍ଡର ଖୋଲନ୍ତୁ ..."/>
+					<Item id="41023" name="ଡିଫଲ୍ଟ ଦର୍ଶକରେ ଖୋଲ"/>
+					<Item id="42001" name="କାଟ"/>
+					<Item id="42002" name="କପି"/>
+					<Item id="42003" name="ପୂର୍ବବତ୍ କରନ୍ତୁ |"/>
+					<Item id="42004" name="ପୁନ o"/>
+					<Item id="42005" name="ଲେପନ କରନ୍ତୁ"/>
+					<Item id="42006" name="ବିଲୋପ କରନ୍ତୁ"/>
+					<Item id="42007" name="ସମସ୍ତ ଚୟନ କରନ୍ତୁ"/>
+					<Item id="42020" name="ଆରମ୍ଭ / ଶେଷ ଚୟନ"/>
+					<Item id="42089" name="ସ୍ତମ୍ଭ ମୋଡ୍ ରେ ଆରମ୍ଭ / ଶେଷ ଚୟନ"/>
+					<Item id="42084" name="ତାରିଖ ସମୟ (ସଂକ୍ଷିପ୍ତ)"/>
+					<Item id="42085" name="ତାରିଖ ସମୟ (ଲମ୍ବା)"/>
+					<Item id="42086" name="ତାରିଖ ସମୟ (କଷ୍ଟମାଇଜ୍)"/>
+					<Item id="42008" name="ରେଖା ଇଣ୍ଡେଣ୍ଟ ବୃଦ୍ଧି"/>
+					<Item id="42009" name="ରେଖା ଇଣ୍ଡେଣ୍ଟ ହ୍ରାସ କରନ୍ତୁ"/>
+					<Item id="42010" name="ନକଲ କରେଣ୍ଟ ଲାଇନ"/>
+					<Item id="42079" name="ନକଲ ଲାଇନ୍ ଅପସାରଣ କରନ୍ତୁ"/>
+					<Item id="42077" name="କ୍ରମାଗତ ନକଲ ଲାଇନ୍ ଅପସାରଣ କରନ୍ତୁ"/>
+					<Item id="42012" name="ବିଭାଜନ ରେଖା"/>
+					<Item id="42013" name="ରେଖା ଯୋଗ ଦିଅନ୍ତୁ"/>
+					<Item id="42014" name="ସାମ୍ପ୍ରତିକ ଲାଇନକୁ ଘୁଞ୍ଚାନ୍ତୁ"/>
+					<Item id="42015" name="ସାମ୍ପ୍ରତିକ ଲାଇନକୁ ଘୁଞ୍ଚାନ୍ତୁ"/>
+					<Item id="42059" name="ଲେକ୍ସିକୋଗ୍ରାଫିକ୍ ଆରୋହଣ ରେଖା ସର୍ଟ କରନ୍ତୁ"/>
+					<Item id="42060" name="ଲେକ୍ସିକୋଗ୍ରାଫିକ୍ ଅବତରଣ ରେଖାଗୁଡିକ ସର୍ଟ କରନ୍ତୁ |"/>
+					<Item id="42080" name="ଲାଇନ୍ ଲେକ୍ସ ସର୍ଟ କରନ୍ତୁ |ଅବହେଳା ମାମଲା"/>
+					<Item id="42081" name="ଲାଇନ୍ ଲେକ୍ସ ସର୍ଟ କରନ୍ତୁ |ଅବହେଳା ମାମଲା"/>
+					<Item id="42100" name="ଲୋକାଲ୍ ଅର୍ଡର ଆରୋହଣରେ ରେଖା ସର୍ଟ କରନ୍ତୁ"/>
+					<Item id="42101" name="ଲୋକାଲ୍ ଅର୍ଡର ଅବତରଣରେ ରେଖା ସର୍ଟ କରନ୍ତୁ"/>
+					<Item id="42104" name="ଦ Length ର୍ଘ୍ୟ ବୃଦ୍ଧି ଦ୍ୱାରା ରେଖା ସର୍ଟ କରନ୍ତୁ"/>
+					<Item id="42105" name="ଦ Length ର୍ଘ୍ୟ ଅବତରଣ ଦ୍ୱାରା ରେଖା ସର୍ଟ କରନ୍ତୁ"/>
+					<Item id="42061" name="ଇଣ୍ଟିଜର୍ସ ଆରୋହଣ ଭାବରେ ରେଖା ସର୍ଟ କରନ୍ତୁ"/>
+					<Item id="42062" name="ଇଣ୍ଟିଜର୍ସ ଅବତରଣ କରୁଥିବା ପରି ରେଖା ସର୍ଟ କରନ୍ତୁ"/>
+					<Item id="42063" name="ଡ଼େସିମଲ୍ (କମା) ଆରୋହଣ ରେଖାଗୁଡ଼ିକୁ ସର୍ଟ କରନ୍ତୁ"/>
+					<Item id="42064" name="ଡ଼େସିମଲ୍ (କମା) ଅବତରଣ ପରି ରେଖା ସର୍ଟ କରନ୍ତୁ"/>
+					<Item id="42065" name="ଡ଼େସିମାଲ୍ (ଡଟ୍) ଆରୋହଣ ରେଖାଗୁଡ଼ିକୁ ସର୍ଟ କରନ୍ତୁ"/>
+					<Item id="42066" name="ଡ଼େସିମଲ୍ (ଡଟ୍) ଅବତରଣ ପରି ରେଖା ସର୍ଟ କରନ୍ତୁ"/>
+					<Item id="42083" name="ଓଲଟା ରେଖା ଅର୍ଡର"/>
+					<Item id="42078" name="ରେଖା ଅର୍ଡର ରାଣ୍ଡମାଇଜ୍ କରନ୍ତୁ"/>
+					<Item id="42016" name="UPPERCASE"/>
+					<Item id="42017" name="ଲୋୟର କେସ୍"/>
+					<Item id="42067" name="ଉପଯୁକ୍ତ ମାମଲା"/>
+					<Item id="42068" name="ସଠିକ୍ ମାମଲା (ମିଶ୍ରଣ)"/>
+					<Item id="42069" name="ବାକ୍ୟ ମାମଲା"/>
+					<Item id="42070" name="ବାକ୍ୟ ମାମଲା (ମିଶ୍ରଣ)"/>
+					<Item id="42071" name="iNVERT କେସ୍"/>
+					<Item id="42072" name="ranDOm CasE"/>
+					<Item id="42073" name="ଫାଇଲ୍ ଖୋଲ"/>
+					<Item id="42074" name="ଏକ୍ସପ୍ଲୋରରରେ ଧାରଣକାରୀ ଫୋଲ୍ଡର୍ ଖୋଲନ୍ତୁ"/>
+					<Item id="42106" name="ପୁନ Red ଚୟନ █ (ଶିଫ୍ଟ: ●)"/>
+					<Item id="42075" name="ଇଣ୍ଟରନେଟରେ ସନ୍ଧାନ"/>
+					<Item id="42076" name="ସର୍ଚ୍ଚ ଇଞ୍ଜିନ୍ ପରିବର୍ତ୍ତନ କରନ୍ତୁ ..."/>
+					<Item id="42090" name="କେସ୍ ପୁରା ଶବ୍ଦକୁ ଉପେକ୍ଷା କରନ୍ତୁ"/>
+					<Item id="42091" name="କେବଳ ମ୍ୟାଚ୍ କେସ୍"/>
+					<Item id="42092" name="କେବଳ ସମ୍ପୂର୍ଣ୍ଣ ଶବ୍ଦ ସହିତ ମେଳ"/>
+					<Item id="42093" name="ମ୍ୟାଚ୍ କେସ୍ ପୁରା ଶବ୍ଦ"/>
+					<Item id="42094" name="କେସ୍ ପୁରା ଶବ୍ଦକୁ ଉପେକ୍ଷା କରନ୍ତୁ"/>
+					<Item id="42095" name="କେବଳ ମ୍ୟାଚ୍ କେସ୍"/>
+					<Item id="42096" name="କେବଳ ସମ୍ପୂର୍ଣ୍ଣ ଶବ୍ଦ ସହିତ ମେଳ"/>
+					<Item id="42097" name="ମ୍ୟାଚ୍ କେସ୍ ପୁରା ଶବ୍ଦ"/>
+					<Item id="42098" name="ସର୍ବଶେଷ ଯୋଗ ହୋଇଥିବା ମଲ୍ଟି-ସିଲେକ୍ଟକୁ ପୂର୍ବବତ୍ କରନ୍ତୁ"/>
+					<Item id="42099" name="ପରବର୍ତ୍ତୀ ମଲ୍ଟି-ସିଲେକ୍ଟକୁ ସାମ୍ପ୍ରତିକ ଯାଆନ୍ତୁ"/>
+					<Item id="42018" name="ରେକର୍ଡିଂ ଆରମ୍ଭ କରନ୍ତୁ"/>
+					<Item id="42019" name="ରେକର୍ଡିଂ ବନ୍ଦ କରନ୍ତୁ"/>
+					<Item id="42021" name="ଚଲାଇବା"/>
+					<Item id="42022" name="ଏକକ ରେଖା ମନ୍ତବ୍ୟ ଟୋଗଲ୍ କରନ୍ତୁ"/>
+					<Item id="42023" name="ମନ୍ତବ୍ୟକୁ ଅବରୋଧ କରନ୍ତୁ"/>
+					<Item id="42047" name="ଅବରୋଧ ଅବରୋଧ"/>
+					<Item id="42024" name="ଟ୍ରେଲିଂ ସ୍ପେସ୍"/>
+					<Item id="42042" name="ଅଗ୍ରଣୀ ସ୍ଥାନ ଟ୍ରିମ୍"/>
+					<Item id="42043" name="ଅଗ୍ରଣୀ ଏବଂ ଟ୍ରେଲିଂ ସ୍ପେସ୍"/>
+					<Item id="42044" name="EOL ରୁ ସ୍ପେସ୍"/>
+					<Item id="42045" name="ଉଭୟ ଏବଂ EOL କୁ ସ୍ପେସ୍"/>
+					<Item id="42046" name="TAB ରୁ ସ୍ପେସ୍"/>
+					<Item id="42054" name="TAB କୁ ସ୍ପେସ୍ (ସମସ୍ତ)"/>
+					<Item id="42053" name="TAB କୁ ସ୍ଥାନ (ଅଗ୍ରଣୀ)"/>
+					<Item id="42038" name="HTML ବିଷୟବସ୍ତୁ ଲେପନ କରନ୍ତୁ"/>
+					<Item id="42039" name="RTF ବିଷୟବସ୍ତୁ ଲେପନ କରନ୍ତୁ"/>
+					<Item id="42048" name="ବାଇନାରୀ ବିଷୟବସ୍ତୁ କପି କରନ୍ତୁ"/>
+					<Item id="42049" name="ବାଇନାରୀ ବିଷୟବସ୍ତୁ କାଟ"/>
+					<Item id="42050" name="ବାଇନାରୀ ବିଷୟବସ୍ତୁ ଲେପନ କରନ୍ତୁ"/>
+					<Item id="42082" name="ଲିଙ୍କ୍ କପି"/>
+					<Item id="42037" name="ସ୍ତମ୍ଭ ମୋଡ୍ ..."/>
+					<Item id="42034" name="ସ୍ତମ୍ଭ ସମ୍ପାଦକ ..."/>
+					<Item id="42051" name="ଅକ୍ଷର ପ୍ୟାନେଲ୍ |"/>
+					<Item id="42052" name="କ୍ଲିପବୋର୍ଡ ଇତିହାସ"/>
+					<Item id="42025" name="ସମ୍ପ୍ରତି ରେକର୍ଡ ହୋଇଥିବା ମାକ୍ରୋ ସଞ୍ଚୟ କରନ୍ତୁ ..."/>
+					<Item id="42026" name="ପାଠ୍ୟ ନିର୍ଦ୍ଦେଶ RTL"/>
+					<Item id="42027" name="ପାଠ୍ୟ ନିର୍ଦ୍ଦେଶ LTR"/>
+					<Item id="42028" name="କେବଳ ସାମ୍ପ୍ରତିକ ଡକ୍ୟୁମେଣ୍ଟରେ ପ Read ନ୍ତୁ"/>
+					<Item id="42102" name="କେବଳ ସମସ୍ତ ଡକ୍ୟୁମେଣ୍ଟ୍ ପାଇଁ ପ Read ନ୍ତୁ"/>
+					<Item id="42103" name="ସମସ୍ତ ଡକ୍ୟୁମେଣ୍ଟ୍ ପାଇଁ କେବଳ ପଠନ-ସଫା କରନ୍ତୁ"/>
+					<Item id="42029" name="ସାମ୍ପ୍ରତିକ ଫାଇଲ୍ ପଥ କପି କରନ୍ତୁ"/>
+					<Item id="42030" name="ସାମ୍ପ୍ରତିକ ଫାଇଲନାମ କପି କରନ୍ତୁ"/>
+					<Item id="42031" name="ସାମ୍ପ୍ରତିକ ନିର୍ଦ୍ଦେଶକୁ କପି କରନ୍ତୁ |ପଥ"/>
+					<Item id="42087" name="ସମସ୍ତ ଫାଇଲନାମଗୁଡିକ କପି କରନ୍ତୁ"/>
+					<Item id="42088" name="ସମସ୍ତ ଫାଇଲ୍ ପଥ କପି କରନ୍ତୁ"/>
+					<Item id="42032" name="ଏକ ମାକ୍ରୋ ମଲ୍ଟିପଲ୍ ଟାଇମ୍ସ ଚଲାନ୍ତୁ ..."/>
+					<Item id="42033" name="ୱିଣ୍ଡୋଜ୍ ରେ କେବଳ ପ Read ଼ିବା ଗୁଣ"/>
+					<Item id="42035" name="ଏକକ ରେଖା ମନ୍ତବ୍ୟ"/>
+					<Item id="42036" name="ଏକକ ରେଖା ଅସନ୍ତୋଷ"/>
+					<Item id="42055" name="ଖାଲି ରେଖା ହଟାନ୍ତୁ"/>
+					<Item id="42056" name="ଖାଲି ଲାଇନ୍ ଅପସାରଣ କରନ୍ତୁ (ଖାଲି ଅକ୍ଷର ଧାରଣ କରେ)"/>
+					<Item id="42057" name="ସାମ୍ପ୍ରତିକ ଉପରେ ଖାଲି ରେଖା ସନ୍ନିବେଶ କରନ୍ତୁ"/>
+					<Item id="42058" name="କରେଣ୍ଟ୍ ତଳେ ଖାଲି ରେଖା ସନ୍ନିବେଶ କରନ୍ତୁ |"/>
+					<Item id="43001" name="ଖୋଜ ..."/>
+					<Item id="43002" name="ପରବର୍ତ୍ତୀ ଖୋଜ"/>
+					<Item id="43003" name="ବଦଳାନ୍ତୁ ..."/>
+					<Item id="43004" name="ଯାଆନ୍ତୁ ..."/>
+					<Item id="43005" name="ବୁକମାର୍କ ଟୋଗଲ୍ କରନ୍ତୁ"/>
+					<Item id="43006" name="ପରବର୍ତ୍ତୀ ବୁକମାର୍କ"/>
+					<Item id="43007" name="ପୂର୍ବ ବୁକମାର୍କ"/>
+					<Item id="43008" name="ସମସ୍ତ ବୁକମାର୍କଗୁଡିକ ସଫା କରନ୍ତୁ"/>
+					<Item id="43018" name="ବୁକମାର୍କଡ୍ ଲାଇନ୍ କାଟ"/>
+					<Item id="43019" name="ବୁକମାର୍କଡ୍ ଲାଇନ୍ କପି କରନ୍ତୁ"/>
+					<Item id="43020" name="ବୁକମାର୍କ ହୋଇଥିବା ରେଖାଗୁଡ଼ିକୁ ଲେପନ କରନ୍ତୁ (ବଦଳାନ୍ତୁ)"/>
+					<Item id="43021" name="ବୁକମାର୍କଡ୍ ଲାଇନ୍ ଅପସାରଣ କରନ୍ତୁ"/>
+					<Item id="43051" name="ବୁକମାର୍କ ହୋଇନଥିବା ଲାଇନଗୁଡିକ ଅପସାରଣ କରନ୍ତୁ"/>
+					<Item id="43050" name="ଓଲଟା ବୁକମାର୍କ"/>
+					<Item id="43052" name="ପରିସର ମଧ୍ୟରେ ଅକ୍ଷର ଖୋଜ ..."/>
+					<Item id="43053" name="In} [] କିମ୍ବା ()"/>
+					<Item id="43009" name="ମଧ୍ୟରେ ଥିବା ସମସ୍ତ ଇନ୍-ସିଲେକ୍ଟ କରନ୍ତୁ |ମେଳଣ ବନ୍ଧନୀକୁ ଯାଆନ୍ତୁ"/>
+					<Item id="43010" name="ପୂର୍ବ ଖୋଜ"/>
+					<Item id="43011" name="ବର୍ଦ୍ଧିତ ସନ୍ଧାନ"/>
+					<Item id="43013" name="ଫାଇଲଗୁଡିକରେ ଖୋଜ |"/>
+					<Item id="43014" name="ପରବର୍ତ୍ତୀ (ଅସ୍ଥିର) ଖୋଜ"/>
+					<Item id="43015" name="ସନ୍ଧାନ କରନ୍ତୁ (ଅସ୍ଥିର) ପୂର୍ବ"/>
+					<Item id="43022" name="ପ୍ରଥମ ଶ Style ଳୀ ବ୍ୟବହାର"/>
+					<Item id="43023" name="ପ୍ରଥମ ଶ Style ଳୀ ସଫା କରନ୍ତୁ"/>
+					<Item id="43024" name="୨ୟ ଶ Style ଳୀ ବ୍ୟବହାର"/>
+					<Item id="43025" name="୨ୟ ଶ Style ଳୀ ସଫା କରନ୍ତୁ"/>
+					<Item id="43026" name="ତୃତୀୟ ଶ Style ଳୀ ବ୍ୟବହାର"/>
+					<Item id="43027" name="ତୃତୀୟ ଶ Style ଳୀ ସଫା କରନ୍ତୁ"/>
+					<Item id="43028" name="4th ର୍ଥ ଶ Style ଳୀ ବ୍ୟବହାର"/>
+					<Item id="43029" name="4th ର୍ଥ ଶ Style ଳୀ ସଫା କରନ୍ତୁ"/>
+					<Item id="43030" name="ପ 5th ୍ଚମ ଶ Style ଳୀ ବ୍ୟବହାର"/>
+					<Item id="43031" name="ପ 5th ୍ଚମ ଶ Style ଳୀ ସଫା କରନ୍ତୁ"/>
+					<Item id="43032" name="ସମସ୍ତ ଶ yles ଳୀ ସଫା କରନ୍ତୁ"/>
+					<Item id="43033" name="ପ୍ରଥମ ଶ style ଳୀ"/>
+					<Item id="43034" name="୨ୟ ଶ style ଳୀ"/>
+					<Item id="43035" name="୨ୟ ଶ style ଳୀ"/>
+					<Item id="43036" name="4th ର୍ଥ ଶ style ଳୀ"/>
+					<Item id="43037" name="ପ 5th ୍ଚମ ଶ style ଳୀ"/>
+					<Item id="43038" name="ମାର୍କ ଷ୍ଟାଇଲ୍ ଖୋଜ"/>
+					<Item id="43039" name="ପ୍ରଥମ ଶ style ଳୀ"/>
+					<Item id="43040" name="୨ୟ ଶ style ଳୀ"/>
+					<Item id="43041" name="୨ୟ ଶ style ଳୀ"/>
+					<Item id="43042" name="4th ର୍ଥ ଶ style ଳୀ"/>
+					<Item id="43043" name="ପ 5th ୍ଚମ ଶ style ଳୀ"/>
+					<Item id="43044" name="ମାର୍କ ଷ୍ଟାଇଲ୍ ଖୋଜ"/>
+					<Item id="43055" name="ପ୍ରଥମ ଶ Style ଳୀ"/>
+					<Item id="43056" name="୨ୟ ଶ Style ଳୀ"/>
+					<Item id="43057" name="୨ୟ ଶ Style ଳୀ"/>
+					<Item id="43058" name="4th ର୍ଥ ଶ Style ଳୀ"/>
+					<Item id="43059" name="ପ 5th ୍ଚମ ଶ Style ଳୀ"/>
+					<Item id="43060" name="ସମସ୍ତ ଶ yles ଳୀ"/>
+					<Item id="43061" name="ମାର୍କ ଷ୍ଟାଇଲ୍ ଖୋଜ"/>
+					<Item id="43062" name="ପ୍ରଥମ ଶ Style ଳୀ ବ୍ୟବହାର"/>
+					<Item id="43063" name="୨ୟ ଶ Style ଳୀ ବ୍ୟବହାର"/>
+					<Item id="43064" name="ତୃତୀୟ ଶ Style ଳୀ ବ୍ୟବହାର"/>
+					<Item id="43065" name="4th ର୍ଥ ଶ Style ଳୀ ବ୍ୟବହାର"/>
+					<Item id="43066" name="ପ 5th ୍ଚମ ଶ Style ଳୀ ବ୍ୟବହାର"/>
+					<Item id="43067" name="ପରବର୍ତ୍ତୀ ପରିବର୍ତ୍ତନକୁ ଯାଆନ୍ତୁ"/>
+					<Item id="43068" name="ପୂର୍ବ ପରିବର୍ତ୍ତନକୁ ଯାଆନ୍ତୁ"/>
+					<Item id="43069" name="ପରିବର୍ତ୍ତନ ଇତିହାସ ସଫା କରନ୍ତୁ |"/>
+					<Item id="43045" name="ସନ୍ଧାନ ଫଳାଫଳ ୱିଣ୍ଡୋ"/>
+					<Item id="43046" name="ପରବର୍ତ୍ତୀ ସନ୍ଧାନ ଫଳାଫଳ"/>
+					<Item id="43047" name="ପୂର୍ବ ସନ୍ଧାନ ଫଳାଫଳ"/>
+					<Item id="43048" name="ପରବର୍ତ୍ତୀ ଚୟନ ଏବଂ ଖୋଜ"/>
+					<Item id="43049" name="ପୂର୍ବ ଚୟନ କରନ୍ତୁ ଏବଂ ସନ୍ଧାନ କରନ୍ତୁ"/>
+					<Item id="43054" name="ମାର୍କ ..."/>
+					<Item id="43501" name="ସିଲେକ୍ଟ୍ ବନ୍ଦ କରନ୍ତୁ"/>
+					<Item id="43502" name="ଅନ୍ୟମାନଙ୍କୁ ବନ୍ଦ କରନ୍ତୁ"/>
+					<Item id="43503" name="ମନୋନୀତ ନାମଗୁଡିକ କପି କରନ୍ତୁ"/>
+					<Item id="43504" name="ମନୋନୀତ ପଥନାମଗୁଡିକ କପି କରନ୍ତୁ"/>
+					<Item id="44009" name="ଏହା ପରେ"/>
+					<Item id="44010" name="ସମସ୍ତ ଫୋଲ୍ କରନ୍ତୁ"/>
+					<Item id="44011" name="ବିଭ୍ରାଟ ମୁକ୍ତ ମୋଡ୍"/>
+					<Item id="44019" name="ସମସ୍ତ ଅକ୍ଷର ଦେଖାନ୍ତୁ"/>
+					<Item id="44020" name="ଇଣ୍ଡେଣ୍ଟ ଗାଇଡ୍ ଦେଖାନ୍ତୁ"/>
+					<Item id="44022" name="ଶବ୍ଦ ରାପ୍"/>
+					<Item id="44023" name="ଜୁମ୍ ଇନ୍ (Ctrl + ମାଉସ୍ ଚକ ଅପ୍)"/>
+					<Item id="44024" name="ଜୁମ୍ ଆଉଟ୍ (Ctrl + ମାଉସ୍ ଚକ ଡାଉନ୍)"/>
+					<Item id="44025" name="ସ୍ପେସ୍ ଏବଂ ଟ୍ୟାବ୍ ଦେଖାନ୍ତୁ"/>
+					<Item id="44026" name="ଲାଇନର ଶେଷ ଦେଖାନ୍ତୁ |"/>
+					<Item id="44029" name="ସମସ୍ତ ଖୋଲିବା"/>
+					<Item id="44030" name="ସାମ୍ପ୍ରତିକ ସ୍ତର ଫୋଲ୍ କରନ୍ତୁ"/>
+					<Item id="44031" name="ଅନାବଶ୍ୟକ ସାମ୍ପ୍ରତିକ ସ୍ତର"/>
+					<Item id="44049" name="ସାରାଂଶ ..."/>
+					<Item id="44080" name="ଡକ୍ୟୁମେଣ୍ଟ୍ ମାନଚିତ୍ର"/>
+					<Item id="44070" name="ଡକ୍ୟୁମେଣ୍ଟ୍ ତାଲିକା"/>
+					<Item id="44084" name="କାର୍ଯ୍ୟ ତାଲିକା"/>
+					<Item id="44085" name="କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଭାବରେ ଫୋଲ୍ଡର"/>
+					<Item id="44086" name="ପ୍ରଥମ ଟ୍ୟାବ୍"/>
+					<Item id="44087" name="୨ୟ ଟ୍ୟାବ୍"/>
+					<Item id="44088" name="୨ୟ ଟ୍ୟାବ୍"/>
+					<Item id="44089" name="4th ର୍ଥ ଟ୍ୟାବ୍"/>
+					<Item id="44090" name="ପ 5th ୍ଚମ ଟ୍ୟାବ୍"/>
+					<Item id="44091" name="ଷଷ୍ଠ ଟ୍ୟାବ୍"/>
+					<Item id="44092" name="ସପ୍ତମ ଟ୍ୟାବ୍"/>
+					<Item id="44093" name="ଅଷ୍ଟମ ଟ୍ୟାବ୍"/>
+					<Item id="44094" name="9th ମ ଟ୍ୟାବ୍"/>
+					<Item id="44116" name="ପ୍ରଥମ ଟ୍ୟାବ୍"/>
+					<Item id="44117" name="ଶେଷ ଟ୍ୟାବ୍"/>
+					<Item id="44095" name="ପରବର୍ତ୍ତୀ ଟ୍ୟାବ୍ |"/>
+					<Item id="44096" name="ପୂର୍ବ ଟ୍ୟାବ୍"/>
+					<Item id="44097" name="ମନିଟରିଂ (ଲାଞ୍ଜ-ଫ)"/>
+					<Item id="44098" name="ଟ୍ୟାବ୍ ଆଗକୁ ଘୁଞ୍ଚାନ୍ତୁ"/>
+					<Item id="44099" name="ଟ୍ୟାବ୍ ପଛକୁ ଘୁଞ୍ଚାନ୍ତୁ"/>
+					<Item id="44110" name="ରଙ୍ଗ ହଟାନ୍ତୁ"/>
+					<Item id="44111" name="ରଙ୍ଗ 1 ପ୍ରୟୋଗ କରନ୍ତୁ"/>
+					<Item id="44112" name="ରଙ୍ଗ 2"/>
+					<Item id="44113" name="ପ୍ରୟୋଗ କରନ୍ତୁ |ରଙ୍ଗ 3"/>
+					<Item id="44114" name="ପ୍ରୟୋଗ କରନ୍ତୁ |ରଙ୍ଗ 4 ପ୍ରୟୋଗ କରନ୍ତୁ"/>
+					<Item id="44115" name="ରଙ୍ଗ 5 ପ୍ରୟୋଗ କରନ୍ତୁ"/>
+					<Item id="44130" name="ଅଣ-ମୁଦ୍ରଣ ଅକ୍ଷର ଦେଖାନ୍ତୁ"/>
+					<Item id="44131" name="କଣ୍ଟ୍ରୋଲ୍ ଅକ୍ଷର ୟୁନିକୋଡ୍ EOL ଦେଖାନ୍ତୁ"/>
+					<Item id="44032" name="ଫୁଲ୍ ସ୍କ୍ରିନ୍ ମୋଡ୍ ଟୋଗଲ୍ କରନ୍ତୁ"/>
+					<Item id="44033" name="ଡିଫଲ୍ଟ ଜୁମ୍ ପୁନରୁଦ୍ଧାର କରନ୍ତୁ"/>
+					<Item id="44034" name="ସର୍ବଦା ଶୀର୍ଷରେ"/>
+					<Item id="44035" name="ଭର୍ଟିକାଲ୍ ସ୍କ୍ରୋଲିଂକୁ ସିଙ୍କ୍ରୋନାଇଜ୍ କରନ୍ତୁ"/>
+					<Item id="44036" name="ଭୂସମାନ୍ତର ସ୍କ୍ରୋଲିଂକୁ ସିଙ୍କ୍ରୋନାଇଜ୍ କରନ୍ତୁ"/>
+					<Item id="44041" name="ରାପ୍ ପ୍ରତୀକ ଦେଖାନ୍ତୁ"/>
+					<Item id="44072" name="ଅନ୍ୟ ଏକ ଦୃଶ୍ୟ ଉପରେ ଧ୍ୟାନ ଦିଅନ୍ତୁ"/>
+					<Item id="44081" name="ପ୍ରୋଜେକ୍ଟ ପ୍ୟାନେଲ୍ 1"/>
+					<Item id="44082" name="ପ୍ରୋଜେକ୍ଟ ପ୍ୟାନେଲ୍ 2"/>
+					<Item id="44083" name="ପ୍ରୋଜେକ୍ଟ ପ୍ୟାନେଲ୍ 3"/>
+					<Item id="45001" name="ୱିଣ୍ଡୋଜ୍ (CR LF)"/>
+					<Item id="45002" name="ୟୁନିକ୍ସ (LF)"/>
+					<Item id="45003" name="ମାକିନଟୋସ୍ (CR)"/>
+					<Item id="45004" name="ANSI"/>
+					<Item id="45005" name="UTF-8-BOM"/>
+					<Item id="45006" name="UTF-16 BE BOM"/>
+					<Item id="45007" name="UTF-16 LE BOM"/>
+					<Item id="45008" name="UTF-8"/>
+					<Item id="45009" name="ANSI କୁ ରୂପାନ୍ତର କରନ୍ତୁ"/>
+					<Item id="45010" name="UTF-8"/>
+					<Item id="45011" name="କୁ ରୂପାନ୍ତର କରନ୍ତୁ |UTF-8-BOM କୁ ରୂପାନ୍ତର କରନ୍ତୁ"/>
+					<Item id="45012" name="UTF-16 BE BOM କୁ ରୂପାନ୍ତର କରନ୍ତୁ"/>
+					<Item id="45013" name="UTF-16 LE BOM କୁ ରୂପାନ୍ତର କରନ୍ତୁ"/>
+					<Item id="45060" name="Big5 (ପାରମ୍ପାରିକ)"/>
+					<Item id="45061" name="GB2312 (ସରଳୀକୃତ)"/>
+					<Item id="45054" name="OEM 861: ଆଇସଲ୍ୟାଣ୍ଡ୍"/>
+					<Item id="45057" name="OEM 865: ନର୍ଡିକ୍"/>
+					<Item id="45053" name="OEM 860: ପର୍ତ୍ତୁଗୀଜ୍ |"/>
+					<Item id="45056" name="OEM 863: ଫରାସୀ"/>
+					<Item id="10001" name="ଅନ୍ୟ ଦୃଶ୍ୟକୁ ଯାଆନ୍ତୁ"/>
+					<Item id="10002" name="ଅନ୍ୟ ଦୃଶ୍ୟକୁ କ୍ଲୋନ୍"/>
+					<Item id="10003" name="ନୂତନ ଇନଷ୍ଟାନ୍ସକୁ ଯାଆନ୍ତୁ"/>
+					<Item id="10004" name="ନୂତନ ଇନଷ୍ଟାନ୍ସରେ ଖୋଲ"/>
+					<Item id="10005" name="ଆରମ୍ଭକୁ ଯାଆନ୍ତୁ"/>
+					<Item id="10006" name="ଶେଷକୁ ଯାଆନ୍ତୁ"/>
+					<Item id="46001" name="ଶ Style ଳୀ ବିନ୍ୟାସକାରୀ ..."/>
+					<Item id="46016" name="କିଛି ନୁହେଁ (ସାଧାରଣ ପାଠ)"/>
+					<Item id="46250" name="ତୁମର ଭାଷା ବ୍ୟାଖ୍ୟା କର ..."/>
+					<Item id="46300" name="ବ୍ୟବହାରକାରୀ ପରିଭାଷିତ ଭାଷା ଫୋଲ୍ଡର ଖୋଲନ୍ତୁ ..."/>
+					<Item id="46301" name="ନୋଟପ୍ୟାଡ୍ ++ ବ୍ୟବହାରକାରୀ ପରିଭାଷିତ ଭାଷା ସଂଗ୍ରହ"/>
+					<Item id="46180" name="ଉପଯୋଗକର୍ତ୍ତା-ପରିଭାଷିତ"/>
+					<Item id="47000" name="ନୋଟପ୍ୟାଡ୍ ++ ବିଷୟରେ"/>
+					<Item id="47010" name="କମାଣ୍ଡ୍ ଲାଇନ୍ ଆର୍ଗୁମେଣ୍ଟସ୍ ..."/>
+					<Item id="47001" name="ନୋଟପ୍ୟାଡ୍ ++ ଘର"/>
+					<Item id="47002" name="ନୋଟପ୍ୟାଡ୍ ++ ପ୍ରୋଜେକ୍ଟ ପୃଷ୍ଠା"/>
+					<Item id="47003" name="ନୋଟପ୍ୟାଡ୍ ++ ଅନ୍ଲାଇନ୍ ୟୁଜର୍ ମାନୁଆଲ୍"/>
+					<Item id="47004" name="ନୋଟପ୍ୟାଡ୍ ++ ସମ୍ପ୍ରଦାୟ (ଫୋରମ୍)"/>
+					<Item id="47012" name="ତ୍ରୁଟି ନିବାରଣ ସୂଚନା ..."/>
+					<Item id="47005" name="ଅଧିକ ପ୍ଲଗଇନ୍ ପ୍ରାପ୍ତ କରନ୍ତୁ"/>
+					<Item id="47006" name="ନୋଟପ୍ୟାଡ୍ ++ ଅଦ୍ୟତନ କରନ୍ତୁ"/>
+					<Item id="47009" name="ଅପଡେଟର୍ ପ୍ରକ୍ସି ସେଟ୍ କରନ୍ତୁ ..."/>
+					<Item id="48005" name="ପ୍ଲଗଇନ୍ (ଗୁଡିକ) ଆମଦାନୀ କରନ୍ତୁ ..."/>
+					<Item id="48006" name="ଶ style ଳୀ ଥିମ୍ (ଗୁଡିକ) ଆମଦାନି କରନ୍ତୁ ..."/>
+					<Item id="48018" name="ପପ୍ଅପ୍ ପ୍ରସଙ୍ଗ ମେନୁ ସଂପାଦନ କରନ୍ତୁ"/>
+					<Item id="48009" name="ସର୍ଟକଟ୍ ମ୍ୟାପର୍ ..."/>
+					<Item id="48011" name="ପସନ୍ଦ ..."/>
+					<Item id="48014" name="ପ୍ଲଗଇନ୍ ଫୋଲ୍ଡର୍ ଖୋଲନ୍ତୁ ..."/>
+					<Item id="48015" name="ପ୍ଲଗଇନ୍ ଆଡମିନି ..."/>
+					<Item id="48501" name="ସୃଷ୍ଟି ..."/>
+					<Item id="48502" name="ଫାଇଲରୁ ସୃଷ୍ଟି କରନ୍ତୁ ..."/>
+					<Item id="48503" name="ଚୟନରୁ କ୍ଲିପବୋର୍ଡରେ ସୃଷ୍ଟି କରନ୍ତୁ"/>
+					<Item id="48504" name="ସୃଷ୍ଟି ..."/>
+					<Item id="48505" name="ଫାଇଲରୁ ସୃଷ୍ଟି କରନ୍ତୁ ..."/>
+					<Item id="48506" name="ଚୟନରୁ କ୍ଲିପବୋର୍ଡରେ ସୃଷ୍ଟି କରନ୍ତୁ"/>
+					<Item id="48507" name="ସୃଷ୍ଟି ..."/>
+					<Item id="48508" name="ଫାଇଲରୁ ସୃଷ୍ଟି କରନ୍ତୁ ..."/>
+					<Item id="48509" name="ଚୟନରୁ କ୍ଲିପବୋର୍ଡରେ ସୃଷ୍ଟି କରନ୍ତୁ"/>
+					<Item id="48510" name="ସୃଷ୍ଟି ..."/>
+					<Item id="48511" name="ଫାଇଲରୁ ସୃଷ୍ଟି କରନ୍ତୁ ..."/>
+					<Item id="48512" name="ଚୟନରୁ କ୍ଲିପବୋର୍ଡରେ ସୃଷ୍ଟି କରନ୍ତୁ"/>
+					<Item id="49000" name="ଚଲାନ୍ତୁ ..."/>
+
+					<Item id="50000" name="କାର୍ଯ୍ୟ ସମାପ୍ତି"/>
+					<Item id="50001" name="ଶବ୍ଦ ସମାପ୍ତି"/>
+					<Item id="50002" name="କାର୍ଯ୍ୟ ପାରାମିଟର ଇଙ୍ଗିତ"/>
+					<Item id="50010" name="କାର୍ଯ୍ୟ ପାରାମିଟରଗୁଡିକ ପୂର୍ବ ସୂଚନା"/>
+					<Item id="50011" name="ଫଙ୍କସନ୍ ପାରାମିଟରଗୁଡିକ ପରବର୍ତ୍ତୀ ସୂଚନା"/>
+					<Item id="50005" name="ମାକ୍ରୋ ରେକର୍ଡ ଟୋଗଲ୍ କରନ୍ତୁ"/>
+					<Item id="50006" name="ପଥ ସମାପ୍ତି"/>
+					<Item id="44042" name="ରେଖା ଲୁଚାନ୍ତୁ"/>
+					<Item id="42040" name="ସମସ୍ତ ସାମ୍ପ୍ରତିକ ଫାଇଲଗୁଡିକ ଖୋଲନ୍ତୁ"/>
+					<Item id="42041" name="ସାମ୍ପ୍ରତିକ ଫାଇଲ ତାଲିକା ଖାଲି"/>
+					<Item id="48016" name="ସର୍ଟକଟ୍ ପରିବର୍ତ୍ତନ କରନ୍ତୁ / ମାକ୍ରୋ ବିଲୋପ କରନ୍ତୁ ..."/>
+					<Item id="48017" name="ସର୍ଟକଟ୍ ପରିବର୍ତ୍ତନ କରନ୍ତୁ / ନିର୍ଦ୍ଦେଶ ବିଲୋପ କରନ୍ତୁ ..."/>
+
+					<Item id="11001" name="ୱିଣ୍ଡୋଜ୍ ..."/>
+					<Item id="11002" name="ନାମ A ରୁ Z"/>
+					<Item id="11003" name="Z ରୁ A"/>
+					<Item id="11004" name="ପଥ A ରୁ Z"/>
+					<Item id="11005" name="ପଥ Z ରୁ A"/>
+					<Item id="11006" name="A ରୁ Z ଟାଇପ୍ କରନ୍ତୁ"/>
+					<Item id="11007" name="Z ରୁ A"/>
+					<Item id="11008" name="ଟାଇପ୍ କରନ୍ତୁ |ବିଷୟବସ୍ତୁ ଦ Length ର୍ଘ୍ୟ ବୃଦ୍ଧି"/>
+					<Item id="11009" name="ବିଷୟବସ୍ତୁ ଦ Length ର୍ଘ୍ୟ ହ୍ରାସ"/>
+					<Item id="11010" name="ପରିବର୍ତ୍ତିତ ସମୟ ଆରୋହଣ"/>
+					<Item id="11011" name="ପରିବର୍ତ୍ତିତ ସମୟ ଅବନତି"/>
+				</Commands>
+			</Main>
+			<TabBar>
+				<Item CMDID="41003" name="ବନ୍ଦ"/>
+				<Item CMDID="0" name="ଏକାଧିକ ଟ୍ୟାବ୍ ବନ୍ଦ କରନ୍ତୁ"/>
+				<Item CMDID="41005" name="ସମସ୍ତ ବନ୍ଦ କରନ୍ତୁ କିନ୍ତୁ ଏହା"/>
+				<Item CMDID="41026" name="ସମସ୍ତ ବନ୍ଦ କରନ୍ତୁ କିନ୍ତୁ ପିନ୍"/>
+				<Item CMDID="41009" name="ସମସ୍ତଙ୍କୁ ବାମକୁ ବନ୍ଦ କରନ୍ତୁ"/>
+				<Item CMDID="41018" name="ସମସ୍ତଙ୍କୁ ଡାହାଣକୁ ବନ୍ଦ କରନ୍ତୁ"/>
+				<Item CMDID="41024" name="ସମସ୍ତ ଅପରିବର୍ତ୍ତିତ ବନ୍ଦ କରନ୍ତୁ"/>
+				<Item CMDID="44048" name="ପିନ୍ ଟ୍ୟାବ୍" alternativeName="ଅନ୍ପିନ ଟ୍ୟାବ୍"/>
+				<Item CMDID="41006" name="ସଞ୍ଚୟ କରନ୍ତୁ"/>
+				<Item CMDID="41008" name="ଯେପରି ସେଭ୍ କରନ୍ତୁ ..."/>
+				<Item CMDID="1" name=""/>
+				<Item CMDID="41019" name="ରେ ଖୋଲନ୍ତୁ |ଏକ୍ସପ୍ଲୋରରରେ ଧାରଣକାରୀ ଫୋଲ୍ଡର୍ ଖୋଲନ୍ତୁ"/>
+				<Item CMDID="41020" name="Cmd ରେ ଧାରଣକାରୀ ଫୋଲ୍ଡର ଖୋଲନ୍ତୁ |"/>
+				<Item CMDID="41025" name="କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଭାବରେ ଧାରଣକାରୀ ଫୋଲ୍ଡର ଖୋଲନ୍ତୁ"/>
+				<Item CMDID="41023" name="ଡିଫଲ୍ଟ ଦର୍ଶକରେ ଖୋଲ"/>
+				<Item CMDID="41017" name="ପୁନ ame ନାମ କରନ୍ତୁ ..."/>
+				<Item CMDID="41016" name="ରିସାଇକ୍ଲି ବିନ୍ କୁ ଯାଆନ୍ତୁ"/>
+				<Item CMDID="41014" name="ପୁନ elo ଲୋଡ୍"/>
+				<Item CMDID="41010" name="ମୁଦ୍ରଣ ..."/>
+				<Item CMDID="42028" name="କେବଳ ନୋଟପ୍ୟାଡ୍ ++ ରେ ପ Read ଼ନ୍ତୁ"/>
+				<Item CMDID="42033" name="ୱିଣ୍ଡୋଜ୍ ରେ କେବଳ ପ Read ଼ିବା ଗୁଣ"/>
+				<Item CMDID="2" name="କ୍ଲିପବୋର୍ଡକୁ କପି କରନ୍ତୁ"/>
+				<Item CMDID="42029" name="ପୂର୍ଣ୍ଣ ଫାଇଲ୍ ପଥ କପି କରନ୍ତୁ"/>
+				<Item CMDID="42030" name="ଫାଇଲନାମ କପି କରନ୍ତୁ"/>
+				<Item CMDID="42031" name="ସାମ୍ପ୍ରତିକ ନିର୍ଦ୍ଦେଶକୁ କପି କରନ୍ତୁ |ପଥ"/>
+				<Item CMDID="3" name="ଡକ୍ୟୁମେଣ୍ଟ୍ ଘୁଞ୍ଚାନ୍ତୁ"/>
+				<Item CMDID="10005" name="ଆରମ୍ଭକୁ ଯାଆନ୍ତୁ"/>
+				<Item CMDID="10006" name="ଶେଷକୁ ଯାଆନ୍ତୁ"/>
+				<Item CMDID="10001" name="ଅନ୍ୟ ଦୃଶ୍ୟକୁ ଯାଆନ୍ତୁ"/>
+				<Item CMDID="10002" name="ଅନ୍ୟ ଦୃଶ୍ୟକୁ କ୍ଲୋନ୍"/>
+				<Item CMDID="10003" name="ନୂତନ ଇନଷ୍ଟାନ୍ସକୁ ଯାଆନ୍ତୁ"/>
+				<Item CMDID="10004" name="ନୂତନ ଇନଷ୍ଟାନ୍ସରେ ଖୋଲ"/>
+				<Item CMDID="4" name="ଟ୍ୟାବରେ ରଙ୍ଗ ଲଗାନ୍ତୁ |"/>
+				<Item CMDID="44111" name="ରଙ୍ଗ 1 ପ୍ରୟୋଗ କରନ୍ତୁ"/>
+				<Item CMDID="44112" name="ରଙ୍ଗ 2"/>
+				<Item CMDID="44113" name="ପ୍ରୟୋଗ କରନ୍ତୁ |ରଙ୍ଗ 3"/>
+				<Item CMDID="44114" name="ପ୍ରୟୋଗ କରନ୍ତୁ |ରଙ୍ଗ 4 ପ୍ରୟୋଗ କରନ୍ତୁ"/>
+				<Item CMDID="44115" name="ରଙ୍ଗ 5 ପ୍ରୟୋଗ କରନ୍ତୁ"/>
+				<Item CMDID="44110" name="ରଙ୍ଗ ହଟାନ୍ତୁ"/>
+			</TabBar>
+			<TrayIcon>
+				<Item id="43101" name="ସକ୍ରିୟ"/>
+				<Item id="43102" name="ନୂତନ"/>
+				<Item id="43103" name="ନୂତନ ଏବଂ ପେଷ୍ଟ"/>
+				<Item id="43104" name="ଖୋଲ ..."/>
+				<Item id="43013" name="ଫାଇଲଗୁଡିକରେ ଖୋଜ ..."/>
+				<Item id="43105" name="ଟ୍ରେ ଆଇକନ୍ ବନ୍ଦ କରନ୍ତୁ"/>
+			</TrayIcon>
+		</Menu>
+
+		<Dialog>
+			<Find title="" titleFind="ଖୋଜ" titleReplace="ବଦଳାନ୍ତୁ" titleFindInFiles="ଫାଇଲଗୁଡ଼ିକରେ ଖୋଜ" titleFindInProjects="ପ୍ରୋଜେକ୍ଟରେ ଖୋଜ" titleMark="ମାର୍କ">
+				<Item id="1" name="ପରବର୍ତ୍ତୀ ଖୋଜ"/>
+				<Item id="1722" name="ପଛୁଆ ଦିଗ"/>
+				<Item id="2" name="ବନ୍ଦ"/>
+				<Item id="1620" name="କ’ଣ ଖୋଜ:"/>
+				<Item id="1603" name="କେବଳ ପୁରା ଶବ୍ଦ ସହିତ ମେଳ"/>
+				<Item id="1604" name="ମ୍ୟାଚ୍ କେସ୍"/>
+				<Item id="1605" name="ନିୟମିତ ଅଭିବ୍ୟକ୍ତି"/>
+				<Item id="1606" name="ଚାରିପାଖରେ ଘୋଡ଼ାନ୍ତୁ"/>
+				<Item id="1614" name="ଗଣନା"/>
+				<Item id="1615" name="ସମସ୍ତଙ୍କୁ ଚିହ୍ନିତ କର"/>
+				<Item id="1616" name="ବୁକମାର୍କ ଲାଇନ"/>
+				<Item id="1618" name="ପ୍ରତ୍ୟେକ ସନ୍ଧାନ ପାଇଁ ଶୁଦ୍ଧ"/>
+				<Item id="1611" name="ସହିତ ବଦଳାନ୍ତୁ:"/>
+				<Item id="1608" name="ବଦଳାନ୍ତୁ"/>
+				<Item id="1609" name="ସମସ୍ତ ବଦଳାନ୍ତୁ"/>
+				<Item id="1687" name="ଧ୍ୟାନ ହରାଇବା ଉପରେ"/>
+				<Item id="1688" name="ସର୍ବଦା"/>
+				<Item id="1632" name="ଚୟନରେ"/>
+				<Item id="1633" name="ସମସ୍ତ ମାର୍କ ସଫା କରନ୍ତୁ"/>
+				<Item id="1635" name="ସମସ୍ତ ଖୋଲାଯାଇଥିବା ଡକ୍ୟୁମେଣ୍ଟରେ ସମସ୍ତଙ୍କୁ ବଦଳାନ୍ତୁ"/>
+				<Item id="1636" name="ସମସ୍ତ ଖୋଲାଯାଇଥିବା ଡକ୍ୟୁମେଣ୍ଟରେ ସମସ୍ତଙ୍କୁ ଖୋଜ"/>
+				<Item id="1654" name="ଫିଲ୍ଟର୍:"/>
+				<Item id="1655" name="ଡିରେକ୍ଟୋରୀ:"/>
+				<Item id="1656" name="ସମସ୍ତ ଖୋଜ"/>
+				<Item id="1658" name="ସମସ୍ତ ସବ୍-ଫୋଲ୍ଡରରେ"/>
+				<Item id="1659" name="ଲୁକ୍କାୟିତ ଫୋଲ୍ଡରରେ"/>
+				<Item id="1624" name="ସନ୍ଧାନ ମୋଡ୍"/>
+				<Item id="1625" name="ସାଧାରଣ"/>
+				<Item id="1626" name="ବିସ୍ତାରିତ (\ n, \ r, \ t, \ 0, \ x ...)"/>
+				<Item id="1660" name="ଫାଇଲଗୁଡ଼ିକରେ ବଦଳାନ୍ତୁ"/>
+				<Item id="1665" name="ପ୍ରୋଜେକ୍ଟରେ ବଦଳାନ୍ତୁ"/>
+				<Item id="1662" name="ପ୍ରୋଜେକ୍ଟ ପ୍ୟାନେଲ୍ 1"/>
+				<Item id="1663" name="ପ୍ରୋଜେକ୍ଟ ପ୍ୟାନେଲ୍ 2"/>
+				<Item id="1664" name="ପ୍ରୋଜେକ୍ଟ ପ୍ୟାନେଲ୍ 3"/>
+				<Item id="1641" name="ସାମ୍ପ୍ରତିକ ଡକ୍ୟୁମେଣ୍ଟରେ ସମସ୍ତ ଖୋଜ"/>
+				<Item id="1686" name="ସ୍ୱଚ୍ଛତା"/>
+				<Item id="1703" name="।ନୂଆ ଲାଇନ ସହିତ ମେଳ"/>
+				<Item id="1721" name="▲"/>
+				<Item id="1723" name="Next ପରବର୍ତ୍ତୀ ଖୋଜ"/>
+				<Item id="1725" name="ଚିହ୍ନିତ ପାଠ କପି କରନ୍ତୁ"/>
+				<Menu>
+					<Item id="1726" name="Rep ବଦଳ ସହିତ ଅଦଳବଦଳ ଖୋଜ"/>
+					<Item id="1727" name="Find ସନ୍ଧାନରୁ ବଦଳାଇବାକୁ କପି କରନ୍ତୁ"/>
+					<Item id="1728" name="Rep ସ୍ଥାନାନ୍ତର ପାଇଁ ସ୍ଥାନାନ୍ତରରୁ କପି କରନ୍ତୁ |"/>
+				</Menu>
+			</Find>
+
+			<IncrementalFind title="">
+				<Item id="1681" name="ଖୋଜ:"/>
+				<Item id="1685" name="ମ୍ୟାଚ୍ କେସ୍"/>
+				<Item id="1690" name="ସମସ୍ତଙ୍କୁ ହାଇଲାଇଟ୍ କରନ୍ତୁ"/>
+			</IncrementalFind>
+
+			<FindCharsInRange title="ରେଞ୍ଜରେ ଅକ୍ଷର ଖୋଜ ...">
+				<Item id="2" name="ବନ୍ଦ"/>
+				<Item id="2901" name="ଅଣ- ASCII ବର୍ଣ୍ଣଗୁଡିକ (128-255)"/>
+				<Item id="2902" name="ASCII ବର୍ଣ୍ଣଗୁଡିକ (0–127)"/>
+				<Item id="2903" name="କଷ୍ଟମ୍ ପରିସର (0-255):"/>
+				<Item id="2906" name="ଉପର"/>
+				<Item id="2907" name="ତଳକୁ"/>
+				<Item id="2908" name="ଦିଗ"/>
+				<Item id="2909" name="ଚାରିପାଖରେ ଘୋଡ଼ାନ୍ତୁ"/>
+				<Item id="2910" name="ଖୋଜ"/>
+			</FindCharsInRange>
+
+			<GoToLine title="ଯାଆନ୍ତୁ ...">
+				<Item id="2007" name="ରେଖା"/>
+				<Item id="2008" name="ଅଫସେଟ"/>
+				<Item id="1" name="ଯାଅ"/>
+				<Item id="2" name="ମୁଁ କ here ଣସି ସ୍ଥାନକୁ ଯାଉନାହିଁ"/>
+				<Item id="2004" name="ଆପଣ ଏଠାରେ ଅଛନ୍ତି:"/>
+				<Item id="2005" name="ଆପଣ ଯିବାକୁ ଚାହୁଁଛନ୍ତି:"/>
+				<Item id="2006" name="ଆପଣ ଏହାଠାରୁ ଅଧିକ ଯାଇପାରିବେ ନାହିଁ:"/>
+			</GoToLine>
+
+			<Run title="ଚଲାନ୍ତୁ ...">
+				<Item id="1903" name="ଚଲାଇବାକୁ ପ୍ରୋଗ୍ରାମ୍"/>
+				<Item id="1" name="ଚଲାନ୍ତୁ"/>
+				<Item id="2" name="ବାତିଲ୍"/>
+				<Item id="1904" name="ସଞ୍ଚୟ କରନ୍ତୁ ..."/>
+			</Run>
+
+			<MD5FromFilesDlg title="ଫାଇଲଗୁଡ଼ିକରୁ MD5 ହଜମ ସୃଷ୍ଟି କରନ୍ତୁ">
+				<Item id="1922" name="MD5 ସୃଷ୍ଟି କରିବାକୁ ଫାଇଲଗୁଡିକ ବାଛନ୍ତୁ ..."/>
+				<Item id="1924" name="କ୍ଲିପବୋର୍ଡକୁ କପି କରନ୍ତୁ"/>
+				<Item id="2" name="ବନ୍ଦ"/>
+			</MD5FromFilesDlg>
+
+			<MD5FromTextDlg title="MD5 ହଜମ ସୃଷ୍ଟି କରନ୍ତୁ">
+				<Item id="1932" name="ପ୍ରତ୍ୟେକ ଧାଡିକୁ ଏକ ପୃଥକ ଷ୍ଟ୍ରିଙ୍ଗ ଭାବରେ ବ୍ୟବହାର କରନ୍ତୁ"/>
+				<Item id="1934" name="କ୍ଲିପବୋର୍ଡକୁ କପି କରନ୍ତୁ"/>
+				<Item id="2" name="ବନ୍ଦ"/>
+			</MD5FromTextDlg>
+
+			<SHA256FromFilesDlg title="ଫାଇଲଗୁଡ଼ିକରୁ SHA-256 ହଜମ ସୃଷ୍ଟି କରନ୍ତୁ">
+				<Item id="1922" name="SHA-256 ସୃଷ୍ଟି କରିବାକୁ ଫାଇଲଗୁଡିକ ବାଛନ୍ତୁ ..."/>
+				<Item id="1924" name="କ୍ଲିପବୋର୍ଡକୁ କପି କରନ୍ତୁ"/>
+				<Item id="2" name="ବନ୍ଦ"/>
+			</SHA256FromFilesDlg>
+
+			<SHA256FromTextDlg title="SHA-256 ହଜମ ସୃଷ୍ଟି କରନ୍ତୁ">
+				<Item id="1932" name="ପ୍ରତ୍ୟେକ ଧାଡିକୁ ଅଲଗା ଷ୍ଟ୍ରିଙ୍ଗ୍ ଭାବରେ ବ୍ୟବହାର କରନ୍ତୁ |"/>
+				<Item id="1934" name="କ୍ଲିପବୋର୍ଡକୁ କପି କରନ୍ତୁ"/>
+				<Item id="2" name="ବନ୍ଦ"/>
+			</SHA256FromTextDlg>
+
+			<SHA1FromFilesDlg title="ଫାଇଲଗୁଡ଼ିକରୁ SHA-1 ହଜମ ସୃଷ୍ଟି କରନ୍ତୁ">
+				<Item id="1922" name="SHA-1 ସୃଷ୍ଟି କରିବାକୁ ଫାଇଲଗୁଡିକ ବାଛନ୍ତୁ ..."/>
+				<Item id="1924" name="କ୍ଲିପବୋର୍ଡକୁ କପି କରନ୍ତୁ"/>
+				<Item id="2" name="ବନ୍ଦ"/>
+			</SHA1FromFilesDlg>
+
+			<SHA1FromTextDlg title="SHA-1 ହଜମ ସୃଷ୍ଟି କରନ୍ତୁ">
+				<Item id="1932" name="ପ୍ରତ୍ୟେକ ଧାଡିକୁ ଏକ ପୃଥକ ଷ୍ଟ୍ରିଙ୍ଗ ଭାବରେ ବ୍ୟବହାର କରନ୍ତୁ"/>
+				<Item id="1934" name="କ୍ଲିପବୋର୍ଡକୁ କପି କରନ୍ତୁ"/>
+				<Item id="2" name="ବନ୍ଦ"/>
+			</SHA1FromTextDlg>
+
+			<SHA512FromFilesDlg title="ଫାଇଲଗୁଡ଼ିକରୁ SHA-512 ହଜମ ସୃଷ୍ଟି କରନ୍ତୁ">
+				<Item id="1922" name="SHA-512 ସୃଷ୍ଟି କରିବାକୁ ଫାଇଲଗୁଡିକ ବାଛନ୍ତୁ ..."/>
+				<Item id="1924" name="କ୍ଲିପବୋର୍ଡକୁ କପି କରନ୍ତୁ"/>
+				<Item id="2" name="ବନ୍ଦ"/>
+			</SHA512FromFilesDlg>
+
+			<SHA512FromTextDlg title="SHA-512 ହଜମ ସୃଷ୍ଟି କରନ୍ତୁ">
+				<Item id="1932" name="ପ୍ରତ୍ୟେକ ଧାଡିକୁ ଏକ ପୃଥକ ଷ୍ଟ୍ରିଙ୍ଗ ଭାବରେ ବ୍ୟବହାର କରନ୍ତୁ"/>
+				<Item id="1934" name="କ୍ଲିପବୋର୍ଡକୁ କପି କରନ୍ତୁ"/>
+				<Item id="2" name="ବନ୍ଦ"/>
+			</SHA512FromTextDlg>
+			<PluginsAdminDlg title="ପ୍ଲଗଇନ୍ ଆଡମିନି" titleAvailable="Available" titleUpdates="Updates" titleInstalled="Installed" titleIncompatible="Incompatible">
+				<ColumnPlugin name="ପ୍ଲଗଇନ୍ |"/>
+				<ColumnVersion name="ସଂସ୍କରଣ"/>
+				<Item id="5501" name="ସନ୍ଧାନ:"/>
+				<Item id="5503" name="ସଂସ୍ଥାପନ"/>
+				<Item id="5504" name="ଅଦ୍ୟତନ"/>
+				<Item id="5505" name="ଅପସାରଣ କରନ୍ତୁ"/>
+				<Item id="5508" name="ପରବର୍ତ୍ତୀ"/>
+				<Item id="5509" name="ପ୍ଲଗଇନ୍ ତାଲିକା ସଂସ୍କରଣ:"/>
+				<Item id="5511" name="ପ୍ଲଗଇନ୍ ତାଲିକା ସଂଗ୍ରହାଳୟ"/>
+				<Item id="2" name="ବନ୍ଦ"/>
+			</PluginsAdminDlg>
+
+			<StyleConfig title="ଶ Style ଳୀ ବିନ୍ୟାସକ">
+				<Item id="2" name="ବାତିଲ୍"/>
+				<Item id="2301" name="ବନ୍ଦ ସଞ୍ଚୟ"/>
+				<Item id="2303" name="ସ୍ୱଚ୍ଛତା"/>
+				<Item id="2306" name="ଥିମ୍ ଚୟନ କରନ୍ତୁ:"/>
+				<SubDialog>
+					<Item id="2204" name="ବୋଲ୍ଡ"/>
+					<Item id="2205" name="ଇଟାଲିକ୍"/>
+					<Item id="2206" name="ପୃଷ୍ଠଭୂମି ରଙ୍ଗ"/>
+					<Item id="2207" name="ପୃଷ୍ଠଭୂମି ରଙ୍ଗ"/>
+					<Item id="2208" name="ଫଣ୍ଟ ନାମ:"/>
+					<Item id="2209" name="ଫଣ୍ଟ ଆକାର:"/>
+					<Item id="2211" name="ଶ Style ଳୀ:"/>
+					<Item id="2212" name="ରଙ୍ଗ ଶ Style ଳୀ"/>
+					<Item id="2213" name="ଫଣ୍ଟ ଶ Style ଳୀ"/>
+					<Item id="2214" name="ଡିଫଲ୍ଟ ext:"/>
+					<Item id="2216" name="ଉପଯୋଗକର୍ତ୍ତା ବିସ୍ତାର:"/>
+					<Item id="2218" name="ଅଣ୍ଡରଲାଇନ୍"/>
+					<Item id="2219" name="ଡିଫଲ୍ଟ କୀ ଶବ୍ଦ"/>
+					<Item id="2221" name="ଉପଭୋକ୍ତା-ପରିଭାଷିତ କୀ ଶବ୍ଦ"/>
+					<Item id="2225" name="ଭାଷା:"/>
+					<Item id="2226" name="ସମସ୍ତ ଶ yles ଳୀ ପାଇଁ ପୃଷ୍ଠଭୂମି ରଙ୍ଗକୁ ବାଧ୍ୟ କରନ୍ତୁ"/>
+					<Item id="2227" name="ସମସ୍ତ ଶ yles ଳୀ ପାଇଁ ପୃଷ୍ଠଭୂମି ରଙ୍ଗକୁ ବାଧ୍ୟ କରନ୍ତୁ"/>
+					<Item id="2228" name="ସମସ୍ତ ଶ yles ଳୀ ପାଇଁ ଫଣ୍ଟ ପସନ୍ଦକୁ ବାଧ୍ୟ କରନ୍ତୁ"/>
+					<Item id="2229" name="ସମସ୍ତ ଶ yles ଳୀ ପାଇଁ ଫଣ୍ଟ୍ ସାଇଜ୍ ପସନ୍ଦକୁ ବାଧ୍ୟ କରନ୍ତୁ"/>
+					<Item id="2230" name="ସମସ୍ତ ଶ yles ଳୀ ପାଇଁ ବୋଲ୍ଡ ପସନ୍ଦକୁ ବାଧ୍ୟ କରନ୍ତୁ"/>
+					<Item id="2231" name="ସମସ୍ତ ଶ yles ଳୀ ପାଇଁ ଇଟାଲିକ୍ ପସନ୍ଦକୁ ବାଧ୍ୟ କରନ୍ତୁ"/>
+					<Item id="2232" name="ସମସ୍ତ ଶ yles ଳୀ ପାଇଁ ଅଣ୍ଡରଲାଇନ୍ ପସନ୍ଦକୁ ବାଧ୍ୟ କରନ୍ତୁ"/>
+					<Item id="2234" name="ସେଟିଂସମୂହକୁ ଯାଆନ୍ତୁ"/>
+					<!-- Don't translate "Global override" -->
+					<Item id="2235" name="ଗ୍ଲୋବାଲ୍ ଓଭର୍ରାଇଡ୍ କ’ଣ?"/>
+				</SubDialog>
+			</StyleConfig>
+
+			<ShortcutMapper title="ସର୍ଟକଟ୍ ମ୍ୟାପର୍">
+				<Item id="2602" name="ପରିବର୍ତ୍ତନ କରନ୍ତୁ |"/>
+				<Item id="2603" name="ବିଲୋପ କରନ୍ତୁ"/>
+				<Item id="2606" name="ସଫା"/>
+				<Item id="2607" name="ଫିଲ୍ଟର୍:"/>
+				<Item id="1" name="ବନ୍ଦ"/>
+				<ColumnName name="ନାମ"/>
+				<ColumnShortcut name="ସର୍ଟକଟ୍"/>
+				<ColumnCategory name="ବର୍ଗ"/>
+				<ColumnPlugin name="ପ୍ଲଗଇନ୍"/>
+				<MainMenuTab name="ମୁଖ୍ୟ ମେନୁ"/>
+				<MacrosTab name="ମାକ୍ରୋସ୍"/>
+				<RunCommandsTab name="ନିର୍ଦ୍ଦେଶଗୁଡିକ ଚଲାନ୍ତୁ"/>
+				<PluginCommandsTab name="ପ୍ଲଗଇନ୍ ନିର୍ଦ୍ଦେଶ"/>
+				<ScintillaCommandsTab name="ସ୍କିଣ୍ଟିଲା ନିର୍ଦ୍ଦେଶ"/>
+				<ConflictInfoOk name="ଏହି ଆଇଟମ୍ ପାଇଁ କ short ଣସି ସର୍ଟକଟ୍ ବିବାଦ ନାହିଁ"/>
+				<ConflictInfoEditing name="|କ No ଣସି ବିବାଦ ନାହିଁ |।।"/>
+				<AboutCategory name="ବିଷୟରେ"/>
+				<ModifyContextMenu name="ପରିବର୍ତ୍ତନ କରନ୍ତୁ"/>
+				<DeleteContextMenu name="ବିଲୋପ କରନ୍ତୁ"/>
+				<ClearContextMenu name="ସଫା"/>
+				<MainCommandNames>
+					<Item id="41019" name="ଏକ୍ସପ୍ଲୋରରରେ ଧାରଣ କରିଥିବା ଫୋଲ୍ଡର୍ ଖୋଲନ୍ତୁ |"/>
+					<Item id="41020" name="କମାଣ୍ଡ ପ୍ରମ୍ପ୍ଟରେ ଥିବା ଫୋଲ୍ଡର ଧାରଣ କରନ୍ତୁ"/>
+					<Item id="41021" name="ସମ୍ପ୍ରତି ବନ୍ଦ ଫାଇଲ୍ ପୁନରୁଦ୍ଧାର କରନ୍ତୁ"/>
+					<Item id="45001" name="ୱିଣ୍ଡୋଜ୍ (CR LF) କୁ EOL ରୂପାନ୍ତର"/>
+					<Item id="45002" name="ୟୁନିକ୍ସ (LF) କୁ EOL ରୂପାନ୍ତର"/>
+					<Item id="45003" name="ମାକିଣ୍ଟୋଶ୍ (CR) କୁ EOL ରୂପାନ୍ତର"/>
+					<Item id="43022" name="ପ୍ରଥମ ଶ style ଳୀ ବ୍ୟବହାର କରି ସମସ୍ତ ଶ Style ଳୀ"/>
+					<Item id="43024" name="୨ୟ ଶ style ଳୀ ବ୍ୟବହାର କରି ଶ Style ଳୀ"/>
+					<Item id="43026" name="ତୃତୀୟ ଶ style ଳୀ ବ୍ୟବହାର କରି ଶ Style ଳୀ"/>
+					<Item id="43028" name="4th ର୍ଥ ଶ style ଳୀ ବ୍ୟବହାର କରି ସମସ୍ତ ଶ Style ଳୀ"/>
+					<Item id="43030" name="ପ 5th ୍ଚମ ଶ style ଳୀ ବ୍ୟବହାର କରି ଶ Style ଳୀ"/>
+					<Item id="43062" name="ପ୍ରଥମ ଶ style ଳୀ ବ୍ୟବହାର କରି ଗୋଟିଏ ଶ Style ଳୀ"/>
+					<Item id="43063" name="୨ୟ ଶ style ଳୀ ବ୍ୟବହାର କରି ଗୋଟିଏ ଶ Style ଳୀ"/>
+					<Item id="43064" name="ତୃତୀୟ ଶ style ଳୀ ବ୍ୟବହାର କରି ଗୋଟିଏ ଶ Style ଳୀ"/>
+					<Item id="43065" name="4th ର୍ଥ ଶ style ଳୀ ବ୍ୟବହାର କରି ଗୋଟିଏ ଶ Style ଳୀ"/>
+					<Item id="43066" name="ପ 5th ୍ଚମ ଶ style ଳୀ ବ୍ୟବହାର କରି ଗୋଟିଏ ଶ Style ଳୀ"/>
+					<Item id="43023" name="ପ୍ରଥମ ଶ style ଳୀ ସଫା କରନ୍ତୁ"/>
+					<Item id="43025" name="ଦ୍ୱିତୀୟ ଶ style ଳୀ ସଫା କରନ୍ତୁ"/>
+					<Item id="43027" name="ତୃତୀୟ ଶ style ଳୀ ସଫା କରନ୍ତୁ"/>
+					<Item id="43029" name="4th ର୍ଥ ଶ style ଳୀ ସଫା କରନ୍ତୁ"/>
+					<Item id="43031" name="5 ମ ଶ style ଳୀ ସଫା କରନ୍ତୁ |"/>
+					<Item id="43032" name="ସମସ୍ତ ଶ yles ଳୀ ସଫା କରନ୍ତୁ"/>
+					<Item id="43033" name="ପ୍ରଥମ ଶ style ଳୀର ପୂର୍ବ ଶ style ଳୀ"/>
+					<Item id="43034" name="୨ୟ ଶ style ଳୀର ପୂର୍ବ ଶ style ଳୀ"/>
+					<Item id="43035" name="ତୃତୀୟ ଶ style ଳୀର ପୂର୍ବ ଶ style ଳୀ"/>
+					<Item id="43036" name="4th ର୍ଥ ଶ style ଳୀର ପୂର୍ବ ଶ style ଳୀ"/>
+					<Item id="43037" name="ପ 5th ୍ଚମ ଶ style ଳୀର ପୂର୍ବ ଶ style ଳୀ"/>
+					<Item id="43038" name="ମାର୍କ ଶ style ଳୀର ପୂର୍ବ ଶ style ଳୀ"/>
+					<Item id="43039" name="ପ୍ରଥମ ଶ style ଳୀର ପରବର୍ତ୍ତୀ ଶ style ଳୀ"/>
+					<Item id="43040" name="ଦ୍ୱିତୀୟ ଶ style ଳୀର ପରବର୍ତ୍ତୀ ଶ style ଳୀ"/>
+					<Item id="43041" name="ତୃତୀୟ ଶ style ଳୀର ପରବର୍ତ୍ତୀ ଶ style ଳୀ"/>
+					<Item id="43042" name="4th ର୍ଥ ଶ style ଳୀର ପରବର୍ତ୍ତୀ ଶ style ଳୀ"/>
+					<Item id="43043" name="ପ 5th ୍ଚମ ଶ style ଳୀର ପରବର୍ତ୍ତୀ ଶ style ଳୀ"/>
+					<Item id="43044" name="ମାର୍କ ଶ style ଳୀର ପରବର୍ତ୍ତୀ ଶ style ଳୀ"/>
+					<Item id="43055" name="ପ୍ରଥମ ଶ Style ଳୀର ଷ୍ଟାଇଲ୍ ଟେକ୍ସଟ୍ କପି କରନ୍ତୁ"/>
+					<Item id="43056" name="୨ୟ ଶ Style ଳୀର ଷ୍ଟାଇଲ୍ ଟେକ୍ସଟ୍ କପି କରନ୍ତୁ"/>
+					<Item id="43057" name="ତୃତୀୟ ଶ Style ଳୀର ଷ୍ଟାଇଲ୍ ଟେକ୍ସଟ୍ କପି କରନ୍ତୁ"/>
+					<Item id="43058" name="4th ର୍ଥ ଷ୍ଟାଇଲର ଷ୍ଟାଇଲ୍ ଟେକ୍ସଟ୍ କପି କରନ୍ତୁ"/>
+					<Item id="43059" name="ପ 5th ୍ଚମ ଶ Style ଳୀର ଷ୍ଟାଇଲ୍ ଟେକ୍ସଟ୍ କପି କରନ୍ତୁ"/>
+					<Item id="43060" name="ସମସ୍ତ ଶ yles ଳୀର ଷ୍ଟାଇଲ୍ ପାଠ୍ୟ କପି କରନ୍ତୁ"/>
+					<Item id="43061" name="ସନ୍ଧାନ ମାର୍କ ଶ style ଳୀର ଷ୍ଟାଇଲ୍ ଟେକ୍ସଟ୍ କପି କରନ୍ତୁ |"/>
+					<Item id="44100" name="ଫାୟାରଫକ୍ସରେ ସାମ୍ପ୍ରତିକ ଫାଇଲ୍ ଦେଖନ୍ତୁ"/>
+					<Item id="44101" name="କ୍ରୋମ୍ ରେ ସାମ୍ପ୍ରତିକ ଫାଇଲ୍ ଦେଖନ୍ତୁ"/>
+					<Item id="44103" name="IE ରେ ସାମ୍ପ୍ରତିକ ଫାଇଲ୍ ଦେଖନ୍ତୁ"/>
+					<Item id="44102" name="ଏଜ୍ ରେ ସାମ୍ପ୍ରତିକ ଫାଇଲ୍ ଦେଖନ୍ତୁ"/>
+					<Item id="50003" name="ପୂର୍ବ ଡକ୍ୟୁମେଣ୍ଟକୁ ସୁଇଚ୍ କରନ୍ତୁ"/>
+					<Item id="50004" name="ପରବର୍ତ୍ତୀ ଡକ୍ୟୁମେଣ୍ଟକୁ ସୁଇଚ୍ କରନ୍ତୁ"/>
+					<Item id="44051" name="ଫୋଲ୍ଡ ସ୍ତର 1"/>
+					<Item id="44052" name="ଫୋଲ୍ଡ ସ୍ତର 2"/>
+					<Item id="44053" name="ଫୋଲ୍ଡ ସ୍ତର 3"/>
+					<Item id="44054" name="ଫୋଲ୍ଡ ସ୍ତର 4"/>
+					<Item id="44055" name="ଫୋଲ୍ଡ ସ୍ତର 5"/>
+					<Item id="44056" name="ଫୋଲ୍ଡ ସ୍ତର 6"/>
+					<Item id="44057" name="ଫୋଲ୍ଡ ସ୍ତର 7"/>
+					<Item id="44058" name="ଫୋଲ୍ଡ ସ୍ତର 8"/>
+					<Item id="44061" name="ଅନାବୃତ ସ୍ତର 1"/>
+					<Item id="44062" name="ଅନାବୃତ ସ୍ତର 2"/>
+					<Item id="44063" name="ଅନାବୃତ ସ୍ତର 3"/>
+					<Item id="44064" name="ଅନାବୃତ ସ୍ତର 4"/>
+					<Item id="44065" name="ଅନାବୃତ ସ୍ତର 5"/>
+					<Item id="44066" name="ଅନାବୃତ ସ୍ତର 6"/>
+					<Item id="44067" name="ଅନାବଶ୍ୟକ ସ୍ତର 7"/>
+					<Item id="44068" name="ଅନାବୃତ ସ୍ତର 8"/>
+					<Item id="44081" name="ପ୍ରୋଜେକ୍ଟ ପ୍ୟାନେଲ୍ ଟୋଗଲ୍ କରନ୍ତୁ"/>
+					<Item id="44082" name="ପ୍ରୋଜେକ୍ଟ ପ୍ୟାନେଲ୍ 2 | ଟୋଗଲ୍ କରନ୍ତୁ"/>
+					<Item id="44083" name="ପ୍ରୋଜେକ୍ଟ ପ୍ୟାନେଲ୍ 3 ଟୋଗଲ୍ କରନ୍ତୁ"/>
+					<Item id="44085" name="କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଭାବରେ ଫୋଲ୍ଡରକୁ ଟୋଗଲ୍ କରନ୍ତୁ"/>
+					<Item id="44080" name="ଡକ୍ୟୁମେଣ୍ଟ୍ ମାନଚିତ୍ର ଟୋଗଲ୍ କରନ୍ତୁ"/>
+					<Item id="44070" name="ଡକ୍ୟୁମେଣ୍ଟ୍ ତାଲିକା ଟୋଗଲ୍ କରନ୍ତୁ"/>
+					<Item id="44084" name="କାର୍ଯ୍ୟ ତାଲିକା ଟୋଗଲ୍ କରନ୍ତୁ"/>
+					<Item id="50005" name="ମାକ୍ରୋ ରେକର୍ଡିଂ ଟୋଗଲ୍ କରନ୍ତୁ"/>
+					<Item id="44104" name="ପ୍ରୋଜେକ୍ଟ ପ୍ୟାନେଲ୍ 1 କୁ ସୁଇଚ୍ କରନ୍ତୁ"/>
+					<Item id="44105" name="ପ୍ରୋଜେକ୍ଟ ପ୍ୟାନେଲ୍ 2 କୁ ସୁଇଚ୍ କରନ୍ତୁ"/>
+					<Item id="44106" name="ପ୍ରୋଜେକ୍ଟ ପ୍ୟାନେଲ୍ 3 କୁ ସୁଇଚ୍ କରନ୍ତୁ"/>
+					<Item id="44107" name="କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଭାବରେ ଫୋଲ୍ଡରକୁ ସୁଇଚ୍ କରନ୍ତୁ"/>
+					<Item id="44109" name="ଡକ୍ୟୁମେଣ୍ଟ୍ ତାଲିକାକୁ ସୁଇଚ୍ କରନ୍ତୁ"/>
+					<Item id="44108" name="କାର୍ଯ୍ୟ ତାଲିକାକୁ ସୁଇଚ୍ କରନ୍ତୁ"/>
+					<Item id="44110" name="ଟ୍ୟାବ୍ ରଙ୍ଗ ହଟାନ୍ତୁ"/>
+					<Item id="44111" name="ଟ୍ୟାବ୍ ରଙ୍ଗ 1"/>
+					<Item id="44112" name="ପ୍ରୟୋଗ କରନ୍ତୁ |ଟ୍ୟାବ୍ ରଙ୍ଗ 2 ପ୍ରୟୋଗ କରନ୍ତୁ"/>
+					<Item id="44113" name="ଟ୍ୟାବ୍ ରଙ୍ଗ 3 ପ୍ରୟୋଗ କରନ୍ତୁ |"/>
+					<Item id="44114" name="ଟ୍ୟାବ୍ ରଙ୍ଗ 4"/>
+					<Item id="44115" name="ପ୍ରୟୋଗ କରନ୍ତୁ |ଟ୍ୟାବ୍ ରଙ୍ଗ 5"/>
+					<Item id="11002" name="ପ୍ରୟୋଗ କରନ୍ତୁ |ନାମ A ରୁ Z କୁ ସର୍ଟ କରନ୍ତୁ"/>
+					<Item id="11003" name="ନାମ Z ରୁ A କୁ ସର୍ଟ କରନ୍ତୁ"/>
+					<Item id="11004" name="ପଥ A ରୁ Z କୁ ସର୍ଟ କରନ୍ତୁ"/>
+					<Item id="11005" name="ପଥ Z ରୁ A"/>
+					<Item id="11006" name="ଟାଇପ୍ A ରୁ Z"/>
+					<Item id="11007" name="ଟାଇପ୍ Z ରୁ A"/>
+					<Item id="11008" name="ବିଷୟବସ୍ତୁ ଦ Length ର୍ଘ୍ୟ ଆରୋହଣ ଦ୍ୱାରା ସର୍ଟ କରନ୍ତୁ"/>
+					<Item id="11009" name="ବିଷୟବସ୍ତୁ ଦ Length ର୍ଘ୍ୟ ଅବତରଣ ଦ୍ୱାରା ସର୍ଟ କରନ୍ତୁ"/>
+				</MainCommandNames>
+			</ShortcutMapper>
+			<ShortcutMapperSubDialg title="ସର୍ଟକଟ୍">
+				<Item id="1" name="ଠିକ ଅଛି"/>
+				<Item id="2" name="ବାତିଲ୍"/>
+				<Item id="5006" name="ନାମ"/>
+				<Item id="5008" name="ଯୋଡନ୍ତୁ"/>
+				<Item id="5009" name="ଅପସାରଣ କରନ୍ତୁ"/>
+				<Item id="5010" name="ପ୍ରୟୋଗ କରନ୍ତୁ"/>
+				<Item id="5007" name="ଏହା ଏହି କମାଣ୍ଡରୁ ସର୍ଟକଟ୍ ଅପସାରଣ କରିବ"/>
+				<Item id="5012" name="ବିବାଦ ଫାଉଣ୍ଡ!"/>
+			</ShortcutMapperSubDialg>
+			<UserDefine title="ଉପଯୋଗକର୍ତ୍ତା-ପରିଭାଷିତ |">
+				<Item id="20001" name="ଡକ୍"/>
+				<Item id="20002" name="ପୁନ ame ନାମ କରନ୍ତୁ"/>
+				<Item id="20003" name="ନୂତନ ସୃଷ୍ଟି କରନ୍ତୁ ..."/>
+				<Item id="20004" name="ଅପସାରଣ କରନ୍ତୁ"/>
+				<Item id="20005" name="ଯେପରି ସେଭ୍ କରନ୍ତୁ ..."/>
+				<Item id="20007" name="ବ୍ୟବହାରକାରୀ ଭାଷା"/>
+				<Item id="20009" name="ବିସ୍ତୃତ:"/>
+				<Item id="20012" name="ମାମଲାକୁ ଉପେକ୍ଷା କରନ୍ତୁ"/>
+				<Item id="20011" name="ସ୍ୱଚ୍ଛତା"/>
+				<Item id="20015" name="ଆମଦାନି ..."/>
+				<Item id="20016" name="ରପ୍ତାନି ..."/>
+				<Item id="20017" name="Undock"/>
+				<StylerDialog title="ଷ୍ଟାଇଲର୍ ସଂଳାପ">
+					<Item id="25030" name="ଫଣ୍ଟ ବିକଳ୍ପ"/>
+					<Item id="25006" name="ପୃଷ୍ଠଭୂମି ରଙ୍ଗ"/>
+					<Item id="25007" name="ପୃଷ୍ଠଭୂମି ରଙ୍ଗ"/>
+					<Item id="25031" name="ନାମ:"/>
+					<Item id="25032" name="ଆକାର:"/>
+					<Item id="25001" name="ବୋଲ୍ଡ"/>
+					<Item id="25002" name="ଇଟାଲିକ୍ |"/>
+					<Item id="25003" name="ଅଣ୍ଡରଲାଇନ୍"/>
+					<Item id="25029" name="ବସା"/>
+					<Item id="25008" name="ଡିଲିମିଟର 1"/>
+					<Item id="25009" name="ଡିଲିମିଟର 2"/>
+					<Item id="25010" name="ଡିଲିମିଟର 3"/>
+					<Item id="25011" name="ଡିଲିମିଟର 4"/>
+					<Item id="25012" name="ଡିଲିମିଟର 5"/>
+					<Item id="25013" name="ଡିଲିମିଟର 6"/>
+					<Item id="25014" name="ଡିଲିମିଟର 7"/>
+					<Item id="25015" name="ଡିଲିମିଟର 8"/>
+					<Item id="25018" name="କୀ ଶବ୍ଦ 1"/>
+					<Item id="25019" name="କୀୱାର୍ଡ 2"/>
+					<Item id="25020" name="କୀୱାର୍ଡ 3"/>
+					<Item id="25021" name="କୀୱାର୍ଡ 4"/>
+					<Item id="25022" name="କୀୱାର୍ଡ 5"/>
+					<Item id="25023" name="କୀୱାର୍ଡ 6"/>
+					<Item id="25024" name="କୀୱାର୍ଡ 7"/>
+					<Item id="25025" name="କୀୱାର୍ଡ 8"/>
+					<Item id="25016" name="ମନ୍ତବ୍ୟ"/>
+					<Item id="25017" name="ମନ୍ତବ୍ୟ ରେଖା |"/>
+					<Item id="25026" name="ଅପରେଟର୍ 1"/>
+					<Item id="25027" name="ଅପରେଟର୍ 2"/>
+					<Item id="25028" name="ସଂଖ୍ୟା"/>
+					<Item id="25033" name="ସ୍ୱଚ୍ଛ"/>
+					<Item id="25034" name="ସ୍ୱଚ୍ଛ"/>
+					<Item id="1" name="ଠିକ ଅଛି"/>
+					<Item id="2" name="ବାତିଲ୍"/>
+				</StylerDialog>
+				<Folder title="ଫୋଲ୍ଡର ଡିଫଲ୍ଟ">
+					<Item id="21101" name="ଡିଫଲ୍ଟ ଶ style ଳୀ"/>
+					<Item id="21102" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="21103" name="ଉପଭୋକ୍ତା ନିର୍ଦ୍ଦିଷ୍ଟ ଭାଷା ଅନଲାଇନ୍ ସହାୟତା"/>
+					<Item id="21105" name="ଡକ୍ୟୁମେଣ୍ଟେସନ୍"/>
+					<Item id="21106" name="ଫୋଲ୍ଡ କମ୍ପାକ୍ଟ (ଖାଲି ରେଖା ମଧ୍ୟ ଫୋଲ୍ କରନ୍ତୁ)"/>
+					<Item id="21220" name="କୋଡ୍ 1 ଶ style ଳୀରେ ଫୋଲ୍ଡିଂ"/>
+					<Item id="21224" name="ଖୋଲ:"/>
+					<Item id="21225" name="ମଧ୍ୟମ:"/>
+					<Item id="21226" name="ବନ୍ଦ:"/>
+					<Item id="21227" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="21320" name="କୋଡ୍ style ଶ style ଳୀରେ ଫୋଲ୍ଡିଂ (ବିଚ୍ଛିନ୍ନକର୍ତ୍ତା ଆବଶ୍ୟକ)"/>
+					<Item id="21324" name="ଖୋଲ:"/>
+					<Item id="21325" name="ମଧ୍ୟମ:"/>
+					<Item id="21326" name="ବନ୍ଦ:"/>
+					<Item id="21327" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="21420" name="ମନ୍ତବ୍ୟ ଶ style ଳୀରେ ଫୋଲ୍ଡିଂ"/>
+					<Item id="21424" name="ଖୋଲ:"/>
+					<Item id="21425" name="ମଧ୍ୟମ:"/>
+					<Item id="21426" name="ବନ୍ଦ:"/>
+					<Item id="21427" name="ଷ୍ଟାଇଲର୍"/>
+				</Folder>
+				<Keywords title="କୀ ଶବ୍ଦ ତାଲିକା">
+					<Item id="22101" name="ପ୍ରଥମ ଗୋଷ୍ଠୀ"/>
+					<Item id="22201" name="୨ୟ ଗୋଷ୍ଠୀ"/>
+					<Item id="22301" name="ତୃତୀୟ ଗୋଷ୍ଠୀ"/>
+					<Item id="22401" name="4th ର୍ଥ ଗୋଷ୍ଠୀ"/>
+					<Item id="22451" name="ପ 5th ୍ଚମ ଗୋଷ୍ଠୀ"/>
+					<Item id="22501" name="ଷଷ୍ଠ ଗୋଷ୍ଠୀ"/>
+					<Item id="22551" name="ସପ୍ତମ ଗୋଷ୍ଠୀ"/>
+					<Item id="22601" name="ଅଷ୍ଟମ ଗୋଷ୍ଠୀ"/>
+					<Item id="22121" name="ଉପସର୍ଗ ମୋଡ୍"/>
+					<Item id="22221" name="ଉପସର୍ଗ ମୋଡ୍"/>
+					<Item id="22321" name="ଉପସର୍ଗ ମୋଡ୍"/>
+					<Item id="22421" name="ଉପସର୍ଗ ମୋଡ୍"/>
+					<Item id="22471" name="ଉପସର୍ଗ ମୋଡ୍"/>
+					<Item id="22521" name="ଉପସର୍ଗ ମୋଡ୍"/>
+					<Item id="22571" name="ଉପସର୍ଗ ମୋଡ୍"/>
+					<Item id="22621" name="ଉପସର୍ଗ ମୋଡ୍"/>
+					<Item id="22122" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="22222" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="22322" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="22422" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="22472" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="22522" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="22572" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="22622" name="ଷ୍ଟାଇଲର୍"/>
+				</Keywords>
+				<Comment title="ମନ୍ତବ୍ୟ ସଂଖ୍ୟା">
+					<Item id="23003" name="ରେଖା ମନ୍ତବ୍ୟ ସ୍ଥିତି"/>
+					<Item id="23004" name="ଯେକ anywhere ଣସି ସ୍ଥାନକୁ ଅନୁମତି ଦିଅନ୍ତୁ"/>
+					<Item id="23005" name="ରେଖା ଆରମ୍ଭରେ ବଳ"/>
+					<Item id="23006" name="ପୂର୍ବ ଧଳା ସ୍ଥାନକୁ ଅନୁମତି ଦିଅନ୍ତୁ"/>
+					<Item id="23001" name="ମନ୍ତବ୍ୟଗୁଡିକର ଫୋଲ୍ଡିଂକୁ ଅନୁମତି ଦିଅନ୍ତୁ"/>
+					<Item id="23326" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="23323" name="ଖୋଲ"/>
+					<Item id="23324" name="ଅକ୍ଷର ଜାରି ରଖ"/>
+					<Item id="23325" name="ବନ୍ଦ"/>
+					<Item id="23301" name="ମନ୍ତବ୍ୟ ରେଖା ଶ style ଳୀ"/>
+					<Item id="23124" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="23122" name="ଖୋଲ"/>
+					<Item id="23123" name="ବନ୍ଦ"/>
+					<Item id="23101" name="ମନ୍ତବ୍ୟ ଶ style ଳୀ"/>
+					<Item id="23201" name="ସଂଖ୍ୟା ଶ style ଳୀ"/>
+					<Item id="23220" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="23230" name="ଉପସର୍ଗ 1"/>
+					<Item id="23232" name="ଉପସର୍ଗ 2"/>
+					<Item id="23234" name="ଅତିରିକ୍ତ 1"/>
+					<Item id="23236" name="ଅତିରିକ୍ତ 2"/>
+					<Item id="23238" name="ସଫିକ୍ସ 1"/>
+					<Item id="23240" name="ସଫିକ୍ସ 2"/>
+					<Item id="23242" name="ପରିସର:"/>
+					<Item id="23244" name="ଦଶମିକ ବିଛିନ୍ନକାରୀ"/>
+					<Item id="23245" name="ବିନ୍ଦୁ"/>
+					<Item id="23246" name="କମା"/>
+					<Item id="23247" name="ଉଭୟ"/>
+				</Comment>
+				<Operator title="ଅପରେଟର୍ସ ଡିଲିମିଟର">
+					<Item id="24101" name="ଅପରେଟର୍ସ ଶ style ଳୀ"/>
+					<Item id="24113" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="24116" name="ଅପରେଟର୍ସ 1"/>
+					<Item id="24117" name="ଅପରେଟର୍ସ ୨ (ବିଚ୍ଛିନ୍ନକର୍ତ୍ତା ଆବଶ୍ୟକ)"/>
+					<Item id="24201" name="ଡିଲିମିଟର 1 ଶ style ଳୀ"/>
+					<Item id="24220" name="ଖୋଲ:"/>
+					<Item id="24221" name="ପଳାୟନ:"/>
+					<Item id="24222" name="ବନ୍ଦ:"/>
+					<Item id="24223" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="24301" name="ଡିଲିମିଟର 2 ଶ style ଳୀ"/>
+					<Item id="24320" name="ଖୋଲ:"/>
+					<Item id="24321" name="ପଳାୟନ:"/>
+					<Item id="24322" name="ବନ୍ଦ:"/>
+					<Item id="24323" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="24401" name="ଡିଲିମିଟର style ଶ style ଳୀ"/>
+					<Item id="24420" name="ଖୋଲ:"/>
+					<Item id="24421" name="ପଳାୟନ:"/>
+					<Item id="24422" name="ବନ୍ଦ:"/>
+					<Item id="24423" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="24451" name="ଡିଲିମିଟର 4 ଶ style ଳୀ"/>
+					<Item id="24470" name="ଖୋଲ:"/>
+					<Item id="24471" name="ପଳାୟନ:"/>
+					<Item id="24472" name="ବନ୍ଦ:"/>
+					<Item id="24473" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="24501" name="ଡିଲିମିଟର 5 ଶ style ଳୀ"/>
+					<Item id="24520" name="ଖୋଲ:"/>
+					<Item id="24521" name="ପଳାୟନ:"/>
+					<Item id="24522" name="ବନ୍ଦ:"/>
+					<Item id="24523" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="24551" name="ଡିଲିମିଟର 6 ଶ style ଳୀ"/>
+					<Item id="24570" name="ଖୋଲ:"/>
+					<Item id="24571" name="ପଳାୟନ:"/>
+					<Item id="24572" name="ବନ୍ଦ:"/>
+					<Item id="24573" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="24601" name="ଡିଲିମିଟର 7 ଶ style ଳୀ"/>
+					<Item id="24620" name="ଖୋଲ:"/>
+					<Item id="24621" name="ପଳାୟନ:"/>
+					<Item id="24622" name="ବନ୍ଦ:"/>
+					<Item id="24623" name="ଷ୍ଟାଇଲର୍"/>
+					<Item id="24651" name="ଡିଲିମିଟର 8 ଶ style ଳୀ"/>
+					<Item id="24670" name="ଖୋଲ:"/>
+					<Item id="24671" name="ପଳାୟନ:"/>
+					<Item id="24672" name="ବନ୍ଦ:"/>
+					<Item id="24673" name="ଷ୍ଟାଇଲର୍"/>
+				</Operator>
+			</UserDefine>
+			<Preference title="ପସନ୍ଦ">
+				<Item id="6001" name="ବନ୍ଦ"/>
+				<Global title="ସାଧାରଣ">
+					<Item id="6123" name="ଲୋକାଲାଇଜେସନ୍"/>
+					<Item id="6131" name="ମେନୁ"/>
+					<Item id="6122" name="ଲୁଚାନ୍ତୁ (ଟୋଗଲ୍ କରିବାକୁ Alt କିମ୍ବା F10 କି ବ୍ୟବହାର କରନ୍ତୁ)"/>
+					<Item id="6132" name="ଡାହାଣ ସର୍ଟକଟ୍ ଲୁଚାନ୍ତୁ ＋ ▼ ✕"/>
+					<Item id="6133" name="ସ୍ଥିତି ଦଣ୍ଡ"/>
+					<Item id="6134" name="ଲୁଚାନ୍ତୁ"/>
+				</Global>
+
+				<Toolbar title="ଟୁଲ୍ ବାର୍">
+					<Item id="6102" name="ଲୁଚାନ୍ତୁ"/>
+					<Item id="6103" name="ସ୍ U ଚ୍ଛ UI: ଛୋଟ"/>
+					<Item id="6104" name="ସ୍ U ଚ୍ଛ UI: ବଡ଼"/>
+					<Item id="6129" name="ଭରପୂର ଫ୍ଲୁଏଣ୍ଟ UI: ଛୋଟ |"/>
+					<Item id="6130" name="ଭରପୂର ଫ୍ଲୁଏଣ୍ଟ UI: ବଡ଼"/>
+					<Item id="6105" name="ମାନକ ଆଇକନ୍: ଛୋଟ"/>
+					<Item id="6011" name="ରଙ୍ଗୀକରଣ"/>
+					<Item id="6012" name="ସଂପୂର୍ଣ୍ଣ"/>
+					<Item id="6013" name="ଆଂଶିକ"/>
+					<Item id="6014" name="ରଙ୍ଗ ପସନ୍ଦ"/>
+					<Item id="6015" name="ଡିଫଲ୍ଟ"/>
+					<Item id="6016" name="ଲାଲ୍"/>
+					<Item id="6017" name="ସବୁଜ"/>
+					<Item id="6018" name="ନୀଳ"/>
+					<Item id="6019" name="ବାଇଗଣୀ"/>
+					<Item id="6020" name="ସିଆନ୍"/>
+					<Item id="6021" name="ଅଲିଭ୍"/>
+					<Item id="6022" name="ହଳଦିଆ"/>
+					<Item id="6023" name="ସିଷ୍ଟମ୍ Accent"/>
+					<Item id="6024" name="କଷ୍ଟମ୍"/>
+				</Toolbar>
+
+				<Tabbar title="ଟ୍ୟାବ୍ ବାର୍">
+					<Item id="6107" name="ହ୍ରାସ"/>
+					<Item id="6108" name="ଲକ୍ (ଡ୍ରାଗ୍ ଏବଂ ଡ୍ରପ୍ ନାହିଁ)"/>
+					<Item id="6109" name="ନିଷ୍କ୍ରିୟ ଟ୍ୟାବ୍ ରଙ୍ଗ ପରିବର୍ତ୍ତନ କରନ୍ତୁ |"/>
+					<Item id="6110" name="ସକ୍ରିୟ ଟ୍ୟାବରେ ଏକ ରଙ୍ଗୀନ ଦଣ୍ଡ ଅଙ୍କନ"/>
+					<Item id="6111" name="ନିଷ୍କ୍ରିୟ ଟ୍ୟାବଗୁଡ଼ିକରେ ବଟନ୍ ଦେଖାନ୍ତୁ"/>
+					<Item id="6112" name="ବନ୍ଦ ବଟନ୍ ଦେଖାନ୍ତୁ"/>
+					<Item id="6113" name="ଡକ୍ୟୁମେଣ୍ଟ୍ ବନ୍ଦ କରିବାକୁ ଦୁଇଥର କ୍ଲିକ୍ କରନ୍ତୁ"/>
+					<Item id="6115" name="ପିନ୍ ଟ୍ୟାବ୍ ବ feature ଶିଷ୍ଟ୍ୟ ସକ୍ଷମ କରନ୍ତୁ"/>
+					<Item id="6135" name="କେବଳ ପିନ୍ ହୋଇଥିବା ବଟନ୍ ଦେଖାନ୍ତୁ"/>
+					<Item id="6118" name="ଲୁଚାନ୍ତୁ"/>
+					<Item id="6119" name="ମଲ୍ଟି ଲାଇନ୍"/>
+					<Item id="6120" name="ଭୂଲମ୍ବ"/>
+					<Item id="6121" name="ଶେଷ ଟ୍ୟାବ୍ ବନ୍ଦ କରନ୍ତୁ"/>
+					<Item id="6128" name="ବିକଳ୍ପ ଆଇକନ୍"/>
+					<Item id="6125" name="ଆଚରଣ"/>
+					<Item id="6126" name="ଅନୁଭବ ଦେଖନ୍ତୁ"/>
+					<Item id="6136" name="ସର୍ବାଧିକଟ୍ୟାବ୍ ଲେବଲ୍ ଲମ୍ବ:"/>
+				</Tabbar>
+
+				<Scintillas title="ସମ୍ପାଦନା 1">
+					<Item id="6216" name="କ୍ୟାରେଟ୍ ସେଟିଂସମୂହ"/>
+					<Item id="6217" name="ମୋଟେଇ:"/>
+					<Item id="6219" name="Ink ଲକ ହାର:"/>
+					<Item id="6221" name="F"/>
+					<Item id="6222" name="S।"/>
+					<Item id="6246" name="ସାମ୍ପ୍ରତିକ ସ୍ତରର ଫୋଲ୍ଡିଂ / ଫୋଲ୍ଡିଂ କମାଣ୍ଡଗୁଡିକ ଟୋଗଲ୍ ଯୋଗ୍ୟ କରନ୍ତୁ"/>
+					<Item id="6227" name="ରେଖା ରାପ୍"/>
+					<Item id="6228" name="ଡିଫଲ୍ଟ"/>
+					<Item id="6229" name="ସମତୁଲ"/>
+					<Item id="6230" name="ଇଣ୍ଡେଣ୍ଟ"/>
+					<Item id="6234" name="ଟଚପ୍ୟାଡ୍ ସମସ୍ୟା ହେତୁ ଉନ୍ନତ ସ୍କ୍ରୋଲିଂ ବ feature ଶିଷ୍ଟ୍ୟ ଅକ୍ଷମ କରନ୍ତୁ"/>
+					<Item id="6215" name="ସୁଗମ ଫଣ୍ଟ ସକ୍ଷମ କରନ୍ତୁ"/>
+					<Item id="6236" name="ଶେଷ ଧାଡି ବାହାରେ ସ୍କ୍ରୋଲିଂ ସକ୍ଷମ କରନ୍ତୁ"/>
+					<Item id="6239" name="ଚୟନ ବାହାରେ ଡାହାଣ କ୍ଲିକ୍ କରିବା ସମୟରେ ଚୟନ ରଖନ୍ତୁ"/>
+					<Item id="6245" name="ଭର୍ଚୁଆଲ୍ ସ୍ପେସ୍ ସକ୍ଷମ କରନ୍ତୁ"/>
+					<Item id="6214" name="ଚୟନ ବିନା କପି / କଟ୍ ଲାଇନ୍ ସକ୍ଷମ କରନ୍ତୁ"/>
+					<Item id="6225" name="ମନୋନୀତ ପାଠ୍ୟ ପୃଷ୍ଠଭୂମିରେ କଷ୍ଟମ୍ ରଙ୍ଗ ପ୍ରୟୋଗ କରନ୍ତୁ"/>
+					<Item id="6651" name="ସାମ୍ପ୍ରତିକ ରେଖା ସୂଚକ"/>
+					<Item id="6652" name="କିଛି ନୁହେଁ"/>
+					<Item id="6653" name="ପୃଷ୍ଠଭୂମି ହାଇଲାଇଟ୍ କରନ୍ତୁ"/>
+					<Item id="6654" name="ଫ୍ରେମ୍"/>
+					<Item id="6655" name="ମୋଟେଇ:"/>
+				</Scintillas>
+
+				<Scintillas2 title="ସମ୍ପାଦନା 2">
+					<Item id="6521" name="ମଲ୍ଟି ଏଡିଟିଂ"/>
+					<Item id="6522" name="ମଲ୍ଟି ଏଡିଟିଂ ସକ୍ଷମ କରନ୍ତୁ (Ctrl + ମାଉସ୍ କ୍ଲିକ୍ / ଚୟନ)"/>
+					<Item id="6523" name="ମଲ୍ଟି-ଏଡିଟିଂରେ ସ୍ତମ୍ଭ ଚୟନକୁ ସକ୍ଷମ କରନ୍ତୁ"/>
+					<Item id="6247" name="EOL (CRLF)"/><!-- Don't translate "(CRLF)" -->
+					<Item id="6248" name="ଡିଫଲ୍ଟ"/>
+					<Item id="6249" name="ସରଳ ପାଠ"/>
+					<Item id="6250" name="କଷ୍ଟମ୍ ରଙ୍ଗ"/>
+					<Item id="6252" name="ଅଣ-ମୁଦ୍ରଣ ଅକ୍ଷର"/>
+					<Item id="6260" name="ଦୃଶ୍ୟ"/>
+					<Item id="6254" name="ସଂକ୍ଷିପ୍ତ"/>
+					<Item id="6255" name="କୋଡପଏଣ୍ଟ"/>
+					<Item id="6256" name="କଷ୍ଟମ୍ ରଙ୍ଗ"/>
+					<Item id="6258" name="C0, C1 ୟୁନିକୋଡ୍ EOL ରେ ଦୃଶ୍ୟ ସେଟିଂସମୂହ ପ୍ରୟୋଗ କରନ୍ତୁ"/>
+					<Item id="6259" name="ଡକ୍ୟୁମେଣ୍ଟରେ ଟାଇପିଂ କଣ୍ଟ୍ରୋଲ୍ ବର୍ଣ୍ଣ (C0 କୋଡ୍) ରୋକନ୍ତୁ"/>
+				</Scintillas2>
+
+				<DarkMode title="ଗା ark ମୋଡ୍">
+					<Item id="7131" name="ହାଲୁକା ମୋଡ୍"/>
+					<Item id="7132" name="ଗା ark ମୋଡ୍"/>
+					<Item id="7133" name="ୱିଣ୍ଡୋଜ୍ ଅନୁସରଣ କରନ୍ତୁ"/>
+					<Item id="7102" name="କଳା"/>
+					<Item id="7103" name="ଲାଲ୍"/>
+					<Item id="7104" name="ସବୁଜ"/>
+					<Item id="7105" name="ନୀଳ"/>
+					<Item id="7107" name="ବାଇଗଣୀ"/>
+					<Item id="7108" name="ସିଆନ୍"/>
+					<Item id="7109" name="ଅଲିଭ୍"/>
+					<Item id="7115" name="କଷ୍ଟୋମାଇଜ୍"/>
+					<Item id="7116" name="ବିଷୟବସ୍ତୁ ପୃଷ୍ଠଭୂମି"/>
+					<Item id="7117" name="ହଟ୍ ଟ୍ରାକ୍ ଆଇଟମ୍"/>
+					<Item id="7118" name="ନିୟନ୍ତ୍ରଣ ପୃଷ୍ଠଭୂମି"/>
+					<Item id="7119" name="ସଂଳାପ ପୃଷ୍ଠଭୂମି"/>
+					<Item id="7120" name="ତ୍ରୁଟି"/>
+					<Item id="7121" name="ପାଠ"/>
+					<Item id="7122" name="ଗା er ଼ ପାଠ"/>
+					<Item id="7123" name="ଅକ୍ଷମ ପାଠ୍ୟ"/>
+					<Item id="7124" name="ଧାର"/>
+					<Item id="7125" name="ଲିଙ୍କ୍"/>
+					<Item id="7126" name="ଧାର ହାଇଲାଇଟ୍"/>
+					<Item id="7127" name="ଧାର ଅକ୍ଷମ"/>
+					<Item id="7130" name="ପୁନ et ସେଟ୍ କରନ୍ତୁ"/>
+					<Item id="7135" name="ସ୍ୱର"/>
+				</DarkMode>
+
+				<MarginsBorderEdge title="ମାର୍ଜିନ୍ / ସୀମା / ଧାର">
+					<Item id="6201" name="ଫୋଲ୍ଡ ମାର୍ଜିନ୍ ଷ୍ଟାଇଲ୍ |"/>
+					<Item id="6202" name="ସରଳ"/>
+					<Item id="6203" name="ତୀର"/>
+					<Item id="6204" name="ବୃତ୍ତ ଗଛ"/>
+					<Item id="6205" name="ବାକ୍ସ ଗଛ"/>
+					<Item id="6226" name="କିଛି ନୁହେଁ"/>
+					<Item id="6291" name="ରେଖା ସଂଖ୍ୟା"/>
+					<Item id="6206" name="ପ୍ରଦର୍ଶନ"/>
+					<Item id="6292" name="ଗତିଶୀଳ ମୋଟେଇ"/>
+					<Item id="6293" name="ସ୍ଥିର ମୋଟେଇ"/>
+					<Item id="6207" name="ବୁକମାର୍କ ପ୍ରଦର୍ଶନ କରନ୍ତୁ"/>
+					<Item id="6295" name="ଇତିହାସ ପରିବର୍ତ୍ତନ କରନ୍ତୁ"/>
+					<Item id="6223" name="ମାର୍ଜିନରେ ଦେଖାନ୍ତୁ"/>
+					<Item id="6296" name="ପାଠ୍ୟରେ ଦେଖାନ୍ତୁ"/>
+					<Item id="6211" name="ଭର୍ଟିକାଲ୍ ଏଜ୍ ସେଟିଂସମୂହ"/>
+					<Item id="6213" name="ପୃଷ୍ଠଭୂମି ମୋଡ୍"/>
+					<Item id="6231" name="ସୀମା ଓସାର"/>
+					<Item id="6235" name="କ edge ଣସି ଧାର ନାହିଁ"/>
+					<Item id="6208" name="ପ୍ୟାଡିଂ"/>
+					<Item id="6209" name="ବାମ"/>
+					<Item id="6210" name="ଠିକ୍ |"/>
+					<Item id="6212" name="ବିଭ୍ରାଟ ମୁକ୍ତ"/>
+				</MarginsBorderEdge>
+
+				<NewDoc title="ନୂତନ ଡକ୍ୟୁମେଣ୍ଟ୍">
+					<Item id="6401" name="ଫର୍ମାଟ୍ (ରେଖା ସମାପ୍ତ)"/>
+					<Item id="6402" name="ୱିଣ୍ଡୋଜ୍ (CR LF)"/>
+					<Item id="6403" name="ୟୁନିକ୍ସ (LF)"/>
+					<Item id="6404" name="ମାକିନଟୋସ୍ (CR)"/>
+					<Item id="6405" name="ଏନକୋଡିଂ"/>
+					<Item id="6406" name="ANSI"/>
+					<Item id="6407" name="UTF-8"/>
+					<Item id="6408" name="BOM ସହିତ UTF-8"/>
+					<Item id="6409" name="BOM ସହିତ UTF-16 ବିଗ୍ ଏଣ୍ଡିଆନ୍"/>
+					<Item id="6410" name="BOM ସହିତ UTF-16 ଲିଟିଲ୍ ଏଣ୍ଡିଆନ୍"/>
+					<Item id="6411" name="ଡିଫଲ୍ଟ ଭାଷା:"/>
+					<Item id="6419" name="ନୂତନ ଡକ୍ୟୁମେଣ୍ଟ୍"/>
+					<Item id="6420" name="ଖୋଲା ANSI ଫାଇଲଗୁଡିକ ପାଇଁ ପ୍ରୟୋଗ କରନ୍ତୁ"/>
+					<Item id="6432" name="ଷ୍ଟାର୍ଟଅପ୍ ରେ ସର୍ବଦା ଏକ ନୂତନ ଡକ୍ୟୁମେଣ୍ଟ୍ ଖୋଲନ୍ତୁ"/>
+					<Item id="6433" name="ଡକ୍ୟୁମେଣ୍ଟ୍ ର ପ୍ରଥମ ଧାଡି ଆଖ୍ୟାବିହୀନ ଟ୍ୟାବ୍ ନାମ ଭାବରେ ବ୍ୟବହାର କରନ୍ତୁ"/>
+				</NewDoc>
+
+				<DefaultDir title="ଡିଫଲ୍ଟ ଡିରେକ୍ଟୋରୀ">
+					<Item id="6413" name="ଡିଫଲ୍ଟ ଖୋଲା / ସେଭ୍ ଫାଇଲ୍ ଡିରେକ୍ଟୋରୀ"/>
+					<Item id="6414" name="ସାମ୍ପ୍ରତିକ ଡକ୍ୟୁମେଣ୍ଟ୍ ଅନୁସରଣ କରନ୍ତୁ |"/>
+					<Item id="6415" name="ଶେଷ ବ୍ୟବହୃତ ଡିରେକ୍ଟୋରୀ ମନେରଖ"/>
+					<Item id="6431" name="ଫୋଲ୍ଡର ଡ୍ରପ୍ ଉପରେ ୱାର୍କସ୍ପେସ୍ ଭାବରେ ଫୋଲ୍ଡର୍ ଲଞ୍ଚ କରିବା ପରିବର୍ତ୍ତେ ଫୋଲ୍ଡରର ସମସ୍ତ ଫାଇଲ୍ ଖୋଲ"/>
+				</DefaultDir>
+
+				<FileAssoc title="ଫାଇଲ୍ ଆସୋସିଏସନ୍">
+					<Item id="4008" name="ଏହି ବ feature ଶିଷ୍ଟ୍ୟ ବ୍ୟବହାର କରିବାକୁ ଦୟାକରି ନୋଟପ୍ୟାଡ୍ ++ ଛାଡନ୍ତୁ ଏବଂ ଆଡମିନିଷ୍ଟ୍ରେଟର୍ ମୋଡ୍ ରେ ନୋଟପ୍ୟାଡ୍ ++ ପୁନ rel ଆରମ୍ଭ କରନ୍ତୁ"/>
+					<Item id="4009" name="|ସମର୍ଥିତ ବିସ୍ତୃତକରଣ:"/>
+					<Item id="4010" name="ପଞ୍ଜିକୃତ ବିସ୍ତୃତକରଣ:"/>
+				</FileAssoc>
+
+
+				<Language title="ଭାଷା">
+					<Item id="6505" name="ଉପଲବ୍ଧ ଆଇଟମ୍"/>
+					<Item id="6506" name="ଅକ୍ଷମ ବସ୍ତୁ"/>
+					<Item id="6507" name="ଭାଷା ମେନୁ କମ୍ପାକ୍ଟ କରନ୍ତୁ"/>
+					<Item id="6508" name="ଭାଷା ମେନୁ"/>
+					<Item id="6335" name="SQL"/>
+				</Language>
+
+				<Indentation title="ପାଇଁ ପଳାୟନ ଚରିତ୍ର ଭାବରେ ବ୍ୟାକ୍ ସ୍ଲାସ୍ ବ୍ୟବହାର କରନ୍ତୁ |ଇଣ୍ଡେଣ୍ଟେସନ୍">
+					<Item id="7161" name="ଅଟୋ-ଇଣ୍ଡେଣ୍ଟ"/>
+					<Item id="7162" name="କିଛି ନୁହେଁ"/>
+					<Item id="7163" name="ମ Basic ଳିକ"/>
+					<Item id="7164" name="ଉନ୍ନତ"/>
+					<Item id="6301" name="ଇଣ୍ଡେଣ୍ଟ ସେଟିଂସମୂହ"/>
+					<Item id="6302" name="ସ୍ପେସ୍ ବର୍ଣ୍ଣ (ଗୁଡିକ)"/>
+					<Item id="6303" name="ଇଣ୍ଡେଣ୍ଟ ଆକାର:"/>
+					<Item id="6310" name="ବ୍ୟବହାର କରିବା ଇଣ୍ଡେଣ୍ଟ:"/>
+					<Item id="6311" name="ଟ୍ୟାବ୍ ବର୍ଣ୍ଣ"/>
+					<Item id="6510" name="ଡିଫଲ୍ଟ ମୂଲ୍ୟ ବ୍ୟବହାର କରନ୍ତୁ"/>
+					<Item id="6512" name="ଏକକ ସ୍ଥାନ ଅପସାରଣ କରିବା ପରିବର୍ତ୍ତେ ବ୍ୟାକସ୍ପେସ୍ କି ଅନିଣ୍ଡେଣ୍ଟ"/>
+				</Indentation>
+
+				<Highlighting title="ହାଇଲାଇଟ୍">
+					<Item id="6351" name="ଟୋକେନ୍ ର ସମସ୍ତ ଘଟଣା ଶ Style ଳୀ"/>
+					<Item id="6352" name="ମ୍ୟାଚ୍ କେସ୍"/>
+					<Item id="6353" name="କେବଳ ପୁରା ଶବ୍ଦ ସହିତ ମେଳ"/>
+					<Item id="6333" name="ସ୍ମାର୍ଟ ହାଇଲାଇଟ୍"/>
+					<Item id="6326" name="ସକ୍ଷମ"/>
+					<Item id="6354" name="ମେଳ"/>
+					<Item id="6332" name="ମ୍ୟାଚ୍ କେସ୍"/>
+					<Item id="6338" name="କେବଳ ପୁରା ଶବ୍ଦ ସହିତ ମେଳ"/>
+					<Item id="6339" name="ସନ୍ଧାନ ସଂଳାପ ସେଟିଂସମୂହ ବ୍ୟବହାର କରନ୍ତୁ"/>
+					<Item id="6340" name="ଅନ୍ୟ ଏକ ଦୃଶ୍ୟକୁ ହାଇଲାଇଟ୍ କରନ୍ତୁ"/>
+					<Item id="6329" name="ମେଳଣ ଟ୍ୟାଗଗୁଡ଼ିକୁ ହାଇଲାଇଟ୍ କରନ୍ତୁ"/>
+					<Item id="6327" name="ସକ୍ଷମ"/>
+					<Item id="6328" name="ଟ୍ୟାଗ୍ ଗୁଣଗୁଡିକ ହାଇଲାଇଟ୍ କରନ୍ତୁ"/>
+					<Item id="6330" name="ମନ୍ତବ୍ୟ / php / asp ଜୋନ୍"/>
+				</Highlighting>
+
+				<Print title="ମୁଦ୍ରଣ">
+					<Item id="6601" name="ପ୍ରିଣ୍ଟ୍ ଲାଇନ୍ ନମ୍ବର"/>
+					<Item id="6602" name="ରଙ୍ଗ ବିକଳ୍ପ"/>
+					<Item id="6603" name="WYSIWYG"/>
+					<Item id="6604" name="ଓଲଟା"/>
+					<Item id="6605" name="ଧଳା ଉପରେ କଳା"/>
+					<Item id="6606" name="କ background ଣସି ପୃଷ୍ଠଭୂମି ରଙ୍ଗ ନାହିଁ"/>
+					<Item id="6607" name="ମାର୍ଜିନ୍ ସେଟିଂସମୂହ (ୟୁନିଟ୍: mm)"/>
+					<Item id="6612" name="ବାମ"/>
+					<Item id="6613" name="ଶୀର୍ଷ"/>
+					<Item id="6614" name="ଠିକ୍"/>
+					<Item id="6615" name="ତଳ"/>
+					<Item id="6706" name="ବୋଲ୍ଡ"/>
+					<Item id="6707" name="ଇଟାଲିକ୍"/>
+					<Item id="6708" name="ଶୀର୍ଷକ"/>
+					<Item id="6709" name="ବାମ ଅଂଶ"/>
+					<Item id="6710" name="ମଧ୍ୟ ଭାଗ"/>
+					<Item id="6711" name="ଡାହାଣ ଅଂଶ"/>
+					<Item id="6717" name="ବୋଲ୍ଡ"/>
+					<Item id="6718" name="ଇଟାଲିକ୍"/>
+					<Item id="6719" name="ଫୁଟର୍ |"/>
+					<Item id="6720" name="ବାମ ଅଂଶ"/>
+					<Item id="6721" name="ମଧ୍ୟ ଭାଗ"/>
+					<Item id="6722" name="ଡାହାଣ ଅଂଶ"/>
+					<Item id="6723" name="ଯୋଡନ୍ତୁ"/>
+					<ComboBox id="6724">
+						<Element name="ସମ୍ପୂର୍ଣ୍ଣ ଫାଇଲ୍ ନାମ ପଥ"/>
+						<Element name="ଫାଇଲ୍ ନାମ"/>
+						<Element name="ଫାଇଲ୍ ଡିରେକ୍ଟୋରୀ"/>
+						<Element name="ପୃଷ୍ଠା"/>
+						<Element name="ସଂକ୍ଷିପ୍ତ ତାରିଖ ଫର୍ମାଟ୍"/>
+						<Element name="ଲମ୍ବା ତାରିଖ ଫର୍ମାଟ୍"/>
+						<Element name="ସମୟ"/>
+					</ComboBox>
+					<Item id="6725" name="ପରିବର୍ତ୍ତନଶୀଳ:"/>
+					<Item id="6727" name="ଏଠାରେ ତୁମର ଭେରିଏବଲ୍ ସେଟିଙ୍ଗ୍ ପ୍ରଦର୍ଶନ କର"/>
+					<Item id="6728" name="ହେଡର୍ ଏବଂ ଫୁଟର୍"/>
+				</Print>
+
+				<Searching title="ଖୋଜୁଛି">
+					<Item id="6902" name="ସନ୍ଧାନ ସଂଳାପରେ ମୋନୋସ୍ପେସ୍ ଫଣ୍ଟ ବ୍ୟବହାର କରନ୍ତୁ (ନୋଟପ୍ୟାଡ୍ ++ ପୁନ rest ଆରମ୍ଭ କରିବା ଆବଶ୍ୟକ)"/>
+					<Item id="6903" name="ସନ୍ଧାନ ପରେ ସଂଳାପ ଖୋଲା ରହିଥାଏ ଯାହା ଫଳାଫଳ ୱିଣ୍ଡୋକୁ ଆଉଟପୁଟ କରେ"/>
+					<Item id="6904" name="ସମସ୍ତ ଖୋଲାଯାଇଥିବା ଡକ୍ୟୁମେଣ୍ଟରେ ସମସ୍ତଙ୍କୁ ବଦଳାଇବା ନିଶ୍ଚିତ କରନ୍ତୁ"/>
+					<Item id="6905" name="ବଦଳାନ୍ତୁ: ନିମ୍ନଲିଖିତ ଘଟଣାକୁ ଯାଆନ୍ତୁ ନାହିଁ"/>
+					<Item id="6906" name="ସନ୍ଧାନ ଫଳାଫଳ ୱିଣ୍ଡୋ: ସମ୍ଭବ ହେଲେ ମିଳୁଥିବା ଲାଇନ ପ୍ରତି କେବଳ ଗୋଟିଏ ଏଣ୍ଟ୍ରି ଦେଖାନ୍ତୁ |"/>
+					<Item id="6907" name="ଯେତେବେଳେ ସନ୍ଧାନ ସଂଳାପ ନିମନ୍ତ୍ରିତ"/>
+					<Item id="6908" name="ସିଲେକ୍ଟ ହୋଇଥିବା ଟେକ୍ସଟ୍ ସହିତ ଫିଲ୍ଡ ଖୋଜ"/>
+					<Item id="6909" name="ଯେତେବେଳେ କିଛି ସିଲେକ୍ଟ ହୋଇନଥାଏ ୱାର୍ଡ ଅଧୀନରେ ଚୟନ କରନ୍ତୁ"/>
+					<Item id="6910" name="ଅଟୋ-ଚେକିଂ ପାଇଁ ସର୍ବନିମ୍ନ ଆକାର &quot;ଚୟନରେ&quot;:"/>
+					<Item id="6913" name="ଆକ୍ଟିଭ୍ ଡକ୍ୟୁମେଣ୍ଟ୍ ଉପରେ ଆଧାରିତ ଫାଇଲ୍ ଡିରେକ୍ଟୋରୀ ଫିଲ୍ଡରେ ଖୋଜ"/>
+					<Item id="6916" name=": ଚୟନରୁ ଅଟୋ-ଫିଲ୍ ଫିଲ୍ଡ ଖୋଜିବା ପାଇଁ ସର୍ବାଧିକ ଅକ୍ଷର"/>
+				</Searching>
+
+				<RecentFilesHistory title="ସାମ୍ପ୍ରତିକ ଫାଇଲ ଇତିହାସ">
+					<Item id="6304" name="ସାମ୍ପ୍ରତିକ ଫାଇଲ ଇତିହାସ"/>
+					<Item id="6306" name="ସର୍ବାଧିକଏଣ୍ଟ୍ରି ସଂଖ୍ୟା:"/>
+					<Item id="6305" name="ଲଞ୍ଚ ସମୟରେ ଯାଞ୍ଚ କରନ୍ତୁ ନାହିଁ"/>
+					<Item id="6429" name="ପ୍ରଦର୍ଶନ"/>
+					<Item id="6424" name="ସବମେନୁରେ"/>
+					<Item id="6425" name="କେବଳ ଫାଇଲ୍ ନାମ"/>
+					<Item id="6426" name="ପୂର୍ଣ୍ଣ ଫାଇଲ୍ ନାମ ପଥ"/>
+					<Item id="6427" name="ସର୍ବାଧିକ ଲମ୍ବ କଷ୍ଟୋମାଇଜ୍ କରନ୍ତୁ:"/>
+				</RecentFilesHistory>
+
+				<Backup title="ବ୍ୟାକଅପ୍">
+					<Item id="6817" name="ଅଧିବେଶନ ସ୍ନାପସଟ୍ ଏବଂ ପର୍ଯ୍ୟାୟ ବ୍ୟାକଅପ୍"/>
+					<Item id="6818" name="ଅଧିବେଶନ ସ୍ନାପସଟ୍ ଏବଂ ପର୍ଯ୍ୟାୟ ବ୍ୟାକଅପ୍ ସକ୍ଷମ କରନ୍ତୁ"/>
+					<Item id="6819" name="ପ୍ରତ୍ୟେକ"/>
+					<Item id="6821" name="ରେ ପରିବର୍ତ୍ତନ ଉପରେ ଟ୍ରାଇଗର୍ ବ୍ୟାକଅପ୍ |ସେକେଣ୍ଡ୍ |"/>
+					<Item id="6822" name="ବ୍ୟାକଅପ୍ ପଥ:"/>
+					<Item id="6309" name="ପରବର୍ତ୍ତୀ ଉନ୍ମୋଚନ ପାଇଁ ସାମ୍ପ୍ରତିକ ଅଧିବେଶନ ମନେରଖ"/>
+					<Item id="6825" name="ଅତୀତ ଅଧିବେଶନରୁ ଅସମ୍ଭବ ଫାଇଲଗୁଡ଼ିକୁ ମନେରଖ"/>
+					<Item id="6801" name="ସେଭ୍ ଉପରେ ବ୍ୟାକଅପ୍"/>
+					<Item id="6315" name="କିଛି ନୁହେଁ"/>
+					<Item id="6316" name="ସରଳ ବ୍ୟାକଅପ୍"/>
+					<Item id="6317" name="ଭର୍ବାଜ୍ ବ୍ୟାକଅପ୍"/>
+					<Item id="6804" name="କଷ୍ଟମ୍ ବ୍ୟାକଅପ୍ ଡିରେକ୍ଟୋରୀ"/>
+					<Item id="6803" name="ଡିରେକ୍ଟୋରୀ:"/>
+				</Backup>
+
+				<AutoCompletion title="ଅଟୋ-ସମାପ୍ତି">
+					<Item id="6807" name="ଅଟୋ-ସମାପ୍ତି"/>
+					<Item id="6808" name="ପ୍ରତ୍ୟେକ ଇନପୁଟ୍ ଉପରେ ଅଟୋ-ସମାପ୍ତି ସକ୍ଷମ କରନ୍ତୁ"/>
+					<Item id="6809" name="କାର୍ଯ୍ୟ ସମାପ୍ତ"/>
+					<Item id="6810" name="ଶବ୍ଦ ସମାପ୍ତି"/>
+					<Item id="6816" name="କାର୍ଯ୍ୟ ଏବଂ ଶବ୍ଦ ସମାପ୍ତି"/>
+					<Item id="6869" name="ଚୟନ ସନ୍ନିବେଶ କରନ୍ତୁ"/>
+					<Item id="6870" name="TAB"/><!-- TAB key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6871" name="ପ୍ରବେଶ"/><!-- ENTER key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6824" name="ସଂଖ୍ୟାକୁ ଉପେକ୍ଷା କରନ୍ତୁ"/>
+					<Item id="6811" name="ଠାରୁ"/>
+					<Item id="6813" name="th ବର୍ଣ୍ଣ"/>
+					<Item id="6872" name="ସ୍ auto ତ - ସମାପ୍ତି ତାଲିକା ସଂକ୍ଷିପ୍ତ କର"/>
+					<Item id="6815" name="ଫଙ୍କସନ୍ ପାରାମିଟରଗୁଡିକ ଇନପୁଟ୍"/>
+					<Item id="6851" name="ଅଟୋ-ସନ୍ନିବେଶ"/>
+					<Item id="6857" name="html / xml ବନ୍ଦ ଟ୍ୟାଗ୍"/>
+					<Item id="6858" name="ଖୋଲ"/>
+					<Item id="6859" name="ବନ୍ଦ"/>
+					<Item id="6860" name="ମେଳ ଯୋଡି 1:"/>
+					<Item id="6863" name="ମେଳ ଯୋଡି 2:"/>
+					<Item id="6866" name="ମେଳ ଯୋଡି 3:"/>
+				</AutoCompletion>
+
+				<MultiInstance title="ମଲ୍ଟି ଇନଷ୍ଟାନ୍ସ ତାରିଖ">
+					<Item id="6151" name="ମଲ୍ଟି-ଇନ୍ଷ୍ଟାନ୍ସ ସେଟିଙ୍ଗ୍ *"/>
+					<Item id="6152" name="ଏକ ନୂତନ ଉଦାହରଣରେ ଅଧିବେଶନ ଖୋଲନ୍ତୁ (ଏବଂ ପ୍ରସ୍ଥାନରେ ସ୍ୱୟଂଚାଳିତ ଭାବରେ ଅଧିବେଶନ ସଂରକ୍ଷଣ କରନ୍ତୁ)"/>
+					<Item id="6153" name="ସର୍ବଦା ମଲ୍ଟି-ଇନ୍ଷ୍ଟାଣ୍ଟ ମୋଡ୍"/>
+					<Item id="6154" name="ଡିଫଲ୍ଟ (ମନୋ-ଉଦାହରଣ)"/>
+					<Item id="6155" name="* ଏହି ସେଟିଂର ପରିବର୍ତ୍ତନ ନୋଟପ୍ୟାଡ୍ ++"/>
+					<Item id="6171" name="କୁ ପୁନ rest ଆରମ୍ଭ କରିବା ଆବଶ୍ୟକ କରେ |ତାରିଖ ସମୟ ସନ୍ନିବେଶ କଷ୍ଟୋମାଇଜ୍ କରନ୍ତୁ"/>
+					<Item id="6175" name="ଓଲଟା ଡିଫଲ୍ଟ ତାରିଖ ସମୟ କ୍ରମ (କ୍ଷୁଦ୍ର ଲମ୍ବା ଫର୍ମାଟ୍)"/>
+					<Item id="6172" name="କଷ୍ଟମ୍ ଫର୍ମାଟ୍:"/>
+					<Item id="6181" name="ପ୍ୟାନେଲ୍ ଷ୍ଟେଟ୍ ଏବଂ [-nosession] *"/>
+					<Item id="6182" name="ମନେରଖନ୍ତୁ ପ୍ୟାନେଲ୍ ସ୍ଥିତି (ପ୍ୟାନେଲ୍ ଖୋଲା ଅଛି) ଅନ୍ୟ ପରିସ୍ଥିତିରେ (ମଲ୍ଟି-ଇନ୍ଷ୍ଟାନ୍ସ ମୋଡ୍) କିମ୍ବା କମାଣ୍ଡ୍ ଲାଇନ୍ ପାରାମିଟର ବ୍ୟବହାର କରିବା ସମୟରେ [-nosession]"/>
+					<Item id="6183" name="କ୍ଲିପବୋର୍ଡ ଇତିହାସ"/>
+					<Item id="6184" name="ଡକ୍ୟୁମେଣ୍ଟ୍ ତାଲିକା"/>
+					<Item id="6185" name="ଅକ୍ଷର ପ୍ୟାନେଲ୍"/>
+					<Item id="6186" name="କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଭାବରେ ଫୋଲ୍ଡର"/>
+					<Item id="6187" name="ପ୍ରୋଜେକ୍ଟ ପ୍ୟାନେଲ୍"/>
+					<Item id="6188" name="ଡକ୍ୟୁମେଣ୍ଟ୍ ମାନଚିତ୍ର"/>
+					<Item id="6189" name="କାର୍ଯ୍ୟ ତାଲିକା"/>
+					<Item id="6190" name="ପ୍ଲଗଇନ୍ ପ୍ୟାନେଲ୍"/>
+				</MultiInstance>
+
+				<Delimiter title="ଡିଲିମିଟର">
+					<Item id="6251" name="ଡିଲିମିଟର ଚୟନ ସେଟିଂସମୂହ (Ctrl + ମାଉସ୍ ଦୁଇଥର କ୍ଲିକ୍)"/>
+					<Item id="6252" name="ଖୋଲ"/>
+					<Item id="6255" name="ବନ୍ଦ"/>
+					<Item id="6256" name="ଅନେକ ଧାଡିରେ ଅନୁମତି ଦିଅନ୍ତୁ"/>
+					<Item id="6161" name="ଶବ୍ଦ ବର୍ଣ୍ଣ ତାଲିକା"/>
+					<Item id="6162" name="ଡିଫଲ୍ଟ ୱାର୍ଡ ବର୍ଣ୍ଣ ତାଲିକା ବ୍ୟବହାର କରନ୍ତୁ"/>
+					<Item id="6163" name="ଶବ୍ଦର ଅଂଶ ଭାବରେ ତୁମର ଚରିତ୍ରକୁ ଯୋଡ |
+(ତୁମେ କ’ଣ କରୁଛ ତାହା ଜାଣିବା ପର୍ଯ୍ୟନ୍ତ ଏହାକୁ ବାଛ ନାହିଁ)"/>
+				</Delimiter>
+
+				<Performance title="ପ୍ରଦର୍ଶନ">
+					<Item id="7141" name="ବଡ଼ ଫାଇଲ ପ୍ରତିବନ୍ଧକ"/>
+					<Item id="7143" name="ବଡ଼ ଫାଇଲ ପ୍ରତିବନ୍ଧକ ସକ୍ଷମ କରନ୍ତୁ (କ synt ଣସି ବାକ୍ୟବିନ୍ୟାସ ହାଇଲାଇଟ୍ ନାହିଁ)"/>
+					<Item id="7144" name="ବଡ଼ ଫାଇଲ ଆକାରକୁ ବ୍ୟାଖ୍ୟା କରନ୍ତୁ:"/>
+					<Item id="7146" name="MB (1 - 2046)"/>
+					<Item id="7147" name="ବ୍ରେସ୍ ମ୍ୟାଚ୍ ଅନୁମତି ଦିଅନ୍ତୁ"/>
+					<Item id="7148" name="ଅଟୋ-ସମାପ୍ତିକୁ ଅନୁମତି ଦିଅନ୍ତୁ"/>
+					<Item id="7149" name="ସ୍ମାର୍ଟ ହାଇଲାଇଟିଂକୁ ଅନୁମତି ଦିଅନ୍ତୁ"/>
+					<Item id="7150" name="ସର୍ବଭାରତୀୟ ସ୍ତରରେ ୱାର୍ଡ ରାପ୍ ନିଷ୍କ୍ରିୟ କରନ୍ତୁ"/>
+					<Item id="7151" name="URL କ୍ଲିକ୍ ଯୋଗ୍ୟ ଲିଙ୍କକୁ ଅନୁମତି ଦିଅନ୍ତୁ"/>
+					<Item id="7152" name="GB2GB ଫାଇଲ ଖୋଲିବା ସମୟରେ ଚେତାବନୀକୁ ଦବାନ୍ତୁ"/>
+				</Performance>
+
+				<Cloud title="କ୍ଲାଉଡ୍ ଲିଙ୍କ୍">
+					<Item id="6262" name="କ୍ଲାଉଡ୍ ରେ ସେଟିଂସମୂହ"/>
+					<Item id="6263" name="କ୍ଲାଉଡ୍ ନାହିଁ"/>
+					<Item id="6267" name="ଏଠାରେ ଆପଣଙ୍କର କ୍ଲାଉଡ୍ ଅବସ୍ଥାନ ପଥ ସେଟ୍ କରନ୍ତୁ:"/>
+					<Item id="6318" name="କ୍ଲିକ୍ ଯୋଗ୍ୟ ଲିଙ୍କ୍ ସେଟିଂସମୂହ"/>
+					<Item id="6319" name="ସକ୍ଷମ"/>
+					<Item id="6320" name="କ under ଣସି ଅଣ୍ଡରଲାଇନ୍ ନାହିଁ"/>
+					<Item id="6350" name="ଫୁଲବକ୍ସ ମୋଡ୍ ସକ୍ଷମ କରନ୍ତୁ"/>
+					<Item id="6264" name="URI କଷ୍ଟୋମାଇଜ୍ ସ୍କିମ୍:"/>
+				</Cloud>
+
+				<SearchEngine title="ସର୍ଚ୍ଚ ଇଞ୍ଜିନ୍">
+					<Item id="6271" name="ସର୍ଚ୍ଚ ଇଞ୍ଜିନ୍ (&quot;ଇଣ୍ଟରନେଟରେ ସନ୍ଧାନ&quot; ନିର୍ଦ୍ଦେଶ ପାଇଁ)"/>
+					<Item id="6272" name="ଡକ୍ ଡକ୍ଗୋ |"/>
+					<Item id="6273" name="ଗୁଗୁଲ୍"/>
+					<Item id="6274" name="Bing"/>
+					<Item id="6275" name="Yahoo!"/>
+					<Item id="6276" name="ଏଠାରେ ଆପଣଙ୍କର ସର୍ଚ୍ଚ ଇଞ୍ଜିନ୍ ସେଟ୍ କରନ୍ତୁ:"/>
+					<!-- Don't change anything after Example: -->
+					<Item id="6278" name="ଉଦାହରଣ: https://www.google.com/search?q=$(CURRENT_WORD)"/>
+				</SearchEngine>
+
+				<MISC title="MISC">
+					<ComboBox id="6347">
+						<Element name="ସାମ୍ପ୍ରତିକ ଫାଇଲ୍ ପାଇଁ ସକ୍ଷମ"/>
+						<Element name="ସମସ୍ତ ଖୋଲା ଫାଇଲଗୁଡିକ ପାଇଁ ସକ୍ଷମ କରନ୍ତୁ"/>
+						<Element name="ଅକ୍ଷମ କରନ୍ତୁ"/>
+					</ComboBox>
+					<ComboBox id="6307">
+						<Element name="ଉପରେ କ action ଣସି କାର୍ଯ୍ୟ ନାହିଁ"/>
+						<Element name=""/>
+						<Element name="କୁ କମ୍ କରନ୍ତୁ |ପାଖାପାଖି"/>
+						<Element name="ସର୍ବନିମ୍ନ / ବନ୍ଦ"/>
+					</ComboBox>
+					<ComboBox id="6362">
+						<Element name="GDI (ସବୁଠାରୁ ସୁସଙ୍ଗତ)"/>
+						<Element name="DirectWrite (ଡିଫଲ୍ଟ)"/>
+						<Element name="DirectWrite (ଫ୍ରେମ୍ ରଖ)"/>
+						<Element name="DirectWrite (GDI DC କୁ ଅଙ୍କନ)"/>
+						<Element name="DirectWrite (DirectX 11)"/>
+					</ComboBox>
+					<ComboBox id="6364">
+						<Element name="ଅକ୍ଷମ କରନ୍ତୁ"/>
+						<Element name="ନୋଟପ୍ୟାଡ୍ ++ ଷ୍ଟାର୍ଟଅପ୍ ରେ ସକ୍ଷମ କରନ୍ତୁ |"/>
+						<Element name="ନୋଟପ୍ୟାଡ୍ ++ ପ୍ରସ୍ଥାନରେ ସକ୍ଷମ କରନ୍ତୁ"/>
+					</ComboBox>
+					<Item id="6308" name="ସିଷ୍ଟମ୍ ଟ୍ରେ"/>
+					<Item id="6363" name="ରେଣ୍ଡରିଂ ମୋଡ୍"/>
+					<Item id="6365" name="ଅଟୋ-ଅପଡେଟର୍:"/>
+					<Item id="6312" name="ଫାଇଲ୍ ସ୍ଥିତି ଅଟୋ-ଡିଟେକସନ୍"/>
+					<Item id="6313" name="ଚୁପଚାପ୍ ଅଦ୍ୟତନ କରନ୍ତୁ"/>
+					<Item id="6325" name="ଅଦ୍ୟତନ ପରେ ଶେଷ ଲାଇନକୁ ସ୍କ୍ରୋଲ୍ କରନ୍ତୁ"/>
+					<Item id="6322" name="ଅଧିବେଶନ ଫାଇଲ୍ ext।:"/>
+					<Item id="6324" name="ଡକ୍ୟୁମେଣ୍ଟ୍ ସୁଇଚର୍ (Ctrl + TAB)"/>
+					<Item id="6331" name="ଟାଇଟଲ୍ ବାର୍ ରେ କେବଳ ଫାଇଲନାମ ଦେଖାନ୍ତୁ"/>
+					<Item id="6334" name="ଅଟୋଡେଟେକ୍ଟ ବର୍ଣ୍ଣ ଏନକୋଡିଂ"/>
+					<Item id="6337" name="ୱାର୍କସ୍ପେସ୍ ଫାଇଲ୍ ext।:"/>
+					<Item id="6114" name="ସକ୍ଷମ"/>
+					<Item id="6117" name="MRU ଆଚରଣ ସକ୍ଷମ କରନ୍ତୁ"/>
+					<Item id="6344" name="ଡକ୍ୟୁମେଣ୍ଟ୍ ପାଇକର୍"/>
+					<Item id="6345" name="ଟ୍ୟାବ୍ ଉପରେ ଦେଖ"/>
+					<Item id="6346" name="ଡକ୍ୟୁମେଣ୍ଟ୍ ମାନଚିତ୍ରରେ ଦେଖ"/>
+					<Item id="6360" name="ସମସ୍ତ ଧ୍ୱନିକୁ ଚୁପ୍ କର"/>
+					<Item id="6361" name="ସମସ୍ତ ନିଶ୍ଚିତ ସଂଳାପକୁ ସଞ୍ଚୟ କରନ୍ତୁ"/>
+				</MISC>
+			</Preference>
+			<MultiMacro title="ଏକ ମାକ୍ରୋ ମଲ୍ଟିପଲ୍ ଟାଇମ୍ସ ଚଲାନ୍ତୁ |">
+				<Item id="1" name="ଚଲାନ୍ତୁ"/>
+				<Item id="2" name="ବାତିଲ୍"/>
+				<Item id="8006" name="ଚଲାଇବା ପାଇଁ ମାକ୍ରୋ"/>
+				<Item id="8001" name="ଚଲାନ୍ତୁ"/>
+				<Item id="8005" name="ସମୟ"/>
+				<Item id="8002" name="ଫାଇଲ୍ ଶେଷ ପର୍ଯ୍ୟନ୍ତ ଚଲାନ୍ତୁ"/>
+			</MultiMacro>
+			<Window title="ୱିଣ୍ଡୋଜ୍">
+				<Item id="1" name="ସକ୍ରିୟ"/>
+				<Item id="2" name="ଠିକ ଅଛି"/>
+				<Item id="7002" name="ସଞ୍ଚୟ କରନ୍ତୁ"/>
+				<Item id="7003" name="ୱିଣ୍ଡୋ (ଗୁଡିକ) ବନ୍ଦ କରନ୍ତୁ"/>
+				<Item id="7004" name="ଟ୍ୟାବଗୁଡିକ ସର୍ଟ କରନ୍ତୁ"/>
+			</Window>
+			<ColumnEditor title="ସ୍ତମ୍ଭ ସମ୍ପାଦକ">
+				<Item id="2023" name="ସନ୍ନିବେଶ କରିବାକୁ ପାଠ"/>
+				<Item id="2033" name="ସନ୍ନିବେଶ କରିବାକୁ ସଂଖ୍ୟା"/>
+				<Item id="2030" name="ପ୍ରାରମ୍ଭିକ ସଂଖ୍ୟା:"/>
+				<Item id="2031" name="ଦ୍ୱାରା ବୃଦ୍ଧି:"/>
+				<Item id="2038" name="ଅଗ୍ରଣୀ:"/>
+				<ComboBox id="2039">
+					<Element name="କିଛି ନୁହେଁ"/>
+					<Element name="ଶୂନ"/>
+					<Element name="ଖାଲି ସ୍ଥାନ"/>
+				</ComboBox>
+				<Item id="2036" name="ପୁନରାବୃତ୍ତି:"/>
+				<Item id="2032" name="ଫର୍ମାଟ୍"/>
+				<Item id="2024" name="ଡିସେମ୍ବର"/>
+				<Item id="2025" name="ଅକ୍ଟୋବର"/>
+				<Item id="2026" name="ହେକ୍ସ"/>
+				<Item id="2027" name="ବିନ୍"/>
+				<Item id="1" name="ଠିକ ଅଛି"/>
+				<Item id="2" name="ବାତିଲ୍"/>
+			</ColumnEditor>
+			<FindInFinder title="ସନ୍ଧାନ ଫଳାଫଳଗୁଡିକରେ ଖୋଜ">
+				<Item id="1" name="ସମସ୍ତ ଖୋଜ"/>
+				<Item id="2" name="ବନ୍ଦ"/>
+				<Item id="1711" name="କ’ଣ ଖୋଜ:"/>
+				<Item id="1713" name="କେବଳ ମିଳୁଥିବା ରେଖାଗୁଡ଼ିକରେ ଖୋଜ"/>
+				<Item id="1714" name="କେବଳ ପୁରା ଶବ୍ଦ ସହିତ ମେଳ"/>
+				<Item id="1715" name="ମ୍ୟାଚ୍ କେସ୍"/>
+				<Item id="1716" name="ସନ୍ଧାନ ମୋଡ୍"/>
+				<Item id="1717" name="ସାଧାରଣ"/>
+				<Item id="1719" name="ନିୟମିତ ଅଭିବ୍ୟକ୍ତି"/>
+				<Item id="1718" name="ବିସ୍ତାରିତ (\ n, \ r, \ t, \ 0, \ x ...)"/>
+				<Item id="1720" name="।ନୂଆ ଲାଇନ ସହିତ ମେଳ"/>
+			</FindInFinder>
+			<DoSaveOrNot title="ସଞ୍ଚୟ କରନ୍ତୁ">
+				<Item id="1761" name="ଫାଇଲ୍ &quot;$ STR_REPLACE $&quot; ସଞ୍ଚୟ କରନ୍ତୁ?"/>
+				<Item id="6" name="ହଁ"/>
+				<Item id="7" name="ନା"/>
+				<Item id="2" name="ବାତିଲ୍"/>
+				<Item id="4" name="ସମସ୍ତଙ୍କୁ ହଁ"/>
+				<Item id="5" name="ସମସ୍ତଙ୍କୁ ନା"/>
+			</DoSaveOrNot>
+			<DoSaveAll title="ସମସ୍ତ ନିଶ୍ଚିତକରଣ ସଞ୍ଚୟ କରନ୍ତୁ">
+				<Item id="1766" name="ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ସମସ୍ତ ପରିବର୍ତ୍ତିତ ଡକ୍ୟୁମେଣ୍ଟ୍ ସେଭ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?
+
+ଯଦି ଆପଣ ଏହି ସଂଳାପକୁ ଆଉଥରେ ଦେଖିବାକୁ ଚାହୁଁନାହାଁନ୍ତି “ସର୍ବଦା ହଁ” ବାଛନ୍ତୁ |
+ଆପଣ ଏହି ସଂଳାପକୁ ପରେ ପ୍ରିଫରେନ୍ସେସ୍ ରେ ପୁନ activ ସକ୍ରିୟ କରିପାରିବେ"/>
+				<Item id="6" name="|ହଁ"/>
+				<Item id="7" name="ନା"/>
+				<Item id="4" name="ସର୍ବଦା ହଁ"/>
+			</DoSaveAll><!-- HowToReproduce: Check the "Enable Save All confirm dialog" checkbox in Preference->MISC, now click "Save all" -->
+
+			<DebugInfo title="ତ୍ରୁଟି ନିବାରଣ ସୂଚନା">
+				<Item id="1752" name="କ୍ଲିପବୋର୍ଡରେ ଡିବଗ୍ ସୂଚନା କପି କରନ୍ତୁ"/>
+				<Item id="1" name="ଠିକ ଅଛି"/>
+			</DebugInfo>
+					<MacStrings>
+				<Item id="90001" name="ସନ୍ଧାନ ଫଳାଫଳ"/>
+				<Item id="90002" name="ସନ୍ଧାନ ଫଳାଫଳଗୁଡିକ ବନ୍ଦ କରନ୍ତୁ"/>
+				<Item id="90003" name="ସମସ୍ତ ସଫା କରନ୍ତୁ"/>
+				<Item id="90004" name="ପ୍ୟାନେଲ୍ ବନ୍ଦ କରନ୍ତୁ |"/>
+				<Item id="90005" name="ପ୍ରୋଜେକ୍ଟ ପ୍ୟାନେଲ୍"/>
+				<Item id="90006" name="ଉତ୍ସ ନିୟନ୍ତ୍ରଣ"/>
+				<Item id="90007" name="ପ୍ରତିବଦ୍ଧତା"/>
+				<Item id="90008" name="ପ୍ରତିଶ୍ରୁତି ବିଫଳ"/>
+				<Item id="90009" name="କ git ଣସି git ସଂଗ୍ରହାଳୟ ନାହିଁ \ n ରେପୋ ଖୋଲିବାକୁ ବ୍ରାଉଜ୍ କରନ୍ତୁ"/>
+				<Item id="90010" name="|ପର୍ଯ୍ୟାୟ"/>
+				<Item id="90011" name="ଅସ୍ଥିର"/>
+				<Item id="90012" name="ସମସ୍ତ ପର୍ଯ୍ୟାୟ"/>
+				<Item id="90013" name="ସମସ୍ତ ଅସ୍ଥିର"/>
+				<Item id="90014" name="ପ୍ରତିଶ୍ରୁତି ବାର୍ତ୍ତା \ u2026"/>
+				<Item id="90015" name="ସଂଗ୍ରହାଳୟ ପାଇଁ ବ୍ରାଉଜ୍ କରନ୍ତୁ \ u2026"/>
+				<Item id="90016" name="ଏକ git ସଂଗ୍ରହାଳୟ ଫୋଲ୍ଡର୍ ବାଛନ୍ତୁ"/>
+				<Item id="90017" name="(କ rep ଣସି ସଂଗ୍ରହାଳୟ ନାହିଁ)"/>
+				<Item id="90018" name="(ଅଲଗା)"/>
+				<Item id="90019" name="ଅଜ୍ଞାତ ତ୍ରୁଟି"/>
+				<Item id="90020" name="କ functions ଣସି କାର୍ଯ୍ୟ ମିଳିଲା ନାହିଁ"/>
+				<Item id="90021" name="ସନ୍ଧାନ କାର୍ଯ୍ୟ ..."/>
+				<Item id="90022" name="ସମସ୍ତ ବିସ୍ତାର କରନ୍ତୁ"/>
+				<Item id="90023" name="ସାମ୍ପ୍ରତିକ ଫାଇଲ୍ ଖୋଜ"/>
+				<Item id="90024" name="ସତେଜ କରନ୍ତୁ |"/>
+				<Item id="90025" name="କାର୍ଯ୍ୟଗୁଡିକ ସର୍ଟ କରନ୍ତୁ (A ରୁ Z)"/>
+				<Item id="90026" name="ଫଳାଫଳ"/>
+				<Item id="90027" name="ବନ୍ଦ"/>
+				<Item id="90028" name="ସନ୍ଧାନ ବନ୍ଦ ହେଲା"/>
+				<Item id="90029" name="|ସନ୍ଧାନ \ u2026"/>
+				<Item id="90030" name="ଖୋଜିବା ପାଇଁ ପାଠ"/>
+				<Item id="90031" name="* .txt, * .cpp, \ u2026"/>
+				<Item id="90032" name="ଖୋଜୁଛି ..."/>
+				<Item id="90033" name="ବଦଳାନ୍ତୁ:"/>
+				<Item id="90034" name="ସମ୍ପୂର୍ଣ୍ଣ ଶବ୍ଦ"/>
+				<Item id="90035" name="ସମ୍ପୂର୍ଣ୍ଣ ଶବ୍ଦ"/>
+				<Item id="90036" name="ଗୁଡ଼"/>
+				<Item id="90037" name="ବର୍ଣ୍ଣ"/>
+				<Item id="90038" name="HTML ନାମ"/>
+				<Item id="90039" name="HTML ଦଶମିକ"/>
+				<Item id="90040" name="HTML ହେକ୍ସାଡେସିମାଲ୍"/>
+				<Item id="90041" name="ମୂଲ୍ୟ"/>
+				<Item id="90042" name="ଖାଲି ଅଧିବେଶନ"/>
+				<Item id="90043" name="ମନୋନୀତ ଅଧିବେଶନ ଫାଇଲରେ କ tab ଣସି ଟ୍ୟାବ୍ ନାହିଁ"/>
+				<Item id="90044" name="|ଅଧିବେଶନ ଲୋଡ୍ କରନ୍ତୁ |"/>
+				<Item id="90045" name="ଅଧିବେଶନ ସଞ୍ଚୟ କରନ୍ତୁ"/>
+				<Item id="90046" name="ସାମ୍ପ୍ରତିକ ଫାଇଲଗୁଡିକ ସଫା କରନ୍ତୁ"/>
+				<Item id="90047" name="ଫାଇଲ ମିଳିଲା ନାହିଁ"/>
+				<Item id="90048" name="କ No ଣସି ମାକ୍ରୋ ରେକର୍ଡ ହୋଇନାହିଁ"/>
+				<Item id="90049" name="ଷ୍ଟାର୍ଟ ରେକର୍ଡିଂ ବ୍ୟବହାର କରି ପ୍ରଥମେ ଏକ ମାକ୍ରୋ ରେକର୍ଡ କରନ୍ତୁ"/>
+				<Item id="90050" name="|କ short ଣସି ସର୍ଟକଟ୍ ବିବାଦ ନାହିଁ"/>
+				<Item id="90051" name="|ଫାଇଲ୍ ନାମ"/>
+				<Item id="90052" name="ଟାଇପ୍ କରନ୍ତୁ"/>
+				<Item id="90053" name="ପଥ"/>
+				<Item id="90054" name="ରେଖା କୁ ଯାଆନ୍ତୁ"/>
+				<Item id="90055" name="ତାରିଖ / ସମୟ ସନ୍ନିବେଶ କରନ୍ତୁ"/>
+				<Item id="90056" name="ଏନକୋଡିଂ ପରିବର୍ତ୍ତନ"/>
+				<Item id="90057" name="ଏକ କପି ସଞ୍ଚୟ କରନ୍ତୁ"/>
+				<Item id="90058" name="ଆବର୍ଜନାକୁ ଯାଆନ୍ତୁ"/>
+				<Item id="90059" name="ଆଖ୍ୟା ଦଣ୍ଡ"/>
+				<Item id="90060" name="ଟାଇଟଲ୍ ବାର୍ ରେ ପୂର୍ଣ୍ଣ ଫାଇଲ୍ ପଥ ଦେଖାନ୍ତୁ"/>
+				<Item id="90061" name="ସ୍ଥିତି ଦଣ୍ଡିକା ଦେଖାନ୍ତୁ"/>
+				<Item id="90062" name="ଟ୍ୟାବ୍ ଆକାର:"/>
+				<Item id="90063" name="କ୍ୟାରେଟ୍ ମୋଟେଇ:"/>
+				<Item id="90064" name="କ୍ୟାରେଟ୍ ବ୍ଲିଙ୍କ୍ ରେଟ୍ (ms):"/>
+				<Item id="90065" name="ଫଣ୍ଟ ରେଣ୍ଡରିଂ:"/>
+				<Item id="90066" name="ସର୍ବାଧିକ ଟ୍ୟାବ୍ ମୋଟେଇ (ପିକ୍ସେଲ):"/>
+				<Item id="90067" name="ଭୂଲମ୍ବ ଧାର"/>
+				<Item id="90068" name="ଧାର ଧାରା:"/>
+				<Item id="90069" name="ଧାର ସ୍ତମ୍ଭ:"/>
+				<Item id="90070" name="ଗତିଶୀଳ ରେଖା ସଂଖ୍ୟା ମୋଟେଇ"/>
+				<Item id="90071" name="ବାମ:"/>
+				<Item id="90072" name="ଡାହାଣ:"/>
+				<Item id="90073" name="ଡିଫଲ୍ଟ ରେଖା ସମାପ୍ତ:"/>
+				<Item id="90074" name="ଡିଫଲ୍ଟ ଏନକୋଡିଂ:"/>
+				<Item id="90075" name="ଅଟୋ-ବ୍ୟାକଅପ୍ ସକ୍ଷମ କରନ୍ତୁ"/>
+				<Item id="90076" name="ବ୍ୟାକଅପ୍ ବ୍ୟବଧାନ (ସେକେଣ୍ଡ୍):"/>
+				<Item id="90077" name="ବ୍ୟାକଅପ୍ ଅବସ୍ଥାନ:"/>
+				<Item id="90078" name="ରଙ୍ଗ ଶ Style ଳୀ"/>
+				<Item id="90079" name="(ଉତ୍ତରାଧିକାରୀ)"/>
+				<Item id="90080" name="ଶ Style ଳୀ ଥିମ୍ ଆମଦାନି କରନ୍ତୁ"/>
+				<Item id="90081" name="ବର୍ଗ"/>
+				<Item id="90082" name="ଫିଲ୍ଟର୍ ଟାଇପ୍ କରନ୍ତୁ ..."/>
+				<Item id="90083" name="ଏହି ଆଇଟମ୍ ପାଇଁ କ short ଣସି ସର୍ଟକଟ୍ ବିବାଦ ନାହିଁ"/>
+				<Item id="90084" name="|ପ୍ଲଗଇନ୍ |"/>
+				<Item id="90085" name="ସଂସ୍କରଣ"/>
+				<Item id="90086" name="ସ୍ଥାପନ ସଂପୂର୍ଣ୍ଣ"/>
+				<Item id="90087" name="ସଂସ୍ଥାପିତ ପ୍ଲଗଇନଗୁଡ଼ିକୁ ଧାରଣ କରିବା ପାଇଁ ପ୍ରୟୋଗକୁ ପୁନ Rest ଆରମ୍ଭ କରନ୍ତୁ"/>
+				<Item id="90088" name="|ପ୍ଲଗଇନ୍ ସଂସ୍ଥାପନ କରନ୍ତୁ"/>
+				<Item id="90089" name="ପ୍ଲଗଇନ୍ ଅପସାରଣ କରନ୍ତୁ"/>
+				<Item id="90090" name="କ commands ଣସି ନିର୍ଦ୍ଦେଶ ମିଳିଲା ନାହିଁ"/>
+				<Item id="90091" name="ସନ୍ଧାନ କରିବାକୁ ଟାଇପ୍ କରନ୍ତୁ \ u2026"/>
+				<Item id="90092" name="ବ୍ୟବହାରକାରୀ ପରିଭାଷିତ ଭାଷା v.2.1"/>
+				<Item id="90093" name="ନୂତନ ଭାଷା ସୃଷ୍ଟି କରନ୍ତୁ"/>
+				<Item id="90094" name="ଏକ ନାମ ପ୍ରବେଶ କରନ୍ତୁ:"/>
+				<Item id="90095" name="ପୃଷ୍ଠଭୂମି ରଙ୍ଗ:"/>
+				<Item id="90096" name="ପୃଷ୍ଠଭୂମି ରଙ୍ଗ:"/>
+				<Item id="90097" name="ସଞ୍ଚୟ କରନ୍ତୁ ନାହିଁ"/>
+				<Item id="90098" name="ସମାପ୍ତ"/>
+				<Item id="90099" name="ୱାର୍ଡ ରାପ୍ ଟୋଗଲ୍ କରନ୍ତୁ"/>
+				<Item id="90100" name="ସମସ୍ତ ଅକ୍ଷର ଦେଖାନ୍ତୁ"/>
+				<Item id="90101" name="ଅକ୍ଷର ବିକଳ୍ପଗୁଡିକ ଦେଖାନ୍ତୁ"/>
+				<Item id="90102" name="ଇଣ୍ଡେଣ୍ଟ୍ ଗାଇଡ୍ ଟୋଗଲ୍ କରନ୍ତୁ"/>
+				<Item id="90103" name="ତଥାପି କାର୍ଯ୍ୟକାରୀ ହୋଇନାହିଁ"/>
+				<Item id="90104" name="ଡିସ୍କରୁ ପୁନ elo ଲୋଡ୍ କରନ୍ତୁ |"/>
+				<Item id="90105" name="ସର୍ଚ୍ଚ ଇଞ୍ଜିନ୍ ପରିବର୍ତ୍ତନ କରନ୍ତୁ"/>
+				<Item id="90106" name="ତ୍ରୁଟି ଚଲାନ୍ତୁ"/>
+				<Item id="90107" name="ନୋଟପ୍ୟାଡ୍ ++ ଲୋଡିଂ ସମୟ"/>
+				<Item id="90108" name="ଅଦ୍ୟତନଗୁଡିକ ଯାଞ୍ଚ କରିବାରେ ଅସମର୍ଥ"/>
+				<Item id="90109" name="ଆପଣ ଅପ୍ ଟୁ ଡେଟ୍"/>
+				<Item id="90110" name="ଡାଉନଲୋଡ୍"/>
+				<Item id="90111" name="ପୃଷ୍ଠା ପୃଷ୍ଠା"/>
+				<Item id="90112" name="ପରେ"/>
+				<Item id="90113" name="ଫିଲ୍ଟର୍ ପ୍ଲଗଇନ୍ \ u2026"/>
+				<Item id="90114" name="ଉପଲବ୍ଧ"/>
+				<Item id="90115" name="ଅଦ୍ୟତନଗୁଡିକ"/>
+				<Item id="90116" name="ସଂସ୍ଥାପିତ"/>
+				<Item id="90117" name="ଅସଙ୍ଗତ"/>
+				<Item id="90118" name="ସଂସ୍ଥାପନ କରିବାରେ ବିଫଳ"/>
+				<Item id="90119" name="ନିମ୍ନଲିଖିତ ପ୍ଲଗଇନଗୁଡିକ ଅପସାରଣ କରନ୍ତୁ?"/>
+				<Item id="90120" name="ନିମ୍ନଲିଖିତ ପ୍ଲଗଇନଗୁଡ଼ିକୁ ସଂସ୍ଥାପନ କରନ୍ତୁ?"/>
+				<Item id="90121" name="ଏହା ପ୍ଲଗଇନ୍ ଫାଇଲଗୁଡ଼ିକୁ ଡିଲିଟ୍ କରିବ"/>
+				<Item id="90122" name="|ସନ୍ଧାନ ନିର୍ଦ୍ଦେଶ \ u2026"/>
+				<Item id="90123" name="ପୃଷ୍ଠଭୂମି ରଙ୍ଗ"/>
+				<Item id="90124" name="ପୃଷ୍ଠଭୂମି ରଙ୍ଗ |"/>
+				<Item id="90125" name="ମାକ୍ରୋ ନାମ"/>
+				<Item id="90126" name="ମାକ୍ରୋ ନାମ"/>
+				<Item id="90127" name="ସାମ୍ପ୍ରତିକ ରେକର୍ଡ ହୋଇଥିବା ମାକ୍ରୋ"/>
+				<Item id="90128" name="ମାକ୍ରୋ ମ୍ୟାନେଜର୍"/>
+				<Item id="90129" name="କ No ଣସି ସଞ୍ଚିତ ମାକ୍ରୋସ୍ ନାହିଁ"/>
+				<Item id="90130" name="ପ୍ରଥମେ ଏକ ମାକ୍ରୋ ରେକର୍ଡ କରନ୍ତୁ ଏବଂ ସେଭ୍ କରନ୍ତୁ"/>
+				<Item id="90131" name="|ସର୍ଟକଟ୍ ଡିଲିଟ୍ କରନ୍ତୁ"/>
+				<Item id="90132" name="ମୁଖ୍ୟ ମେନୁ"/>
+				<Item id="90133" name="ମାକ୍ରୋସ୍"/>
+				<Item id="90134" name="ନିର୍ଦ୍ଦେଶଗୁଡିକ ଚଲାନ୍ତୁ"/>
+				<Item id="90135" name="ପ୍ଲଗଇନ୍ ନିର୍ଦ୍ଦେଶ"/>
+				<Item id="90136" name="ସ୍କିଣ୍ଟିଲା ନିର୍ଦ୍ଦେଶ"/>
+				<Item id="90137" name="କମାଣ୍ଡ୍ ଲାଇନ୍ ଆର୍ଗୁମେଣ୍ଟସ୍"/>
+				<Item id="90138" name="ରନ୍ ମେନୁ ପାଇଁ ନିର୍ଦ୍ଦେଶ ନାମ"/>
+				<Item id="90139" name="ସମସ୍ତ ମାର୍କ ସଫା ହୋଇଛି"/>
+				<Item id="90140" name="|ଚିହ୍ନିତ ପାଠ୍ୟ କ୍ଲିପବୋର୍ଡରେ କପି ହୋଇଛି"/>
+				<Item id="90141" name="|କପି କରିବାକୁ କ marked ଣସି ଚିହ୍ନିତ ପାଠ ନାହିଁ"/>
+				<Item id="90142" name="|ସନ୍ଧାନ କରୁଛି ...% ld ହିଟ୍ (ଗୁଡିକ) \ u2014% @"/>
+				<Item id="90143" name="ଫାଇଲଗୁଡ଼ିକରେ ବଦଳାଇବା ..."/>
+				<Item id="90144" name="ପ୍ରୋଜେକ୍ଟରେ ବଦଳାନ୍ତୁ: ଏପର୍ଯ୍ୟନ୍ତ ସଂଯୋଗ ହୋଇନାହିଁ |"/>
+				<Item id="90145" name="ପ୍ରୋଜେକ୍ଟଗୁଡିକରେ ସନ୍ଧାନ କରନ୍ତୁ: ଏପର୍ଯ୍ୟନ୍ତ ପ୍ରୋଜେକ୍ଟ ପ୍ୟାନେଲ୍ ଫାଇଲ୍ ତାଲିକା ସହିତ ସଂଯୁକ୍ତ ହୋଇନାହିଁ"/>
+				<Item id="90146" name="|କାର୍ଯ୍ୟକ୍ଷେତ୍ରକୁ ପରିବର୍ତ୍ତନ କରାଯାଇଥିଲା"/>
+				<Item id="90147" name="|ଆପଣ ପରିବର୍ତ୍ତନଗୁଡିକ ସଞ୍ଚୟ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+				<Item id="90148" name="ସନ୍ଧାନ ଫଳାଫଳ"/>
+				<Item id="90149" name="ସାମ୍ପ୍ରତିକ ରେଖା ହାଇଲାଇଟ୍ କରନ୍ତୁ"/>
+				<Item id="90150" name="ରେଖା ସଂଖ୍ୟା ଦେଖାନ୍ତୁ"/>
+				<Item id="90151" name="ଧଳା ସ୍ଥାନ ଦେଖାନ୍ତୁ"/>
+				<Item id="90152" name="EOL ମାର୍କରଗୁଡିକ ଦେଖାନ୍ତୁ"/>
+				<Item id="90153" name="ବୁକମାର୍କ ମାର୍ଜିନ୍ ଦେଖାନ୍ତୁ"/>
+				<Item id="90154" name="ଟ୍ୟାବ୍ସ ବ୍ୟବହାର କରନ୍ତୁ (ଖାଲି ସ୍ଥାନ ବଦଳରେ)"/>
+				<Item id="90155" name="ଶେଷ ରେଖା ବାହାରେ ସ୍କ୍ରୋଲ୍ କରନ୍ତୁ"/>
+				<Item id="90156" name="ଚୟନ ବିନା ରେଖା କପି / କଟ୍"/>
+				<Item id="90157" name="ମନୋନୀତ ପାଠ୍ୟ ଡ୍ରାଗ୍-ଡ୍ରପ୍ ଅକ୍ଷମ କରନ୍ତୁ"/>
+				<Item id="90158" name="ସ୍ମାର୍ଟ ହାଇଲାଇଟିଂ ସକ୍ଷମ କରନ୍ତୁ"/>
+				<Item id="90159" name="ସ୍ମାର୍ଟ ହାଇଲାଇଟ୍: ମ୍ୟାଚ୍ କେସ୍"/>
+				<Item id="90160" name="ସ୍ମାର୍ଟ ହାଇଲାଇଟିଂ: କେବଳ ସମ୍ପୂର୍ଣ୍ଣ ଶବ୍ଦ"/>
+				<Item id="90161" name="ଟ୍ୟାବ୍ ବନ୍ଦ କରିବାକୁ ଦୁଇଥର କ୍ଲିକ୍ କରନ୍ତୁ"/>
+				<Item id="90162" name="ଟ୍ୟାବଗୁଡ଼ିକରେ ବନ୍ଦ ବଟନ୍ ଦେଖାନ୍ତୁ"/>
+				<Item id="90163" name="ଅଧିବେଶନଗୁଡିକରେ ପ୍ୟାନେଲ୍ ଦୃଶ୍ୟତାକୁ ମନେରଖ"/>
+				<Item id="90164" name="ଅଧିବେଶନରେ ଅନୁପସ୍ଥିତ ଫାଇଲ୍ ଏଣ୍ଟ୍ରିଗୁଡିକ ରଖନ୍ତୁ |"/>
+				<Item id="90165" name="ସମସ୍ତ ସଞ୍ଚୟ କରିବା ପୂର୍ବରୁ ନିଶ୍ଚିତ କରନ୍ତୁ"/>
+				<Item id="90166" name="ସମସ୍ତ ଖୋଲା ଦଲିଲରେ ବଦଳାଇବାକୁ ନିଶ୍ଚିତ କରନ୍ତୁ"/>
+				<Item id="90167" name="ବଦଳାନ୍ତୁ: ପରବର୍ତ୍ତୀ ଘଟଣାକୁ ଯାଆନ୍ତୁ ନାହିଁ"/>
+				<Item id="90168" name="ସନ୍ଧାନ ସଂଳାପରେ ମୋନୋସ୍ପେସ୍ ଫଣ୍ଟ ବ୍ୟବହାର କରନ୍ତୁ"/>
+				<Item id="90169" name="ଡାହାଣ କ୍ଲିକ୍ ଚୟନ ରଖେ"/>
+				<Item id="90170" name="ଓଲଟା ଡିଫଲ୍ଟ ତାରିଖ / ସମୟ କ୍ରମ"/>
+				<Item id="90171" name="XML- ଆଧାରିତ ଫଙ୍କସନ୍ ତାଲିକା ପାର୍ସର୍ ବ୍ୟବହାର କରନ୍ତୁ"/>
+				<Item id="90172" name="ଅଟୋ-ବନ୍ଦ ବ୍ରାକେଟ୍ () [] {}"/>
+				<Item id="90173" name="Nth ବର୍ଣ୍ଣରୁ:"/>
+				<Item id="90174" name="ଇନ୍-ସିଲେକ୍ଟ ଅଟୋ-ଚେକ୍ ଥ୍ରେସହୋଲ୍ଡ (ବାଇଟ୍):"/>
+				<Item id="90175" name="ବିସ୍ତାରିତ (\\ n, \\ r, \\ t, \\ 0, \\ x ...)"/>
+				<Item id="90176" name="ସମ୍ପାଦକ"/>
+				<Item id="90177" name="ମାର୍ଜିନ୍"/>
+				<Item id="90178" name="ଅନ୍ଧାର"/>
+				<Item id="90179" name="ଆଲୋକ"/>
+				<Item id="90180" name="ଅଟୋ (ସିଷ୍ଟମ୍ ଅନୁସରଣ କରନ୍ତୁ)"/>
+				<Item id="90181" name="ପତଳା (1px)"/>
+				<Item id="90182" name="ମଧ୍ୟମ (2px)"/>
+				<Item id="90183" name="ମୋଟା (3px)"/>
+				<Item id="90184" name="ବନ୍ଦ"/>
+				<Item id="90185" name="ପୃଷ୍ଠଭୂମି"/>
+				<Item id="90186" name="ବିରୋଧୀ"/>
+				<Item id="90187" name="LCD ଅପ୍ଟିମାଇଜ୍"/>
+				<Item id="90188" name="ସରଳ +/-"/>
+				<Item id="90189" name="ୱିଣ୍ଡୋଜ୍ (CRLF)"/>
+				<Item id="90190" name="ମ୍ୟାକ୍ (CR)"/>
+				<Item id="90191" name="ପ୍ଲଗଇନ୍ ତାଲିକା ସଂଗ୍ରହାଳୟ"/>
+				<Item id="90192" name="ପ୍ରୟୋଗ କରିବାକୁ ଏକ ନୋଟପ୍ୟାଡ୍ ++ ଥିମ୍ XML ଫାଇଲ୍ ଚୟନ କରନ୍ତୁ"/>
+				<Item id="90193" name="ନୂତନ \ u2026 ସୃଷ୍ଟି କରନ୍ତୁ"/>
+				<Item id="90194" name="\ U2026 ଭାବରେ ସଞ୍ଚୟ କରନ୍ତୁ"/>
+				<Item id="90195" name="ବ୍ୟବହାରକାରୀ ଭାଷା:"/>
+				<Item id="90196" name="ଭାଷା ନାମ"/>
+				<Item id="90197" name="ସୃଷ୍ଟି କରନ୍ତୁ"/>
+				<Item id="90198" name="ଯେପରି ସେଭ୍ କରନ୍ତୁ"/>
+				<Item id="90199" name="es"/>
+				<Item id="90200" name="ପୁରା ଫାଇଲ୍ ରେ"/>
+				<Item id="90201" name="ଅପରେଟର୍ସ ଡିଲିମିଟର"/>
+				<Item id="90202" name="ଅବ val ଧ ପରିସର"/>
+				<Item id="90203" name="ପରିସର ମୂଲ୍ୟ ନିଶ୍ଚିତ ଭାବରେ 0-255 ଏବଂ ଆରମ୍ଭ ନିଶ୍ଚିତ ଭାବରେ &lt;= ଶେଷ ହେବା ଆବଶ୍ୟକ"/>
+				<Item id="90204" name="|contextMenu.xml ମିଳିଲା ନାହିଁ |"/>
+				<Item id="90205" name="ଡିଫଲ୍ଟ ପ୍ରସଙ୍ଗ ମେନୁ। Xml ପୁନ ener ନିର୍ମାଣ କରିବାକୁ ନୋଟପ୍ୟାଡ୍ ++ ପୁନ Rest ଆରମ୍ଭ କରନ୍ତୁ"/>
+				<Item id="90206" name="|ଫାଇଲରେ ସ sa ୍ଚୟ ପରିବର୍ତ୍ତନ ନାହିଁ |ନୂତନ ଏନକୋଡିଂ ସହିତ ପୁନ elo ଲୋଡ୍ କରିବା ସେମାନଙ୍କୁ ପରିତ୍ୟାଗ କରିବ |ଜାରି ରଖନ୍ତୁ?"/>
+				<Item id="90207" name="ସର୍ଭରରୁ କ response ଣସି ପ୍ରତିକ୍ରିୟା ନାହିଁ"/>
+				<Item id="90208" name="|ସର୍ଭର ଫେରସ୍ତ ସ୍ଥିତି"/>
+				<Item id="90209" name="ସଂଗ୍ରହାଳୟ ବ୍ୟକ୍ତିଗତ ହୋଇପାରେ"/>
+				<Item id="90210" name="|ଉପଲବ୍ଧ"/>
+				<Item id="90211" name="ହେଉଛି ସର୍ବଶେଷ ସଂସ୍କରଣ"/>
+				<Item id="90212" name="|ଆପଣ ବର୍ତ୍ତମାନ ଚାଲୁଛନ୍ତି"/>
+				<Item id="90213" name="ଏଠାରେ ସନ୍ଧାନକାରୀ"/>
+				<Item id="90214" name="ଟର୍ମିନାଲ୍ ଏଠାରେ"/>
+				<Item id="90215" name="ଅତିରିକ୍ତ ଭାଷା ଫାଇଲଗୁଡିକ (.xml) ରେ ରଖାଯାଇପାରିବ:"/>
+							<Item id="90216" name="କମାଣ୍ଡ୍ ପ୍ୟାଲେଟ୍…"/>
+				<Item id="90217" name="ବନାନ ଯାଞ୍ଚ"/>
+				<Item id="90218" name="ଖୋଜିବାକୁ ଟାଇପ୍ କରନ୍ତୁ…"/>
+				<Item id="90219" name="ନୂତନ ୱିଣ୍ଡୋ"/>
+				<Item id="90220" name="ସାମ୍ପ୍ରତିକ amp କୁ ଛାଡିଦିଅ;ପରବର୍ତ୍ତୀ ମଲ୍ଟି-ସିଲେକ୍ଟକୁ ଯାଆନ୍ତୁ"/>
+				<Item id="90221" name="ଲକ୍ ହୋଇଥିବା ଗୁଣ (ମାକୋସ୍)"/>
+				<Item id="90222" name="ଅଦ୍ୟତନଗୁଡିକ ଯାଞ୍ଚ କରନ୍ତୁ…"/>
+				<Item id="90223" name="ସମ୍ପ୍ରତି ଖୋଲନ୍ତୁ"/>
+			</MacStrings>
+		</Dialog>
+		<MessageBox>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<ContextMenuXmlEditWarning title="ପ୍ରସଙ୍ଗ ସଂପାଦନା" message="ContextMenu.xml ସଂପାଦନ କରିବା ଦ୍ୱାରା ତୁମର ନୋଟପ୍ୟାଡ୍ ++ ପପ୍ଅପ୍ ପ୍ରସଙ୍ଗ ମେନୁକୁ ପରିବର୍ତ୍ତନ କରିବାକୁ ଅନୁମତି ଦିଏ |
+ପ୍ରସଙ୍ଗ ମେନୁ। Xml ପରିବର୍ତ୍ତନ କରିବା ପରେ କାର୍ଯ୍ୟକାରୀ ହେବା ପାଇଁ ଆପଣଙ୍କୁ ଆପଣଙ୍କର ନୋଟପ୍ୟାଡ୍ ++ ପୁନ rest ଆରମ୍ଭ କରିବାକୁ ପଡିବ"/>
+			<SaveCurrentModifWarning title="|ସାମ୍ପ୍ରତିକ ପରିବର୍ତ୍ତନ ସଞ୍ଚୟ କରନ୍ତୁ" message="ଆପଣ ସାମ୍ପ୍ରତିକ ପରିବର୍ତ୍ତନକୁ ସଂରକ୍ଷଣ କରିବା ଉଚିତ୍ |
+ସମସ୍ତ ସଞ୍ଚିତ ପରିବର୍ତ୍ତନଗୁଡିକ ପୂର୍ବବତ୍ କରାଯାଇପାରିବ ନାହିଁ |
+
+ଜାରି ରଖନ୍ତୁ?"/><!-- HowToReproduce: when you openned file is modified but unsaved yet, and you are changing file encoding. -->
+			<LoseUndoAbilityWarning title="କ୍ଷମତା ଚେତାବନୀ ହଟାନ୍ତୁ" message="ଆପଣ ସାମ୍ପ୍ରତିକ ପରିବର୍ତ୍ତନକୁ ସଂରକ୍ଷଣ କରିବା ଉଚିତ୍ |
+ସମସ୍ତ ସଞ୍ଚିତ ପରିବର୍ତ୍ତନଗୁଡିକ ପୂର୍ବବତ୍ କରାଯାଇପାରିବ ନାହିଁ |
+
+ଜାରି ରଖନ୍ତୁ?"/><!-- HowToReproduce: when you openned file is modified and saved, then you are changing file encoding. -->
+			<CannotMoveDoc title="ନୂତନ ନୋଟପ୍ୟାଡ୍ ++ ଇନଷ୍ଟାନ୍ସକୁ ଯାଆନ୍ତୁ" message="ଡକ୍ୟୁମେଣ୍ଟ୍ ସଂଶୋଧିତ ହୋଇଛି, ଏହାକୁ ସେଭ୍ କର ଏବଂ ପୁନର୍ବାର ଚେଷ୍ଟା କର"/><!-- HowToReproduce: From your Notepad++ drag & drop a clean (not dirty) file to outside of Notepad++, another instance of Notepad++ will be created. Then from your first Notepad++ drag & drop an unsaved file to the new instance. -->
+			<DocReloadWarning title="|ପୁନ elo ଲୋଡ୍" message="ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ସାମ୍ପ୍ରତିକ ଫାଇଲ୍ ପୁନ o ଲୋଡ୍ କରିବାକୁ ଏବଂ ନୋଟପ୍ୟାଡ୍ ++ ରେ କରାଯାଇଥିବା ପରିବର୍ତ୍ତନଗୁଡିକ ହରାଇବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<FileLockedWarning title="ସଞ୍ଚୟ ବିଫଳ" message="ଏହି ଫାଇଲ୍ ଅନ୍ୟ ପ୍ରୋଗ୍ରାମରେ ଖୋଲା ଅଛି କି ନାହିଁ ଦୟାକରି ଯାଞ୍ଚ କରନ୍ତୁ"/>
+			<FileAlreadyOpenedInNpp title="" message="ଫାଇଲ୍ ପୂର୍ବରୁ ନୋଟପ୍ୟାଡ୍ ++ ରେ ଖୋଲା ଯାଇଛି"/><!-- HowToReproduce: Open a new document and open a file "c:/tmp/foo", save this new document by choosing "c:/tmp/foo" as file to save, reply the override popup "yes", then this message appears. -->
+			<RenameTabTemporaryNameAlreadyInUse title="|ପୁନ ame ନାମ ବିଫଳ ହେଲା" message="ନିର୍ଦ୍ଦିଷ୍ଟ ନାମ ଅନ୍ୟ ଏକ ଟ୍ୟାବରେ ବ୍ୟବହାର ହୋଇସାରିଛି"/><!-- HowToReproduce: Rename the tab of an untitled document and provide a name that is the same as an already-existing tab of an untitled document. -->
+			<RenameTabTemporaryNameIsEmpty title="|ପୁନ ame ନାମ ବିଫଳ ହେଲା" message="ନିର୍ଦ୍ଦିଷ୍ଟ ନାମ ଖାଲି ହୋଇପାରିବ ନାହିଁ, କିମ୍ବା ଏହା କେବଳ ସ୍ଥାନ (ଗୁଡିକ) କିମ୍ବା TAB (ଗୁଡିକ) ଧାରଣ କରିପାରିବ ନାହିଁ"/><!-- HowToReproduce: Rename the tab of an untitled document and provide an empty string or only some white speces. -->
+			<DeleteFileFailed title="|ଫାଇଲ୍ ଡିଲିଟ୍ କରନ୍ତୁ" message="ଫାଇଲ୍ ଡିଲିଟ୍ ବିଫଳ ହେଲା"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+
+			<NbFileToOpenImportantWarning title="ଖୋଲିବାକୁ ଥିବା ଫାଇଲଗୁଡ଼ିକର ପରିମାଣ ବହୁତ ବଡ" message="$INT_REPLACE$ files are about to be opened.
+Are you sure you want to open them?"/><!-- HowToReproduce: Check "Open all files of folder instead of launching Folder as Workspace on folder dropping" in "Default Directory" of Preferences dialog, then drop a folder which contains more then 200 files into Notepad++. -->
+			<SettingsOnCloudError title="କ୍ଲାଉଡ୍ ରେ ସେଟିଂସମୂହ |" message="କ୍ଲାଉଡ୍ ରେ ସେଟିଂସମୂହର ପଥ କେବଳ ପଠନ ଡ୍ରାଇଭରେ ସେଟ୍ ହୋଇଥିବା ପରି ମନେହୁଏ,
+କିମ୍ବା ଏକ ଫୋଲ୍ଡରରେ ଆକ୍ସେସ୍ ଲେଖିବା ପାଇଁ ଅଧିକାର ଅଧିକାର ଆବଶ୍ୟକ |
+କ୍ଲାଉଡ୍ ରେ ଆପଣଙ୍କର ସେଟିଙ୍ଗ୍ ବାତିଲ୍ ହେବ |ପ୍ରିଫରେନ୍ସ ଡାୟଲଗ୍ ମାଧ୍ୟମରେ ଦୟାକରି ଏକ ସମନ୍ୱିତ ମୂଲ୍ୟ ପୁନ res ସେଟ୍ କରନ୍ତୁ"/>
+			<FilePathNotFoundWarning title="|ଫାଇଲ୍ ଖୋଲା" message="ଆପଣ ଖୋଲିବାକୁ ଚେଷ୍ଟା କରୁଥିବା ଫାଇଲ୍ ବିଦ୍ୟମାନ ନାହିଁ"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SessionFileInvalidError title="|ଅଧିବେଶନ ଲୋଡ୍ ହୋଇପାରିଲା ନାହିଁ" message="ଅଧିବେଶନ ଫାଇଲଟି ଭ୍ରଷ୍ଟ ହୋଇଛି କିମ୍ବା ବ valid ଧ ନୁହେଁ"/><!-- HowToReproduce: Save current session via menu "File -> Save Session...", use another editor to modify the session you saved to make it an invalid xml file. Then load this invalid session via menu "File -> Load Session...". -->
+			<DroppingFolderAsProjectModeWarning title="|ଅବ val ଧ କାର୍ଯ୍ୟ" message="ଆପଣ କେବଳ ଫାଇଲ୍ କିମ୍ବା ଫୋଲ୍ଡର୍ ଡ୍ରପ୍ କରିପାରିବେ କିନ୍ତୁ ଉଭୟ ନୁହେଁ, କାରଣ ଆପଣ ଫୋଲ୍ଡରକୁ ପ୍ରୋଜେକ୍ଟ ମୋଡ୍ ଭାବରେ ଡ୍ରପ୍ କରୁଛନ୍ତି |
+ଏହି ଅପରେସନ୍ କାର୍ଯ୍ୟ କରିବା ପାଇଁ ଆପଣଙ୍କୁ ପ୍ରିଫରେନ୍ସେସ୍ ଡାୟଲଗ୍ ର “ଡିଫଲ୍ଟ ଡିରେକ୍ଟୋରୀ” ବିଭାଗରେ ଫୋଲ୍ଡର ଡ୍ରପ୍ ଉପରେ ୱର୍କସ୍ପେସ୍ ଭାବରେ ଫୋଲ୍ଡର ଲଞ୍ଚ କରିବା ପରିବର୍ତ୍ତେ ଫୋଲ୍ଡରର ସମସ୍ତ ଫାଇଲ୍ ଖୋଲିବାକୁ ପଡିବ"/>
+			<SortingError title="|ତ୍ରୁଟି ସର୍ଟ କରିବା" message="ରେଖା $ INT_REPLACE $ ହେତୁ ସାଂଖ୍ୟିକ ସର୍ଟିଂ କରିବାକୁ ଅସମର୍ଥ"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SortLocaleMultiple title="|ସର୍ଟ କରାଯାଇ ନାହିଁ" message="ଏକାଧିକ ଚୟନ ସର୍ଟ କରିବା ସମର୍ଥିତ ନୁହେଁ"/><!-- HowToReproduce: Make a multiple selection and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<SortLocaleUnknown title="|ସର୍ଟ ବିଫଳ ହେଲା" message="ସର୍ଟ ବିଫଳ ହେବାର କାରଣ ନିର୍ଣ୍ଣୟ କରାଯାଇପାରିବ ନାହିଁ"/><!-- HowToReproduce: This condition is theoretical; it is unknown what could cause it. -->
+			<SortLocaleExcept title="|ସର୍ଟ ବିଫଳ ହେଲା" message="$STR_REPLACE$"/><!-- HowToReproduce: Open a large file, e.g. 500MB / 90k lines, in 32-bit Notepad++ and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<ColumnModeTip title="ସ୍ତମ୍ଭ ମୋଡ୍ ଟିପ୍" message="ସ୍ତମ୍ଭ-ଚୟନ ମୋଡ୍ କୁ ପରିବର୍ତ୍ତନ କରିବାର 3 ଟି ଉପାୟ ଅଛି:
+
+1। (କୀବୋର୍ଡ୍ ଏବଂ ମାଉସ୍) ଡ୍ରାଗ୍ କରିବାବେଳେ ବାମ କ୍ଲିକ୍ କର |
+
+2। (କେବଳ କୀବୋର୍ଡ୍) ତୀର କି ବ୍ୟବହାର କରିବା ସମୟରେ Alt + Shift ଧରି ରଖନ୍ତୁ |
+
+3। (କୀବୋର୍ଡ୍ କିମ୍ବା ମାଉସ୍)
+ସ୍ତମ୍ଭ ବ୍ଲକ ସ୍ଥିତିର ଇଚ୍ଛିତ ପ୍ରାରମ୍ଭରେ କ୍ୟାରେଟ୍ ରଖନ୍ତୁ |
+&quot;ସ୍ତମ୍ଭ ମୋଡ୍ ରେ ଆରମ୍ଭ / ଶେଷ ଚୟନ&quot; ନିର୍ଦ୍ଦେଶକୁ ଏକଜେକ୍ୟୁଟ୍ କର |
+ସ୍ତମ୍ଭ ବ୍ଲକ ସ୍ଥିତିର ଇଚ୍ଛାକୃତ ଶେଷକୁ କ୍ୟାରେଟ୍ ଘୁଞ୍ଚାନ୍ତୁ |
+ପୁନର୍ବାର &quot;ସ୍ତମ୍ଭ ମୋଡ୍ ରେ ଆରମ୍ଭ / ଶେଷ ଚୟନ&quot; ନିର୍ଦ୍ଦେଶକୁ ଏକଜେକ୍ୟୁଟ୍ କର"/>
+			<BufferInvalidWarning title="ସଞ୍ଚୟ ବିଫଳ" message="ସଞ୍ଚୟ କରିପାରିବ ନାହିଁ: ବଫର୍ ଅବ alid ଧ ଅଟେ"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<DoCloseOrNot title="|ବିଦ୍ୟମାନ ନଥିବା ଫାଇଲ୍ ରଖ" message="&quot;$ STR_REPLACE $&quot; ଫାଇଲ୍ ଆଉ ନାହିଁ |
+ଏହି ଫାଇଲକୁ ଏଡିଟର୍ ରେ ରଖନ୍ତୁ?"/>
+			<DoDeleteOrNot title="ଫାଇଲ୍ ଡିଲିଟ୍ କରନ୍ତୁ" message="ଫାଇଲ୍ &quot;$ STR_REPLACE $&quot;
+ତୁମର ରିସାଇକ୍ଲି ବିନ୍ କୁ ସ୍ଥାନାନ୍ତରିତ ହେବ ଏବଂ ଏହି ଡକ୍ୟୁମେଣ୍ଟ୍ ବନ୍ଦ ହୋଇଯିବ |
+ଜାରି ରଖନ୍ତୁ?"/>
+			<NoBackupDoSaveFile title="ସଞ୍ଚୟ କରନ୍ତୁ" message="ତୁମର ବ୍ୟାକଅପ୍ ଫାଇଲ୍ ମିଳିବ ନାହିଁ (ବାହ୍ୟରୁ ବିଲୋପ) |
+ଏହାକୁ ସଞ୍ଚୟ କର ନଚେତ୍ ତୁମର ତଥ୍ୟ ନଷ୍ଟ ହୋଇଯିବ |
+ଆପଣ &quot;$ STR_REPLACE $&quot; ଫାଇଲ୍ ସେଭ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<DoReloadOrNot title="ପୁନ elo ଲୋଡ୍" message="&quot;$ STR_REPLACE $&quot;
+
+ଏହି ଫାଇଲ୍ ଅନ୍ୟ ଏକ ପ୍ରୋଗ୍ରାମ୍ ଦ୍ୱାରା ପରିବର୍ତ୍ତିତ ହୋଇଛି |
+ଆପଣ ଏହାକୁ ପୁନ o ଲୋଡ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<DoReloadOrNotAndLooseChange title="ପୁନ elo ଲୋଡ୍" message="&quot;$ STR_REPLACE $&quot;
+
+ଏହି ଫାଇଲ୍ ଅନ୍ୟ ଏକ ପ୍ରୋଗ୍ରାମ୍ ଦ୍ୱାରା ପରିବର୍ତ୍ତିତ ହୋଇଛି |
+ଆପଣ ଏହାକୁ ପୁନ o ଲୋଡ୍ କରିବାକୁ ଏବଂ ନୋଟପ୍ୟାଡ୍ ++ ରେ କରାଯାଇଥିବା ପରିବର୍ତ୍ତନଗୁଡିକ ହରାଇବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<PrehistoricSystemDetected title="ପ୍ରିହାଷ୍ଟୋରିକ୍ ​​ସିଷ୍ଟମ ଚିହ୍ନଟ" message="ମନେହୁଏ ତୁମେ ତଥାପି ଏକ ପ୍ରିଷ୍ଟୋଷ୍ଟୋରିକ୍ ​​ସିଷ୍ଟମ୍ ବ୍ୟବହାର କରୁଛ |ଏହି ବ feature ଶିଷ୍ଟ୍ୟ କେବଳ ଏକ ଆଧୁନିକ ସିଷ୍ଟମରେ କାମ କରେ, ଦୁ sorry ଖିତ।"/><!-- HowToReproduce: Launch "Document Map" under Windows XP. -->
+			<XpUpdaterProblem title="ନୋଟପ୍ୟାଡ୍ ++ ଅପଡେଟର୍" message="ନୋଟପ୍ୟାଡ୍ ++ ଅପଡେଟର୍ XP ସହିତ ପୁରୁଣା ସୁରକ୍ଷା ସ୍ତର ହେତୁ XP ସହିତ ସୁସଙ୍ଗତ ନୁହେଁ |
+ଆପଣ ନୂତନତମ ସଂସ୍କରଣ ଡାଉନଲୋଡ୍ କରିବାକୁ ନୋଟପ୍ୟାଡ୍ ++ ପୃଷ୍ଠାକୁ ଯିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/><!-- HowToReproduce: Run menu "? -> Update Notepad++" under Windows XP. -->
+			<GUpProxyConfNeedAdminMode title="ପ୍ରକ୍ସି ସେଟିଂସମୂହ" message="ପ୍ରକ୍ସି ବିନ୍ୟାସ କରିବାକୁ ଦୟାକରି ଆଡମିନି ମୋଡରେ ନୋଟପ୍ୟାଡ୍ ++ ପୁନ un ଆରମ୍ଭ କରନ୍ତୁ"/>
+			<DocTooDirtyToMonitor title="|ମନିଟରିଂ ସମସ୍ୟା" message="ଡକ୍ୟୁମେଣ୍ଟ୍ ମଇଳା ଅଟେ |ଏହାକୁ ମନିଟରିଂ କରିବା ପୂର୍ବରୁ ଦୟାକରି ସଂରକ୍ଷଣକୁ ସଂରକ୍ଷଣ କରନ୍ତୁ"/>
+			<DocNoExistToMonitor title="|ମନିଟରିଂ ସମସ୍ୟା" message="ତଦାରଖ କରିବାକୁ ଫାଇଲ୍ ବିଦ୍ୟମାନ ରହିବା ଉଚିତ୍"/>
+			<FileTooBigToOpen title="|ଫାଇଲ୍ ଆକାର ସମସ୍ୟା" message="ନୋଟପ୍ୟାଡ୍ ++ ଦ୍ୱାରା ଫାଇଲ୍ ଖୋଲିବାକୁ ବହୁତ ବଡ |"/><!-- HowToReproduce: Try to open a 4GB file (it's not easy to reproduce, it depends on your system). -->
+			<FileLoadingException title="ବ୍ୟତିକ୍ରମ କୋଡ୍: $ STR_REPLACE $" message="ଫାଇଲ୍ ଲୋଡ୍ କରିବା ସମୟରେ ଏକ ତ୍ରୁଟି ଘଟିଗଲା!"/>
+			<WantToOpenHugeFile title="ବିରାଟ ଫାଇଲ ଚେତାବନୀ ଖୋଲିବା" message="2GB + ର ଏକ ବିରାଟ ଫାଇଲ୍ ଖୋଲିବା ପାଇଁ କିଛି ମିନିଟ୍ ଲାଗିପାରେ |
+ଆପଣ ଏହାକୁ ଖୋଲିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<CreateNewFileOrNot title="ନୂତନ ଫାଇଲ୍ ସୃଷ୍ଟି କରନ୍ତୁ" message="&quot;$ STR_REPLACE $&quot; ବିଦ୍ୟମାନ ନାହିଁ |ଏହାକୁ ସୃଷ୍ଟି କରନ୍ତୁ?"/>
+			<CreateNewFileError title="ନୂତନ ଫାଇଲ୍ ସୃଷ୍ଟି କରନ୍ତୁ" message="&quot;$ STR_REPLACE $&quot; ଫାଇଲ୍ ସୃଷ୍ଟି କରିପାରିବ ନାହିଁ"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<OpenFileError title="|ତ୍ରୁଟି" message="&quot;$ STR_REPLACE $&quot; ଫାଇଲ୍ ଖୋଲିପାରିବ ନାହିଁ"/>
+			<OpenFileNoFolderError title="|ଫାଇଲ୍ ଖୋଲିପାରିବ ନାହିଁ" message="&quot;$ STR_REPLACE1 $&quot; ଖୋଲାଯାଇପାରିବ ନାହିଁ:
+ଫୋଲ୍ଡର &quot;$ STR_REPLACE2 $&quot; ବିଦ୍ୟମାନ ନାହିଁ"/>
+			<FileBackupFailed title="|ଫାଇଲ୍ ବ୍ୟାକଅପ୍ ବିଫଳ ହେଲା" message="ଫାଇଲର ପୂର୍ବ ସଂସ୍କରଣ &quot;$ STR_REPLACE $&quot; ରେ ବ୍ୟାକଅପ୍ ଡିରେକ୍ଟୋରୀରେ ସଞ୍ଚୟ ହୋଇପାରିଲା ନାହିଁ |
+
+ଆପଣ ଯେକ way ଣସି ପ୍ରକାରେ ସାମ୍ପ୍ରତିକ ଫାଇଲ୍ ସେଭ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<LoadStylersFailed title="Stylers.xml ଲୋଡ୍ ବିଫଳ ହେଲା" message="&quot;$ STR_REPLACE $&quot; ଲୋଡ୍ ବିଫଳ ହେଲା!"/>
+			<LoadLangsFailed title="ବିନ୍ୟାସକ" message="Langs.xml ଲୋଡ୍ ବିଫଳ ହେଲା!
+ଆପଣ ଆପଣଙ୍କର langs.xml ପୁନରୁଦ୍ଧାର କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/><!-- HowToReproduce: Close Notepad++. Use another editor to remove all content of "langs.xml" (0 length) then save it. Open Notepad++. -->
+			<LoadLangsFailedFinal title="ବିନ୍ୟାସକ" message="Langs.xml ଲୋଡ୍ ବିଫଳ ହେଲା!"/><!-- HowToReproduce: Close Notepad++. Use another editor to make "langs.xml" an invalid xml file then save it. Open Notepad++. -->
+			<FolderAsWorspaceSubfolderExists title="ୱାର୍କସ୍ପେସ୍ ଭାବରେ ଫୋଲ୍ଡର୍ ଫୋଲ୍ଡର୍ ସମସ୍ୟା ଯୋଡିବା" message="ଆପଣ ଯୋଡିବାକୁ ଚାହୁଁଥିବା ଫୋଲ୍ଡରର ଏକ ସବ୍-ଫୋଲ୍ଡର୍ ବିଦ୍ୟମାନ ଅଛି |
+&quot;$ STR_REPLACE $&quot; ଫୋଲ୍ଡର ଯୋଡିବା ପୂର୍ବରୁ ଦୟାକରି ଏହାର ମୂଳକୁ ପ୍ୟାନେଲରୁ ବାହାର କରନ୍ତୁ"/><!-- HowToReproduce: Add a folder like "c:\temp\aFolder\" into "Folder as Workspace" panel, then try to add "c:\temp\". -->
+
+			<ProjectPanelChanged title="$STR_REPLACE$" message="|କାର୍ଯ୍ୟକ୍ଷେତ୍ରକୁ ପରିବର୍ତ୍ତନ କରାଯାଇଥିଲା |ଆପଣ ଏହାକୁ ସଞ୍ଚୟ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<ProjectPanelSaveError title="$STR_REPLACE$" message="ଆପଣଙ୍କର କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଫାଇଲ୍ ଲେଖିବାବେଳେ ଏକ ତ୍ରୁଟି ଘଟିଗଲା |
+ଆପଣଙ୍କର କାର୍ଯ୍ୟକ୍ଷେତ୍ର ସଞ୍ଚୟ ହୋଇନାହିଁ"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<ProjectPanelOpenDoSaveDirtyWsOrNot title="|କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଖୋଲନ୍ତୁ" message="ସାମ୍ପ୍ରତିକ କାର୍ଯ୍ୟକ୍ଷେତ୍ରକୁ ପରିବର୍ତ୍ତନ କରାଯାଇଥିଲା |ଆପଣ ବର୍ତ୍ତମାନର ପ୍ରକଳ୍ପ ସଞ୍ଚୟ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<ProjectPanelNewDoSaveDirtyWsOrNot title="ନୂତନ କାର୍ଯ୍ୟକ୍ଷେତ୍ର" message="ସାମ୍ପ୍ରତିକ କାର୍ଯ୍ୟକ୍ଷେତ୍ରକୁ ପରିବର୍ତ୍ତନ କରାଯାଇଥିଲା |ଆପଣ ବର୍ତ୍ତମାନର ପ୍ରକଳ୍ପ ସଞ୍ଚୟ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<ProjectPanelOpenFailed title="କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଖୋଲନ୍ତୁ" message="କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଖୋଲାଯାଇ ପାରିଲା ନାହିଁ |
+ଦେଖାଯାଉଛି ଫାଇଲ୍ ଖୋଲିବା ଏକ ବ project ଧ ପ୍ରୋଜେକ୍ଟ ଫାଇଲ୍ ନୁହେଁ"/>
+			<ProjectPanelRemoveFolderFromProject title="|ପ୍ରୋଜେକ୍ଟରୁ ଫୋଲ୍ଡର୍ ଅପସାରଣ କରନ୍ତୁ" message="ସମସ୍ତ ଉପ-ଆଇଟମ୍ ଗୁଡିକ ଅପସାରିତ ହେବ |
+ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ଏହି ଫୋଲ୍ଡରକୁ ପ୍ରୋଜେକ୍ଟରୁ ଅପସାରଣ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<ProjectPanelRemoveFileFromProject title="ପ୍ରୋଜେକ୍ଟରୁ ଫାଇଲ୍ ଅପସାରଣ କରନ୍ତୁ" message="ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ଏହି ଫାଇଲକୁ ପ୍ରୋଜେକ୍ଟରୁ ଅପସାରଣ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<ProjectPanelReloadError title="କାର୍ଯ୍ୟକ୍ଷେତ୍ର ପୁନ elo ଲୋଡ୍ କରନ୍ତୁ" message="ପୁନ o ଲୋଡ୍ କରିବାକୁ ଫାଇଲ୍ ଖୋଜି ପାରିଲା ନାହିଁ"/>
+			<ProjectPanelReloadDirty title="|କାର୍ଯ୍ୟକ୍ଷେତ୍ର ପୁନ elo ଲୋଡ୍ କରନ୍ତୁ" message="ସାମ୍ପ୍ରତିକ କାର୍ଯ୍ୟକ୍ଷେତ୍ରକୁ ପରିବର୍ତ୍ତନ କରାଯାଇଥିଲା |ପୁନ elo ଲୋଡିଂ ସମସ୍ତ ପରିବର୍ତ୍ତନକୁ ପରିତ୍ୟାଗ କରିବ |
+ଆପଣ ଜାରି ରଖିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<UDLNewNameError title="UDL ତ୍ରୁଟି" message="ଏହି ନାମ ଅନ୍ୟ ଭାଷା ଦ୍ୱାରା ବ୍ୟବହୃତ ହୁଏ,
+ଦୟାକରି ଅନ୍ୟକୁ ଦିଅ |"/>
+			<UDLRemoveCurrentLang title="ସାମ୍ପ୍ରତିକ ଭାଷା ଅପସାରଣ କରନ୍ତୁ" message="ଆପଣ ନିଶ୍ଚିତ କି?"/>
+			<UDL_importSuccessful title="ଉପଯୋଗକର୍ତ୍ତା ପରିଭାଷିତ ଭାଷା" message="ସଫଳ ଆମଦାନୀ କରନ୍ତୁ"/>
+			<UDL_importFails title="|ଉପଯୋଗକର୍ତ୍ତା ପରିଭାଷିତ ଭାଷା" message="ଆମଦାନି କରିବାରେ ବିଫଳ"/>
+			<UDL_saveBeforeImport title="|ଉପଯୋଗକର୍ତ୍ତା ପରିଭାଷିତ ଭାଷା" message="ରପ୍ତାନି କରିବା ପୂର୍ବରୁ, &quot;ସେଭ୍ ଏସ୍ ...&quot; ବଟନ୍ କ୍ଲିକ୍ କରି ଆପଣଙ୍କର ଭାଷା ସଂଜ୍ଞା ସଞ୍ଚୟ କରନ୍ତୁ"/> <!-- HowToReproduce: Choose "User Defined Language" in User Language combobox, then click on "Export... button". -->
+			<UDL_exportSuccessful title="|ଉପଯୋଗକର୍ତ୍ତା ପରିଭାଷିତ ଭାଷା" message="ରପ୍ତାନି ସଫଳ"/>
+			<UDL_exportFails title="|ଉପଯୋଗକର୍ତ୍ତା ପରିଭାଷିତ ଭାଷା" message="ରପ୍ତାନିରେ ବିଫଳ"/>
+			<SCMapperDoDeleteOrNot title="|ଆପଣ ନିଶ୍ଚିତ କି?" message="ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ଏହି ସର୍ଟକଟ୍ ଡିଲିଟ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<FindCharRangeValueError title="ପରିସର ମୂଲ୍ୟ ସମସ୍ୟା" message="ଆପଣ 0 ରୁ 255 ମଧ୍ୟରେ ଟାଇପ୍ କରିବା ଉଚିତ୍"/> <!-- HowToReproduce: Search menu, then Find characters in range, select Custom range, enter 999 in either edit box, press Find. -->
+			<OpenInAdminMode title="ସଞ୍ଚୟ ବିଫଳ" message="ଫାଇଲ୍ ସେଭ୍ ହୋଇପାରିବ ନାହିଁ ଏବଂ ଏହା ସୁରକ୍ଷିତ ହୋଇପାରେ |
+ଆପଣ ଆଡମିନିଷ୍ଟ୍ରେଟର୍ ମୋଡ୍ ରେ ନୋଟପ୍ୟାଡ୍ ++ ଲଞ୍ଚ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<OpenInAdminModeWithoutCloseCurrent title="ସଞ୍ଚୟ ବିଫଳ" message="ଫାଇଲ୍ ସେଭ୍ ହୋଇପାରିବ ନାହିଁ ଏବଂ ଏହା ସୁରକ୍ଷିତ ହୋଇପାରେ |
+ଆପଣ ଆଡମିନିଷ୍ଟ୍ରେଟର୍ ମୋଡ୍ ରେ ନୋଟପ୍ୟାଡ୍ ++ ଲଞ୍ଚ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<OpenInAdminModeFailed title="ଆଡମିନିଷ୍ଟ୍ରେଟର୍ ମୋଡ୍ ରେ ଖୋଲା" message="ଆଡମିନିଷ୍ଟ୍ରେଟର୍ ମୋଡ୍ ରେ ନୋଟପ୍ୟାଡ୍ ++ ଖୋଲାଯାଇପାରିବ ନାହିଁ"/><!-- HowToReproduce: When you have no Admin privilege and you try to save a modified file in a protected location (for example: any file in sub-folder of "C:\Program Files\". This message will appear after replying "Yes" to "Open in Admin mode" dialog. -->
+			<ViewInBrowser title="|ବ୍ରାଉଜରରେ ସାମ୍ପ୍ରତିକ ଫାଇଲ୍ ଦେଖନ୍ତୁ" message="ଆପଣଙ୍କ ସିଷ୍ଟମରେ ପ୍ରୟୋଗ ମିଳିବ ନାହିଁ"/>
+			<ExitToUpdatePlugins title="|ନୋଟପ୍ୟାଡ୍ ++ ବାହାରକୁ ଯିବାକୁ ଯାଉଛି" message="ଯଦି ଆପଣ YES କ୍ଲିକ୍ କରନ୍ତି, ଅପରେସନ୍ ଜାରି ରଖିବା ପାଇଁ ଆପଣ ନୋଟପ୍ୟାଡ୍ ++ ଛାଡିବେ |
+ସମସ୍ତ ଅପରେସନ୍ ସମାପ୍ତ ହେବା ପରେ ନୋଟପ୍ୟାଡ୍ ++ ପୁନ art ଆରମ୍ଭ ହେବ |
+ଜାରି ରଖନ୍ତୁ?"/>
+			<NeedToRestartToLoadPlugins title="ନୋଟପ୍ୟାଡ୍ ++ ପୁନ un ଆରମ୍ଭ ହେବା ଆବଶ୍ୟକ" message="ଆପଣ ସଂସ୍ଥାପିତ ପ୍ଲଗଇନଗୁଡ଼ିକୁ ଲୋଡ୍ କରିବା ପାଇଁ ଆପଣଙ୍କୁ ନୋଟପ୍ୟାଡ୍ ++ ପୁନ rest ଆରମ୍ଭ କରିବାକୁ ପଡିବ"/><!-- HowToReproduce: Import a plugin via menu "Settings->Import->Import Plugin(s)...". -->
+			<ChangeHistoryEnabledWarning title="|ନୋଟପ୍ୟାଡ୍ ++ ପୁନ un ଆରମ୍ଭ ହେବା ଆବଶ୍ୟକ" message="ଇତିହାସ ପରିବର୍ତ୍ତନ କରିବାକୁ ଆପଣଙ୍କୁ ନୋଟପ୍ୟାଡ୍ ++ ପୁନ rest ଆରମ୍ଭ କରିବାକୁ ପଡିବ"/><!-- HowToReproduce: uncheck "Display Change History" via Preferences dialog "Marges/Border/Edge. -->
+			<WindowsSessionExit title="|ନୋଟପ୍ୟାଡ୍ ++ - ୱିଣ୍ଡୋଜ୍ ଅଧିବେଶନ ପ୍ରସ୍ଥାନ" message="ୱିଣ୍ଡୋଜ୍ ଅଧିବେଶନ ସମାପ୍ତ ହେବାକୁ ଯାଉଛି କିନ୍ତୁ ଆପଣଙ୍କର କିଛି ତଥ୍ୟ ସଞ୍ଚୟ ହୋଇନାହିଁ |ଆପଣ ବର୍ତ୍ତମାନ ନୋଟପ୍ୟାଡ୍ ++ ଛାଡିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<LanguageMenuCompactWarning title="କମ୍ପାକ୍ଟ ଭାଷା ମେନୁ" message="ପରବର୍ତ୍ତୀ ଉନ୍ମୋଚନରେ ଏହି ବିକଳ୍ପକୁ ପରିବର୍ତ୍ତନ କରାଯିବ"/><!-- HowToReproduce: toggle "Make language menu compact" via Preferences dialog "Language/Language Menu. -->
+			<SwitchUnsavedThemeWarning title="$STR_REPLACE$" message="|ସଂରକ୍ଷିତ ପରିବର୍ତ୍ତନଗୁଡିକ ପରିତ୍ୟାଗ ହେବାକୁ ଯାଉଛି!
+ଥିମ୍ ସୁଇଚ୍ କରିବା ପୂର୍ବରୁ ଆପଣ ଆପଣଙ୍କର ପରିବର୍ତ୍ତନଗୁଡିକ ସଞ୍ଚୟ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?"/><!-- HowToReproduce: In the Style Configurator dialog change some theme and switch to other theme without saving. -->
+			<MacroAndRunCmdlWarning title="ମାକ୍ରୋ ଏବଂ ରନ୍ କମାଣ୍ଡ ସୁସଙ୍ଗତତା" message="ନୋଟପ୍ୟାଡ୍ ++ v.8.5.2 (କିମ୍ବା ପୁରାତନ) ରେ ସଞ୍ଚିତ ଆପଣଙ୍କର ମାକ୍ରୋ ଏବଂ ରନ୍ ନିର୍ଦ୍ଦେଶଗୁଡ଼ିକ ନୋଟପ୍ୟାଡ୍ ++ ର ସାମ୍ପ୍ରତିକ ସଂସ୍କରଣ ସହିତ ସୁସଙ୍ଗତ ହୋଇନପାରେ |
+ଦୟାକରି ସେହି ନିର୍ଦ୍ଦେଶଗୁଡ଼ିକୁ ପରୀକ୍ଷା କରନ୍ତୁ ଏବଂ ଯଦି ଆବଶ୍ୟକ ହୁଏ, ସେଗୁଡ଼ିକୁ ପୁନ - ସମ୍ପାଦନ କରନ୍ତୁ |
+
+ବ ly କଳ୍ପିକ ଭାବରେ, ଆପଣ ନୋଟପ୍ୟାଡ୍ ++ v8.5.2 କୁ ଡାଉନଗ୍ରେଡ୍ କରିପାରିବେ ଏବଂ ଆପଣଙ୍କର ପୂର୍ବ ତଥ୍ୟକୁ ପୁନ restore ସ୍ଥାପନ କରିପାରିବେ |
+ନୋଟପ୍ୟାଡ୍ ++ ଆପଣଙ୍କର ପୁରୁଣା &quot;ସର୍ଟକଟ୍। Xml&quot; କୁ ବ୍ୟାକଅପ୍ କରିବ ଏବଂ ଏହାକୁ &quot;ସର୍ଟକଟ୍। Xml.v8.5.2.backup&quot; ଭାବରେ ସେଭ୍ କରିବ |
+&quot;ସର୍ଟକଟ୍।"/><!-- HowToReproduce: Close Notepad++, remove shortcuts.xml.v8.5.2.backup & v852ShortcutsCompatibilityWarning.xml if present, relaunch Notepad++, delete or modify a shortcuts via Shortcut Mapper, close Notepad++, then the message will show up -->
+			<FullReadOnlySavingForbidden title="ସଞ୍ଚୟ ବିଫଳ" message="ଫାଇଲ୍ ସେଭ୍ କରିପାରିବ ନାହିଁ |
+ନୋଟପ୍ୟାଡ୍ ++ ପୂର୍ଣ୍ଣ ପଠନ-କେବଳ ସଂରକ୍ଷଣ ନିଷେଧ ମୋଡ୍ ଫାଇଲ୍ ସେଭ୍ ହେବାକୁ ବାରଣ କଲା"/>
+			<NotEnoughRoom4Saving title="|ସଞ୍ଚୟ ବିଫଳ ହେଲା |" message="ଫାଇଲ୍ ସେଭ୍ କରିବାରେ ବିଫଳ |
+ଫାଇଲ୍ ସେଭ୍ କରିବାକୁ ଡିସ୍କରେ ପର୍ଯ୍ୟାପ୍ତ ସ୍ଥାନ ନାହିଁ ବୋଲି ମନେହୁଏ |ଆପଣଙ୍କର ଫାଇଲ୍ ସେଭ୍ ହୋଇନାହିଁ"/>
+			<FileInaccessibleUserSession title="|ଫାଇଲ୍ ଉପଲବ୍ଧ ନୁହେଁ" message="ଆପଣଙ୍କର ମାନୁଆଲ୍-ସଞ୍ଚିତ ଅଧିବେଶନ &quot;$ STR_REPLACE $&quot; ରୁ କିଛି ଫାଇଲ୍ ଉପଲବ୍ଧ ନୁହେଁ |ସେଗୁଡିକ ଖାଲି ଏବଂ କେବଳ ପଠନୀୟ ଦଲିଲଗୁଡିକ ସ୍ଥାନଧାରୀ ଭାବରେ ଖୋଲାଯାଇପାରିବ |
+
+ଆପଣ ସେହି ସ୍ଥାନଧାରୀମାନଙ୍କୁ ସୃଷ୍ଟି କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?
+
+ଟିପ୍ପଣୀ: ସ୍ଥାନଧାରୀ ସୃଷ୍ଟି ନକରିବା କିମ୍ବା ପରେ ବନ୍ଦ ନକରିବା, ଆପଣଙ୍କର ମାନୁଆଲ-ସଞ୍ଚିତ ଅଧିବେଶନ ପ୍ରସ୍ଥାନରେ ପରିବର୍ତ୍ତିତ ହେବ ନାହିଁ"/>
+			<FileInaccessibleDefaultSessionXml title="|ଫାଇଲ୍ ଉପଲବ୍ଧ ନୁହେଁ" message="ତୁମର ଅତୀତ ଅଧିବେଶନରୁ କିଛି ଫାଇଲ୍ ଉପଲବ୍ଧ ନୁହେଁ |ସେଗୁଡିକ ଖାଲି ଏବଂ କେବଳ ପଠନୀୟ ଦଲିଲଗୁଡିକ ସ୍ଥାନଧାରୀ ଭାବରେ ଖୋଲାଯାଇପାରିବ |
+
+ଆପଣ ସେହି ସ୍ଥାନଧାରୀମାନଙ୍କୁ ସୃଷ୍ଟି କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?
+
+ଟିପ୍ପଣୀ: ସ୍ଥାନଧାରୀ ସୃଷ୍ଟି ନକରିବା କିମ୍ବା ପରେ ବନ୍ଦ ନକରିବା, ଆପଣଙ୍କ ଅଧିବେଶନ ନିର୍ବାହରେ ପରିବର୍ତ୍ତିତ ହେବ!ଆମେ ବର୍ତ୍ତମାନ ତୁମର &quot;session.xml&quot; କୁ ବ୍ୟାକଅପ୍ କରିବାକୁ ପରାମର୍ଶ ଦେଉଛୁ"/>
+			<RTLvsDirectWrite title="|RTL ଚଲାଇପାରିବ ନାହିଁ" message="DirectLrite ମୋଡ୍ ସହିତ RTL ସୁସଙ୍ଗତ ନୁହେଁ |ଦୟାକରି MISC ରେ DirectWrite ମୋଡ୍ ଅକ୍ଷମ କରନ୍ତୁ |ପସନ୍ଦ ସଂଳାପର ବିଭାଗ, ଏବଂ ନୋଟପ୍ୟାଡ୍ ++ କୁ ପୁନ rest ଆରମ୍ଭ କରନ୍ତୁ"/>
+			<FileMemoryAllocationFailed title="|ବ୍ୟତିକ୍ରମ: ଫାଇଲ ମେମୋରୀ ଆବଣ୍ଟନ ବିଫଳ ହେଲା" message="ନୋଟପ୍ୟାଡ୍ ++ ଦ୍ୱାରା ଲୋଡ୍ ହୋଇଥିବା ଫାଇଲ୍ ପାଇଁ ବୋଧହୁଏ ଯଥେଷ୍ଟ ସଂଲଗ୍ନ ମାଗଣା ମେମୋରୀ ନାହିଁ"/><!-- HowToReproduce: Try to open multiple files with total size > ~700MB in the x86 Notepad++ (it will depend on the PC memory configuration and the current system memory usage...). -->
+			<FindRegexBackwardDisabled title="|ରେଜେକ୍ସ ପଛୁଆ ସନ୍ଧାନ ଅକ୍ଷମ" message="ଡିଫଲ୍ଟ ଭାବରେ, ସମ୍ଭାବ୍ୟ ଅପ୍ରତ୍ୟାଶିତ ଫଳାଫଳ ହେତୁ ପଛୁଆ ରେଜେକ୍ସ ସନ୍ଧାନ ଅକ୍ଷମ ହୋଇଥାଏ |ଏକ ପଛୁଆ ସନ୍ଧାନ କରିବାକୁ, ସନ୍ଧାନ ସଂଳାପ ଖୋଲ ଏବଂ ନିୟମିତ ଅଭିବ୍ୟକ୍ତି ପରିବର୍ତ୍ତେ ସାଧାରଣ କିମ୍ବା ବିସ୍ତାରିତ ସନ୍ଧାନ ମୋଡ୍ ବାଛ |
+ସନ୍ଧାନ ସଂଳାପ ଖୋଲିବାକୁ କିମ୍ବା ଏହା ଉପରେ ଧ୍ୟାନ ସେଟ୍ କରିବାକୁ ଓକେ ବଟନ୍ ଦବାନ୍ତୁ |
+
+ଯଦି ଆପଣ ପଛୁଆ ରେଜେକ୍ସ ସନ୍ଧାନ ବ feature ଶିଷ୍ଟ୍ୟ ଆବଶ୍ୟକ କରନ୍ତି, ଏହାକୁ ସକ୍ଷମ କରିବା ପାଇଁ ନିର୍ଦ୍ଦେଶାବଳୀ ପାଇଁ ଉପଭୋକ୍ତା ମାନୁଆଲକୁ ପରାମର୍ଶ କରନ୍ତୁ"/>
+			<PrintError title="0" message="|ପ୍ରିଣ୍ଟର୍ ଡକ୍ୟୁମେଣ୍ଟ୍ ଆରମ୍ଭ କରିପାରିବ ନାହିଁ"/><!-- Use title="0" to use Windows OS default translated "Error" title. -->
+			<FindAutoChangeOfInSelectionWarning title="|ସନ୍ଧାନ ଚେତାବନୀ" message="&quot;ଚୟନରେ&quot; ଚେକ୍ ବକ୍ସ ସ୍ଥିତି ସ୍ୱୟଂଚାଳିତ ଭାବରେ ପରିବର୍ତ୍ତିତ ହୋଇଛି |
+କାର୍ଯ୍ୟ କରିବା ପୂର୍ବରୁ ଦୟାକରି ସନ୍ଧାନ ସ୍ଥିତି ଯାଞ୍ଚ କରନ୍ତୁ"/> <!-- HowToReproduce: https://github.com/notepad-plus-plus/notepad-plus-plus/issues/14897#issuecomment-2564316224 -->
+			<Need2Restart2ShowMenuShortcuts title="|ନୋଟପ୍ୟାଡ୍ ++ ପୁନ rest ଆରମ୍ଭ ହେବା ଆବଶ୍ୟକ" message="ଡାହାଣ ମେନୁ ସର୍ଟକଟ୍ ଦେଖାଇବା ପାଇଁ ନୋଟପ୍ୟାଡ୍ ++ ପୁନ rest ଆରମ୍ଭ ହେବା ଆବଶ୍ୟକ"/>
+			<NoAdminRight2ChangeReadOnlyFileAttribute title="|ଫାଇଲ୍ ପଠନ-କେବଳ ଗୁଣ ପରିବର୍ତ୍ତନ କରିବାରେ ବିଫଳ ହେଲା" message="ଫାଇଲ୍ ଆଟ୍ରିବ୍ୟୁଟ୍ ପରିବର୍ତ୍ତନ କରିବାକୁ ଦୟାକରି ଆଡମିନିଷ୍ଟ୍ରେଟର ଭାବରେ ନୋଟପ୍ୟାଡ୍ ++ ଚଲାନ୍ତୁ"/>
+		</MessageBox>
+		<ClipboardHistory>
+			<PanelTitle name="|କ୍ଲିପବୋର୍ଡ ଇତିହାସ"/>
+		</ClipboardHistory>
+		<DocList>
+			<PanelTitle name="ଡକ୍ୟୁମେଣ୍ଟ୍ ତାଲିକା |"/>
+			<ColumnName name="ନାମ"/>
+			<ColumnExt name="ବିସ୍ତୃତ"/>
+			<ColumnPath name="ପଥ"/>
+			<ListGroups name="ଦର୍ଶନ ଦ୍ Group ାରା ଗୋଷ୍ଠୀ"/>
+		</DocList>
+		<WindowsDlg>
+			<ColumnName name="ନାମ"/>
+			<ColumnPath name="ପଥ"/>
+			<ColumnType name="ଟାଇପ୍ କରନ୍ତୁ"/>
+			<ColumnSize name="ଆକାର"/>
+			<ColumnDateTime name="ପରିବର୍ତ୍ତିତ ସମୟ"/>
+			<NbDocsTotal name="ସମୁଦାୟ ଡକ୍ୟୁମେଣ୍ଟ୍:"/>
+			<MenuCopyName name="ନାମ (ଗୁଡିକ) କପି କରନ୍ତୁ"/>
+			<MenuCopyPath name="ପଥ ନାମ (ଗୁଡିକ) କପି କରନ୍ତୁ"/>
+		</WindowsDlg>
+		<AsciiInsertion>
+			<PanelTitle name="ASCII କୋଡ୍ ସନ୍ନିବେଶ ପ୍ୟାନେଲ୍"/>
+			<ColumnVal name="ମୂଲ୍ୟ"/>
+			<ColumnHex name="ହେକ୍ସ"/>
+			<ColumnChar name="ବର୍ଣ୍ଣ"/>
+			<ColumnHtmlName name="HTML ନାମ"/>
+			<ColumnHtmlNumber name="HTML ଦଶମିକ"/>
+			<ColumnHtmlHexNb name="HTML ହେକ୍ସାଡେସିମାଲ୍"/>
+		</AsciiInsertion>
+		<DocumentMap>
+			<PanelTitle name="ଡକ୍ୟୁମେଣ୍ଟ୍ ମାନଚିତ୍ର"/>
+		</DocumentMap>
+		<FunctionList>
+			<PanelTitle name="କାର୍ଯ୍ୟ ତାଲିକା"/>
+			<SortTip name="ସର୍ଟ"/>
+			<ReloadTip name="ପୁନ elo ଲୋଡ୍"/>
+			<PreferencesTip name="ପସନ୍ଦ"/>
+			<PreferencesInitialSort name="ଡିଫଲ୍ଟ ଭାବରେ କାର୍ଯ୍ୟଗୁଡିକ (A ରୁ Z) ସର୍ଟ କରନ୍ତୁ"/>
+		</FunctionList>
+		<FolderAsWorkspace>
+			<PanelTitle name="କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଭାବରେ ଫୋଲ୍ଡର"/>
+			<SelectFolderFromBrowserString name="ୱାର୍କସ୍ପେସ୍ ପ୍ୟାନେଲ୍ ଭାବରେ ଫୋଲ୍ଡରରେ ଯୋଡିବାକୁ ଏକ ଫୋଲ୍ଡର୍ ଚୟନ କରନ୍ତୁ"/>
+			<ExpandAllFoldersTip name="ସମସ୍ତ ଖୋଲନ୍ତୁ"/>
+			<CollapseAllFoldersTip name="ସମସ୍ତ ଫୋଲ୍ କରନ୍ତୁ"/>
+			<LocateCurrentFileTip name="ସାମ୍ପ୍ରତିକ ଫାଇଲ୍ ଖୋଜ"/>
+			<Menu>
+				<Item id="3511" name="ଅପସାରଣ କରନ୍ତୁ"/>
+				<Item id="3512" name="ସମସ୍ତ ଅପସାରଣ କରନ୍ତୁ"/>
+				<Item id="3513" name="ଯୋଡନ୍ତୁ"/>
+				<Item id="3514" name="ସିଷ୍ଟମ୍ ଦ୍ୱାରା ଚଲାନ୍ତୁ"/>
+				<Item id="3515" name="ଖୋଲ"/>
+				<Item id="3516" name="ପଥ କପି କରନ୍ତୁ"/>
+				<Item id="3517" name="ଫାଇଲଗୁଡିକରେ ଖୋଜ ..."/>
+				<Item id="3518" name="ଏକ୍ସପ୍ଲୋରର ଏଠାରେ"/>
+				<Item id="3519" name="CMD ଏଠାରେ"/>
+				<Item id="3520" name="ଫାଇଲ୍ ନାମ କପି କରନ୍ତୁ |"/>
+			</Menu>
+		</FolderAsWorkspace>
+		<ProjectManager>
+			<PanelTitle name="ପ୍ରକଳ୍ପ"/>
+			<WorkspaceRootName name="କାର୍ଯ୍ୟକ୍ଷେତ୍ର"/>
+			<NewProjectName name="ପ୍ରକଳ୍ପ ନାମ"/>
+			<NewFolderName name="ଫୋଲ୍ଡର ନାମ"/>
+			<Menus>
+				<Entries>
+					<Item id="0" name="କାର୍ଯ୍ୟକ୍ଷେତ୍ର"/>
+					<Item id="1" name="ସଂପାଦନା"/>
+				</Entries>
+				<WorkspaceMenu>
+					<Item id="3122" name="ନୂତନ କାର୍ଯ୍ୟକ୍ଷେତ୍ର"/>
+					<Item id="3123" name="କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଖୋଲନ୍ତୁ"/>
+					<Item id="3124" name="କାର୍ଯ୍ୟକ୍ଷେତ୍ର ପୁନ elo ଲୋଡ୍ କରନ୍ତୁ"/>
+					<Item id="3125" name="ସଞ୍ଚୟ କରନ୍ତୁ"/>
+					<Item id="3126" name="ଯେପରି ସେଭ୍ କରନ୍ତୁ ..."/>
+					<Item id="3127" name="ଯେପରି ଏକ କପି ସଞ୍ଚୟ କରନ୍ତୁ ..."/>
+					<Item id="3121" name="ନୂତନ ପ୍ରକଳ୍ପ ଯୋଡନ୍ତୁ"/>
+					<Item id="3128" name="ପ୍ରୋଜେକ୍ଟରେ ଖୋଜ ..."/>
+				</WorkspaceMenu>
+				<ProjectMenu>
+					<Item id="3111" name="ପୁନ ame ନାମ କରନ୍ତୁ"/>
+					<Item id="3112" name="ଫୋଲ୍ଡର୍ ଯୋଡନ୍ତୁ"/>
+					<Item id="3113" name="ଫାଇଲ୍ ଯୋଡନ୍ତୁ ..."/>
+					<Item id="3117" name="ଡିରେକ୍ଟୋରୀରୁ ଫାଇଲ୍ ଯୋଡନ୍ତୁ ..."/>
+					<Item id="3114" name="ଅପସାରଣ କରନ୍ତୁ"/>
+					<Item id="3118" name="ଉପରକୁ ଯାଅ |"/>
+					<Item id="3119" name="ତଳକୁ ଘୁଞ୍ଚାନ୍ତୁ"/>
+				</ProjectMenu>
+				<FolderMenu>
+					<Item id="3111" name="ପୁନ ame ନାମ କରନ୍ତୁ"/>
+					<Item id="3112" name="ଫୋଲ୍ଡର୍ ଯୋଡନ୍ତୁ"/>
+					<Item id="3113" name="ଫାଇଲ୍ ଯୋଡନ୍ତୁ ..."/>
+					<Item id="3117" name="ଡିରେକ୍ଟୋରୀରୁ ଫାଇଲ୍ ଯୋଡନ୍ତୁ ..."/>
+					<Item id="3114" name="ଅପସାରଣ କରନ୍ତୁ"/>
+					<Item id="3118" name="ଉପରକୁ ଯାଅ"/>
+					<Item id="3119" name="ତଳକୁ ଘୁଞ୍ଚାନ୍ତୁ"/>
+				</FolderMenu>
+				<FileMenu>
+					<Item id="3111" name="ପୁନ ame ନାମ କରନ୍ତୁ"/>
+					<Item id="3115" name="ଅପସାରଣ କରନ୍ତୁ"/>
+					<Item id="3116" name="ଫାଇଲ୍ ପଥ ପରିବର୍ତ୍ତନ କରନ୍ତୁ"/>
+					<Item id="3118" name="ଉପରକୁ ଯାଅ"/>
+					<Item id="3119" name="ତଳକୁ ଘୁଞ୍ଚାନ୍ତୁ"/>
+				</FileMenu>
+			</Menus>
+		</ProjectManager>
+		<MiscStrings>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<word-chars-list-tip value="ଚୟନ ପାଇଁ ଦୁଇଥର କ୍ଲିକ୍ କରିବା କିମ୍ବା “କେବଳ ପୁରା ଶବ୍ଦ ମେଳ” ବିକଳ୍ପ ସହିତ ସନ୍ଧାନ କରିବାବେଳେ ଏହା ଆପଣଙ୍କୁ ସାମ୍ପ୍ରତିକ ଶବ୍ଦ ବର୍ଣ୍ଣରେ ଅତିରିକ୍ତ ବର୍ଣ୍ଣ ଅନ୍ତର୍ଭୂକ୍ତ କରିବାକୁ ଅନୁମତି ଦିଏ"/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, hover your mouse on the "?" button. -->
+
+			<!-- Don't translate "(&quot;EOL custom color&quot;)" -->
+			<eol-custom-color-tip value="|ଡିଫଲ୍ଟ EOL କଷ୍ଟମ୍ ରଙ୍ଗ (&quot;EOL କଷ୍ଟମ୍ ରଙ୍ଗ&quot;) ପରିବର୍ତ୍ତନ କରିବାକୁ ଷ୍ଟାଇଲ୍ କନଫିଗରେଟରକୁ ଯାଆନ୍ତୁ .."/>
+
+			<word-chars-list-warning-begin value="ସଚେତନ ହୁଅନ୍ତୁ:"/>
+			<word-chars-list-space-warning value="$INT_REPLACE$ space(s)"/>
+			<word-chars-list-tab-warning value="$INT_REPLACE$ TAB(s)"/>
+			<word-chars-list-warning-end value="ତୁମର ବର୍ଣ୍ଣ ତାଲିକାରେ"/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, check "Add your character as part of word\r(don't choose it unless you know what you're doing)", then type a white-space in the text field. -->
+			<backup-select-folder value="|ବ୍ୟାକଅପ୍ ଡିରେକ୍ଟୋରୀ ଭାବରେ ଏକ ଫୋଲ୍ଡର୍ ଚୟନ କରନ୍ତୁ"/><!-- HowToReproduce: Settings > Preferences > Backup > [...] -->
+			<cloud-invalid-warning value="ଅବ val ଧ ପଥ"/>
+			<cloud-restart-warning value="|କାର୍ଯ୍ୟକାରୀ ହେବାକୁ ଦୟାକରି ନୋଟପ୍ୟାଡ୍ ++ ପୁନ rest ଆରମ୍ଭ କରନ୍ତୁ |"/>
+			<cloud-select-folder value="/ ରୁ ଯେଉଁଠାରେ ଏକ ନୋଟପ୍ୟାଡ୍ ++ ଏହାର ସେଟିଂସମୂହ ପ s େ / ଲେଖେ ଏକ ଫୋଲ୍ଡର୍ ବାଛ"/><!-- HowToReproduce: In "Cloud" section of Preferences dialog, check "Set your cloud location path here: ", then click the button "...". This message is displayed in the "Browse For Folder" dialog. -->
+			<default-open-save-select-folder value="ଡିଫଲ୍ଟ ଡିରେକ୍ଟୋରୀ ଭାବରେ ଏକ ଫୋଲ୍ଡର୍ ଚୟନ କରନ୍ତୁ"/><!-- HowToReproduce: Settings > Preferences > Default Directory > [...] -->
+			<shift-change-direction-tip value="ବିପରୀତ ଦିଗରେ ଖୋଜିବାକୁ Shift + Enter ବ୍ୟବହାର କରନ୍ତୁ"/>
+			<two-find-buttons-tip value="2 ବଟନ୍ ମୋଡ୍ ଖୋଜ"/>
+			<find-in-files-filter-tip value="Cpp, cxx, h, hxx hpp ରେ ଖୋଜ:
+* .cpp * .cxx * .h * .hxx * .hpp
+
+Exe, obj ଲଗ ବ୍ୟତୀତ ସମସ୍ତ ଫାଇଲରେ ଖୋଜ:
+*। *! *। exe! *। obj! *। ଲଗ
+
+ସମସ୍ତ ଫାଇଲରେ ସନ୍ଧାନ କରନ୍ତୁ କିନ୍ତୁ ଫୋଲ୍ଡର ପରୀକ୍ଷାକୁ ବାଦ ଦିଅନ୍ତୁ, bin bin64:
+*। *! \ ପରୀକ୍ଷା! \ ବିନ୍ *
+
+ସମସ୍ତ ଫାଇଲରେ ସନ୍ଧାନ କରନ୍ତୁ କିନ୍ତୁ ସମସ୍ତ ଫୋଲ୍ଡର ଲଗ କିମ୍ବା ଲଗକୁ ବାରମ୍ବାର ବାଦ ଦିଅନ୍ତୁ:
+*। *! + \ ଲଗ *"/><!-- HowToReproduce: Tip of mouse hovered on "Filters" label in "Find in Files" section of Find dialog. -->
+			<find-in-files-select-folder value=""/><!-- HowToReproduce: Search > Find in Files > [...] -->
+			<find-in-files-dir-from-active-doc-tip value="ରୁ ଖୋଜିବାକୁ ଏକ ଫୋଲ୍ଡର୍ ଚୟନ କରନ୍ତୁ |ସକ୍ରିୟ ଡକ୍ୟୁମେଣ୍ଟ ଉପରେ ଆଧାର କରି ଡିରେକ୍ଟୋରୀ କ୍ଷେତ୍ର ପୁରଣ କରନ୍ତୁ"/><!-- HowToReproduce: Search > Find in Files > [<<] -->
+			<find-status-top-reached value="ସନ୍ଧାନ: ଡକ୍ୟୁମେଣ୍ଟ ଆରମ୍ଭରୁ ପହଞ୍ଚିଲା, ତଳରୁ ପ୍ରଥମ ଘଟଣା"/>
+			<find-status-end-reached value="|ସନ୍ଧାନ: ଡକ୍ୟୁମେଣ୍ଟ୍ ଶେଷରେ ପହଞ୍ଚିଲା, ଉପରରୁ ପ୍ରଥମ ଘଟଣା"/>
+			<find-status-replaceinfiles-1-replaced value="|ଫାଇଲଗୁଡ଼ିକରେ ବଦଳାନ୍ତୁ: 1 ଘଟଣା ବଦଳାଯାଇଥିଲା"/>
+			<find-status-replaceinfiles-nb-replaced value="ଫାଇଲଗୁଡ଼ିକରେ ବଦଳାନ୍ତୁ: $ INT_REPLACE $ ଘଟଣାଗୁଡ଼ିକ ବଦଳାଗଲା"/>
+			<find-status-replaceinopenedfiles-1-replaced value="ଖୋଲା ଫାଇଲଗୁଡ଼ିକରେ ବଦଳାନ୍ତୁ: 1 ଘଟଣା ବଦଳାଯାଇଥିଲା"/>
+			<find-status-replaceinopenedfiles-nb-replaced value="ଖୋଲା ଫାଇଲଗୁଡ଼ିକରେ ବଦଳାନ୍ତୁ: $ INT_REPLACE $ ଘଟଣାଗୁଡ଼ିକ ବଦଳାଗଲା"/>
+			<find-status-invalid-re value="ସନ୍ଧାନ: ଅବ val ଧ ନିୟମିତ ଅଭିବ୍ୟକ୍ତି"/>
+			<find-status-search-failed value="ସନ୍ଧାନ: ସନ୍ଧାନ ବିଫଳ"/>
+			<find-status-mark-1-match value="ମାର୍କ: match ମ୍ୟାଚ୍"/>
+			<find-status-mark-nb-matches value="ମାର୍କ: $ INT_REPLACE $ ମେଳ"/>
+			<find-status-count-1-match value="ଗଣନା: match ମ୍ୟାଚ୍"/>
+			<find-status-count-nb-matches value="ଗଣନା: $ INT_REPLACE $ ମେଳ"/>
+			<find-status-replaceall-1-replaced value="ସମସ୍ତ ବଦଳାନ୍ତୁ: 1 ଘଟଣା ବଦଳାଯାଇଥିଲା |"/>
+			<find-status-replaceall-nb-replaced value="ସମସ୍ତଙ୍କୁ ବଦଳାନ୍ତୁ: $ INT_REPLACE $ ଘଟଣାଗୁଡ଼ିକ ବଦଳାଗଲା"/>
+			<find-status-replaceall-readonly value="ସମସ୍ତଙ୍କୁ ବଦଳାନ୍ତୁ: ପାଠ ବଦଳାଇ ପାରିବେ ନାହିଁ |ସାମ୍ପ୍ରତିକ ଡକ୍ୟୁମେଣ୍ଟ୍ କେବଳ ପ read ାଯାଏ"/>
+			<find-status-replace-end-reached value="ବଦଳାନ୍ତୁ: ଉପରୁ ଆରମ୍ଭ ହୋଇଥିବା ଡକ୍ୟୁମେଣ୍ଟ୍ ଶେଷରେ ପହଞ୍ଚିଲା"/>
+			<find-status-replace-top-reached value="|ବଦଳାନ୍ତୁ: ତଳୁ ଆରମ୍ଭ ହୋଇଥିବା ଡକ୍ୟୁମେଣ୍ଟ ଆରମ୍ଭ"/>
+			<find-status-replaced-next-found value="|ବଦଳାନ୍ତୁ: 1 ଘଟଣା ବଦଳାଯାଇଥିଲା |ପରବର୍ତ୍ତୀ ଘଟଣା ମିଳିଲା"/>
+			<find-status-replaced-without-continuing value="|ବଦଳାନ୍ତୁ: 1 ଘଟଣା ବଦଳାଯାଇଥିଲା"/>
+			<find-status-replaced-next-not-found value="|ବଦଳାନ୍ତୁ: 1 ଘଟଣା ବଦଳାଯାଇଥିଲା |ଆଉ କ occurr ଣସି ଘଟଣା ମିଳିଲା ନାହିଁ"/>
+			<find-status-replace-not-found value="|ବଦଳାନ୍ତୁ: କ occurr ଣସି ଘଟଣା ମିଳିଲା ନାହିଁ"/>
+			<find-status-replace-readonly value="ବଦଳାନ୍ତୁ: ପାଠ ବଦଳାଇ ପାରିବେ ନାହିଁ |ସାମ୍ପ୍ରତିକ ଡକ୍ୟୁମେଣ୍ଟ୍ କେବଳ ପ read ାଯାଏ"/>
+			<find-status-cannot-find value="ସନ୍ଧାନ: &quot;$ STR_REPLACE $&quot; ଲେଖା ଖୋଜି ପାଇଲା ନାହିଁ"/>
+			<find-status-cannot-find-pebkac-maybe value="ପ୍ରଦତ୍ତ ଘଟଣା ମିଳିବ ନାହିଁ |ଆପଣ ହୁଏତ “ଚାରିପାଖରେ ଗୁଡ଼ାଇ” (ON କୁ), “ମ୍ୟାଚ୍ କେସ୍” (OFF କୁ), କିମ୍ବା “କେବଳ ସମ୍ପୂର୍ଣ୍ଣ ଶବ୍ଦ ମେଳ” (OFF) ଯାଞ୍ଚ କରିବାକୁ ଭୁଲି ଯାଇଥିବେ"/>
+			<find-status-scope-selection value="|ମନୋନୀତ ପାଠ୍ୟରେ"/>
+			<find-status-scope-all value="ପୁରା ଫାଇଲ୍ ରେ"/>
+			<find-status-scope-backward value="ଫାଇଲ୍ ଆରମ୍ଭରୁ କେରେଟ୍"/>
+			<find-status-scope-forward value="କେରେଟ୍ ଠାରୁ ଶେଷ ଫାଇଲ୍"/>
+			<find-status-invisible-chars-findWhat value="ପେଷ୍ଟ ହୋଇଥିବା &quot;କ’ଣ ଖୋଜ&quot; କିମ୍ବା &quot;ବିଷୟବସ୍ତୁ ସହିତ ବଦଳାନ୍ତୁ&quot; ରେ ଅଦୃଶ୍ୟ ଅକ୍ଷର"/>
+			<find-status-invisible-chars-findWhat-tip value="ଚେତାବନୀ: ସନ୍ଧାନ (କିମ୍ବା ବଦଳାଇବା) କ୍ଷେତ୍ରରେ ଅଦୃଶ୍ୟ ଅକ୍ଷର |
+ଏହି କ୍ଷେତ୍ରରେ ଲେପନ ହୋଇଥିବା ପାଠ୍ୟରେ ଅଦୃଶ୍ୟ (ବୋଧହୁଏ ରେଖା-ସମାପ୍ତ) ଅକ୍ଷର ଅନ୍ତର୍ଭୁକ୍ତ |ଯଦି ଆପଣ ସେଗୁଡିକୁ ବିଲୋପ ନକରି ଅଗ୍ରଗତି କରନ୍ତି, ସେଗୁଡିକ ସନ୍ଧାନ (କିମ୍ବା ବଦଳାଇବା) ପାଠ୍ୟରେ ଅନ୍ତର୍ଭୂକ୍ତ ହେବ"/>
+			<finder-find-in-finder value="|ଏହି ସନ୍ଧାନ ଫଳାଫଳଗୁଡିକରେ ଖୋଜ ..."/>
+			<finder-close-this value="ଏହି ସନ୍ଧାନ ଫଳାଫଳଗୁଡିକ ବନ୍ଦ କରନ୍ତୁ"/>
+			<finder-collapse-all value="ସମସ୍ତ ଫୋଲ୍ କରନ୍ତୁ |"/>
+			<finder-uncollapse-all value="ସମସ୍ତ ଖୋଲନ୍ତୁ"/>
+			<finder-copy value="ମନୋନୀତ ରେଖା (ଗୁଡିକ) କପି କରନ୍ତୁ"/>
+			<finder-copy-selected-paths value="ମନୋନୀତ ପଥ ନାମ (ଗୁଡିକ) କପି କରନ୍ତୁ"/>
+			<finder-clear-all value="ସମସ୍ତ ସଫା କର"/>
+			<finder-open-selected-paths value="ମନୋନୀତ ପଥ ନାମ (ଗୁଡିକ) ଖୋଲନ୍ତୁ"/>
+			<finder-purge-for-every-search value="ପ୍ରତ୍ୟେକ ସନ୍ଧାନ ପାଇଁ ଶୁଦ୍ଧ"/>
+			<finder-wrap-long-lines value="ଶବ୍ଦ ଲମ୍ବା ଧାଡି ଗୁଡ଼ାଇ"/>
+			<common-ok value="ଠିକ ଅଛି"/>
+			<common-cancel value="ବାତିଲ୍"/>
+			<common-name value="ନାମ"/>
+			<tabrename-title value="ସାମ୍ପ୍ରତିକ ଟ୍ୟାବ୍ ପୁନ ame ନାମ କରନ୍ତୁ"/>
+			<tabrename-newname value="ନୂତନ ନାମ"/>
+			<splitter-rotate-left value="ବାମକୁ ଘୂର୍ଣ୍ଣନ କରନ୍ତୁ"/>
+			<splitter-rotate-right value="ଡାହାଣକୁ ଘୂର୍ଣ୍ଣନ କରନ୍ତୁ"/>
+			<userdefined-title-new value="ନୂତନ ଭାଷା ସୃଷ୍ଟି କରନ୍ତୁ ..."/>
+			<userdefined-title-save value="ସାମ୍ପ୍ରତିକ ଭାଷା ନାମକୁ ସେଭ୍ କରନ୍ତୁ ..."/>
+			<userdefined-title-rename value="ସାମ୍ପ୍ରତିକ ଭାଷା ନାମ ପରିବର୍ତ୍ତନ କରନ୍ତୁ"/>
+			<summary value="ସାରାଂଶ"/>
+			<summary-filepath value="ପୂର୍ଣ୍ଣ ଫାଇଲ୍ ପଥ:"/>
+			<summary-filecreatetime value="ସୃଷ୍ଟି:"/>
+			<summary-filemodifytime value="ପରିବର୍ତ୍ତିତ:"/>
+			<summary-nbchar value="ଅକ୍ଷରଗୁଡିକ (ରେଖା ଶେଷ ବିନା):"/>
+			<summary-nbword value="ଶବ୍ଦ:"/>
+			<summary-nbline value="ରେଖା:"/>
+			<summary-nbbyte value="ଡକ୍ୟୁମେଣ୍ଟ୍ ଲମ୍ବ:"/>
+			<summary-nbsel1 value=""/>
+			<summary-nbsel2 value="ରେ ମନୋନୀତ ବର୍ଣ୍ଣଗୁଡିକ ("/>
+			<summary-nbrange value="ବାଇଟ୍) |ପରିସର"/>
+			<progress-hits-title value="ହିଟ୍:"/>
+			<progress-cancel-info value="ଅପରେସନ୍ ବାତିଲ୍ କରନ୍ତୁ, ଦୟାକରି ଅପେକ୍ଷା କରନ୍ତୁ ..."/>
+			<find-in-files-progress-title value="ଫାଇଲଗୁଡ଼ିକରେ ସନ୍ଧାନ କରନ୍ତୁ ..."/>
+			<replace-in-files-confirm-title value="ଆପଣ ନିଶ୍ଚିତ କି?"/>
+			<replace-in-files-confirm-directory value="ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ସମସ୍ତ ଘଟଣାକୁ ବଦଳାଇବାକୁ ଚାହୁଁଛନ୍ତି:"/>
+			<replace-in-files-confirm-filetype value="ଫାଇଲ୍ ପ୍ରକାର ପାଇଁ:"/>
+			<replace-in-files-progress-title value="ଫାଇଲଗୁଡ଼ିକରେ ଅଗ୍ରଗତି କରନ୍ତୁ ..."/>
+			<replace-in-projects-confirm-title value="ଆପଣ ନିଶ୍ଚିତ କି?"/>
+			<replace-in-projects-confirm-message value="ମନୋନୀତ ପ୍ରୋଜେକ୍ଟ ପ୍ୟାନେଲ (ଗୁଡିକ) ରେ ଥିବା ସମସ୍ତ ଡକ୍ୟୁମେଣ୍ଟରେ ଆପଣ ସମସ୍ତ ଘଟଣାକୁ ବଦଳାଇବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<replace-in-open-docs-confirm-title value="ଆପଣ ନିଶ୍ଚିତ କି?"/>
+			<replace-in-open-docs-confirm-message value="ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ସମସ୍ତ ଖୋଲା ଦଲିଲରେ ସମସ୍ତ ଘଟଣାକୁ ବଦଳାଇବାକୁ ଚାହୁଁଛନ୍ତି କି?"/>
+			<find-result-caption value="ସନ୍ଧାନ ଫଳାଫଳ |"/>
+			<find-result-title value="ସନ୍ଧାନ"/><!-- Must not begin with space or tab character -->
+			<find-result-title-info value="($ INT_REPLACE1 $ INT_REPLACE3 $ ଫାଇଲଗୁଡିକରେ $ INT_REPLACE1 $ ସନ୍ଧାନ ହୋଇଛି)"/>
+			<find-result-title-info-selections value="($ INT_REPLACE1 $ INT_REPLACE2 $ ଚୟନରେ $ INT_REPLACE3 $ ହିଟ୍ ହୋଇଛି)"/>
+			<find-result-title-info-options-searchmode-normal value="ସାଧାରଣ"/>
+			<find-result-title-info-options-searchmode-extended value="ବିସ୍ତାରିତ"/>
+			<find-result-title-info-options-searchmode-regexp value="RegEx"/>
+			<find-result-title-info-options-case value="ମାମଲା"/>
+			<find-result-title-info-options-word value="ଶବ୍ଦ"/>
+			<find-result-title-info-extra value="- ରେଖା ଫିଲ୍ଟର୍ ମୋଡ୍: କେବଳ ଫିଲ୍ଟର୍ ହୋଇଥିବା ଫଳାଫଳଗୁଡିକ ପ୍ରଦର୍ଶନ କରନ୍ତୁ"/>
+			<find-result-hits value="($ INT_REPLACE $ ହିଟ୍)"/>
+			<find-result-line-prefix value="ରେଖା"/><!-- Must not begin with space or tab character -->
+			<find-regex-zero-length-match value="ଶୂନ ଦ length ର୍ଘ୍ୟ ମେଳ"/>
+			<session-save-folder-as-workspace value="ୱାର୍କସ୍ପେସ୍ ଭାବରେ ଫୋଲ୍ଡର୍ ସେଭ୍ କରନ୍ତୁ"/>
+			<tab-untitled-string value="ନୂତନ"/>
+			<file-save-assign-type value="ସମ୍ପ୍ରସାରଣ ଯୋଡନ୍ତୁ"/>
+			<close-panel-tip value="ବନ୍ଦ"/>
+			<IncrementalFind-FSFound value="$INT_REPLACE$ matches"/>
+			<IncrementalFind-FSNotFound value="ବାକ୍ୟାଂଶ ମିଳିଲା ନାହିଁ"/>
+			<IncrementalFind-FSTopReached value="ପୃଷ୍ଠାର ଶୀର୍ଷରେ ପହଞ୍ଚିଲା, ତଳୁ ଜାରି"/>
+			<IncrementalFind-FSEndReached value="ପୃଷ୍ଠାର ଶେଷରେ ପହଞ୍ଚିଲା, ଉପରୁ ଜାରି"/>
+			<contextMenu-styleAlloccurrencesOfToken value="ଟୋକେନ୍ ର ସମସ୍ତ ଘଟଣା ଶ Style ଳୀ କରନ୍ତୁ |"/>
+			<contextMenu-styleOneToken value="ଷ୍ଟାଇଲ୍ ଗୋଟିଏ ଟୋକନ୍"/>
+			<contextMenu-clearStyle value="ଶ style ଳୀ ସଫା କରନ୍ତୁ"/>
+			<contextMenu-PluginCommands value="ପ୍ଲଗଇନ୍ ନିର୍ଦ୍ଦେଶ"/>
+			<largeFileRestriction-tip value="କେତେକ ବ features ଶିଷ୍ଟ୍ୟ ବଡ଼ ଫାଇଲଗୁଡ଼ିକରେ କାର୍ଯ୍ୟଦକ୍ଷତାକୁ ମନ୍ଥର କରିପାରେ |ଏକ ବଡ ଫାଇଲ୍ ଖୋଲିବାରେ ଏହି ବ features ଶିଷ୍ଟ୍ୟଗୁଡିକ ସ୍ auto ତ - ଅକ୍ଷମ ହୋଇପାରିବ |ଆପଣ ସେଗୁଡ଼ିକୁ ଏଠାରେ କଷ୍ଟମାଇଜ୍ କରିପାରିବେ |
+
+ଟିପ୍ପଣୀ:
+ଉପଯୁକ୍ତ ଆଚରଣ ପାଇବା ପାଇଁ ଏଠାରେ ବିକଳ୍ପଗୁଡ଼ିକୁ ପରିବର୍ତ୍ତନ କରିବା ବର୍ତ୍ତମାନ ଖୋଲାଯାଇଥିବା ବଡ଼ ଫାଇଲଗୁଡ଼ିକୁ ପୁନ open ଖୋଲିବା ଆବଶ୍ୟକ କରେ |
+
+2। ଯଦି &quot;ସର୍ବଭାରତୀୟ ସ୍ତରରେ ୱାର୍ଡ ରାପ୍ ନିଷ୍କ୍ରିୟ କରନ୍ତୁ&quot; ଯାଞ୍ଚ କରାଯାଏ ଏବଂ ଆପଣ ଏକ ବଡ ଫାଇଲ୍ ଖୋଲନ୍ତି, ସମସ୍ତ ଫାଇଲ୍ ପାଇଁ &quot;ୱାର୍ଡ ରାପ୍&quot; ଅକ୍ଷମ ହେବ |ମେନୁ &quot;ଭ୍ୟୁ-&gt; ୱାର୍ଡ ରାପ୍&quot; ମାଧ୍ୟମରେ ଆପଣ ଏହାକୁ ପୁନ enable- ସକ୍ଷମ କରିପାରିବେ"/>
+			<npcNote-tip value="|ମନୋନୀତ &quot;ଅଣ- ASCII&quot; ହ୍ ites ାଇଟସ୍ପେସ୍ ଏବଂ ଅଣ-ମୁଦ୍ରଣ (ନିୟନ୍ତ୍ରଣ) ବର୍ଣ୍ଣଗୁଡିକର ପ୍ରତିନିଧିତ୍ୱ |
+
+ଟିପ୍ପଣୀ:
+ଉପସ୍ଥାପନା ବ୍ୟବହାର କରିବା ଦ୍ୱାରା ପାଠ୍ୟ ଉପରେ ବର୍ଣ୍ଣ ପ୍ରଭାବ ଅକ୍ଷମ ହେବ |
+
+ମନୋନୀତ ହ୍ ites ାଇଟସ୍ପେସ୍ ଏବଂ ପ୍ରିଣ୍ଟିଂ ନଥିବା ଅକ୍ଷରଗୁଡ଼ିକର ସମ୍ପୂର୍ଣ୍ଣ ତାଲିକା ପାଇଁ ୟୁଜର୍ ମାନୁଆଲ୍ ଯାଞ୍ଚ କରନ୍ତୁ |
+
+ୟୁଜର୍ ମାନୁଆଲ୍ ସହିତ ୱେବସାଇଟ୍ ଖୋଲିବାକୁ ଏହି ବଟନ୍ ଉପରେ କ୍ଲିକ୍ କରନ୍ତୁ"/>
+			<npcAbbreviation-tip value="|ସଂକ୍ଷିପ୍ତ: ନାମ
+NBSP: ନୋ-ବ୍ରେକ୍ ସ୍ପେସ୍ |
+ZWSP: ଶୂନ୍ୟ-ପ୍ରସ୍ଥ ସ୍ଥାନ |
+ZWNBSP: ଶୂନ୍ୟ-ପ୍ରସ୍ଥ ନୋ-ବ୍ରେକ୍ ସ୍ପେସ୍ |
+
+ପୂର୍ଣ୍ଣ ତାଲିକା ପାଇଁ ୟୁଜର୍ ମାନୁଆଲ୍ ଯାଞ୍ଚ କରନ୍ତୁ |
+&quot;?&quot; ଉପରେ କ୍ଲିକ୍ କରନ୍ତୁ?ୟୁଜର୍ ମାନୁଆଲ୍ ସହିତ ୱେବସାଇଟ୍ ଖୋଲିବାକୁ ଡାହାଣରେ ବଟନ୍"/>
+			<npcCodepoint-tip value="|କୋଡପଏଣ୍ଟ: ନାମ
+U + 00A0: ନୋ-ବ୍ରେକ୍ ସ୍ପେସ୍ |
+U + 200B: ଶୂନ୍ୟ-ପ୍ରସ୍ଥ ସ୍ଥାନ |
+U + FEFF: ଶୂନ୍ୟ-ପ୍ରସ୍ଥ ନୋ-ବ୍ରେକ୍ ସ୍ପେସ୍ |
+
+ପୂର୍ଣ୍ଣ ତାଲିକା ପାଇଁ ୟୁଜର୍ ମାନୁଆଲ୍ ଯାଞ୍ଚ କରନ୍ତୁ |
+&quot;?&quot; ଉପରେ କ୍ଲିକ୍ କରନ୍ତୁ?ୟୁଜର୍ ମାନୁଆଲ୍ ସହିତ ୱେବସାଇଟ୍ ଖୋଲିବାକୁ ଡାହାଣରେ ବଟନ୍"/>
+
+			<!-- Don't translate "(&quot;Non-printing characters custom color&quot;)" -->
+			<npcCustomColor-tip value="|ମନୋନୀତ ହ୍ ites ାଇଟସ୍ପେସ୍ ଏବଂ ଅଣ-ପ୍ରିଣ୍ଟିଙ୍ଗ୍ ଅକ୍ଷରଗୁଡ଼ିକ ପାଇଁ ଡିଫଲ୍ଟ କଷ୍ଟମ୍ ରଙ୍ଗ ପରିବର୍ତ୍ତନ କରିବାକୁ ଷ୍ଟାଇଲ୍ କନଫିଗରେଟରକୁ ଯାଆନ୍ତୁ (“ଅଣ-ମୁଦ୍ରଣ ଅକ୍ଷର କଷ୍ଟମ୍ ରଙ୍ଗ”)"/>
+			<npcIncludeCcUniEol-tip value="|C0, C1 ନିୟନ୍ତ୍ରଣ ଏବଂ ୟୁନିକୋଡ୍ EOL (ପରବର୍ତ୍ତୀ ଧାଡି, ରେଖା ପୃଥକକାରୀ ଏବଂ ପାରାଗ୍ରାଫ୍ ବିଛିନ୍ନକାରୀ) ଅକ୍ଷରରେ ପ୍ରିଣ୍ଟିଂ ନଥିବା ଅକ୍ଷର ଦୃଶ୍ୟ ସେଟିଂସମୂହ ପ୍ରୟୋଗ କରନ୍ତୁ"/>
+			<searchingInSelThresh-tip value="|ସନ୍ଧାନ ସଂଳାପ ସକ୍ରିୟ ହେଲେ ସ୍ୱୟଂଚାଳିତ ଭାବରେ “ଚୟନ” ଚେକ୍ ବକ୍ସକୁ ଯାଞ୍ଚ କରିବା ପାଇଁ ଏଡିଟ୍ ଜୋନ୍ରେ ସର୍ବନିମ୍ନ ସଂଖ୍ୟକ ମନୋନୀତ ଅକ୍ଷର |ସର୍ବାଧିକ ମୂଲ୍ୟ ହେଉଛି $ INT_REPLACE $ |ଅଟୋ-ଯାଞ୍ଚକୁ ଅକ୍ଷମ କରିବା ପାଇଁ ମୂଲ୍ୟ 0 କୁ ସେଟ୍ କରନ୍ତୁ"/>
+			<searchingFillFindWhat-tip value="|Ctrl-F ଟ୍ରିଗର ହେବାବେଳେ ସ୍ୱୟଂଚାଳିତ ଭାବରେ &quot;ଖୋଜ କଣ&quot; ଫିଲ୍ଡ ପୂରଣ କରିବା ପାଇଁ ସଂପାଦନ ଜୋନରେ ସର୍ବାଧିକ ସଂଖ୍ୟକ ମନୋନୀତ ବର୍ଣ୍ଣଗୁଡିକ |ସର୍ବାଧିକ ମୂଲ୍ୟ ହେଉଛି $ INT_REPLACE $, ଯାହା ସିଷ୍ଟମ୍ ଦ୍ୱାରା ସୀମିତ &quot;ଖୋଜ କଣ&quot; କ୍ଷେତ୍ରର ସର୍ବାଧିକ ଆକାର ଅଟେ"/>
+			<verticalEdge-tip value="|ଏକ ଦଶମିକ ସଂଖ୍ୟା ସହିତ ଏହାର ସ୍ଥିତିକୁ ସୂଚାଇ ଆପଣଙ୍କର ସ୍ତମ୍ଭ ମାର୍କର୍ ଯୋଡନ୍ତୁ |ବିଭିନ୍ନ ସଂଖ୍ୟାକୁ ଅଲଗା କରିବା ପାଇଁ ଧଳା ସ୍ଥାନ ବ୍ୟବହାର କରି ଆପଣ ଅନେକ ସ୍ତମ୍ଭ ମାର୍କର ବ୍ୟାଖ୍ୟା କରିପାରିବେ"/>
+			<fileSaveAsCopySaveButton-tip value="|ସେଭ୍ କରିବା ପରେ କପି ଖୋଲିବାକୁ ସେଭ୍ ଦବାଇବାବେଳେ Shift ଧରି ରଖନ୍ତୁ"/>
+			<autoIndentBasic-tip value="|ନିଶ୍ଚିତ କରନ୍ତୁ ଯେ ସାମ୍ପ୍ରତିକ ଲାଇନର ଇଣ୍ଡେଣ୍ଟେସନ୍ (ଯଥା ENTER କୀ ଦବାଇ ସୃଷ୍ଟି ହୋଇଥିବା ନୂତନ ରେଖା) ପୂର୍ବ ଧାଡିର ଇଣ୍ଡେଣ୍ଟେସନ୍ ସହିତ ମେଳ ଖାଉଛି"/>
+			<autoIndentAdvanced-tip value="|&quot;C- ପରି&quot; ଭାଷା ଏବଂ ପାଇଥନ୍ ପାଇଁ ସ୍ମାର୍ଟ ଇଣ୍ଡେଣ୍ଟେସନ୍ ସକ୍ଷମ କରନ୍ତୁ |&quot;C- ପରି&quot; ଭାଷା ଅନ୍ତର୍ଭୁକ୍ତ:
+C, C ++, Java, C #, Objective-C, PHP, JavaScript, JSP, CSS, Perl, Rust, PowerShell ଏବଂ JSON |
+
+ଯଦି ଆପଣ ଉନ୍ନତ ମୋଡ୍ ଚୟନ କରନ୍ତି କିନ୍ତୁ ଉପରୋକ୍ତ ଭାଷାଗୁଡ଼ିକରେ ଫାଇଲଗୁଡିକ ସଂପାଦନ କରନ୍ତି ନାହିଁ, ଇଣ୍ଡେଣ୍ଟେସନ୍ ମ basic ଳିକ ମୋଡ୍ ରେ ରହିବ"/>
+
+			<!-- Don't translate "Global override" and "Default Style" -->
+			<global-override-tip value="|ଏଠାରେ &quot;ଗ୍ଲୋବାଲ୍ ଓଭର୍ରାଇଡ୍&quot; ସକ୍ଷମ କରିବା ସମସ୍ତ ଭାଷା ଶ yles ଳୀରେ ସେହି ପାରାମିଟରକୁ ନବଲିଖନ କରିବ |ଆପଣ ବୋଧହୁଏ ଯାହା ଚାହୁଁଛନ୍ତି ତାହା ବଦଳରେ “ଡିଫଲ୍ଟ ଷ୍ଟାଇଲ୍” ସେଟିଂସମୂହ ବ୍ୟବହାର କରିବା"/>
+			<scintillaRenderingTechnology-tip value="ସ୍ characters ତନ୍ତ୍ର ଅକ୍ଷରର ରେଣ୍ଡରିଂରେ ଉନ୍ନତି ଆଣିପାରେ କିମ୍ବା କିଛି ଗ୍ରାଫିକ୍ ସମସ୍ୟା ସମାଧାନ କରିପାରେ, ପରିବର୍ତ୍ତନଗୁଡ଼ିକୁ ପ୍ରୟୋଗ କରିବା ପାଇଁ ନୋଟପ୍ୟାଡ୍ ++ ପୁନ rest ଆରମ୍ଭ କରନ୍ତୁ"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'length' & 'lines' are much longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-length-lines value="|ଦ length ର୍ଘ୍ୟ: $ STR_REPLACE1 $ ରେଖା: $ STR_REPLACE2 $"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Ln' & 'Col' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Ln-Col value="Ln: $ STR_REPLACE1 $ Col: $ STR_REPLACE2 $"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Pos' & 'Sel' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Pos value="ପୋସ୍:"/>
+			<statusbar-Sel value="ବିକ୍ରୟ:"/>
+			<statusbar-Sel-number value="ବିକ୍ରୟ"/>
+			<toolbar-accent-tip value="ଏହି ବିକଳ୍ପ ଆପଣଙ୍କ ଟୁଲ୍ ବାର୍ ଆଇକନ୍ ଗୁଡିକ ୱିଣ୍ଡୋଜ୍ ସିଷ୍ଟମ୍ ଆକ୍ସେଣ୍ଟ୍ ରଙ୍ଗ ଅନୁସରଣ କରେ |ୱିଣ୍ଡୋଜରେ ବଟନ୍, ସୀମା, ଏବଂ ଷ୍ଟାର୍ଟ ମେନୁ ଟାଇଲରେ ବ୍ୟବହୃତ ହାଇଲାଇଟ୍ ରଙ୍ଗ |ଏହାକୁ ପରିବର୍ତ୍ତନ କରିବାକୁ, ସେଟିଂସମୂହ&gt; ବ୍ୟକ୍ତିଗତକରଣ&gt; ରଙ୍ଗକୁ ଯାଆନ୍ତୁ, ତାପରେ ଆପଣଙ୍କର ପସନ୍ଦିତ ଉଚ୍ଚାରଣ ରଙ୍ଗ ଚୟନ କରନ୍ତୁ"/>
+			<len-limit-exceeded-tip value="|ଦ Length ର୍ଘ୍ୟ ସୀମା ଅତିକ୍ରମ କରିଛି: ଆପଣଙ୍କର ଇନପୁଟ୍ ଅନୁମୋଦିତ ସୀମା ଅତିକ୍ରମ କରିପାରେ ଏବଂ ଛେଦନ ହୋଇଥାଇପାରେ, ଏବଂ ଏହା ପରବର୍ତ୍ତୀ ଅଧିବେଶନ ପାଇଁ ସଞ୍ଚୟ ହେବ ନାହିଁ"/>
+			<max-len-on-search-tip value="|ଆପଣଙ୍କର ଇନପୁଟ୍ ଅନୁମୋଦିତ ସୀମା ଅତିକ୍ରମ କରିପାରେ ଏବଂ ଛୋଟ ହୋଇପାରେ, ଏବଂ ଏହା ପରବର୍ତ୍ତୀ ଅଧିବେଶନ ପାଇଁ ସଞ୍ଚୟ ହେବ ନାହିଁ"/>
+			<max-len-on-save-tip value="|ଆପଣଙ୍କର ଇନପୁଟ୍ ର ଲମ୍ବ ବହୁତ ଲମ୍ବା ଏବଂ ଆପଣଙ୍କର ପରବର୍ତ୍ତୀ ଅଧିବେଶନ ପାଇଁ ସଞ୍ଚୟ ହୋଇନପାରେ"/>
+			<goto-setting-tip value="|ଏଠାରେ ଆପଣଙ୍କର ସେଟିଂ ଖୋଜ"/>
+			<tabbar-tabcompactlabellen-tip value="ଲମ୍ବା ଟ୍ୟାବ୍ ନାମଗୁଡ଼ିକର ଦୃଶ୍ୟମାନ ଲମ୍ବକୁ ସୀମିତ କରେ |ପ୍ରଦତ୍ତ ମୂଲ୍ୟ ପ୍ରୟୋଗ କରିବାକୁ ପ୍ରବେଶ କରନ୍ତୁ |ମୂଲ୍ୟ ପରିସର: 1-257 ଅକ୍ଷର (0 କାଟିବା ଅକ୍ଷମ କରିଥାଏ) |"/>
+		</MiscStrings>
+	</Native-Langue>
+</NotepadPlus>
+
+

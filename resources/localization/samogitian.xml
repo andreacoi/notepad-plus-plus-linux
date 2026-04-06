@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<NotepadPlus>
+	<Native-Langue name="Samogitian" filename="samogitian.xml">
+		<!-- Mindaugas Machernis veertea.  -->
+		<Menu>
+			<Main>
+				<!-- Main Menu Entries -->
+				<Entries>
+					<Item menuId="file" name="&amp;Failaa"/>
+					<Item menuId="edit" name="&amp;Keistea"/>
+					<Item menuId="search" name="&amp;Eaishkuotea"/>
+					<Item menuId="view" name="R&amp;uodiitea"/>
+					<Item menuId="encoding" name="&amp;Format's"/>
+					<Item menuId="language" name="&amp;Shnekta"/>
+					<Item menuId="settings" name="&amp;Nostatimaa"/>
+				</Entries>
+
+				<!-- Sub Menu Entries -->
+				<SubEntries>
+
+
+
+
+				</SubEntries>
+
+				<!-- all menu item -->
+				<Commands>
+					<Item id="41001" name="&amp;Koortea	Ctrl+N"/>
+					<Item id="41002" name="&amp;Atdariitea	Ctrl+O"/>
+					<Item id="41003" name="&amp;Sheaata Ozhdariitea Ctrl+W"/>
+					<Item id="41004" name="&amp;Veasas  Ozhdariitea"/>
+					<Item id="41005" name="&amp;Keatas  Ozhdariitea"/>
+					<Item id="41006" name="S&amp;auguotea	Ctrl+S"/>
+					<Item id="41007" name="Vea&amp;sas Sauguotea	Ctrl+Shift+S"/>
+					<Item id="41008" name="Keateep &amp;Sauguotea .."/>
+					<Item id="41010" name="Spausdintea...	Ctrl+P"/>
+					<Item id="41011" name="Pabonga"/>
+
+					<Item id="42001" name="Eashkearp&amp;t'	Ctrl+X"/>
+					<Item id="42002" name="P&amp;asdaugeantea	Ctrl+C"/>
+					<Item id="42003" name="&amp;Atshaukt'	Ctrl+Z"/>
+					<Item id="42004" name="Atstat&amp;iitea	Ctrl+Y"/>
+					<Item id="42005" name="K&amp;eeltea	Ctrl+V"/>
+					<Item id="42006" name="&amp;Eashtriintea	Del"/>
+					<Item id="42007" name="Veaskou Zhea&amp;mietea	Ctrl+A"/>
+
+					<Item id="43001" name="&amp;Eaiskuot'...	Ctrl+F"/>
+					<Item id="43002" name="Keaata Ea&amp;iskuotea	F3"/>
+					<Item id="43003" name="Keist'...	Ctrl+H"/>
+					<Item id="43004" name="Eitea ea...	Ctrl+G"/>
+					<Item id="43005" name="Veait' Atmiint'	Ctrl+F2"/>
+					<Item id="43006" name="Veait' Keat' Atmiint'	F2"/>
+					<Item id="43007" name="Veait' Boovus' Atmiint' Shift+F2"/>
+					<Item id="43008" name="Veait's Veasas Ozhmeaarshtea"/>
+
+
+
+
+
+
+
+
+
+
+
+					<Item id="44011" name="Long's kalbuos naujuos apeapreazheaama"/>
+
+
+
+
+
+
+
+					<Item id="44025" name="Zheaanklos tarpa ear tabuliaveaam ruodiit'"/>
+					<Item id="44026" name="Skeartoka eilooteas roudiit'"/>
+					<Item id="44019" name="Zheanklos veasos ruodiit"/>
+
+
+					<Item id="44020" name="Zhiim's Tabuliaveam'"/>
+
+					<Item id="44022" name="Tekst' liigiout'"/>
+					<Item id="44023" name="Didint' Ctrl-pelies ratok's aukshtiin"/>
+					<Item id="44024" name="Mazhint' Ctrl-pelies ratok's zhemiin"/>
+
+					<Item id="45001" name="Windows formato veerstea"/>
+					<Item id="45002" name="UNIX  formato veerstea"/>
+					<Item id="45003" name="MAC  formato veerstea"/>
+
+					<Item id="45004" name="ANSI kodout'"/>
+					<Item id="45005" name="UTF-8 kodout'"/>
+					<Item id="45006" name="UCS-2 Big Endian kodout'"/>
+					<Item id="45007" name="UCS-2 Little Endian kodout'"/>
+					<Item id="45008" name="MAC formato kodout'"/>
+
+					<Item id="10001" name="Ean vaizd' keaat'"/>
+					<Item id="10002" name="Vaizd's dveagob's"/>
+
+					<Item id="46001" name="Reankeaniis Steaalio..."/>
+
+					<Item id="47000" name="Apleank...	F1"/>
+
+
+
+
+
+
+					<Item id="49000" name="&amp;Veakdiitea..."/>
+				</Commands>
+			</Main>
+			<Splitter>
+			</Splitter>
+			<TabBar>
+				<Item CMID="0" name="Sheat' Uzhdariitea"/>
+				<Item CMID="1" name="Veasas keatas ozhdariitea(sheat' plaeakt')"/>
+				<Item CMID="2" name="Sauguot'"/>
+				<Item CMID="3" name="Keateep Sauguotea..."/>
+				<Item CMID="4" name="Spausdintea"/>
+				<Item CMID="5" name="Ean vaizd' keat'"/>
+				<Item CMID="6" name="Vaizd's deaagob's"/>
+			</TabBar>
+		</Menu>
+
+		<Dialog>
+			<Find title="Ieshkuot'...">
+				<Item id="1" name="Keat' eaiskuot'"/>
+				<Item id="2" name="Ozhadariitea"/>
+				<Item id="1620" name="Kuun rast'?"/>
+				<Item id="1603" name="Zhuodee eashteasea"/>
+				<Item id="1604" name="Deadzhiuoseas/mazhuosias"/>
+				<Item id="1605" name="Reishkeanee"/>
+				<Item id="1606" name="Apleankou Liigiuotea"/>
+				<Item id="1614" name="Skaichiuotea"/>
+				<Item id="1615" name="Veasas Eaishkuotea"/>
+				<Item id="1616" name="Eiloot' zhiimiet'"/>
+				<Item id="1618" name="Po paieshkuos eashseavaliitea"/>
+
+				<Item id="1611" name="Eaa kou pakeeistea?"/>
+				<Item id="1608" name="Keist'"/>
+				<Item id="1609" name="Veasos Keistea"/>
+			</Find>
+			<GoToLine title="Eelootea nomerio tvarkiitea">
+				<Item id="1" name="&amp;Teanaas eetea"/>
+				<Item id="2" name="Kor eso teaan geraa"/>
+				<Item id="2004" name="Eiloot' tvarkuom' :"/>
+				<Item id="2005" name="Tvarkiit' reek' :"/>
+				<Item id="2006" name="Eashveaasa eilochio :"/>
+			</GoToLine>
+			<TabSize>
+				<Item id="2401" name="Pluoteas 'Tab':"/>
+			</TabSize>
+			<MaxFile>
+				<Item id="2401" name="Biilas daugiausia iir :"/>
+			</MaxFile>
+			<Run title="Veakdiitea...">
+				<Item id="1903" name="Kou veakdiitea: "/>
+				<Item id="1" name="Veakdiit'"/>
+				<Item id="2" name="atshaukt'"/>
+			</Run>
+			<StyleConfig title="Saronka Steaalio">
+				<Item id="1" name="Bandiik!"/>
+				<Item id="2" name="Grazhink"/>
+				<Item id="2301" name="Sauguok"/>
+
+				<SubDialog>
+					<Item id="2211" name="Apeabreazheams Stealiaus :"/>
+					<Item id="2210" name="Tas stealios veaseaams galious"/>
+					<Item id="2212" name="Spalvas"/>
+					<Item id="2213" name="Shreaphtaa"/>
+					<Item id="2206" name="Spaalv' Teekst'"/>
+					<Item id="2207" name="Spaalv' Fuon'"/>
+					<Item id="2208" name="Shreapht's :"/>
+					<Item id="2209" name="Diid's Shreapht' :"/>
+					<Item id="2204" name="Joud's"/>
+					<Item id="2205" name="Korsiiv's"/>
+					<Item id="2214" name="Priesag'"/>
+					<Item id="2216" name="Priesaga vartuotuoja"/>
+					<Item id="2218" name="Pabraukt'"/>
+					<Item id="2219" name="Raktazhodee"/>
+					<Item id="2221" name="Rajtazhodee vartuotuoja"/>
+				</SubDialog>
+
+			</StyleConfig>
+			<UserDefine title="Apeapriezht's Vartuotuoja">
+				<Item id="20002" name="Keist'"/>
+				<Item id="20003" name="Sokoortea.."/>
+				<Item id="20004" name="Naikintea"/>
+				<Item id="20005" name="Keateep sauguotea.."/>
+				<Item id="20007" name="Kaalb' vartuotuoj':"/>
+				<Item id="20009" name="Priesag' :"/>
+				<Item id="0" name="Stealios spalvuos"/>
+				<Item id="1" name="Teekst' spalv'"/>
+				<Item id="2" name="Fuon' spalv'"/>
+				<Item id="3" name="Shreaaphta stealios"/>
+				<Item id="4" name="Sreapht's :"/>
+				<Item id="5" name="Diid's Sreapht' :"/>
+				<Item id="6" name="Joud's"/>
+				<Item id="7" name="Korsiiv's"/>
+				<Folder title="Aplonkaa">
+					<Item id="21101" name="Nuostatas stealiaus sotarta"/>
+					<Item id="21201" name="Nuostatas stealiaus aplonka ateadariima"/>
+					<Item id="21301" name="Nuostatas stealiaus aplonka ozhdariima"/>
+				</Folder>
+				<Keywords title="Sarashaa raktazhuodio">
+					<Item id="22101" name="groopea pearma (1)"/>
+					<Item id="22201" name="groopea ontra (2)"/>
+					<Item id="22301" name="groopea tretea (3)"/>
+					<Item id="22401" name="groopea ketveaarta (4)"/>
+				</Keywords>
+				<Comment title="Komentaraa ear skaitee">
+					<Item id="23301" name="Komentar's Eelooteas"/>
+					<Item id="23101" name="Komentar's Bluoka"/>
+					<Item id="23113" name="Komentaras pradedamas :"/>
+					<Item id="23115" name="Komentaras beangiamas :"/>
+					<Item id="23201" name="Skaitios"/>
+				</Comment>
+				<Operator title="Operatoree">
+					<Item id="24107" name="Operatuorios"/>
+					<Item id="24103" name="Galeamea zheanklaa"/>
+					<Item id="24101" name="Operatoree aktiivoujamea"/>
+				</Operator>
+			</UserDefine>
+					<MacStrings>
+				<Item id="90001" name="Search results"/>
+				<Item id="90002" name="Close Search Results"/>
+				<Item id="90003" name="Clear All"/>
+				<Item id="90004" name="Close panel"/>
+				<Item id="90005" name="Project Panel"/>
+				<Item id="90006" name="Source Control"/>
+				<Item id="90007" name="Commit"/>
+				<Item id="90008" name="Commit Failed"/>
+				<Item id="90009" name="No git repository\nUse Browse to open a repo."/>
+				<Item id="90010" name="Stage"/>
+				<Item id="90011" name="Unstage"/>
+				<Item id="90012" name="Stage All"/>
+				<Item id="90013" name="Unstage All"/>
+				<Item id="90014" name="Commit message\u2026"/>
+				<Item id="90015" name="Browse for repository\u2026"/>
+				<Item id="90016" name="Choose a git repository folder"/>
+				<Item id="90017" name="(no repository)"/>
+				<Item id="90018" name="(detached)"/>
+				<Item id="90019" name="Unknown error"/>
+				<Item id="90020" name="No functions found"/>
+				<Item id="90021" name="Search function..."/>
+				<Item id="90022" name="Expand All"/>
+				<Item id="90023" name="Locate Current File"/>
+				<Item id="90024" name="Refresh"/>
+				<Item id="90025" name="Sort functions (A to Z)"/>
+				<Item id="90026" name="Results"/>
+				<Item id="90027" name="Stop"/>
+				<Item id="90028" name="Search stopped."/>
+				<Item id="90029" name="Searching\u2026"/>
+				<Item id="90030" name="Text to search for"/>
+				<Item id="90031" name="*.txt, *.cpp, \u2026"/>
+				<Item id="90032" name="Searching..."/>
+				<Item id="90033" name="Replace:"/>
+				<Item id="90034" name="Whole Word"/>
+				<Item id="90035" name="Whole word"/>
+				<Item id="90036" name="Wrap"/>
+				<Item id="90037" name="Character"/>
+				<Item id="90038" name="HTML Name"/>
+				<Item id="90039" name="HTML Decimal"/>
+				<Item id="90040" name="HTML Hexadecimal"/>
+				<Item id="90041" name="Value"/>
+				<Item id="90042" name="Empty Session"/>
+				<Item id="90043" name="The selected session file contains no tabs."/>
+				<Item id="90044" name="Load Session"/>
+				<Item id="90045" name="Save Session"/>
+				<Item id="90046" name="Clear Recent Files"/>
+				<Item id="90047" name="File not found"/>
+				<Item id="90048" name="No Macro Recorded"/>
+				<Item id="90049" name="Record a macro first using Start Recording."/>
+				<Item id="90050" name="No shortcut conflicts."/>
+				<Item id="90051" name="File Name"/>
+				<Item id="90052" name="Type"/>
+				<Item id="90053" name="Path"/>
+				<Item id="90054" name="Go to Line"/>
+				<Item id="90055" name="Insert Date/Time"/>
+				<Item id="90056" name="Encoding Change"/>
+				<Item id="90057" name="Save a Copy As"/>
+				<Item id="90058" name="Move to Trash"/>
+				<Item id="90059" name="Title Bar"/>
+				<Item id="90060" name="Show full file path in title bar"/>
+				<Item id="90061" name="Show status bar"/>
+				<Item id="90062" name="Tab size:"/>
+				<Item id="90063" name="Caret width:"/>
+				<Item id="90064" name="Caret blink rate (ms):"/>
+				<Item id="90065" name="Font rendering:"/>
+				<Item id="90066" name="Max tab width (pixels):"/>
+				<Item id="90067" name="Vertical Edge"/>
+				<Item id="90068" name="Edge mode:"/>
+				<Item id="90069" name="Edge column:"/>
+				<Item id="90070" name="Dynamic line number width"/>
+				<Item id="90071" name="Left:"/>
+				<Item id="90072" name="Right:"/>
+				<Item id="90073" name="Default line ending:"/>
+				<Item id="90074" name="Default encoding:"/>
+				<Item id="90075" name="Enable auto-backup"/>
+				<Item id="90076" name="Backup interval (seconds):"/>
+				<Item id="90077" name="Backup location:"/>
+				<Item id="90078" name="Colour Style"/>
+				<Item id="90079" name="(inherit)"/>
+				<Item id="90080" name="Import Style Theme"/>
+				<Item id="90081" name="Category"/>
+				<Item id="90082" name="Type to filter..."/>
+				<Item id="90083" name="No shortcut conflicts for this item."/>
+				<Item id="90084" name="Plugin"/>
+				<Item id="90085" name="Version"/>
+				<Item id="90086" name="Installation Complete"/>
+				<Item id="90087" name="Restart the application to load the installed plugins."/>
+				<Item id="90088" name="Install Plugins"/>
+				<Item id="90089" name="Remove Plugins"/>
+				<Item id="90090" name="No commands found"/>
+				<Item id="90091" name="Type to search\u2026"/>
+				<Item id="90092" name="User Defined Language v.2.1"/>
+				<Item id="90093" name="Create New Language"/>
+				<Item id="90094" name="Enter a name:"/>
+				<Item id="90095" name="Foreground color:"/>
+				<Item id="90096" name="Background color:"/>
+				<Item id="90097" name="Don't Save"/>
+				<Item id="90098" name="Done"/>
+				<Item id="90099" name="Toggle Word Wrap"/>
+				<Item id="90100" name="Show All Characters"/>
+				<Item id="90101" name="Show Characters Options"/>
+				<Item id="90102" name="Toggle Indent Guide"/>
+				<Item id="90103" name="Not Yet Implemented"/>
+				<Item id="90104" name="Reload from Disk"/>
+				<Item id="90105" name="Change Search Engine"/>
+				<Item id="90106" name="Run Error"/>
+				<Item id="90107" name="Notepad++ Loading Time"/>
+				<Item id="90108" name="Unable to Check for Updates"/>
+				<Item id="90109" name="You're Up to Date"/>
+				<Item id="90110" name="Download"/>
+				<Item id="90111" name="Release Page"/>
+				<Item id="90112" name="Later"/>
+				<Item id="90113" name="Filter plugins\u2026"/>
+				<Item id="90114" name="Available"/>
+				<Item id="90115" name="Updates"/>
+				<Item id="90116" name="Installed"/>
+				<Item id="90117" name="Incompatible"/>
+				<Item id="90118" name="Failed to Install"/>
+				<Item id="90119" name="Remove the following plugins?"/>
+				<Item id="90120" name="Install the following plugins?"/>
+				<Item id="90121" name="This will delete the plugin files."/>
+				<Item id="90122" name="Search commands\u2026"/>
+				<Item id="90123" name="Foreground colour"/>
+				<Item id="90124" name="Background colour"/>
+				<Item id="90125" name="Macro name"/>
+				<Item id="90126" name="Macro Name"/>
+				<Item id="90127" name="Current recorded macro"/>
+				<Item id="90128" name="Macro Manager"/>
+				<Item id="90129" name="No Saved Macros"/>
+				<Item id="90130" name="Record and save a macro first."/>
+				<Item id="90131" name="Delete Shortcut"/>
+				<Item id="90132" name="Main menu"/>
+				<Item id="90133" name="Macros"/>
+				<Item id="90134" name="Run commands"/>
+				<Item id="90135" name="Plugin commands"/>
+				<Item id="90136" name="Scintilla commands"/>
+				<Item id="90137" name="Command Line Arguments"/>
+				<Item id="90138" name="Command name for Run menu"/>
+				<Item id="90139" name="All marks cleared."/>
+				<Item id="90140" name="Marked text copied to clipboard."/>
+				<Item id="90141" name="No marked text to copy."/>
+				<Item id="90142" name="Searching... %ld hit(s) \u2014 %@"/>
+				<Item id="90143" name="Replacing in files..."/>
+				<Item id="90144" name="Replace in Projects: Not yet connected."/>
+				<Item id="90145" name="Find in Projects: Not yet connected to Project Panel file list."/>
+				<Item id="90146" name="The workspace was modified."/>
+				<Item id="90147" name="Do you want to save changes?"/>
+				<Item id="90148" name="Search results"/>
+				<Item id="90149" name="Highlight current line"/>
+				<Item id="90150" name="Show line numbers"/>
+				<Item id="90151" name="Show whitespace"/>
+				<Item id="90152" name="Show EOL markers"/>
+				<Item id="90153" name="Show bookmark margin"/>
+				<Item id="90154" name="Use tabs (instead of spaces)"/>
+				<Item id="90155" name="Scroll beyond last line"/>
+				<Item id="90156" name="Copy/cut line without selection"/>
+				<Item id="90157" name="Disable selected text drag-drop"/>
+				<Item id="90158" name="Enable smart highlighting"/>
+				<Item id="90159" name="Smart highlighting: match case"/>
+				<Item id="90160" name="Smart highlighting: whole word only"/>
+				<Item id="90161" name="Double-click to close tab"/>
+				<Item id="90162" name="Show close button on tabs"/>
+				<Item id="90163" name="Remember panel visibility across sessions"/>
+				<Item id="90164" name="Keep absent file entries in session"/>
+				<Item id="90165" name="Confirm before Save All"/>
+				<Item id="90166" name="Confirm Replace All in open documents"/>
+				<Item id="90167" name="Replace: don't move to next occurrence"/>
+				<Item id="90168" name="Use monospaced font in Find dialog"/>
+				<Item id="90169" name="Right-click keeps selection"/>
+				<Item id="90170" name="Reverse default date/time order"/>
+				<Item id="90171" name="Use XML-based function list parsers"/>
+				<Item id="90172" name="Auto-close brackets ( ) [ ] { }"/>
+				<Item id="90173" name="From Nth character:"/>
+				<Item id="90174" name="In-selection auto-check threshold (bytes):"/>
+				<Item id="90175" name="Extended (\\n, \\r, \\t, \\0, \\x...)"/>
+				<Item id="90176" name="Editor"/>
+				<Item id="90177" name="Margins"/>
+				<Item id="90178" name="Dark"/>
+				<Item id="90179" name="Light"/>
+				<Item id="90180" name="Auto (Follow System)"/>
+				<Item id="90181" name="Thin (1px)"/>
+				<Item id="90182" name="Medium (2px)"/>
+				<Item id="90183" name="Thick (3px)"/>
+				<Item id="90184" name="Off"/>
+				<Item id="90185" name="Background"/>
+				<Item id="90186" name="Antialiased"/>
+				<Item id="90187" name="LCD Optimized"/>
+				<Item id="90188" name="Simple +/-"/>
+				<Item id="90189" name="Windows (CRLF)"/>
+				<Item id="90190" name="Mac (CR)"/>
+				<Item id="90191" name="Plugin list repository"/>
+				<Item id="90192" name="Select a Notepad++ theme XML file to apply"/>
+				<Item id="90193" name="Create new\u2026"/>
+				<Item id="90194" name="Save as\u2026"/>
+				<Item id="90195" name="User language:"/>
+				<Item id="90196" name="Language name"/>
+				<Item id="90197" name="Create"/>
+				<Item id="90198" name="Save As"/>
+				<Item id="90199" name="es"/>
+				<Item id="90200" name="in entire file"/>
+				<Item id="90201" name="Operators &amp; Delimiters"/>
+				<Item id="90202" name="Invalid Range"/>
+				<Item id="90203" name="Range values must be 0-255 and start must be &lt;= end."/>
+				<Item id="90204" name="contextMenu.xml Not Found"/>
+				<Item id="90205" name="Restart Notepad++ to regenerate the default contextMenu.xml."/>
+				<Item id="90206" name="The file has unsaved changes. Reloading with the new encoding will discard them. Continue?"/>
+				<Item id="90207" name="No response from server."/>
+				<Item id="90208" name="Server returned status"/>
+				<Item id="90209" name="The repository may be private."/>
+				<Item id="90210" name="is Available"/>
+				<Item id="90211" name="is the latest version."/>
+				<Item id="90212" name="You are currently running"/>
+				<Item id="90213" name="Finder Here"/>
+				<Item id="90214" name="Terminal Here"/>
+				<Item id="90215" name="Additional language files (.xml) can be placed in:"/>
+							<Item id="90216" name="Command Palette…"/>
+				<Item id="90217" name="Spell Check"/>
+				<Item id="90218" name="Type to search…"/>
+				<Item id="90219" name="New Window"/>
+				<Item id="90220" name="Skip Current &amp;amp; Go to Next Multi-select"/>
+				<Item id="90221" name="Locked Attribute (macOS)"/>
+				<Item id="90222" name="Check for Updates…"/>
+				<Item id="90223" name="Open Recent"/>
+			</MacStrings>
+		</Dialog>
+	</Native-Langue>
+</NotepadPlus>

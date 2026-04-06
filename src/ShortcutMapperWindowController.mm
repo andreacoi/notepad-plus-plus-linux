@@ -2,6 +2,7 @@
 #import "AppDelegate.h"
 #import "MainWindowController.h"
 #import "NppPluginManager.h"
+#import "NppLocalizer.h"
 
 NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChangedNotification";
 
@@ -160,7 +161,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
                   styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable)
                     backing:NSBackingStoreBuffered
                       defer:NO];
-    win.title = @"Shortcut Mapper";
+    win.title = [[NppLocalizer shared] translate:@"Shortcut Mapper"];
     win.minSize = NSMakeSize(600, 400);
     [win center];
 
@@ -187,8 +188,9 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     NSView *cv = self.window.contentView;
 
     // Segmented control for tabs (matching Windows tab bar appearance)
+    NppLocalizer *loc = [NppLocalizer shared];
     NSSegmentedControl *seg = [NSSegmentedControl segmentedControlWithLabels:
-        @[@"Main menu", @"Macros", @"Run commands", @"Plugin commands", @"Scintilla commands"]
+        @[[loc translate:@"Main menu"], [loc translate:@"Macros"], [loc translate:@"Run commands"], [loc translate:@"Plugin commands"], [loc translate:@"Scintilla commands"]]
         trackingMode:NSSegmentSwitchTrackingSelectOne
         target:self action:@selector(_tabSegmentChanged:)];
     seg.translatesAutoresizingMaskIntoConstraints = NO;
@@ -217,20 +219,20 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     [_tableView addTableColumn:numCol];
 
     NSTableColumn *nameCol = [[NSTableColumn alloc] initWithIdentifier:@"name"];
-    nameCol.title = @"Name";
+    nameCol.title = [loc translate:@"Name"];
     nameCol.width = 350;
     nameCol.resizingMask = NSTableColumnAutoresizingMask;
     [nameCol.headerCell setFont:[NSFont boldSystemFontOfSize:13]];
     [_tableView addTableColumn:nameCol];
 
     NSTableColumn *shortcutCol = [[NSTableColumn alloc] initWithIdentifier:@"shortcut"];
-    shortcutCol.title = @"Shortcut";
+    shortcutCol.title = [loc translate:@"Shortcut"];
     shortcutCol.width = 180;
     [shortcutCol.headerCell setFont:[NSFont boldSystemFontOfSize:13]];
     [_tableView addTableColumn:shortcutCol];
 
     NSTableColumn *catCol = [[NSTableColumn alloc] initWithIdentifier:@"category"];
-    catCol.title = @"Category";
+    catCol.title = [loc translate:@"Category"];
     catCol.width = 150;
     [catCol.headerCell setFont:[NSFont boldSystemFontOfSize:13]];
     [_tableView addTableColumn:catCol];
@@ -250,25 +252,25 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     _conflictInfo.bezeled = YES;
     _conflictInfo.bezelStyle = NSTextFieldSquareBezel;
     _conflictInfo.font = [NSFont systemFontOfSize:11];
-    _conflictInfo.stringValue = @"No shortcut conflicts for this item.";
+    _conflictInfo.stringValue = [loc translate:[[NppLocalizer shared] translate:@"No shortcut conflicts for this item."]];
     [cv addSubview:_conflictInfo];
 
     // Filter
-    NSTextField *filterLabel = [NSTextField labelWithString:@"Filter:"];
+    NSTextField *filterLabel = [NSTextField labelWithString:[loc translate:@"Filter:"]];
     filterLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [cv addSubview:filterLabel];
 
     _filterField = [[NSTextField alloc] init];
     _filterField.translatesAutoresizingMaskIntoConstraints = NO;
-    _filterField.placeholderString = @"Type to filter...";
+    _filterField.placeholderString = [loc translate:@"Type to filter..."];
     _filterField.delegate = (id<NSTextFieldDelegate>)self;
     [cv addSubview:_filterField];
 
     // Buttons
-    _modifyBtn = [NSButton buttonWithTitle:@"Modify" target:self action:@selector(_modifyShortcut:)];
-    _clearBtn  = [NSButton buttonWithTitle:@"Clear"  target:self action:@selector(_clearShortcut:)];
-    _deleteBtn = [NSButton buttonWithTitle:@"Delete" target:self action:@selector(_deleteShortcut:)];
-    _closeBtn  = [NSButton buttonWithTitle:@"Close"  target:self action:@selector(_close:)];
+    _modifyBtn = [NSButton buttonWithTitle:[loc translate:@"Modify"] target:self action:@selector(_modifyShortcut:)];
+    _clearBtn  = [NSButton buttonWithTitle:[loc translate:@"Clear"]  target:self action:@selector(_clearShortcut:)];
+    _deleteBtn = [NSButton buttonWithTitle:[loc translate:@"Delete"] target:self action:@selector(_deleteShortcut:)];
+    _closeBtn  = [NSButton buttonWithTitle:[loc translate:@"Close"]  target:self action:@selector(_close:)];
     _closeBtn.keyEquivalent = @"\r";
     for (NSButton *b in @[_modifyBtn, _clearBtn, _deleteBtn, _closeBtn]) {
         b.translatesAutoresizingMaskIntoConstraints = NO;
@@ -706,7 +708,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     // Show/hide Category column based on tab
     NSTableColumn *catCol = [_tableView tableColumnWithIdentifier:@"category"];
     catCol.hidden = (tab != ShortcutMapperTabMainMenu);
-    catCol.title = (tab == ShortcutMapperTabPluginCommands) ? @"Plugin" : @"Category";
+    catCol.title = (tab == ShortcutMapperTabPluginCommands) ? [[NppLocalizer shared] translate:@"Plugin"] : [[NppLocalizer shared] translate:@"Category"];
     if (tab == ShortcutMapperTabPluginCommands) catCol.hidden = NO;
 
     // Enable/disable Delete button
@@ -749,7 +751,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
         }
     }
     [_tableView reloadData];
-    _conflictInfo.stringValue = @"No shortcut conflicts for this item.";
+    _conflictInfo.stringValue = [[NppLocalizer shared] translate:@"No shortcut conflicts for this item."];
 }
 
 - (void)_filterChanged:(id)sender {
@@ -811,17 +813,17 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
     NSInteger row = _tableView.selectedRow;
     if (row < 0 || row >= (NSInteger)_filteredEntries.count) {
-        _conflictInfo.stringValue = @"No shortcut conflicts for this item.";
+        _conflictInfo.stringValue = [[NppLocalizer shared] translate:@"No shortcut conflicts for this item."];
         return;
     }
     ShortcutEntry *e = _filteredEntries[row];
     if (e.keyCode == 0) {
-        _conflictInfo.stringValue = @"No shortcut conflicts for this item.";
+        _conflictInfo.stringValue = [[NppLocalizer shared] translate:@"No shortcut conflicts for this item."];
         return;
     }
     // Check for conflicts
     NSString *conflicts = [self _findConflictsFor:e excluding:nil];
-    _conflictInfo.stringValue = conflicts.length ? conflicts : @"No shortcut conflicts for this item.";
+    _conflictInfo.stringValue = conflicts.length ? conflicts : [[NppLocalizer shared] translate:@"No shortcut conflicts for this item."];
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -873,12 +875,12 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
         initWithContentRect:NSMakeRect(0, 0, 400, 240)
                   styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
                     backing:NSBackingStoreBuffered defer:NO];
-    panel.title = @"Shortcut";
+    panel.title = [[NppLocalizer shared] translate:@"Shortcut"];
     [panel center];
     NSView *cv = panel.contentView;
 
     // Name
-    NSTextField *nameLbl = [NSTextField labelWithString:@"Name:"];
+    NSTextField *nameLbl = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Name:"]];
     nameLbl.frame = NSMakeRect(20, 205, 50, 16);
     [cv addSubview:nameLbl];
     NSTextField *nameVal = [NSTextField labelWithString:e.name];
@@ -888,22 +890,22 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     [cv addSubview:nameVal];
 
     // Modifiers
-    NSButton *chkCmd = [NSButton checkboxWithTitle:@"\u2318 Command" target:nil action:nil];
+    NSButton *chkCmd = [NSButton checkboxWithTitle:[[NppLocalizer shared] translate:@"\u2318 Command"] target:nil action:nil];
     chkCmd.frame = NSMakeRect(20, 170, 140, 20);
     chkCmd.state = e.hasCmd ? NSControlStateValueOn : NSControlStateValueOff;
     [cv addSubview:chkCmd];
 
-    NSButton *chkCtrl = [NSButton checkboxWithTitle:@"\u2303 Control" target:nil action:nil];
+    NSButton *chkCtrl = [NSButton checkboxWithTitle:[[NppLocalizer shared] translate:@"\u2303 Control"] target:nil action:nil];
     chkCtrl.frame = NSMakeRect(170, 170, 140, 20);
     chkCtrl.state = e.hasCtrl ? NSControlStateValueOn : NSControlStateValueOff;
     [cv addSubview:chkCtrl];
 
-    NSButton *chkOpt = [NSButton checkboxWithTitle:@"\u2325 Option" target:nil action:nil];
+    NSButton *chkOpt = [NSButton checkboxWithTitle:[[NppLocalizer shared] translate:@"\u2325 Option"] target:nil action:nil];
     chkOpt.frame = NSMakeRect(20, 143, 140, 20);
     chkOpt.state = e.hasAlt ? NSControlStateValueOn : NSControlStateValueOff;
     [cv addSubview:chkOpt];
 
-    NSButton *chkShift = [NSButton checkboxWithTitle:@"\u21E7 Shift" target:nil action:nil];
+    NSButton *chkShift = [NSButton checkboxWithTitle:[[NppLocalizer shared] translate:@"\u21E7 Shift"] target:nil action:nil];
     chkShift.frame = NSMakeRect(170, 143, 100, 20);
     chkShift.state = e.hasShift ? NSControlStateValueOn : NSControlStateValueOff;
     [cv addSubview:chkShift];
@@ -950,10 +952,10 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
         NSString *conflicts = [weakSelf _findConflictsFor:test excluding:e];
         if (conflicts.length) {
             conflictLabel.textColor = [NSColor systemRedColor];
-            conflictLabel.stringValue = [NSString stringWithFormat:@"CONFLICT: %@", conflicts];
+            conflictLabel.stringValue = [NSString stringWithFormat:[[NppLocalizer shared] translate:@"CONFLICT: %@"], conflicts];
         } else {
             conflictLabel.textColor = [NSColor secondaryLabelColor];
-            conflictLabel.stringValue = @"No shortcut conflicts.";
+            conflictLabel.stringValue = [[NppLocalizer shared] translate:@"No shortcut conflicts."];
         }
     };
 
@@ -970,12 +972,12 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
 
     // Buttons
     NSButton *btnOK = [[NSButton alloc] initWithFrame:NSMakeRect(195, 12, 90, 28)];
-    btnOK.title = @"OK"; btnOK.bezelStyle = NSBezelStyleRounded;
+    btnOK.title = [[NppLocalizer shared] translate:@"OK"]; btnOK.bezelStyle = NSBezelStyleRounded;
     btnOK.keyEquivalent = @"\r"; btnOK.target = NSApp; btnOK.action = @selector(stopModal);
     [cv addSubview:btnOK];
 
     NSButton *btnCancel = [[NSButton alloc] initWithFrame:NSMakeRect(293, 12, 90, 28)];
-    btnCancel.title = @"Cancel"; btnCancel.bezelStyle = NSBezelStyleRounded;
+    btnCancel.title = [[NppLocalizer shared] translate:@"Cancel"]; btnCancel.bezelStyle = NSBezelStyleRounded;
     btnCancel.keyEquivalent = @"\033"; btnCancel.target = NSApp; btnCancel.action = @selector(abortModal);
     [cv addSubview:btnCancel];
 
@@ -996,7 +998,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
 
     // Update conflict info
     NSString *conflicts = [self _findConflictsFor:e excluding:nil];
-    _conflictInfo.stringValue = conflicts.length ? conflicts : @"No shortcut conflicts for this item.";
+    _conflictInfo.stringValue = conflicts.length ? conflicts : [[NppLocalizer shared] translate:@"No shortcut conflicts for this item."];
 }
 
 - (void)_clearShortcut:(id)sender {
@@ -1009,7 +1011,7 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
     _hasChanges = YES;
     [e updateDisplay];
     [_tableView reloadData];
-    _conflictInfo.stringValue = @"No shortcut conflicts for this item.";
+    _conflictInfo.stringValue = [[NppLocalizer shared] translate:@"No shortcut conflicts for this item."];
 }
 
 - (void)_deleteShortcut:(id)sender {
@@ -1019,10 +1021,10 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
 
     ShortcutEntry *e = _filteredEntries[row];
     NSAlert *confirm = [[NSAlert alloc] init];
-    confirm.messageText = @"Delete Shortcut";
-    confirm.informativeText = [NSString stringWithFormat:@"Delete \"%@\"?", e.name];
-    [confirm addButtonWithTitle:@"Delete"];
-    [confirm addButtonWithTitle:@"Cancel"];
+    confirm.messageText = [[NppLocalizer shared] translate:@"Delete Shortcut"];
+    confirm.informativeText = [NSString stringWithFormat:[[NppLocalizer shared] translate:@"Delete \"%@\"?"], e.name];
+    [confirm addButtonWithTitle:[[NppLocalizer shared] translate:@"Delete"]];
+    [confirm addButtonWithTitle:[[NppLocalizer shared] translate:@"Cancel"]];
     if ([confirm runModal] != NSAlertFirstButtonReturn) return;
 
     NSMutableArray *source = [self _entriesForCurrentTab];

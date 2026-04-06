@@ -1,0 +1,2142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Somali (Soomaali) language file for Notepad++ macOS
+    Based on English template - community translations welcome
+    Created: 2026-04-04
+-->
+<NotepadPlus>
+	<Native-Langue name="Soomaali" filename="somali.xml" version="8.9">
+		<Menu>
+			<Main>
+				<!-- Main Menu Entries -->
+				<Entries>
+					<Item menuId="file" name="File"/>
+					<Item menuId="edit" name="Wax ka beddel"/>
+					<Item menuId="search" name="Raadi"/>
+					<Item menuId="view" name="Daawo"/>
+					<Item menuId="encoding" name="Codeynta"/>
+					<Item menuId="language" name="Luuqada"/>
+					<Item menuId="settings" name="Dejinta"/>
+					<Item menuId="tools" name="Qalabka"/>
+					<Item menuId="macro" name="Macro"/>
+					<Item menuId="run" name="Orod"/>
+					<Item menuId="Plugins" name="Plugins"/>
+					<Item menuId="Window" name="Daaqadda"/>
+				</Entries>
+				<!-- Sub Menu Entries -->
+				<SubEntries>
+					<Item subMenuId="file-openFolder" name="Faylka Furan"/>
+					<Item subMenuId="file-closeMore" name="Xir Dukumentiyo Badan"/>
+					<Item subMenuId="file-recentFiles" name="Files dhawaa"/>
+					<Item subMenuId="edit-insert" name="Gali"/>
+					<Item subMenuId="edit-copyToClipboard" name="Ku koobi kara sabuuradda"/>
+					<Item subMenuId="edit-indent" name="Indent"/>
+					<Item subMenuId="edit-convertCaseTo" name="Kiiska u beddel"/>
+					<Item subMenuId="edit-lineOperations" name="Howlaha khadka"/>
+					<Item subMenuId="edit-comment" name="Faallo/Faallo la'aan"/>
+					<Item subMenuId="edit-autoCompletion" name="Si Toos ah u Dhameystiran"/>
+					<Item subMenuId="edit-eolConversion" name="Beddelka EOL"/>
+					<Item subMenuId="edit-blankOperations" name="Hawlaha Madhan"/>
+					<Item subMenuId="edit-pasteSpecial" name="Ku dhaji gaar ah"/>
+					<Item subMenuId="edit-onSelection" name="Xulashada"/>
+					<Item subMenuId="edit-multiSelectALL" name="Dooro badan oo DHAMMAAN"/>
+					<Item subMenuId="edit-multiSelectNext" name="Xulo badan Xiga"/>
+					<Item subMenuId="edit-readonlyInNotepad++" name="Akhri-kaliya gudaha Notepad++"/>
+					<Item subMenuId="search-changeHistory" name="Taariikhda Beddel"/>
+					<Item subMenuId="search-markAll" name="Style Dhammaan Dhacdooyinka Token"/>
+					<Item subMenuId="search-markOne" name="Style One Token"/>
+					<Item subMenuId="search-unmarkAll" name="Qaabka Cad"/>
+					<Item subMenuId="search-jumpUp" name="Soo booda"/>
+					<Item subMenuId="search-jumpDown" name="Hoos Ka Booda"/>
+					<Item subMenuId="search-copyStyledText" name="Nuqul ka mid ah qoraalka qaabaysan"/>
+					<Item subMenuId="search-bookmark" name="Bookmark"/>
+					<Item subMenuId="view-currentFileIn" name="Fiiri faylka hadda ku jira"/>
+					<Item subMenuId="view-showSymbol" name="Muuji Astaanta"/>
+					<Item subMenuId="view-zoom" name="Zoom"/>
+					<Item subMenuId="view-moveCloneDocument" name="Dhaqaaq/dhamee dukumeentiga hadda"/>
+					<Item subMenuId="view-tab" name="Tab"/>
+					<Item subMenuId="view-collapseLevel" name="Heerka Laalaab"/>
+					<Item subMenuId="view-uncollapseLevel" name="Heerka Kala Bixi"/>
+					<Item subMenuId="view-project" name="Mashruuca"/>
+					<Item subMenuId="encoding-characterSets" name="Qaabka Dabeecada"/>
+					<Item subMenuId="encoding-arabic" name="Carabi"/>
+					<Item subMenuId="encoding-baltic" name="Baltic"/>
+					<Item subMenuId="encoding-celtic" name="Celtic"/>
+					<Item subMenuId="encoding-cyrillic" name="Cyrillic"/>
+					<Item subMenuId="encoding-centralEuropean" name="Bartamaha Yurub"/>
+					<Item subMenuId="encoding-chinese" name="Shiine"/>
+					<Item subMenuId="encoding-easternEuropean" name="Yurubta Bari"/>
+					<Item subMenuId="encoding-greek" name="Giriiga"/>
+					<Item subMenuId="encoding-hebrew" name="Cibraaniga"/>
+					<Item subMenuId="encoding-japanese" name="Jabbaan"/>
+					<Item subMenuId="encoding-korean" name="Kuuriya"/>
+					<Item subMenuId="encoding-northEuropean" name="Waqooyiga Yurub"/>
+					<Item subMenuId="encoding-thai" name="Thai"/>
+					<Item subMenuId="encoding-turkish" name="Turkish"/>
+					<Item subMenuId="encoding-westernEuropean" name="Yurubta Galbeed"/>
+					<Item subMenuId="encoding-vietnamese" name="Vietnamese"/>
+					<Item subMenuId="language-userDefinedLanguage" name="Luqadda Qeexay Isticmaalaha"/>
+					<Item subMenuId="settings-import" name="Soo dejinta"/>
+					<Item subMenuId="tools-md5" name="MD5"/>
+					<Item subMenuId="tools-sha1" name="SHA-1"/>
+					<Item subMenuId="tools-sha256" name="SHA-256"/>
+					<Item subMenuId="tools-sha512" name="SHA-512"/>
+					<Item subMenuId="window-sortby" name="Kala Soocida"/>
+				</SubEntries>
+
+				<!-- all menu item -->
+				<Commands>
+					<Item id="41001" name="Cusub"/>
+					<Item id="41002" name="Fur..."/>
+					<Item id="41019" name="Explorer"/>
+					<Item id="41020" name="cmd"/>
+					<Item id="41025" name="Folder sida goobta shaqada"/>
+					<Item id="41003" name="Xir"/>
+					<Item id="41004" name="Xir dhamaan"/>
+					<Item id="41005" name="Xir Dhammaan LAAKIIN Document-ga Hadda Jira"/>
+					<Item id="41026" name="Xir dhammaan Documents-ku-xidhan mooyaane"/>
+					<Item id="41009" name="Ku dhawaad ​​Bidix"/>
+					<Item id="41018" name="Close All to the Right"/>
+					<Item id="41024" name="Close All Unchanged"/>
+					<Item id="41006" name="Save"/>
+					<Item id="41007" name="Save All"/>
+					<Item id="41008" name="Save As..."/>
+					<Item id="41010" name="Print..."/>
+					<Item id="1001" name="Print Now"/>
+					<Item id="41011" name="Exit"/>
+					<Item id="41012" name="Load Session..."/>
+					<Item id="41013" name="Save Session..."/>
+					<Item id="41014" name="Reload from Disk"/>
+					<Item id="41015" name="Save a Copy As..."/>
+					<Item id="41016" name="Move to Recycle Bin"/>
+					<Item id="41017" name="Rename..."/>
+					<Item id="41021" name="Restore Recent Closed File"/>
+					<Item id="41022" name="Open Folder as Workspace..."/>
+					<Item id="41023" name="Open in Default Viewer"/>
+					<Item id="42001" name="Cut"/>
+					<Item id="42002" name="Copy"/>
+					<Item id="42003" name="Undo"/>
+					<Item id="42004" name="Dib u celi"/>
+					<Item id="42005" name="Ku dheji"/>
+					<Item id="42006" name="Tirtir"/>
+					<Item id="42007" name="Dooro Dhamaan"/>
+					<Item id="42020" name="Bilow/Dhammaadka Xulashada"/>
+					<Item id="42089" name="Ku Bilow/Dhammaadka Xulashada Habka Tiirka"/>
+					<Item id="42084" name="Waqtiga Taariikhda (gaaban)"/>
+					<Item id="42085" name="Taariikhda Taariikhda (dheer)"/>
+					<Item id="42086" name="Waqtiga Taariikhda (la habeeyey)"/>
+					<Item id="42008" name="Kordhi soo gelida khadka"/>
+					<Item id="42009" name="Hoos-u-dhici galiyaha khadka"/>
+					<Item id="42010" name="Koobi Khadka Hadda"/>
+					<Item id="42079" name="Ka saar khadadka nuqulka ah"/>
+					<Item id="42077" name="Ka saar khadadka nuqulka ah ee isku xiga"/>
+					<Item id="42012" name="Khadadka kala baxa"/>
+					<Item id="42013" name="Ku biir khadadka"/>
+					<Item id="42014" name="Kor u Qaado Khadka Hadda"/>
+					<Item id="42015" name="Hoos U Dhaadhac Khadka Hadda"/>
+					<Item id="42059" name="Kala soocida khadadka qaamuus ahaan kor u kaca"/>
+					<Item id="42060" name="Kala sooc khadadka qaamuus ahaan soo degaya"/>
+					<Item id="42080" name="Kala soocida Lex.Kor u kaca Iilow Dacwad"/>
+					<Item id="42081" name="Kala soocida Lex.Ka Soo Degaya Dacwad Iilowsha"/>
+					<Item id="42100" name="Kala soocida khadadka amarka deegaanka ee kor u kaca"/>
+					<Item id="42101" name="Kala soocida laymanka Dalabka Maxaliga ah ee soo degaya"/>
+					<Item id="42104" name="Kala soocida xariiqyada dhererka kor u kaca"/>
+					<Item id="42105" name="Kala soocida laynka Dhererka soo degaya"/>
+					<Item id="42061" name="U kala sooc xariiqyada sida is-goysyada kor u kacaya"/>
+					<Item id="42062" name="U kala sooc xariiqyada sida is-goysyada u soo degaya"/>
+					<Item id="42063" name="U kala sooc khadadka sida jajab tobanle (comma) kor u kaca"/>
+					<Item id="42064" name="U kala sooc khadadka sida jajab tobanle (comma) soo degaya"/>
+					<Item id="42065" name="U kala sooc khadadka sida jajab tobanle (dhibic) kor u kaca"/>
+					<Item id="42066" name="U kala sooc xariiqyada sida jajab tobanle (dhibic) hoos u soo dhacaya"/>
+					<Item id="42083" name="Amarka line roga"/>
+					<Item id="42078" name="Amarka line-ka Randomize"/>
+					<Item id="42016" name="SARE"/>
+					<Item id="42017" name="far yar"/>
+					<Item id="42067" name="Dacwad Sax Ah"/>
+					<Item id="42068" name="Kiiska habboon (isku-dhafka)"/>
+					<Item id="42069" name="Kiiska xukunka"/>
+					<Item id="42070" name="Kiis xukun (isku dar ah)"/>
+					<Item id="42071" name="INVERT CASE"/>
+					<Item id="42072" name="ranDOm Case"/>
+					<Item id="42073" name="Faylka Furan"/>
+					<Item id="42074" name="Ku Fur Faylka Ka Kooban Explorer"/>
+					<Item id="42106" name="Dib u habeyn Xulashada █ (Shift: ●)"/>
+					<Item id="42075" name="Internetka ka baadh"/>
+					<Item id="42076" name="Beddel mashiinka raadinta..."/>
+					<Item id="42090" name="Iska Iilow Kiis Oo Dhan Erayga"/>
+					<Item id="42091" name="Kiis Ciyaareed Kaliya"/>
+					<Item id="42092" name="Isbarbardhiga Erayga oo Dhan Kaliya"/>
+					<Item id="42093" name="Isku-daba-marin Kelmadda oo Dhan"/>
+					<Item id="42094" name="Iska Iilow Kiis Oo Dhan Erayga"/>
+					<Item id="42095" name="Kiis Ciyaareed Kaliya"/>
+					<Item id="42096" name="Isbarbardhiga Erayga oo Dhan Kaliya"/>
+					<Item id="42097" name="Isku-daba-marin Kelmadda oo Dhan"/>
+					<Item id="42098" name="Ka noqo Xulashooyinka badan ee lagu daray"/>
+					<Item id="42099" name="Ka bood hadda Tag Xiga Xulo badan"/>
+					<Item id="42018" name="Bilow Duubista"/>
+					<Item id="42019" name="Jooji Duubista"/>
+					<Item id="42021" name="dib u ciyaar"/>
+					<Item id="42022" name="Beddel Faallada Keliya"/>
+					<Item id="42023" name="Faallo xannibo"/>
+					<Item id="42047" name="Jooji Faallooyinka"/>
+					<Item id="42024" name="Ka jar booska raadraaca"/>
+					<Item id="42042" name="Ka jar booska hogaaminta"/>
+					<Item id="42043" name="Ka jar hogaanka iyo booska raadraaca"/>
+					<Item id="42044" name="EOL ilaa Space"/>
+					<Item id="42045" name="Labadaba iyo EOL u goo meel bannaan"/>
+					<Item id="42046" name="TAB ilaa Space"/>
+					<Item id="42054" name="Booska TAB (Dhammaan)"/>
+					<Item id="42053" name="Booska TAB (Hogaanka)"/>
+					<Item id="42038" name="Ku dhaji nuxurka HTML"/>
+					<Item id="42039" name="Ku dhaji nuxurka RTF"/>
+					<Item id="42048" name="Nuqul ka kooban Binary Content"/>
+					<Item id="42049" name="Iska yaree Content Binary"/>
+					<Item id="42050" name="Ku dhaji Content Binary"/>
+					<Item id="42082" name="Copy link"/>
+					<Item id="42037" name="Habka Tiirka..."/>
+					<Item id="42034" name="Tifaftiraha Tiirka..."/>
+					<Item id="42051" name="Guddiga Jilayaasha"/>
+					<Item id="42052" name="Taariikhdii Boodhadhka"/>
+					<Item id="42025" name="Keydso Macro hadda la duubay..."/>
+					<Item id="42026" name="Jihada qoraalka RTL"/>
+					<Item id="42027" name="Jihada qoraalka LTR"/>
+					<Item id="42028" name="Akhri-Kaliya Dukumentiga Hadda"/>
+					<Item id="42102" name="Akhri-Kaliya Dhammaan Dukumentiyada"/>
+					<Item id="42103" name="U nadiifi akhri-kaliya dhammaan dhokumantiyada"/>
+					<Item id="42029" name="Nuqulka Jidka Faylka Hadda"/>
+					<Item id="42030" name="Nuqul magaca faylka hadda jira"/>
+					<Item id="42031" name="Nuqul Dirka HaddaJidka"/>
+					<Item id="42087" name="Nuqul dhammaan magacyada faylka"/>
+					<Item id="42088" name="Nuqulka Dhamaan Wadooyinka Faylka"/>
+					<Item id="42032" name="Orod dhowr jeer macro..."/>
+					<Item id="42033" name="Sifada Akhri-Kaliya ee Daaqadaha"/>
+					<Item id="42035" name="Faallo Keliya"/>
+					<Item id="42036" name="Faallo La'aan Keliya"/>
+					<Item id="42055" name="Ka saar khadadka madhan"/>
+					<Item id="42056" name="Ka saar khadadka madhan (oo ay ku jiraan xarfo madhan)"/>
+					<Item id="42057" name="Geli Khadka Banaan Xagga Sare ee Hadda"/>
+					<Item id="42058" name="Hoos Geli Khadka Banaan ee Hadda"/>
+					<Item id="43001" name="Hel..."/>
+					<Item id="43002" name="Xiga Lasoco"/>
+					<Item id="43003" name="Beddel..."/>
+					<Item id="43004" name="Tag..."/>
+					<Item id="43005" name="Toggle Bookmark"/>
+					<Item id="43006" name="Buuga Xiga"/>
+					<Item id="43007" name="Bookmark hore"/>
+					<Item id="43008" name="Nadiifi dhammaan Bookmarks"/>
+					<Item id="43018" name="Jar khadadka la calaamadeeyay"/>
+					<Item id="43019" name="Nuqul ka samee khadadka la calaamadeeyay"/>
+					<Item id="43020" name="Ku dheji (Beddel) Khadadka la calaamadeeyay"/>
+					<Item id="43021" name="Ka saar khadadka la calaamadeeyay"/>
+					<Item id="43051" name="Ka saar khadadka aan-la-calaamsaneyn"/>
+					<Item id="43050" name="Bookmarks rogan"/>
+					<Item id="43052" name="Soo hel jilayaasha kala duwan..."/>
+					<Item id="43053" name="Dooro Dhammaan inta u dhaxaysa {} [] ama ()"/>
+					<Item id="43009" name="Tag isku xidhka isku xidhka"/>
+					<Item id="43010" name="Horey usoco"/>
+					<Item id="43011" name="Raadinta Kordhinta"/>
+					<Item id="43013" name="Ka hel Faylasha"/>
+					<Item id="43014" name="Soo hel (Kool) Xiga"/>
+					<Item id="43015" name="Hel (Kacsan) Hore"/>
+					<Item id="43022" name="Isticmaalka Qaabka 1aad"/>
+					<Item id="43023" name="Nadiifi Qaabka 1aad"/>
+					<Item id="43024" name="Isticmaalka Qaabka 2aad"/>
+					<Item id="43025" name="Nadiifi Qaabka 2aad"/>
+					<Item id="43026" name="Isticmaalka Qaabka 3aad"/>
+					<Item id="43027" name="Nadiifi Qaabka 3aad"/>
+					<Item id="43028" name="Isticmaalka Qaabka 4aad"/>
+					<Item id="43029" name="Nadiifi Qaabka 4aad"/>
+					<Item id="43030" name="Isticmaalka Qaabka 5aad"/>
+					<Item id="43031" name="Nadiifi Qaabka 5aad"/>
+					<Item id="43032" name="Nadiifi Hababka oo dhan"/>
+					<Item id="43033" name="Qaabka 1aad"/>
+					<Item id="43034" name="Qaabka 2aad"/>
+					<Item id="43035" name="Qaabka 3aad"/>
+					<Item id="43036" name="Qaabka 4aad"/>
+					<Item id="43037" name="Qaabka 5aad"/>
+					<Item id="43038" name="Raadi Mark Style"/>
+					<Item id="43039" name="Qaabka 1aad"/>
+					<Item id="43040" name="Qaabka 2aad"/>
+					<Item id="43041" name="Qaabka 3aad"/>
+					<Item id="43042" name="Qaabka 4aad"/>
+					<Item id="43043" name="Qaabka 5aad"/>
+					<Item id="43044" name="Raadi Mark Style"/>
+					<Item id="43055" name="Qaabka 1aad"/>
+					<Item id="43056" name="Qaabka 2aad"/>
+					<Item id="43057" name="Qaabka 3aad"/>
+					<Item id="43058" name="Qaabka 4aad"/>
+					<Item id="43059" name="Qaabka 5aad"/>
+					<Item id="43060" name="Dhamaan Qaababka"/>
+					<Item id="43061" name="Raadi Mark Style"/>
+					<Item id="43062" name="Isticmaalka Qaabka 1aad"/>
+					<Item id="43063" name="Isticmaalka Qaabka 2aad"/>
+					<Item id="43064" name="Isticmaalka Qaabka 3aad"/>
+					<Item id="43065" name="Isticmaalka Qaabka 4aad"/>
+					<Item id="43066" name="Isticmaalka Qaabka 5aad"/>
+					<Item id="43067" name="U gudub Isbadalka Xiga"/>
+					<Item id="43068" name="U gudub Isbeddel hore"/>
+					<Item id="43069" name="Nadiifi Taariikhda Isbedelka"/>
+					<Item id="43045" name="Natiijooyinka raadinta Daaqada"/>
+					<Item id="43046" name="Natiijooyinka Raadinta Xiga"/>
+					<Item id="43047" name="Natiijo Raadin hore"/>
+					<Item id="43048" name="Dooro oo raadi ku xiga"/>
+					<Item id="43049" name="Dooro oo Hesho Hore"/>
+					<Item id="43054" name="Mark..."/>
+					<Item id="43501" name="Xir la doortay"/>
+					<Item id="43502" name="Kuwa kale xidh"/>
+					<Item id="43503" name="Nuqul Magacyada la xushay"/>
+					<Item id="43504" name="Nuqulka Magacyada Wadooyinka la xushay"/>
+					<Item id="44009" name="Kadibna"/>
+					<Item id="44010" name="Isku laab dhammaan"/>
+					<Item id="44011" name="Qaabka Bilaashka ah ee Mashqulka"/>
+					<Item id="44019" name="Tus Dhamaan Jilayaasha"/>
+					<Item id="44020" name="Muuji Hagaha Indent"/>
+					<Item id="44022" name="Duubista erayada"/>
+					<Item id="44023" name="Soo dhawoow (Ctrl+Mouse Wheel Up)"/>
+					<Item id="44024" name="Soo Dhawee (Ctrl+Mouse Wheel Down)"/>
+					<Item id="44025" name="Muuji booska iyo Tab"/>
+					<Item id="44026" name="Muuji Dhamaadka Line"/>
+					<Item id="44029" name="Kala Bixi Dhammaan"/>
+					<Item id="44030" name="Laab Heerka Hadda"/>
+					<Item id="44031" name="Kala Bixi Heerka Hadda"/>
+					<Item id="44049" name="Soo koobid..."/>
+					<Item id="44080" name="Document Map"/>
+					<Item id="44070" name="Liiska Dukumentiga"/>
+					<Item id="44084" name="Liiska Hawlaha"/>
+					<Item id="44085" name="Folder sida goobta shaqada"/>
+					<Item id="44086" name="Talaabada 1aad"/>
+					<Item id="44087" name="Talaabada 2aad"/>
+					<Item id="44088" name="Talaabada 3aad"/>
+					<Item id="44089" name="Talaabada 4-aad"/>
+					<Item id="44090" name="Shabakadda 5aad"/>
+					<Item id="44091" name="Talaabada 6aad"/>
+					<Item id="44092" name="Tabtii 7aad"/>
+					<Item id="44093" name="Tabtii 8aad"/>
+					<Item id="44094" name="Tabtii 9aad"/>
+					<Item id="44116" name="Tababbarka Koowaad"/>
+					<Item id="44117" name="Tabtii U Danbaysay"/>
+					<Item id="44095" name="Tab xigta"/>
+					<Item id="44096" name="Tabtii Hore"/>
+					<Item id="44097" name="Korjoogteynta (dabada -f)"/>
+					<Item id="44098" name="Talaabada Hore u Soco"/>
+					<Item id="44099" name="Tab gadaal usoco"/>
+					<Item id="44110" name="Ka saar Midabka"/>
+					<Item id="44111" name="Codso Midabka 1"/>
+					<Item id="44112" name="Codso Midabka 2"/>
+					<Item id="44113" name="Codso Midabka 3"/>
+					<Item id="44114" name="Codso Midabka 4"/>
+					<Item id="44115" name="Codso Midabka 5"/>
+					<Item id="44130" name="Muuji Calaamadaha Aan Daabicin"/>
+					<Item id="44131" name="Muuji Xakamaynta Jilayaasha Unicode EOL"/>
+					<Item id="44032" name="Beddel Qaabka Shaashada Buuxa"/>
+					<Item id="44033" name="Soo Celinta Soo Dhawaynta Hore"/>
+					<Item id="44034" name="Had iyo jeer dusha sare"/>
+					<Item id="44035" name="Isku-dubbarid Wareegid Toosan"/>
+					<Item id="44036" name="Isku-dubbarid Wareegid Horizontal"/>
+					<Item id="44041" name="Muuji Astaanta Duubka"/>
+					<Item id="44072" name="U fiirso aragti kale"/>
+					<Item id="44081" name="Guddiga Mashruuca 1"/>
+					<Item id="44082" name="Gudida Mashruuca 2"/>
+					<Item id="44083" name="Guddiga Mashruuca 3"/>
+					<Item id="45001" name="Daaqadaha (CR LF)"/>
+					<Item id="45002" name="Unix (LF)"/>
+					<Item id="45003" name="Macintosh (CR)"/>
+					<Item id="45004" name="ANSI"/>
+					<Item id="45005" name="UTF-8-BOM"/>
+					<Item id="45006" name="UTF-16 BE BOM"/>
+					<Item id="45007" name="UTF-16 LE BOM"/>
+					<Item id="45008" name="UTF-8"/>
+					<Item id="45009" name="U rog ANSI"/>
+					<Item id="45010" name="U rog UTF-8"/>
+					<Item id="45011" name="U beddelo UTF-8-BOM"/>
+					<Item id="45012" name="U beddelo UTF-16 BE BOM"/>
+					<Item id="45013" name="U beddelo UTF-16 LE BOM"/>
+					<Item id="45060" name="Big5 (Dhaqameed)"/>
+					<Item id="45061" name="GB2312 (La Fududeeyay)"/>
+					<Item id="45054" name="OEM 861: Icelandic"/>
+					<Item id="45057" name="OEM 865: Nordic"/>
+					<Item id="45053" name="OEM 860: Boortaqiis"/>
+					<Item id="45056" name="OEM 863: Faransiis"/>
+					<Item id="10001" name="U guuro Muuqaal kale"/>
+					<Item id="10002" name="Clone to View Kale"/>
+					<Item id="10003" name="U Guuri Tusaal Cusub"/>
+					<Item id="10004" name="Ku Fur Tusaal Cusub"/>
+					<Item id="10005" name="U guuri si aad u bilowdo"/>
+					<Item id="10006" name="U gudub Dhamaadka"/>
+					<Item id="46001" name="Habeeyaha Style..."/>
+					<Item id="46016" name="Midna (Qoraalka Caadiga ah)"/>
+					<Item id="46250" name="qeex luqadaada..."/>
+					<Item id="46300" name="Fur Gal Luuqad Qeexay Isticmaalaha..."/>
+					<Item id="46301" name="Notepad++ Uruurinta Luuqadaha Qeexay Isticmaalaha"/>
+					<Item id="46180" name="Isticmaale-Qeexay"/>
+					<Item id="47000" name="Ku saabsan Notepad++"/>
+					<Item id="47010" name="Dooda Line Command..."/>
+					<Item id="47001" name="Notepad++ Hoyga"/>
+					<Item id="47002" name="Notepad++ Bogga Mashruuca"/>
+					<Item id="47003" name="Notepad++ Buuga Isticmaalaha ee Online"/>
+					<Item id="47004" name="Notepad++ Community (Madasha)"/>
+					<Item id="47012" name="Macluumaadka ciribtirka"/>
+					<Item id="47005" name="Hel Plugins badan"/>
+					<Item id="47006" name="Cusbooneysii notepad++"/>
+					<Item id="47009" name="Deji Proxy Updater..."/>
+					<Item id="48005" name="Soo deji plugin(yada)..."/>
+					<Item id="48006" name="Mowduuca qaabka soo dejinta..."/>
+					<Item id="48018" name="Wax ka beddel Popup ContextMenu"/>
+					<Item id="48009" name="Mapper Shortcut..."/>
+					<Item id="48011" name="Dookhyada..."/>
+					<Item id="48014" name="Fur Folders Folder..."/>
+					<Item id="48015" name="Plugins Admin..."/>
+					<Item id="48501" name="Abuur..."/>
+					<Item id="48502" name="Ka abuur faylal..."/>
+					<Item id="48503" name="Ka soo saar doorashada oo u beddel sabuuradda"/>
+					<Item id="48504" name="Abuur..."/>
+					<Item id="48505" name="Ka abuur faylal..."/>
+					<Item id="48506" name="Ka soo saar doorashada oo u beddel sabuuradda"/>
+					<Item id="48507" name="Abuur..."/>
+					<Item id="48508" name="Ka abuur faylal..."/>
+					<Item id="48509" name="Ka soo saar doorashada oo u beddel sabuuradda"/>
+					<Item id="48510" name="Samee..."/>
+					<Item id="48511" name="Ka abuur faylal..."/>
+					<Item id="48512" name="Ka soo saar doorashada oo u beddel sabuuradda"/>
+					<Item id="49000" name="Orod..."/>
+
+					<Item id="50000" name="Dhamaystirka Shaqada"/>
+					<Item id="50001" name="Dhamaystirka Erayga"/>
+					<Item id="50002" name="Tilmaamaha Halbeegyada Shaqada"/>
+					<Item id="50010" name="Halbeegyada Shaqada Tilmaamihii Hore"/>
+					<Item id="50011" name="Halbeegyada Shaqada Tilmaamaha Xiga"/>
+					<Item id="50005" name="Beddel rikoorka makro"/>
+					<Item id="50006" name="Dhamaystirka Wadada"/>
+					<Item id="44042" name="Qari khadadka"/>
+					<Item id="42040" name="Fur dhammaan faylalka u dambeeyay"/>
+					<Item id="42041" name="Liiska faylalka dhawaan madhan"/>
+					<Item id="48016" name="Wax ka beddel Jidka Gaaban/Tirtir Macro..."/>
+					<Item id="48017" name="Wax ka beddel Jidka Gaaban/Tirtir Taliska..."/>
+
+					<Item id="11001" name="Daaqadaha..."/>
+					<Item id="11002" name="Magaca A ilaa Z"/>
+					<Item id="11003" name="Magaca Z ilaa A"/>
+					<Item id="11004" name="Jidka A ilaa Z"/>
+					<Item id="11005" name="Jidka Z ilaa A"/>
+					<Item id="11006" name="Nooca A ilaa Z"/>
+					<Item id="11007" name="Ku qor Z ilaa A"/>
+					<Item id="11008" name="Dhererka nuxurka Kora"/>
+					<Item id="11009" name="Dhererka nuxurka hoos u sii dhacaya"/>
+					<Item id="11010" name="Wakhtiga wax laga beddelay ee kor u kacaya"/>
+					<Item id="11011" name="Wakhtiga la bedelay ee soo degaya"/>
+				</Commands>
+			</Main>
+			<TabBar>
+				<Item CMDID="41003" name="Xir"/>
+				<Item CMDID="0" name="Xir dhowr tabs"/>
+				<Item CMDID="41005" name="Xir dhamaan intan mooyaane"/>
+				<Item CMDID="41026" name="Xir dhamaan LAAKIIN waa lagu dhejiyay"/>
+				<Item CMDID="41009" name="Ku dhawaad ​​Bidix"/>
+				<Item CMDID="41018" name="Dhammaan midigta ka xidh"/>
+				<Item CMDID="41024" name="Xir Dhammaan Aan Is Bedelin"/>
+				<Item CMDID="44048" name="Pin Tab" alternativeName="Tabka ka saar"/>
+				<Item CMDID="41006" name="Keydso"/>
+				<Item CMDID="41008" name="U keydi sidii..."/>
+				<Item CMDID="1" name="Furan"/>
+				<Item CMDID="41019" name="Ku Fur Faylka Ka Kooban Explorer"/>
+				<Item CMDID="41020" name="Ku Fur Faylka Ka Kooban cmd"/>
+				<Item CMDID="41025" name="Fur Folder ka kooban sidii goob shaqo"/>
+				<Item CMDID="41023" name="Ku Furan Daawade Hore"/>
+				<Item CMDID="41017" name="Magacaabista..."/>
+				<Item CMDID="41016" name="U guuri dib u warshadaynta bin"/>
+				<Item CMDID="41014" name="Dib u soo celi"/>
+				<Item CMDID="41010" name="Daabac..."/>
+				<Item CMDID="42028" name="Akhri-kaliya gudaha Notepad++"/>
+				<Item CMDID="42033" name="Sifada Akhri-Kaliya ee Daaqadaha"/>
+				<Item CMDID="2" name="Ku koobi kara sabuuradda"/>
+				<Item CMDID="42029" name="Koobi Jidka Faylka Buuxa"/>
+				<Item CMDID="42030" name="Nuqul magaca faylka"/>
+				<Item CMDID="42031" name="Nuqul Dirka HaddaJidka"/>
+				<Item CMDID="3" name="Dhaqaaq Document"/>
+				<Item CMDID="10005" name="U guuri si aad u bilowdo"/>
+				<Item CMDID="10006" name="U gudub Dhamaadka"/>
+				<Item CMDID="10001" name="U guuro Muuqaal kale"/>
+				<Item CMDID="10002" name="Clone to View Kale"/>
+				<Item CMDID="10003" name="U Guuri Tusaal Cusub"/>
+				<Item CMDID="10004" name="Ku Fur Tusaal Cusub"/>
+				<Item CMDID="4" name="Codso Midabka Tab"/>
+				<Item CMDID="44111" name="Codso Midabka 1"/>
+				<Item CMDID="44112" name="Codso Midabka 2"/>
+				<Item CMDID="44113" name="Codso Midabka 3"/>
+				<Item CMDID="44114" name="Codso Midabka 4"/>
+				<Item CMDID="44115" name="Codso Midabka 5"/>
+				<Item CMDID="44110" name="Ka saar Midabka"/>
+			</TabBar>
+			<TrayIcon>
+				<Item id="43101" name="Daar"/>
+				<Item id="43102" name="Cusub"/>
+				<Item id="43103" name="Cusub oo Dheji"/>
+				<Item id="43104" name="Fur..."/>
+				<Item id="43013" name="Ka hel faylalka..."/>
+				<Item id="43105" name="Xir astaanta saxanka"/>
+			</TrayIcon>
+		</Menu>
+
+		<Dialog>
+			<Find title="" titleFind="Hel" titleReplace="Beddel" titleFindInFiles="Ka hel faylasha" titleFindInProjects="Ka hel Mashaariicda" titleMark="Mark">
+				<Item id="1" name="Xiga Lasoco"/>
+				<Item id="1722" name="Jihada danbe"/>
+				<Item id="2" name="Xir"/>
+				<Item id="1620" name="Raadi waxa:"/>
+				<Item id="1603" name="Isku beeg kelmada oo dhan kaliya"/>
+				<Item id="1604" name="Kiiska ciyaarta"/>
+				<Item id="1605" name="Odhaah joogto ah"/>
+				<Item id="1606" name="Isku soo wada duuboo"/>
+				<Item id="1614" name="Tiri"/>
+				<Item id="1615" name="Mark All"/>
+				<Item id="1616" name="line Bookmark"/>
+				<Item id="1618" name="Nadiifi baaritaan kasta"/>
+				<Item id="1611" name="Ku bedel:"/>
+				<Item id="1608" name="Beddel"/>
+				<Item id="1609" name="Badal Dhammaan"/>
+				<Item id="1687" name="Diidmada luminta"/>
+				<Item id="1688" name="Had iyo jeer"/>
+				<Item id="1632" name="Xulashada"/>
+				<Item id="1633" name="Nadiifi dhammaan calaamadaha"/>
+				<Item id="1635" name="Ku beddel dhammaan dukumentiyada la furay"/>
+				<Item id="1636" name="Dhammaan dukumentiyada la furay ka hel"/>
+				<Item id="1654" name="Filters:"/>
+				<Item id="1655" name="Hagaha:"/>
+				<Item id="1656" name="Hel Dhammaan"/>
+				<Item id="1658" name="Dhamaan faylalka hoose"/>
+				<Item id="1659" name="Galyada qarsoon"/>
+				<Item id="1624" name="Habka raadinta"/>
+				<Item id="1625" name="Caadi"/>
+				<Item id="1626" name="La fidiyay (\n, \r, \t, \0, \x...)"/>
+				<Item id="1660" name="Ku beddel faylalka"/>
+				<Item id="1665" name="Ku Bedel Mashaariicda"/>
+				<Item id="1662" name="Guddiga Mashruuca 1"/>
+				<Item id="1663" name="Gudida Mashruuca 2"/>
+				<Item id="1664" name="Guddiga Mashruuca 3"/>
+				<Item id="1641" name="Dhammaan ka hel dukumeentiga hadda"/>
+				<Item id="1686" name="Hufnaan"/>
+				<Item id="1703" name=".kulan cusub"/>
+				<Item id="1721" name="v"/>
+				<Item id="1723" name="▼ Ku Xiga Soo hel"/>
+				<Item id="1725" name="Nuqul ka mid ah qoraalka calaamadeysan"/>
+				<Menu>
+					<Item id="1726" name="⇅ Ku beddel Raadinta Beddel"/>
+					<Item id="1727" name="⤵ Nuqul ka soo Hel oo Beddel"/>
+					<Item id="1728" name="Nuqul ka beddelka si aad u hesho"/>
+				</Menu>
+			</Find>
+
+			<IncrementalFind title="">
+				<Item id="1681" name="Hel:"/>
+				<Item id="1685" name="Kiiska ciyaarta"/>
+				<Item id="1690" name="Iftiimin dhammaan"/>
+			</IncrementalFind>
+
+			<FindCharsInRange title="Ka hel jilayaasha kala duwan...">
+				<Item id="2" name="Xir"/>
+				<Item id="2901" name="Jilayaasha aan ASCII ahayn (128-255)"/>
+				<Item id="2902" name="Jilayaasha ASCII (0–127)"/>
+				<Item id="2903" name="Kala duwanaanshaha gaarka ah (0-255):"/>
+				<Item id="2906" name="Sare"/>
+				<Item id="2907" name="Down"/>
+				<Item id="2908" name="Jiho"/>
+				<Item id="2909" name="Isku soo wada duuboo"/>
+				<Item id="2910" name="Hel"/>
+			</FindCharsInRange>
+
+			<GoToLine title="Tag...">
+				<Item id="2007" name="Line"/>
+				<Item id="2008" name="Dejinta"/>
+				<Item id="1" name="Tag"/>
+				<Item id="2" name="Meelna uma socdo"/>
+				<Item id="2004" name="halkan ayaad joogtaa:"/>
+				<Item id="2005" name="Waxaad doonaysaa inaad tagto:"/>
+				<Item id="2006" name="Ma aad ka sii fogaan kartid:"/>
+			</GoToLine>
+
+			<Run title="Orod...">
+				<Item id="1903" name="Barnaamijka Lagu Furayo"/>
+				<Item id="1" name="Orod"/>
+				<Item id="2" name="Jooji"/>
+				<Item id="1904" name="Badbaadiya..."/>
+			</Run>
+
+			<MD5FromFilesDlg title="Ka abuur MD5 dheefshiidka faylalka">
+				<Item id="1922" name="Dooro faylasha si aad u dhaliso MD5..."/>
+				<Item id="1924" name="Ku koobi kara sabuuradda"/>
+				<Item id="2" name="Xir"/>
+			</MD5FromFilesDlg>
+
+			<MD5FromTextDlg title="Samee dheefshiidka MD5">
+				<Item id="1932" name="Ula dhaqan xariiq kasta sidii xadhig gooni ah"/>
+				<Item id="1934" name="Ku koobi kara sabuuradda"/>
+				<Item id="2" name="Xir"/>
+			</MD5FromTextDlg>
+
+			<SHA256FromFilesDlg title="Ka abuur SHA-256 dheefshiidka faylalka">
+				<Item id="1922" name="Dooro faylasha si aad u dhaliso SHA-256..."/>
+				<Item id="1924" name="Ku koobi kara sabuuradda"/>
+				<Item id="2" name="Xir"/>
+			</SHA256FromFilesDlg>
+
+			<SHA256FromTextDlg title="Samee SHA-256 dheefshiidka">
+				<Item id="1932" name="Ula dhaqan xariiq kasta sidii xadhig gooni ah"/>
+				<Item id="1934" name="Ku koobi kara sabuuradda"/>
+				<Item id="2" name="Xir"/>
+			</SHA256FromTextDlg>
+
+			<SHA1FromFilesDlg title="Ka abuur SHA-1 dheefshiidka faylalka">
+				<Item id="1922" name="Dooro faylasha si aad u dhaliso SHA-1..."/>
+				<Item id="1924" name="Ku koobi kara sabuuradda"/>
+				<Item id="2" name="Xir"/>
+			</SHA1FromFilesDlg>
+
+			<SHA1FromTextDlg title="Samee SHA-1 dheefshiidka">
+				<Item id="1932" name="Ula dhaqan xariiq kasta sidii xadhig gooni ah"/>
+				<Item id="1934" name="Ku koobi kara sabuuradda"/>
+				<Item id="2" name="Xir"/>
+			</SHA1FromTextDlg>
+
+			<SHA512FromFilesDlg title="Ka abuur SHA-512 dheefshiidka faylalka">
+				<Item id="1922" name="Dooro faylasha si aad u dhaliso SHA-512..."/>
+				<Item id="1924" name="Ku koobi kara sabuuradda"/>
+				<Item id="2" name="Xir"/>
+			</SHA512FromFilesDlg>
+
+			<SHA512FromTextDlg title="Samee SHA-512 dheefshiidka">
+				<Item id="1932" name="Ula dhaqan xariiq kasta sidii xadhig gooni ah"/>
+				<Item id="1934" name="Ku koobi kara sabuuradda"/>
+				<Item id="2" name="Xir"/>
+			</SHA512FromTextDlg>
+			<PluginsAdminDlg title="Plugins Admin" titleAvailable="Available" titleUpdates="Updates" titleInstalled="Installed" titleIncompatible="Incompatible">
+				<ColumnPlugin name="Plugin"/>
+				<ColumnVersion name="Version"/>
+				<Item id="5501" name="Raadi:"/>
+				<Item id="5503" name="Ku rakib"/>
+				<Item id="5504" name="Update"/>
+				<Item id="5505" name="Ka saar"/>
+				<Item id="5508" name="Xiga"/>
+				<Item id="5509" name="Nooca liiska furaha:"/>
+				<Item id="5511" name="Kaydka liiska furaha"/>
+				<Item id="2" name="Xir"/>
+			</PluginsAdminDlg>
+
+			<StyleConfig title="Habeeyaha Style">
+				<Item id="2" name="Jooji"/>
+				<Item id="2301" name="Save Xir"/>
+				<Item id="2303" name="Hufnaan"/>
+				<Item id="2306" name="Dooro mawduuca:"/>
+				<SubDialog>
+					<Item id="2204" name="Dhiirran"/>
+					<Item id="2205" name="Italic"/>
+					<Item id="2206" name="Midabka hore"/>
+					<Item id="2207" name="Midabka asalka"/>
+					<Item id="2208" name="Magaca farta:"/>
+					<Item id="2209" name="Cabbirka farta:"/>
+					<Item id="2211" name="Qaabka:"/>
+					<Item id="2212" name="Qaabka Midabka"/>
+					<Item id="2213" name="Qaabka Farta"/>
+					<Item id="2214" name="Default ext.:"/>
+					<Item id="2216" name="Isticmaalaha ex.:"/>
+					<Item id="2218" name="Hoos Ka Xariiq"/>
+					<Item id="2219" name="Erayada muhiimka ah ee asalka ah"/>
+					<Item id="2221" name="Erayada muhiimka ah ee isticmaale-qeexay"/>
+					<Item id="2225" name="Luuqad:"/>
+					<Item id="2226" name="Ku qasbi midabka hore ee dhammaan noocyada"/>
+					<Item id="2227" name="Ku qasbi midabka asalka dhammaan noocyada"/>
+					<Item id="2228" name="Ku qasb doorashada xarfaha nooc kasta"/>
+					<Item id="2229" name="Ku qasbi doorashada cabbirka farta ee dhammaan noocyada"/>
+					<Item id="2230" name="Ku qasba doorashada geesinimada leh ee dhammaan noocyada"/>
+					<Item id="2231" name="Ku qas doorashada farta taagta ah ee dhammaan noocyada"/>
+					<Item id="2232" name="Ku qasbi inay hoosta ka xariiqaan doorashada dhammaan noocyada"/>
+					<Item id="2234" name="Tag goobaha"/>
+					<!-- Don't translate "Global override" -->
+					<Item id="2235" name="Waa maxay override Global?"/>
+				</SubDialog>
+			</StyleConfig>
+
+			<ShortcutMapper title="Gaaban Mapper">
+				<Item id="2602" name="Wax ka beddel"/>
+				<Item id="2603" name="Tirtir"/>
+				<Item id="2606" name="Cad"/>
+				<Item id="2607" name="filter:"/>
+				<Item id="1" name="Xir"/>
+				<ColumnName name="Magaca"/>
+				<ColumnShortcut name="Gaaban"/>
+				<ColumnCategory name="Qaybta"/>
+				<ColumnPlugin name="Plugin"/>
+				<MainMenuTab name="Liiska ugu muhiimsan"/>
+				<MacrosTab name="Macros"/>
+				<RunCommandsTab name="Orod amarrada"/>
+				<PluginCommandsTab name="Plugin amarada"/>
+				<ScintillaCommandsTab name="Scintilla amarrada"/>
+				<ConflictInfoOk name="Ma jiro khilaaf u dhexeeya shaygan"/>
+				<ConflictInfoEditing name="Khilaaf ma jiro ..."/>
+				<AboutCategory name="Ku saabsan"/>
+				<ModifyContextMenu name="Wax ka beddel"/>
+				<DeleteContextMenu name="Tirtir"/>
+				<ClearContextMenu name="Cad"/>
+				<MainCommandNames>
+					<Item id="41019" name="Ku fur galka ka kooban Explorer"/>
+					<Item id="41020" name="Ku fur gal ka kooban Command Prompt"/>
+					<Item id="41021" name="Soo Celinta Faylkii Dhawaan Xidhnaa"/>
+					<Item id="45001" name="U Beddelka EOL ee Daaqadaha (CR LF)"/>
+					<Item id="45002" name="U Beddelka EOL ee Unix (LF)"/>
+					<Item id="45003" name="U Beddelka EOL ee Macintosh (CR)"/>
+					<Item id="43022" name="Style dhamaan adoo isticmaalaya qaabka 1aad"/>
+					<Item id="43024" name="Style oo dhan adoo isticmaalaya qaabka 2aad"/>
+					<Item id="43026" name="Style oo dhan adoo isticmaalaya qaabka 3aad"/>
+					<Item id="43028" name="Style dhamaan adoo isticmaalaya qaabka 4aad"/>
+					<Item id="43030" name="Style dhamaan adoo isticmaalaya qaabka 5aad"/>
+					<Item id="43062" name="Qaabka koowaad adoo isticmaalaya qaabka 1aad"/>
+					<Item id="43063" name="Qaabka koowaad adoo isticmaalaya qaabka 2aad"/>
+					<Item id="43064" name="Qaabka koowaad adoo isticmaalaya qaabka 3aad"/>
+					<Item id="43065" name="Qaabka koowaad adoo isticmaalaya qaabka 4aad"/>
+					<Item id="43066" name="Qaabka koowaad adoo isticmaalaya qaabka 5aad"/>
+					<Item id="43023" name="Qaabka 1aad cad"/>
+					<Item id="43025" name="Qaabka 2aad cad"/>
+					<Item id="43027" name="Qaabka 3aad oo cad"/>
+					<Item id="43029" name="Qaabka 4aad cad"/>
+					<Item id="43031" name="Nadiifi qaabka 5aad"/>
+					<Item id="43032" name="Nadiifi dhammaan qaababka"/>
+					<Item id="43033" name="Qaabkii hore ee qaabka 1aad"/>
+					<Item id="43034" name="Qaabkii hore ee qaabka 2aad"/>
+					<Item id="43035" name="Qaabkii hore ee qaabka 3aad"/>
+					<Item id="43036" name="Qaabkii hore ee qaabka 4aad"/>
+					<Item id="43037" name="Qaabkii hore ee qaabka 5aad"/>
+					<Item id="43038" name="Qaabkii hore ee Hel Mark style"/>
+					<Item id="43039" name="Qaabka Xiga Qaabka 1aad"/>
+					<Item id="43040" name="Qaabka Xiga Qaabka 2aad"/>
+					<Item id="43041" name="Qaabka xiga ee qaabka 3aad"/>
+					<Item id="43042" name="Qaabka Xiga Qaabka 4aad"/>
+					<Item id="43043" name="Qaabka Xiga Qaabka 5aad"/>
+					<Item id="43044" name="Habka Xiga ee Hel Mark style"/>
+					<Item id="43055" name="Nuqul ka mid ah qoraalka qaabka 1aad"/>
+					<Item id="43056" name="Nuqul ka mid ah qoraalka Qaabka 2aad"/>
+					<Item id="43057" name="Nuqul ka mid ah qoraalka qaabka 3aad"/>
+					<Item id="43058" name="Nuqul ka mid ah qoraalka qaabka 4aad"/>
+					<Item id="43059" name="Nuqul ka mid ah qoraalka qaabka 5aad"/>
+					<Item id="43060" name="Nuqul ka mid ah Qoraallada Habboon ee Dhammaan Qaababka"/>
+					<Item id="43061" name="Nuqul ka samee qoraalka qaabaysan ee Hel qaabka Mark"/>
+					<Item id="44100" name="Fiiri faylka hadda ee Firefox"/>
+					<Item id="44101" name="Fiiri faylka hadda ku jira Chrome"/>
+					<Item id="44103" name="Fiiri faylka hadda ku jira IE"/>
+					<Item id="44102" name="Eeg faylka hadda ee Edge"/>
+					<Item id="50003" name="U beddel dukumeenti hore"/>
+					<Item id="50004" name="U beddel dukumeentiga xiga"/>
+					<Item id="44051" name="Laab Heerka 1"/>
+					<Item id="44052" name="Laab Heerka 2"/>
+					<Item id="44053" name="Laab Heerka 3"/>
+					<Item id="44054" name="Laab Heerka 4"/>
+					<Item id="44055" name="Laab Heerka 5"/>
+					<Item id="44056" name="Laab Heerka 6"/>
+					<Item id="44057" name="Laab Heerka 7"/>
+					<Item id="44058" name="Laab Heerka 8"/>
+					<Item id="44061" name="Kala Bixi Heerka 1"/>
+					<Item id="44062" name="Lasoco Heerka 2"/>
+					<Item id="44063" name="Lasoco Heerka 3"/>
+					<Item id="44064" name="Lasoco Heerka 4"/>
+					<Item id="44065" name="Lasoco Heerka 5"/>
+					<Item id="44066" name="Kala bixi Heerka 6"/>
+					<Item id="44067" name="Lasoco Heerka 7"/>
+					<Item id="44068" name="Lasoco Heerka 8"/>
+					<Item id="44081" name="Beddel Gudida Mashruuca 1"/>
+					<Item id="44082" name="Beddel Gudida Mashruuca 2"/>
+					<Item id="44083" name="Beddel Gudida Mashruuca 3"/>
+					<Item id="44085" name="U beddel Folderka sidii goob shaqo"/>
+					<Item id="44080" name="Beddel Maabka Dukumentiga"/>
+					<Item id="44070" name="Beddel Liiska Dukumentiga"/>
+					<Item id="44084" name="Beddel Liiska Hawlaha"/>
+					<Item id="50005" name="Beddel duubista macro"/>
+					<Item id="44104" name="U beddelo guddiga mashruuca 1"/>
+					<Item id="44105" name="U beddelo guddiga mashruuca 2"/>
+					<Item id="44106" name="U beddelo guddiga mashruuca 3"/>
+					<Item id="44107" name="U beddelo Folderka sidii goobta shaqada"/>
+					<Item id="44109" name="U Beddel Liiska Dukumentiga"/>
+					<Item id="44108" name="U Beddel Liiska Hawlaha"/>
+					<Item id="44110" name="Ka saar Midabka Tab"/>
+					<Item id="44111" name="Codso Taabka Midabka 1"/>
+					<Item id="44112" name="Dalbo Taabka Midabka 2"/>
+					<Item id="44113" name="Codso Midabka Tab 3"/>
+					<Item id="44114" name="Dalbo Taabka Midabka 4"/>
+					<Item id="44115" name="Dalbo Taabka Midabka 5"/>
+					<Item id="11002" name="Ku kala sooc Magaca A ilaa Z"/>
+					<Item id="11003" name="Ku kala sooc Magaca Z una kala sooc A"/>
+					<Item id="11004" name="Ku kala sooc Jidka A ilaa Z"/>
+					<Item id="11005" name="Ku kala sooc Jidka Z ilaa A"/>
+					<Item id="11006" name="Ku kala sooc Nooca A ilaa Z"/>
+					<Item id="11007" name="Ku kala sooc Nooca Z ilaa A"/>
+					<Item id="11008" name="Ku kala sooc dhererka nuxurka ee kor u kaca"/>
+					<Item id="11009" name="Ku kala sooc dhererka nuxurka ee soo degaya"/>
+				</MainCommandNames>
+			</ShortcutMapper>
+			<ShortcutMapperSubDialg title="Gaaban">
+				<Item id="1" name="Waayahay"/>
+				<Item id="2" name="Jooji"/>
+				<Item id="5006" name="Magaca"/>
+				<Item id="5008" name="Kudar"/>
+				<Item id="5009" name="Ka saar"/>
+				<Item id="5010" name="Codso"/>
+				<Item id="5007" name="Tani waxay meesha ka saaraysaa habka gaaban ee amarkan"/>
+				<Item id="5012" name="KHILAAF LA HELAY!"/>
+			</ShortcutMapperSubDialg>
+			<UserDefine title="Isticmaale-Qeexay">
+				<Item id="20001" name="Dekadda"/>
+				<Item id="20002" name="Magaca ka badal"/>
+				<Item id="20003" name="Abuur cusub..."/>
+				<Item id="20004" name="Ka saar"/>
+				<Item id="20005" name="U keydi sidii..."/>
+				<Item id="20007" name="Luqada isticmaalaha"/>
+				<Item id="20009" name="Ex.:"/>
+				<Item id="20012" name="Kiis iska daa"/>
+				<Item id="20011" name="Hufnaan"/>
+				<Item id="20015" name="Soo dejinta..."/>
+				<Item id="20016" name="Dhoofinta..."/>
+				<Item id="20017" name="Dejinta"/>
+				<StylerDialog title="Sheekada Styler">
+					<Item id="25030" name="Xulashada xarfaha"/>
+					<Item id="25006" name="Midabka hore"/>
+					<Item id="25007" name="Midabka asalka"/>
+					<Item id="25031" name="Magaca:"/>
+					<Item id="25032" name="Xajmiga:"/>
+					<Item id="25001" name="Dhiirran"/>
+					<Item id="25002" name="Italic"/>
+					<Item id="25003" name="Hoos Ka Xariiq"/>
+					<Item id="25029" name="Buulka"/>
+					<Item id="25008" name="Xadka 1"/>
+					<Item id="25009" name="Xadka 2"/>
+					<Item id="25010" name="Xadka 3"/>
+					<Item id="25011" name="Xadka 4"/>
+					<Item id="25012" name="Xadka 5"/>
+					<Item id="25013" name="Xadka 6"/>
+					<Item id="25014" name="Xadka 7"/>
+					<Item id="25015" name="Xadka 8"/>
+					<Item id="25018" name="Erayga 1aad"/>
+					<Item id="25019" name="Erayga 2aad"/>
+					<Item id="25020" name="Erayga 3aad"/>
+					<Item id="25021" name="Erayga 4aad"/>
+					<Item id="25022" name="Erayga 5aad"/>
+					<Item id="25023" name="Erayga 6aad"/>
+					<Item id="25024" name="Erayga 7aad"/>
+					<Item id="25025" name="Erayga 8aad"/>
+					<Item id="25016" name="Faallo"/>
+					<Item id="25017" name="Khadka faallooyinka"/>
+					<Item id="25026" name="Hawl-wadeen 1"/>
+					<Item id="25027" name="Hawl-wadeen 2"/>
+					<Item id="25028" name="Nambarada"/>
+					<Item id="25033" name="Hufan"/>
+					<Item id="25034" name="Hufan"/>
+					<Item id="1" name="Waayahay"/>
+					<Item id="2" name="Jooji"/>
+				</StylerDialog>
+				<Folder title="Folder Default">
+					<Item id="21101" name="Qaabka asalka ah"/>
+					<Item id="21102" name="Styler"/>
+					<Item id="21103" name="Luqadaha Qeexida Isticmaalaha ee khadka tooska ah"/>
+					<Item id="21105" name="Documentation"/>
+					<Item id="21106" name="Isku laab laablaabi (laabi khadadka madhan sidoo kale)"/>
+					<Item id="21220" name="Ku laabashada qaabka 1 code"/>
+					<Item id="21224" name="Furan:"/>
+					<Item id="21225" name="Dhexe:"/>
+					<Item id="21226" name="Xir:"/>
+					<Item id="21227" name="Styler"/>
+					<Item id="21320" name="Isku laablaabida qaabka 2 code (kala-soocida ayaa loo baahan yahay)"/>
+					<Item id="21324" name="Fur:"/>
+					<Item id="21325" name="Dhexe:"/>
+					<Item id="21326" name="Xir:"/>
+					<Item id="21327" name="Styler"/>
+					<Item id="21420" name="U laalaabida qaabka faallooyinka"/>
+					<Item id="21424" name="Furan:"/>
+					<Item id="21425" name="Dhexe:"/>
+					<Item id="21426" name="Xir:"/>
+					<Item id="21427" name="Styler"/>
+				</Folder>
+				<Keywords title="Liiska Erayada Muhiimka ah">
+					<Item id="22101" name="Kooxda 1-aad"/>
+					<Item id="22201" name="Kooxda 2aad"/>
+					<Item id="22301" name="Kooxda 3aad"/>
+					<Item id="22401" name="Kooxda 4aad"/>
+					<Item id="22451" name="Kooxda 5-aad"/>
+					<Item id="22501" name="Kooxda 6-aad"/>
+					<Item id="22551" name="Kooxda 7aad"/>
+					<Item id="22601" name="Kooxda 8-aad"/>
+					<Item id="22121" name="Habka horgalayaasha"/>
+					<Item id="22221" name="Habka horgalayaasha"/>
+					<Item id="22321" name="Habka horgalayaasha"/>
+					<Item id="22421" name="Habka horgalayaasha"/>
+					<Item id="22471" name="Habka horgalayaasha"/>
+					<Item id="22521" name="Habka horgalayaasha"/>
+					<Item id="22571" name="Habka horgalayaasha"/>
+					<Item id="22621" name="Habka horgalayaasha"/>
+					<Item id="22122" name="Styler"/>
+					<Item id="22222" name="Styler"/>
+					<Item id="22322" name="Styler"/>
+					<Item id="22422" name="Styler"/>
+					<Item id="22472" name="Styler"/>
+					<Item id="22522" name="Styler"/>
+					<Item id="22572" name="Styler"/>
+					<Item id="22622" name="Styler"/>
+				</Keywords>
+				<Comment title="Faallo Number">
+					<Item id="23003" name="booska comment line"/>
+					<Item id="23004" name="Allow meel kasta ha ahaatee"/>
+					<Item id="23005" name="Xoog bilowga line"/>
+					<Item id="23006" name="Allow meel cad ka hor"/>
+					<Item id="23001" name="Allow laalaabida faallooyinka"/>
+					<Item id="23326" name="Styler"/>
+					<Item id="23323" name="Furan"/>
+					<Item id="23324" name="Sii wad dabeecad"/>
+					<Item id="23325" name="Xir"/>
+					<Item id="23301" name="Qaabka khadka faallooyinka"/>
+					<Item id="23124" name="Styler"/>
+					<Item id="23122" name="Furan"/>
+					<Item id="23123" name="Xir"/>
+					<Item id="23101" name="Qaabka faallooyinka"/>
+					<Item id="23201" name="Habka tirada"/>
+					<Item id="23220" name="Styler"/>
+					<Item id="23230" name="Horgalayaasha 1"/>
+					<Item id="23232" name="Horgalayaasha 2"/>
+					<Item id="23234" name="Dheeraad ah 1"/>
+					<Item id="23236" name="Dheeraad ah 2"/>
+					<Item id="23238" name="Lifaaqa 1aad"/>
+					<Item id="23240" name="Lifaaqa 2aad"/>
+					<Item id="23242" name="Heerarka:"/>
+					<Item id="23244" name="Kala saar tobanle"/>
+					<Item id="23245" name="Dhibic"/>
+					<Item id="23246" name="Comma"/>
+					<Item id="23247" name="Labadaba"/>
+				</Comment>
+				<Operator title="Xakamaynta Hawl-wadeenada">
+					<Item id="24101" name="Habka hawl-wadeenada"/>
+					<Item id="24113" name="Styler"/>
+					<Item id="24116" name="Hawl-wadeenada 1"/>
+					<Item id="24117" name="Hawl-wadeenada 2 (kala-saarayaasha ayaa loo baahan yahay)"/>
+					<Item id="24201" name="Xadka 1 style"/>
+					<Item id="24220" name="Furan:"/>
+					<Item id="24221" name="Baxsada:"/>
+					<Item id="24222" name="Xir:"/>
+					<Item id="24223" name="Styler"/>
+					<Item id="24301" name="Qaabka xadaynta 2"/>
+					<Item id="24320" name="Furan:"/>
+					<Item id="24321" name="Baxsada:"/>
+					<Item id="24322" name="Xir:"/>
+					<Item id="24323" name="Styler"/>
+					<Item id="24401" name="Qaabka xadaynta 3"/>
+					<Item id="24420" name="Furan:"/>
+					<Item id="24421" name="Baxsada:"/>
+					<Item id="24422" name="Xir:"/>
+					<Item id="24423" name="Styler"/>
+					<Item id="24451" name="Qaabka xadaynta 4"/>
+					<Item id="24470" name="Furan:"/>
+					<Item id="24471" name="Baxsada:"/>
+					<Item id="24472" name="Xir:"/>
+					<Item id="24473" name="Styler"/>
+					<Item id="24501" name="Qaabka xadaynta 5"/>
+					<Item id="24520" name="Furan:"/>
+					<Item id="24521" name="Baxsada:"/>
+					<Item id="24522" name="Xir:"/>
+					<Item id="24523" name="Styler"/>
+					<Item id="24551" name="Qaabka xadaynta 6"/>
+					<Item id="24570" name="Furan:"/>
+					<Item id="24571" name="Baxsada:"/>
+					<Item id="24572" name="Xir:"/>
+					<Item id="24573" name="Styler"/>
+					<Item id="24601" name="Qaabka xadaynta 7"/>
+					<Item id="24620" name="Furan:"/>
+					<Item id="24621" name="Baxsada:"/>
+					<Item id="24622" name="Xir:"/>
+					<Item id="24623" name="Styler"/>
+					<Item id="24651" name="Qaabka xadaynta 8"/>
+					<Item id="24670" name="Furan:"/>
+					<Item id="24671" name="Baxsada:"/>
+					<Item id="24672" name="Xir:"/>
+					<Item id="24673" name="Styler"/>
+				</Operator>
+			</UserDefine>
+			<Preference title="Dookhyada">
+				<Item id="6001" name="Xir"/>
+				<Global title="Guud">
+					<Item id="6123" name="Degenaansho"/>
+					<Item id="6131" name="Menu"/>
+					<Item id="6122" name="Qari (isticmaal furaha Alt ama F10 si aad u rogto)"/>
+					<Item id="6132" name="Qari jidadka gaagaaban ee saxda ah ＋ ▼ ✕"/>
+					<Item id="6133" name="Xaaladda Bar"/>
+					<Item id="6134" name="Qari"/>
+				</Global>
+
+				<Toolbar title="Toolbar">
+					<Item id="6102" name="Qari"/>
+					<Item id="6103" name="UI faseexa: yar"/>
+					<Item id="6104" name="UI faseexa: weyn"/>
+					<Item id="6129" name="Buuxsan Fluent UI: yar"/>
+					<Item id="6130" name="Buuxsan Fluent UI: weyn"/>
+					<Item id="6105" name="Astaamaha caadiga ah: yar"/>
+					<Item id="6011" name="Midabaynta"/>
+					<Item id="6012" name="Dhamaystiran"/>
+					<Item id="6013" name="Qayb"/>
+					<Item id="6014" name="Doorashada midabka"/>
+					<Item id="6015" name="Defaftirka"/>
+					<Item id="6016" name="Casaan"/>
+					<Item id="6017" name="Cagaaran"/>
+					<Item id="6018" name="Buluugga"/>
+					<Item id="6019" name="Purple"/>
+					<Item id="6020" name="Cyan"/>
+					<Item id="6021" name="Saytuun"/>
+					<Item id="6022" name="Jaalle"/>
+					<Item id="6023" name="Lahjadda Nidaamka"/>
+					<Item id="6024" name="Caado"/>
+				</Toolbar>
+
+				<Tabbar title="Tab Bar">
+					<Item id="6107" name="Iska yaree"/>
+					<Item id="6108" name="Quful (ma jiidi oo tuur)"/>
+					<Item id="6109" name="Beddel midabka tabka aan shaqayn"/>
+					<Item id="6110" name="Ku sawir bar midab leh tab firfircoon"/>
+					<Item id="6111" name="Tus badhamada tabsiyada aan shaqaynayn"/>
+					<Item id="6112" name="Muuji badhanka dhow"/>
+					<Item id="6113" name="Laba jeer guji si aad u xirto dukumeenti"/>
+					<Item id="6115" name="Daar sifada pin tab"/>
+					<Item id="6135" name="Muuji kaliya badhanka dhagan"/>
+					<Item id="6118" name="Qari"/>
+					<Item id="6119" name="Khadka badan"/>
+					<Item id="6120" name="Toosan"/>
+					<Item id="6121" name="Ka bax adigoo dhaw tabka ugu dambeeya"/>
+					<Item id="6128" name="Astaamo kale"/>
+					<Item id="6125" name="Dhaqanka"/>
+					<Item id="6126" name="Fiiri dareenka"/>
+					<Item id="6136" name="Max.dhererka sumadda tab:"/>
+				</Tabbar>
+
+				<Scintillas title="Tafatirka 1">
+					<Item id="6216" name="Goobaha daryeelka"/>
+					<Item id="6217" name="Ballaca:"/>
+					<Item id="6219" name="Heerka indho-beelka:"/>
+					<Item id="6221" name="F"/>
+					<Item id="6222" name="S"/>
+					<Item id="6246" name="Ka dhig amarada laalaabida/furida heerka hadda taagan mid la beddeli karo"/>
+					<Item id="6227" name="Xariiq Duub"/>
+					<Item id="6228" name="Defaftirka"/>
+					<Item id="6229" name="La jaanqaaday"/>
+					<Item id="6230" name="Indent"/>
+					<Item id="6234" name="Dami sifada duubista horumarsan sababtoo ah taabasho taabasho"/>
+					<Item id="6215" name="Daar farta siman"/>
+					<Item id="6236" name="Daar u rogo wixii dhaafsiisan laynka u dambeeya"/>
+					<Item id="6239" name="Hayso doorashada markaad midigta gujiso meel ka baxsan doorashada"/>
+					<Item id="6245" name="Daar meel bannaan"/>
+					<Item id="6214" name="Daar koobi/gooy khadka iyada oo aan la dooran"/>
+					<Item id="6225" name="Codso midabka gaarka ah xagga hore ee qoraalka ee la xushay"/>
+					<Item id="6651" name="Tusiyaha khadka hadda jira"/>
+					<Item id="6652" name="Midna"/>
+					<Item id="6653" name="Sooyaalka Taariikhda"/>
+					<Item id="6654" name="Qaabka"/>
+					<Item id="6655" name="Ballaca:"/>
+				</Scintillas>
+
+				<Scintillas2 title="Tafatirka 2">
+					<Item id="6521" name="Tafatirka badan"/>
+					<Item id="6522" name="Daar tafatirka badan (Ctrl+Mouse guji/doorasho)"/>
+					<Item id="6523" name="U sahlo Xulashada Saadaasha Tafatirka badan"/>
+					<Item id="6247" name="EOL (CRLF)"/><!-- Don't translate "(CRLF)" -->
+					<Item id="6248" name="Defaftirka"/>
+					<Item id="6249" name="Qoraal Cad"/>
+					<Item id="6250" name="Midabka gaarka ah"/>
+					<Item id="6252" name="Jilayaasha aan Daabicin"/>
+					<Item id="6260" name="Muuqaal"/>
+					<Item id="6254" name="Soo gaabinta"/>
+					<Item id="6255" name="Codepoint"/>
+					<Item id="6256" name="Midabka gaarka ah"/>
+					<Item id="6258" name="Ku codso dejinta muuqaalka C0, C1 Unicode EOL"/>
+					<Item id="6259" name="Kahortagga xarfaha xakamaynta (C0 code) ku qorida dukumeenti"/>
+				</Scintillas2>
+
+				<DarkMode title="Qaab Madow">
+					<Item id="7131" name="Habka iftiinka"/>
+					<Item id="7132" name="Qaab mugdi ah"/>
+					<Item id="7133" name="Lasoco Daaqadaha"/>
+					<Item id="7102" name="Madow"/>
+					<Item id="7103" name="Casaan"/>
+					<Item id="7104" name="Cagaaran"/>
+					<Item id="7105" name="Buluug"/>
+					<Item id="7107" name="Purple"/>
+					<Item id="7108" name="Cyan"/>
+					<Item id="7109" name="Saytuun"/>
+					<Item id="7115" name="La habeeyey"/>
+					<Item id="7116" name="asalka nuxurka"/>
+					<Item id="7117" name="Shayga xiisaha leh"/>
+					<Item id="7118" name="Taariikhda maamulka"/>
+					<Item id="7119" name="asalka wada hadalka"/>
+					<Item id="7120" name="Khalad"/>
+					<Item id="7121" name="Qoraal"/>
+					<Item id="7122" name="Qoraal madow"/>
+					<Item id="7123" name="Qoraalka naafada"/>
+					<Item id="7124" name="Edge"/>
+					<Item id="7125" name="Linkiga"/>
+					<Item id="7126" name="Iftiinka Cida"/>
+					<Item id="7127" name="Edge waa naafo"/>
+					<Item id="7130" name="Dib u habayn"/>
+					<Item id="7135" name="Tones"/>
+				</DarkMode>
+
+				<MarginsBorderEdge title="Margins/Xuduudka/Cirka">
+					<Item id="6201" name="Laabi Margin Style"/>
+					<Item id="6202" name="Fudud"/>
+					<Item id="6203" name="Falaadh"/>
+					<Item id="6204" name="Geed wareeg ah"/>
+					<Item id="6205" name="Geedka sanduuqa"/>
+					<Item id="6226" name="Midna"/>
+					<Item id="6291" name="Nambarka laynka"/>
+					<Item id="6206" name="Bandhig"/>
+					<Item id="6292" name="Balaadhka firfircoon"/>
+					<Item id="6293" name="Balaadhka joogtada ah"/>
+					<Item id="6207" name="Muuji bookmark"/>
+					<Item id="6295" name="Taariikhda Beddel"/>
+					<Item id="6223" name="Muuji margin"/>
+					<Item id="6296" name="Ku muuji qoraalka"/>
+					<Item id="6211" name="Dejinta Cidhifka Toosan"/>
+					<Item id="6213" name="Qaabka asalka ah"/>
+					<Item id="6231" name="Balaadhka Xuduudka"/>
+					<Item id="6235" name="gees malaha"/>
+					<Item id="6208" name="Duubista"/>
+					<Item id="6209" name="Bidix"/>
+					<Item id="6210" name="Sax"/>
+					<Item id="6212" name="Mashqulka Xorta ah"/>
+				</MarginsBorderEdge>
+
+				<NewDoc title="Document Cusub">
+					<Item id="6401" name="Qaabka (Line dhamadka)"/>
+					<Item id="6402" name="Daaqadaha (CR LF)"/>
+					<Item id="6403" name="Unix (LF)"/>
+					<Item id="6404" name="Macintosh (CR)"/>
+					<Item id="6405" name="Codeynta"/>
+					<Item id="6406" name="ANSI"/>
+					<Item id="6407" name="UTF-8"/>
+					<Item id="6408" name="UTF-8 oo leh BOM"/>
+					<Item id="6409" name="UTF-16 Big Endian oo leh BOM"/>
+					<Item id="6410" name="UTF-16 Little Endian oo leh BOM"/>
+					<Item id="6411" name="Luuqadda asalka ah:"/>
+					<Item id="6419" name="Document Cusub"/>
+					<Item id="6420" name="Codso faylasha ANSI ee la furay"/>
+					<Item id="6432" name="Had iyo jeer fur dukumeenti cusub marka lagu daro bilowga"/>
+					<Item id="6433" name="U isticmaal xariiqda koowaad ee dukumeentiga sida magaca tab aan ciwaan looga dhigin"/>
+				</NewDoc>
+
+				<DefaultDir title="Tusaha Hore">
+					<Item id="6413" name="Tusaha Faylka Furan/Kaydi ee ugu tala galay"/>
+					<Item id="6414" name="Raac dukumeentiga hadda"/>
+					<Item id="6415" name="Xusuusnow hagaha ugu dambeeyay ee la isticmaalo"/>
+					<Item id="6431" name="Fur dhammaan faylalka galka halkii aad ka soo saari lahayd Folder-ka oo ah goobta shaqada ee galka soo dhacaya"/>
+				</DefaultDir>
+
+				<FileAssoc title="Ururka File">
+					<Item id="4008" name="Fadlan ka bax Notepad++ oo dib u billow Notepad++ qaabka maamulka si aad u isticmaasho sifadan."/>
+					<Item id="4009" name="Kordhinta la taageeray:"/>
+					<Item id="4010" name="Kordhinta diiwaangashan:"/>
+				</FileAssoc>
+
+
+				<Language title="Luuqada">
+					<Item id="6505" name="Alaabta la heli karo"/>
+					<Item id="6506" name="Alaabta naafada ah"/>
+					<Item id="6507" name="Ka dhig liiska luqadda mid is haysta"/>
+					<Item id="6508" name="Liiska Luuqadda"/>
+					<Item id="6335" name="Ula dhaqan dib-u-dhac ku yimaadda sifo baxsad ah oo loogu talagalay SQL"/>
+				</Language>
+
+				<Indentation title="Soo galitaanka">
+					<Item id="7161" name="Si toos ah u gal"/>
+					<Item id="7162" name="Midna"/>
+					<Item id="7163" name="Aasaaska"/>
+					<Item id="7164" name="Sareeye"/>
+					<Item id="6301" name="Dejinta Indent"/>
+					<Item id="6302" name="Jilayaasha booska"/>
+					<Item id="6303" name="Cabbirka galitaanka:"/>
+					<Item id="6310" name="Indent isticmaalaya:"/>
+					<Item id="6311" name="Jilaa tab"/>
+					<Item id="6510" name="Isticmaal qiimaha caadiga ah"/>
+					<Item id="6512" name="Furaha gadaasha dambe oo aan leexleexan halkii meel kaliya laga saari lahaa"/>
+				</Indentation>
+
+				<Highlighting title="Iftiiminaya">
+					<Item id="6351" name="Style Dhammaan Dhacdooyinka Token"/>
+					<Item id="6352" name="Kiiska ciyaarta"/>
+					<Item id="6353" name="Isku beeg kelmada oo dhan kaliya"/>
+					<Item id="6333" name="Iftiiminta Wacan"/>
+					<Item id="6326" name="Daar"/>
+					<Item id="6354" name="Isbarbardhigga"/>
+					<Item id="6332" name="Kiiska ciyaarta"/>
+					<Item id="6338" name="Isku beeg kelmada oo dhan kaliya"/>
+					<Item id="6339" name="Isticmaal Raadi goobaha wada hadalka"/>
+					<Item id="6340" name="Iftiimin aragti kale"/>
+					<Item id="6329" name="Iftiimin Tags Isbarbardhiga"/>
+					<Item id="6327" name="Daar"/>
+					<Item id="6328" name="Iftiimin sifooyinka"/>
+					<Item id="6330" name="Iftiimin faallooyinka/php/aagga asp"/>
+				</Highlighting>
+
+				<Print title="Daabac">
+					<Item id="6601" name="Daabacaada lambarka"/>
+					<Item id="6602" name="Xulashada Midabka"/>
+					<Item id="6603" name="WYSIWYG"/>
+					<Item id="6604" name="rogan"/>
+					<Item id="6605" name="Madaw oo cad"/>
+					<Item id="6606" name="Ma jiro midab asal ah"/>
+					<Item id="6607" name="Dejinta Margin (Cutub:mm)"/>
+					<Item id="6612" name="Bidix"/>
+					<Item id="6613" name="Sare"/>
+					<Item id="6614" name="Sax"/>
+					<Item id="6615" name="Gunta"/>
+					<Item id="6706" name="Dhiirran"/>
+					<Item id="6707" name="Italic"/>
+					<Item id="6708" name="Madaxa"/>
+					<Item id="6709" name="Qaybta bidix"/>
+					<Item id="6710" name="Qaybta dhexe"/>
+					<Item id="6711" name="Qaybta saxda ah"/>
+					<Item id="6717" name="Dhiirran"/>
+					<Item id="6718" name="Italic"/>
+					<Item id="6719" name="Lug"/>
+					<Item id="6720" name="Qaybta bidix"/>
+					<Item id="6721" name="Qaybta dhexe"/>
+					<Item id="6722" name="Qaybta saxda ah"/>
+					<Item id="6723" name="Kudar"/>
+					<ComboBox id="6724">
+						<Element name="Dariiqa magaca faylka oo buuxa"/>
+						<Element name="Magaca faylka"/>
+						<Element name="Hagaha faylka"/>
+						<Element name="Bogga"/>
+						<Element name="Qaab taariikheed gaaban"/>
+						<Element name="Qaab taariikheed dheer"/>
+						<Element name="Waqtiga"/>
+					</ComboBox>
+					<Item id="6725" name="Kala duwanaansho:"/>
+					<Item id="6727" name="Halkan ku muuji jaangooyooyinkaaga doorsoomay"/>
+					<Item id="6728" name="Madaxa iyo Lugta"/>
+				</Print>
+
+				<Searching title="Raadinta">
+					<Item id="6902" name="Adeegso farta monospaced ee Raadi wada hadalka (Waxa loo baahan yahay in dib loo bilaabo Notepad++)"/>
+					<Item id="6903" name="Soo hel wada hadalku wuu furan yahay raadinta ka dib kaas oo ka soo baxa daaqada natiijooyinka"/>
+					<Item id="6904" name="Xaqiiji Beddel Dhammaan Dukumentiyada Furan"/>
+					<Item id="6905" name="Beddel: Ha u guurin dhacdadan soo socota"/>
+					<Item id="6906" name="Daaqadda Natiijooyinka Raadinta: tus hal gelid oo keliya xariiq kasta oo la helo haddii ay suurtagal tahay"/>
+					<Item id="6907" name="Marka la helo wada hadal"/>
+					<Item id="6908" name="Buuxi goobta ka hel qoraal la xushay"/>
+					<Item id="6909" name="Dooro kelmad ku hoos jirta daryeelka marka aan waxba la dooran"/>
+					<Item id="6910" name="Baaxadda ugu yar ee si toos ah u hubinta &quot;Xulashada&quot;:"/>
+					<Item id="6913" name="Buuxi ka hel Goobta Hagaha faylalka ku salaysan Document Firfircoon"/>
+					<Item id="6916" name=": Calaamadaha ugu badan ee si otomaatig ah u buuxinaya goob ka soo xulashada"/>
+				</Searching>
+
+				<RecentFilesHistory title="Taariikhdii Faylasha dhawaa">
+					<Item id="6304" name="Taariikhdii Faylasha dhawaa"/>
+					<Item id="6306" name="Max.tirada gelinta:"/>
+					<Item id="6305" name="Ha fiirin waqtiga bilaabista"/>
+					<Item id="6429" name="Bandhig"/>
+					<Item id="6424" name="In Submenu"/>
+					<Item id="6425" name="Magaca Faylka kaliya"/>
+					<Item id="6426" name="Jidka Magaca faylka oo buuxa"/>
+					<Item id="6427" name="Habbee dhererka ugu badan:"/>
+				</RecentFilesHistory>
+
+				<Backup title="Kaabta">
+					<Item id="6817" name="Sawirka fadhiga iyo kaydinta xilliyeedka"/>
+					<Item id="6818" name="Daar sawirka fadhiga iyo kaabaynta xilliyeedka"/>
+					<Item id="6819" name="Soo kicinta dib u habeynta wax ka bedel kasta"/>
+					<Item id="6821" name="ilbiriqsi"/>
+					<Item id="6822" name="Jidka kaabta:"/>
+					<Item id="6309" name="Xusuusnow casharka hadda la bilaabayo soo socda"/>
+					<Item id="6825" name="Xusuusnow galalka aan la geli karin ee fadhigii hore"/>
+					<Item id="6801" name="Backup on save"/>
+					<Item id="6315" name="Midna"/>
+					<Item id="6316" name="Backup fudud"/>
+					<Item id="6317" name="Kaydka hadalka ah"/>
+					<Item id="6804" name="Hagaha Kaydinta Gaarka ah"/>
+					<Item id="6803" name="Tusaha:"/>
+				</Backup>
+
+				<AutoCompletion title="Si Toos ah u Dhameystiran">
+					<Item id="6807" name="Si Toos ah u Dhameystiran"/>
+					<Item id="6808" name="U sahlo dhamaystirka otomaatiga ah wax galinta kasta"/>
+					<Item id="6809" name="Dhamaystirka shaqada"/>
+					<Item id="6810" name="Dhamaystirka ereyga"/>
+					<Item id="6816" name="Dhamaystirka ereyga iyo shaqada"/>
+					<Item id="6869" name="Geli Xulashada"/>
+					<Item id="6870" name="TAB"/><!-- TAB key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6871" name="GAL"/><!-- ENTER key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6824" name="Tirooyinka iska dhaaf"/>
+					<Item id="6811" name="Ka"/>
+					<Item id="6813" name="jilaagii"/>
+					<Item id="6872" name="Si kooban uga dhig liiska dhammaystirka tooska ah"/>
+					<Item id="6815" name="Halbeegyada shaqada waxay tilmaan ka bixinayaan gelinta"/>
+					<Item id="6851" name="Si otomaatig ah u geliso"/>
+					<Item id="6857" name="html/xml tag"/>
+					<Item id="6858" name="Furan"/>
+					<Item id="6859" name="Xir"/>
+					<Item id="6860" name="Lammaanaha isku midka ah 1:"/>
+					<Item id="6863" name="Lammaanaha 2:"/>
+					<Item id="6866" name="Lammaanaha isku midka ah 3:"/>
+				</AutoCompletion>
+
+				<MultiInstance title="Taariikhda Tusaalooyinka Badan">
+					<Item id="6151" name="Dejinta tusaalooyin badan *"/>
+					<Item id="6152" name="Ku fur kalfadhi tusaale cusub (oo si toos ah u kaydi fadhiga markaad baxdo)"/>
+					<Item id="6153" name="Had iyo jeer ku jira qaabka tusaalooyinka badan"/>
+					<Item id="6154" name="Default (mono-tusaale)"/>
+					<Item id="6155" name="* Wax ka beddelka goobtan wuxuu u baahan yahay inuu dib u bilaabo Notepad++"/>
+					<Item id="6171" name="Habbee wakhtiga gelinka taariikhda"/>
+					<Item id="6175" name="Dib u celi nidaamka wakhtiga taariikhda caadiga ah (qaabab gaaban oo gaaban)"/>
+					<Item id="6172" name="Qaabka gaarka ah:"/>
+					<Item id="6181" name="Gobolka iyo [-sanka] *"/>
+					<Item id="6182" name="Xasuusnoow gobolka (gudku wuu furan yahay) xaalado kale (qaabka tusaalaha badan) ama markaad isticmaalayso cabbirka xariiqda taliska [-sanka]"/>
+					<Item id="6183" name="Taariikhdii Boodhadhka"/>
+					<Item id="6184" name="Liiska Dukumentiga"/>
+					<Item id="6185" name="Kooxda Jilayaasha"/>
+					<Item id="6186" name="Folder sida goobta shaqada"/>
+					<Item id="6187" name="Guddiyada Mashruuca"/>
+					<Item id="6188" name="Document Map"/>
+					<Item id="6189" name="Liiska Hawlaha"/>
+					<Item id="6190" name="Plugin Panels"/>
+				</MultiInstance>
+
+				<Delimiter title="Xaddidaad">
+					<Item id="6251" name="Delimiter settings settings (Ctrl + Mouse double click)"/>
+					<Item id="6252" name="Furan"/>
+					<Item id="6255" name="Xir"/>
+					<Item id="6256" name="Allow dhowr sadar"/>
+					<Item id="6161" name="Liiska jilayaasha erayada"/>
+					<Item id="6162" name="U adeegso liiska xarfaha ereyga caadiga ah sida uu yahay"/>
+					<Item id="6163" name="Ku dar dabeecadaada qayb ka mid ah ereyga
+(ha dooran ilaa aad garanayso waxaad samaynayso)"/>
+				</Delimiter>
+
+				<Performance title="Waxqabadka">
+					<Item id="7141" name="Xakamaynta Faylka Weyn"/>
+					<Item id="7143" name="Daar xaddidaadda Faylka Weyn (ma muujinayo syntax)"/>
+					<Item id="7144" name="Qeexi Cabbirka Faylka Weyn:"/>
+					<Item id="7146" name="MB (1 - 2046)"/>
+					<Item id="7147" name="Allow Ciyaarta Laabka"/>
+					<Item id="7148" name="Allow si toos ah u dhameystir"/>
+					<Item id="7149" name="Allow ku iftiimin wanaagsan"/>
+					<Item id="7150" name="Dami Ku Duubista Erayada Caalamka"/>
+					<Item id="7151" name="Allow URL-ka la taaban karo"/>
+					<Item id="7152" name="Cadaadis digniinta marka la furayo faylasha ≥2GB"/>
+				</Performance>
+
+				<Cloud title="Cloud Link">
+					<Item id="6262" name="Dejinta daruuraha"/>
+					<Item id="6263" name="Daruur maleh"/>
+					<Item id="6267" name="Deji dariiqa goobtaada daruurta halkan:"/>
+					<Item id="6318" name="Goobaha isku xirka la gujin karo"/>
+					<Item id="6319" name="Daar"/>
+					<Item id="6320" name="Xariiq la'aan"/>
+					<Item id="6350" name="Daar qaabka sanduuqa buuxa"/>
+					<Item id="6264" name="Nidaamyada URI habaysan:"/>
+				</Cloud>
+
+				<SearchEngine title="Mashiinka Raadinta">
+					<Item id="6271" name="Matoorka Raadinta (ee amarka &quot;ka raadi internetka&quot;)"/>
+					<Item id="6272" name="DuckDuckGo"/>
+					<Item id="6273" name="Google"/>
+					<Item id="6274" name="Bing"/>
+					<Item id="6275" name="Yahoo!"/>
+					<Item id="6276" name="Ku dheji mashiinka raadinta halkan:"/>
+					<!-- Don't change anything after Example: -->
+					<Item id="6278" name="Tusaale: https://www.google.com/search?q=$(CURRENT_WORD)"/>
+				</SearchEngine>
+
+				<MISC title="MISC.">
+					<ComboBox id="6347">
+						<Element name="U oggolow faylka hadda jira"/>
+						<Element name="U sahle dhammaan faylasha la furay"/>
+						<Element name="Dami"/>
+					</ComboBox>
+					<ComboBox id="6307">
+						<Element name="Wax tallaabo ah oo ku saabsan"/>
+						<Element name="Iska yaree"/>
+						<Element name="Ku dhow"/>
+						<Element name="Yaree / Ku dhow"/>
+					</ComboBox>
+					<ComboBox id="6362">
+						<Element name="GDI (ugu habboon)"/>
+						<Element name="DirectWrite (default)"/>
+						<Element name="DirectWrite (xejis meeraha)"/>
+						<Element name="DirectWrite (ku sawir GDI DC)"/>
+						<Element name="DirectWrite (DirectX 11)"/>
+					</ComboBox>
+					<ComboBox id="6364">
+						<Element name="Dami"/>
+						<Element name="Daar Notepad++ bilawga"/>
+						<Element name="Daar ku bixi Notepad++"/>
+					</ComboBox>
+					<Item id="6308" name="system tray"/>
+					<Item id="6363" name="qaabka wax u dhigista"/>
+					<Item id="6365" name="Is-cusboonaysiinta:"/>
+					<Item id="6312" name="Xaaladda Faylka si toos ah u-helidda"/>
+					<Item id="6313" name="Si aamusnaan ah u cusbooneysii"/>
+					<Item id="6325" name="U rog xariiqda ugu dambeysa cusbooneysiinta ka dib"/>
+					<Item id="6322" name="Faylka fadhiga ext.:"/>
+					<Item id="6324" name="Wareegtada Dukumentiga (Ctrl+TAB)"/>
+					<Item id="6331" name="Ku muuji magaca kaliya ee bar cinwaanka"/>
+					<Item id="6334" name="Si otomaatig ah u baadh xarfaha codaynta"/>
+					<Item id="6337" name="Faylka goobta shaqada ext.:"/>
+					<Item id="6114" name="Daar"/>
+					<Item id="6117" name="Daar dhaqanka MRU"/>
+					<Item id="6344" name="Dukumentiga Peeker"/>
+					<Item id="6345" name="Fiiri tabka"/>
+					<Item id="6346" name="Ka fiirso khariidadda dokumentiga"/>
+					<Item id="6360" name="Aamus dhammaan codadka"/>
+					<Item id="6361" name="Awood Save All xaqiijin wada hadalka"/>
+				</MISC>
+			</Preference>
+			<MultiMacro title="Ku socodsii dhowr jeer macro">
+				<Item id="1" name="Orod"/>
+				<Item id="2" name="Jooji"/>
+				<Item id="8006" name="Macro si uu u ordo"/>
+				<Item id="8001" name="Orod"/>
+				<Item id="8005" name="jeer"/>
+				<Item id="8002" name="Orod ilaa dhamaadka faylka"/>
+			</MultiMacro>
+			<Window title="Daaqadaha">
+				<Item id="1" name="Daar"/>
+				<Item id="2" name="Waayahay"/>
+				<Item id="7002" name="Keydso"/>
+				<Item id="7003" name="Xir daaqadaha"/>
+				<Item id="7004" name="Kala soocida tabs"/>
+			</Window>
+			<ColumnEditor title="Tifaftiraha Tiirka">
+				<Item id="2023" name="Qoraal la gelinayo"/>
+				<Item id="2033" name="Nambarka la galinayo"/>
+				<Item id="2030" name="Nambarka hore:"/>
+				<Item id="2031" name="Waxaa Kordhiyey:"/>
+				<Item id="2038" name="Hormuudka:"/>
+				<ComboBox id="2039">
+					<Element name="Midna"/>
+					<Element name="Eber"/>
+					<Element name="Goobaha"/>
+				</ComboBox>
+				<Item id="2036" name="Ku celi:"/>
+				<Item id="2032" name="Qaabka"/>
+				<Item id="2024" name="Dec"/>
+				<Item id="2025" name="Oct"/>
+				<Item id="2026" name="Hex"/>
+				<Item id="2027" name="Bin"/>
+				<Item id="1" name="Waayahay"/>
+				<Item id="2" name="Jooji"/>
+			</ColumnEditor>
+			<FindInFinder title="Raadi natiijooyinka raadinta">
+				<Item id="1" name="Hel Dhammaan"/>
+				<Item id="2" name="Xir"/>
+				<Item id="1711" name="Raadi waxa:"/>
+				<Item id="1713" name="Ka raadi kaliya khadadka la helay"/>
+				<Item id="1714" name="Isku beeg kelmada oo dhan kaliya"/>
+				<Item id="1715" name="Kiiska ciyaarta"/>
+				<Item id="1716" name="Habka raadinta"/>
+				<Item id="1717" name="Caadi"/>
+				<Item id="1719" name="Odhaah joogto ah"/>
+				<Item id="1718" name="La fidiyay (\n, \r, \t, \0, \x...)"/>
+				<Item id="1720" name=".kulan cusub"/>
+			</FindInFinder>
+			<DoSaveOrNot title="Keydso">
+				<Item id="1761" name="Kaydi faylka &quot;$STR_REPLACE$&quot; ?"/>
+				<Item id="6" name="Haa"/>
+				<Item id="7" name="Maya"/>
+				<Item id="2" name="Jooji"/>
+				<Item id="4" name="Haa dhammaan"/>
+				<Item id="5" name="Maya dhammaan"/>
+			</DoSaveOrNot>
+			<DoSaveAll title="Keydi dhammaan xaqiijinta">
+				<Item id="1766" name="Ma hubtaa inaad rabto inaad kaydiso dhammaan dukumentiyada la beddelay?
+
+Dooro &quot;Haa had iyo jeer&quot; haddii aadan rabin inaad mar kale aragto wada hadalkan.
+Waxaad dib u hawlgelin kartaa wada-hadalkan gudaha Dookhyada dambe."/>
+				<Item id="6" name="Haa"/>
+				<Item id="7" name="Maya"/>
+				<Item id="4" name="Had iyo jeer haa"/>
+			</DoSaveAll><!-- HowToReproduce: Check the "Enable Save All confirm dialog" checkbox in Preference->MISC, now click "Save all" -->
+
+			<DebugInfo title="Macluumaadka Ciribtirka">
+				<Item id="1752" name="Ku koobbi macluumaadka khaladka kaabis sabuuradda"/>
+				<Item id="1" name="Waayahay"/>
+			</DebugInfo>
+					<MacStrings>
+				<Item id="90001" name="Natiijooyinka raadinta"/>
+				<Item id="90002" name="Xir natiijooyinka raadinta"/>
+				<Item id="90003" name="Nadiifi Dhamaan"/>
+				<Item id="90004" name="Xir guddi"/>
+				<Item id="90005" name="Gudida Mashruuca"/>
+				<Item id="90006" name="Xakamaynta Isha"/>
+				<Item id="90007" name="Go'aan"/>
+				<Item id="90008" name="Ballanqaadkii wuu Fashilmay"/>
+				<Item id="90009" name="Majiraan kayd git\nIsticmaal Baadh si aad u furto repo."/>
+				<Item id="90010" name="Marxalada"/>
+				<Item id="90011" name="Marxalad la'aan"/>
+				<Item id="90012" name="Marxaladda oo dhan"/>
+				<Item id="90013" name="Marxaladaha oo dhan"/>
+				<Item id="90014" name="Gudbi fariin\u2026"/>
+				<Item id="90015" name="Ka baadh bakhaarka\u2026"/>
+				<Item id="90016" name="Dooro galka kaydka git"/>
+				<Item id="90017" name="(Bakhaar la'aan)"/>
+				<Item id="90018" name="(ka goostay)"/>
+				<Item id="90019" name="Khalad aan la aqoon"/>
+				<Item id="90020" name="Wax hawl ah lama helin"/>
+				<Item id="90021" name="Shaqada raadinta..."/>
+				<Item id="90022" name="Balaadhi Dhamaan"/>
+				<Item id="90023" name="Hel faylka hadda jira"/>
+				<Item id="90024" name="Dib u cusboonaysii"/>
+				<Item id="90025" name="Kala sooci hawlaha (A ilaa Z)"/>
+				<Item id="90026" name="Natiijooyinka"/>
+				<Item id="90027" name="Jooji"/>
+				<Item id="90028" name="Raadinta waa joogsatay"/>
+				<Item id="90029" name="Raadinta\u2026"/>
+				<Item id="90030" name="Qoraal lagu raadiyo"/>
+				<Item id="90031" name="*.txt, *.cpp, \u2026"/>
+				<Item id="90032" name="Raadinta..."/>
+				<Item id="90033" name="Beddel:"/>
+				<Item id="90034" name="Ereyga oo dhan"/>
+				<Item id="90035" name="Erayga oo dhan"/>
+				<Item id="90036" name="Duub"/>
+				<Item id="90037" name="Dabeecad"/>
+				<Item id="90038" name="Magaca HTML"/>
+				<Item id="90039" name="HTML jajab tobanle"/>
+				<Item id="90040" name="HTML Hexadecimal"/>
+				<Item id="90041" name="Qiimaha"/>
+				<Item id="90042" name="Kulan Madhan"/>
+				<Item id="90043" name="Faylka fadhiga la doortay kuma jiro tabs"/>
+				<Item id="90044" name="Kulanka Xamuulka"/>
+				<Item id="90045" name="Keydso Kulanka"/>
+				<Item id="90046" name="Nadiifi faylalkii dhawaa"/>
+				<Item id="90047" name="Faylka lama helin"/>
+				<Item id="90048" name="Macro lama duubo"/>
+				<Item id="90049" name="Dubi makro marka hore adoo isticmaalaya Bilow Duubista."/>
+				<Item id="90050" name="Wax khilaaf ah ma jiro."/>
+				<Item id="90051" name="Magaca Faylka"/>
+				<Item id="90052" name="Nooca"/>
+				<Item id="90053" name="Jidka"/>
+				<Item id="90054" name="Tag khadka"/>
+				<Item id="90055" name="Gali Taariikhda/Waqtiga"/>
+				<Item id="90056" name="Isbeddelka Codeynta"/>
+				<Item id="90057" name="U keydi nuqul sida"/>
+				<Item id="90058" name="U guuri qashinka"/>
+				<Item id="90059" name="Title Bar"/>
+				<Item id="90060" name="Muuji dariiqa faylka oo buuxa ee bar cinwaanka"/>
+				<Item id="90061" name="Muuji xaaladda bar"/>
+				<Item id="90062" name="Cabbirka Tab:"/>
+				<Item id="90063" name="Balaadhka daryeelka:"/>
+				<Item id="90064" name="Sicirka biqilka ee daryeelka (ms):"/>
+				<Item id="90065" name="Farsamaynta qoraalka:"/>
+				<Item id="90066" name="Ballaca ugu badan ee tab (pixels):"/>
+				<Item id="90067" name="Qarka Toosan"/>
+				<Item id="90068" name="Habka cidhifka:"/>
+				<Item id="90069" name="Tiirka gees:"/>
+				<Item id="90070" name="Balaadhka nambarka xariijinta firfircooni leh"/>
+				<Item id="90071" name="Bidix:"/>
+				<Item id="90072" name="Midig:"/>
+				<Item id="90073" name="Khadka caadiga ah ee dhamaanaya:"/>
+				<Item id="90074" name="Codaynta asalka ah:"/>
+				<Item id="90075" name="Daar auto-kaabta"/>
+				<Item id="90076" name="Inta u dhexaysa kaabta (ilbiriqsi):"/>
+				<Item id="90077" name="Goobta kaydinta:"/>
+				<Item id="90078" name="Qaabka Midabka"/>
+				<Item id="90079" name="(dhaxal)"/>
+				<Item id="90080" name="Mawduuca Qaabka Soo Dejinta"/>
+				<Item id="90081" name="Qaybta"/>
+				<Item id="90082" name="Nooca shaandhaynta..."/>
+				<Item id="90083" name="Ma jiro khilaaf u dhexeeya shaygan"/>
+				<Item id="90084" name="Plugin"/>
+				<Item id="90085" name="Version"/>
+				<Item id="90086" name="Rakibadihii oo Dhamaystiran"/>
+				<Item id="90087" name="Dib u bilow arjiga si aad ugu shubto plugins-yada la rakibay."/>
+				<Item id="90088" name="Ku rakib Plugins"/>
+				<Item id="90089" name="Ka saar Plugins"/>
+				<Item id="90090" name="Wax amarro ah lama helin"/>
+				<Item id="90091" name="Ku qor si aad u raadiso\u2026"/>
+				<Item id="90092" name="Luqadda la Qeexay Isticmaalaha v.2.1"/>
+				<Item id="90093" name="Abuur Luuqad Cusub"/>
+				<Item id="90094" name="Gali magac:"/>
+				<Item id="90095" name="Midabka hore:"/>
+				<Item id="90096" name="Midabka asalka:"/>
+				<Item id="90097" name="Ha Keydin"/>
+				<Item id="90098" name="La sameeyay"/>
+				<Item id="90099" name="Isku-dubbarid kelmadda ku-duubka"/>
+				<Item id="90100" name="Tus Dhamaan Jilayaasha"/>
+				<Item id="90101" name="Muuji Xulashada Jilayaasha"/>
+				<Item id="90102" name="Beddel Hagaha Indent"/>
+				<Item id="90103" name="Wali lama Fulin"/>
+				<Item id="90104" name="Dib uga soo deji Disk"/>
+				<Item id="90105" name="Beddel Matoorka Raadinta"/>
+				<Item id="90106" name="Qaladka Run"/>
+				<Item id="90107" name="Xusuus-qorka++ Wakhtiga soo dejinta"/>
+				<Item id="90108" name="Aan awoodin in la hubiyo wixii ku soo kordha"/>
+				<Item id="90109" name="Waad La Socotaa"/>
+				<Item id="90110" name="Download"/>
+				<Item id="90111" name="Bogga Fasaxa"/>
+				<Item id="90112" name="Kadib"/>
+				<Item id="90113" name="Filter plugins\u2026"/>
+				<Item id="90114" name="La heli karo"/>
+				<Item id="90115" name="Wararka"/>
+				<Item id="90116" name="La rakibay"/>
+				<Item id="90117" name="Aan isqaban karin"/>
+				<Item id="90118" name="Ku guuldareystay in la rakibo"/>
+				<Item id="90119" name="Ka saar furayaashan soo socda?"/>
+				<Item id="90120" name="Ku rakib furayaashan soo socda?"/>
+				<Item id="90121" name="Tani waxay tirtiri doontaa faylasha plugin"/>
+				<Item id="90122" name="Awaamiirta raadinta\u2026"/>
+				<Item id="90123" name="Midabka hore"/>
+				<Item id="90124" name="Midabka asalka"/>
+				<Item id="90125" name="Magaca Macro"/>
+				<Item id="90126" name="Magaca Macro"/>
+				<Item id="90127" name="Macro duuban oo hadda jira"/>
+				<Item id="90128" name="Maamulaha Macro"/>
+				<Item id="90129" name="Macros lama kaydsan"/>
+				<Item id="90130" name="Qor oo kaydi makro marka hore."/>
+				<Item id="90131" name="Tirtir Jidka Gaaban"/>
+				<Item id="90132" name="Liiska ugu muhiimsan"/>
+				<Item id="90133" name="Macros"/>
+				<Item id="90134" name="Orod amarrada"/>
+				<Item id="90135" name="Plugin amarada"/>
+				<Item id="90136" name="Scintilla amarrada"/>
+				<Item id="90137" name="Dooda Line Command"/>
+				<Item id="90138" name="Magaca amarka ee Run menu"/>
+				<Item id="90139" name="Dhammaan calaamadaha waa la nadiifiyey"/>
+				<Item id="90140" name="Qoraal calaamadeysan oo lagu koobiyeeyay sabuuraddii"/>
+				<Item id="90141" name="Ma jiro qoraal calaamadeysan oo la koobi karo"/>
+				<Item id="90142" name="Raadinta... %ld hit(-yada) \ u2014 %@"/>
+				<Item id="90143" name="Beddelka faylalka..."/>
+				<Item id="90144" name="Ku beddel Mashaariicda: Weli kuma xidhna."/>
+				<Item id="90145" name="Ka hel Mashaariicda: Weli kuma xidhna liiska faylka Gudida Mashruuca."/>
+				<Item id="90146" name="Goobta shaqada waa la bedelay"/>
+				<Item id="90147" name="Ma rabtaa inaad kaydiso isbeddellada?"/>
+				<Item id="90148" name="Natiijooyinka raadinta"/>
+				<Item id="90149" name="Iftiimin khadka hadda jira"/>
+				<Item id="90150" name="Muuji nambarada khadka"/>
+				<Item id="90151" name="Muuji meel cad"/>
+				<Item id="90152" name="Tus calaamadaha EOL"/>
+				<Item id="90153" name="Muuji margin bookmark"/>
+				<Item id="90154" name="Isticmaal tabs (halkii boosaska)"/>
+				<Item id="90155" name="Ka gudub xariiqda u dambaysa"/>
+				<Item id="90156" name="Koobi/jaro xariiq la'aan"/>
+				<Item id="90157" name="Dami qoraalka la xushay ee jiidaya"/>
+				<Item id="90158" name="Daar iftiiminta caqliga leh"/>
+				<Item id="90159" name="Iftiiminta wanaagsan: kiiska ciyaarta"/>
+				<Item id="90160" name="Muujinta smart: kelmad dhan kaliya"/>
+				<Item id="90161" name="Laba-guji si aad u xirto tab"/>
+				<Item id="90162" name="Muuji badhanka dhow ee tabs"/>
+				<Item id="90163" name="Xusuusnow muuqaalka guddida fadhiyada oo dhan"/>
+				<Item id="90164" name="Gelida galitaanka maqnaanshaha fadhiga ku hayso"/>
+				<Item id="90165" name="Xaqiiji kahor Badbaadinta Dhammaan"/>
+				<Item id="90166" name="Xaqiiji Bedel Dhammaan waraaqaha furan"/>
+				<Item id="90167" name="Beddel: ha u guurin dhacdada xigta"/>
+				<Item id="90168" name="Isticmaal farta monospaced gudaha Raadi wada hadalka"/>
+				<Item id="90169" name="Midig-guji ayaa ilaalinaysa doorashada"/>
+				<Item id="90170" name="U beddelo nidaamka taariikhda/wakhtiga caadiga ah"/>
+				<Item id="90171" name="Adeegso falanqaynta liiska hawlaha ku salaysan XML"/>
+				<Item id="90172" name="Xiritaanka tooska ah ( ) [ ] {}"/>
+				<Item id="90173" name="Laga soo bilaabo Nth jilaa:"/>
+				<Item id="90174" name="In-doorashada auto-hubinta xadka (bytes):"/>
+				<Item id="90175" name="La fidiyay (\\n, \\r, \\t, \\0, \\ x...)"/>
+				<Item id="90176" name="Tafatire"/>
+				<Item id="90177" name="Margin"/>
+				<Item id="90178" name="Madow"/>
+				<Item id="90179" name="Iftiin"/>
+				<Item id="90180" name="Auto (Raac Nidaamka)"/>
+				<Item id="90181" name="Khafiif ah (1px)"/>
+				<Item id="90182" name="Dhexdhexaad (2px)"/>
+				<Item id="90183" name="Dhumucda (3px)"/>
+				<Item id="90184" name="Demin"/>
+				<Item id="90185" name="Taariikhda"/>
+				<Item id="90186" name="Antialiased"/>
+				<Item id="90187" name="LCD La Hagaajiyey"/>
+				<Item id="90188" name="Fudud +/-"/>
+				<Item id="90189" name="Daaqadaha (CRLF)"/>
+				<Item id="90190" name="Mac (CR)"/>
+				<Item id="90191" name="Kaydka liiska furaha"/>
+				<Item id="90192" name="Dooro faylka Notepad++ mawduuca XML si aad u codsato"/>
+				<Item id="90193" name="Abuur cusub\u2026"/>
+				<Item id="90194" name="U keydi sida\u2026"/>
+				<Item id="90195" name="Luqadda isticmaalaha:"/>
+				<Item id="90196" name="Magaca luqadda"/>
+				<Item id="90197" name="Abuur"/>
+				<Item id="90198" name="U keydi sidii"/>
+				<Item id="90199" name="es"/>
+				<Item id="90200" name="faylka oo dhan"/>
+				<Item id="90201" name="Xakamaynta Hawl-wadeenada"/>
+				<Item id="90202" name="Xadka aan Sax ahayn"/>
+				<Item id="90203" name="Qiimayaasha kala duwani waa inay ahaadaan 0-255 bilawguna waa inuu noqdaa &lt;= dhamaad."/>
+				<Item id="90204" name="contextMenu.xml Lama helin"/>
+				<Item id="90205" name="Dib u bilow Notepad++ si aad dib ugu soo kiciso macnaha guudMenu.xml."/>
+				<Item id="90206" name="Faylku wuxuu leeyahay isbeddello aan la kaydinDib u soo dejinta codaynta cusub ayaa meesha ka saaraysa.Sii wad?"/>
+				<Item id="90207" name="Wax jawaab ah kama helin server-ka"/>
+				<Item id="90208" name="Heerarka serverka soo celiyay"/>
+				<Item id="90209" name="Kaydka ayaa laga yaabaa inuu yahay mid gaar ah."/>
+				<Item id="90210" name="waa la heli karaa"/>
+				<Item id="90211" name="waa nuqulkii ugu dambeeyay."/>
+				<Item id="90212" name="Waxaad hadda wadaa"/>
+				<Item id="90213" name="Halkan ka hel"/>
+				<Item id="90214" name="Terminalka halkan"/>
+				<Item id="90215" name="Faylasha luqadaha dheeriga ah (.xml) waxaa lagu dhejin karaa:"/>
+							<Item id="90216" name="Palette Command…"/>
+				<Item id="90217" name="Hubinta higaada"/>
+				<Item id="90218" name="Nooca si aad wax u raadiso…"/>
+				<Item id="90219" name="Daaqadda Cusub"/>
+				<Item id="90220" name="Ka bood amp;Tag Xiga Multi-dooro"/>
+				<Item id="90221" name="Sifada qufulan (macOS)"/>
+				<Item id="90222" name="Lasoco wixii kusoo kordha…"/>
+				<Item id="90223" name="Dhawaan Furan"/>
+			</MacStrings>
+		</Dialog>
+		<MessageBox>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<ContextMenuXmlEditWarning title="Tafatirka macnaha guud" message="Tafatirka macnaha guudMenu.xml wuxuu kuu ogolaanayaa inaad wax ka beddesho Notepad++ menu-ka soo baxay.
+Waa inaad dib u bilowdo Notepad++ kaaga si aad u dhaqan gasho ka dib markaad wax ka beddesho contextMenu.xml."/>
+			<SaveCurrentModifWarning title="Keydso wax ka beddelka hadda" message="Waa inaad kaydisaa wax ka beddelka hadda.
+Dhammaan isbeddellada la badbaadiyey lama celin karo.
+
+Sii wad?"/><!-- HowToReproduce: when you openned file is modified but unsaved yet, and you are changing file encoding. -->
+			<LoseUndoAbilityWarning title="lumin Digniin Kartida" message="Waa inaad kaydisaa wax ka beddelka hadda.
+Dhammaan isbeddellada la badbaadiyey lama celin karo.
+
+Sii wad?"/><!-- HowToReproduce: when you openned file is modified and saved, then you are changing file encoding. -->
+			<CannotMoveDoc title="U dhaqaaq Notepad++ cusub" message="Dukumeentiga waa la bedelay, kaydi ka dibna isku day mar kale."/><!-- HowToReproduce: From your Notepad++ drag & drop a clean (not dirty) file to outside of Notepad++, another instance of Notepad++ will be created. Then from your first Notepad++ drag & drop an unsaved file to the new instance. -->
+			<DocReloadWarning title="Dib u soo celi" message="Ma hubtaa inaad rabto inaad dib u soo dejiso faylka hadda jira oo aad lumiso isbeddelada lagu sameeyay Notepad++?"/>
+			<FileLockedWarning title="Badbaadinta fashilantay" message="Fadlan hubi haddii faylkan lagu furay barnaamij kale"/>
+			<FileAlreadyOpenedInNpp title="" message="Faylka mar hore ayuu ku furmay Notepad++."/><!-- HowToReproduce: Open a new document and open a file "c:/tmp/foo", save this new document by choosing "c:/tmp/foo" as file to save, reply the override popup "yes", then this message appears. -->
+			<RenameTabTemporaryNameAlreadyInUse title="Magacaabista waa guuldareystay" message="Magaca la cayimay ayaa horey loogu isticmaalay tab kale."/><!-- HowToReproduce: Rename the tab of an untitled document and provide a name that is the same as an already-existing tab of an untitled document. -->
+			<RenameTabTemporaryNameIsEmpty title="Magacaabista waa guuldareystay" message="Magaca la cayimay ma noqon karo madhan, ama kuma koobnaan karo boos(no) ama TAB(yada)."/><!-- HowToReproduce: Rename the tab of an untitled document and provide an empty string or only some white speces. -->
+			<DeleteFileFailed title="Tirtir File" message="Faylka tirtirka wuu fashilmay"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+
+			<NbFileToOpenImportantWarning title="Qadarka faylasha la furayo aad bay u badan yihiin" message="$INT_REPLACE$ files are about to be opened.
+Are you sure you want to open them?"/><!-- HowToReproduce: Check "Open all files of folder instead of launching Folder as Workspace on folder dropping" in "Default Directory" of Preferences dialog, then drop a folder which contains more then 200 files into Notepad++. -->
+			<SettingsOnCloudError title="Dejinta Cloud" message="Waxay u muuqataa in dariiqa dejinta ee daruurtu ay ku qotonto darawal akhrin kaliya,
+ama gal gal loo baahan yahay xaq u lahaanshaha qoraalka gelitaanka.
+Dejintaada daruuraha waa la tirtiri doonaaFadlan dib u deji qiimaha isku xiran adoo isticmaalaya wada hadal doorbid."/>
+			<FilePathNotFoundWarning title="Faylka Furan" message="Faylka aad isku dayayso inaad furto ma jiro."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SessionFileInvalidError title="Waa La Soo Rari Karaa Kulanka" message="Faylka fadhiga ama wuu xumaaday ama ma ansaxayo."/><!-- HowToReproduce: Save current session via menu "File -> Save Session...", use another editor to modify the session you saved to make it an invalid xml file. Then load this invalid session via menu "File -> Load Session...". -->
+			<DroppingFolderAsProjectModeWarning title="Ficil aan sax ahayn" message="Waxaad kaliya tuuri kartaa faylal ama faylal laakiin labadaba maaha, sababtoo ah waxaad ku jirtaa inaad u dejiso Folderka qaabka Mashruuca.
+Waa inaad awood u yeelataa &quot;Fur dhammaan faylalka galka halkii aad ka bilaabi lahayd Folderka ahaan goobta shaqada ee galka la soo ridayo&quot; ee qaybta &quot;Default Directory&quot; ee wada hadalka dookhyada si hawshani u shaqeyso."/>
+			<SortingError title="Khaladka Kala Soocida" message="Aan awoodin in la sameeyo kala-soocidda tirooyinka sababta oo ah line $INT_REPLACE$."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SortLocaleMultiple title="Kala soocida lama samayn" message="Kala soocida xulashooyin badan lama taageero"/><!-- HowToReproduce: Make a multiple selection and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<SortLocaleUnknown title="Kala Soocida Waa Fashilmay" message="Sababta kala-soocidda u fashilantay lama go'aamin karo."/><!-- HowToReproduce: This condition is theoretical; it is unknown what could cause it. -->
+			<SortLocaleExcept title="Kala Soocida Waa Fashilmay" message="$STR_REPLACE$"/><!-- HowToReproduce: Open a large file, e.g. 500MB / 90k lines, in 32-bit Notepad++ and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<ColumnModeTip title="Tilmaanta Habka Tiirka" message="Waxaa jira 3 dariiqo oo loo beddelo habka column-door:
+
+1. (Keyboard iyo Mouse) Qabo Alt intaad bidix-riix jiidid
+
+2. (Keyboard-ka kaliya) Qabo Alt+Shift markaad isticmaalayso furayaasha fallaadha
+
+3. (Keyboard ama Mouse)
+Dhig daryeelka bilawga la rabo ee booska xannibaadda tiirka, ka dib
+fuliya amarka &quot;Begin/End Select in Column Mode&quot;;
+U dhaqaaq daryeelka ilaa dhammaadka la rabo ee booska xannibaadda tiirka, ka dib
+fulinta &quot;Bilow/Dhammaadka Xulashada Qaabka Tiirka&quot; mar labaad"/>
+			<BufferInvalidWarning title="Badbaadinta fashilantay" message="Lama kaydin karo: Buffer waa sax."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<DoCloseOrNot title="Hayso faylka aan jirin" message="Faylka &quot;$STR_REPLACE$&quot; hadda ma jiro.
+Faylkan ku hay tafatiraha?"/>
+			<DoDeleteOrNot title="Tirtir faylka" message="Faylka &quot;$STR_REPLACE$&quot;
+waxaa loo rari doonaa qashinka dib u warshadaynta, dukumeentigana waa la xidhi doonaa.
+Sii wad?"/>
+			<NoBackupDoSaveFile title="Keydso" message="Faylkaaga kaydinta lama heli karo (dibadda ayaa laga tirtiray).
+Keydso haddii kale xogtaadu way lumi doontaa
+Ma rabtaa inaad kaydiso faylka &quot;$STR_REPLACE$&quot; ?"/>
+			<DoReloadOrNot title="Dib u soo celi" message="&quot;$STR_REPLACE$&quot;
+
+Faylkan waxa wax ka beddelay barnaamij kale.
+Ma rabtaa inaad dib u soo dejiso?"/>
+			<DoReloadOrNotAndLooseChange title="Dib u soo celi" message="&quot;$STR_REPLACE$&quot;
+
+Faylkan waxa wax ka beddelay barnaamij kale.
+Ma rabtaa inaad dib u soo dejiso oo aad lumiso isbeddelada lagu sameeyay Notepad++?"/>
+			<PrehistoricSystemDetected title="Nidaamka taariikhiga hore ee la ogaaday" message="Waxa ay u muuqataa in aad wali isticmaasho nidaam taariikhi ka hor ah.Habkaani wuxuu ku shaqeeyaa kaliya nidaam casri ah, raali ahaada"/><!-- HowToReproduce: Launch "Document Map" under Windows XP. -->
+			<XpUpdaterProblem title="Notepad++ Updater" message="Notepad++ updater kuma habboona XP sababtoo ah lakabka amniga gaboobay ee hoos yimaada XP.
+Ma rabtaa inaad tagto Notepad++ bogga si aad u soo dejiso noocii ugu dambeeyay?"/><!-- HowToReproduce: Run menu "? -> Update Notepad++" under Windows XP. -->
+			<GUpProxyConfNeedAdminMode title="Settings Proxy" message="Fadlan dib u billow Notepad++ qaabka maamulka si aad u habayso wakiilka."/>
+			<DocTooDirtyToMonitor title="Dhibaatada la socodka" message="Dukumeentigu waa wasakh.Fadlan kaydi wax ka beddelka ka hor intaadan la socon."/>
+			<DocNoExistToMonitor title="Dhibaatada la socodka" message="Faylku waa inuu jiraa si loola socdo"/>
+			<FileTooBigToOpen title="Dhibaatada cabbirka faylka" message="Faylku aad buu u weyn yahay in la furo Notepad++"/><!-- HowToReproduce: Try to open a 4GB file (it's not easy to reproduce, it depends on your system). -->
+			<FileLoadingException title="Koodhka ka baxsan: $STR_REPLACE$" message="Khalad ayaa dhacay markii la soo shubayay faylka!"/>
+			<WantToOpenHugeFile title="Furitaanka digniinta faylka weyn" message="Furitaanka fayl weyn oo 2GB+ ah waxay qaadan kartaa dhowr daqiiqo.
+Ma rabtaa inaad furto?"/>
+			<CreateNewFileOrNot title="Samee fayl cusub" message="&quot;$STR_REPLACE$&quot; ma jiro.Abuur?"/>
+			<CreateNewFileError title="Samee fayl cusub" message="Ma abuuri karo faylka &quot;$STR_REPLACE$&quot;."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<OpenFileError title="QALAD" message="Lama furi karo faylka &quot;$STR_REPLACE$&quot;."/>
+			<OpenFileNoFolderError title="Lama furi karo faylka" message="&quot;$STR_REPLACE1$&quot; lama furi karo:
+Folder &quot;$STR_REPLACE2$&quot; ma jiro."/>
+			<FileBackupFailed title="Kaydinta Faylku wuu Fashilmay" message="Nooca hore ee faylka laguma kaydin karo hagaha kaydinta ee &quot;$STR_REPLACE$&quot;.
+
+Ma rabtaa inaad kaydiso faylka hadda jira si kastaba?"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<LoadStylersFailed title="Load stylers.xml waa fashilmay" message="Soo dejinta &quot;$STR_REPLACE$&quot; waa fashilmay!"/>
+			<LoadLangsFailed title="Isku xidhka" message="Load langs.xml waa guuldareystay!
+Ma rabtaa inaad dib u soo ceshato langs.xml?"/><!-- HowToReproduce: Close Notepad++. Use another editor to remove all content of "langs.xml" (0 length) then save it. Open Notepad++. -->
+			<LoadLangsFailedFinal title="Isku xidhka" message="Load langs.xml waa guuldareystay!"/><!-- HowToReproduce: Close Notepad++. Use another editor to make "langs.xml" an invalid xml file then save it. Open Notepad++. -->
+			<FolderAsWorspaceSubfolderExists title="Folder sida goobta shaqada oo ku daraya dhibaatada gal" message="Fayl-hoosaad galka aad rabto inaad ku darto ayaa jira.
+Fadlan ka saar xididka guddiga ka hor intaadan ku darin galka &quot;$STR_REPLACE$&quot;."/><!-- HowToReproduce: Add a folder like "c:\temp\aFolder\" into "Folder as Workspace" panel, then try to add "c:\temp\". -->
+
+			<ProjectPanelChanged title="$STR_REPLACE$" message="Goobta shaqada waa la bedelayMa doonaysaa inaad badbaadiso?"/>
+			<ProjectPanelSaveError title="$STR_REPLACE$" message="Khalad ayaa dhacay markii aad qoraysay faylkaaga goobta shaqada.
+Goobtaada shaqada lama keydin"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<ProjectPanelOpenDoSaveDirtyWsOrNot title="Goobta shaqada ee furan" message="Goobta shaqada ee hadda jirta waa la bedelayMa rabtaa inaad kaydiso mashruuca hadda?"/>
+			<ProjectPanelNewDoSaveDirtyWsOrNot title="Goobta Shaqada Cusub" message="Goobta shaqada ee hadda jirta waa la bedelayMa rabtaa inaad kaydiso mashruuca hadda?"/>
+			<ProjectPanelOpenFailed title="Goobta shaqada ee furan" message="Goobta shaqada waa la furi waayay
+Waxay u muuqataa in faylka la furay aanu ahayn fayl mashruuc sax ah."/>
+			<ProjectPanelRemoveFolderFromProject title="Ka saar faylka mashruuca" message="Dhammaan walxaha hoose waa laga saari doonaa
+Ma hubtaa inaad rabto inaad faylkan ka saarto mashruuca?"/>
+			<ProjectPanelRemoveFileFromProject title="Ka saar faylka mashruuca" message="Ma hubtaa inaad rabto inaad faylkan ka saarto mashruuca?"/>
+			<ProjectPanelReloadError title="Dib u soo rar goobta shaqada" message="Lama heli karo faylka dib loo soo dejiyo"/>
+			<ProjectPanelReloadDirty title="Dib u soo rar goobta shaqada" message="Goobta shaqada ee hadda jirta waa la bedelayDib-u-dejinta waxay tuuraysaa dhammaan wax ka beddelka
+Ma rabtaa inaad sii wadato?"/>
+			<UDLNewNameError title="Khaladka UDL" message="Magacan waxaa isticmaala luqad kale,
+fadlan mid kale sii."/>
+			<UDLRemoveCurrentLang title="Ka saar luqadda hadda jirta" message="Ma hubtaa?"/>
+			<UDL_importSuccessful title="Luqadda Qeexay Isticmaalaha" message="Soo dejinta guul"/>
+			<UDL_importFails title="Luqadda Qeexay Isticmaalaha" message="Ku guuldareystay soo dejinta"/>
+			<UDL_saveBeforeImport title="Luqadda Qeexay Isticmaalaha" message="Kahor intaadan dhoofin, keydi qeexida luqadaada adigoo gujinaya &quot;Save As...&quot; badhanka."/> <!-- HowToReproduce: Choose "User Defined Language" in User Language combobox, then click on "Export... button". -->
+			<UDL_exportSuccessful title="Luqadda Qeexay Isticmaalaha" message="Dhoofinta guul"/>
+			<UDL_exportFails title="Luqadda Qeexay Isticmaalaha" message="Ku guuldareystay in la dhoofiyo"/>
+			<SCMapperDoDeleteOrNot title="Ma hubtaa?" message="Ma hubtaa in aad rabto in aad tirtirto jidkan gaaban?"/>
+			<FindCharRangeValueError title="Dhibaatada Qiimaha Kala Duwan" message="Waa inaad ku qortaa inta u dhaxaysa 0 iyo 255."/> <!-- HowToReproduce: Search menu, then Find characters in range, select Custom range, enter 999 in either edit box, press Find. -->
+			<OpenInAdminMode title="Badbaadinta fashilantay" message="Faylka lama kaydin karo oo waa la ilaalin karaa
+Ma rabtaa inaad ku bilowdo Notepad++ qaabka maamulka?"/>
+			<OpenInAdminModeWithoutCloseCurrent title="Badbaadinta fashilantay" message="Faylka lama kaydin karo oo waa la ilaalin karaa
+Ma rabtaa inaad ku bilowdo Notepad++ qaabka maamulka?"/>
+			<OpenInAdminModeFailed title="Ku fur qaabka maamulka waa fashilmay" message="Notepad++ laguma furi karo qaabka maamulka"/><!-- HowToReproduce: When you have no Admin privilege and you try to save a modified file in a protected location (for example: any file in sub-folder of "C:\Program Files\". This message will appear after replying "Yes" to "Open in Admin mode" dialog. -->
+			<ViewInBrowser title="Eeg faylka hadda ku jira browserka" message="Codsiga lagama heli karo nidaamkaaga."/>
+			<ExitToUpdatePlugins title="Notepad++ wuxuu ku dhow yahay inuu baxo" message="Haddii aad HAA gujiso, waxaad joojin doontaa Notepad++ si aad u sii waddo hawlaha.
+Notepad++ dib ayaa loo bilaabi doonaa kadib marka dhamaan hawlgalada la joojiyo.
+Sii wad?"/>
+			<NeedToRestartToLoadPlugins title="Notepad++ waxa uu u baahan yahay in dib loo bilaabo" message="Waa inaad dib u bilowdo Notepad++ si aad ugu shubto plugins aad rakibtay."/><!-- HowToReproduce: Import a plugin via menu "Settings->Import->Import Plugin(s)...". -->
+			<ChangeHistoryEnabledWarning title="Notepad++ waxa uu u baahan yahay in dib loo bilaabo" message="Waa inaad dib u bilowdo Notepad++ si aad awood ugu yeelato Beddelka Taariikhda."/><!-- HowToReproduce: uncheck "Display Change History" via Preferences dialog "Marges/Border/Edge. -->
+			<WindowsSessionExit title="Notepad++ - Ka bixida fadhiga Windows" message="Kalfadhiga Windows waa la joojin doonaa laakiin waxaad haysaa xog aan la keydin.Ma rabtaa inaad hadda ka baxdo Notepad++?"/>
+			<LanguageMenuCompactWarning title="Liiska luuqadaha is haysta" message="Doorashadan waxa la beddeli doonaa bilowga soo socda."/><!-- HowToReproduce: toggle "Make language menu compact" via Preferences dialog "Language/Language Menu. -->
+			<SwitchUnsavedThemeWarning title="$STR_REPLACE$" message="Isbeddellada aan la keydin ayaa qarka u saaran in la tuuro!
+Ma rabtaa inaad kaydiso isbeddelladaada ka hor inta aanad mawduucyada baddalin?"/><!-- HowToReproduce: In the Style Configurator dialog change some theme and switch to other theme without saving. -->
+			<MacroAndRunCmdlWarning title="Waafaqsanaanta amarrada Macro iyo socodsiinta" message="Amarradaada Macro iyo Run ee ku kaydsan Notepad++ v.8.5.2 (ama ka weyn) waxaa laga yaabaa inaysan la socon nooca hadda ee Notepad++.
+Fadlan tijaabi amarradaas oo, haddii loo baahdo, dib u tafatir.
+
+Haddii kale, waxaad hoos ugu dhigi kartaa Notepad++ v8.5.2 oo aad dib u soo celin kartaa xogtaadii hore.
+Notepad++ waxa ay kaydin doontaa &quot;shortcuts.xml&quot; hore oo u kaydinaysa &quot;shortcuts.xml.v8.5.2.backup&quot;.
+Magacaabida &quot;shortcuts.xml.v8.5.2.backup&quot; -&gt; &quot;shortcuts.xml&quot;, amarradaada waa in la soo celiyaa oo si sax ah u shaqeeyaan."/><!-- HowToReproduce: Close Notepad++, remove shortcuts.xml.v8.5.2.backup & v852ShortcutsCompatibilityWarning.xml if present, relaunch Notepad++, delete or modify a shortcuts via Shortcut Mapper, close Notepad++, then the message will show up -->
+			<FullReadOnlySavingForbidden title="Badbaadinta fashilantay" message="Ma kaydin karo faylka
+Notepad++ buuxa ee wax-akhriska-kaliya ee kaydinta habka mamnuuca ah waxay ka hortagtay in faylka la kaydiyo."/>
+			<NotEnoughRoom4Saving title="Badbaadin way ku guuldareysatay" message="Ku guuldareystay inuu kaydiyo faylka
+Waxay u muuqataa inaysan jirin meel ku filan saxanka si loo kaydiyo faylka.Faylkaaga lama kaydin"/>
+			<FileInaccessibleUserSession title="Faylka lama heli karo" message="Faylasha qaarkood fadhigaaga gacanta lagu kaydsado &quot;$STR_REPLACE$&quot; lama heli karoWaxaa loo furi karaa dukumeenti madhan oo akhrin kaliya sida meel-haysayaal.
+
+Ma jeclaan lahayd inaad abuurto boos-hayeyaashaas?
+
+FIIRO GAAR AH: Doorashada inaan la abuurin meel-hayeyaasha ama xidhidh dambe, fadhigaaga gacanta lagu kaydiyo waxba ma beddeli doono markaad baxdo."/>
+			<FileInaccessibleDefaultSessionXml title="Faylka lama heli karo" message="Qaar ka mid ah faylasha fadhigii hore lama geli karoWaxaa loo furi karaa dukumeenti madhan oo akhrin kaliya sida meel-haysayaal.
+
+Ma jeclaan lahayd inaad abuurto boos-hayeyaashaas?
+
+FIIRO GAAR AH: Doorashada inaan la abuurin meel-hayeyaasha ama xidhidh dambe, fadhigaaga waxa wax laga beddelayaa marka laga baxo!Waxaan kuu soo jeedinaynaa in aad hadda kaydiso &quot;session.xml&quot;."/>
+			<RTLvsDirectWrite title="Ma socon karo RTL" message="RTL kuma habboona habka DirectWrite.Fadlan dami qaabka DirectWrite ee MISC.qaybta Dookhyada dialog, oo dib u bilow Notepad++."/>
+			<FileMemoryAllocationFailed title="Marka laga reebo: Qoondaynta xusuusta faylka waa fashilantay" message="Waxay u badan tahay in aanay jirin xasuus bilaash ah oo ku filan faylka uu ku raran yahay Notepad++."/><!-- HowToReproduce: Try to open multiple files with total size > ~700MB in the x86 Notepad++ (it will depend on the PC memory configuration and the current system memory usage...). -->
+			<FindRegexBackwardDisabled title="Dib u baadhida Regex waa naafo" message="Sida caadiga ah, dib-u-raadinta regex waa naafo sababtoo ah natiijooyin lama filaan ah oo suurtagal ah.Si aad u sameyso raadinta gadaal, fur furka Raadinta oo dooro qaabka raadinta caadiga ah ama la dheereeyey halkii aad ka ahaan lahayd mid caadi ah.
+Riix badhanka OK si aad u furto Raadinta wada hadalka ama u dejiso diiradda.
+
+Haddii aad u baahan tahay qaabka raadinta regex gadaal, kala tasho buug-gacmeedka adeegsadaha si aad u hesho tilmaamo awood u leh."/>
+			<PrintError title="0" message="Ma bilaabi karo dukumeenti daabacaha"/><!-- Use title="0" to use Windows OS default translated "Error" title. -->
+			<FindAutoChangeOfInSelectionWarning title="Digniin raadinta" message="Xaaladda sanduuqa hubinta &quot;In xulashada&quot; si toos ah ayaa wax looga beddelay.
+Fadlan xaqiiji xaalada raadinta ka hor inta aanad samayn falka."/> <!-- HowToReproduce: https://github.com/notepad-plus-plus/notepad-plus-plus/issues/14897#issuecomment-2564316224 -->
+			<Need2Restart2ShowMenuShortcuts title="Notepad++ waxa uu u baahan yahay in dib loo bilaabo" message="Notepad++ waxa uu u baahan yahay in dib loo bilaabo si loo tuso menu-gaabyada saxda ah."/>
+			<NoAdminRight2ChangeReadOnlyFileAttribute title="Beddelka faylka sifada akhrinta-keliya waa guuldarraystay" message="Fadlan ku socodsii Notepad++ maamule ahaan si aad u bedesho sifooyinka faylka."/>
+		</MessageBox>
+		<ClipboardHistory>
+			<PanelTitle name="Taariikhdii Boodhadhka"/>
+		</ClipboardHistory>
+		<DocList>
+			<PanelTitle name="Liiska Dukumentiga"/>
+			<ColumnName name="Magaca"/>
+			<ColumnExt name="Ext."/>
+			<ColumnPath name="Jidka"/>
+			<ListGroups name="Koox ahaan Muuqaal"/>
+		</DocList>
+		<WindowsDlg>
+			<ColumnName name="Magaca"/>
+			<ColumnPath name="Jidka"/>
+			<ColumnType name="Nooca"/>
+			<ColumnSize name="Xajmiga"/>
+			<ColumnDateTime name="Wakhtiga wax laga beddelay"/>
+			<NbDocsTotal name="dukumentiyada guud:"/>
+			<MenuCopyName name="Nuqul Magacyada (yada)"/>
+			<MenuCopyPath name="Nuqul ka samee Magaca(yada)"/>
+		</WindowsDlg>
+		<AsciiInsertion>
+			<PanelTitle name="ASCII Codes Gelida Guddiga"/>
+			<ColumnVal name="Qiimaha"/>
+			<ColumnHex name="Hex"/>
+			<ColumnChar name="Dabeecad"/>
+			<ColumnHtmlName name="Magaca HTML"/>
+			<ColumnHtmlNumber name="HTML jajab tobanle"/>
+			<ColumnHtmlHexNb name="HTML Hexadecimal"/>
+		</AsciiInsertion>
+		<DocumentMap>
+			<PanelTitle name="Khariidadda Document"/>
+		</DocumentMap>
+		<FunctionList>
+			<PanelTitle name="Liiska Hawlaha"/>
+			<SortTip name="Kala sooc"/>
+			<ReloadTip name="Dib u soo celi"/>
+			<PreferencesTip name="Dookhyada"/>
+			<PreferencesInitialSort name="Kala sooci hawlaha (A ilaa Z) si caadi ah"/>
+		</FunctionList>
+		<FolderAsWorkspace>
+			<PanelTitle name="Folder sida goobta shaqada"/>
+			<SelectFolderFromBrowserString name="Dooro gal si aad ugu darto Folderka ahaan goobta shaqada"/>
+			<ExpandAllFoldersTip name="Kala saar dhammaan"/>
+			<CollapseAllFoldersTip name="Isku laab dhammaan"/>
+			<LocateCurrentFileTip name="Hel faylka hadda jira"/>
+			<Menu>
+				<Item id="3511" name="Ka saar"/>
+				<Item id="3512" name="Ka saar Dhamaan"/>
+				<Item id="3513" name="Kudar"/>
+				<Item id="3514" name="Ku shaqeeya nidaamka"/>
+				<Item id="3515" name="Furan"/>
+				<Item id="3516" name="Dariiqa koobiga"/>
+				<Item id="3517" name="Ka hel faylalka..."/>
+				<Item id="3518" name="Explorer halkan"/>
+				<Item id="3519" name="CMD halkan"/>
+				<Item id="3520" name="Nuqul magaca faylka"/>
+			</Menu>
+		</FolderAsWorkspace>
+		<ProjectManager>
+			<PanelTitle name="Mashruuca"/>
+			<WorkspaceRootName name="Goobta shaqada"/>
+			<NewProjectName name="Magaca Mashruuca"/>
+			<NewFolderName name="Magaca Folder"/>
+			<Menus>
+				<Entries>
+					<Item id="0" name="Goobta shaqada"/>
+					<Item id="1" name="Wax ka beddel"/>
+				</Entries>
+				<WorkspaceMenu>
+					<Item id="3122" name="Goobta Shaqada Cusub"/>
+					<Item id="3123" name="Goobta shaqada ee furan"/>
+					<Item id="3124" name="Dib u soo rar goobta shaqada"/>
+					<Item id="3125" name="Keydso"/>
+					<Item id="3126" name="U keydi sidii..."/>
+					<Item id="3127" name="Koobi u keydi sidii..."/>
+					<Item id="3121" name="Kudar Mashruuc Cusub"/>
+					<Item id="3128" name="Ka hel Mashaariicda..."/>
+				</WorkspaceMenu>
+				<ProjectMenu>
+					<Item id="3111" name="Magaca ka badal"/>
+					<Item id="3112" name="Kudar Folder"/>
+					<Item id="3113" name="Ku dar faylal..."/>
+					<Item id="3117" name="Kudar Faylasha Hagaha..."/>
+					<Item id="3114" name="Ka saar"/>
+					<Item id="3118" name="Kor u dhaqaaq"/>
+					<Item id="3119" name="Hoos u deg"/>
+				</ProjectMenu>
+				<FolderMenu>
+					<Item id="3111" name="Magaca ka badal"/>
+					<Item id="3112" name="Kudar Folder"/>
+					<Item id="3113" name="Ku dar faylal..."/>
+					<Item id="3117" name="Kudar Faylasha Hagaha..."/>
+					<Item id="3114" name="Ka saar"/>
+					<Item id="3118" name="Kor usoco"/>
+					<Item id="3119" name="Hoos u deg"/>
+				</FolderMenu>
+				<FileMenu>
+					<Item id="3111" name="Magaca ka badal"/>
+					<Item id="3115" name="Ka saar"/>
+					<Item id="3116" name="Wax ka beddel Jidka Faylka"/>
+					<Item id="3118" name="Kor usoco"/>
+					<Item id="3119" name="Hoos u deg"/>
+				</FileMenu>
+			</Menus>
+		</ProjectManager>
+		<MiscStrings>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<word-chars-list-tip value="Tani waxay kuu ogolaanaysaa inaad ku darto xarfo dheeraad ah xarfaha erayga hadda jira adigoo laba jeer gujinaya xulashada ama raadinta &quot;Isku dhig dhammaan kelmad kaliya&quot; ikhtiyaar la hubiyay."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, hover your mouse on the "?" button. -->
+
+			<!-- Don't translate "(&quot;EOL custom color&quot;)" -->
+			<eol-custom-color-tip value="Tag Qaab-dhismeedka Qaabka si aad u bedesho midabka caadiga ah ee EOL ee caadiga ah (&quot;EOL custom color&quot;).."/>
+
+			<word-chars-list-warning-begin value="La soco:"/>
+			<word-chars-list-space-warning value="$INT_REPLACE$ space(s)"/>
+			<word-chars-list-tab-warning value="$INT_REPLACE$ TAB(s)"/>
+			<word-chars-list-warning-end value="liiska dabeecadaada."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, check "Add your character as part of word\r(don't choose it unless you know what you're doing)", then type a white-space in the text field. -->
+			<backup-select-folder value="U dooro galka sidii hagaha kaydinta"/><!-- HowToReproduce: Settings > Preferences > Backup > [...] -->
+			<cloud-invalid-warning value="Jid aan sax ahayn"/>
+			<cloud-restart-warning value="Fadlan dib u bilow Notepad++ si aad u dhaqan gasho."/>
+			<cloud-select-folder value="Ka dooro gal meesha Notepad++ ku akhrido/qorto dejintiisa"/><!-- HowToReproduce: In "Cloud" section of Preferences dialog, check "Set your cloud location path here: ", then click the button "...". This message is displayed in the "Browse For Folder" dialog. -->
+			<default-open-save-select-folder value="U dooro galka sida hagaha caadiga ah"/><!-- HowToReproduce: Settings > Preferences > Default Directory > [...] -->
+			<shift-change-direction-tip value="Isticmaal Shift+Enter si aad u raadiso jihada ka soo horjeeda"/>
+			<two-find-buttons-tip value="2 hab hel badhamada"/>
+			<find-in-files-filter-tip value="Ka hel cpp, cxx, h, hxx hpp:
+*.cpp *.cxx *.h *.hxx *.hpp
+
+Ka hel dhammaan faylasha marka laga reebo exe, obj log:
+*.* !*.exe !*.obj !*.log
+
+Ka hel dhammaan faylasha laakiin ka saar imtixaanada galka, bin bin64:
+*.* !\tijaabooyin !\bin*
+
+Soo hel dhammaan feylasha laakiin ka saar dhammaan galka ama diiwaannada si isdaba joog ah:
+*.* !+\log*"/><!-- HowToReproduce: Tip of mouse hovered on "Filters" label in "Find in Files" section of Find dialog. -->
+			<find-in-files-select-folder value="Ka dooro gal aad ka raadinayso"/><!-- HowToReproduce: Search > Find in Files > [...] -->
+			<find-in-files-dir-from-active-doc-tip value="Buuxi goobta hagaha ku salaysan dukumeenti firfircoon"/><!-- HowToReproduce: Search > Find in Files > [<<] -->
+			<find-status-top-reached value="Soo hel: Dukumeenti la gaarey oo bilaabmaya, dhacdadii ugu horeysay ee hoosta ayaa la helay."/>
+			<find-status-end-reached value="Soo hel: Dhammaadka dukumeentiga la gaarey, dhacdadii ugu horreysay ee ka timid xagga sare ayaa la helay."/>
+			<find-status-replaceinfiles-1-replaced value="Ku Bedel Faylasha: 1 dhacdo ayaa la bedelay"/>
+			<find-status-replaceinfiles-nb-replaced value="Ku beddel faylasha: $INT_REPLACE$ dhacdooyinka waa la bedelay"/>
+			<find-status-replaceinopenedfiles-1-replaced value="Ku beddel faylasha Furan: 1 dhacdo ayaa la beddelay"/>
+			<find-status-replaceinopenedfiles-nb-replaced value="Ku beddel faylasha la furay: $INT_REPLACE$ dhacdooyinka waa la bedelay"/>
+			<find-status-invalid-re value="Soo hel: Odhaah joogto ah oo aan sax ahayn"/>
+			<find-status-search-failed value="Raadi: Baadhitaanku wuu fashilmay"/>
+			<find-status-mark-1-match value="Sumadda: 1 ciyaar"/>
+			<find-status-mark-nb-matches value="Sumad: $INT_REPLACE$ tartamo"/>
+			<find-status-count-1-match value="Tirinta: 1 ciyaar"/>
+			<find-status-count-nb-matches value="Tiri: $INT_REPLACE$ tartamo"/>
+			<find-status-replaceall-1-replaced value="Bedel Dhammaan: 1 dhacdo ayaa la bedelay"/>
+			<find-status-replaceall-nb-replaced value="Beddel Dhammaan: Dhacdooyinka $INT_REPLACE$ waa la bedelay"/>
+			<find-status-replaceall-readonly value="Bedel Dhammaan: Lama beddeli karo qoraalka.Dukumeentiga hadda jira waa la akhriyaa kaliya"/>
+			<find-status-replace-end-reached value="Beddel: Dhammaadka dukumeentiga la gaarey, kor ayuu ka bilaabmay."/>
+			<find-status-replace-top-reached value="Beddel: Dukumeenti la gaarey oo bilaabmaya, hoos ayuu ka bilaabmay."/>
+			<find-status-replaced-next-found value="Beddel: 1 dhacdo ayaa la bedelay.Dhacdadii xigtay waa la helay."/>
+			<find-status-replaced-without-continuing value="Beddel: 1 dhacdo ayaa la bedelay."/>
+			<find-status-replaced-next-not-found value="Beddel: 1 dhacdo ayaa la bedelay.Dhacdooyin dambe lama helin"/>
+			<find-status-replace-not-found value="Beddel: wax dhacay lama helin"/>
+			<find-status-replace-readonly value="Beddel: Ma beddeli karo qoraalkaDukumeentiga hadda jira waa la akhriyaa kaliya"/>
+			<find-status-cannot-find value="Soo hel: Lama heli karo qoraalka &quot;$STR_REPLACE$&quot;"/>
+			<find-status-cannot-find-pebkac-maybe value="Dhacdada la siiyay lama heli karo.Waxaa laga yaabaa inaad illowday inaad hubiso &quot;ku soo duuduubo&quot; (to ON), &quot;Kiiska isku midka ah&quot; (OFF), ama &quot;Ku dar kelmadda oo dhan&quot; (OFF)."/>
+			<find-status-scope-selection value="qoraalka la doortay"/>
+			<find-status-scope-all value="faylka oo dhan"/>
+			<find-status-scope-backward value="laga bilaabo bilawga faylka ilaa daryeelka"/>
+			<find-status-scope-forward value="laga bilaabo daryeelka ilaa dhamaadka-faylka"/>
+			<find-status-invisible-chars-findWhat value="Jilayaasha aan la arki karin ee la dhejiyay &quot;Raadi waxa&quot; ama &quot;Ku beddel&quot; nuxurka"/>
+			<find-status-invisible-chars-findWhat-tip value="Digniin: Jilayaasha aan la arki karin ee goob raadinta (ama beddelka)
+Qoraalka lagu dhejiyay goobtan waxaa ku jira xarfo aan la arki karin (laga yaabee in xariiq- dhammaan).Haddii aad sii waddo adoon tirtirin, waxaa lagu dari doonaa raadinta (ama beddelka) qoraalka."/>
+			<finder-find-in-finder value="Ka hel natiijooyinkan raadinta..."/>
+			<finder-close-this value="Xir natiijooyinkan raadinta"/>
+			<finder-collapse-all value="Laab dhammaan"/>
+			<finder-uncollapse-all value="Kala saar dhammaan"/>
+			<finder-copy value="Nuqul ka mid ah khadadka la xushay"/>
+			<finder-copy-selected-paths value="Nuqul magaca (-yada) la doortay"/>
+			<finder-clear-all value="Nadiifi dhamaan"/>
+			<finder-open-selected-paths value="Fur Magaca(-yada) La doortay"/>
+			<finder-purge-for-every-search value="Nadiifi raadinta kasta"/>
+			<finder-wrap-long-lines value="Kelmad ku duub khadadka dhaadheer"/>
+			<common-ok value="Waayahay"/>
+			<common-cancel value="Jooji"/>
+			<common-name value="Magaca"/>
+			<tabrename-title value="Dib u Magacaw Taabka Hadda"/>
+			<tabrename-newname value="Magaca cusub"/>
+			<splitter-rotate-left value="U rog dhanka bidix"/>
+			<splitter-rotate-right value="U rog dhanka midig"/>
+			<userdefined-title-new value="Abuur Luuqad Cusub..."/>
+			<userdefined-title-save value="Kaydi Magaca Luuqadda Hadda Sida..."/>
+			<userdefined-title-rename value="Dib u Magacaabi Magaca Luuqadda Hadda"/>
+			<summary value="Soo koobid"/>
+			<summary-filepath value="Dariiqa faylka oo buuxa:"/>
+			<summary-filecreatetime value="la sameeyay:"/>
+			<summary-filemodifytime value="Wax laga beddelay:"/>
+			<summary-nbchar value="Jilayaasha (aan lahayn dhamman xariiq):"/>
+			<summary-nbword value="Erayada:"/>
+			<summary-nbline value="Lines:"/>
+			<summary-nbbyte value="Dhererka dukumeentiga:"/>
+			<summary-nbsel1 value="jilayaasha la doortay ("/>
+			<summary-nbsel2 value="bytes) gudaha"/>
+			<summary-nbrange value="safafka"/>
+			<progress-hits-title value="Hits:"/>
+			<progress-cancel-info value="Joojinta hawlgalka, fadlan sug..."/>
+			<find-in-files-progress-title value="Ka hel horumarka faylalka..."/>
+			<replace-in-files-confirm-title value="Ma hubtaa?"/>
+			<replace-in-files-confirm-directory value="Ma hubtaa inaad rabto inaad bedesho dhammaan dhacdooyinka:"/>
+			<replace-in-files-confirm-filetype value="Nooca faylka:"/>
+			<replace-in-files-progress-title value="Ku Beddel Horumarka Faylasha..."/>
+			<replace-in-projects-confirm-title value="Ma hubtaa?"/>
+			<replace-in-projects-confirm-message value="Ma rabtaa inaad bedesho dhammaan dhacdooyinka ku jira dhammaan dukumeentiyada ku jira guddiga mashruuca ee la doortay?"/>
+			<replace-in-open-docs-confirm-title value="Ma hubtaa?"/>
+			<replace-in-open-docs-confirm-message value="Ma hubtaa inaad rabto inaad bedesho dhammaan dhacdooyinka dukumeentiyada furan?"/>
+			<find-result-caption value="Natiijooyinka raadinta"/>
+			<find-result-title value="Raadi"/><!-- Must not begin with space or tab character -->
+			<find-result-title-info value="($INT_REPLACE1$ ku dhufatay $INT_REPLACE2$ galalka $INT_REPLACE3$ la baadhay)"/>
+			<find-result-title-info-selections value="($INT_REPLACE1$ ku dhufatay $INT_REPLACE2$ xulashada $INT_REPLACE3$ la baadhay)"/>
+			<find-result-title-info-options-searchmode-normal value="Caadi"/>
+			<find-result-title-info-options-searchmode-extended value="La Kordhiyey"/>
+			<find-result-title-info-options-searchmode-regexp value="RegEx"/>
+			<find-result-title-info-options-case value="Dacwad"/>
+			<find-result-title-info-options-word value="Erayga"/>
+			<find-result-title-info-extra value="- Qaabka shaandhaynta khadka: kaliya muuji natiijooyinka la sifeeyay"/>
+			<find-result-hits value="($INT_REPLACE$ hits)"/>
+			<find-result-line-prefix value="Line"/><!-- Must not begin with space or tab character -->
+			<find-regex-zero-length-match value="Dhererka eber"/>
+			<session-save-folder-as-workspace value="U keydi galka sidii goob shaqo"/>
+			<tab-untitled-string value="cusub"/>
+			<file-save-assign-type value="Lifaaqa kordhinta"/>
+			<close-panel-tip value="Xir"/>
+			<IncrementalFind-FSFound value="$INT_REPLACE$ matches"/>
+			<IncrementalFind-FSNotFound value="Kelmada lama helin"/>
+			<IncrementalFind-FSTopReached value="La gaarey bogga sare, laga sii waday hoosta"/>
+			<IncrementalFind-FSEndReached value="Dhammaadka bogga la gaarey, oo kor laga sii waday"/>
+			<contextMenu-styleAlloccurrencesOfToken value="Habbee dhammaan dhacdooyinka token"/>
+			<contextMenu-styleOneToken value="Style one calaamad"/>
+			<contextMenu-clearStyle value="Qaab cad"/>
+			<contextMenu-PluginCommands value="Plugin amarada"/>
+			<largeFileRestriction-tip value="Tilmaamaha qaarkood ayaa laga yaabaa inay hoos u dhigaan waxqabadka faylalka waaweyn.Tilmaamahan si toos ah ayaa loo dami karaa marka la furo faylka weyn.Waxaad iyaga ku habayn kartaa halkan.
+
+FIIRO GAAR AH:
+1. Wax ka beddelka xulashooyinka halkan waxay u baahan tahay dib u fur faylal waaweyn oo hadda furmay si loo helo hab-dhaqan habboon.
+
+2. Haddii &quot;Deactivate Word Wrap globally&quot; la eego oo aad furto fayl wayn, &quot;Word Wrap&quot; waxa uu noqon doonaa naafo dhammaan faylasha.Waxaad dib-u-hawlgelin kartaa iyada oo loo marayo menu &quot;View-&gt;Word Wrap&quot;."/>
+			<npcNote-tip value="Matalaadda &quot;non-ASCII&quot; ee la doortay iyo jilayaasha aan daabicin (control).
+
+FIIRO GAAR AH:
+Isticmaalka matalaadda waxay baabi'in doontaa saamaynta qoraalka.
+
+Si aad u hesho liiska buuxa ee meelaha cad ee la doortay iyo xuruufta aan daabicin, hubi Buugga Isticmaalaha.
+
+Guji badhankan si aad u furto degelka buug-gacmeedka."/>
+			<npcAbbreviation-tip value="Soo gaabinta : magac
+NBSP: meel aan jabin
+ZWSP: meel ballac eber ah
+ZWNBSP : Eber-ballac meel aan jabin
+
+Si aad u hesho liiska oo dhan hubi Buugga Isticmaalaha.
+Guji &quot;?&quot;badhanka midigta ku yaal si aad u furto bogga internetka oo leh Buugga Isticmaalaha."/>
+			<npcCodepoint-tip value="Codepoint : magac
+U+00A0: meel aan nasasho lahayn
+U+200B: meel ballac eber ah
+U+FEFF : Eber-ballac meel aan jabin
+
+Si aad u hesho liiska oo dhan hubi Buugga Isticmaalaha.
+Guji &quot;?&quot;badhanka midigta ku yaal si aad u furto bogga internetka oo leh Buugga Isticmaalaha."/>
+
+			<!-- Don't translate "(&quot;Non-printing characters custom color&quot;)" -->
+			<npcCustomColor-tip value="Tag qaabeeyaha Style si aad u bedesho midabka caadiga ah ee goobta cad ee la xushay iyo xuruufta aan daabacin (&quot;midabka xarfaha aan daabacin&quot;)."/>
+			<npcIncludeCcUniEol-tip value="Codso jaangooyooyinka muuqaalka xarfaha aan daabacin ee C0, kantaroolka C1 iyo Unicode EOL (khadka xiga, kala soocida xarriiqda iyo cutubka cutubka)."/>
+			<searchingInSelThresh-tip value="Tirada ugu yar ee jilayaasha la xushay ee aagga wax ka beddelka si aad si toos ah u hubiso &quot;In xulashada&quot; sanduuqa hubinta marka la furo wadahadalka.Qiimaha ugu badan waa $INT_REPLACE$.U deji qiimaha 0 si aad u joojiso hubinta tooska ah."/>
+			<searchingFillFindWhat-tip value="Tirada ugu badan ee jilayaasha la doortay ee aagga wax ka beddelka si ay si toos ah u buuxiso goobta &quot;Raadi maxaa&quot; marka Ctrl-F la kiciyo.Qiimaha ugu badan waa $INT_REPLACE$, taas oo ah cabbirka ugu badan ee &quot;Raadi waxa&quot; goobta, oo xaddidan nidaamka."/>
+			<verticalEdge-tip value="Ku dar calaamadeeyaha tiirkaaga adoo ku tilmaamaya booskiisa nambar jajab tobanle ah.Waxaad qeexi kartaa dhowr calaamadood oo tiirar ah adoo isticmaalaya meel cad si aad u kala saarto tirooyinka kala duwan."/>
+			<fileSaveAsCopySaveButton-tip value="Qabo Shift markaad riixdo Save si aad u furto nuqulka ka dib markaad kaydiso."/>
+			<autoIndentBasic-tip value="Hubi in galitaanka xariiqda hadda jirta (ie, xariiqda cusub ee la sameeyay iyadoo la riixayo furaha ENTER) uu la mid yahay dhexda xariiqii hore."/>
+			<autoIndentAdvanced-tip value="U sahle gelida caqliga leh ee luuqadaha &quot;C-like&quot; iyo Python.Luuqadaha &quot;C-like&quot; waxaa ka mid ah:
+C, C++, Java, C #, Ujeedo-C, PHP, JavaScript, JSP, CSS, Perl, Rust, PowerShell iyo JSON.
+
+Haddii aad dooratid hab horumarsan laakiin aadan wax ka beddelin faylasha luqadaha aan soo sheegnay, galitaanka wuxuu ahaan doonaa qaabka aasaasiga ah."/>
+
+			<!-- Don't translate "Global override" and "Default Style" -->
+			<global-override-tip value="Awood-siinta &quot;Global override&quot; halkan waxay burin doontaa cabbirka dhammaan noocyada luqadda.Waxa aad u badan tahay inaad runtii rabto waa inaad isticmaasho &quot;Style Default&quot; beddelka"/>
+			<scintillaRenderingTechnology-tip value="Waxa laga yaabaa inay horumariso samaynta jilayaasha gaarka ah ama ay xalliso arrimaha garaafyada qaarkood, dib u bilaw Notepad++ si loo dabaqo isbeddelada."/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'length' & 'lines' are much longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-length-lines value="dhererka: $STR_REPLACE1$ khadadka: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Ln' & 'Col' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Ln-Col value="Ln: $STR_REPLACE1$ Col: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Pos' & 'Sel' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Pos value="Pos:"/>
+			<statusbar-Sel value="Sel:"/>
+			<statusbar-Sel-number value="Sel"/>
+			<toolbar-accent-tip value="Doorashadani waxay ka dhigaysa summadaada aaladaha inay raacaan midabka lahjadda nidaamka Windows.Midabka lahjadda waa midabka iftiiminta ee loo isticmaalo badhamada, xuduudaha, iyo muraayadaha menu-ka bilow ee Windows.Si aad u bedesho, aad Settings &gt; Personalization &gt; Colors, ka dibna dooro midabka lahjadda aad door bidayso."/>
+			<len-limit-exceeded-tip value="Xadka dhererka ayaa dhaaftay: gelintaada waxa laga yaabaa inay dhaafto xadka la ogolyahay oo waa la gooyay, lamana kaydin doono casharka xiga."/>
+			<max-len-on-search-tip value="Wax gelintaadu waxa laga yaabaa inay dhaafto xadka la ogol yahay oo waa la gooyn karayay, lamana kaydin doono casharka xiga."/>
+			<max-len-on-save-tip value="Dhererka gelintaadu aad bay u dheer tahay waxaana laga yaabaa inaan lagu kaydin fadhigaaga xiga."/>
+			<goto-setting-tip value="Halkan ka hel goobtaada"/>
+			<tabbar-tabcompactlabellen-tip value="Waxay xaddidaysaa dhererka muuqda ee magacyada tab dheer.Geli si aad u dabaqdo qiimaha la siiyay.Qiyaasta qiimaha: 1-257 xaraf (0 waxay joojinaysaa goynta)."/>
+		</MiscStrings>
+	</Native-Langue>
+</NotepadPlus>
+
+

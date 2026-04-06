@@ -183,16 +183,16 @@ add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
         "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/themes"
     COMMENT "Copying theme XML files into bundle")
 
-# Bundle nativeLang XML files (Windows NPP format, unmodified).
-# These live in resources/nativeLang/ inside this repo.
+# Bundle localization XML files (Windows NPP format, unmodified).
+# These live in resources/localization/ inside this repo.
 # Users can also drop additional XML files into
-#   ~/Library/Application Support/Notepad++/nativeLang/
+#   ~/Library/Application Support/Notepad++/localization/
 # to add languages without touching the app bundle.
 add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_SOURCE_DIR}/resources/nativeLang"
-        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/nativeLang"
-    COMMENT "Copying nativeLang XML files into bundle")
+        "${CMAKE_SOURCE_DIR}/resources/localization"
+        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/localization"
+    COMMENT "Copying localization XML files into bundle")
 
 # Function List parser definitions (XML, same format as Windows NPP)
 add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD

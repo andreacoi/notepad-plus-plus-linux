@@ -2,6 +2,7 @@
 #import "EditorView.h"
 #import "SearchResultsPanel.h"
 #import "ProjectPanel.h"
+#import "NppLocalizer.h"
 #import <objc/runtime.h>
 
 // ── History keys ─────────────────────────────────────────────────────────────
@@ -77,7 +78,7 @@ static FindWindow *_sharedInstance = nil;
         initWithContentRect:NSMakeRect(0, 0, kWinW, 420)
                   styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable)
                     backing:NSBackingStoreBuffered defer:NO];
-    panel.title = @"Find";
+    panel.title = [[NppLocalizer shared] translate:@"Find"];
     panel.floatingPanel = YES;
     panel.becomesKeyOnlyIfNeeded = YES;
     panel.minSize = NSMakeSize(540, 350);
@@ -249,15 +250,15 @@ static void _placeChk(NSView *parent, NSButton *chk, CGFloat x, CGFloat y) {
 /// Build a Search Mode group box at the given position. Returns the 4 control pointers.
 - (void)_buildSearchModeGroup:(int)idx inView:(NSView *)parent atY:(CGFloat)y {
     NSBox *box = [[NSBox alloc] initWithFrame:NSMakeRect(kLeftM, y, kFieldR - kLeftM + 20, 88)];
-    box.title = @"Search Mode";
+    box.title = [[NppLocalizer shared] translate:@"Search Mode"];
     box.titleFont = [NSFont systemFontOfSize:11];
     [parent addSubview:box];
 
     NSView *bc = box.contentView;
-    _smNormal[idx]   = _mkRadio(@"Normal");
-    _smExtended[idx] = _mkRadio(@"Extended (\\n, \\r, \\t, \\0, \\x...)");
-    _smRegex[idx]    = _mkRadio(@"Regular expression");
-    _smDotNL[idx]    = _mkChk(@". matches newline");
+    _smNormal[idx]   = _mkRadio([[NppLocalizer shared] translate:@"Normal"]);
+    _smExtended[idx] = _mkRadio([[NppLocalizer shared] translate:@"Extended (\\n, \\r, \\t, \\0, \\x...)"]);
+    _smRegex[idx]    = _mkRadio([[NppLocalizer shared] translate:@"Regular expression"]);
+    _smDotNL[idx]    = _mkChk([[NppLocalizer shared] translate:@". matches newline"]);
     _smNormal[idx].state = NSControlStateValueOn;
     _smDotNL[idx].enabled = NO;
 
@@ -284,8 +285,10 @@ static void _placeChk(NSView *parent, NSButton *chk, CGFloat x, CGFloat y) {
     NSView *cv = self.window.contentView;
 
     // ── Tab control (segmented, top) ─────────────────────────────────────
+    NppLocalizer *loc = [NppLocalizer shared];
     _tabControl = [NSSegmentedControl segmentedControlWithLabels:
-        @[@"Find", @"Replace", @"Find in Files", @"Find in Projects", @"Mark"]
+        @[[loc translate:@"Find"], [loc translate:@"Replace"], [loc translate:@"Find in Files"],
+          [loc translate:@"Find in Projects"], [loc translate:@"Mark"]]
         trackingMode:NSSegmentSwitchTrackingSelectOne target:self action:@selector(_tabChanged:)];
     _tabControl.translatesAutoresizingMaskIntoConstraints = NO;
     _tabControl.selectedSegment = 0;
@@ -333,25 +336,25 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     CGFloat H = NSHeight(v.frame);
 
     // "Find what:" + combo
-    NSTextField *lbl = _mkLabel(@"Find what:");
+    NSTextField *lbl = _mkLabel([[NppLocalizer shared] translate:@"Find what:"]);
     _placeFieldRow(v, lbl, _findCombo, H - 30, kLabelR, kFieldL, kFieldR);
 
     // "In selection" checkbox — centered between fields and buttons
-    _frInSelection = _mkChk(@"In selection");
+    _frInSelection = _mkChk([[NppLocalizer shared] translate:@"In selection"]);
     _placeChk(v, _frInSelection, kFieldR - 60, H - 70);
 
     // Buttons (right column, matching Windows vertical stack)
-    _placeBtn(v, _mkBtn(@"Find Next",                        @selector(_findNext:), self),        H - 34);
-    _placeBtn(v, _mkBtn(@"Count",                            @selector(_count:), self),           H - 66);
-    _placeBtn(v, _mkBtn(@"Find All in Current Document",     @selector(_findAllCurrent:), self),  H - 98);
-    _placeBtn(v, _mkBtn(@"Find All in All Opened Documents", @selector(_findAllOpened:), self),   H - 130);
-    _placeBtn(v, _mkBtn(@"Close",                            @selector(_close:), self),           H - 162);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Find Next"],                        @selector(_findNext:), self),        H - 34);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Count"],                            @selector(_count:), self),           H - 66);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Find All in Current Document"],     @selector(_findAllCurrent:), self),  H - 98);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Find All in All Opened Documents"], @selector(_findAllOpened:), self),   H - 130);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Close"],                            @selector(_close:), self),           H - 162);
 
     // Left-side checkboxes (below the field row, matching Windows)
-    _frBackward  = _mkChk(@"Backward direction");
-    _frWholeWord = _mkChk(@"Match whole word only");
-    _frMatchCase = _mkChk(@"Match case");
-    _frWrapAround = _mkChk(@"Wrap around");
+    _frBackward  = _mkChk([[NppLocalizer shared] translate:@"Backward direction"]);
+    _frWholeWord = _mkChk([[NppLocalizer shared] translate:@"Match whole word only"]);
+    _frMatchCase = _mkChk([[NppLocalizer shared] translate:@"Match case"]);
+    _frWrapAround = _mkChk([[NppLocalizer shared] translate:@"Wrap around"]);
     _frWrapAround.state = NSControlStateValueOn;
 
     CGFloat chkY = H - 90;
@@ -375,22 +378,22 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     v.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     CGFloat H = NSHeight(v.frame);
 
-    NSTextField *lbl1 = _mkLabel(@"Find what:");
+    NSTextField *lbl1 = _mkLabel([[NppLocalizer shared] translate:@"Find what:"]);
     _placeFieldRow(v, lbl1, _findCombo, H - 30, kLabelR, kFieldL, kFieldR);
 
-    NSTextField *lbl2 = _mkLabel(@"Replace with:");
+    NSTextField *lbl2 = _mkLabel([[NppLocalizer shared] translate:@"Replace with:"]);
     _placeFieldRow(v, lbl2, _replaceCombo, H - 62, kLabelR, kFieldL, kFieldR);
 
     // "In selection"
-    _frInSelection = _mkChk(@"In selection");
+    _frInSelection = _mkChk([[NppLocalizer shared] translate:@"In selection"]);
     _placeChk(v, _frInSelection, kFieldR - 60, H - 92);
 
     // Buttons
-    _placeBtn(v, _mkBtn(@"Find Next",                            @selector(_findNext:), self),        H - 34);
-    _placeBtn(v, _mkBtn(@"Replace",                              @selector(_replace:), self),         H - 66);
-    _placeBtn(v, _mkBtn(@"Replace All",                          @selector(_replaceAll:), self),      H - 98);
-    _placeBtn(v, _mkBtn(@"Replace All in All Opened Documents",  @selector(_replaceAllOpened:), self),H - 130);
-    _placeBtn(v, _mkBtn(@"Close",                                @selector(_close:), self),           H - 162);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Find Next"],                            @selector(_findNext:), self),        H - 34);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Replace"],                              @selector(_replace:), self),         H - 66);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Replace All"],                          @selector(_replaceAll:), self),      H - 98);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Replace All in All Opened Documents"],  @selector(_replaceAllOpened:), self),H - 130);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Close"],                                @selector(_close:), self),           H - 162);
 
     // Checkboxes (same as Find tab, reuse the same ivars since only one tab visible at a time)
     // But we need separate instances to avoid re-parenting. The _fr* ivars are set per-tab-switch.
@@ -401,10 +404,10 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
 
     // For simplicity, create local copies that are read in currentOptions via the _fr* pointers
     // We'll recreate these for each tab that uses them:
-    NSButton *bk = _mkChk(@"Backward direction");
-    NSButton *ww = _mkChk(@"Match whole word only");
-    NSButton *mc = _mkChk(@"Match case");
-    NSButton *wa = _mkChk(@"Wrap around");
+    NSButton *bk = _mkChk([[NppLocalizer shared] translate:@"Backward direction"]);
+    NSButton *ww = _mkChk([[NppLocalizer shared] translate:@"Match whole word only"]);
+    NSButton *mc = _mkChk([[NppLocalizer shared] translate:@"Match case"]);
+    NSButton *wa = _mkChk([[NppLocalizer shared] translate:@"Wrap around"]);
     wa.state = NSControlStateValueOn;
 
     CGFloat chkY = H - 110;
@@ -435,10 +438,10 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     v.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     CGFloat H = NSHeight(v.frame);
 
-    _placeFieldRow(v, _mkLabel(@"Find what:"),    _findCombo,      H - 30, kLabelR, kFieldL, kFieldR);
-    _placeFieldRow(v, _mkLabel(@"Replace with:"), _replaceCombo,   H - 62, kLabelR, kFieldL, kFieldR);
-    _placeFieldRow(v, _mkLabel(@"Filters:"),      _filtersCombo,   H - 94, kLabelR, kFieldL, kFieldR);
-    _placeFieldRow(v, _mkLabel(@"Directory:"),    _directoryCombo, H -126, kLabelR, kFieldL, kFieldR - 70);
+    _placeFieldRow(v, _mkLabel([[NppLocalizer shared] translate:@"Find what:"]),    _findCombo,      H - 30, kLabelR, kFieldL, kFieldR);
+    _placeFieldRow(v, _mkLabel([[NppLocalizer shared] translate:@"Replace with:"]), _replaceCombo,   H - 62, kLabelR, kFieldL, kFieldR);
+    _placeFieldRow(v, _mkLabel([[NppLocalizer shared] translate:@"Filters:"]),      _filtersCombo,   H - 94, kLabelR, kFieldL, kFieldR);
+    _placeFieldRow(v, _mkLabel([[NppLocalizer shared] translate:@"Directory:"]),    _directoryCombo, H -126, kLabelR, kFieldL, kFieldR - 70);
 
     // Browse & fill buttons next to directory
     NSButton *browseBtn = _mkBtn(@"...", @selector(_browseDir:), self);
@@ -449,21 +452,21 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     [v addSubview:fillBtn];
 
     // Buttons
-    _placeBtn(v, _mkBtn(@"Find All",         @selector(_findInFiles:), self),    H - 34);
-    _placeBtn(v, _mkBtn(@"Replace in Files", @selector(_replaceInFiles:), self), H - 66);
-    _placeBtn(v, _mkBtn(@"Close",            @selector(_close:), self),          H - 98);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Find All"],         @selector(_findInFiles:), self),    H - 34);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Replace in Files"], @selector(_replaceInFiles:), self), H - 66);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Close"],            @selector(_close:), self),          H - 98);
 
     // Left options
-    _fifWholeWord = _mkChk(@"Match whole word only");
-    _fifMatchCase = _mkChk(@"Match case");
+    _fifWholeWord = _mkChk([[NppLocalizer shared] translate:@"Match whole word only"]);
+    _fifMatchCase = _mkChk([[NppLocalizer shared] translate:@"Match case"]);
     CGFloat chkY = H - 160;
     _placeChk(v, _fifWholeWord, kLeftM, chkY);
     _placeChk(v, _fifMatchCase, kLeftM, chkY - 22);
 
     // Right options
-    _fifInSubFolders   = _mkChk(@"In all sub-folders");
+    _fifInSubFolders   = _mkChk([[NppLocalizer shared] translate:@"In all sub-folders"]);
     _fifInSubFolders.state = NSControlStateValueOn;
-    _fifInHiddenFolders = _mkChk(@"In hidden folders");
+    _fifInHiddenFolders = _mkChk([[NppLocalizer shared] translate:@"In hidden folders"]);
     _placeChk(v, _fifInSubFolders,   kBtnL, chkY);
     _placeChk(v, _fifInHiddenFolders, kBtnL, chkY - 22);
 
@@ -482,26 +485,26 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     v.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     CGFloat H = NSHeight(v.frame);
 
-    _placeFieldRow(v, _mkLabel(@"Find what:"),    _findCombo,    H - 30, kLabelR, kFieldL, kFieldR);
-    _placeFieldRow(v, _mkLabel(@"Replace with:"), _replaceCombo, H - 62, kLabelR, kFieldL, kFieldR);
-    _placeFieldRow(v, _mkLabel(@"Filters:"),      _filtersCombo, H - 94, kLabelR, kFieldL, kFieldR);
+    _placeFieldRow(v, _mkLabel([[NppLocalizer shared] translate:@"Find what:"]),    _findCombo,    H - 30, kLabelR, kFieldL, kFieldR);
+    _placeFieldRow(v, _mkLabel([[NppLocalizer shared] translate:@"Replace with:"]), _replaceCombo, H - 62, kLabelR, kFieldL, kFieldR);
+    _placeFieldRow(v, _mkLabel([[NppLocalizer shared] translate:@"Filters:"]),      _filtersCombo, H - 94, kLabelR, kFieldL, kFieldR);
 
     // Buttons
-    _placeBtn(v, _mkBtn(@"Find All",            @selector(_findInProjects:), self),    H - 34);
-    _placeBtn(v, _mkBtn(@"Replace in Projects", @selector(_replaceInProjects:), self), H - 66);
-    _placeBtn(v, _mkBtn(@"Close",               @selector(_close:), self),             H - 98);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Find All"],            @selector(_findInProjects:), self),    H - 34);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Replace in Projects"], @selector(_replaceInProjects:), self), H - 66);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Close"],               @selector(_close:), self),             H - 98);
 
     // Left options
-    _fipWholeWord = _mkChk(@"Match whole word only");
-    _fipMatchCase = _mkChk(@"Match case");
+    _fipWholeWord = _mkChk([[NppLocalizer shared] translate:@"Match whole word only"]);
+    _fipMatchCase = _mkChk([[NppLocalizer shared] translate:@"Match case"]);
     CGFloat chkY = H - 130;
     _placeChk(v, _fipWholeWord, kLeftM, chkY);
     _placeChk(v, _fipMatchCase, kLeftM, chkY - 22);
 
     // Right options: Project Panel 1/2/3
-    _fipPanel1 = _mkChk(@"Project Panel 1");
-    _fipPanel2 = _mkChk(@"Project Panel 2");
-    _fipPanel3 = _mkChk(@"Project Panel 3");
+    _fipPanel1 = _mkChk([[NppLocalizer shared] translate:@"Project Panel 1"]);
+    _fipPanel2 = _mkChk([[NppLocalizer shared] translate:@"Project Panel 2"]);
+    _fipPanel3 = _mkChk([[NppLocalizer shared] translate:@"Project Panel 3"]);
     _placeChk(v, _fipPanel1, kBtnL, chkY);
     _placeChk(v, _fipPanel2, kBtnL, chkY - 22);
     _placeChk(v, _fipPanel3, kBtnL, chkY - 44);
@@ -521,25 +524,25 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     v.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     CGFloat H = NSHeight(v.frame);
 
-    _placeFieldRow(v, _mkLabel(@"Find what:"), _findCombo, H - 30, kLabelR, kFieldL, kFieldR);
+    _placeFieldRow(v, _mkLabel([[NppLocalizer shared] translate:@"Find what:"]), _findCombo, H - 30, kLabelR, kFieldL, kFieldR);
 
     // "In selection" — centered
-    _mkInSelection = _mkChk(@"In selection");
+    _mkInSelection = _mkChk([[NppLocalizer shared] translate:@"In selection"]);
     _placeChk(v, _mkInSelection, kFieldR - 60, H - 60);
 
     // Buttons
-    _placeBtn(v, _mkBtn(@"Mark All",         @selector(_markAll:), self),   H - 34);
-    _placeBtn(v, _mkBtn(@"Clear all marks",  @selector(_clearMarks:), self),H - 66);
-    _placeBtn(v, _mkBtn(@"Copy Marked Text", @selector(_copyMarked:), self),H - 98);
-    _placeBtn(v, _mkBtn(@"Close",            @selector(_close:), self),     H - 130);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Mark All"],         @selector(_markAll:), self),   H - 34);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Clear all marks"],  @selector(_clearMarks:), self),H - 66);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Copy Marked Text"], @selector(_copyMarked:), self),H - 98);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Close"],            @selector(_close:), self),     H - 130);
 
     // Left-side checkboxes (matching Windows Mark tab exactly)
-    _mkBookmarkLine = _mkChk(@"Bookmark line");
-    _mkPurge        = _mkChk(@"Purge for each search");
-    _mkBackward     = _mkChk(@"Backward direction");
-    _mkWholeWord    = _mkChk(@"Match whole word only");
-    _mkMatchCase    = _mkChk(@"Match case");
-    _mkWrapAround   = _mkChk(@"Wrap around");
+    _mkBookmarkLine = _mkChk([[NppLocalizer shared] translate:@"Bookmark line"]);
+    _mkPurge        = _mkChk([[NppLocalizer shared] translate:@"Purge for each search"]);
+    _mkBackward     = _mkChk([[NppLocalizer shared] translate:@"Backward direction"]);
+    _mkWholeWord    = _mkChk([[NppLocalizer shared] translate:@"Match whole word only"]);
+    _mkMatchCase    = _mkChk([[NppLocalizer shared] translate:@"Match case"]);
+    _mkWrapAround   = _mkChk([[NppLocalizer shared] translate:@"Wrap around"]);
     _mkWrapAround.state = NSControlStateValueOn;
 
     CGFloat chkY = H - 80;
@@ -565,7 +568,10 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
 }
 
 - (void)_switchToTab:(FindWindowTab)tab {
-    static NSString *titles[] = {@"Find", @"Replace", @"Find in Files", @"Find in Projects", @"Mark"};
+    NppLocalizer *loc = [NppLocalizer shared];
+    NSArray *titles = @[[loc translate:@"Find"], [loc translate:@"Replace"],
+                        [loc translate:@"Find in Files"], [loc translate:@"Find in Projects"],
+                        [loc translate:@"Mark"]];
 
     // Move shared combos to the target tab view
     // First remove from current parent
@@ -667,7 +673,7 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     BOOL forward = (opts.direction == NPPSearchDown);
     BOOL found = [SearchEngine findInView:ed.scintillaView options:opts forward:forward];
     if (!found)
-        [self _showStatus:[NSString stringWithFormat:@"Find: Can't find the text \"%@\"", opts.searchText] found:NO];
+        [self _showStatus:[NSString stringWithFormat:[[NppLocalizer shared] translate:@"Find: Can't find the text \"%@\""], opts.searchText] found:NO];
     else
         [self _showStatus:@"" found:YES];
 }
@@ -679,7 +685,7 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     EditorView *ed = [_delegate currentEditor];
     if (!ed) return;
     NSInteger count = [SearchEngine countInView:ed.scintillaView options:opts];
-    [self _showStatus:[NSString stringWithFormat:@"Count: %ld match(es).", (long)count] found:(count > 0)];
+    [self _showStatus:[NSString stringWithFormat:[[NppLocalizer shared] translate:@"Count: %ld match(es)."], (long)count] found:(count > 0)];
 }
 
 - (void)_findAllCurrent:(id)sender {
@@ -697,7 +703,7 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
         [_delegate findWindow:self showResults:@[fr] forSearchText:opts.searchText options:opts filesSearched:1];
         [_delegate findWindowShowSearchResultsPanel:self];
     } else {
-        [self _showStatus:[NSString stringWithFormat:@"Find: Can't find the text \"%@\"", opts.searchText] found:NO];
+        [self _showStatus:[NSString stringWithFormat:[[NppLocalizer shared] translate:@"Find: Can't find the text \"%@\""], opts.searchText] found:NO];
     }
 }
 
@@ -722,7 +728,7 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
                       options:opts filesSearched:(NSInteger)editors.count];
         [_delegate findWindowShowSearchResultsPanel:self];
     } else {
-        [self _showStatus:[NSString stringWithFormat:@"Find: Can't find the text \"%@\"", opts.searchText] found:NO];
+        [self _showStatus:[NSString stringWithFormat:[[NppLocalizer shared] translate:@"Find: Can't find the text \"%@\""], opts.searchText] found:NO];
     }
 }
 
@@ -737,7 +743,7 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     if (!ed) return;
     BOOL found = [SearchEngine replaceInView:ed.scintillaView options:opts];
     if (!found)
-        [self _showStatus:[NSString stringWithFormat:@"Find: Can't find the text \"%@\"", opts.searchText] found:NO];
+        [self _showStatus:[NSString stringWithFormat:[[NppLocalizer shared] translate:@"Find: Can't find the text \"%@\""], opts.searchText] found:NO];
     else
         [self _showStatus:@"" found:YES];
 }
@@ -750,8 +756,9 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     EditorView *ed = [_delegate currentEditor];
     if (!ed) return;
     NSInteger count = [SearchEngine replaceAllInView:ed.scintillaView options:opts];
-    NSString *scope = opts.inSelection ? @"in selection" : @"in entire file";
-    [self _showStatus:[NSString stringWithFormat:@"Replace All: %ld occurrence(s) were replaced %@.", (long)count, scope]
+    NppLocalizer *loc = [NppLocalizer shared];
+    NSString *scope = opts.inSelection ? [loc translate:@"in selection"] : [loc translate:@"in entire file"];
+    [self _showStatus:[NSString stringWithFormat:[loc translate:@"Replace All: %ld occurrence(s) were replaced %@."], (long)count, scope]
                 found:(count > 0)];
 }
 
@@ -764,7 +771,7 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     NSInteger total = 0;
     for (EditorView *ed in editors)
         total += [SearchEngine replaceAllInView:ed.scintillaView options:opts];
-    [self _showStatus:[NSString stringWithFormat:@"Replace in Opened Files: %ld occurrence(s) were replaced.", (long)total]
+    [self _showStatus:[NSString stringWithFormat:[[NppLocalizer shared] translate:@"Replace in Opened Files: %ld occurrence(s) were replaced."], (long)total]
                 found:(total > 0)];
 }
 
@@ -777,14 +784,14 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     [self _addToHistory:_filtersCombo key:kHistoryFilter];
     [self _addToHistory:_directoryCombo key:kHistoryDir];
     _cancelSearch = NO;
-    [self _showStatus:@"Searching..." found:YES];
+    [self _showStatus:[[NppLocalizer shared] translate:@"Searching..."] found:YES];
 
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
         NSArray<NPPFileResults *> *results = [SearchEngine findInDirectory:opts.directory
             options:opts
             progressBlock:^(NSString *file, NSInteger hits) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self _showStatus:[NSString stringWithFormat:@"Searching... %ld hit(s) — %@",
+                    [self _showStatus:[NSString stringWithFormat:[[NppLocalizer shared] translate:@"Searching... %ld hit(s) — %@"],
                         (long)hits, file.lastPathComponent] found:YES];
                 });
             }
@@ -797,10 +804,10 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
                 [self->_delegate findWindowShowSearchResultsPanel:self];
                 NSInteger totalHits = 0;
                 for (NPPFileResults *fr in results) totalHits += (NSInteger)fr.results.count;
-                [self _showStatus:[NSString stringWithFormat:@"Find in Files: %ld hit(s) in %ld file(s).",
+                [self _showStatus:[NSString stringWithFormat:[[NppLocalizer shared] translate:@"Find in Files: %ld hit(s) in %ld file(s)."],
                     (long)totalHits, (long)results.count] found:YES];
             } else {
-                [self _showStatus:@"Find in Files: 0 hits." found:NO];
+                [self _showStatus:[[NppLocalizer shared] translate:@"Find in Files: 0 hits."] found:NO];
             }
         });
     });
@@ -810,19 +817,19 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     NPPFindOptions *opts = [self currentOptions];
     if (!opts.searchText.length || !opts.directory.length) return;
     NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = @"Replace in Files";
+    alert.messageText = [[NppLocalizer shared] translate:@"Replace in Files"];
     alert.informativeText = [NSString stringWithFormat:
-        @"Replace all occurrences of \"%@\" with \"%@\" in directory:\n%@\n\nThis cannot be undone.",
+        [[NppLocalizer shared] translate:@"Replace all occurrences of \"%@\" with \"%@\" in directory:\n%@\n\nThis cannot be undone."],
         opts.searchText, opts.replaceText, opts.directory];
-    [alert addButtonWithTitle:@"Replace"];
-    [alert addButtonWithTitle:@"Cancel"];
+    [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"Replace"]];
+    [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"Cancel"]];
     if ([alert runModal] != NSAlertFirstButtonReturn) return;
 
     [self _addToHistory:_findCombo key:kHistoryFind];
     [self _addToHistory:_replaceCombo key:kHistoryReplace];
     [self _addToHistory:_filtersCombo key:kHistoryFilter];
     [self _addToHistory:_directoryCombo key:kHistoryDir];
-    [self _showStatus:@"Replacing in files..." found:YES];
+    [self _showStatus:[[NppLocalizer shared] translate:@"Replacing in files..."] found:YES];
 
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
         NSArray<NPPFileResults *> *results = [SearchEngine findInDirectory:opts.directory
@@ -847,7 +854,7 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
                     totalReplacements += (NSInteger)fr.results.count;
                 }
             }
-            [self _showStatus:[NSString stringWithFormat:@"Replace in Files: %ld replacement(s) in %ld file(s).",
+            [self _showStatus:[NSString stringWithFormat:[[NppLocalizer shared] translate:@"Replace in Files: %ld replacement(s) in %ld file(s)."],
                 (long)totalReplacements, (long)results.count] found:(totalReplacements > 0)];
         });
     });
@@ -856,11 +863,11 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
 #pragma mark - Actions: Find in Projects
 
 - (void)_findInProjects:(id)sender {
-    [self _showStatus:@"Find in Projects: Not yet connected to Project Panel file list." found:NO];
+    [self _showStatus:[[NppLocalizer shared] translate:@"Find in Projects: Not yet connected to Project Panel file list."] found:NO];
 }
 
 - (void)_replaceInProjects:(id)sender {
-    [self _showStatus:@"Replace in Projects: Not yet connected." found:NO];
+    [self _showStatus:[[NppLocalizer shared] translate:@"Replace in Projects: Not yet connected."] found:NO];
 }
 
 #pragma mark - Actions: Mark
@@ -872,7 +879,7 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     EditorView *ed = [_delegate currentEditor];
     if (!ed) return;
     NSInteger count = [SearchEngine markAllInView:ed.scintillaView options:opts];
-    [self _showStatus:[NSString stringWithFormat:@"Mark: %ld match(es) marked.", (long)count] found:(count > 0)];
+    [self _showStatus:[NSString stringWithFormat:[[NppLocalizer shared] translate:@"Mark: %ld match(es) marked."], (long)count] found:(count > 0)];
 }
 
 - (void)_clearMarks:(id)sender {
@@ -882,7 +889,7 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     [sci message:SCI_SETINDICATORCURRENT wParam:31];
     [sci message:SCI_INDICATORCLEARRANGE wParam:0 lParam:[sci message:SCI_GETLENGTH]];
     [sci message:SCI_MARKERDELETEALL wParam:20];
-    [self _showStatus:@"All marks cleared." found:YES];
+    [self _showStatus:[[NppLocalizer shared] translate:@"All marks cleared."] found:YES];
 }
 
 - (void)_copyMarked:(id)sender {
@@ -911,9 +918,9 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     if (copied.length) {
         [[NSPasteboard generalPasteboard] clearContents];
         [[NSPasteboard generalPasteboard] setString:copied forType:NSPasteboardTypeString];
-        [self _showStatus:@"Marked text copied to clipboard." found:YES];
+        [self _showStatus:[[NppLocalizer shared] translate:@"Marked text copied to clipboard."] found:YES];
     } else {
-        [self _showStatus:@"No marked text to copy." found:NO];
+        [self _showStatus:[[NppLocalizer shared] translate:@"No marked text to copy."] found:NO];
     }
 }
 

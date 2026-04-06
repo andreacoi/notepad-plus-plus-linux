@@ -1,4 +1,5 @@
 #import "ProjectPanel.h"
+#import "NppLocalizer.h"
 #import "NppThemeManager.h"
 #import "StyleConfiguratorWindowController.h"
 
@@ -359,7 +360,7 @@ static NSString * const kPrefWSPath     = @"ProjectPanelWorkspace%ld";  // forma
     _titleBar = [[NSView alloc] init];
     _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
 
-    _titleLabel = [NSTextField labelWithString:@"Project Panel"];
+    _titleLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Project Panel"]];
     _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _titleLabel.font = [NSFont boldSystemFontOfSize:11];
 
@@ -369,7 +370,7 @@ static NSString * const kPrefWSPath     = @"ProjectPanelWorkspace%ld";  // forma
     _closeButton.bordered   = NO;
     _closeButton.title      = @"\u2715";
     _closeButton.font       = [NSFont systemFontOfSize:11];
-    _closeButton.toolTip    = @"Close panel";
+    _closeButton.toolTip    = [[NppLocalizer shared] translate:@"Close panel"];
     _closeButton.target     = self;
     _closeButton.action     = @selector(_closePanel:);
     [_closeButton.widthAnchor  constraintEqualToConstant:20].active = YES;
@@ -601,33 +602,35 @@ static NSString * const kPrefWSPath     = @"ProjectPanelWorkspace%ld";  // forma
 }
 
 - (NSMenu *)_workspaceMenu {
+    NppLocalizer *loc = [NppLocalizer shared];
     NSMenu *m = [[NSMenu alloc] init];
-    [m addItemWithTitle:@"New Workspace"     action:@selector(_newWorkspace:)     keyEquivalent:@""];
-    [m addItemWithTitle:@"Open Workspace"    action:@selector(_openWorkspace:)    keyEquivalent:@""];
-    [m addItemWithTitle:@"Reload Workspace"  action:@selector(_reloadWorkspace:)  keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"New Workspace"]     action:@selector(_newWorkspace:)     keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Open Workspace"]    action:@selector(_openWorkspace:)    keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Reload Workspace"]  action:@selector(_reloadWorkspace:)  keyEquivalent:@""];
     [m addItem:[NSMenuItem separatorItem]];
-    [m addItemWithTitle:@"Save"              action:@selector(_saveWorkspace:)    keyEquivalent:@""];
-    [m addItemWithTitle:@"Save As..."        action:@selector(_saveWorkspaceAs:)  keyEquivalent:@""];
-    [m addItemWithTitle:@"Save a Copy As..." action:@selector(_saveCopyAs:)       keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Save"]              action:@selector(_saveWorkspace:)    keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Save As..."]        action:@selector(_saveWorkspaceAs:)  keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Save a Copy As..."] action:@selector(_saveCopyAs:)       keyEquivalent:@""];
     [m addItem:[NSMenuItem separatorItem]];
-    [m addItemWithTitle:@"Add New Project"   action:@selector(_addProject:)       keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Add New Project"]   action:@selector(_addProject:)       keyEquivalent:@""];
     [m addItem:[NSMenuItem separatorItem]];
-    [m addItemWithTitle:@"Find in Projects..." action:@selector(_findInProjects:) keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Find in Projects..."] action:@selector(_findInProjects:) keyEquivalent:@""];
     for (NSMenuItem *mi in m.itemArray) mi.target = self;
     return m;
 }
 
 - (NSMenu *)_projectMenu {
+    NppLocalizer *loc = [NppLocalizer shared];
     NSMenu *m = [[NSMenu alloc] init];
-    [m addItemWithTitle:@"Move Up"       action:@selector(_moveUp:)         keyEquivalent:@""];
-    [m addItemWithTitle:@"Move Down"     action:@selector(_moveDown:)       keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Move Up"]       action:@selector(_moveUp:)         keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Move Down"]     action:@selector(_moveDown:)       keyEquivalent:@""];
     [m addItem:[NSMenuItem separatorItem]];
-    [m addItemWithTitle:@"Rename"        action:@selector(_rename:)         keyEquivalent:@""];
-    [m addItemWithTitle:@"Add Folder"    action:@selector(_addFolder:)      keyEquivalent:@""];
-    [m addItemWithTitle:@"Add Files..."  action:@selector(_addFiles:)       keyEquivalent:@""];
-    [m addItemWithTitle:@"Add Files from Directory..." action:@selector(_addFilesFromDir:) keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Rename"]        action:@selector(_rename:)         keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Add Folder"]    action:@selector(_addFolder:)      keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Add Files..."]  action:@selector(_addFiles:)       keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Add Files from Directory..."] action:@selector(_addFilesFromDir:) keyEquivalent:@""];
     [m addItem:[NSMenuItem separatorItem]];
-    [m addItemWithTitle:@"Remove"        action:@selector(_removeItem:)     keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Remove"]        action:@selector(_removeItem:)     keyEquivalent:@""];
     for (NSMenuItem *mi in m.itemArray) mi.target = self;
     return m;
 }
@@ -638,13 +641,14 @@ static NSString * const kPrefWSPath     = @"ProjectPanelWorkspace%ld";  // forma
 }
 
 - (NSMenu *)_fileMenu {
+    NppLocalizer *loc = [NppLocalizer shared];
     NSMenu *m = [[NSMenu alloc] init];
-    [m addItemWithTitle:@"Move Up"          action:@selector(_moveUp:)         keyEquivalent:@""];
-    [m addItemWithTitle:@"Move Down"        action:@selector(_moveDown:)       keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Move Up"]          action:@selector(_moveUp:)         keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Move Down"]        action:@selector(_moveDown:)       keyEquivalent:@""];
     [m addItem:[NSMenuItem separatorItem]];
-    [m addItemWithTitle:@"Rename"           action:@selector(_rename:)         keyEquivalent:@""];
-    [m addItemWithTitle:@"Remove"           action:@selector(_removeItem:)     keyEquivalent:@""];
-    [m addItemWithTitle:@"Modify File Path" action:@selector(_modifyFilePath:) keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Rename"]           action:@selector(_rename:)         keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Remove"]           action:@selector(_removeItem:)     keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Modify File Path"] action:@selector(_modifyFilePath:) keyEquivalent:@""];
     for (NSMenuItem *mi in m.itemArray) mi.target = self;
     return m;
 }
@@ -736,12 +740,13 @@ static NSString * const kPrefWSPath     = @"ProjectPanelWorkspace%ld";  // forma
 }
 
 - (BOOL)_promptSaveDirtyWorkspace:(_ProjectWorkspace *)ws {
+    NppLocalizer *loc = [NppLocalizer shared];
     NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = @"The workspace was modified.";
-    alert.informativeText = @"Do you want to save changes?";
-    [alert addButtonWithTitle:@"Save"];
-    [alert addButtonWithTitle:@"Don't Save"];
-    [alert addButtonWithTitle:@"Cancel"];
+    alert.messageText = [loc translate:@"The workspace was modified."];
+    alert.informativeText = [loc translate:@"Do you want to save changes?"];
+    [alert addButtonWithTitle:[loc translate:@"Save"]];
+    [alert addButtonWithTitle:[loc translate:@"Don't Save"]];
+    [alert addButtonWithTitle:[loc translate:@"Cancel"]];
     NSModalResponse resp = [alert runModal];
     if (resp == NSAlertFirstButtonReturn) {
         if (ws.filePath)
@@ -883,11 +888,12 @@ static NSString * const kPrefWSPath     = @"ProjectPanelWorkspace%ld";  // forma
 
     // Confirm if has children
     if (item.children.count > 0) {
+        NppLocalizer *loc = [NppLocalizer shared];
         NSAlert *alert = [[NSAlert alloc] init];
         alert.messageText = [NSString stringWithFormat:@"Remove \"%@\"?", item.name];
-        alert.informativeText = @"This will remove it and all its contents from the project. No files on disk will be affected.";
-        [alert addButtonWithTitle:@"Remove"];
-        [alert addButtonWithTitle:@"Cancel"];
+        alert.informativeText = [loc translate:@"This will remove it and all its contents from the project. No files on disk will be affected."];
+        [alert addButtonWithTitle:[loc translate:@"Remove"]];
+        [alert addButtonWithTitle:[loc translate:@"Cancel"]];
         if ([alert runModal] != NSAlertFirstButtonReturn) return;
     }
 

@@ -1,0 +1,2142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Chichewa (Chichewa) language file for Notepad++ macOS
+    Based on English template - community translations welcome
+    Created: 2026-04-04
+-->
+<NotepadPlus>
+	<Native-Langue name="Chichewa" filename="chichewa.xml" version="8.9">
+		<Menu>
+			<Main>
+				<!-- Main Menu Entries -->
+				<Entries>
+					<Item menuId="file" name="Fayilo"/>
+					<Item menuId="edit" name="Sinthani"/>
+					<Item menuId="search" name="Sakani"/>
+					<Item menuId="view" name="Onani"/>
+					<Item menuId="encoding" name="Encoding"/>
+					<Item menuId="language" name="Chiyankhulo"/>
+					<Item menuId="settings" name="Zokonda"/>
+					<Item menuId="tools" name="Zida"/>
+					<Item menuId="macro" name="Macro"/>
+					<Item menuId="run" name="Thamanga"/>
+					<Item menuId="Plugins" name="Mapulagini"/>
+					<Item menuId="Window" name="Window"/>
+				</Entries>
+				<!-- Sub Menu Entries -->
+				<SubEntries>
+					<Item subMenuId="file-openFolder" name="Tsegulani Muli Foda"/>
+					<Item subMenuId="file-closeMore" name="Tsekani Zolemba Zambiri"/>
+					<Item subMenuId="file-recentFiles" name="Mafayilo Aposachedwa"/>
+					<Item subMenuId="edit-insert" name="Ikani"/>
+					<Item subMenuId="edit-copyToClipboard" name="Lembani ku Clipboard"/>
+					<Item subMenuId="edit-indent" name="Indent"/>
+					<Item subMenuId="edit-convertCaseTo" name="Sinthani Mlandu kukhala"/>
+					<Item subMenuId="edit-lineOperations" name="Ntchito Zamzere"/>
+					<Item subMenuId="edit-comment" name="Ndemanga/Chotsani ndemanga"/>
+					<Item subMenuId="edit-autoCompletion" name="Kumaliza-Mokha"/>
+					<Item subMenuId="edit-eolConversion" name="Kutembenuka kwa EOL"/>
+					<Item subMenuId="edit-blankOperations" name="Ntchito zopanda kanthu"/>
+					<Item subMenuId="edit-pasteSpecial" name="Matani Chapadera"/>
+					<Item subMenuId="edit-onSelection" name="Pa Kusankhidwa"/>
+					<Item subMenuId="edit-multiSelectALL" name="Sankhani zambiri ONSE"/>
+					<Item subMenuId="edit-multiSelectNext" name="Sankhani Zambiri Kenako"/>
+					<Item subMenuId="edit-readonlyInNotepad++" name="Werengani-Pokha mu Notepad++"/>
+					<Item subMenuId="search-changeHistory" name="Kusintha Mbiri"/>
+					<Item subMenuId="search-markAll" name="Mtundu Zonse Zomwe Zimachitika pa Chizindikiro"/>
+					<Item subMenuId="search-markOne" name="Mtundu Woyamba Chizindikiro"/>
+					<Item subMenuId="search-unmarkAll" name="Chotsani Mtundu"/>
+					<Item subMenuId="search-jumpUp" name="Lumphani Mmwamba"/>
+					<Item subMenuId="search-jumpDown" name="Lumpha Pansi"/>
+					<Item subMenuId="search-copyStyledText" name="Copy Styled Text"/>
+					<Item subMenuId="search-bookmark" name="Bookmark"/>
+					<Item subMenuId="view-currentFileIn" name="Onani Fayilo Yapano mu"/>
+					<Item subMenuId="view-showSymbol" name="Onetsani Chizindikiro"/>
+					<Item subMenuId="view-zoom" name="Makulitsa"/>
+					<Item subMenuId="view-moveCloneDocument" name="Move/Clone Current Document"/>
+					<Item subMenuId="view-tab" name="Tabu"/>
+					<Item subMenuId="view-collapseLevel" name="Pindani Mulingo"/>
+					<Item subMenuId="view-uncollapseLevel" name="Tsegulani Mulingo"/>
+					<Item subMenuId="view-project" name="Ntchito"/>
+					<Item subMenuId="encoding-characterSets" name="Khalidwe la Makhalidwe"/>
+					<Item subMenuId="encoding-arabic" name="Chiarabu"/>
+					<Item subMenuId="encoding-baltic" name="Baltic"/>
+					<Item subMenuId="encoding-celtic" name="Celtic"/>
+					<Item subMenuId="encoding-cyrillic" name="Chisililiki"/>
+					<Item subMenuId="encoding-centralEuropean" name="Central European"/>
+					<Item subMenuId="encoding-chinese" name="Chitchaina"/>
+					<Item subMenuId="encoding-easternEuropean" name="Eastern Europe"/>
+					<Item subMenuId="encoding-greek" name="Greek"/>
+					<Item subMenuId="encoding-hebrew" name="Chiheberi"/>
+					<Item subMenuId="encoding-japanese" name="Chijapani"/>
+					<Item subMenuId="encoding-korean" name="Chikoriya"/>
+					<Item subMenuId="encoding-northEuropean" name="North European"/>
+					<Item subMenuId="encoding-thai" name="Thai"/>
+					<Item subMenuId="encoding-turkish" name="Turkish"/>
+					<Item subMenuId="encoding-westernEuropean" name="Western Europe"/>
+					<Item subMenuId="encoding-vietnamese" name="Vietnamese"/>
+					<Item subMenuId="language-userDefinedLanguage" name="Chinenero Chofotokozedwa ndi Mtumiki"/>
+					<Item subMenuId="settings-import" name="Tengani"/>
+					<Item subMenuId="tools-md5" name="MD5"/>
+					<Item subMenuId="tools-sha1" name="SHA-1"/>
+					<Item subMenuId="tools-sha256" name="SHA-256"/>
+					<Item subMenuId="tools-sha512" name="SHA-512"/>
+					<Item subMenuId="window-sortby" name="Sanjani Mwa"/>
+				</SubEntries>
+
+				<!-- all menu item -->
+				<Commands>
+					<Item id="41001" name="Chatsopano"/>
+					<Item id="41002" name="Tsegulani..."/>
+					<Item id="41019" name="Wofufuza"/>
+					<Item id="41020" name="cmd"/>
+					<Item id="41025" name="Foda ngati Malo Ogwirira Ntchito"/>
+					<Item id="41003" name="Tsekani"/>
+					<Item id="41004" name="Tsekani Zonse"/>
+					<Item id="41005" name="Tsekani Zonse KOMA Chikalata Chatsopano"/>
+					<Item id="41026" name="Tsekani Zolemba Zonse KOMA Zosindikizidwa"/>
+					<Item id="41009" name="Tsekani Zonse Kumanzere"/>
+					<Item id="41018" name="Tsekani Zonse Kumanja"/>
+					<Item id="41024" name="Tsekani Zonse Zosasintha"/>
+					<Item id="41006" name="Sungani"/>
+					<Item id="41007" name="Sungani Zonse"/>
+					<Item id="41008" name="Sungani Monga..."/>
+					<Item id="41010" name="Sindikizani..."/>
+					<Item id="1001" name="Sindikizani Tsopano"/>
+					<Item id="41011" name="Tulukani"/>
+					<Item id="41012" name="Kwezani Gawo..."/>
+					<Item id="41013" name="Sungani Gawo..."/>
+					<Item id="41014" name="Tsitsaninso kuchokera ku Disk"/>
+					<Item id="41015" name="Sungani Copy Monga..."/>
+					<Item id="41016" name="Pitani ku Recycle Bin"/>
+					<Item id="41017" name="Sinthani dzina..."/>
+					<Item id="41021" name="Bwezeretsani Fayilo Yotsekedwa Posachedwapa"/>
+					<Item id="41022" name="Tsegulani Foda ngati Malo Ogwirira Ntchito..."/>
+					<Item id="41023" name="Tsegulani mu Default Viewer"/>
+					<Item id="42001" name="Dulani"/>
+					<Item id="42002" name="Kopi"/>
+					<Item id="42003" name="Bwezerani"/>
+					<Item id="42004" name="Bwezerani"/>
+					<Item id="42005" name="Matani"/>
+					<Item id="42006" name="Chotsani"/>
+					<Item id="42007" name="Sankhani Zonse"/>
+					<Item id="42020" name="Yambani/Mapeto Sankhani"/>
+					<Item id="42089" name="Yambani/Malekezero Sankhani mu Column Mode"/>
+					<Item id="42084" name="Nthawi Ya Tsiku (yayifupi)"/>
+					<Item id="42085" name="Nthawi Ya Tsiku (yaitali)"/>
+					<Item id="42086" name="Nthawi Ya Tsiku (mwamakonda)"/>
+					<Item id="42008" name="Wonjezerani Mzere Wolowera Mzere"/>
+					<Item id="42009" name="Chepetsani Mzere Wolowera"/>
+					<Item id="42010" name="Mzere Wamakono"/>
+					<Item id="42079" name="Chotsani Mizere Yobwerezedwa"/>
+					<Item id="42077" name="Chotsani Mizere Yobwerezabwereza Yotsatizana"/>
+					<Item id="42012" name="Gawani Mizere"/>
+					<Item id="42013" name="Lowani Mizere"/>
+					<Item id="42014" name="Kwezerani Mzere Wamakono"/>
+					<Item id="42015" name="Yendani Pansi Mzere Wamakono"/>
+					<Item id="42059" name="Sankhani Mizere Lexicographically Kukwera"/>
+					<Item id="42060" name="Sanjani Mizere Mwa Lexicographically Kutsika"/>
+					<Item id="42080" name="Sinthani Mizere Lex.Mlandu Wonyalanyaza Wokwera"/>
+					<Item id="42081" name="Sinthani Mizere Lex.Kutsika Mlandu Wonyalanyaza"/>
+					<Item id="42100" name="Sanjani Mizere Mwam'magawo Okwera Kukwera"/>
+					<Item id="42101" name="Sanjani Mizere Mu Madera Akutsika"/>
+					<Item id="42104" name="Sanjani Mizere Mwa Utali Wokwera"/>
+					<Item id="42105" name="Sanjani Mizere Mwa Utali Wotsika"/>
+					<Item id="42061" name="Sanjani Mizere Monga Nambala Yokwera Yokwera"/>
+					<Item id="42062" name="Sanjani Mizere Monga Ma Nambala Akutsika"/>
+					<Item id="42063" name="Sanjani Mizere Monga Ma Desimali (Comma) Kukwera"/>
+					<Item id="42064" name="Sankhani Mizere Monga Ma Desimali (Comma) Yotsika"/>
+					<Item id="42065" name="Sanjani Mizere Monga Ma Desimali (Madontho) Okwera"/>
+					<Item id="42066" name="Sankhani Mizere Monga Ma Desimali (Dot) Kutsika"/>
+					<Item id="42083" name="Reverse Line Order"/>
+					<Item id="42078" name="Mwachisawawa Line Order"/>
+					<Item id="42016" name="CHAKULU"/>
+					<Item id="42017" name="zilembo zazing'ono"/>
+					<Item id="42067" name="Mlandu Woyenera"/>
+					<Item id="42068" name="Mlandu Woyenera (kuphatikiza)"/>
+					<Item id="42069" name="Mlandu wa chiganizo"/>
+					<Item id="42070" name="Mlandu wa chiganizo (kuphatikiza)"/>
+					<Item id="42071" name="inVERT CASE"/>
+					<Item id="42072" name="ranDOm CasE"/>
+					<Item id="42073" name="Tsegulani Fayilo"/>
+					<Item id="42074" name="Tsegulani Chikwatu chomwe chili mu Explorer"/>
+					<Item id="42106" name="Zosankha Zosintha █ (Shift: ●)"/>
+					<Item id="42075" name="Sakani pa intaneti"/>
+					<Item id="42076" name="Sinthani Injini Yosaka..."/>
+					<Item id="42090" name="Musanyalanyaze Mlandu Wonse Mawu"/>
+					<Item id="42091" name="Mlandu Wofananira Pokha"/>
+					<Item id="42092" name="Fananizani Mawu Onse Okha"/>
+					<Item id="42093" name="Match Case Mawu Onse"/>
+					<Item id="42094" name="Musanyalanyaze Mlandu Wonse Mawu"/>
+					<Item id="42095" name="Mlandu Wofananira Pokha"/>
+					<Item id="42096" name="Fananizani Mawu Onse Okha"/>
+					<Item id="42097" name="Match Case Mawu Onse"/>
+					<Item id="42098" name="Bwezeretsani Zowonjezeredwa Zaposachedwa Zambiri"/>
+					<Item id="42099" name="Dumphani Panopo Pitani ku Next Multi-select"/>
+					<Item id="42018" name="Yambani Kujambula"/>
+					<Item id="42019" name="Imani Kujambula"/>
+					<Item id="42021" name="Kusewera"/>
+					<Item id="42022" name="Sinthani Ndemanga Yamzere Umodzi"/>
+					<Item id="42023" name="Letsani Ndemanga"/>
+					<Item id="42047" name="Letsani Kutulutsa"/>
+					<Item id="42024" name="Chepetsa Malo Otsatira"/>
+					<Item id="42042" name="Chepetsa Malo Otsogolera"/>
+					<Item id="42043" name="Dulani Malo Otsogolera ndi Otsatira"/>
+					<Item id="42044" name="EOL kupita ku Space"/>
+					<Item id="42045" name="Chepetsa zonse ndi EOL mpaka Space"/>
+					<Item id="42046" name="TAB to Space"/>
+					<Item id="42054" name="Space to TAB (Zonse)"/>
+					<Item id="42053" name="Malo kupita ku TAB (Otsogolera)"/>
+					<Item id="42038" name="Matani HTML Zamkatimu"/>
+					<Item id="42039" name="Matani za RTF"/>
+					<Item id="42048" name="Copy Binary Content"/>
+					<Item id="42049" name="Dulani Zomwe zili mu Binary"/>
+					<Item id="42050" name="Matani Zomwe Zili ndi Binary"/>
+					<Item id="42082" name="Koperani ulalo"/>
+					<Item id="42037" name="Njira Yazazambiri..."/>
+					<Item id="42034" name="Mkonzi wa Mgawo..."/>
+					<Item id="42051" name="Khalidwe gulu"/>
+					<Item id="42052" name="Mbiri ya Clipboard"/>
+					<Item id="42025" name="Sungani Macro Yojambulidwa Panopa..."/>
+					<Item id="42026" name="Text Direction RTL"/>
+					<Item id="42027" name="Mayendedwe a Malemba LTR"/>
+					<Item id="42028" name="Werengani-Pokha Pa Chikalata Chapano"/>
+					<Item id="42102" name="Werengani-Pokha Pa Zolemba Zonse"/>
+					<Item id="42103" name="Chotsani Zowerenga Pokha Pazolemba Zonse"/>
+					<Item id="42029" name="Matulani Fayilo Yamakono"/>
+					<Item id="42030" name="Lembani Fayilo Yamakono"/>
+					<Item id="42031" name="Copy Current Dir.Njira"/>
+					<Item id="42087" name="Matulani Mayina Onse Afayilo"/>
+					<Item id="42088" name="Lembani Njira Zonse Zafayilo"/>
+					<Item id="42032" name="Thamangani Macro Kangapo..."/>
+					<Item id="42033" name="Kuwerenga-Okha mu Windows"/>
+					<Item id="42035" name="Ndemanga Imodzi"/>
+					<Item id="42036" name="Single Line Uncomment"/>
+					<Item id="42055" name="Chotsani Mizere Yopanda Zinthu"/>
+					<Item id="42056" name="Chotsani Mizere Yopanda kanthu (yokhala ndi zilembo Zopanda kanthu)"/>
+					<Item id="42057" name="Ikani Mzere Wopanda Pamwamba Pamwamba Pano"/>
+					<Item id="42058" name="Ikani Mzere Wopanda Pansi Pansi Pano"/>
+					<Item id="43001" name="Pezani..."/>
+					<Item id="43002" name="Pezani Kenako"/>
+					<Item id="43003" name="Sinthani..."/>
+					<Item id="43004" name="Pitani ku..."/>
+					<Item id="43005" name="Sinthani Chizindikiro"/>
+					<Item id="43006" name="Chizindikiro Chotsatira"/>
+					<Item id="43007" name="Chizindikiro Cham'mbuyo"/>
+					<Item id="43008" name="Chotsani Zikhomo Zonse"/>
+					<Item id="43018" name="Dulani Mizere Yojambulidwa"/>
+					<Item id="43019" name="Koperani Mizere Yojambulidwa"/>
+					<Item id="43020" name="Matani ku (M'malo) Mizere Yosungira Mabuku"/>
+					<Item id="43021" name="Chotsani Mizere Yosungira Mabuku"/>
+					<Item id="43051" name="Chotsani Mizere Yopanda Mabuku"/>
+					<Item id="43050" name="Zolemba Zosintha"/>
+					<Item id="43052" name="Pezani zilembo zosiyanasiyana..."/>
+					<Item id="43053" name="Sankhani Zonse Pakati pa {} [] kapena ()"/>
+					<Item id="43009" name="Pitani ku Matching Brace"/>
+					<Item id="43010" name="Pezani Zam'mbuyo"/>
+					<Item id="43011" name="Kusaka Kwambiri"/>
+					<Item id="43013" name="Pezani mu Mafayilo"/>
+					<Item id="43014" name="Pezani (Zosasinthika) Kenako"/>
+					<Item id="43015" name="Pezani (Zosintha) Zam'mbuyo"/>
+					<Item id="43022" name="Kugwiritsa Ntchito 1st Style"/>
+					<Item id="43023" name="Chotsani Mtundu Woyamba"/>
+					<Item id="43024" name="Kugwiritsa Ntchito 2nd Style"/>
+					<Item id="43025" name="Chotsani Mtundu Wachiwiri"/>
+					<Item id="43026" name="Kugwiritsa Ntchito 3rd Style"/>
+					<Item id="43027" name="Chotsani Mtundu Wachitatu"/>
+					<Item id="43028" name="Kugwiritsa Ntchito 4th Style"/>
+					<Item id="43029" name="Chotsani Mtundu Wachinayi"/>
+					<Item id="43030" name="Kugwiritsa Ntchito 5th Style"/>
+					<Item id="43031" name="Chotsani Mtundu Wachisanu"/>
+					<Item id="43032" name="Chotsani Masitayilo Onse"/>
+					<Item id="43033" name="Mtundu woyamba"/>
+					<Item id="43034" name="Mtundu wachiwiri"/>
+					<Item id="43035" name="Mtundu wachitatu"/>
+					<Item id="43036" name="Mtundu wa 4"/>
+					<Item id="43037" name="Mtundu wachisanu"/>
+					<Item id="43038" name="Pezani Mark Style"/>
+					<Item id="43039" name="1 kalembedwe"/>
+					<Item id="43040" name="Mtundu wachiwiri"/>
+					<Item id="43041" name="Mtundu wachitatu"/>
+					<Item id="43042" name="Mtundu wa 4"/>
+					<Item id="43043" name="Mtundu wachisanu"/>
+					<Item id="43044" name="Pezani Mark Style"/>
+					<Item id="43055" name="Mtundu Woyamba"/>
+					<Item id="43056" name="Mtundu Wachiwiri"/>
+					<Item id="43057" name="Mtundu Wachitatu"/>
+					<Item id="43058" name="Mtundu wa 4"/>
+					<Item id="43059" name="5th Style"/>
+					<Item id="43060" name="Mitundu Yonse"/>
+					<Item id="43061" name="Pezani Mark Style"/>
+					<Item id="43062" name="Kugwiritsa Ntchito 1st Style"/>
+					<Item id="43063" name="Kugwiritsa Ntchito 2nd Style"/>
+					<Item id="43064" name="Kugwiritsa Ntchito 3rd Style"/>
+					<Item id="43065" name="Kugwiritsa Ntchito 4th Style"/>
+					<Item id="43066" name="Kugwiritsa Ntchito 5th Style"/>
+					<Item id="43067" name="Pitani ku Kusintha Kotsatira"/>
+					<Item id="43068" name="Pitani ku Kusintha Kwam'mbuyo"/>
+					<Item id="43069" name="Chotsani Mbiri Yosintha"/>
+					<Item id="43045" name="Search Results Window"/>
+					<Item id="43046" name="Chotsatira Chotsatira Chosaka"/>
+					<Item id="43047" name="Zotsatira Zam'mbuyomu"/>
+					<Item id="43048" name="Sankhani ndi Pezani Kenako"/>
+					<Item id="43049" name="Sankhani ndi Pezani Zakale"/>
+					<Item id="43054" name="Maliko..."/>
+					<Item id="43501" name="Tsekani Zosankhidwa"/>
+					<Item id="43502" name="Tsekani Ena"/>
+					<Item id="43503" name="Matulani Mayina Osankhidwa"/>
+					<Item id="43504" name="Matulani Mayina Osankhidwa"/>
+					<Item id="44009" name="Post-Iyo"/>
+					<Item id="44010" name="Pindani Zonse"/>
+					<Item id="44011" name="Njira Yaulere Yosokoneza"/>
+					<Item id="44019" name="Onetsani Anthu Onse"/>
+					<Item id="44020" name="Onetsani Maupangiri Olowera"/>
+					<Item id="44022" name="Kulemba mawu"/>
+					<Item id="44023" name="Onerani (Ctrl+Mouse Wheel Up)"/>
+					<Item id="44024" name="Onerani Panja (Ctrl+Mouse Wheel Down)"/>
+					<Item id="44025" name="Onetsani Malo ndi Tabu"/>
+					<Item id="44026" name="Onetsani Mapeto a Mzere"/>
+					<Item id="44029" name="Tsegulani Zonse"/>
+					<Item id="44030" name="Pindani Mulingo Wamakono"/>
+					<Item id="44031" name="Tsegulani Mulingo Wamakono"/>
+					<Item id="44049" name="Chidule..."/>
+					<Item id="44080" name="Document Map"/>
+					<Item id="44070" name="Mndandanda wa Zolemba"/>
+					<Item id="44084" name="Mndandanda wa Ntchito"/>
+					<Item id="44085" name="Foda ngati Malo Ogwirira Ntchito"/>
+					<Item id="44086" name="Tsamba loyamba"/>
+					<Item id="44087" name="Tsamba lachiwiri"/>
+					<Item id="44088" name="Tabu 3"/>
+					<Item id="44089" name="Tsamba la 4"/>
+					<Item id="44090" name="Tsamba la 5"/>
+					<Item id="44091" name="Tsamba la 6"/>
+					<Item id="44092" name="Tsamba la 7"/>
+					<Item id="44093" name="Tsamba la 8"/>
+					<Item id="44094" name="Tsamba la 9"/>
+					<Item id="44116" name="Tabu Yoyamba"/>
+					<Item id="44117" name="Tabu Yomaliza"/>
+					<Item id="44095" name="Next Tabu"/>
+					<Item id="44096" name="Tabu Yam'mbuyo"/>
+					<Item id="44097" name="Kuwunika (mchira -f)"/>
+					<Item id="44098" name="Sunthani Tabu Patsogolo"/>
+					<Item id="44099" name="Sunthani Tabu Kumbuyo"/>
+					<Item id="44110" name="Chotsani Mtundu"/>
+					<Item id="44111" name="Ikani Mtundu 1"/>
+					<Item id="44112" name="Ikani Mtundu 2"/>
+					<Item id="44113" name="Ikani Mtundu 3"/>
+					<Item id="44114" name="Ikani Mtundu 4"/>
+					<Item id="44115" name="Ikani Mtundu 5"/>
+					<Item id="44130" name="Onetsani Zilembo Zosasindikiza"/>
+					<Item id="44131" name="Onetsani Zizindikiro Zowongolera Unicode EOL"/>
+					<Item id="44032" name="Sinthani Mawonekedwe a Screen Screen"/>
+					<Item id="44033" name="Bwezerani Makulitsidwe Osasinthika"/>
+					<Item id="44034" name="Nthawizonse Pamwamba"/>
+					<Item id="44035" name="Synchronize Vertical Scrolling"/>
+					<Item id="44036" name="Gwirizanitsani Kupukusira Kopingasa"/>
+					<Item id="44041" name="Onetsani Chizindikiro Chokulunga"/>
+					<Item id="44072" name="Yang'anani pa Mawonedwe Ena"/>
+					<Item id="44081" name="Gulu la Project 1"/>
+					<Item id="44082" name="Gulu la Ntchito 2"/>
+					<Item id="44083" name="Gulu la Ntchito 3"/>
+					<Item id="45001" name="Windows (CR LF)"/>
+					<Item id="45002" name="Unix (LF)"/>
+					<Item id="45003" name="Macintosh (CR)"/>
+					<Item id="45004" name="ANSI"/>
+					<Item id="45005" name="UTF-8-BOM"/>
+					<Item id="45006" name="UTF-16 BE BOM"/>
+					<Item id="45007" name="UTF-16 LE BOM"/>
+					<Item id="45008" name="UTF-8"/>
+					<Item id="45009" name="Sinthani kukhala ANSI"/>
+					<Item id="45010" name="Sinthani kukhala UTF-8"/>
+					<Item id="45011" name="Sinthani kukhala UTF-8-BOM"/>
+					<Item id="45012" name="Sinthani kukhala UTF-16 BE BOM"/>
+					<Item id="45013" name="Sinthani kukhala UTF-16 LE BOM"/>
+					<Item id="45060" name="Big5 (Zachikhalidwe)"/>
+					<Item id="45061" name="GB2312 (Yosavuta)"/>
+					<Item id="45054" name="OEM 861: Icelandic"/>
+					<Item id="45057" name="OEM 865: Nordic"/>
+					<Item id="45053" name="OEM 860: Chipwitikizi"/>
+					<Item id="45056" name="OEM 863: Chifalansa"/>
+					<Item id="10001" name="Pitani ku Mawonedwe Ena"/>
+					<Item id="10002" name="Clone to Other View"/>
+					<Item id="10003" name="Pitani ku New Instance"/>
+					<Item id="10004" name="Tsegulani mu New Instance"/>
+					<Item id="10005" name="Pitani Kuyamba"/>
+					<Item id="10006" name="Pitani Kumapeto"/>
+					<Item id="46001" name="Wokonzera Mtundu..."/>
+					<Item id="46016" name="Palibe (Mawu Okhazikika)"/>
+					<Item id="46250" name="Tanthauzirani chilankhulo chanu..."/>
+					<Item id="46300" name="Tsegulani foda ya Chinenero Chofotokozedwa..."/>
+					<Item id="46301" name="Notepad++ User Defined Languages ​​Collection"/>
+					<Item id="46180" name="Kutanthauzira-Wogwiritsa"/>
+					<Item id="47000" name="Za Notepad++"/>
+					<Item id="47010" name="Mikangano ya Mzere Wamalamulo..."/>
+					<Item id="47001" name="Notepad++ Home"/>
+					<Item id="47002" name="Tsamba la Notepad++ Project"/>
+					<Item id="47003" name="Notepad++ Buku Logwiritsa Ntchito Paintaneti"/>
+					<Item id="47004" name="Notepad++ Community (Forum)"/>
+					<Item id="47012" name="Zambiri Zothetsera..."/>
+					<Item id="47005" name="Pezani Mapulagini Ambiri"/>
+					<Item id="47006" name="Sinthani Notepad++"/>
+					<Item id="47009" name="Khazikitsani Wothandizira Wowonjezera..."/>
+					<Item id="48005" name="Lowetsani mapulogalamu owonjezera..."/>
+					<Item id="48006" name="Mitu ya sitayilo yolowera..."/>
+					<Item id="48018" name="Sinthani Popup ContextMenu"/>
+					<Item id="48009" name="Shortcut Mapper..."/>
+					<Item id="48011" name="Zokonda..."/>
+					<Item id="48014" name="Tsegulani Chikwatu cha Mapulagini..."/>
+					<Item id="48015" name="Mapulagini Admin..."/>
+					<Item id="48501" name="Pangani..."/>
+					<Item id="48502" name="Pangani kuchokera kumafayilo..."/>
+					<Item id="48503" name="Pangani kuchokera pazosankha kukhala pa bolodi"/>
+					<Item id="48504" name="Pangani..."/>
+					<Item id="48505" name="Pangani kuchokera kumafayilo..."/>
+					<Item id="48506" name="Pangani kuchokera pazosankha kukhala pa bolodi"/>
+					<Item id="48507" name="Pangani..."/>
+					<Item id="48508" name="Pangani kuchokera kumafayilo..."/>
+					<Item id="48509" name="Pangani kuchokera pazosankha kukhala pa bolodi"/>
+					<Item id="48510" name="Pangani..."/>
+					<Item id="48511" name="Pangani kuchokera kumafayilo..."/>
+					<Item id="48512" name="Pangani kuchokera pazosankha kukhala pa bolodi"/>
+					<Item id="49000" name="Thamangani..."/>
+
+					<Item id="50000" name="Kumaliza Ntchito"/>
+					<Item id="50001" name="Kumaliza Mawu"/>
+					<Item id="50002" name="Malangizo a Ntchito Zoyambira"/>
+					<Item id="50010" name="Zigawo Zogwirira Ntchito Lingaliro Lakale"/>
+					<Item id="50011" name="Zigawo Zogwirira Ntchito Kenako Malangizo"/>
+					<Item id="50005" name="Sinthani mbiri yakale"/>
+					<Item id="50006" name="Kumaliza Njira"/>
+					<Item id="44042" name="Bisani Mizere"/>
+					<Item id="42040" name="Tsegulani Mafayilo Onse Aposachedwa"/>
+					<Item id="42041" name="Mndandanda Wamafayilo Aposachedwa"/>
+					<Item id="48016" name="Sinthani Njira Yachidule/Chotsani Macro..."/>
+					<Item id="48017" name="Sinthani Njira Yachidule/Chotsani Lamulo..."/>
+
+					<Item id="11001" name="Windows..."/>
+					<Item id="11002" name="Dzina A mpaka Z"/>
+					<Item id="11003" name="Dzina Z to A"/>
+					<Item id="11004" name="Njira A yopita ku Z"/>
+					<Item id="11005" name="Njira Z kupita ku A"/>
+					<Item id="11006" name="Lembani A mpaka Z"/>
+					<Item id="11007" name="Lembani Z kupita ku A"/>
+					<Item id="11008" name="Kutalika Kwazinthu Kukwera"/>
+					<Item id="11009" name="Kutalika Kwazinthu Kutsika"/>
+					<Item id="11010" name="Nthawi Yosinthidwa Ikukwera"/>
+					<Item id="11011" name="Nthawi Yosinthidwa Ikutsika"/>
+				</Commands>
+			</Main>
+			<TabBar>
+				<Item CMDID="41003" name="Tsekani"/>
+				<Item CMDID="0" name="Tsekani Ma Tabu Angapo"/>
+				<Item CMDID="41005" name="Tsekani Zonse KOMA Izi"/>
+				<Item CMDID="41026" name="Tsekani Zonse KOMA Zapinidwa"/>
+				<Item CMDID="41009" name="Tsekani Zonse Kumanzere"/>
+				<Item CMDID="41018" name="Tsekani Zonse Kumanja"/>
+				<Item CMDID="41024" name="Tsekani Zonse Zosasintha"/>
+				<Item CMDID="44048" name="Pin Tab" alternativeName="Chotsani Tabu"/>
+				<Item CMDID="41006" name="Sungani"/>
+				<Item CMDID="41008" name="Sungani Monga..."/>
+				<Item CMDID="1" name="Tsegulani ku"/>
+				<Item CMDID="41019" name="Tsegulani Chikwatu chomwe chili mu Explorer"/>
+				<Item CMDID="41020" name="Tsegulani Foda Yokhala ndi cmd"/>
+				<Item CMDID="41025" name="Tsegulani Chikwatu chomwe chili ngati Malo Ogwirira Ntchito"/>
+				<Item CMDID="41023" name="Tsegulani mu Default Viewer"/>
+				<Item CMDID="41017" name="Sinthani dzina..."/>
+				<Item CMDID="41016" name="Pitani ku Recycle Bin"/>
+				<Item CMDID="41014" name="Kwezaninso"/>
+				<Item CMDID="41010" name="Sindikizani..."/>
+				<Item CMDID="42028" name="Werengani-Pokha mu Notepad++"/>
+				<Item CMDID="42033" name="Kuwerenga-Okha mu Windows"/>
+				<Item CMDID="2" name="Lembani ku Clipboard"/>
+				<Item CMDID="42029" name="Lembani Njira Yathunthu Yafayilo"/>
+				<Item CMDID="42030" name="Copy Filename"/>
+				<Item CMDID="42031" name="Copy Current Dir.Njira"/>
+				<Item CMDID="3" name="Sunthani Document"/>
+				<Item CMDID="10005" name="Pitani Kuyamba"/>
+				<Item CMDID="10006" name="Pitani Kumapeto"/>
+				<Item CMDID="10001" name="Pitani ku Mawonedwe Ena"/>
+				<Item CMDID="10002" name="Clone to Other View"/>
+				<Item CMDID="10003" name="Pitani ku New Instance"/>
+				<Item CMDID="10004" name="Tsegulani mu New Instance"/>
+				<Item CMDID="4" name="Ikani Mtundu ku Tab"/>
+				<Item CMDID="44111" name="Ikani Mtundu 1"/>
+				<Item CMDID="44112" name="Ikani Mtundu 2"/>
+				<Item CMDID="44113" name="Ikani Mtundu 3"/>
+				<Item CMDID="44114" name="Ikani Mtundu 4"/>
+				<Item CMDID="44115" name="Ikani Mtundu 5"/>
+				<Item CMDID="44110" name="Chotsani Mtundu"/>
+			</TabBar>
+			<TrayIcon>
+				<Item id="43101" name="Yambitsani"/>
+				<Item id="43102" name="Chatsopano"/>
+				<Item id="43103" name="Chatsopano ndi Matani"/>
+				<Item id="43104" name="Tsegulani..."/>
+				<Item id="43013" name="Pezani mu Mafayilo..."/>
+				<Item id="43105" name="Tsekani Chizindikiro cha Tray"/>
+			</TrayIcon>
+		</Menu>
+
+		<Dialog>
+			<Find title="" titleFind="Pezani" titleReplace="Sinthani" titleFindInFiles="Pezani mu Mafayilo" titleFindInProjects="Pezani mu Ntchito" titleMark="Mark">
+				<Item id="1" name="Pezani Kenako"/>
+				<Item id="1722" name="Njira yakumbuyo"/>
+				<Item id="2" name="Tsekani"/>
+				<Item id="1620" name="Pezani chiyani:"/>
+				<Item id="1603" name="Fananizani mawu onse"/>
+				<Item id="1604" name="Mlandu wamasewera"/>
+				<Item id="1605" name="Mawu okhazikika"/>
+				<Item id="1606" name="Kuzungulira"/>
+				<Item id="1614" name="Chiwerengero"/>
+				<Item id="1615" name="Mark Onse"/>
+				<Item id="1616" name="Mzere wamabuku"/>
+				<Item id="1618" name="Chotsani pakufufuza kulikonse"/>
+				<Item id="1611" name="M'malo mwake:"/>
+				<Item id="1608" name="Sinthani"/>
+				<Item id="1609" name="Sinthani Zonse"/>
+				<Item id="1687" name="Pa kutaya chidwi"/>
+				<Item id="1688" name="Nthawi zonse"/>
+				<Item id="1632" name="Mukusankhidwa"/>
+				<Item id="1633" name="Chotsani zizindikiro zonse"/>
+				<Item id="1635" name="Bwezerani Zonse mu Zolemba Zonse Zotsegulidwa"/>
+				<Item id="1636" name="Pezani Zonse mu Zolemba Zonse Zotsegulidwa"/>
+				<Item id="1654" name="Zosefera:"/>
+				<Item id="1655" name="Dalaivala:"/>
+				<Item id="1656" name="Pezani Zonse"/>
+				<Item id="1658" name="M'zikwatu zonse zazing'ono"/>
+				<Item id="1659" name="M'zikwatu zobisika"/>
+				<Item id="1624" name="Sakani njira"/>
+				<Item id="1625" name="Zabwinobwino"/>
+				<Item id="1626" name="Zowonjezera (\n, \r, \t, \0, \x...)"/>
+				<Item id="1660" name="Sinthani mu Mafayilo"/>
+				<Item id="1665" name="M'malo mwa Ma Project"/>
+				<Item id="1662" name="Gulu la Ntchito 1"/>
+				<Item id="1663" name="Gulu la Ntchito 2"/>
+				<Item id="1664" name="Gulu la Ntchito 3"/>
+				<Item id="1641" name="Pezani Zonse mu Chikalata Chatsopano"/>
+				<Item id="1686" name="Kuwonekera"/>
+				<Item id="1703" name=".zikufanana ndi newline"/>
+				<Item id="1721" name="▲"/>
+				<Item id="1723" name="▼ Pezani Kenako"/>
+				<Item id="1725" name="Koperani Mawu Olembedwa"/>
+				<Menu>
+					<Item id="1726" name="⇅ Sinthanitsani Pezani ndi Kusintha"/>
+					<Item id="1727" name="⤵ Koperani kuchokera ku Find to Replace"/>
+					<Item id="1728" name="⤴ Koperani kuchokera ku Replace to Find"/>
+				</Menu>
+			</Find>
+
+			<IncrementalFind title="">
+				<Item id="1681" name="Pezani:"/>
+				<Item id="1685" name="Mlandu wamasewera"/>
+				<Item id="1690" name="Onetsani zonse"/>
+			</IncrementalFind>
+
+			<FindCharsInRange title="Pezani Otchulidwa M'mitundu...">
+				<Item id="2" name="Tsekani"/>
+				<Item id="2901" name="Zilembo zomwe si za ASCII (128–255)"/>
+				<Item id="2902" name="Zilembo za ASCII (0–127)"/>
+				<Item id="2903" name="Zosiyanasiyana (0–255):"/>
+				<Item id="2906" name="Pamwamba"/>
+				<Item id="2907" name="Pansi"/>
+				<Item id="2908" name="Mayendedwe"/>
+				<Item id="2909" name="Kuzungulira"/>
+				<Item id="2910" name="Pezani"/>
+			</FindCharsInRange>
+
+			<GoToLine title="Pitani ku...">
+				<Item id="2007" name="Mzere"/>
+				<Item id="2008" name="Offset"/>
+				<Item id="1" name="Pitani"/>
+				<Item id="2" name="sindikupita kulikonse"/>
+				<Item id="2004" name="Muli pano:"/>
+				<Item id="2005" name="Mukufuna kupita ku:"/>
+				<Item id="2006" name="Simungapitirire patali:"/>
+			</GoToLine>
+
+			<Run title="Thamangani...">
+				<Item id="1903" name="Pulogalamu Yoyendetsa"/>
+				<Item id="1" name="Thamanga"/>
+				<Item id="2" name="Letsani"/>
+				<Item id="1904" name="Sungani..."/>
+			</Run>
+
+			<MD5FromFilesDlg title="Pangani MD5 digest kuchokera pamafayilo">
+				<Item id="1922" name="Sankhani mafayilo oti mupange MD5..."/>
+				<Item id="1924" name="Lembani ku Clipboard"/>
+				<Item id="2" name="Tsekani"/>
+			</MD5FromFilesDlg>
+
+			<MD5FromTextDlg title="Pangani MD5 digest">
+				<Item id="1932" name="Chitani mzere uliwonse ngati chingwe chosiyana"/>
+				<Item id="1934" name="Lembani ku Clipboard"/>
+				<Item id="2" name="Tsekani"/>
+			</MD5FromTextDlg>
+
+			<SHA256FromFilesDlg title="Pangani digest ya SHA-256 kuchokera pamafayilo">
+				<Item id="1922" name="Sankhani mafayilo kuti mupange SHA-256..."/>
+				<Item id="1924" name="Lembani ku Clipboard"/>
+				<Item id="2" name="Tsekani"/>
+			</SHA256FromFilesDlg>
+
+			<SHA256FromTextDlg title="Pangani digest ya SHA-256">
+				<Item id="1932" name="Chitani mzere uliwonse ngati chingwe chosiyana"/>
+				<Item id="1934" name="Lembani ku Clipboard"/>
+				<Item id="2" name="Tsekani"/>
+			</SHA256FromTextDlg>
+
+			<SHA1FromFilesDlg title="Pangani digest ya SHA-1 kuchokera pamafayilo">
+				<Item id="1922" name="Sankhani mafayilo kuti mupange SHA-1..."/>
+				<Item id="1924" name="Lembani ku Clipboard"/>
+				<Item id="2" name="Tsekani"/>
+			</SHA1FromFilesDlg>
+
+			<SHA1FromTextDlg title="Pangani digest ya SHA-1">
+				<Item id="1932" name="Chitani mzere uliwonse ngati chingwe chosiyana"/>
+				<Item id="1934" name="Lembani ku Clipboard"/>
+				<Item id="2" name="Tsekani"/>
+			</SHA1FromTextDlg>
+
+			<SHA512FromFilesDlg title="Pangani SHA-512 digest kuchokera pamafayilo">
+				<Item id="1922" name="Sankhani mafayilo kuti mupange SHA-512..."/>
+				<Item id="1924" name="Lembani ku Clipboard"/>
+				<Item id="2" name="Tsekani"/>
+			</SHA512FromFilesDlg>
+
+			<SHA512FromTextDlg title="Pangani digest ya SHA-512">
+				<Item id="1932" name="Chitani mzere uliwonse ngati chingwe chosiyana"/>
+				<Item id="1934" name="Lembani ku Clipboard"/>
+				<Item id="2" name="Tsekani"/>
+			</SHA512FromTextDlg>
+			<PluginsAdminDlg title="Mapulagini Admin" titleAvailable="Available" titleUpdates="Updates" titleInstalled="Installed" titleIncompatible="Incompatible">
+				<ColumnPlugin name="Pulogalamu yowonjezera"/>
+				<ColumnVersion name="Mtundu"/>
+				<Item id="5501" name="Sakani:"/>
+				<Item id="5503" name="Ikani"/>
+				<Item id="5504" name="Kusintha"/>
+				<Item id="5505" name="Chotsani"/>
+				<Item id="5508" name="Kenako"/>
+				<Item id="5509" name="Mtundu wa mndandanda wamapulagi:"/>
+				<Item id="5511" name="Pulogalamu yowonjezera mndandanda"/>
+				<Item id="2" name="Tsekani"/>
+			</PluginsAdminDlg>
+
+			<StyleConfig title="Wokonza Mtundu">
+				<Item id="2" name="Letsani"/>
+				<Item id="2301" name="Sungani Pafupi"/>
+				<Item id="2303" name="Kuwonekera"/>
+				<Item id="2306" name="Sankhani mutu:"/>
+				<SubDialog>
+					<Item id="2204" name="Zolimba"/>
+					<Item id="2205" name="Kapendekeko"/>
+					<Item id="2206" name="Mtundu wakutsogolo"/>
+					<Item id="2207" name="Mtundu wakumbuyo"/>
+					<Item id="2208" name="Dzina lachilembo:"/>
+					<Item id="2209" name="Kukula kwa zilembo:"/>
+					<Item id="2211" name="Mtundu:"/>
+					<Item id="2212" name="Mtundu Wamtundu"/>
+					<Item id="2213" name="Mtundu wa Font"/>
+					<Item id="2214" name="Kufikira kofikira.:"/>
+					<Item id="2216" name="Wogwiritsa ntchito:"/>
+					<Item id="2218" name="Pansi pa mzere"/>
+					<Item id="2219" name="Mawu osakira"/>
+					<Item id="2221" name="Mawu osakira"/>
+					<Item id="2225" name="Chiyankhulo:"/>
+					<Item id="2226" name="Limbikitsani mtundu wakutsogolo pamasitayelo onse"/>
+					<Item id="2227" name="Limbikitsani mtundu wakumbuyo pamasitayelo onse"/>
+					<Item id="2228" name="Limbikitsani kusankha zilembo pamasitayelo onse"/>
+					<Item id="2229" name="Limbikitsani kusankha kukula kwa zilembo pamasitayelo onse"/>
+					<Item id="2230" name="Limbikitsani kusankha molimba mtima pamasitayelo onse"/>
+					<Item id="2231" name="Limbikitsani kusankha mopendekera pamasitayelo onse"/>
+					<Item id="2232" name="Limbikitsani kusankha pansi pamzere pamasitayelo onse"/>
+					<Item id="2234" name="Pitani ku zoikamo"/>
+					<!-- Don't translate "Global override" -->
+					<Item id="2235" name="Kodi Global override ndi chiyani?"/>
+				</SubDialog>
+			</StyleConfig>
+
+			<ShortcutMapper title="Shortcut Mapper">
+				<Item id="2602" name="Sinthani"/>
+				<Item id="2603" name="Chotsani"/>
+				<Item id="2606" name="Chotsani"/>
+				<Item id="2607" name="Zosefera:"/>
+				<Item id="1" name="Tsekani"/>
+				<ColumnName name="Dzina"/>
+				<ColumnShortcut name="Njira yachidule"/>
+				<ColumnCategory name="Gulu"/>
+				<ColumnPlugin name="Pulogalamu yowonjezera"/>
+				<MainMenuTab name="Menyu yayikulu"/>
+				<MacrosTab name="Macro"/>
+				<RunCommandsTab name="Thamangani malamulo"/>
+				<PluginCommandsTab name="Malamulo a pulogalamu yowonjezera"/>
+				<ScintillaCommandsTab name="Malamulo a Scintilla"/>
+				<ConflictInfoOk name="Palibe zosemphana zachidule za chinthuchi."/>
+				<ConflictInfoEditing name="Palibe mikangano ..."/>
+				<AboutCategory name="Za"/>
+				<ModifyContextMenu name="Sinthani"/>
+				<DeleteContextMenu name="Chotsani"/>
+				<ClearContextMenu name="Chotsani"/>
+				<MainCommandNames>
+					<Item id="41019" name="Tsegulani chikwatu chomwe chili mu Explorer"/>
+					<Item id="41020" name="Tsegulani chikwatu chomwe chili mu Command Prompt"/>
+					<Item id="41021" name="Bwezeretsani Fayilo Yotsekedwa Posachedwapa"/>
+					<Item id="45001" name="EOL Conversion to Windows (CR LF)"/>
+					<Item id="45002" name="Kusintha kwa EOL kupita ku Unix (LF)"/>
+					<Item id="45003" name="EOL Conversion to Macintosh (CR)"/>
+					<Item id="43022" name="Sitanileni zonse pogwiritsa ntchito 1st style"/>
+					<Item id="43024" name="Sitanileni zonse pogwiritsa ntchito 2nd style"/>
+					<Item id="43026" name="Sitanileni zonse pogwiritsa ntchito kalembedwe kachitatu"/>
+					<Item id="43028" name="Sitanileni zonse pogwiritsa ntchito 4th style"/>
+					<Item id="43030" name="Sitanileni zonse pogwiritsa ntchito sitayilo yachisanu"/>
+					<Item id="43062" name="Mtundu woyamba pogwiritsa ntchito mtundu woyamba"/>
+					<Item id="43063" name="Mtundu woyamba pogwiritsa ntchito 2nd style"/>
+					<Item id="43064" name="Mtundu woyamba pogwiritsa ntchito kalembedwe kachitatu"/>
+					<Item id="43065" name="Mtundu woyamba pogwiritsa ntchito 4th style"/>
+					<Item id="43066" name="Mtundu woyamba pogwiritsa ntchito 5th style"/>
+					<Item id="43023" name="Chotsani kalembedwe ka 1"/>
+					<Item id="43025" name="Chotsani kalembedwe kachiwiri"/>
+					<Item id="43027" name="Chotsani kalembedwe kachitatu"/>
+					<Item id="43029" name="Chotsani kalembedwe ka 4"/>
+					<Item id="43031" name="Chotsani kalembedwe ka 5"/>
+					<Item id="43032" name="Chotsani masitayelo onse"/>
+					<Item id="43033" name="Mtundu wam'mbuyo wa sitayilo yoyamba"/>
+					<Item id="43034" name="Mtundu wam'mbuyo wa 2nd style"/>
+					<Item id="43035" name="Mtundu wam'mbuyo wa 3rd style"/>
+					<Item id="43036" name="Mtundu wam'mbuyo wa 4th style"/>
+					<Item id="43037" name="Mtundu wam'mbuyo wa sitayilo ya 5"/>
+					<Item id="43038" name="Mtundu wam'mbuyo wa kalembedwe ka Pezani Mark"/>
+					<Item id="43039" name="Mtundu wotsatira wa mtundu woyamba"/>
+					<Item id="43040" name="Mtundu wotsatira wa 2nd style"/>
+					<Item id="43041" name="Mtundu wotsatira wa 3rd style"/>
+					<Item id="43042" name="Mtundu wotsatira wa 4th style"/>
+					<Item id="43043" name="Mtundu wotsatira wa 5th style"/>
+					<Item id="43044" name="Mtundu wotsatira wa kalembedwe ka Pezani Mark"/>
+					<Item id="43055" name="Copy Styled Text of 1st Style"/>
+					<Item id="43056" name="Copy Styled Text of 2nd Style"/>
+					<Item id="43057" name="Copy Styled Text of 3rd Style"/>
+					<Item id="43058" name="Copy Styled Text of 4th Style"/>
+					<Item id="43059" name="Copy Styled Text of 5th Style"/>
+					<Item id="43060" name="Copy Styled Text of All Styles"/>
+					<Item id="43061" name="Copy Styled Text ya kalembedwe ka Find Mark"/>
+					<Item id="44100" name="Onani fayilo yamakono mu Firefox"/>
+					<Item id="44101" name="Onani fayilo yamakono mu Chrome"/>
+					<Item id="44103" name="Onani fayilo yamakono mu IE"/>
+					<Item id="44102" name="Onani fayilo yamakono mu Edge"/>
+					<Item id="50003" name="Pitani ku chikalata cham'mbuyo"/>
+					<Item id="50004" name="Pitani ku chikalata chotsatira"/>
+					<Item id="44051" name="Pindani mlingo 1"/>
+					<Item id="44052" name="Pindani mlingo 2"/>
+					<Item id="44053" name="Pindani mlingo 3"/>
+					<Item id="44054" name="Pindani mlingo 4"/>
+					<Item id="44055" name="Pindani mlingo 5"/>
+					<Item id="44056" name="Pindani mlingo 6"/>
+					<Item id="44057" name="Pindani mlingo 7"/>
+					<Item id="44058" name="Pindani mlingo 8"/>
+					<Item id="44061" name="Tsegulani Gawo 1"/>
+					<Item id="44062" name="Tsegulani Gawo 2"/>
+					<Item id="44063" name="Tsegulani Gawo 3"/>
+					<Item id="44064" name="Tsegulani Gawo 4"/>
+					<Item id="44065" name="Tsegulani Gawo 5"/>
+					<Item id="44066" name="Tsegulani Level 6"/>
+					<Item id="44067" name="Tsegulani Gawo 7"/>
+					<Item id="44068" name="Tsegulani Gawo 8"/>
+					<Item id="44081" name="Sinthani Gulu la Ntchito 1"/>
+					<Item id="44082" name="Sinthani Gulu la Ntchito 2"/>
+					<Item id="44083" name="Sinthani Gulu la Ntchito 3"/>
+					<Item id="44085" name="Sinthani Foda ngati Malo Ogwirira Ntchito"/>
+					<Item id="44080" name="Sinthani Mapu a Document"/>
+					<Item id="44070" name="Sinthani Mndandanda Wazolemba"/>
+					<Item id="44084" name="Sinthani Mndandanda wa Ntchito"/>
+					<Item id="50005" name="Sinthani kujambula kwakukulu"/>
+					<Item id="44104" name="Pitani ku Project Panel 1"/>
+					<Item id="44105" name="Pitani ku Project Panel 2"/>
+					<Item id="44106" name="Pitani ku Project Panel 3"/>
+					<Item id="44107" name="Sinthani ku Foda ngati Malo Ogwirira Ntchito"/>
+					<Item id="44109" name="Pitani ku Document List"/>
+					<Item id="44108" name="Sinthani ku Mndandanda wa Ntchito"/>
+					<Item id="44110" name="Chotsani Mtundu wa Tabu"/>
+					<Item id="44111" name="Ikani Mtundu wa Tabu 1"/>
+					<Item id="44112" name="Ikani Mtundu wa Tabu 2"/>
+					<Item id="44113" name="Ikani Mtundu wa Tabu 3"/>
+					<Item id="44114" name="Ikani Mtundu wa Tabu 4"/>
+					<Item id="44115" name="Ikani Mtundu wa Tabu 5"/>
+					<Item id="11002" name="Sanjani ndi Dzina A mpaka Z"/>
+					<Item id="11003" name="Sanjani ndi Dzina Z mpaka A"/>
+					<Item id="11004" name="Sanjani ndi Njira A mpaka Z"/>
+					<Item id="11005" name="Sanjani ndi Njira Z kupita ku A"/>
+					<Item id="11006" name="Sanjani ndi Mtundu A mpaka Z"/>
+					<Item id="11007" name="Sanjani ndi Mtundu Z mpaka A"/>
+					<Item id="11008" name="Sanjani potengera Utali Wamtali Wokwera"/>
+					<Item id="11009" name="Sanjani Potengera Utali Wazinthu Kutsika"/>
+				</MainCommandNames>
+			</ShortcutMapper>
+			<ShortcutMapperSubDialg title="Njira yachidule">
+				<Item id="1" name="Chabwino"/>
+				<Item id="2" name="Letsani"/>
+				<Item id="5006" name="Dzina"/>
+				<Item id="5008" name="Onjezani"/>
+				<Item id="5009" name="Chotsani"/>
+				<Item id="5010" name="Ikani"/>
+				<Item id="5007" name="Izi zichotsa njira yachidule pa lamulo ili"/>
+				<Item id="5012" name="KUSANGANA KWAPEZEKA!"/>
+			</ShortcutMapperSubDialg>
+			<UserDefine title="Wogwiritsa Ntchito">
+				<Item id="20001" name="Doko"/>
+				<Item id="20002" name="Sinthani dzina"/>
+				<Item id="20003" name="Pangani zatsopano..."/>
+				<Item id="20004" name="Chotsani"/>
+				<Item id="20005" name="Sungani Monga..."/>
+				<Item id="20007" name="Chilankhulo cha ogwiritsa"/>
+				<Item id="20009" name="Zowonjezera.:"/>
+				<Item id="20012" name="Musanyalanyaze mlandu"/>
+				<Item id="20011" name="Kuwonekera"/>
+				<Item id="20015" name="Tengani..."/>
+				<Item id="20016" name="Tumizani kunja..."/>
+				<Item id="20017" name="Tsegulani"/>
+				<StylerDialog title="Styler Dialog">
+					<Item id="25030" name="Zosankha zamafonti"/>
+					<Item id="25006" name="Mtundu wakutsogolo"/>
+					<Item id="25007" name="Mtundu wakumbuyo"/>
+					<Item id="25031" name="Dzina:"/>
+					<Item id="25032" name="Kukula:"/>
+					<Item id="25001" name="Zolimba"/>
+					<Item id="25002" name="Zolemba"/>
+					<Item id="25003" name="Pansi pa mzere"/>
+					<Item id="25029" name="Nesting"/>
+					<Item id="25008" name="Delimiter 1"/>
+					<Item id="25009" name="Delimiter 2"/>
+					<Item id="25010" name="Delimiter 3"/>
+					<Item id="25011" name="Delimiter 4"/>
+					<Item id="25012" name="Delimiter 5"/>
+					<Item id="25013" name="Delimiter 6"/>
+					<Item id="25014" name="Delimiter 7"/>
+					<Item id="25015" name="Delimiter 8"/>
+					<Item id="25018" name="Mawu ofunika 1"/>
+					<Item id="25019" name="Mawu ofunika 2"/>
+					<Item id="25020" name="Mawu ofunika 3"/>
+					<Item id="25021" name="Mawu ofunika 4"/>
+					<Item id="25022" name="Mawu ofunika 5"/>
+					<Item id="25023" name="Mawu ofunika 6"/>
+					<Item id="25024" name="Mawu ofunika 7"/>
+					<Item id="25025" name="Mawu ofunika 8"/>
+					<Item id="25016" name="Ndemanga"/>
+					<Item id="25017" name="Ndemanga mzere"/>
+					<Item id="25026" name="Wothandizira 1"/>
+					<Item id="25027" name="Wothandizira 2"/>
+					<Item id="25028" name="Nambala"/>
+					<Item id="25033" name="Zowonekera"/>
+					<Item id="25034" name="Zowonekera"/>
+					<Item id="1" name="Chabwino"/>
+					<Item id="2" name="Letsani"/>
+				</StylerDialog>
+				<Folder title="Chikwatu Chida">
+					<Item id="21101" name="Mtundu wofikira"/>
+					<Item id="21102" name="Styler"/>
+					<Item id="21103" name="Thandizo Lapaintaneti la Zinenero Zomasulira"/>
+					<Item id="21105" name="Zolemba"/>
+					<Item id="21106" name="Pindani chophatikizika (pindaninso mizere yopanda kanthu)"/>
+					<Item id="21220" name="Kupinda mu code 1 style"/>
+					<Item id="21224" name="Tsegulani:"/>
+					<Item id="21225" name="Pakati:"/>
+					<Item id="21226" name="Tsekani:"/>
+					<Item id="21227" name="Styler"/>
+					<Item id="21320" name="Kupinda mu code 2 style (zolekanitsa zofunika)"/>
+					<Item id="21324" name="Tsegulani:"/>
+					<Item id="21325" name="Pakati:"/>
+					<Item id="21326" name="Tsekani:"/>
+					<Item id="21327" name="Styler"/>
+					<Item id="21420" name="Kupinda mumayendedwe a ndemanga"/>
+					<Item id="21424" name="Tsegulani:"/>
+					<Item id="21425" name="Pakati:"/>
+					<Item id="21426" name="Tsekani:"/>
+					<Item id="21427" name="Styler"/>
+				</Folder>
+				<Keywords title="Mndandanda wa Mawu Ofunikira">
+					<Item id="22101" name="Gulu loyamba"/>
+					<Item id="22201" name="Gulu lachiwiri"/>
+					<Item id="22301" name="Gulu lachitatu"/>
+					<Item id="22401" name="Gulu la 4"/>
+					<Item id="22451" name="Gulu lachisanu"/>
+					<Item id="22501" name="Gulu la 6"/>
+					<Item id="22551" name="Gulu la 7"/>
+					<Item id="22601" name="Gulu la 8"/>
+					<Item id="22121" name="Mawonekedwe oyambira"/>
+					<Item id="22221" name="Mawonekedwe oyambira"/>
+					<Item id="22321" name="Prefix mode"/>
+					<Item id="22421" name="Mawonekedwe oyambira"/>
+					<Item id="22471" name="Mawonekedwe oyambira"/>
+					<Item id="22521" name="Mawonekedwe oyambira"/>
+					<Item id="22571" name="Mawonekedwe oyambira"/>
+					<Item id="22621" name="Mawonekedwe oyambira"/>
+					<Item id="22122" name="Styler"/>
+					<Item id="22222" name="Styler"/>
+					<Item id="22322" name="Styler"/>
+					<Item id="22422" name="Styler"/>
+					<Item id="22472" name="Styler"/>
+					<Item id="22522" name="Styler"/>
+					<Item id="22572" name="Styler"/>
+					<Item id="22622" name="Styler"/>
+				</Keywords>
+				<Comment title="Nambala ya Ndemanga">
+					<Item id="23003" name="Malo a ndemanga pamzere"/>
+					<Item id="23004" name="Lolani kulikonse"/>
+					<Item id="23005" name="Limbani kumayambiriro kwa mzere"/>
+					<Item id="23006" name="Lolani malo oyera"/>
+					<Item id="23001" name="Lolani kukundika ndemanga"/>
+					<Item id="23326" name="Styler"/>
+					<Item id="23323" name="Tsegulani"/>
+					<Item id="23324" name="Pitirizani khalidwe"/>
+					<Item id="23325" name="Tsekani"/>
+					<Item id="23301" name="Ndemanga ya mzere wa ndemanga"/>
+					<Item id="23124" name="Styler"/>
+					<Item id="23122" name="Tsegulani"/>
+					<Item id="23123" name="Tsekani"/>
+					<Item id="23101" name="Ndemanga kalembedwe"/>
+					<Item id="23201" name="Mtundu wa nambala"/>
+					<Item id="23220" name="Styler"/>
+					<Item id="23230" name="Mawu Oyamba 1"/>
+					<Item id="23232" name="Mawu Oyamba 2"/>
+					<Item id="23234" name="Zowonjezera 1"/>
+					<Item id="23236" name="Zowonjezera 2"/>
+					<Item id="23238" name="Suffix 1"/>
+					<Item id="23240" name="Suffix 2"/>
+					<Item id="23242" name="Mtundu:"/>
+					<Item id="23244" name="Wolekanitsa decimal"/>
+					<Item id="23245" name="Dontho"/>
+					<Item id="23246" name="Koma"/>
+					<Item id="23247" name="Onse"/>
+				</Comment>
+				<Operator title="Operators Delimiter">
+					<Item id="24101" name="Mtundu wa operekera"/>
+					<Item id="24113" name="Styler"/>
+					<Item id="24116" name="Othandizira 1"/>
+					<Item id="24117" name="Othandizira 2 (olekanitsa amafunika)"/>
+					<Item id="24201" name="Delimiter 1 style"/>
+					<Item id="24220" name="Tsegulani:"/>
+					<Item id="24221" name="Kuthawa:"/>
+					<Item id="24222" name="Tsekani:"/>
+					<Item id="24223" name="Styler"/>
+					<Item id="24301" name="Delimiter 2 style"/>
+					<Item id="24320" name="Tsegulani:"/>
+					<Item id="24321" name="Kuthawa:"/>
+					<Item id="24322" name="Tsekani:"/>
+					<Item id="24323" name="Styler"/>
+					<Item id="24401" name="Delimiter 3 style"/>
+					<Item id="24420" name="Tsegulani:"/>
+					<Item id="24421" name="Kuthawa:"/>
+					<Item id="24422" name="Tsekani:"/>
+					<Item id="24423" name="Styler"/>
+					<Item id="24451" name="Delimiter 4 style"/>
+					<Item id="24470" name="Tsegulani:"/>
+					<Item id="24471" name="Kuthawa:"/>
+					<Item id="24472" name="Tsekani:"/>
+					<Item id="24473" name="Styler"/>
+					<Item id="24501" name="Delimiter 5 style"/>
+					<Item id="24520" name="Tsegulani:"/>
+					<Item id="24521" name="Kuthawa:"/>
+					<Item id="24522" name="Tsekani:"/>
+					<Item id="24523" name="Styler"/>
+					<Item id="24551" name="Delimiter 6 style"/>
+					<Item id="24570" name="Tsegulani:"/>
+					<Item id="24571" name="Kuthawa:"/>
+					<Item id="24572" name="Tsekani:"/>
+					<Item id="24573" name="Styler"/>
+					<Item id="24601" name="Delimiter 7 style"/>
+					<Item id="24620" name="Tsegulani:"/>
+					<Item id="24621" name="Kuthawa:"/>
+					<Item id="24622" name="Tsekani:"/>
+					<Item id="24623" name="Styler"/>
+					<Item id="24651" name="Delimiter 8 style"/>
+					<Item id="24670" name="Tsegulani:"/>
+					<Item id="24671" name="Kuthawa:"/>
+					<Item id="24672" name="Tsekani:"/>
+					<Item id="24673" name="Styler"/>
+				</Operator>
+			</UserDefine>
+			<Preference title="Zokonda">
+				<Item id="6001" name="Tsekani"/>
+				<Global title="General">
+					<Item id="6123" name="Localization"/>
+					<Item id="6131" name="Menyu"/>
+					<Item id="6122" name="Bisani (gwiritsani ntchito makiyi a Alt kapena F10 kuti musinthe)"/>
+					<Item id="6132" name="Bisani njira zazifupi zakumanja ＋ ▼ ✕"/>
+					<Item id="6133" name="Status Bar"/>
+					<Item id="6134" name="Bisani"/>
+				</Global>
+
+				<Toolbar title="Zida">
+					<Item id="6102" name="Bisani"/>
+					<Item id="6103" name="Phunzirani UI: yaying'ono"/>
+					<Item id="6104" name="Phunzirani UI: chachikulu"/>
+					<Item id="6129" name="Wodzaza Fluent UI: yaying'ono"/>
+					<Item id="6130" name="Wodzazidwa Phunzirani UI: lalikulu"/>
+					<Item id="6105" name="Zithunzi zokhazikika: zazing'ono"/>
+					<Item id="6011" name="Kupanga mitundu"/>
+					<Item id="6012" name="Malizitsani"/>
+					<Item id="6013" name="Tsankho"/>
+					<Item id="6014" name="Kusankha mtundu"/>
+					<Item id="6015" name="Zofikira"/>
+					<Item id="6016" name="|Red"/>
+					<Item id="6017" name="Green"/>
+					<Item id="6018" name="Blue"/>
+					<Item id="6019" name="Chofiirira"/>
+					<Item id="6020" name="Chinya"/>
+					<Item id="6021" name="Azitona"/>
+					<Item id="6022" name="Yellow"/>
+					<Item id="6023" name="Kalankhulidwe ka System"/>
+					<Item id="6024" name="Mwamakonda"/>
+				</Toolbar>
+
+				<Tabbar title="Tabu Bar">
+					<Item id="6107" name="Chepetsa"/>
+					<Item id="6108" name="Tsekani (palibe kukokera ndi kuponya)"/>
+					<Item id="6109" name="Sinthani mtundu wa tabu yosagwira ntchito"/>
+					<Item id="6110" name="Jambulani kapamwamba kokhala pa tabu yogwira"/>
+					<Item id="6111" name="Onetsani mabatani pamasamba osagwira ntchito"/>
+					<Item id="6112" name="Onetsani batani lotseka"/>
+					<Item id="6113" name="Dinani kawiri kuti mutseke chikalata"/>
+					<Item id="6115" name="Yambitsani mawonekedwe a pini"/>
+					<Item id="6135" name="Onetsani batani losindikizidwa lokha"/>
+					<Item id="6118" name="Bisani"/>
+					<Item id="6119" name="Mizere yambiri"/>
+					<Item id="6120" name="Oima"/>
+					<Item id="6121" name="Tulukani potseka tabu yomaliza"/>
+					<Item id="6128" name="Zithunzi zina"/>
+					<Item id="6125" name="Khalidwe"/>
+					<Item id="6126" name="Onani kumva"/>
+					<Item id="6136" name="Max.utali wa tabu:"/>
+				</Tabbar>
+
+				<Scintillas title="Kusintha 1">
+					<Item id="6216" name="Zokonda za Caret"/>
+					<Item id="6217" name="Kukula:"/>
+					<Item id="6219" name="Mtengo wogwetsa:"/>
+					<Item id="6221" name="F"/>
+					<Item id="6222" name="S"/>
+					<Item id="6246" name="Pangani malamulo amakono opinda / osatsegula kuti azitha kusintha"/>
+					<Item id="6227" name="Kukulunga Mzere"/>
+					<Item id="6228" name="Zofikira"/>
+					<Item id="6229" name="|Zogwirizana"/>
+					<Item id="6230" name="Indent"/>
+					<Item id="6234" name="Letsani kusuntha kwapamwamba chifukwa cha vuto la touchpad"/>
+					<Item id="6215" name="Yambitsani zilembo zosalala"/>
+					<Item id="6236" name="Yambitsani kupitilira mzere womaliza"/>
+					<Item id="6239" name="Sungani zosankha mukadina kumanja kunja kwa zomwe mwasankha"/>
+					<Item id="6245" name="Yambitsani malo enieni"/>
+					<Item id="6214" name="Yambitsani Copy/Cut Line popanda kusankha"/>
+					<Item id="6225" name="Ikani mtundu womwe mwasankha pamawu osankhidwa"/>
+					<Item id="6651" name="Chizindikiro Chamakono"/>
+					<Item id="6652" name="Palibe"/>
+					<Item id="6653" name="Kuunikira Mbiri"/>
+					<Item id="6654" name="Chithunzi"/>
+					<Item id="6655" name="Kukula:"/>
+				</Scintillas>
+
+				<Scintillas2 title="Kusintha 2">
+					<Item id="6521" name="Kusintha Kwambiri"/>
+					<Item id="6522" name="Yambitsani Kusintha Kwambiri (Ctrl+Mouse dinani/kusankha)"/>
+					<Item id="6523" name="Yambitsani Kusankha Mzati Kuti Musinthe Zambiri"/>
+					<Item id="6247" name="EOL (CRLF)"/><!-- Don't translate "(CRLF)" -->
+					<Item id="6248" name="Zofikira"/>
+					<Item id="6249" name="|Mawu Osavuta"/>
+					<Item id="6250" name="Mtundu Wamakonda"/>
+					<Item id="6252" name="Zilembo Zosasindikiza"/>
+					<Item id="6260" name="Kuwonekera"/>
+					<Item id="6254" name="Chidule"/>
+					<Item id="6255" name="Codepoint"/>
+					<Item id="6256" name="Mtundu Wamakonda"/>
+					<Item id="6258" name="Ikani zoikamo Maonekedwe ku C0, C1 Unicode EOL"/>
+					<Item id="6259" name="Letsani zilembo zowongolera (C0 code) kulemba mu chikalata"/>
+				</Scintillas2>
+
+				<DarkMode title="Mtundu Wakuda">
+					<Item id="7131" name="Njira yowunikira"/>
+					<Item id="7132" name="Mtundu wakuda"/>
+					<Item id="7133" name="Tsatirani Windows"/>
+					<Item id="7102" name="Black"/>
+					<Item id="7103" name="Red"/>
+					<Item id="7104" name="Green"/>
+					<Item id="7105" name="Buluu"/>
+					<Item id="7107" name="Chofiirira"/>
+					<Item id="7108" name="Chinya"/>
+					<Item id="7109" name="Azitona"/>
+					<Item id="7115" name="Zosinthidwa mwamakonda"/>
+					<Item id="7116" name="Nkhani zakumbuyo"/>
+					<Item id="7117" name="Nkhani yotentha"/>
+					<Item id="7118" name="Kuwongolera kumbuyo"/>
+					<Item id="7119" name="Nkhani yakumbuyo"/>
+					<Item id="7120" name="Cholakwika"/>
+					<Item id="7121" name="Mawu"/>
+					<Item id="7122" name="Mawu akuda kwambiri"/>
+					<Item id="7123" name="Mawu olemala"/>
+					<Item id="7124" name="Mphepete"/>
+					<Item id="7125" name="Link"/>
+					<Item id="7126" name="Zowonetsa m'mphepete"/>
+					<Item id="7127" name="Mphepete yayimitsidwa"/>
+					<Item id="7130" name="Bwezerani"/>
+					<Item id="7135" name="Nyimbo"/>
+				</DarkMode>
+
+				<MarginsBorderEdge title="Mphepete/Malire/Mphepete">
+					<Item id="6201" name="Fold Margin Style"/>
+					<Item id="6202" name="Zosavuta"/>
+					<Item id="6203" name="Muvi"/>
+					<Item id="6204" name="Mtengo wozungulira"/>
+					<Item id="6205" name="Mtengo wa bokosi"/>
+					<Item id="6226" name="Palibe"/>
+					<Item id="6291" name="Nambala Yamzere"/>
+					<Item id="6206" name="Onetsani"/>
+					<Item id="6292" name="Kukula kwamphamvu"/>
+					<Item id="6293" name="M'lifupi mwake"/>
+					<Item id="6207" name="Onetsani chizindikiro"/>
+					<Item id="6295" name="Kusintha Mbiri"/>
+					<Item id="6223" name="Onetsani m'mphepete"/>
+					<Item id="6296" name="Onetsani m'mawu"/>
+					<Item id="6211" name="Zokonda Zakutsogolo"/>
+					<Item id="6213" name="Njira yakumbuyo"/>
+					<Item id="6231" name="Border Width"/>
+					<Item id="6235" name="Palibe malire"/>
+					<Item id="6208" name="Padding"/>
+					<Item id="6209" name="Kumanzere"/>
+					<Item id="6210" name="Kulondola"/>
+					<Item id="6212" name="Zosokoneza Zaulere"/>
+				</MarginsBorderEdge>
+
+				<NewDoc title="Chikalata Chatsopano">
+					<Item id="6401" name="Mtundu (Mapeto a mzere)"/>
+					<Item id="6402" name="Windows (CR LF)"/>
+					<Item id="6403" name="Unix (LF)"/>
+					<Item id="6404" name="Macintosh (CR)"/>
+					<Item id="6405" name="Encoding"/>
+					<Item id="6406" name="ANSI"/>
+					<Item id="6407" name="UTF-8"/>
+					<Item id="6408" name="UTF-8 yokhala ndi BOM"/>
+					<Item id="6409" name="UTF-16 Big Endian yokhala ndi BOM"/>
+					<Item id="6410" name="UTF-16 Little Endian yokhala ndi BOM"/>
+					<Item id="6411" name="Chinenero chofikira:"/>
+					<Item id="6419" name="Chikalata Chatsopano"/>
+					<Item id="6420" name="Ikani pamafayilo a ANSI otsegulidwa"/>
+					<Item id="6432" name="Tsegulani chikalata chatsopano nthawi zonse poyambira"/>
+					<Item id="6433" name="Gwiritsani ntchito mzere woyamba wa chikalata ngati dzina lopanda dzina"/>
+				</NewDoc>
+
+				<DefaultDir title="Kalozera Wosasinthika">
+					<Item id="6413" name="Msakatuli Tsegulani/Sungani fayilo Kalozera"/>
+					<Item id="6414" name="Tsatirani chikalata chapano"/>
+					<Item id="6415" name="Kumbukirani chikwatu chomwe chagwiritsidwa ntchito komaliza"/>
+					<Item id="6431" name="Tsegulani mafayilo onse a foda m'malo moyambitsa Foda ngati Malo Ogwirira Ntchito pafoda yotsitsa"/>
+				</DefaultDir>
+
+				<FileAssoc title="Fayilo Association">
+					<Item id="4008" name="Chonde tulukani Notepad++ ndikuyambitsanso Notepad++ mu Administrator mode kuti mugwiritse ntchito izi."/>
+					<Item id="4009" name="Zowonjezera zothandizira:"/>
+					<Item id="4010" name="Zowonjezera zolembetsa:"/>
+				</FileAssoc>
+
+
+				<Language title="Chiyankhulo">
+					<Item id="6505" name="Zinthu zomwe zilipo"/>
+					<Item id="6506" name="Zinthu zolemala"/>
+					<Item id="6507" name="Pangani menyu ya chinenero kukhala yogwirizana"/>
+					<Item id="6508" name="Menyu ya Zinenero"/>
+					<Item id="6335" name="Tetezani backslash ngati mawonekedwe othawa a SQL"/>
+				</Language>
+
+				<Indentation title="Kulowetsa">
+					<Item id="7161" name="Lonjezani pawokha"/>
+					<Item id="7162" name="Palibe"/>
+					<Item id="7163" name="Basic"/>
+					<Item id="7164" name="Zapamwamba"/>
+					<Item id="6301" name="Zokonda pa Indent"/>
+					<Item id="6302" name="Zilembo zakumlengalenga"/>
+					<Item id="6303" name="Kukula kwa indent:"/>
+					<Item id="6310" name="Lonjezani pogwiritsa ntchito:"/>
+					<Item id="6311" name="Makhalidwe a tabu"/>
+					<Item id="6510" name="Gwiritsani ntchito mtengo wokhazikika"/>
+					<Item id="6512" name="Backspace key unindents m'malo mochotsa malo amodzi"/>
+				</Indentation>
+
+				<Highlighting title="Kuwunikira">
+					<Item id="6351" name="Mtundu Zonse Zomwe Zimachitika pa Chizindikiro"/>
+					<Item id="6352" name="Mlandu wamasewera"/>
+					<Item id="6353" name="Fananizani mawu onse"/>
+					<Item id="6333" name="Kuwunikira Mwanzeru"/>
+					<Item id="6326" name="Yambitsani"/>
+					<Item id="6354" name="Zofananira"/>
+					<Item id="6332" name="Mlandu wamasewera"/>
+					<Item id="6338" name="Fananizani mawu onse"/>
+					<Item id="6339" name="Gwiritsani Ntchito Zokonda za dialog"/>
+					<Item id="6340" name="Onetsani malingaliro ena"/>
+					<Item id="6329" name="Onetsani Ma Matching Tags"/>
+					<Item id="6327" name="Yambitsani"/>
+					<Item id="6328" name="Onetsani ma tag"/>
+					<Item id="6330" name="Onetsani ndemanga/php/asp zone"/>
+				</Highlighting>
+
+				<Print title="Sindikizani">
+					<Item id="6601" name="Sindikizani nambala ya mzere"/>
+					<Item id="6602" name="Zosankha Zamitundu"/>
+					<Item id="6603" name="WYSIWYG"/>
+					<Item id="6604" name="Sinthani"/>
+					<Item id="6605" name="Wakuda pa zoyera"/>
+					<Item id="6606" name="Palibe mtundu wakumbuyo"/>
+					<Item id="6607" name="Zokonda Pamphepete (Chigawo:mm)"/>
+					<Item id="6612" name="Kumanzere"/>
+					<Item id="6613" name="Pamwamba"/>
+					<Item id="6614" name="Kumanja"/>
+					<Item id="6615" name="Pansi"/>
+					<Item id="6706" name="Zolimba"/>
+					<Item id="6707" name="Kapendekeko"/>
+					<Item id="6708" name="Mutu"/>
+					<Item id="6709" name="Gawo lakumanzere"/>
+					<Item id="6710" name="Chigawo chapakati"/>
+					<Item id="6711" name="Mbali yakumanja"/>
+					<Item id="6717" name="Zolimba"/>
+					<Item id="6718" name="Kapendekeko"/>
+					<Item id="6719" name="M'munsi"/>
+					<Item id="6720" name="Gawo lakumanzere"/>
+					<Item id="6721" name="Chigawo chapakati"/>
+					<Item id="6722" name="Mbali yakumanja"/>
+					<Item id="6723" name="Onjezani"/>
+					<ComboBox id="6724">
+						<Element name="Njira yonse ya dzina lafayilo"/>
+						<Element name="Dzina lafayilo"/>
+						<Element name="Chikwatu chafayilo"/>
+						<Element name="Tsamba"/>
+						<Element name="Mtundu wamfupi"/>
+						<Element name="Nthawi yayitali"/>
+						<Element name="Nthawi"/>
+					</ComboBox>
+					<Item id="6725" name="Zosintha:"/>
+					<Item id="6727" name="Pano onetsani zosintha zanu"/>
+					<Item id="6728" name="Mutu ndi Wapansi"/>
+				</Print>
+
+				<Searching title="Kusaka">
+					<Item id="6902" name="Gwiritsani ntchito font yokhala ndi malo amodzi mu bokosi la Pezani (Muyenera kuyambitsanso Notepad++)"/>
+					<Item id="6903" name="Pezani kukambirana kumakhalabe kotsegula pambuyo kusaka komwe kumatuluka pazenera lazotsatira"/>
+					<Item id="6904" name="Tsimikizirani Kusintha Zonse M'ma Documents Onse Otsegulidwa"/>
+					<Item id="6905" name="Bwezerani: Osasunthira kuzochitika zotsatirazi"/>
+					<Item id="6906" name="Zenera la Zotsatira Zosaka: onetsani cholowera chimodzi pamzere wopezeka ngati nkotheka"/>
+					<Item id="6907" name="Pamene Kupeza Dialog Akuitanidwa"/>
+					<Item id="6908" name="Lembani Pezani Munda Ndi Malemba Osankhidwa"/>
+					<Item id="6909" name="Sankhani Mawu Pansi pa Caret Pamene Palibe Chosankhidwa"/>
+					<Item id="6910" name="Kukula Kocheperako Pakuwunika Mwadzidzidzi &quot;Posankha&quot;:"/>
+					<Item id="6913" name="Lembani Pezani mu Files Directory Field Kutengera Active Document"/>
+					<Item id="6916" name=": Makhalidwe Aakulu Kuti Adzaze-Mokha Kupeza Munda kuchokera Kusankhidwa"/>
+				</Searching>
+
+				<RecentFilesHistory title="Mbiri Yamafayilo Aposachedwa">
+					<Item id="6304" name="Mbiri Yamafayilo Aposachedwa"/>
+					<Item id="6306" name="Max.chiwerengero cha zolemba:"/>
+					<Item id="6305" name="Osayang'ana nthawi yoyambitsa"/>
+					<Item id="6429" name="Onetsani"/>
+					<Item id="6424" name="Mu Submenu"/>
+					<Item id="6425" name="Dzina Lafayilo Lokha"/>
+					<Item id="6426" name="Njira Yathunthu Yafayilo"/>
+					<Item id="6427" name="Sinthani Mwamakonda Anu Kutalika Kwambiri:"/>
+				</RecentFilesHistory>
+
+				<Backup title="Zosunga zobwezeretsera">
+					<Item id="6817" name="Chithunzi cha gawo ndi zosunga zobwezeretsera nthawi ndi nthawi"/>
+					<Item id="6818" name="Yambitsani chithunzithunzi cha gawo ndi zosunga zobwezeretsera nthawi ndi nthawi"/>
+					<Item id="6819" name="Yambitsani zosunga zobwezeretsera pakusintha kulikonse"/>
+					<Item id="6821" name="masekondi"/>
+					<Item id="6822" name="Njira zosunga zobwezeretsera:"/>
+					<Item id="6309" name="Kumbukirani gawo lomwe lakhazikitsidwa posachedwa"/>
+					<Item id="6825" name="Kumbukirani mafayilo osafikirika a gawo lapitalo"/>
+					<Item id="6801" name="Sungani zosunga zobwezeretsera"/>
+					<Item id="6315" name="Palibe"/>
+					<Item id="6316" name="Kusunga kosavuta"/>
+					<Item id="6317" name="Zosunga zobwezeretsera Verbose"/>
+					<Item id="6804" name="Custom Backup Directory"/>
+					<Item id="6803" name="Chikwatu:"/>
+				</Backup>
+
+				<AutoCompletion title="Kumaliza-Mokha">
+					<Item id="6807" name="Kumaliza-Mokha"/>
+					<Item id="6808" name="Yambitsani kumalizitsa zokha pazolowetsa zilizonse"/>
+					<Item id="6809" name="Kumaliza ntchito"/>
+					<Item id="6810" name="Kumaliza kwa mawu"/>
+					<Item id="6816" name="Ntchito ndi kumaliza mawu"/>
+					<Item id="6869" name="Ikani Zosankha"/>
+					<Item id="6870" name="TAB"/><!-- TAB key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6871" name="LOWANI"/><!-- ENTER key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6824" name="Musanyalanyaze manambala"/>
+					<Item id="6811" name="Kuchokera"/>
+					<Item id="6813" name="munthu"/>
+					<Item id="6872" name="Pangani mndandanda wazomwe mukumaliza mwachidule"/>
+					<Item id="6815" name="Magawo a ntchito akuwonetsa zolowetsa"/>
+					<Item id="6851" name="Lowetsani Zokha"/>
+					<Item id="6857" name="html/xml tag yotseka"/>
+					<Item id="6858" name="Tsegulani"/>
+					<Item id="6859" name="Tsekani"/>
+					<Item id="6860" name="Zofanana ndi 1:"/>
+					<Item id="6863" name="Zofananira 2:"/>
+					<Item id="6866" name="Zofananira 3:"/>
+				</AutoCompletion>
+
+				<MultiInstance title="Tsiku la Multi-Instance">
+					<Item id="6151" name="Zokonda zambiri *"/>
+					<Item id="6152" name="Tsegulani gawo muzochitika zatsopano (ndikusunga gawo pokhapokha mutatuluka)"/>
+					<Item id="6153" name="Nthawi zonse mumachitidwe ambiri"/>
+					<Item id="6154" name="Zosasintha (mwachitsanzo chimodzi)"/>
+					<Item id="6155" name="* Kusintha kwa izi kuyenera kuyambitsanso Notepad++"/>
+					<Item id="6171" name="Sinthani Mwamakonda Anu Ikani Nthawi Ya Tsiku"/>
+					<Item id="6175" name="Bwezerani sinthani dongosolo la nthawi (mawonekedwe aatali aatali)"/>
+					<Item id="6172" name="Zokonda:"/>
+					<Item id="6181" name="Gulu Lachigawo ndi [-nosession] *"/>
+					<Item id="6182" name="Kumbukirani mawonekedwe a gulu (gulu lotseguka) nthawi zina (mawonekedwe amitundu yambiri) kapena mukamagwiritsa ntchito mzere wolamula [-nosession]"/>
+					<Item id="6183" name="Mbiri ya Clipboard"/>
+					<Item id="6184" name="Mndandanda wa Zolemba"/>
+					<Item id="6185" name="Gulu la Makhalidwe"/>
+					<Item id="6186" name="Foda ngati Malo Ogwirira Ntchito"/>
+					<Item id="6187" name="Magulu a Ntchito"/>
+					<Item id="6188" name="Document Map"/>
+					<Item id="6189" name="Mndandanda wa Ntchito"/>
+					<Item id="6190" name="Mapulogalamu apulagi"/>
+				</MultiInstance>
+
+				<Delimiter title="Delimiter">
+					<Item id="6251" name="Zokonda zosankha za Delimiter (Ctrl + Mouse dinani kawiri)"/>
+					<Item id="6252" name="Tsegulani"/>
+					<Item id="6255" name="Tsekani"/>
+					<Item id="6256" name="Lolani pamizere ingapo"/>
+					<Item id="6161" name="Mndandanda wa zilembo zamawu"/>
+					<Item id="6162" name="Gwiritsani ntchito mndandanda wa zilembo za Mawu monga momwe zilili"/>
+					<Item id="6163" name="Onjezani chikhalidwe chanu ngati gawo la mawu
+(musasankhe pokhapokha mutadziwa zomwe mukuchita)"/>
+				</Delimiter>
+
+				<Performance title="Zochita">
+					<Item id="7141" name="Kuletsa Fayilo Yaikulu"/>
+					<Item id="7143" name="Yambitsani Kuletsa Mafayilo Aakulu (palibe kuwunikira kwa mawu)"/>
+					<Item id="7144" name="Tanthauzani Kukula Kwa Fayilo Yaikulu:"/>
+					<Item id="7146" name="MB (1 - 2046)"/>
+					<Item id="7147" name="Lolani Machesi a Brace"/>
+					<Item id="7148" name="Lolani Kumaliza-Kumaliza"/>
+					<Item id="7149" name="Lolani Kuwunikira Mwanzeru"/>
+					<Item id="7150" name="Chotsani Kukulunga kwa Mawu padziko lonse"/>
+					<Item id="7151" name="Lolani Ulalo Wodina Ulalo wa URL"/>
+					<Item id="7152" name="Limbikitsani chenjezo potsegula ≥2GB mafayilo"/>
+				</Performance>
+
+				<Cloud title="Cloud Link">
+					<Item id="6262" name="Zokonda pamtambo"/>
+					<Item id="6263" name="Palibe Mtambo"/>
+					<Item id="6267" name="Khazikitsani njira yanu yamtambo apa:"/>
+					<Item id="6318" name="Zokonda pa Ulalo Wodina"/>
+					<Item id="6319" name="Yambitsani"/>
+					<Item id="6320" name="Palibe pansi"/>
+					<Item id="6350" name="Yambitsani mawonekedwe a bokosi lonse"/>
+					<Item id="6264" name="Makonda a URI:"/>
+				</Cloud>
+
+				<SearchEngine title="Search Engine">
+					<Item id="6271" name="Search Engine (kulamula &quot;Sakani pa intaneti&quot;)"/>
+					<Item id="6272" name="DuckDuckGo"/>
+					<Item id="6273" name="Google"/>
+					<Item id="6274" name="Bing"/>
+					<Item id="6275" name="Yahoo!"/>
+					<Item id="6276" name="Khazikitsani chosaka chanu apa:"/>
+					<!-- Don't change anything after Example: -->
+					<Item id="6278" name="Chitsanzo: https://www.google.com/search?q=$(CURRENT_WORD)"/>
+				</SearchEngine>
+
+				<MISC title="Mtengo wa MISC.">
+					<ComboBox id="6347">
+						<Element name="Yambitsani fayilo yamakono"/>
+						<Element name="Yambitsani mafayilo onse otsegulidwa"/>
+						<Element name="Letsani"/>
+					</ComboBox>
+					<ComboBox id="6307">
+						<Element name="Palibe chochita pa"/>
+						<Element name="Chepetsani ku"/>
+						<Element name="Pafupi ndi"/>
+						<Element name="Chepetsani / Pafupi ndi"/>
+					</ComboBox>
+					<ComboBox id="6362">
+						<Element name="GDI (yogwirizana kwambiri)"/>
+						<Element name="DirectWrite (zofikira)"/>
+						<Element name="DirectWrite (sungani mafelemu)"/>
+						<Element name="DirectWrite (jambulani ku GDI DC)"/>
+						<Element name="DirectWrite (DirectX 11)"/>
+					</ComboBox>
+					<ComboBox id="6364">
+						<Element name="Letsani"/>
+						<Element name="Yambitsani poyambira Notepad ++"/>
+						<Element name="Yambitsani pa Notepad++ kutuluka"/>
+					</ComboBox>
+					<Item id="6308" name="dongosolo tray"/>
+					<Item id="6363" name="njira yoperekera"/>
+					<Item id="6365" name="Zosintha zokha:"/>
+					<Item id="6312" name="Kuzindikira Kwanthawi Yamafayilo"/>
+					<Item id="6313" name="Sinthani mwakachetechete"/>
+					<Item id="6325" name="Pitani pamzere womaliza mutasintha"/>
+					<Item id="6322" name="Fayilo yachigawo ext.:"/>
+					<Item id="6324" name="Document Switcher (Ctrl+TAB)"/>
+					<Item id="6331" name="Onetsani dzina lafayilo lokha mu bar yamutu"/>
+					<Item id="6334" name="Dziwani nokha kabisidwe ka zilembo"/>
+					<Item id="6337" name="Fayilo yapantchito ext.:"/>
+					<Item id="6114" name="Yambitsani"/>
+					<Item id="6117" name="Yambitsani khalidwe la MRU"/>
+					<Item id="6344" name="Document Peeker"/>
+					<Item id="6345" name="Yang'anani pa tabu"/>
+					<Item id="6346" name="Yang'anani pamapu olembedwa"/>
+					<Item id="6360" name="Tsegulani mawu onse"/>
+					<Item id="6361" name="Yambitsani Kusunga Zonse kutsimikizira kukambirana"/>
+				</MISC>
+			</Preference>
+			<MultiMacro title="Pangani Macro Nthawi Zambiri">
+				<Item id="1" name="Thamanga"/>
+				<Item id="2" name="Letsani"/>
+				<Item id="8006" name="Macro kuthamanga"/>
+				<Item id="8001" name="Thamanga"/>
+				<Item id="8005" name="nthawi"/>
+				<Item id="8002" name="Thamangani mpaka kumapeto kwa fayilo"/>
+			</MultiMacro>
+			<Window title="Windows">
+				<Item id="1" name="Yambitsani"/>
+				<Item id="2" name="Chabwino"/>
+				<Item id="7002" name="Sungani"/>
+				<Item id="7003" name="Tsekani zenera(ma)"/>
+				<Item id="7004" name="Sinthani ma tabo"/>
+			</Window>
+			<ColumnEditor title="Mkonzi wa Mzere">
+				<Item id="2023" name="Mawu Oti Muyike"/>
+				<Item id="2033" name="Nambala Yoti Muyike"/>
+				<Item id="2030" name="Nambala yoyambirira:"/>
+				<Item id="2031" name="Wonjezerani ndi:"/>
+				<Item id="2038" name="Otsogolera:"/>
+				<ComboBox id="2039">
+					<Element name="Palibe"/>
+					<Element name="Zero"/>
+					<Element name="Malo"/>
+				</ComboBox>
+				<Item id="2036" name="Bwerezani:"/>
+				<Item id="2032" name="Mtundu"/>
+				<Item id="2024" name="Dec"/>
+				<Item id="2025" name="Oct"/>
+				<Item id="2026" name="Hex"/>
+				<Item id="2027" name="Bin"/>
+				<Item id="1" name="Chabwino"/>
+				<Item id="2" name="Letsani"/>
+			</ColumnEditor>
+			<FindInFinder title="Pezani muzotsatira">
+				<Item id="1" name="Pezani Zonse"/>
+				<Item id="2" name="Tsekani"/>
+				<Item id="1711" name="Pezani chiyani:"/>
+				<Item id="1713" name="Sakani pamizere yopezeka"/>
+				<Item id="1714" name="Fananizani mawu onse"/>
+				<Item id="1715" name="Mlandu wamasewera"/>
+				<Item id="1716" name="Njira Yosaka"/>
+				<Item id="1717" name="Zabwinobwino"/>
+				<Item id="1719" name="Mawu okhazikika"/>
+				<Item id="1718" name="Zowonjezeredwa (\n, \r, \t, \0, \x...)"/>
+				<Item id="1720" name=".zikufanana ndi newline"/>
+			</FindInFinder>
+			<DoSaveOrNot title="Sungani">
+				<Item id="1761" name="Sungani fayilo &quot;$STR_REPLACE$&quot; ?"/>
+				<Item id="6" name="Inde"/>
+				<Item id="7" name="Ayi"/>
+				<Item id="2" name="Letsani"/>
+				<Item id="4" name="Inde kwa onse"/>
+				<Item id="5" name="Ayi kwa onse"/>
+			</DoSaveOrNot>
+			<DoSaveAll title="Sungani Chitsimikizo Chonse">
+				<Item id="1766" name="Kodi mukutsimikiza kuti mukufuna kusunga zolemba zonse zosinthidwa?
+
+Sankhani &quot;Nthawi zonse inde&quot; ngati simukufuna kuwonanso zokambiranazi.
+Mutha kuyambitsanso zokambiranazi mu Zokonda pambuyo pake."/>
+				<Item id="6" name="Inde"/>
+				<Item id="7" name="Ayi"/>
+				<Item id="4" name="Nthawi zonse inde"/>
+			</DoSaveAll><!-- HowToReproduce: Check the "Enable Save All confirm dialog" checkbox in Preference->MISC, now click "Save all" -->
+
+			<DebugInfo title="Zambiri za Debug">
+				<Item id="1752" name="Koperani zambiri za debug pa clipboard"/>
+				<Item id="1" name="Chabwino"/>
+			</DebugInfo>
+					<MacStrings>
+				<Item id="90001" name="Zotsatira zakusaka"/>
+				<Item id="90002" name="Tsekani Zotsatira Zakusaka"/>
+				<Item id="90003" name="Chotsani Zonse"/>
+				<Item id="90004" name="Tsekani gulu"/>
+				<Item id="90005" name="Gulu la Ntchito"/>
+				<Item id="90006" name="Source Control"/>
+				<Item id="90007" name="Kudzipereka"/>
+				<Item id="90008" name="Kudzipereka Kwalephera"/>
+				<Item id="90009" name="Palibe git repository\nGwiritsani ntchito Sakatulani kuti mutsegule repo."/>
+				<Item id="90010" name="Gawo"/>
+				<Item id="90011" name="Zosewerera"/>
+				<Item id="90012" name="Gawo Onse"/>
+				<Item id="90013" name="Tsegulani Zonse"/>
+				<Item id="90014" name="Tumizani uthenga\u2026"/>
+				<Item id="90015" name="Sakatulani nkhokwe\u2026"/>
+				<Item id="90016" name="Sankhani chikwatu cha git"/>
+				<Item id="90017" name="(palibe posungira)"/>
+				<Item id="90018" name="(ochotsedwa)"/>
+				<Item id="90019" name="Cholakwika chosadziwika"/>
+				<Item id="90020" name="Palibe ntchito zomwe zapezeka"/>
+				<Item id="90021" name="Fufuzani ntchito..."/>
+				<Item id="90022" name="Wonjezerani Zonse"/>
+				<Item id="90023" name="Pezani Fayilo Yapano"/>
+				<Item id="90024" name="Tsitsaninso"/>
+				<Item id="90025" name="Sinthani magwiridwe antchito (A mpaka Z)"/>
+				<Item id="90026" name="Zotsatira"/>
+				<Item id="90027" name="Imani"/>
+				<Item id="90028" name="Kusaka kwayimitsidwa."/>
+				<Item id="90029" name="Kusaka\u2026"/>
+				<Item id="90030" name="Mawu oti mufufuze"/>
+				<Item id="90031" name="*.txt, *.cpp, \u2026"/>
+				<Item id="90032" name="Kufufuza..."/>
+				<Item id="90033" name="Sinthani:"/>
+				<Item id="90034" name="Mawu Onse"/>
+				<Item id="90035" name="Mawu onse"/>
+				<Item id="90036" name="Manga"/>
+				<Item id="90037" name="Khalidwe"/>
+				<Item id="90038" name="Dzina la HTML"/>
+				<Item id="90039" name="HTML Decimal"/>
+				<Item id="90040" name="HTML Hexadecimal"/>
+				<Item id="90041" name="Mtengo"/>
+				<Item id="90042" name="Gawo Lopanda kanthu"/>
+				<Item id="90043" name="Fayilo yosankhidwa ilibe ma tabo."/>
+				<Item id="90044" name="Katundu Gawo"/>
+				<Item id="90045" name="Sungani Gawo"/>
+				<Item id="90046" name="Chotsani Mafayilo Aposachedwa"/>
+				<Item id="90047" name="Fayilo sinapezeke"/>
+				<Item id="90048" name="Palibe Macro Yojambulidwa"/>
+				<Item id="90049" name="Jambulani macro choyamba pogwiritsa ntchito Start Recording."/>
+				<Item id="90050" name="Palibe mikangano yachidule."/>
+				<Item id="90051" name="Dzina Lafayilo"/>
+				<Item id="90052" name="Mtundu"/>
+				<Item id="90053" name="Njira"/>
+				<Item id="90054" name="Pitani ku Line"/>
+				<Item id="90055" name="Lowetsani Tsiku/Nthawi"/>
+				<Item id="90056" name="Kusintha kwa Encoding"/>
+				<Item id="90057" name="Sungani Copy Monga"/>
+				<Item id="90058" name="Pitani ku Zinyalala"/>
+				<Item id="90059" name="Mutu Bar"/>
+				<Item id="90060" name="Onetsani njira yonse ya fayilo mu bar yamutu"/>
+				<Item id="90061" name="Onetsani kapamwamba"/>
+				<Item id="90062" name="Kukula kwa tsamba:"/>
+				<Item id="90063" name="Kutalika kwa Caret:"/>
+				<Item id="90064" name="Kuthwanima kwa Caret (ms):"/>
+				<Item id="90065" name="Kumasulira kwa zilembo:"/>
+				<Item id="90066" name="M'lifupi mwake (ma pixels):"/>
+				<Item id="90067" name="Mphepete mwa Vertical"/>
+				<Item id="90068" name="M'mphepete:"/>
+				<Item id="90069" name="Mzere wa m'mphepete:"/>
+				<Item id="90070" name="M'lifupi mwa mizere yamphamvu"/>
+				<Item id="90071" name="Kumanzere:"/>
+				<Item id="90072" name="Kumanja:"/>
+				<Item id="90073" name="Mapeto a mzere wofikira:"/>
+				<Item id="90074" name="Kabisidwe kofikira:"/>
+				<Item id="90075" name="Yambitsani zosunga zobwezeretsera"/>
+				<Item id="90076" name="Nthawi yosunga zosunga zobwezeretsera (masekondi):"/>
+				<Item id="90077" name="Malo osungira:"/>
+				<Item id="90078" name="Mtundu Wamtundu"/>
+				<Item id="90079" name="(cholowa)"/>
+				<Item id="90080" name="Tsitsani Mtundu Wamtundu"/>
+				<Item id="90081" name="Gulu"/>
+				<Item id="90082" name="Lembani kuti musefe..."/>
+				<Item id="90083" name="Palibe zosemphana zachidule za chinthuchi."/>
+				<Item id="90084" name="Pulogalamu yowonjezera"/>
+				<Item id="90085" name="Mtundu"/>
+				<Item id="90086" name="Kukhazikitsa Kwatha"/>
+				<Item id="90087" name="Yambitsaninso pulogalamu kuti mutsegule mapulagini omwe adayikidwa."/>
+				<Item id="90088" name="Ikani mapulagini"/>
+				<Item id="90089" name="Chotsani mapulagini"/>
+				<Item id="90090" name="Palibe malamulo omwe apezeka"/>
+				<Item id="90091" name="Lembani kuti mufufuze\u2026"/>
+				<Item id="90092" name="Chinenero Chofotokozedwa ndi Mtumiki v.2.1"/>
+				<Item id="90093" name="Pangani Chinenero Chatsopano"/>
+				<Item id="90094" name="Lowetsani dzina:"/>
+				<Item id="90095" name="Mtundu wakutsogolo:"/>
+				<Item id="90096" name="Mtundu wakumbuyo:"/>
+				<Item id="90097" name="Osasunga"/>
+				<Item id="90098" name="Zachitika"/>
+				<Item id="90099" name="Sinthani Kukulunga Mawu"/>
+				<Item id="90100" name="Onetsani Anthu Onse"/>
+				<Item id="90101" name="Onetsani Zosankha za Anthu"/>
+				<Item id="90102" name="Toggle Indent Guide"/>
+				<Item id="90103" name="Sanakwaniritsidwebe"/>
+				<Item id="90104" name="Tsitsaninso kuchokera ku Disk"/>
+				<Item id="90105" name="Sinthani Injini Yosaka"/>
+				<Item id="90106" name="Thamangani Vuto"/>
+				<Item id="90107" name="Notepad++ Loading Time"/>
+				<Item id="90108" name="Sitinathe Kuwona Zosintha"/>
+				<Item id="90109" name="Mwakudziwa"/>
+				<Item id="90110" name="Tsitsani"/>
+				<Item id="90111" name="Tsamba Lotulutsidwa"/>
+				<Item id="90112" name="Kenako"/>
+				<Item id="90113" name="Zosefera mapulagini\u2026"/>
+				<Item id="90114" name="Likupezeka"/>
+				<Item id="90115" name="Zosintha"/>
+				<Item id="90116" name="Adayikidwa"/>
+				<Item id="90117" name="Zosagwirizana"/>
+				<Item id="90118" name="Zalephera Kuyika"/>
+				<Item id="90119" name="Chotsani mapulagini otsatirawa?"/>
+				<Item id="90120" name="Ikani mapulagini otsatirawa?"/>
+				<Item id="90121" name="Izi zichotsa mafayilo owonjezera."/>
+				<Item id="90122" name="Sakani malamulo\u2026"/>
+				<Item id="90123" name="Mtundu wakutsogolo"/>
+				<Item id="90124" name="Mtundu wakumbuyo"/>
+				<Item id="90125" name="Dzina la Macro"/>
+				<Item id="90126" name="Dzina la Macro"/>
+				<Item id="90127" name="Macro yojambulidwa pano"/>
+				<Item id="90128" name="Macro Manager"/>
+				<Item id="90129" name="Palibe Macros Opulumutsidwa"/>
+				<Item id="90130" name="Jambulani ndikusunga ma macro poyamba."/>
+				<Item id="90131" name="Chotsani Njira Yachidule"/>
+				<Item id="90132" name="Menyu yayikulu"/>
+				<Item id="90133" name="Macro"/>
+				<Item id="90134" name="Thamangani malamulo"/>
+				<Item id="90135" name="Malamulo a pulogalamu yowonjezera"/>
+				<Item id="90136" name="Malamulo a Scintilla"/>
+				<Item id="90137" name="Mikangano ya Mzere wa Command"/>
+				<Item id="90138" name="Dzina la lamulo la Run menyu"/>
+				<Item id="90139" name="Zizindikiro zonse zachotsedwa."/>
+				<Item id="90140" name="Mawu olembedwa akopedwa pa bolodi."/>
+				<Item id="90141" name="Palibe zolembedwa zokopera."/>
+				<Item id="90142" name="Mukusaka... %ld kugunda \u2014 %@"/>
+				<Item id="90143" name="Kusintha m'mafayilo..."/>
+				<Item id="90144" name="Bwezerani m'Maprojekiti: Simunalumikizanebe."/>
+				<Item id="90145" name="Pezani mu Projects: Simunalumikizidwebe pamndandanda wamafayilo a Project Panel."/>
+				<Item id="90146" name="Malo ogwirira ntchito adasinthidwa."/>
+				<Item id="90147" name="Kodi mukufuna kusunga zosintha?"/>
+				<Item id="90148" name="Zotsatira zakusaka"/>
+				<Item id="90149" name="Onetsani mzere wamakono"/>
+				<Item id="90150" name="Onetsani manambala a mzere"/>
+				<Item id="90151" name="Onetsani malo oyera"/>
+				<Item id="90152" name="Onetsani zolembera za EOL"/>
+				<Item id="90153" name="Onetsani malire a bookmark"/>
+				<Item id="90154" name="Gwiritsani ntchito ma tabu (m'malo mwa mipata)"/>
+				<Item id="90155" name="Mpukutu kupyola mzere womaliza"/>
+				<Item id="90156" name="Koperani/dula mzere popanda kusankha"/>
+				<Item id="90157" name="Zimitsani mawu osankhidwa kukokera-dontho"/>
+				<Item id="90158" name="Yambitsani kuwunikira mwanzeru"/>
+				<Item id="90159" name="Kuwunikira mwanzeru: nkhani yofananira"/>
+				<Item id="90160" name="Kuwunikira mwanzeru: mawu athunthu"/>
+				<Item id="90161" name="Dinani kawiri kuti mutseke tabu"/>
+				<Item id="90162" name="Onetsani batani lotseka pama tabu"/>
+				<Item id="90163" name="Kumbukirani mawonekedwe a gulu lonse la magawo"/>
+				<Item id="90164" name="Sungani zolemba zamafayilo zomwe palibe mu gawo"/>
+				<Item id="90165" name="Tsimikizirani musanasunge Zonse"/>
+				<Item id="90166" name="Tsimikizirani Kusintha Zonse m'zikalata zotseguka"/>
+				<Item id="90167" name="Sinthani: osasunthika kumalo ena"/>
+				<Item id="90168" name="Gwiritsani ntchito font ya monospaced mu Pezani dialog"/>
+				<Item id="90169" name="Dinani kumanja kumasunga zosankha"/>
+				<Item id="90170" name="Sinthani sinthani deti/nthawi yoyitanitsa"/>
+				<Item id="90171" name="Gwiritsani ntchito zigawo za mndandanda wa XML"/>
+				<Item id="90172" name="Zotsekera zokha ( ) [ ] { }"/>
+				<Item id="90173" name="Kuchokera kwa munthu wa Nth:"/>
+				<Item id="90174" name="Posankha-chongoyang'ana poyambira (mabati):"/>
+				<Item id="90175" name="Zowonjezera (\\n, \\r, \\t, \\0, \\x...)"/>
+				<Item id="90176" name="Mkonzi"/>
+				<Item id="90177" name="Mphepete"/>
+				<Item id="90178" name="Wakuda"/>
+				<Item id="90179" name="Kuwala"/>
+				<Item id="90180" name="Auto (Tsatirani Dongosolo)"/>
+				<Item id="90181" name="Woonda (1px)"/>
+				<Item id="90182" name="Chapakati (2px)"/>
+				<Item id="90183" name="Kunenepa (3px)"/>
+				<Item id="90184" name="Kuzimitsa"/>
+				<Item id="90185" name="Mbiri"/>
+				<Item id="90186" name="Antialiased"/>
+				<Item id="90187" name="LCD Wokometsedwa"/>
+				<Item id="90188" name="Yosavuta +/-"/>
+				<Item id="90189" name="Windows (CRLF)"/>
+				<Item id="90190" name="Mac (CR)"/>
+				<Item id="90191" name="Pulogalamu yowonjezera mndandanda"/>
+				<Item id="90192" name="Sankhani fayilo ya XML ya Notepad ++ yoti mugwiritse ntchito"/>
+				<Item id="90193" name="Pangani zatsopano\u2026"/>
+				<Item id="90194" name="Sungani monga\u2026"/>
+				<Item id="90195" name="Chilankhulo cha ogwiritsa ntchito:"/>
+				<Item id="90196" name="Dzina lachiyankhulo"/>
+				<Item id="90197" name="Pangani"/>
+				<Item id="90198" name="Sungani Monga"/>
+				<Item id="90199" name="ndi"/>
+				<Item id="90200" name="mu fayilo yonse"/>
+				<Item id="90201" name="Operators Delimiters"/>
+				<Item id="90202" name="Mtundu Wosalondola"/>
+				<Item id="90203" name="Ziwerengero ziyenera kukhala 0-255 ndipo chiyambi chiyenera kukhala &lt;= mapeto."/>
+				<Item id="90204" name="contextMenu.xml Sanapezeke"/>
+				<Item id="90205" name="Yambitsaninso Notepad++ kuti muyambitsenso nkhani yokhazikikaMenu.xml."/>
+				<Item id="90206" name="Fayilo ili ndi zosintha zosasungidwa.Kutsegulanso ndi encoding yatsopano kudzawataya.Pitirizani?"/>
+				<Item id="90207" name="Palibe yankho lochokera ku seva."/>
+				<Item id="90208" name="Seva yabweza udindo"/>
+				<Item id="90209" name="Malo osungira akhoza kukhala achinsinsi."/>
+				<Item id="90210" name="ilipo"/>
+				<Item id="90211" name="ndi mtundu waposachedwa."/>
+				<Item id="90212" name="Mukuthamanga"/>
+				<Item id="90213" name="Pezani Apa"/>
+				<Item id="90214" name="Pokwerera Pano"/>
+				<Item id="90215" name="Mafayilo owonjezera a zilankhulo (.xml) atha kuikidwa mu:"/>
+							<Item id="90216" name="Lamulo Palette…"/>
+				<Item id="90217" name="Kufufuza Malembo"/>
+				<Item id="90218" name="Lembani kuti musake…"/>
+				<Item id="90219" name="Zenera Latsopano"/>
+				<Item id="90220" name="Dumphani Current amp;Pitani ku Next Multi-select"/>
+				<Item id="90221" name="Khalidwe Lotsekedwa (macOS)"/>
+				<Item id="90222" name="Onani Zosintha…"/>
+				<Item id="90223" name="Tsegulani Posachedwapa"/>
+			</MacStrings>
+		</Dialog>
+		<MessageBox>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<ContextMenuXmlEditWarning title="Kusintha contextMenu" message="Kusintha contextMenu.xml kumakupatsani mwayi wosintha menyu yanu ya Notepad++ popup.
+Muyenera kuyambitsanso Notepad++ yanu kuti iyambe kugwira ntchito mutasintha contextMenu.xml."/>
+			<SaveCurrentModifWarning title="Sungani Zosintha Pano" message="Muyenera kusunga zosintha zapano.
+Zosintha zonse zosungidwa sizingasinthidwe.
+
+Pitirizani?"/><!-- HowToReproduce: when you openned file is modified but unsaved yet, and you are changing file encoding. -->
+			<LoseUndoAbilityWarning title="Kutaya Kuthetsa Kutha Chenjezo" message="Muyenera kusunga zosintha zapano.
+Zosintha zonse zosungidwa sizingasinthidwe.
+
+Pitirizani?"/><!-- HowToReproduce: when you openned file is modified and saved, then you are changing file encoding. -->
+			<CannotMoveDoc title="Pitani ku Notepad++ Instance yatsopano" message="Document yasinthidwa, sungani ndikuyesanso."/><!-- HowToReproduce: From your Notepad++ drag & drop a clean (not dirty) file to outside of Notepad++, another instance of Notepad++ will be created. Then from your first Notepad++ drag & drop an unsaved file to the new instance. -->
+			<DocReloadWarning title="Kwezaninso" message="Kodi mukutsimikiza kuti mukufuna kutsitsanso fayilo yomwe ilipo ndikutaya zosintha zomwe zachitika mu Notepad++?"/>
+			<FileLockedWarning title="Kusunga kwalephera" message="Chonde onani ngati fayiloyi yatsegulidwa mu pulogalamu ina"/>
+			<FileAlreadyOpenedInNpp title="" message="Fayilo yatsegulidwa kale mu Notepad ++."/><!-- HowToReproduce: Open a new document and open a file "c:/tmp/foo", save this new document by choosing "c:/tmp/foo" as file to save, reply the override popup "yes", then this message appears. -->
+			<RenameTabTemporaryNameAlreadyInUse title="Kutchulanso kwalephera" message="Dzina lotchulidwa likugwiritsidwa ntchito pa tabu ina."/><!-- HowToReproduce: Rename the tab of an untitled document and provide a name that is the same as an already-existing tab of an untitled document. -->
+			<RenameTabTemporaryNameIsEmpty title="Kutchulanso kwalephera" message="Dzina lotchulidwa silingakhale lopanda kanthu, kapena silingakhale ndi malo okha kapena TAB(ma)."/><!-- HowToReproduce: Rename the tab of an untitled document and provide an empty string or only some white speces. -->
+			<DeleteFileFailed title="Chotsani Fayilo" message="Kuchotsa Fayilo kwalephera"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+
+			<NbFileToOpenImportantWarning title="Kuchuluka kwa mafayilo oti mutsegule ndikwambiri" message="$INT_REPLACE$ files are about to be opened.
+Are you sure you want to open them?"/><!-- HowToReproduce: Check "Open all files of folder instead of launching Folder as Workspace on folder dropping" in "Default Directory" of Preferences dialog, then drop a folder which contains more then 200 files into Notepad++. -->
+			<SettingsOnCloudError title="Zokonda pa Cloud" message="Zikuwoneka kuti njira yosinthira pamtambo imayikidwa pa drive yokhayo yowerengera,
+kapena pa chikwatu chomwe chimafunikira mwayi wokhala ndi mwayi wolembera.
+Zokonda zanu pamtambo zichotsedwa.Chonde yambitsaninso mtengo wogwirizana kudzera muzokambirana Zokonda."/>
+			<FilePathNotFoundWarning title="Fayilo Tsegulani" message="Fayilo yomwe mukuyesera kutsegula kulibe."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SessionFileInvalidError title="Sitinathe Kutsitsa Gawo" message="Fayilo yanthawiyo ndiyowonongeka kapena silovomerezeka."/><!-- HowToReproduce: Save current session via menu "File -> Save Session...", use another editor to modify the session you saved to make it an invalid xml file. Then load this invalid session via menu "File -> Load Session...". -->
+			<DroppingFolderAsProjectModeWarning title="Zochita zosalondola" message="Mutha kugwetsa mafayilo kapena zikwatu koma osati zonse ziwiri, chifukwa mukugwetsa Foda ngati Project mode.
+Muyenera kuyatsa &quot;Tsegulani mafayilo onse a foda m'malo moyambitsa Foda ngati Malo Ogwirira Ntchito pafoda yotsitsa&quot; mu gawo la &quot;Default Directory&quot; la Zokonda kuti ntchitoyi igwire ntchito."/>
+			<SortingError title="Vuto Losanja" message="Takanika kusanja manambala chifukwa cha mzere $INT_REPLACE$."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SortLocaleMultiple title="Kusankha sikunachitike" message="Kusankha zingapo sikutheka."/><!-- HowToReproduce: Make a multiple selection and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<SortLocaleUnknown title="Mtundu Walephera" message="Chifukwa chomwe mtunduwo unalepherera sikudziwika."/><!-- HowToReproduce: This condition is theoretical; it is unknown what could cause it. -->
+			<SortLocaleExcept title="Mtundu Walephera" message="$STR_REPLACE$"/><!-- HowToReproduce: Open a large file, e.g. 500MB / 90k lines, in 32-bit Notepad++ and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<ColumnModeTip title="Upangiri Wamgawo Lazanja" message="Pali njira zitatu zosinthira kukhala mulingo wosankha:
+
+1. (Kiyibodi ndi Mouse) Gwirani Alt pamene dinani-kumanzere kukokera
+
+2. (Kiyibodi yokha) Gwirani Alt+Shift mukugwiritsa ntchito mivi
+
+3. (Kiyibodi kapena Mouse)
+Ikani caret poyambira pomwe mukufuna pa block block, ndiye
+perekani lamulo la &quot;Yambani / Mapeto Sankhani mu Column Mode&quot;;
+Sonkhanitsani caret kumapeto komwe mukufuna kwa block block, ndiye
+perekani &quot;Yambani/Mapeto Sankhani mu Column Mode&quot; lamulo kachiwiri"/>
+			<BufferInvalidWarning title="Kusunga kwalephera" message="Sitingathe kusunga: Buffer ndiyosavomerezeka."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<DoCloseOrNot title="Sungani fayilo yomwe siilipo" message="Fayilo &quot;$STR_REPLACE$&quot; kulibenso.
+Kodi mungasunge fayilo ili mumkonzi?"/>
+			<DoDeleteOrNot title="Chotsani fayilo" message="Fayilo &quot;$STR_REPLACE$&quot;
+idzasunthidwa ku Recycle Bin yanu ndipo chikalatachi chidzatsekedwa.
+Pitirizani?"/>
+			<NoBackupDoSaveFile title="Sungani" message="Fayilo yanu yosunga zobwezeretsera siyingapezeke (yachotsedwa kunja).
+Sungani apo ayi deta yanu idzatayika
+Mukufuna kusunga fayilo &quot;$STR_REPLACE$&quot; ?"/>
+			<DoReloadOrNot title="Kwezaninso" message="&quot;$STR_REPLACE$&quot;
+
+Fayiloyi yasinthidwa ndi pulogalamu ina.
+Kodi mukufuna kuyiyikanso?"/>
+			<DoReloadOrNotAndLooseChange title="Kwezaninso" message="&quot;$STR_REPLACE$&quot;
+
+Fayiloyi yasinthidwa ndi pulogalamu ina.
+Kodi mukufuna kuyiyikanso ndikutaya zosintha zomwe zachitika mu Notepad++?"/>
+			<PrehistoricSystemDetected title="Mbiri yakale yapezeka" message="Zikuwoneka kuti mukugwiritsabe ntchito mbiri yakale.Izi zimagwira ntchito pamakina amakono okha, pepani."/><!-- HowToReproduce: Launch "Document Map" under Windows XP. -->
+			<XpUpdaterProblem title="Notepad++ Updater" message="Notepad++ updater sagwirizana ndi XP chifukwa chachitetezo chosatha cha XP.
+Kodi mukufuna kupita patsamba la Notepad++ kuti mutsitse mtundu waposachedwa?"/><!-- HowToReproduce: Run menu "? -> Update Notepad++" under Windows XP. -->
+			<GUpProxyConfNeedAdminMode title="Zokonda pa Proxy" message="Chonde yambitsaninso Notepad++ mumchitidwe Woyang'anira kuti mukhazikitse proxy."/>
+			<DocTooDirtyToMonitor title="Vuto loyang'anira" message="Chikalatacho ndi chonyansa.Chonde sungani zosinthazo musanaziyang'anire."/>
+			<DocNoExistToMonitor title="Vuto loyang'anira" message="Fayilo iyenera kukhalapo kuti iwunthwe."/>
+			<FileTooBigToOpen title="Vuto la kukula kwa fayilo" message="Fayilo ndi yayikulu kwambiri kuti isatsegulidwe ndi Notepad++"/><!-- HowToReproduce: Try to open a 4GB file (it's not easy to reproduce, it depends on your system). -->
+			<FileLoadingException title="Khodi yopatulapo: $STR_REPLACE$" message="Panali vuto potsegula fayilo!"/>
+			<WantToOpenHugeFile title="Kutsegula chenjezo lalikulu la fayilo" message="Kutsegula fayilo yayikulu ya 2GB + kungatenge mphindi zingapo.
+Mukufuna kutsegula?"/>
+			<CreateNewFileOrNot title="Pangani fayilo yatsopano" message="&quot;$STR_REPLACE$&quot; kulibe.Pangani izo?"/>
+			<CreateNewFileError title="Pangani fayilo yatsopano" message="Sitingathe kupanga fayilo &quot;$STR_REPLACE$&quot;."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<OpenFileError title="ZOLAKWA" message="Sitingathe kutsegula fayilo &quot;$STR_REPLACE$&quot;."/>
+			<OpenFileNoFolderError title="Sitingatsegule fayilo" message="&quot;$STR_REPLACE1$&quot; sichingatsegulidwe:
+Foda &quot;$STR_REPLACE2$&quot; palibe."/>
+			<FileBackupFailed title="Kusunga Fayilo Kwalephera" message="Fayilo yam'mbuyomu sinathe kusungidwa muzosunga zosunga zobwezeretsera pa &quot;$STR_REPLACE$&quot;.
+
+Mukufuna kusunga fayilo yomwe ilipo?"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<LoadStylersFailed title="Lowetsani stylers.xml zalephera" message="Kutsitsa &quot;$STR_REPLACE$&quot; kwalephera!"/>
+			<LoadLangsFailed title="Configurator" message="Kutsegula langs.xml kwalephera!
+Kodi mukufuna kupezanso langs.xml yanu?"/><!-- HowToReproduce: Close Notepad++. Use another editor to remove all content of "langs.xml" (0 length) then save it. Open Notepad++. -->
+			<LoadLangsFailedFinal title="Configurator" message="Kutsegula langs.xml kwalephera!"/><!-- HowToReproduce: Close Notepad++. Use another editor to make "langs.xml" an invalid xml file then save it. Open Notepad++. -->
+			<FolderAsWorspaceSubfolderExists title="Foda ngati Malo Ogwirira ntchito ndikuwonjezera vuto la foda" message="Chikwatu chaching'ono cha chikwatu chomwe mukufuna kuwonjezera chilipo.
+Chonde chotsani mizu yake pagulu musanawonjezere chikwatu &quot;$STR_REPLACE$&quot;."/><!-- HowToReproduce: Add a folder like "c:\temp\aFolder\" into "Folder as Workspace" panel, then try to add "c:\temp\". -->
+
+			<ProjectPanelChanged title="$STR_REPLACE$" message="Malo ogwirira ntchito adasinthidwa.Kodi mukufuna kuchisunga?"/>
+			<ProjectPanelSaveError title="$STR_REPLACE$" message="Panali cholakwika polemba fayilo yanu yakumalo ogwirira ntchito.
+Malo anu ogwirira ntchito sanasungidwe."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<ProjectPanelOpenDoSaveDirtyWsOrNot title="Tsegulani Malo Ogwirira Ntchito" message="Malo ogwirira ntchito pano asinthidwa.Mukufuna kusunga pulojekiti yamakono?"/>
+			<ProjectPanelNewDoSaveDirtyWsOrNot title="Malo Atsopano Ogwirira Ntchito" message="Malo ogwirira ntchito pano asinthidwa.Mukufuna kusunga pulojekiti yamakono?"/>
+			<ProjectPanelOpenFailed title="Tsegulani Malo Ogwirira Ntchito" message="Malo ogwirira ntchito sanatsegulidwe.
+Zikuwoneka kuti fayilo yotsegula si fayilo yovomerezeka."/>
+			<ProjectPanelRemoveFolderFromProject title="Chotsani chikwatu ku polojekiti" message="Zonse zazing'ono zidzachotsedwa.
+Kodi mukutsimikiza kuti mukufuna kuchotsa chikwatuchi?"/>
+			<ProjectPanelRemoveFileFromProject title="Chotsani fayilo ku polojekiti" message="Kodi mukutsimikiza kuti mukufuna kuchotsa fayiloyi?"/>
+			<ProjectPanelReloadError title="Kwezaninso Malo Ogwirira Ntchito" message="Sitinapeze fayilo yoti muyitsenso."/>
+			<ProjectPanelReloadDirty title="Kwezaninso Malo Ogwirira Ntchito" message="Malo ogwirira ntchito pano asinthidwa.Kutsegulanso kudzataya zosintha zonse.
+Kodi mukufuna kupitiriza?"/>
+			<UDLNewNameError title="Vuto la UDL" message="Dzinali limagwiritsidwa ntchito ndi chilankhulo china,
+chonde perekani ina."/>
+			<UDLRemoveCurrentLang title="Chotsani chinenero chamakono" message="Mukutsimikiza?"/>
+			<UDL_importSuccessful title="Chinenero Chofotokozedwa ndi Mtumiki" message="Kulowetsa mwapambana."/>
+			<UDL_importFails title="Chinenero Chofotokozedwa ndi Mtumiki" message="Zalephera kuitanitsa."/>
+			<UDL_saveBeforeImport title="Chinenero Chofotokozedwa ndi Mtumiki" message="Musanatumize, sungani tanthauzo la chilankhulo chanu podina &quot;Save As...&quot; batani."/> <!-- HowToReproduce: Choose "User Defined Language" in User Language combobox, then click on "Export... button". -->
+			<UDL_exportSuccessful title="Chinenero Chofotokozedwa ndi Mtumiki" message="Kutumiza kwapambana."/>
+			<UDL_exportFails title="Chinenero Chofotokozedwa ndi Mtumiki" message="Zalephera kutumiza kunja."/>
+			<SCMapperDoDeleteOrNot title="Mukutsimikiza?" message="Kodi mukutsimikiza kuti mukufuna kuchotsa njira yachiduleyi?"/>
+			<FindCharRangeValueError title="Vuto la Mtengo Wosiyanasiyana" message="Muyenera kulemba pakati pa 0 ndi 255."/> <!-- HowToReproduce: Search menu, then Find characters in range, select Custom range, enter 999 in either edit box, press Find. -->
+			<OpenInAdminMode title="Kusunga kwalephera" message="Fayiloyo siyingasungidwe ndipo ikhoza kutetezedwa.
+Kodi mukufuna kukhazikitsa Notepad++ mu Administrator mode?"/>
+			<OpenInAdminModeWithoutCloseCurrent title="Kusunga kwalephera" message="Fayiloyo siyingasungidwe ndipo ikhoza kutetezedwa.
+Kodi mukufuna kukhazikitsa Notepad++ mu Administrator mode?"/>
+			<OpenInAdminModeFailed title="Tsegulani mumayendedwe a Administrator sizinatheke" message="Notepad ++ singatsegulidwe mumayendedwe a Administrator."/><!-- HowToReproduce: When you have no Admin privilege and you try to save a modified file in a protected location (for example: any file in sub-folder of "C:\Program Files\". This message will appear after replying "Yes" to "Open in Admin mode" dialog. -->
+			<ViewInBrowser title="Onani Fayilo Yapano mu Msakatuli" message="Kugwiritsa ntchito sikungapezeke m'dongosolo lanu."/>
+			<ExitToUpdatePlugins title="Notepad++ yatsala pang'ono kutuluka" message="Mukadina YES, mudzasiya Notepad ++ kuti mupitirize kugwira ntchito.
+Notepad ++ idzayambiranso ntchito zonse zitathetsedwa.
+Pitirizani?"/>
+			<NeedToRestartToLoadPlugins title="Notepad ++ ikuyenera kukhazikitsidwanso" message="Muyenera kuyambitsanso Notepad ++ kuti mutsegule mapulagini omwe mudayika."/><!-- HowToReproduce: Import a plugin via menu "Settings->Import->Import Plugin(s)...". -->
+			<ChangeHistoryEnabledWarning title="Notepad ++ ikuyenera kukhazikitsidwanso" message="Muyenera kuyambitsanso Notepad ++ kuti muthe Kusintha Mbiri."/><!-- HowToReproduce: uncheck "Display Change History" via Preferences dialog "Marges/Border/Edge. -->
+			<WindowsSessionExit title="Notepad++ - kutuluka kwa gawo la Windows" message="Windows gawo latsala pang'ono kuthetsedwa koma muli ndi zina zomwe sizinasungidwe.Kodi mukufuna kutuluka Notepad++ tsopano?"/>
+			<LanguageMenuCompactWarning title="Menyu Yachiyankhulo Chophatikiza" message="Izi zidzasinthidwa pakukhazikitsa kotsatira."/><!-- HowToReproduce: toggle "Make language menu compact" via Preferences dialog "Language/Language Menu. -->
+			<SwitchUnsavedThemeWarning title="$STR_REPLACE$" message="Zosintha zosasungidwa zatsala pang'ono kutayidwa!
+Kodi mukufuna kusunga zosintha zanu musanasinthe mitu?"/><!-- HowToReproduce: In the Style Configurator dialog change some theme and switch to other theme without saving. -->
+			<MacroAndRunCmdlWarning title="Kugwirizana kwa Ma Macro ndi Run Commands" message="Malamulo anu a Macro ndi Run osungidwa mu Notepad ++ v.8.5.2 (kapena apamwamba) sangagwirizane ndi Notepad ++ yamakono.
+Chonde yesani malamulowo ndipo, ngati pakufunika, sinthaninso.
+
+Kapenanso, mutha kutsitsa ku Notepad ++ v8.5.2 ndikubwezeretsanso deta yanu yam'mbuyo.
+Notepad++ idzasunga &quot;shortcuts.xml&quot; yanu yakale ndikuisunga ngati &quot;shortcuts.xml.v8.5.2.backup&quot;.
+Kutchulanso &quot;shortcuts.xml.v8.5.2.backup&quot; -&gt; &quot;shortcuts.xml&quot;, malamulo anu ayenera kubwezeretsedwa ndikugwira ntchito moyenera."/><!-- HowToReproduce: Close Notepad++, remove shortcuts.xml.v8.5.2.backup & v852ShortcutsCompatibilityWarning.xml if present, relaunch Notepad++, delete or modify a shortcuts via Shortcut Mapper, close Notepad++, then the message will show up -->
+			<FullReadOnlySavingForbidden title="Kusunga kwalephera" message="Sitingathe kusunga fayilo.
+Njira ya Notepad ++ yoletsa kuwerenga-yokha yoletsedwa idalepheretsa fayilo kusungidwa."/>
+			<NotEnoughRoom4Saving title="Kusunga kwalephera" message="Zalephera kusunga fayilo.
+Zikuwoneka kuti palibe malo okwanira pa disk kusunga fayilo.Fayilo yanu sinasungidwe."/>
+			<FileInaccessibleUserSession title="Fayilo siyikupezeka" message="Mafayilo ena agawo lanu losungidwa pamanja &quot;$STR_REPLACE$&quot; ndizosatheka.Atha kutsegulidwa ngati zolemba zopanda kanthu komanso zowerengera zokha ngati zosungira malo.
+
+Mukufuna kupanga zosungiramo malo?
+
+ZINDIKIRANI: Kusankha kusapanga zoikira malo kapena kuzitseka pambuyo pake, gawo lanu losungidwa pamanja SIDZAsinthidwa potuluka."/>
+			<FileInaccessibleDefaultSessionXml title="Fayilo siyikupezeka" message="Mafayilo ena amgawo lanu lapitalo sakupezeka.Atha kutsegulidwa ngati zolemba zopanda kanthu komanso zowerengera zokha ngati zosungira malo.
+
+Mukufuna kupanga zosungiramo malo?
+
+ZINDIKIRANI: Kusankha kusapanga zoikira malo kapena kuzitseka pambuyo pake, gawo lanu LIDZASINTHA POTUMUKA!Tikukulangizani kuti musunge &quot;session.xml&quot; yanu tsopano."/>
+			<RTLvsDirectWrite title="Sitingathe kuyendetsa RTL" message="RTL siyogwirizana ndi DirectWrite mode.Chonde zimitsani DirectWrite mode mu MISC.gawo la Zokonda kukambirana, ndikuyambitsanso Notepad ++."/>
+			<FileMemoryAllocationFailed title="Kupatulapo: Kugawa mafayilo kwalephera" message="Mwina palibe kukumbukira kokwanira kokwanira kwa fayilo yomwe ikukwezedwa ndi Notepad ++."/><!-- HowToReproduce: Try to open multiple files with total size > ~700MB in the x86 Notepad++ (it will depend on the PC memory configuration and the current system memory usage...). -->
+			<FindRegexBackwardDisabled title="Kusaka kwa Regex kumbuyo kwayimitsidwa" message="Mwachisawawa, kusaka kwa regex yakumbuyo kumayimitsidwa chifukwa cha zotsatira zosayembekezereka.Kuti mufufuze chakumbuyo, tsegulani bokosi lakuti Pezani ndikusankha zosaka zanthawi zonse kapena zowonjezera m'malo mongonena zanthawi zonse.
+Dinani batani la OK kuti mutsegule bokosi la Pezani kapena ikani kuyang'ana pa izo.
+
+Ngati mukufuna kusaka kwa regex yakumbuyo, funsani buku la ogwiritsa ntchito kuti mupeze malangizo a momwe mungathandizire."/>
+			<PrintError title="0" message="Sitingathe kuyambitsa chikalata chosindikizira."/><!-- Use title="0" to use Windows OS default translated "Error" title. -->
+			<FindAutoChangeOfInSelectionWarning title="Fufuzani chenjezo" message="Bokosi la &quot;Mu kusankha&quot; lasinthidwa zokha.
+Chonde tsimikizirani zosaka musanachite."/> <!-- HowToReproduce: https://github.com/notepad-plus-plus/notepad-plus-plus/issues/14897#issuecomment-2564316224 -->
+			<Need2Restart2ShowMenuShortcuts title="Notepad ++ ikufunika kuyambiranso" message="Notepad ++ ikufunika kuyambiranso kuti iwonetse njira zazifupi za menyu."/>
+			<NoAdminRight2ChangeReadOnlyFileAttribute title="Kusintha fayilo yowerengera-yokha kwalephera" message="Chonde yendetsani Notepad ++ ngati woyang'anira kuti musinthe mawonekedwe a fayilo."/>
+		</MessageBox>
+		<ClipboardHistory>
+			<PanelTitle name="Mbiri ya Clipboard"/>
+		</ClipboardHistory>
+		<DocList>
+			<PanelTitle name="Document List"/>
+			<ColumnName name="Dzina"/>
+			<ColumnExt name="Zowonjezera."/>
+			<ColumnPath name="Njira"/>
+			<ListGroups name="Gulu ndi View"/>
+		</DocList>
+		<WindowsDlg>
+			<ColumnName name="Dzina"/>
+			<ColumnPath name="Njira"/>
+			<ColumnType name="Mtundu"/>
+			<ColumnSize name="Kukula"/>
+			<ColumnDateTime name="Nthawi yosinthidwa"/>
+			<NbDocsTotal name="zikalata zonse:"/>
+			<MenuCopyName name="Copy Name(ma)"/>
+			<MenuCopyPath name="Matulani Njira(ma)"/>
+		</WindowsDlg>
+		<AsciiInsertion>
+			<PanelTitle name="ASCII Codes Insertion Panel"/>
+			<ColumnVal name="Mtengo"/>
+			<ColumnHex name="Hex"/>
+			<ColumnChar name="Khalidwe"/>
+			<ColumnHtmlName name="Dzina la HTML"/>
+			<ColumnHtmlNumber name="HTML Decimal"/>
+			<ColumnHtmlHexNb name="HTML Hexadecimal"/>
+		</AsciiInsertion>
+		<DocumentMap>
+			<PanelTitle name="Document Map"/>
+		</DocumentMap>
+		<FunctionList>
+			<PanelTitle name="Mndandanda wa Ntchito"/>
+			<SortTip name="Sinthani"/>
+			<ReloadTip name="Kwezaninso"/>
+			<PreferencesTip name="Zokonda"/>
+			<PreferencesInitialSort name="Sinthani magwiridwe antchito (A mpaka Z) mokhazikika"/>
+		</FunctionList>
+		<FolderAsWorkspace>
+			<PanelTitle name="Foda ngati Malo Ogwirira Ntchito"/>
+			<SelectFolderFromBrowserString name="Sankhani chikwatu choti muwonjezere mu Foda ngati gulu la Workspace"/>
+			<ExpandAllFoldersTip name="Tsegulani zonse"/>
+			<CollapseAllFoldersTip name="Pindani zonse"/>
+			<LocateCurrentFileTip name="Pezani fayilo yamakono"/>
+			<Menu>
+				<Item id="3511" name="Chotsani"/>
+				<Item id="3512" name="Chotsani Zonse"/>
+				<Item id="3513" name="Onjezani"/>
+				<Item id="3514" name="Kuthamanga ndi dongosolo"/>
+				<Item id="3515" name="Tsegulani"/>
+				<Item id="3516" name="Koperani njira"/>
+				<Item id="3517" name="Pezani mu Mafayilo..."/>
+				<Item id="3518" name="Ofufuza apa"/>
+				<Item id="3519" name="CMD pano"/>
+				<Item id="3520" name="Koperani dzina lafayilo"/>
+			</Menu>
+		</FolderAsWorkspace>
+		<ProjectManager>
+			<PanelTitle name="Ntchito"/>
+			<WorkspaceRootName name="Malo ogwirira ntchito"/>
+			<NewProjectName name="Dzina la Ntchito"/>
+			<NewFolderName name="Dzina Lachikwatu"/>
+			<Menus>
+				<Entries>
+					<Item id="0" name="Malo ogwirira ntchito"/>
+					<Item id="1" name="Sinthani"/>
+				</Entries>
+				<WorkspaceMenu>
+					<Item id="3122" name="Malo Atsopano Ogwirira Ntchito"/>
+					<Item id="3123" name="Tsegulani Malo Ogwirira Ntchito"/>
+					<Item id="3124" name="Kwezaninso Malo Ogwirira Ntchito"/>
+					<Item id="3125" name="Sungani"/>
+					<Item id="3126" name="Sungani Monga..."/>
+					<Item id="3127" name="Sungani Copy Monga..."/>
+					<Item id="3121" name="Onjezani Ntchito Yatsopano"/>
+					<Item id="3128" name="Pezani mu Ntchito..."/>
+				</WorkspaceMenu>
+				<ProjectMenu>
+					<Item id="3111" name="Sinthani dzina"/>
+					<Item id="3112" name="Onjezani Foda"/>
+					<Item id="3113" name="Onjezani Mafayilo..."/>
+					<Item id="3117" name="Onjezani Mafayilo kuchokera ku Kalozera..."/>
+					<Item id="3114" name="Chotsani"/>
+					<Item id="3118" name="Kwerani Mmwamba"/>
+					<Item id="3119" name="Yenda Pansi"/>
+				</ProjectMenu>
+				<FolderMenu>
+					<Item id="3111" name="Sinthani dzina"/>
+					<Item id="3112" name="Onjezani Foda"/>
+					<Item id="3113" name="Onjezani Mafayilo..."/>
+					<Item id="3117" name="Onjezani Mafayilo kuchokera ku Kalozera..."/>
+					<Item id="3114" name="Chotsani"/>
+					<Item id="3118" name="Kwezani Mmwamba"/>
+					<Item id="3119" name="Yenda Pansi"/>
+				</FolderMenu>
+				<FileMenu>
+					<Item id="3111" name="Sinthani dzina"/>
+					<Item id="3115" name="Chotsani"/>
+					<Item id="3116" name="Sinthani Fayilo Njira"/>
+					<Item id="3118" name="Kwezani Mmwamba"/>
+					<Item id="3119" name="Yenda Pansi"/>
+				</FileMenu>
+			</Menus>
+		</ProjectManager>
+		<MiscStrings>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<word-chars-list-tip value="Izi zimakupatsani mwayi kuti muphatikize zilembo zamawu apano pomwe mukudina kawiri kuti musankhe kapena mukusaka ndi njira ya &quot;Fananizani mawu okha&quot; yosindikizidwa."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, hover your mouse on the "?" button. -->
+
+			<!-- Don't translate "(&quot;EOL custom color&quot;)" -->
+			<eol-custom-color-tip value="Pitani ku Style Configurator kuti musinthe mtundu wokhazikika wa EOL (&quot;EOL custom color&quot;).."/>
+
+			<word-chars-list-warning-begin value="Dziwani:"/>
+			<word-chars-list-space-warning value="$INT_REPLACE$ space(s)"/>
+			<word-chars-list-tab-warning value="$INT_REPLACE$ TAB(s)"/>
+			<word-chars-list-warning-end value="pamndandanda wamakhalidwe anu."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, check "Add your character as part of word\r(don't choose it unless you know what you're doing)", then type a white-space in the text field. -->
+			<backup-select-folder value="Sankhani chikwatu ngati chikwatu zosunga zobwezeretsera"/><!-- HowToReproduce: Settings > Preferences > Backup > [...] -->
+			<cloud-invalid-warning value="Njira yolakwika."/>
+			<cloud-restart-warning value="Chonde yambitsaninso Notepad++ kuti igwire ntchito."/>
+			<cloud-select-folder value="Sankhani chikwatu kuchokera/komwe Notepad++ imawerenga/kulemba zoikamo zake"/><!-- HowToReproduce: In "Cloud" section of Preferences dialog, check "Set your cloud location path here: ", then click the button "...". This message is displayed in the "Browse For Folder" dialog. -->
+			<default-open-save-select-folder value="Sankhani chikwatu ngati chikwatu chosasintha"/><!-- HowToReproduce: Settings > Preferences > Default Directory > [...] -->
+			<shift-change-direction-tip value="Gwiritsani ntchito Shift+Enter kuti mufufuze mbali ina"/>
+			<two-find-buttons-tip value="2 kupeza mabatani mode"/>
+			<find-in-files-filter-tip value="Pezani mu cpp, cxx, h, hxx hpp:
+*.cpp *.cxx *.h *.hxx *.hpp
+
+Pezani mafayilo onse kupatula exe, obj log:
+*.* !*.exe !*.obj !*.log
+
+Pezani mafayilo onse koma osapatula mayeso a zikwatu, bin bin64:
+*.* !\mayesero !\bin*
+
+Pezani m'mafayilo onse koma osaphatikiza zikwatu zonse zolowa kapena zolemba mobwerezabwereza:
+*.* !+\log*"/><!-- HowToReproduce: Tip of mouse hovered on "Filters" label in "Find in Files" section of Find dialog. -->
+			<find-in-files-select-folder value="Sankhani chikwatu choti mufufuze pa"/><!-- HowToReproduce: Search > Find in Files > [...] -->
+			<find-in-files-dir-from-active-doc-tip value="Lembani malo a Kalozera kutengera chikalata chogwira"/><!-- HowToReproduce: Search > Find in Files > [<<] -->
+			<find-status-top-reached value="Pezani: Zolemba zomwe zafika poyambira, zomwe zimachitika koyamba kuchokera pansi zapezeka."/>
+			<find-status-end-reached value="Pezani: Kufikira kumapeto kwa chikalata, kupezeka koyamba kuchokera pamwamba papezeka."/>
+			<find-status-replaceinfiles-1-replaced value="Sinthani mu Mafayilo: 1 zomwe zachitika zidasinthidwa"/>
+			<find-status-replaceinfiles-nb-replaced value="Sinthani mu Mafayilo: $INT_REPLACE$ zochitika zidasinthidwa"/>
+			<find-status-replaceinopenedfiles-1-replaced value="Bwezerani mu Mafayilo Otsegulidwa: Zochitika 1 zidasinthidwa"/>
+			<find-status-replaceinopenedfiles-nb-replaced value="Sinthani mu Mafayilo Otsegulidwa: $INT_REPLACE$ zomwe zachitika zidasinthidwa"/>
+			<find-status-invalid-re value="Pezani: Mawu okhazikika osalondola"/>
+			<find-status-search-failed value="Pezani: Kusaka kwalephera"/>
+			<find-status-mark-1-match value="Chizindikiro: 1 machesi"/>
+			<find-status-mark-nb-matches value="Mark: $INT_REPLACE$ machesi"/>
+			<find-status-count-1-match value="Chiwerengero: 1 machesi"/>
+			<find-status-count-nb-matches value="Chiwerengero: $INT_REPLACE$ machesi"/>
+			<find-status-replaceall-1-replaced value="Bwezerani Zonse: Zochitika 1 zidasinthidwa"/>
+			<find-status-replaceall-nb-replaced value="Sinthani Zonse: $INT_REPLACE$ zochitika zidasinthidwa"/>
+			<find-status-replaceall-readonly value="Sinthani Zonse: Sizingatheke kusintha mawu.Chikalata chapano chikuwerengedwa kokha"/>
+			<find-status-replace-end-reached value="Bwezerani: Kufikira kumapeto kwa chikalata, kuyambira pamwamba."/>
+			<find-status-replace-top-reached value="Bwezerani: Chikalata chomwe chafika poyambira, kuyambira pansi."/>
+			<find-status-replaced-next-found value="M'malo: 1 zomwe zachitika zidasinthidwa.Chochitika chotsatira chapezeka."/>
+			<find-status-replaced-without-continuing value="M'malo: 1 zomwe zachitika zidasinthidwa."/>
+			<find-status-replaced-next-not-found value="M'malo: 1 zomwe zachitika zidasinthidwa.Palibe zopezekanso zomwe zapezeka."/>
+			<find-status-replace-not-found value="M'malo: palibe zomwe zidapezeka"/>
+			<find-status-replace-readonly value="Bwezerani: Sizingatheke kusintha mawu.Chikalata chapano chikuwerengedwa kokha"/>
+			<find-status-cannot-find value="Pezani: Sindikupeza mawu akuti &quot;$STR_REPLACE$&quot;"/>
+			<find-status-cannot-find-pebkac-maybe value="Zomwe zachitika sizikupezeka.Mwina mwayiwala kuchongani &quot;Mangirirani&quot; (mpaka ONANI), &quot;Match case&quot; (KUTI WOZIMITSA), kapena &quot;Gwirizanitsani mawu onse okha&quot; (kuti ZIMAYI)."/>
+			<find-status-scope-selection value="m'mawu osankhidwa"/>
+			<find-status-scope-all value="mu fayilo yonse"/>
+			<find-status-scope-backward value="kuyambira pachiyambi-cha-fayilo kupita ku caret"/>
+			<find-status-scope-forward value="kuchokera ku caret mpaka kumapeto kwa fayilo"/>
+			<find-status-invisible-chars-findWhat value="Zilembo zosaoneka zomwe zalembedwa &quot;Pezani zomwe&quot; kapena &quot;Bwezerani&quot; zomwe zili"/>
+			<find-status-invisible-chars-findWhat-tip value="Chenjezo: Zilembo zosawoneka pakusaka (kapena kusintha) malo.
+Zolemba zomwe zayikidwa mu gawoli zili ndi zilembo zosawoneka (mwina zomaliza).Ngati mupitiliza popanda kuzichotsa, zidzaphatikizidwa pakusaka (kapena kusintha) mawu."/>
+			<finder-find-in-finder value="Pezani muzotsatirazi..."/>
+			<finder-close-this value="Tsekani zotsatira izi"/>
+			<finder-collapse-all value="Pindani zonse"/>
+			<finder-uncollapse-all value="Tsegulani zonse"/>
+			<finder-copy value="Koperani Mizere Yosankhidwa"/>
+			<finder-copy-selected-paths value="Koperani (ma) Njira Yosankhidwa"/>
+			<finder-clear-all value="Chotsani zonse"/>
+			<finder-open-selected-paths value="Tsegulani (ma) Njira Zosankhidwa"/>
+			<finder-purge-for-every-search value="Chotsani pakufufuza kulikonse"/>
+			<finder-wrap-long-lines value="Kukulunga mawu mizere yayitali"/>
+			<common-ok value="Chabwino"/>
+			<common-cancel value="Letsani"/>
+			<common-name value="Dzina"/>
+			<tabrename-title value="Tchulaninso Tabu Yamakono"/>
+			<tabrename-newname value="Dzina latsopano"/>
+			<splitter-rotate-left value="kuzungulira kumanzere"/>
+			<splitter-rotate-right value="tembenuzani kumanja"/>
+			<userdefined-title-new value="Pangani Chinenero Chatsopano..."/>
+			<userdefined-title-save value="Sungani Dzina Lachiyankhulo Chamakono Monga..."/>
+			<userdefined-title-rename value="Tchulani Dzina Lachiyankhulo Chamakono"/>
+			<summary value="Chidule"/>
+			<summary-filepath value="Njira yonse yamafayilo:"/>
+			<summary-filecreatetime value="Adapangidwa:"/>
+			<summary-filemodifytime value="Zosinthidwa:"/>
+			<summary-nbchar value="Zilembo (zopanda mapeto a mzere):"/>
+			<summary-nbword value="Mawu:"/>
+			<summary-nbline value="Mizere:"/>
+			<summary-nbbyte value="Kutalika kwa zolemba:"/>
+			<summary-nbsel1 value="zilembo zosankhidwa ("/>
+			<summary-nbsel2 value="mabayiti) mu"/>
+			<summary-nbrange value="mitundu"/>
+			<progress-hits-title value="Zomenyedwa:"/>
+			<progress-cancel-info value="Mukuletsa ntchito, chonde dikirani..."/>
+			<find-in-files-progress-title value="Find In Files progress..."/>
+			<replace-in-files-confirm-title value="Mukutsimikiza?"/>
+			<replace-in-files-confirm-directory value="Mukutsimikiza kuti mukufuna kusintha zochitika zonse mu:"/>
+			<replace-in-files-confirm-filetype value="Kwa mtundu wamafayilo:"/>
+			<replace-in-files-progress-title value="Sinthani Mafayilo kupita patsogolo..."/>
+			<replace-in-projects-confirm-title value="Mukutsimikiza?"/>
+			<replace-in-projects-confirm-message value="Kodi mukufuna kusintha zochitika zonse muzolemba zonse za Project Panel(ma) zomwe zasankhidwa?"/>
+			<replace-in-open-docs-confirm-title value="Mukutsimikiza?"/>
+			<replace-in-open-docs-confirm-message value="Kodi mukutsimikiza kuti mukufuna kusintha zonse zomwe zimachitika m'mapepala onse otsegula?"/>
+			<find-result-caption value="Zotsatira zakusaka"/>
+			<find-result-title value="Sakani"/><!-- Must not begin with space or tab character -->
+			<find-result-title-info value="($INT_REPLACE1$ kugunda mu $INT_REPLACE2$ mafayilo a $INT_REPLACE3$ afufuzidwa)"/>
+			<find-result-title-info-selections value="($INT_REPLACE1$ kugunda mu $INT_REPLACE2$ zosankhidwa za $INT_REPLACE3$ zofufuzidwa)"/>
+			<find-result-title-info-options-searchmode-normal value="Zabwinobwino"/>
+			<find-result-title-info-options-searchmode-extended value="Zowonjezera"/>
+			<find-result-title-info-options-searchmode-regexp value="RegEx"/>
+			<find-result-title-info-options-case value="Nkhani"/>
+			<find-result-title-info-options-word value="Mawu"/>
+			<find-result-title-info-extra value="- Njira Zosefera Mzere: onetsani zotsatira zosefedwa"/>
+			<find-result-hits value="($INT_REPLACE$ kugunda)"/>
+			<find-result-line-prefix value="Mzere"/><!-- Must not begin with space or tab character -->
+			<find-regex-zero-length-match value="ziro kutalika mafananidwe"/>
+			<session-save-folder-as-workspace value="Sungani Foda Monga Malo Ogwirira Ntchito"/>
+			<tab-untitled-string value="watsopano"/>
+			<file-save-assign-type value="Zowonjezera zowonjezera"/>
+			<close-panel-tip value="Tsekani"/>
+			<IncrementalFind-FSFound value="$INT_REPLACE$ matches"/>
+			<IncrementalFind-FSNotFound value="Mawu sanapezeke"/>
+			<IncrementalFind-FSTopReached value="Kufika pamwamba pa tsamba, kupitilira kuchokera pansi"/>
+			<IncrementalFind-FSEndReached value="Kufikira kumapeto kwa tsamba, kupitilira kuchokera pamwamba"/>
+			<contextMenu-styleAlloccurrencesOfToken value="Sinthani mawonekedwe onse a chizindikiro"/>
+			<contextMenu-styleOneToken value="Chizindikiro chimodzi"/>
+			<contextMenu-clearStyle value="Chotsani masitayelo"/>
+			<contextMenu-PluginCommands value="Malamulo a pulogalamu yowonjezera"/>
+			<largeFileRestriction-tip value="Zina zitha kuchedwetsa magwiridwe antchito pamafayilo akulu.Izi zitha kuzimitsidwa zokha mukatsegula fayilo yayikulu.Mutha kusintha mwamakonda apa.
+
+ZINDIKIRANI:
+1. Kusintha zosankha pano kumafuna kutsegulanso mafayilo akulu omwe atsegulidwa pano kuti mukhale ndi khalidwe labwino.
+
+2. Ngati &quot;Zimitsani Mawu Manga padziko lonse&quot; ndi kufufuzidwa ndi inu kutsegula lalikulu wapamwamba, &quot;Mawu Manga&quot; adzakhala wolumala onse owona.Mutha kuyiyambitsanso kudzera pa menyu &quot;Onani-&gt; Kukulunga Mawu&quot;."/>
+			<npcNote-tip value="Kuyimira kwa osankhidwa &quot;omwe si ASCII&quot; oyera komanso osasindikiza (kuwongolera).
+
+ZINDIKIRANI:
+Kugwiritsa ntchito choyimira kudzalepheretsa mawonekedwe pamawu.
+
+Kuti mupeze mndandanda wathunthu wamalo oyera osankhidwa ndi zilembo zosasindikiza onani Buku Logwiritsa Ntchito.
+
+Dinani batani ili kuti mutsegule tsambalo ndi Buku Logwiritsa Ntchito."/>
+			<npcAbbreviation-tip value="Chidule : dzina
+NBSP: malo osapumira
+ZWSP : danga la zero-width
+ZWNBSP : Ziro-width no-break space
+
+Kuti muwone mndandanda wonse onani Buku Logwiritsa Ntchito.
+Dinani pa &quot;?&quot;batani kumanja kuti mutsegule tsambalo ndi Buku Logwiritsa Ntchito."/>
+			<npcCodepoint-tip value="Codepoint : dzina
+U+00A0 : malo osapuma
+U+200B : malo m'lifupi ziro
+U+FEFF : zero-width no-break space
+
+Kuti muwone mndandanda wonse onani Buku Logwiritsa Ntchito.
+Dinani pa &quot;?&quot;batani kumanja kuti mutsegule tsambalo ndi Buku Logwiritsa Ntchito."/>
+
+			<!-- Don't translate "(&quot;Non-printing characters custom color&quot;)" -->
+			<npcCustomColor-tip value="Pitani ku Style Configurator kuti musinthe mtundu wokhazikika wamalo oyera osankhidwa ndi zilembo zosasindikiza (&quot;mtundu wa zilembo zomwe sizisindikiza&quot;)."/>
+			<npcIncludeCcUniEol-tip value="Ikani mawonekedwe a zilembo zosasindikiza pa zilembo za C0, C1 ndi Unicode EOL (mzere wotsatira, cholekanitsa mizere ndi cholekanitsa ndime)."/>
+			<searchingInSelThresh-tip value="Chiwerengero chochepa cha zilembo zosankhidwa mu zone yosinthira kuti muyang'ane bokosi la &quot;Posankha&quot; pomwe kukambirana kwa Pezani kutsegulidwa.Mtengo wokwanira ndi $INT_REPLACE$.Khazikitsani mtengo kukhala 0 kuti mulepheretse kuyang'ana pawokha."/>
+			<searchingFillFindWhat-tip value="Chiwerengero chachikulu cha zilembo zosankhidwa muzone yosinthira kuti mudzaze basi &quot;Pezani chiyani&quot; pamene Ctrl-F iyambika.Mtengo wokwanira ndi $INT_REPLACE$, womwe ndi kukula kwakukulu kwa gawo la &quot;Pezani chiyani&quot;, lochepera ndi dongosolo."/>
+			<verticalEdge-tip value="Onjezani chikhomo chanu posonyeza malo ake ndi nambala ya decimal.Mutha kufotokozera zolembera zingapo pogwiritsa ntchito malo oyera kuti mulekanitse manambala osiyanasiyana."/>
+			<fileSaveAsCopySaveButton-tip value="Gwirani Shift kwinaku mukukanikiza Save kuti mutsegule kopiyo mukasunga."/>
+			<autoIndentBasic-tip value="Onetsetsani kuti kulowa kwa mzere wapano (ie, mzere watsopano wopangidwa mwa kukanikiza kiyi ENTER) ukufanana ndi kulowera kwa mzere wapitawo."/>
+			<autoIndentAdvanced-tip value="Yambitsani kulondolera mwanzeru kwa zilankhulo za &quot;C-like&quot; ndi Python.Zilankhulo za &quot;C-like&quot; zimaphatikizapo:
+C, C++, Java, C#, Objective-C, PHP, JavaScript, JSP, CSS, Perl, Rust, PowerShell ndi JSON.
+
+Ngati musankha zotsogola koma osasintha mafayilo m'zilankhulo zomwe tatchulazi, indentation ikhalabe mumayendedwe oyambira."/>
+
+			<!-- Don't translate "Global override" and "Default Style" -->
+			<global-override-tip value="Kuyang'anira &quot;Global override&quot; apa kudzachotsa gawolo m'zilankhulo zonse.Zomwe mukufuna kwenikweni ndikugwiritsa ntchito &quot;Default Style&quot; m'malo mwa"/>
+			<scintillaRenderingTechnology-tip value="Mutha kupititsa patsogolo kumasulira kwa zilembo zapadera kapena kuthetsa zovuta zazithunzi, yambitsaninso Notepad ++ kuti mugwiritse ntchito zosinthazo."/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'length' & 'lines' are much longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-length-lines value="utali: $STR_REPLACE1$ mizere: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Ln' & 'Col' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Ln-Col value="Ln: $STR_REPLACE1$ Col: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Pos' & 'Sel' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Pos value="Pos:"/>
+			<statusbar-Sel value="Sel:"/>
+			<statusbar-Sel-number value="Seli"/>
+			<toolbar-accent-tip value="Izi zimapangitsa kuti zithunzi zanu zizitsatira mtundu wa kalembedwe ka Windows system.Mtundu wa kamvekedwe ndi mtundu wowunikira womwe umagwiritsidwa ntchito m'mabatani, malire, ndi matailosi a menyu Yoyambira mu Windows.Kuti musinthe, pitani ku Zikhazikiko&gt; Kusintha Kwamunthu&gt; Mitundu, kenako sankhani mtundu wa mawu omwe mumakonda."/>
+			<len-limit-exceeded-tip value="Kutalika kwapyola malire: Zomwe mwalemba zitha kupitilira malire ololedwa ndipo zikadachepetsedwa, ndipo sizisungidwa gawo lotsatira."/>
+			<max-len-on-search-tip value="Zomwe mwalemba zitha kupitilira malire ololedwa ndipo zikadachepetsedwa, ndipo sizisungidwa gawo lotsatira."/>
+			<max-len-on-save-tip value="Kutalika kwa zomwe mwalemba ndi zazitali kwambiri ndipo mwina sizingasungidwe mu gawo lotsatira."/>
+			<goto-setting-tip value="Pezani malo anu apa"/>
+			<tabbar-tabcompactlabellen-tip value="Imaletsa kutalika kwa mayina a ma tabu aatali.Lowani kuti mugwiritse ntchito mtengo womwe mwapatsidwa.Kusiyanasiyana kwamtengo: zilembo 1-257 (0 imalepheretsa kudulidwa)."/>
+		</MiscStrings>
+	</Native-Langue>
+</NotepadPlus>
+
+

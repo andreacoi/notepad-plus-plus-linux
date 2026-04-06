@@ -1,0 +1,2142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Armenian (Հայերեն) language file for Notepad++ macOS
+    Based on English template - community translations welcome
+    Created: 2026-04-04
+-->
+<NotepadPlus>
+	<Native-Langue name="Հայերեն" filename="armenian.xml" version="8.9">
+		<Menu>
+			<Main>
+				<!-- Main Menu Entries -->
+				<Entries>
+					<Item menuId="file" name="Ֆայլ"/>
+					<Item menuId="edit" name="Խմբագրել"/>
+					<Item menuId="search" name="Որոնում"/>
+					<Item menuId="view" name="Դիտել"/>
+					<Item menuId="encoding" name="Կոդավորում"/>
+					<Item menuId="language" name="Լեզու"/>
+					<Item menuId="settings" name="Կարգավորումներ"/>
+					<Item menuId="tools" name="Գործիքներ"/>
+					<Item menuId="macro" name="Մակրո"/>
+					<Item menuId="run" name="Վազել"/>
+					<Item menuId="Plugins" name="Պլագիններ"/>
+					<Item menuId="Window" name="Պատուհան"/>
+				</Entries>
+				<!-- Sub Menu Entries -->
+				<SubEntries>
+					<Item subMenuId="file-openFolder" name="Բացել պարունակող թղթապանակը"/>
+					<Item subMenuId="file-closeMore" name="Փակել բազմաթիվ փաստաթղթեր"/>
+					<Item subMenuId="file-recentFiles" name="Վերջին ֆայլեր"/>
+					<Item subMenuId="edit-insert" name="Տեղադրեք"/>
+					<Item subMenuId="edit-copyToClipboard" name="Պատճենել սեղմատախտակին"/>
+					<Item subMenuId="edit-indent" name="Նահանջ"/>
+					<Item subMenuId="edit-convertCaseTo" name="Փոխակերպել գործը"/>
+					<Item subMenuId="edit-lineOperations" name="Գծի գործառնություններ"/>
+					<Item subMenuId="edit-comment" name="Մեկնաբանություն/Չմեկնաբանություն"/>
+					<Item subMenuId="edit-autoCompletion" name="Ավտոմատ լրացում"/>
+					<Item subMenuId="edit-eolConversion" name="EOL փոխակերպում"/>
+					<Item subMenuId="edit-blankOperations" name="Դատարկ գործառնություններ"/>
+					<Item subMenuId="edit-pasteSpecial" name="Կպցնել հատուկ"/>
+					<Item subMenuId="edit-onSelection" name="Ընտրության մասին"/>
+					<Item subMenuId="edit-multiSelectALL" name="Բազմակի ընտրություն ԲՈԼՈՐ"/>
+					<Item subMenuId="edit-multiSelectNext" name="Բազմակի ընտրություն Հաջորդ"/>
+					<Item subMenuId="edit-readonlyInNotepad++" name="Միայն կարդալու համար Notepad++"/>
+					<Item subMenuId="search-changeHistory" name="Փոփոխությունների պատմություն"/>
+					<Item subMenuId="search-markAll" name="Style Token-ի բոլոր դեպքերը"/>
+					<Item subMenuId="search-markOne" name="Style One Token"/>
+					<Item subMenuId="search-unmarkAll" name="Մաքուր ոճ"/>
+					<Item subMenuId="search-jumpUp" name="Անցնել վեր"/>
+					<Item subMenuId="search-jumpDown" name="Անցնել ներքև"/>
+					<Item subMenuId="search-copyStyledText" name="Պատճենել ոճավորված տեքստը"/>
+					<Item subMenuId="search-bookmark" name="Էջանիշ"/>
+					<Item subMenuId="view-currentFileIn" name="Դիտեք ընթացիկ ֆայլը"/>
+					<Item subMenuId="view-showSymbol" name="-ումՑույց տալ խորհրդանիշը"/>
+					<Item subMenuId="view-zoom" name="Մեծացնել"/>
+					<Item subMenuId="view-moveCloneDocument" name="Տեղափոխել/Կլոնավորել ընթացիկ փաստաթուղթը"/>
+					<Item subMenuId="view-tab" name="Ներդիր"/>
+					<Item subMenuId="view-collapseLevel" name="Ծալովի մակարդակ"/>
+					<Item subMenuId="view-uncollapseLevel" name="Բացահայտման մակարդակ"/>
+					<Item subMenuId="view-project" name="Նախագիծ"/>
+					<Item subMenuId="encoding-characterSets" name="Նիշերի հավաքածու"/>
+					<Item subMenuId="encoding-arabic" name="Արաբական"/>
+					<Item subMenuId="encoding-baltic" name="Բալթյան"/>
+					<Item subMenuId="encoding-celtic" name="Սելտիկ"/>
+					<Item subMenuId="encoding-cyrillic" name="կիրիլիցա"/>
+					<Item subMenuId="encoding-centralEuropean" name="Կենտրոնական Եվրոպայի"/>
+					<Item subMenuId="encoding-chinese" name="Չինական"/>
+					<Item subMenuId="encoding-easternEuropean" name="Արևելյան Եվրոպայի"/>
+					<Item subMenuId="encoding-greek" name="Հունարեն"/>
+					<Item subMenuId="encoding-hebrew" name="Եբրայերեն"/>
+					<Item subMenuId="encoding-japanese" name="Ճապոնական"/>
+					<Item subMenuId="encoding-korean" name="Կորեական"/>
+					<Item subMenuId="encoding-northEuropean" name="Հյուսիսային Եվրոպայի"/>
+					<Item subMenuId="encoding-thai" name="թայերեն"/>
+					<Item subMenuId="encoding-turkish" name="Թուրքական"/>
+					<Item subMenuId="encoding-westernEuropean" name="Արևմտյան Եվրոպայի"/>
+					<Item subMenuId="encoding-vietnamese" name="Վիետնամերեն"/>
+					<Item subMenuId="language-userDefinedLanguage" name="Օգտագործողի կողմից սահմանված լեզու"/>
+					<Item subMenuId="settings-import" name="Ներմուծում"/>
+					<Item subMenuId="tools-md5" name="MD5"/>
+					<Item subMenuId="tools-sha1" name="SHA-1"/>
+					<Item subMenuId="tools-sha256" name="SHA-256"/>
+					<Item subMenuId="tools-sha512" name="SHA-512"/>
+					<Item subMenuId="window-sortby" name="Դասավորել ըստ"/>
+				</SubEntries>
+
+				<!-- all menu item -->
+				<Commands>
+					<Item id="41001" name="Նոր"/>
+					<Item id="41002" name="Բաց..."/>
+					<Item id="41019" name="Հետախույզ"/>
+					<Item id="41020" name="սմդ"/>
+					<Item id="41025" name="Թղթապանակը որպես աշխատանքային տարածք"/>
+					<Item id="41003" name="Փակել"/>
+					<Item id="41004" name="Փակել բոլորը"/>
+					<Item id="41005" name="Փակել բոլորը, բայց ընթացիկ փաստաթուղթը"/>
+					<Item id="41026" name="Փակել բոլոր, բայց ամրացված փաստաթղթերը"/>
+					<Item id="41009" name="Փակեք բոլորը դեպի ձախ"/>
+					<Item id="41018" name="Փակել բոլորը դեպի աջ"/>
+					<Item id="41024" name="Փակել բոլորը անփոփոխ"/>
+					<Item id="41006" name="Պահպանել"/>
+					<Item id="41007" name="Պահպանել բոլորը"/>
+					<Item id="41008" name="Պահպանել որպես..."/>
+					<Item id="41010" name="Տպել..."/>
+					<Item id="1001" name="Տպել հիմա"/>
+					<Item id="41011" name="Ելք"/>
+					<Item id="41012" name="Բեռնել նիստը..."/>
+					<Item id="41013" name="Պահպանել նիստը..."/>
+					<Item id="41014" name="Վերբեռնել սկավառակից"/>
+					<Item id="41015" name="Պահպանել պատճենը որպես..."/>
+					<Item id="41016" name="Տեղափոխել թափոնարկղ"/>
+					<Item id="41017" name="Վերանվանել..."/>
+					<Item id="41021" name="Վերականգնել վերջին փակված ֆայլը"/>
+					<Item id="41022" name="Բացել թղթապանակը որպես աշխատանքային տարածք..."/>
+					<Item id="41023" name="Բացել Default Viewer"/>
+					<Item id="42001" name="Կտրել"/>
+					<Item id="42002" name="Պատճենել"/>
+					<Item id="42003" name="Հետարկել"/>
+					<Item id="42004" name="Կրկնել"/>
+					<Item id="42005" name="Կպցնել"/>
+					<Item id="42006" name="Ջնջել"/>
+					<Item id="42007" name="Ընտրել բոլորը"/>
+					<Item id="42020" name="Սկիզբ/Վերջ Ընտրել"/>
+					<Item id="42089" name="Սկիզբ/Վերջ Ընտրեք սյունակի ռեժիմում"/>
+					<Item id="42084" name="Ամսաթիվ Ժամը (կարճ)"/>
+					<Item id="42085" name="Ամսաթիվ Ժամը (երկար)"/>
+					<Item id="42086" name="Ամսաթիվ Ժամ (հարմարեցված)"/>
+					<Item id="42008" name="Մեծացնել տողի նահանջը"/>
+					<Item id="42009" name="Նվազեցնել տողի նահանջը"/>
+					<Item id="42010" name="Կրկնվող ընթացիկ գիծ"/>
+					<Item id="42079" name="Հեռացնել կրկնօրինակ տողերը"/>
+					<Item id="42077" name="Հեռացնել հաջորդական կրկնօրինակ տողերը"/>
+					<Item id="42012" name="Split Lines"/>
+					<Item id="42013" name="Միանալ գծերին"/>
+					<Item id="42014" name="Տեղափոխել ընթացիկ գիծը դեպի վեր"/>
+					<Item id="42015" name="Տեղափոխել ներքև ընթացիկ գիծ"/>
+					<Item id="42059" name="Տեսակավորել տողերը բառարանագրորեն աճող"/>
+					<Item id="42060" name="Տեսակավորել տողերը բառարանագրորեն նվազող"/>
+					<Item id="42080" name="Տեսակավորել գծերը Lex.Աճող անտեսող դեպք"/>
+					<Item id="42081" name="Տեսակավորել գծերը Lex.Descending Ignoring Case"/>
+					<Item id="42100" name="Տեսակավորել տողերը ըստ տեղային կարգի աճման"/>
+					<Item id="42101" name="Տեսակավորել տողերը ըստ տեղային կարգի նվազման"/>
+					<Item id="42104" name="Տեսակավորել տողերը ըստ երկարության աճման"/>
+					<Item id="42105" name="Տեսակավորել տողերը ըստ երկարության նվազման"/>
+					<Item id="42061" name="Տեսակավորել տողերը որպես ամբողջ թվեր աճող"/>
+					<Item id="42062" name="Տեսակավորել տողերը որպես ամբողջ թվեր նվազող"/>
+					<Item id="42063" name="Տեսակավորել տողերը որպես տասնորդական (ստորակետ) Աճման"/>
+					<Item id="42064" name="Տեսակավորել տողերը որպես տասնորդական (ստորակետ) նվազող"/>
+					<Item id="42065" name="Տեսակավորել տողերը որպես տասնորդական (կետ) Աճման"/>
+					<Item id="42066" name="Տեսակավորել տողերը որպես տասնորդական (կետ) նվազող"/>
+					<Item id="42083" name="Հակադարձ գծի կարգը"/>
+					<Item id="42078" name="Պատահականացնել տողերի հերթականությունը"/>
+					<Item id="42016" name="Մեծատառ"/>
+					<Item id="42017" name="փոքրատառ"/>
+					<Item id="42067" name="Պատշաճ գործ"/>
+					<Item id="42068" name="Պատշաճ պատյան (խառնուրդ)"/>
+					<Item id="42069" name="Պատժի գործ"/>
+					<Item id="42070" name="Նախադասության դեպք (խառնուրդ)"/>
+					<Item id="42071" name="IINVERT CASSE"/>
+					<Item id="42072" name="պատահական դեպք"/>
+					<Item id="42073" name="Բացել ֆայլը"/>
+					<Item id="42074" name="Բացեք պարունակող թղթապանակ Explorer-ում"/>
+					<Item id="42106" name="Redact Ընտրությունը █ (Shift: ●)"/>
+					<Item id="42075" name="Որոնել ինտերնետում"/>
+					<Item id="42076" name="Փոփոխել որոնման համակարգը..."/>
+					<Item id="42090" name="Անտեսել մեծատառ ամբողջ բառը"/>
+					<Item id="42091" name="Միայն համընկնման դեպք"/>
+					<Item id="42092" name="Համապատասխանեցրեք միայն ամբողջ բառը"/>
+					<Item id="42093" name="Համընկնում է ամբողջ բառը"/>
+					<Item id="42094" name="Անտեսել մեծատառ ամբողջ բառը"/>
+					<Item id="42095" name="Միայն համընկնման դեպք"/>
+					<Item id="42096" name="Համապատասխանեցրեք միայն ամբողջ բառը"/>
+					<Item id="42097" name="Համընկնում է ամբողջ բառը"/>
+					<Item id="42098" name="Հետարկել վերջին ավելացված բազմակի ընտրությունը"/>
+					<Item id="42099" name="Բաց թողնել ընթացիկ Գնալ դեպի Հաջորդը Բազմակի ընտրություն"/>
+					<Item id="42018" name="Սկսել ձայնագրումը"/>
+					<Item id="42019" name="Դադարեցնել ձայնագրումը"/>
+					<Item id="42021" name="Նվագարկում"/>
+					<Item id="42022" name="Փոխարկել Մեկ տողով մեկնաբանությունը"/>
+					<Item id="42023" name="Արգելափակել մեկնաբանությունը"/>
+					<Item id="42047" name="Արգելափակել չմեկնաբանելը"/>
+					<Item id="42024" name="Կտրեք հետքի տարածությունը"/>
+					<Item id="42042" name="Կտրեք առաջատար տարածությունը"/>
+					<Item id="42043" name="Կտրեք առաջատար և հետևի տարածքը"/>
+					<Item id="42044" name="EOL դեպի տիեզերք"/>
+					<Item id="42045" name="Կտրեք երկուսն էլ և EOL-ը դեպի Space"/>
+					<Item id="42046" name="TAB դեպի տիեզերք"/>
+					<Item id="42054" name="Տիեզերք դեպի TAB (Բոլորը)"/>
+					<Item id="42053" name="Տիեզերք դեպի TAB (Առաջատար)"/>
+					<Item id="42038" name="Տեղադրեք HTML բովանդակություն"/>
+					<Item id="42039" name="Կպցնել RTF բովանդակությունը"/>
+					<Item id="42048" name="Պատճենել Երկուական բովանդակությունը"/>
+					<Item id="42049" name="Կտրել Երկուական բովանդակությունը"/>
+					<Item id="42050" name="Կպցնել Երկուական բովանդակություն"/>
+					<Item id="42082" name="Պատճենել հղումը"/>
+					<Item id="42037" name="Սյունակի ռեժիմ..."/>
+					<Item id="42034" name="Սյունակի խմբագիր..."/>
+					<Item id="42051" name="Նիշերի վահանակ"/>
+					<Item id="42052" name="Clipboard պատմություն"/>
+					<Item id="42025" name="Պահել ընթացիկ գրանցված մակրո..."/>
+					<Item id="42026" name="Տեքստի ուղղություն RTL"/>
+					<Item id="42027" name="Տեքստի ուղղություն LTR"/>
+					<Item id="42028" name="Ընթացիկ փաստաթղթի վրա միայն կարդալու"/>
+					<Item id="42102" name="Միայն կարդալու բոլոր փաստաթղթերի համար"/>
+					<Item id="42103" name="Մաքրել միայն կարդալու բոլոր փաստաթղթերը"/>
+					<Item id="42029" name="Պատճենել ընթացիկ ֆայլի ուղին"/>
+					<Item id="42030" name="Պատճենել ընթացիկ ֆայլի անունը"/>
+					<Item id="42031" name="Պատճենել ընթացիկ ռեժ.Ճանապարհ"/>
+					<Item id="42087" name="Պատճենել բոլոր ֆայլերի անունները"/>
+					<Item id="42088" name="Պատճենել բոլոր ֆայլերի ուղիները"/>
+					<Item id="42032" name="Գործարկել մի քանի անգամ մակրո..."/>
+					<Item id="42033" name="Windows-ում միայն կարդալու հատկանիշ"/>
+					<Item id="42035" name="Մեկ տող մեկնաբանություն"/>
+					<Item id="42036" name="Single Line Uncomment"/>
+					<Item id="42055" name="Հեռացնել դատարկ գծերը"/>
+					<Item id="42056" name="Հեռացնել դատարկ տողերը (դատարկ նիշեր պարունակող)"/>
+					<Item id="42057" name="Տեղադրեք դատարկ գիծ ընթացիկ"/>
+					<Item id="42058" name="Տեղադրեք դատարկ գիծ հոսանքի տակ"/>
+					<Item id="43001" name="Գտի՛ր..."/>
+					<Item id="43002" name="Գտնել հաջորդը"/>
+					<Item id="43003" name="Փոխարինել..."/>
+					<Item id="43004" name="Գնալ դեպի..."/>
+					<Item id="43005" name="Միացնել էջանիշը"/>
+					<Item id="43006" name="Հաջորդ Էջանիշ"/>
+					<Item id="43007" name="Նախորդ Էջանիշ"/>
+					<Item id="43008" name="Մաքրել բոլոր էջանիշները"/>
+					<Item id="43018" name="Կտրել էջանշված տողերը"/>
+					<Item id="43019" name="Պատճենել էջանշված տողերը"/>
+					<Item id="43020" name="Տեղադրել (Փոխարինել) էջանշված տողերը"/>
+					<Item id="43021" name="Հեռացնել էջանշված տողերը"/>
+					<Item id="43051" name="Հեռացնել ոչ էջանշված տողերը"/>
+					<Item id="43050" name="Հակադարձ էջանիշներ"/>
+					<Item id="43052" name="Գտեք նիշերը տիրույթում..."/>
+					<Item id="43053" name="Ընտրեք Բոլորը միջակայքում {} [] կամ ()"/>
+					<Item id="43009" name="Գնալ Համապատասխան ամրակ"/>
+					<Item id="43010" name="Գտնել նախորդ"/>
+					<Item id="43011" name="Աճող որոնում"/>
+					<Item id="43013" name="Գտեք Ֆայլերում"/>
+					<Item id="43014" name="Գտեք (ցնդող) Հաջորդը"/>
+					<Item id="43015" name="Գտնել (Ցնդող) Նախորդ"/>
+					<Item id="43022" name="Օգտագործելով 1-ին ոճը"/>
+					<Item id="43023" name="Մաքուր 1-ին ոճ"/>
+					<Item id="43024" name="Օգտագործելով 2-րդ ոճ"/>
+					<Item id="43025" name="Մաքուր 2-րդ ոճ"/>
+					<Item id="43026" name="Օգտագործելով 3-րդ ոճ"/>
+					<Item id="43027" name="Մաքուր 3-րդ ոճ"/>
+					<Item id="43028" name="Օգտագործելով 4-րդ ոճը"/>
+					<Item id="43029" name="Մաքուր 4-րդ ոճ"/>
+					<Item id="43030" name="Օգտագործելով 5-րդ ոճ"/>
+					<Item id="43031" name="Մաքուր 5-րդ ոճ"/>
+					<Item id="43032" name="Մաքրել բոլոր ոճերը"/>
+					<Item id="43033" name="1-ին ոճ"/>
+					<Item id="43034" name="2-րդ ոճ"/>
+					<Item id="43035" name="3-րդ ոճ"/>
+					<Item id="43036" name="4-րդ ոճ"/>
+					<Item id="43037" name="5-րդ ոճ"/>
+					<Item id="43038" name="Գտեք նշանի ոճը"/>
+					<Item id="43039" name="1-ին ոճ"/>
+					<Item id="43040" name="2-րդ ոճ"/>
+					<Item id="43041" name="3-րդ ոճ"/>
+					<Item id="43042" name="4-րդ ոճ"/>
+					<Item id="43043" name="5-րդ ոճ"/>
+					<Item id="43044" name="Գտեք նշանի ոճը"/>
+					<Item id="43055" name="1-ին ոճ"/>
+					<Item id="43056" name="2-րդ ոճ"/>
+					<Item id="43057" name="3-րդ ոճ"/>
+					<Item id="43058" name="4-րդ ոճ"/>
+					<Item id="43059" name="5-րդ ոճ"/>
+					<Item id="43060" name="Բոլոր ոճերը"/>
+					<Item id="43061" name="Գտեք նշանի ոճը"/>
+					<Item id="43062" name="Օգտագործելով 1-ին ոճը"/>
+					<Item id="43063" name="Օգտագործելով 2-րդ ոճ"/>
+					<Item id="43064" name="Օգտագործելով 3-րդ ոճ"/>
+					<Item id="43065" name="Օգտագործելով 4-րդ ոճը"/>
+					<Item id="43066" name="Օգտագործելով 5-րդ ոճ"/>
+					<Item id="43067" name="Գնալ դեպի Հաջորդ փոփոխություն"/>
+					<Item id="43068" name="Գնալ դեպի Նախորդ փոփոխություն"/>
+					<Item id="43069" name="Մաքրել փոփոխությունների պատմությունը"/>
+					<Item id="43045" name="Որոնման արդյունքների պատուհան"/>
+					<Item id="43046" name="Հաջորդ որոնման արդյունքը"/>
+					<Item id="43047" name="Նախորդ որոնման արդյունքը"/>
+					<Item id="43048" name="Ընտրեք և գտեք հաջորդը"/>
+					<Item id="43049" name="Ընտրեք և գտեք նախորդ"/>
+					<Item id="43054" name="Նշել..."/>
+					<Item id="43501" name="Փակել ընտրված"/>
+					<Item id="43502" name="Փակել Այլ"/>
+					<Item id="43503" name="Պատճենել ընտրված անունները"/>
+					<Item id="43504" name="Պատճենել ընտրված ուղիների անվանումները"/>
+					<Item id="44009" name="Post-It"/>
+					<Item id="44010" name="Ծալել բոլորը"/>
+					<Item id="44011" name="Շեղման ազատ ռեժիմ"/>
+					<Item id="44019" name="Ցույց տալ բոլոր կերպարները"/>
+					<Item id="44020" name="Ցույց տալ նահանջ ուղեցույցը"/>
+					<Item id="44022" name="Բառի փաթեթավորում"/>
+					<Item id="44023" name="Մեծացնել (Ctrl+Mouse Wheel Up)"/>
+					<Item id="44024" name="Մեծացնել (Ctrl+Mouse Wheel Down)"/>
+					<Item id="44025" name="Ցույց տալ տարածությունը և ներդիրը"/>
+					<Item id="44026" name="Ցույց տալ գծի վերջը"/>
+					<Item id="44029" name="Բացեք բոլորը"/>
+					<Item id="44030" name="Ծալել ընթացիկ մակարդակը"/>
+					<Item id="44031" name="Բացահայտել ընթացիկ մակարդակը"/>
+					<Item id="44049" name="Ամփոփում..."/>
+					<Item id="44080" name="Փաստաթղթի քարտեզ"/>
+					<Item id="44070" name="Փաստաթղթերի ցանկ"/>
+					<Item id="44084" name="Գործառույթների ցանկ"/>
+					<Item id="44085" name="Թղթապանակը որպես աշխատանքային տարածք"/>
+					<Item id="44086" name="1-ին ներդիր"/>
+					<Item id="44087" name="2-րդ ներդիր"/>
+					<Item id="44088" name="3-րդ ներդիր"/>
+					<Item id="44089" name="4-րդ ներդիր"/>
+					<Item id="44090" name="5-րդ ներդիր"/>
+					<Item id="44091" name="6-րդ ներդիր"/>
+					<Item id="44092" name="7-րդ ներդիր"/>
+					<Item id="44093" name="8-րդ ներդիր"/>
+					<Item id="44094" name="9-րդ ներդիր"/>
+					<Item id="44116" name="Առաջին ներդիր"/>
+					<Item id="44117" name="Վերջին ներդիրը"/>
+					<Item id="44095" name="Հաջորդ ներդիր"/>
+					<Item id="44096" name="Նախորդ ներդիր"/>
+					<Item id="44097" name="Մոնիտորինգ (պոչ -զ)"/>
+					<Item id="44098" name="Տեղափոխել ներդիրը առաջ"/>
+					<Item id="44099" name="Տեղափոխել ներդիրը ետ"/>
+					<Item id="44110" name="Հեռացնել գույնը"/>
+					<Item id="44111" name="Կիրառել գույն 1"/>
+					<Item id="44112" name="Կիրառել գույն 2"/>
+					<Item id="44113" name="Կիրառել գույն 3"/>
+					<Item id="44114" name="Կիրառել գույն 4"/>
+					<Item id="44115" name="Կիրառել գույն 5"/>
+					<Item id="44130" name="Ցույց տալ չտպող կերպարներ"/>
+					<Item id="44131" name="Ցույց տալ կառավարման նիշերը Unicode EOL"/>
+					<Item id="44032" name="Միացնել ամբողջ էկրանի ռեժիմը"/>
+					<Item id="44033" name="Վերականգնել կանխադրված խոշորացումը"/>
+					<Item id="44034" name="Միշտ վերևում"/>
+					<Item id="44035" name="Համաժամացնել ուղղահայաց ոլորումը"/>
+					<Item id="44036" name="Համաժամացնել հորիզոնական ոլորումը"/>
+					<Item id="44041" name="Ցույց տալ փաթաթման նշանը"/>
+					<Item id="44072" name="Կենտրոնանալ մեկ այլ տեսակետի վրա"/>
+					<Item id="44081" name="Ծրագրի վահանակ 1"/>
+					<Item id="44082" name="Ծրագրի վահանակ 2"/>
+					<Item id="44083" name="Ծրագրի վահանակ 3"/>
+					<Item id="45001" name="Windows (CR LF)"/>
+					<Item id="45002" name="Unix (LF)"/>
+					<Item id="45003" name="Macintosh (CR)"/>
+					<Item id="45004" name="ANSI"/>
+					<Item id="45005" name="UTF-8-BOM"/>
+					<Item id="45006" name="UTF-16 BE BOM"/>
+					<Item id="45007" name="UTF-16 LE BOM"/>
+					<Item id="45008" name="UTF-8"/>
+					<Item id="45009" name="Փոխարկել ANSI"/>
+					<Item id="45010" name="Փոխարկել UTF-8"/>
+					<Item id="45011" name="Փոխարկել UTF-8-BOM"/>
+					<Item id="45012" name="Փոխարկել UTF-16 BE BOM"/>
+					<Item id="45013" name="Փոխարկել UTF-16 LE BOM"/>
+					<Item id="45060" name="Մեծ5 (Ավանդական)"/>
+					<Item id="45061" name="GB2312 (Պարզեցված)"/>
+					<Item id="45054" name="OEM 861. Իսլանդերեն"/>
+					<Item id="45057" name="OEM 865: Սկանդինավյան"/>
+					<Item id="45053" name="OEM 860՝ պորտուգալերեն"/>
+					<Item id="45056" name="OEM 863՝ ֆրանսերեն"/>
+					<Item id="10001" name="Տեղափոխել այլ տեսք"/>
+					<Item id="10002" name="Կլոնավորել այլ դիտում"/>
+					<Item id="10003" name="Տեղափոխել նոր օրինակ"/>
+					<Item id="10004" name="Բացել նոր ատյանում"/>
+					<Item id="10005" name="Տեղափոխել դեպի սկիզբ"/>
+					<Item id="10006" name="Տեղափոխել մինչև վերջ"/>
+					<Item id="46001" name="Style Configurator..."/>
+					<Item id="46016" name="Ոչ մեկը (Նորմալ տեքստ)"/>
+					<Item id="46250" name="Սահմանեք ձեր լեզուն..."/>
+					<Item id="46300" name="Բացել User Defined Language թղթապանակը..."/>
+					<Item id="46301" name="Notepad++ User Defined Languages ​​Collection"/>
+					<Item id="46180" name="Օգտագործողի կողմից սահմանված"/>
+					<Item id="47000" name="Notepad++-ի մասին"/>
+					<Item id="47010" name="Հրամանի տողի փաստարկներ..."/>
+					<Item id="47001" name="Notepad++ Գլխավոր"/>
+					<Item id="47002" name="Notepad++ Ծրագրի էջ"/>
+					<Item id="47003" name="Notepad++ Առցանց Օգտագործողի ձեռնարկ"/>
+					<Item id="47004" name="Notepad++ Համայնք (Ֆորում)"/>
+					<Item id="47012" name="Վրիպազերծման տեղեկատվությունը..."/>
+					<Item id="47005" name="Ստացեք ավելի շատ պլագիններ"/>
+					<Item id="47006" name="Թարմացրեք Notepad++"/>
+					<Item id="47009" name="Սահմանել Updater Proxy..."/>
+					<Item id="48005" name="Ներմուծել պլագին(ներ)..."/>
+					<Item id="48006" name="Ներմուծեք ոճի թեմա(ներ)..."/>
+					<Item id="48018" name="Խմբագրել թռուցիկ համատեքստային մենյու"/>
+					<Item id="48009" name="Դյուրանցման քարտեզագրող..."/>
+					<Item id="48011" name="Նախապատվություններ..."/>
+					<Item id="48014" name="Բացել Plugins Folder..."/>
+					<Item id="48015" name="Plugins Admin..."/>
+					<Item id="48501" name="Ստեղծել..."/>
+					<Item id="48502" name="Ստեղծել ֆայլերից..."/>
+					<Item id="48503" name="Ստեղծել ընտրվածից սեղմատախտակ"/>
+					<Item id="48504" name="Ստեղծել..."/>
+					<Item id="48505" name="Ստեղծել ֆայլերից..."/>
+					<Item id="48506" name="Ստեղծել ընտրվածից սեղմատախտակ"/>
+					<Item id="48507" name="Ստեղծել..."/>
+					<Item id="48508" name="Ստեղծել ֆայլերից..."/>
+					<Item id="48509" name="Ստեղծել ընտրվածից սեղմատախտակ"/>
+					<Item id="48510" name="Ստեղծել..."/>
+					<Item id="48511" name="Ստեղծել ֆայլերից..."/>
+					<Item id="48512" name="Ստեղծել ընտրվածից սեղմատախտակ"/>
+					<Item id="49000" name="Վազիր..."/>
+
+					<Item id="50000" name="Ֆունկցիայի ավարտը"/>
+					<Item id="50001" name="Բառի լրացում"/>
+					<Item id="50002" name="Ֆունկցիայի պարամետրերի հուշում"/>
+					<Item id="50010" name="Ֆունկցիայի պարամետրեր Նախորդ հուշում"/>
+					<Item id="50011" name="Ֆունկցիայի պարամետրեր Հաջորդ ակնարկ"/>
+					<Item id="50005" name="Միացնել մակրո գրառումը"/>
+					<Item id="50006" name="Ճանապարհի ավարտը"/>
+					<Item id="44042" name="Թաքցնել տողերը"/>
+					<Item id="42040" name="Բացեք բոլոր վերջին ֆայլերը"/>
+					<Item id="42041" name="Դատարկ վերջին ֆայլերի ցանկը"/>
+					<Item id="48016" name="Փոփոխել դյուրանցումը/Ջնջել մակրո..."/>
+					<Item id="48017" name="Փոփոխել դյուրանցումը/Ջնջել հրամանը..."/>
+
+					<Item id="11001" name="Պատուհաններ..."/>
+					<Item id="11002" name="Անվանումը A-ից Z"/>
+					<Item id="11003" name="Անվանումը Z-ից A"/>
+					<Item id="11004" name="Ճանապարհ A-ից Z"/>
+					<Item id="11005" name="Ճանապարհ Z դեպի Ա"/>
+					<Item id="11006" name="Տիպը A-ից Z"/>
+					<Item id="11007" name="Տեսակ Z-ից A"/>
+					<Item id="11008" name="Բովանդակության երկարությունը աճող"/>
+					<Item id="11009" name="Բովանդակության երկարությունը նվազող"/>
+					<Item id="11010" name="Փոփոխված ժամանակ Աճման"/>
+					<Item id="11011" name="Փոփոխված ժամանակ Նվազող"/>
+				</Commands>
+			</Main>
+			<TabBar>
+				<Item CMDID="41003" name="Փակել"/>
+				<Item CMDID="0" name="Փակել բազմաթիվ ներդիրներ"/>
+				<Item CMDID="41005" name="Փակել բոլորը, ԲԱՅՑ այս"/>
+				<Item CMDID="41026" name="Փակել բոլորը, ԲԱՅՑ ամրացված"/>
+				<Item CMDID="41009" name="Փակեք բոլորը դեպի ձախ"/>
+				<Item CMDID="41018" name="Փակել բոլորը դեպի աջ"/>
+				<Item CMDID="41024" name="Փակել բոլորը անփոփոխ"/>
+				<Item CMDID="44048" name="Փին ներդիր" alternativeName="Ապամրացնել ներդիրը"/>
+				<Item CMDID="41006" name="Պահպանել"/>
+				<Item CMDID="41008" name="Պահպանել որպես..."/>
+				<Item CMDID="1" name="Բացել"/>
+				<Item CMDID="41019" name="Բացեք պարունակող թղթապանակ Explorer-ում"/>
+				<Item CMDID="41020" name="Բացեք Containing Folder-ը cmd-ում"/>
+				<Item CMDID="41025" name="Բացեք պարունակող թղթապանակը որպես աշխատանքային տարածք"/>
+				<Item CMDID="41023" name="Բացել Default Viewer"/>
+				<Item CMDID="41017" name="Վերանվանել..."/>
+				<Item CMDID="41016" name="Տեղափոխել թափոնարկղ"/>
+				<Item CMDID="41014" name="Վերաբեռնում"/>
+				<Item CMDID="41010" name="Տպել..."/>
+				<Item CMDID="42028" name="Միայն կարդալու համար Notepad++"/>
+				<Item CMDID="42033" name="Windows-ում միայն կարդալու հատկանիշ"/>
+				<Item CMDID="2" name="Պատճենել սեղմատախտակին"/>
+				<Item CMDID="42029" name="Պատճենել ամբողջական ֆայլի ուղին"/>
+				<Item CMDID="42030" name="Պատճենել ֆայլի անունը"/>
+				<Item CMDID="42031" name="Պատճենել ընթացիկ ռեժ.Ճանապարհ"/>
+				<Item CMDID="3" name="Տեղափոխել փաստաթուղթը"/>
+				<Item CMDID="10005" name="Տեղափոխել դեպի սկիզբ"/>
+				<Item CMDID="10006" name="Տեղափոխել մինչև վերջ"/>
+				<Item CMDID="10001" name="Տեղափոխել այլ տեսք"/>
+				<Item CMDID="10002" name="Կլոնավորել այլ դիտում"/>
+				<Item CMDID="10003" name="Տեղափոխել նոր օրինակ"/>
+				<Item CMDID="10004" name="Բացել նոր ատյանում"/>
+				<Item CMDID="4" name="Կիրառել գույնը ներդիրին"/>
+				<Item CMDID="44111" name="Կիրառել գույն 1"/>
+				<Item CMDID="44112" name="Կիրառել գույն 2"/>
+				<Item CMDID="44113" name="Կիրառել գույն 3"/>
+				<Item CMDID="44114" name="Կիրառել գույն 4"/>
+				<Item CMDID="44115" name="Կիրառել գույն 5"/>
+				<Item CMDID="44110" name="Հեռացնել գույնը"/>
+			</TabBar>
+			<TrayIcon>
+				<Item id="43101" name="Ակտիվացնել"/>
+				<Item id="43102" name="Նոր"/>
+				<Item id="43103" name="Նոր և տեղադրեք"/>
+				<Item id="43104" name="Բաց..."/>
+				<Item id="43013" name="Գտնել Ֆայլերում..."/>
+				<Item id="43105" name="Փակել սկուտեղի պատկերակը"/>
+			</TrayIcon>
+		</Menu>
+
+		<Dialog>
+			<Find title="" titleFind="Գտնել" titleReplace="Փոխարինել" titleFindInFiles="Գտնել ֆայլերում" titleFindInProjects="Գտնել նախագծերում" titleMark="Նշել">
+				<Item id="1" name="Գտնել հաջորդը"/>
+				<Item id="1722" name="Հետընթաց ուղղություն"/>
+				<Item id="2" name="Փակել"/>
+				<Item id="1620" name="Գտեք ինչ՝"/>
+				<Item id="1603" name="Համապատասխանեցրեք միայն ամբողջ բառը"/>
+				<Item id="1604" name="Լուցկի գործ"/>
+				<Item id="1605" name="Կանոնավոր արտահայտություն"/>
+				<Item id="1606" name="Փաթաթել շուրջը"/>
+				<Item id="1614" name="Հաշվել"/>
+				<Item id="1615" name="Նշել բոլորը"/>
+				<Item id="1616" name="Էջանիշի տող"/>
+				<Item id="1618" name="Մաքրում յուրաքանչյուր որոնման համար"/>
+				<Item id="1611" name="Փոխարինել հետևյալով`"/>
+				<Item id="1608" name="Փոխարինել"/>
+				<Item id="1609" name="Փոխարինել բոլորը"/>
+				<Item id="1687" name="Ուշադրության կորստի մասին"/>
+				<Item id="1688" name="Միշտ"/>
+				<Item id="1632" name="Ընտրության մեջ"/>
+				<Item id="1633" name="Մաքրել բոլոր նշանները"/>
+				<Item id="1635" name="Փոխարինել բոլոր բացված փաստաթղթերը"/>
+				<Item id="1636" name="Գտնել բոլորը բոլոր բացված փաստաթղթերում"/>
+				<Item id="1654" name="Զտիչներ՝"/>
+				<Item id="1655" name="տեղեկատու:"/>
+				<Item id="1656" name="Գտնել բոլորը"/>
+				<Item id="1658" name="Բոլոր ենթաթղթապանակներում"/>
+				<Item id="1659" name="Թաքնված թղթապանակներում"/>
+				<Item id="1624" name="Որոնման ռեժիմ"/>
+				<Item id="1625" name="Նորմալ"/>
+				<Item id="1626" name="Ընդլայնված (\n, \r, \t, \0, \x...)"/>
+				<Item id="1660" name="Փոխարինել ֆայլերում"/>
+				<Item id="1665" name="Փոխարինել նախագծերում"/>
+				<Item id="1662" name="Ծրագրի վահանակ 1"/>
+				<Item id="1663" name="Ծրագրի վահանակ 2"/>
+				<Item id="1664" name="Ծրագրի վահանակ 3"/>
+				<Item id="1641" name="Գտնել բոլորը ընթացիկ փաստաթղթում"/>
+				<Item id="1686" name="Թափանցիկություն"/>
+				<Item id="1703" name=".համապատասխանում է նոր տողին"/>
+				<Item id="1721" name="▲"/>
+				<Item id="1723" name="▼ Գտնել հաջորդը"/>
+				<Item id="1725" name="Պատճենել նշված տեքստը"/>
+				<Menu>
+					<Item id="1726" name="⇅ Փոխել Գտնել Փոխարինել"/>
+					<Item id="1727" name="⤵ Պատճենել Գտնել-ից փոխարինել"/>
+					<Item id="1728" name="⤴ Պատճենել Replace-ից գտնել"/>
+				</Menu>
+			</Find>
+
+			<IncrementalFind title="">
+				<Item id="1681" name="Գտնել՝"/>
+				<Item id="1685" name="Լուցկի գործ"/>
+				<Item id="1690" name="Նշեք բոլորը"/>
+			</IncrementalFind>
+
+			<FindCharsInRange title="Գտեք կերպարներ տիրույթում...">
+				<Item id="2" name="Փակել"/>
+				<Item id="2901" name="Ոչ ASCII նիշ (128–255)"/>
+				<Item id="2902" name="ASCII նիշ (0–127)"/>
+				<Item id="2903" name="Հատուկ միջակայք (0–255)՝"/>
+				<Item id="2906" name="Վերև"/>
+				<Item id="2907" name="Ներքև"/>
+				<Item id="2908" name="Ուղղություն"/>
+				<Item id="2909" name="Փաթաթել շուրջը"/>
+				<Item id="2910" name="Գտնել"/>
+			</FindCharsInRange>
+
+			<GoToLine title="Գնալ դեպի...">
+				<Item id="2007" name="Գիծ"/>
+				<Item id="2008" name="Օֆսեթ"/>
+				<Item id="1" name="Գնա"/>
+				<Item id="2" name="Ես ոչ մի տեղ չեմ գնում"/>
+				<Item id="2004" name="Դուք այստեղ եք՝"/>
+				<Item id="2005" name="Դուք ցանկանում եք գնալ."/>
+				<Item id="2006" name="Դուք չեք կարող ավելի հեռու գնալ, քան՝"/>
+			</GoToLine>
+
+			<Run title="Վազիր...">
+				<Item id="1903" name="Գործարկվող ծրագիրը"/>
+				<Item id="1" name="Վազել"/>
+				<Item id="2" name="Չեղարկել"/>
+				<Item id="1904" name="Պահպանել..."/>
+			</Run>
+
+			<MD5FromFilesDlg title="Ստեղծեք MD5 digest ֆայլերից">
+				<Item id="1922" name="Ընտրեք ֆայլեր MD5 ստեղծելու համար..."/>
+				<Item id="1924" name="Պատճենել սեղմատախտակին"/>
+				<Item id="2" name="Փակել"/>
+			</MD5FromFilesDlg>
+
+			<MD5FromTextDlg title="Ստեղծել MD5 մարսողություն">
+				<Item id="1932" name="Վերաբերվեք յուրաքանչյուր տողին որպես առանձին տողի"/>
+				<Item id="1934" name="Պատճենել սեղմատախտակին"/>
+				<Item id="2" name="Փակել"/>
+			</MD5FromTextDlg>
+
+			<SHA256FromFilesDlg title="Ստեղծեք SHA-256 digest ֆայլերից">
+				<Item id="1922" name="Ընտրեք ֆայլեր SHA-256 ստեղծելու համար..."/>
+				<Item id="1924" name="Պատճենել սեղմատախտակին"/>
+				<Item id="2" name="Փակել"/>
+			</SHA256FromFilesDlg>
+
+			<SHA256FromTextDlg title="Ստեղծել SHA-256 digest">
+				<Item id="1932" name="Վերաբերվեք յուրաքանչյուր տողին որպես առանձին տողի"/>
+				<Item id="1934" name="Պատճենել սեղմատախտակին"/>
+				<Item id="2" name="Փակել"/>
+			</SHA256FromTextDlg>
+
+			<SHA1FromFilesDlg title="Ստեղծեք SHA-1 digest ֆայլերից">
+				<Item id="1922" name="Ընտրեք ֆայլեր SHA-1 ստեղծելու համար..."/>
+				<Item id="1924" name="Պատճենել սեղմատախտակին"/>
+				<Item id="2" name="Փակել"/>
+			</SHA1FromFilesDlg>
+
+			<SHA1FromTextDlg title="Ստեղծել SHA-1 մարսողություն">
+				<Item id="1932" name="Վերաբերվեք յուրաքանչյուր տողին որպես առանձին տողի"/>
+				<Item id="1934" name="Պատճենել սեղմատախտակին"/>
+				<Item id="2" name="Փակել"/>
+			</SHA1FromTextDlg>
+
+			<SHA512FromFilesDlg title="Ստեղծեք SHA-512 digest ֆայլերից">
+				<Item id="1922" name="Ընտրեք ֆայլեր SHA-512 ստեղծելու համար..."/>
+				<Item id="1924" name="Պատճենել սեղմատախտակին"/>
+				<Item id="2" name="Փակել"/>
+			</SHA512FromFilesDlg>
+
+			<SHA512FromTextDlg title="Ստեղծել SHA-512 digest">
+				<Item id="1932" name="Վերաբերվեք յուրաքանչյուր տողին որպես առանձին տողի"/>
+				<Item id="1934" name="Պատճենել սեղմատախտակին"/>
+				<Item id="2" name="Փակել"/>
+			</SHA512FromTextDlg>
+			<PluginsAdminDlg title="Plugins Admin" titleAvailable="Available" titleUpdates="Updates" titleInstalled="Installed" titleIncompatible="Incompatible">
+				<ColumnPlugin name="Փլագին"/>
+				<ColumnVersion name="Տարբերակ"/>
+				<Item id="5501" name="Որոնում՝"/>
+				<Item id="5503" name="Տեղադրեք"/>
+				<Item id="5504" name="Թարմացնել"/>
+				<Item id="5505" name="Հեռացնել"/>
+				<Item id="5508" name="Հաջորդ"/>
+				<Item id="5509" name="Փլագինների ցանկի տարբերակ՝"/>
+				<Item id="5511" name="Պլագինների ցուցակի պահեստ"/>
+				<Item id="2" name="Փակել"/>
+			</PluginsAdminDlg>
+
+			<StyleConfig title="Style Configurator">
+				<Item id="2" name="Չեղարկել"/>
+				<Item id="2301" name="Պահպանել Փակել"/>
+				<Item id="2303" name="Թափանցիկություն"/>
+				<Item id="2306" name="Ընտրեք թեման՝"/>
+				<SubDialog>
+					<Item id="2204" name="Համարձակ"/>
+					<Item id="2205" name="Շեղ"/>
+					<Item id="2206" name="Առաջին պլանի գույնը"/>
+					<Item id="2207" name="Ֆոնի գույնը"/>
+					<Item id="2208" name="Տառատեսակի անվանումը՝"/>
+					<Item id="2209" name="Տառատեսակի չափը:"/>
+					<Item id="2211" name="Ոճ՝"/>
+					<Item id="2212" name="Գույնի ոճ"/>
+					<Item id="2213" name="Տառատեսակի ոճ"/>
+					<Item id="2214" name="Կանխադրված արտ.՝"/>
+					<Item id="2216" name="Օգտագործողի ներք.՝"/>
+					<Item id="2218" name="Ընդգծի՛ր"/>
+					<Item id="2219" name="Կանխադրված հիմնաբառեր"/>
+					<Item id="2221" name="Օգտագործողի կողմից սահմանված հիմնաբառեր"/>
+					<Item id="2225" name="Լեզու՝"/>
+					<Item id="2226" name="Պարտադիր առաջին պլանի գույնը բոլոր ոճերի համար"/>
+					<Item id="2227" name="Պարտադիր ֆոնի գույնը բոլոր ոճերի համար"/>
+					<Item id="2228" name="Հարկադիր տառատեսակի ընտրություն բոլոր ոճերի համար"/>
+					<Item id="2229" name="Ստիպել տառատեսակի չափի ընտրություն բոլոր ոճերի համար"/>
+					<Item id="2230" name="Ստիպել համարձակ ընտրություն բոլոր ոճերի համար"/>
+					<Item id="2231" name="Պարտադիր շեղ ընտրություն բոլոր ոճերի համար"/>
+					<Item id="2232" name="Ստիպել ընդգծված ընտրությունը բոլոր ոճերի համար"/>
+					<Item id="2234" name="Գնալ դեպի կարգավորումներ"/>
+					<!-- Don't translate "Global override" -->
+					<Item id="2235" name="Ի՞նչ է գլոբալ անտեսումը:"/>
+				</SubDialog>
+			</StyleConfig>
+
+			<ShortcutMapper title="Դյուրանցման քարտեզագրող">
+				<Item id="2602" name="Փոփոխել"/>
+				<Item id="2603" name="Ջնջել"/>
+				<Item id="2606" name="Մաքրել"/>
+				<Item id="2607" name="Զտիչ՝"/>
+				<Item id="1" name="Փակել"/>
+				<ColumnName name="Անունը"/>
+				<ColumnShortcut name="Դյուրանցում"/>
+				<ColumnCategory name="Կատեգորիա"/>
+				<ColumnPlugin name="Պլագին"/>
+				<MainMenuTab name="Հիմնական մենյու"/>
+				<MacrosTab name="Մակրոներ"/>
+				<RunCommandsTab name="Գործարկել հրամանները"/>
+				<PluginCommandsTab name="Plugin հրամաններ"/>
+				<ScintillaCommandsTab name="Scintilla հրամաններ"/>
+				<ConflictInfoOk name="Այս տարրի համար դյուրանցումների հակասություններ չկան:"/>
+				<ConflictInfoEditing name="Ոչ մի կոնֆլիկտ:.."/>
+				<AboutCategory name=""/>
+				<ModifyContextMenu name="-ի մասինՓոփոխել"/>
+				<DeleteContextMenu name="Ջնջել"/>
+				<ClearContextMenu name="Մաքրել"/>
+				<MainCommandNames>
+					<Item id="41019" name="Բացեք Explorer-ում պարունակող թղթապանակը"/>
+					<Item id="41020" name="Բացեք հրամանի տողում պարունակող պանակը"/>
+					<Item id="41021" name="Վերականգնել վերջին փակված ֆայլը"/>
+					<Item id="45001" name="EOL-ի փոխարկում Windows-ի (CR LF)"/>
+					<Item id="45002" name="EOL-ի փոխարկում Unix-ի (LF)"/>
+					<Item id="45003" name="EOL-ի փոխարկում Macintosh-ի (CR)"/>
+					<Item id="43022" name="Ոճացրեք բոլորը՝ օգտագործելով 1-ին ոճը"/>
+					<Item id="43024" name="Ոճավորեք բոլորը՝ օգտագործելով 2-րդ ոճը"/>
+					<Item id="43026" name="Ոճացրեք բոլորը՝ օգտագործելով 3-րդ ոճը"/>
+					<Item id="43028" name="Ոճավորեք բոլորը՝ օգտագործելով 4-րդ ոճը"/>
+					<Item id="43030" name="Ոճեք բոլորը՝ օգտագործելով 5-րդ ոճը"/>
+					<Item id="43062" name="Ոճ առաջին՝ օգտագործելով 1-ին ոճը"/>
+					<Item id="43063" name="Ոճ առաջին՝ օգտագործելով 2-րդ ոճը"/>
+					<Item id="43064" name="Ոճ առաջին՝ օգտագործելով 3-րդ ոճը"/>
+					<Item id="43065" name="Ոճ առաջին՝ օգտագործելով 4-րդ ոճը"/>
+					<Item id="43066" name="Ոճ առաջին՝ օգտագործելով 5-րդ ոճը"/>
+					<Item id="43023" name="Պարզ 1-ին ոճ"/>
+					<Item id="43025" name="Պարզ 2-րդ ոճ"/>
+					<Item id="43027" name="Պարզ 3-րդ ոճ"/>
+					<Item id="43029" name="Պարզ 4-րդ ոճ"/>
+					<Item id="43031" name="Պարզ 5-րդ ոճ"/>
+					<Item id="43032" name="Մաքրել բոլոր ոճերը"/>
+					<Item id="43033" name="1-ին ոճի նախորդ ոճը"/>
+					<Item id="43034" name="2-րդ ոճի նախորդ ոճ"/>
+					<Item id="43035" name="3-րդ ոճի նախորդ ոճ"/>
+					<Item id="43036" name="4-րդ ոճի նախորդ ոճը"/>
+					<Item id="43037" name="5-րդ ոճի նախորդ ոճը"/>
+					<Item id="43038" name="Find Mark ոճի նախորդ ոճը"/>
+					<Item id="43039" name="1-ին ոճի հաջորդ ոճը"/>
+					<Item id="43040" name="2-րդ ոճի հաջորդ ոճը"/>
+					<Item id="43041" name="3-րդ ոճի հաջորդ ոճը"/>
+					<Item id="43042" name="4-րդ ոճի հաջորդ ոճը"/>
+					<Item id="43043" name="5-րդ ոճի հաջորդ ոճը"/>
+					<Item id="43044" name="Find Mark ոճի հաջորդ ոճը"/>
+					<Item id="43055" name="Պատճենել 1-ին ոճի ոճավորված տեքստը"/>
+					<Item id="43056" name="Պատճենել 2-րդ ոճի ոճավորված տեքստը"/>
+					<Item id="43057" name="Պատճենել 3-րդ ոճի ոճավորված տեքստը"/>
+					<Item id="43058" name="Պատճենել 4-րդ ոճի ոճավորված տեքստը"/>
+					<Item id="43059" name="Պատճենել 5-րդ ոճի ոճավորված տեքստը"/>
+					<Item id="43060" name="Պատճենել ոճավորված տեքստը բոլոր ոճերի"/>
+					<Item id="43061" name="Պատճենել ոճավորված տեքստը Find Mark ոճով"/>
+					<Item id="44100" name="Դիտեք ընթացիկ ֆայլը Firefox-ում"/>
+					<Item id="44101" name="Դիտեք ընթացիկ ֆայլը Chrome-ում"/>
+					<Item id="44103" name="Դիտեք ընթացիկ ֆայլը IE-ում"/>
+					<Item id="44102" name="Դիտեք ընթացիկ ֆայլը Edge"/>
+					<Item id="50003" name="-ումԱնցում նախորդ փաստաթղթին"/>
+					<Item id="50004" name="Անցում հաջորդ փաստաթղթին"/>
+					<Item id="44051" name="Ծալովի մակարդակ 1"/>
+					<Item id="44052" name="Ծալովի մակարդակ 2"/>
+					<Item id="44053" name="Ծալել մակարդակ 3"/>
+					<Item id="44054" name="Ծալովի մակարդակ 4"/>
+					<Item id="44055" name="Ծալովի մակարդակ 5"/>
+					<Item id="44056" name="Ծալովի մակարդակ 6"/>
+					<Item id="44057" name="Ծալել մակարդակ 7"/>
+					<Item id="44058" name="Ծալել մակարդակ 8"/>
+					<Item id="44061" name="Բացահայտել Մակարդակ 1"/>
+					<Item id="44062" name="Բացահայտել մակարդակ 2"/>
+					<Item id="44063" name="Բացահայտել մակարդակ 3"/>
+					<Item id="44064" name="Բացահայտել մակարդակ 4"/>
+					<Item id="44065" name="Բացահայտել մակարդակ 5"/>
+					<Item id="44066" name="Բացահայտեք 6-րդ մակարդակը"/>
+					<Item id="44067" name="Բացահայտել 7-րդ մակարդակ"/>
+					<Item id="44068" name="Բացեք մակարդակ 8"/>
+					<Item id="44081" name="Փոխարկել Ծրագրի վահանակ 1"/>
+					<Item id="44082" name="Փոխարկել Ծրագրի վահանակ 2"/>
+					<Item id="44083" name="Փոխարկել Ծրագրի վահանակ 3"/>
+					<Item id="44085" name="Փոխարկել թղթապանակը որպես աշխատանքային տարածք"/>
+					<Item id="44080" name="Փոխարկել փաստաթղթի քարտեզը"/>
+					<Item id="44070" name="Փոխարկել Փաստաթղթերի ցանկը"/>
+					<Item id="44084" name="Փոխարկել գործառույթների ցանկը"/>
+					<Item id="50005" name="Միացնել մակրո ձայնագրությունը"/>
+					<Item id="44104" name="Անցնել Ծրագրի վահանակ 1"/>
+					<Item id="44105" name="Անցում Ծրագրի վահանակ 2"/>
+					<Item id="44106" name="Անցում Ծրագրի վահանակ 3"/>
+					<Item id="44107" name="Անցնել թղթապանակին որպես աշխատանքային տարածք"/>
+					<Item id="44109" name="Անցում Փաստաթղթերի ցանկին"/>
+					<Item id="44108" name="Անցնել գործառույթների ցանկին"/>
+					<Item id="44110" name="Հեռացնել ներդիրի գույնը"/>
+					<Item id="44111" name="Կիրառել ներդիրի գույնը 1"/>
+					<Item id="44112" name="Կիրառել ներդիրի գույնը 2"/>
+					<Item id="44113" name="Կիրառել ներդիրի գույնը 3"/>
+					<Item id="44114" name="Կիրառել ներդիրի գույնը 4"/>
+					<Item id="44115" name="Կիրառել ներդիրի գույնը 5"/>
+					<Item id="11002" name="Տեսակավորել ըստ A-ից Z անունների"/>
+					<Item id="11003" name="Տեսակավորել ըստ անվանման Z-ից A"/>
+					<Item id="11004" name="Դասավորել ըստ A-ից Z ճանապարհի"/>
+					<Item id="11005" name="Տեսակավորել ըստ Z-ից A ճանապարհի"/>
+					<Item id="11006" name="Տեսակավորել ըստ A-ից Z տեսակի"/>
+					<Item id="11007" name="Տեսակավորել ըստ Z տիպի A"/>
+					<Item id="11008" name="Դասավորել ըստ բովանդակության երկարության աճման"/>
+					<Item id="11009" name="Դասավորել ըստ բովանդակության երկարության նվազման"/>
+				</MainCommandNames>
+			</ShortcutMapper>
+			<ShortcutMapperSubDialg title="Դյուրանցում">
+				<Item id="1" name="Լավ"/>
+				<Item id="2" name="Չեղարկել"/>
+				<Item id="5006" name="Անունը"/>
+				<Item id="5008" name="Ավելացնել"/>
+				<Item id="5009" name="Հեռացնել"/>
+				<Item id="5010" name="Դիմել"/>
+				<Item id="5007" name="Սա կհեռացնի դյուրանցումը այս հրամանից"/>
+				<Item id="5012" name="ՀԱԿԱՄԱՐՏՈՒԹՅՈՒՆԸ ԳՏՆՎԵԼ Է."/>
+			</ShortcutMapperSubDialg>
+			<UserDefine title="Օգտագործողի կողմից սահմանված">
+				<Item id="20001" name="Դոկ"/>
+				<Item id="20002" name="Վերանվանել"/>
+				<Item id="20003" name="Ստեղծել նոր..."/>
+				<Item id="20004" name="Հեռացնել"/>
+				<Item id="20005" name="Պահպանել որպես..."/>
+				<Item id="20007" name="Օգտագործողի լեզուն"/>
+				<Item id="20009" name="Լր.՝"/>
+				<Item id="20012" name="Անտեսել գործը"/>
+				<Item id="20011" name="Թափանցիկություն"/>
+				<Item id="20015" name="Ներմուծում..."/>
+				<Item id="20016" name="Արտահանել..."/>
+				<Item id="20017" name="Ապակապել"/>
+				<StylerDialog title="Styler Dialog">
+					<Item id="25030" name="Տառատեսակի ընտրանքներ"/>
+					<Item id="25006" name="Առաջին պլանի գույնը"/>
+					<Item id="25007" name="Ֆոնի գույնը"/>
+					<Item id="25031" name="Անունը՝"/>
+					<Item id="25032" name="Չափս՝"/>
+					<Item id="25001" name="Համարձակ"/>
+					<Item id="25002" name="Շեղագիր"/>
+					<Item id="25003" name="Ընդգծի՛ր"/>
+					<Item id="25029" name="Բնադրում"/>
+					<Item id="25008" name="Սահմանազատող 1"/>
+					<Item id="25009" name="Սահմանազատող 2"/>
+					<Item id="25010" name="Սահմանազատող 3"/>
+					<Item id="25011" name="Սահմանազատող 4"/>
+					<Item id="25012" name="Սահմանազատող 5"/>
+					<Item id="25013" name="Սահմանազատող 6"/>
+					<Item id="25014" name="Սահմանազատող 7"/>
+					<Item id="25015" name="Սահմանազատող 8"/>
+					<Item id="25018" name="Հիմնաբառ 1"/>
+					<Item id="25019" name="Հիմնաբառ 2"/>
+					<Item id="25020" name="Հիմնաբառ 3"/>
+					<Item id="25021" name="Հիմնաբառ 4"/>
+					<Item id="25022" name="Հիմնաբառ 5"/>
+					<Item id="25023" name="Հիմնաբառ 6"/>
+					<Item id="25024" name="Հիմնաբառ 7"/>
+					<Item id="25025" name="Հիմնաբառ 8"/>
+					<Item id="25016" name="Մեկնաբանություն"/>
+					<Item id="25017" name="Մեկնաբանության տող"/>
+					<Item id="25026" name="Օպերատոր 1"/>
+					<Item id="25027" name="Օպերատոր 2"/>
+					<Item id="25028" name="Համարներ"/>
+					<Item id="25033" name="Թափանցիկ"/>
+					<Item id="25034" name="Թափանցիկ"/>
+					<Item id="1" name="Լավ"/>
+					<Item id="2" name="Չեղարկել"/>
+				</StylerDialog>
+				<Folder title="Թղթապանակի լռելյայն">
+					<Item id="21101" name="Կանխադրված ոճ"/>
+					<Item id="21102" name="ոճավորող"/>
+					<Item id="21103" name="Օգտատիրոջ կողմից սահմանված լեզուների առցանց օգնություն"/>
+					<Item id="21105" name="Փաստաթղթեր"/>
+					<Item id="21106" name="Ծալեք կոմպակտ (ծալեք նաև դատարկ գծերը)"/>
+					<Item id="21220" name="Ծալովի կոդ 1 ոճով"/>
+					<Item id="21224" name="Բաց՝"/>
+					<Item id="21225" name="Միջին`"/>
+					<Item id="21226" name="Փակել՝"/>
+					<Item id="21227" name="ոճավորող"/>
+					<Item id="21320" name="Ծալովի կոդ 2 ոճով (անհրաժեշտ են բաժանիչներ)"/>
+					<Item id="21324" name="Բացել:"/>
+					<Item id="21325" name="Միջին`"/>
+					<Item id="21326" name="Փակել՝"/>
+					<Item id="21327" name="ոճավորող"/>
+					<Item id="21420" name="Ծալովի մեկնաբանության ոճով"/>
+					<Item id="21424" name="Բաց՝"/>
+					<Item id="21425" name="Միջին`"/>
+					<Item id="21426" name="Փակել՝"/>
+					<Item id="21427" name="ոճավորող"/>
+				</Folder>
+				<Keywords title="Հիմնաբառերի ցուցակներ">
+					<Item id="22101" name="1-ին խումբ"/>
+					<Item id="22201" name="2-րդ խումբ"/>
+					<Item id="22301" name="3-րդ խումբ"/>
+					<Item id="22401" name="4-րդ խումբ"/>
+					<Item id="22451" name="5-րդ խումբ"/>
+					<Item id="22501" name="6-րդ խումբ"/>
+					<Item id="22551" name="7-րդ խումբ"/>
+					<Item id="22601" name="8-րդ խումբ"/>
+					<Item id="22121" name="Նախածանցային ռեժիմ"/>
+					<Item id="22221" name="Նախածանցային ռեժիմ"/>
+					<Item id="22321" name="Նախածանցային ռեժիմ"/>
+					<Item id="22421" name="Նախածանցային ռեժիմ"/>
+					<Item id="22471" name="Նախածանցային ռեժիմ"/>
+					<Item id="22521" name="Նախածանցային ռեժիմ"/>
+					<Item id="22571" name="Նախածանցային ռեժիմ"/>
+					<Item id="22621" name="Նախածանցային ռեժիմ"/>
+					<Item id="22122" name="ոճավորող"/>
+					<Item id="22222" name="ոճավորող"/>
+					<Item id="22322" name="ոճավորող"/>
+					<Item id="22422" name="ոճավորող"/>
+					<Item id="22472" name="ոճավորող"/>
+					<Item id="22522" name="ոճավորող"/>
+					<Item id="22572" name="ոճավորող"/>
+					<Item id="22622" name="ոճավորող"/>
+				</Keywords>
+				<Comment title="Մեկնաբանության համարը">
+					<Item id="23003" name="Տողի մեկնաբանության դիրքը"/>
+					<Item id="23004" name="Թույլատրել ցանկացած վայրում"/>
+					<Item id="23005" name="Ուժը տողի սկզբում"/>
+					<Item id="23006" name="Թույլատրել նախորդ բացատը"/>
+					<Item id="23001" name="Թույլատրել մեկնաբանությունների ծալում"/>
+					<Item id="23326" name="ոճավորող"/>
+					<Item id="23323" name="Բացել"/>
+					<Item id="23324" name="Շարունակել նիշը"/>
+					<Item id="23325" name="Փակել"/>
+					<Item id="23301" name="Մեկնաբանության տողի ոճը"/>
+					<Item id="23124" name="ոճավորող"/>
+					<Item id="23122" name="Բացել"/>
+					<Item id="23123" name="Փակել"/>
+					<Item id="23101" name="Մեկնաբանության ոճը"/>
+					<Item id="23201" name="Թվի ոճը"/>
+					<Item id="23220" name="ոճավորող"/>
+					<Item id="23230" name="Նախածանց 1"/>
+					<Item id="23232" name="Նախածանց 2"/>
+					<Item id="23234" name="Լրացուցիչ 1"/>
+					<Item id="23236" name="Լրացուցիչ 2"/>
+					<Item id="23238" name="վերջածանց 1"/>
+					<Item id="23240" name="վերջածանց 2"/>
+					<Item id="23242" name="Շրջանակ՝"/>
+					<Item id="23244" name="Տասնորդական բաժանարար"/>
+					<Item id="23245" name="Կետ"/>
+					<Item id="23246" name="Ստորակետ"/>
+					<Item id="23247" name="Երկուսն էլ"/>
+				</Comment>
+				<Operator title="Օպերատորների սահմանազատող">
+					<Item id="24101" name="Օպերատորների ոճը"/>
+					<Item id="24113" name="ոճավորող"/>
+					<Item id="24116" name="Օպերատորներ 1"/>
+					<Item id="24117" name="Օպերատորներ 2 (պահանջվում են տարանջատիչներ)"/>
+					<Item id="24201" name="Սահմանազատող 1 ոճ"/>
+					<Item id="24220" name="Բաց՝"/>
+					<Item id="24221" name="Փախուստ՝"/>
+					<Item id="24222" name="Փակել՝"/>
+					<Item id="24223" name="ոճավորող"/>
+					<Item id="24301" name="Սահմանազատող 2 ոճ"/>
+					<Item id="24320" name="Բաց՝"/>
+					<Item id="24321" name="Փախուստ՝"/>
+					<Item id="24322" name="Փակել՝"/>
+					<Item id="24323" name="ոճավորող"/>
+					<Item id="24401" name="Սահմանազատող 3 ոճ"/>
+					<Item id="24420" name="Բաց՝"/>
+					<Item id="24421" name="Փախուստ՝"/>
+					<Item id="24422" name="Փակել:"/>
+					<Item id="24423" name="ոճավորող"/>
+					<Item id="24451" name="Սահմանազատող 4 ոճ"/>
+					<Item id="24470" name="Բաց՝"/>
+					<Item id="24471" name="Փախուստ՝"/>
+					<Item id="24472" name="Փակել՝"/>
+					<Item id="24473" name="ոճավորող"/>
+					<Item id="24501" name="Սահմանազատող 5 ոճ"/>
+					<Item id="24520" name="Բաց՝"/>
+					<Item id="24521" name="Փախուստ՝"/>
+					<Item id="24522" name="Փակել՝"/>
+					<Item id="24523" name="ոճավորող"/>
+					<Item id="24551" name="Սահմանազատող 6 ոճ"/>
+					<Item id="24570" name="Բաց՝"/>
+					<Item id="24571" name="Փախուստ՝"/>
+					<Item id="24572" name="Փակել՝"/>
+					<Item id="24573" name="ոճավորող"/>
+					<Item id="24601" name="Սահմանազատող 7 ոճ"/>
+					<Item id="24620" name="Բաց՝"/>
+					<Item id="24621" name="Փախուստ՝"/>
+					<Item id="24622" name="Փակել:"/>
+					<Item id="24623" name="ոճավորող"/>
+					<Item id="24651" name="Սահմանազատող 8 ոճ"/>
+					<Item id="24670" name="Բաց՝"/>
+					<Item id="24671" name="Փախուստ՝"/>
+					<Item id="24672" name="Փակել՝"/>
+					<Item id="24673" name="ոճավորող"/>
+				</Operator>
+			</UserDefine>
+			<Preference title="Նախապատվություններ">
+				<Item id="6001" name="Փակել"/>
+				<Global title="Ընդհանուր">
+					<Item id="6123" name="Տեղայնացում"/>
+					<Item id="6131" name="Մենյու"/>
+					<Item id="6122" name="Թաքցնել (փոխարկելու համար օգտագործեք Alt կամ F10 ստեղնը)"/>
+					<Item id="6132" name="Թաքցնել աջ դյուրանցումները ＋ ▼ ✕"/>
+					<Item id="6133" name="Կարգավիճակի բար"/>
+					<Item id="6134" name="Թաքցնել"/>
+				</Global>
+
+				<Toolbar title="Գործիքադարակի">
+					<Item id="6102" name="Թաքցնել"/>
+					<Item id="6103" name="Սահուն UI՝ փոքր"/>
+					<Item id="6104" name="Սահուն UI՝ մեծ"/>
+					<Item id="6129" name="Լրացված Fluent UI՝ փոքր"/>
+					<Item id="6130" name="Լրացված Fluent UI՝ մեծ"/>
+					<Item id="6105" name="Ստանդարտ պատկերակներ՝ փոքր"/>
+					<Item id="6011" name="Գունավորում"/>
+					<Item id="6012" name="Ամբողջական"/>
+					<Item id="6013" name="Մասնակի"/>
+					<Item id="6014" name="Գույնի ընտրություն"/>
+					<Item id="6015" name="Կանխադրված"/>
+					<Item id="6016" name="Կարմիր"/>
+					<Item id="6017" name="Կանաչ"/>
+					<Item id="6018" name="Կապույտ"/>
+					<Item id="6019" name="Մանուշակագույն"/>
+					<Item id="6020" name="Cyan"/>
+					<Item id="6021" name="Ձիթապտղի"/>
+					<Item id="6022" name="Դեղին"/>
+					<Item id="6023" name="Համակարգի շեշտը"/>
+					<Item id="6024" name="Պատվերով"/>
+				</Toolbar>
+
+				<Tabbar title="Ներդիրի բար">
+					<Item id="6107" name="Նվազեցնել"/>
+					<Item id="6108" name="Կողպեք (առանց քաշելու և թողնելու)"/>
+					<Item id="6109" name="Փոխել ոչ ակտիվ ներդիրի գույնը"/>
+					<Item id="6110" name="Ակտիվ ներդիրի վրա նկարեք գունավոր գիծ"/>
+					<Item id="6111" name="Ցույց տալ կոճակները ոչ ակտիվ ներդիրների վրա"/>
+					<Item id="6112" name="Ցույց տալ փակման կոճակը"/>
+					<Item id="6113" name="Փաստաթուղթը փակելու համար կրկնակի սեղմեք"/>
+					<Item id="6115" name="Միացնել փին ներդիրի հատկությունը"/>
+					<Item id="6135" name="Ցույց տալ միայն ամրացված կոճակը"/>
+					<Item id="6118" name="Թաքցնել"/>
+					<Item id="6119" name="Բազմագիծ"/>
+					<Item id="6120" name="Ուղղահայաց"/>
+					<Item id="6121" name="Ելք փակելով վերջին ներդիրը"/>
+					<Item id="6128" name="Այլընտրանքային պատկերակներ"/>
+					<Item id="6125" name="Վարքագիծ"/>
+					<Item id="6126" name="Նայեք զգում"/>
+					<Item id="6136" name="Մաքս.ներդիրի պիտակի երկարությունը՝"/>
+				</Tabbar>
+
+				<Scintillas title="Խմբագրում 1">
+					<Item id="6216" name="Կարետի կարգավորումներ"/>
+					<Item id="6217" name="Լայնություն՝"/>
+					<Item id="6219" name="Թարթման արագությունը՝"/>
+					<Item id="6221" name="Զ"/>
+					<Item id="6222" name="Ս"/>
+					<Item id="6246" name="Ընթացիկ մակարդակի ծալովի/բացվող հրամանները դարձրեք փոխարկվող"/>
+					<Item id="6227" name="Գծի փաթաթում"/>
+					<Item id="6228" name="Կանխադրված"/>
+					<Item id="6229" name="Հավասարեցված"/>
+					<Item id="6230" name="Նահանջ"/>
+					<Item id="6234" name="Անջատել առաջադեմ ոլորման հնարավորությունը՝ հպման վահանակի խնդրի պատճառով"/>
+					<Item id="6215" name="Միացնել հարթ տառատեսակը"/>
+					<Item id="6236" name="Միացնել ոլորումը վերջին տողից այն կողմ"/>
+					<Item id="6239" name="Պահպանեք ընտրությունը, երբ աջ սեղմում եք ընտրվածից դուրս"/>
+					<Item id="6245" name="Միացնել վիրտուալ տարածքը"/>
+					<Item id="6214" name="Միացնել Copy/Cut Line առանց ընտրության"/>
+					<Item id="6225" name="Կիրառել հատուկ գույն ընտրված տեքստի առաջին պլանում"/>
+					<Item id="6651" name="Ընթացիկ գծի ցուցիչ"/>
+					<Item id="6652" name="Ոչ մի"/>
+					<Item id="6653" name="Ընդգծեք ֆոնը"/>
+					<Item id="6654" name="Շրջանակ"/>
+					<Item id="6655" name="Լայնություն՝"/>
+				</Scintillas>
+
+				<Scintillas2 title="Խմբագրում 2">
+					<Item id="6521" name="Բազմ խմբագրում"/>
+					<Item id="6522" name="Միացնել բազմակի խմբագրումը (Ctrl+Մկնիկի սեղմում/ընտրություն)"/>
+					<Item id="6523" name="Միացնել սյունակների ընտրությունը բազմակի խմբագրման"/>
+					<Item id="6247" name="EOL (CRLF)"/><!-- Don't translate "(CRLF)" -->
+					<Item id="6248" name="Կանխադրված"/>
+					<Item id="6249" name="Պարզ տեքստ"/>
+					<Item id="6250" name="Պատվերով գույն"/>
+					<Item id="6252" name="Չտպող կերպարներ"/>
+					<Item id="6260" name="Արտաքին տեսք"/>
+					<Item id="6254" name="հապավումը"/>
+					<Item id="6255" name="Կոդակետ"/>
+					<Item id="6256" name="Պատվերով գույն"/>
+					<Item id="6258" name="Կիրառել արտաքին տեսքի կարգավորումները C0, C1 Unicode EOL"/>
+					<Item id="6259" name="Կանխել կառավարման նիշի (C0 կոդը) մուտքագրումը փաստաթղթում"/>
+				</Scintillas2>
+
+				<DarkMode title="Մութ ռեժիմ">
+					<Item id="7131" name="Լույսի ռեժիմ"/>
+					<Item id="7132" name="Մութ ռեժիմ"/>
+					<Item id="7133" name="Հետևեք Windows-ին"/>
+					<Item id="7102" name="Սև"/>
+					<Item id="7103" name="Կարմիր"/>
+					<Item id="7104" name="Կանաչ"/>
+					<Item id="7105" name="Կապույտ"/>
+					<Item id="7107" name="Մանուշակագույն"/>
+					<Item id="7108" name="Cyan"/>
+					<Item id="7109" name="Ձիթապտղի"/>
+					<Item id="7115" name="Անհատականացված"/>
+					<Item id="7116" name="Բովանդակության նախապատմություն"/>
+					<Item id="7117" name="Hot track նյութ"/>
+					<Item id="7118" name="Վերահսկիչ ֆոն"/>
+					<Item id="7119" name="Երկխոսության ֆոն"/>
+					<Item id="7120" name="Սխալ"/>
+					<Item id="7121" name="Տեքստ"/>
+					<Item id="7122" name="Ավելի մուգ տեքստ"/>
+					<Item id="7123" name="Անջատված տեքստ"/>
+					<Item id="7124" name="Ծայր"/>
+					<Item id="7125" name="Հղում"/>
+					<Item id="7126" name="Եզրային ընդգծում"/>
+					<Item id="7127" name="Եզրն անջատված է"/>
+					<Item id="7130" name="Վերականգնել"/>
+					<Item id="7135" name="Տոններ"/>
+				</DarkMode>
+
+				<MarginsBorderEdge title="Լուսանցքներ/Սահման/Եզր">
+					<Item id="6201" name="Fold Margin Style"/>
+					<Item id="6202" name="Պարզ"/>
+					<Item id="6203" name="Սլաք"/>
+					<Item id="6204" name="Շրջանակի ծառ"/>
+					<Item id="6205" name="Տուփի ծառ"/>
+					<Item id="6226" name="Ոչ մի"/>
+					<Item id="6291" name="Տողի համարը"/>
+					<Item id="6206" name="Ցուցադրել"/>
+					<Item id="6292" name="Դինամիկ լայնություն"/>
+					<Item id="6293" name="Մշտական ​​լայնություն"/>
+					<Item id="6207" name="Ցուցադրել էջանիշ"/>
+					<Item id="6295" name="Փոփոխությունների պատմություն"/>
+					<Item id="6223" name="Ցույց տալ լուսանցքում"/>
+					<Item id="6296" name="Ցույց տալ տեքստում"/>
+					<Item id="6211" name="Ուղղահայաց եզրերի կարգավորումներ"/>
+					<Item id="6213" name="Ֆոնային ռեժիմ"/>
+					<Item id="6231" name="Սահմանի լայնությունը"/>
+					<Item id="6235" name="Եզր չկա"/>
+					<Item id="6208" name="Լիցք"/>
+					<Item id="6209" name="Ձախ"/>
+					<Item id="6210" name="Ճիշտ է"/>
+					<Item id="6212" name="Ազատ շեղում"/>
+				</MarginsBorderEdge>
+
+				<NewDoc title="Նոր փաստաթուղթ">
+					<Item id="6401" name="Ձևաչափ (Տողի վերջավորություն)"/>
+					<Item id="6402" name="Windows (CR LF)"/>
+					<Item id="6403" name="Unix (LF)"/>
+					<Item id="6404" name="Macintosh (CR)"/>
+					<Item id="6405" name="Կոդավորում"/>
+					<Item id="6406" name="ANSI"/>
+					<Item id="6407" name="UTF-8"/>
+					<Item id="6408" name="UTF-8 BOM-ով"/>
+					<Item id="6409" name="UTF-16 Big Endian BOM-ով"/>
+					<Item id="6410" name="UTF-16 Փոքրիկ Էնդիանը BOM-ով"/>
+					<Item id="6411" name="Լռելյայն լեզու՝"/>
+					<Item id="6419" name="Նոր փաստաթուղթ"/>
+					<Item id="6420" name="Կիրառել բացված ANSI ֆայլերին"/>
+					<Item id="6432" name="Միշտ բացեք նոր փաստաթուղթ` ի լրումն գործարկման"/>
+					<Item id="6433" name="Օգտագործեք փաստաթղթի առաջին տողը որպես անվերնագիր ներդիրի անուն"/>
+				</NewDoc>
+
+				<DefaultDir title="Կանխադրված տեղեկատու">
+					<Item id="6413" name="Կանխադրված Բացել/Պահպանել ֆայլի տեղեկատու"/>
+					<Item id="6414" name="Հետևեք ընթացիկ փաստաթղթին"/>
+					<Item id="6415" name="Հիշել վերջին օգտագործված գրացուցակը"/>
+					<Item id="6431" name="Բացեք թղթապանակի բոլոր ֆայլերը՝ Թղթապանակը որպես աշխատանքային տարածք գործարկելու փոխարեն թղթապանակը թողնելով"/>
+				</DefaultDir>
+
+				<FileAssoc title="Ֆայլերի ասոցիացիա">
+					<Item id="4008" name="Խնդրում ենք դուրս գալ Notepad++-ից և վերագործարկել Notepad++-ը Ադմինիստրատոր ռեժիմում՝ այս գործառույթն օգտագործելու համար:"/>
+					<Item id="4009" name="Աջակցվող ընդարձակումներ՝"/>
+					<Item id="4010" name="Գրանցված ընդարձակումներ՝"/>
+				</FileAssoc>
+
+
+				<Language title="Լեզու">
+					<Item id="6505" name="Առկա ապրանքներ"/>
+					<Item id="6506" name="Հաշմանդամ առարկաներ"/>
+					<Item id="6507" name="Լեզվի ընտրացանկը կոմպակտ դարձնել"/>
+					<Item id="6508" name="Լեզվի ընտրացանկ"/>
+					<Item id="6335" name="Վերաբերվեք հետշեղը որպես SQL"/>
+				</Language>
+
+				<Indentation title="փախուստի նշանՆեղացում">
+					<Item id="7161" name="Ավտոմատ նահանջ"/>
+					<Item id="7162" name="Ոչ մի"/>
+					<Item id="7163" name="Հիմնական"/>
+					<Item id="7164" name="Ընդլայնված"/>
+					<Item id="6301" name="Նահանջի կարգավորումներ"/>
+					<Item id="6302" name="Տիեզերական նիշ(ներ)"/>
+					<Item id="6303" name="Նահանջի չափը:"/>
+					<Item id="6310" name="Նահանջ օգտագործելով՝"/>
+					<Item id="6311" name="Ներդիրի նիշ"/>
+					<Item id="6510" name="Օգտագործեք լռելյայն արժեքը"/>
+					<Item id="6512" name="Backspace ստեղնը հանվում է մեկ բացատը հեռացնելու փոխարեն"/>
+				</Indentation>
+
+				<Highlighting title="Ընդգծելով">
+					<Item id="6351" name="Style Token-ի բոլոր դեպքերը"/>
+					<Item id="6352" name="Լուցկի գործ"/>
+					<Item id="6353" name="Համապատասխանեցրեք միայն ամբողջ բառը"/>
+					<Item id="6333" name="Խելացի ընդգծում"/>
+					<Item id="6326" name="Միացնել"/>
+					<Item id="6354" name="Համապատասխանեցում"/>
+					<Item id="6332" name="Լուցկի գործ"/>
+					<Item id="6338" name="Համապատասխանեցրեք միայն ամբողջ բառը"/>
+					<Item id="6339" name="Օգտագործեք Գտնել երկխոսության կարգավորումները"/>
+					<Item id="6340" name="Ընդգծեք մեկ այլ տեսակետ"/>
+					<Item id="6329" name="Նշեք համապատասխանող պիտակները"/>
+					<Item id="6327" name="Միացնել"/>
+					<Item id="6328" name="Նշեք պիտակի ատրիբուտները"/>
+					<Item id="6330" name="Նշեք մեկնաբանությունը/php/asp գոտին"/>
+				</Highlighting>
+
+				<Print title="Տպել">
+					<Item id="6601" name="Տպել տողի համարը"/>
+					<Item id="6602" name="Գույնի ընտրանքներ"/>
+					<Item id="6603" name="WYSIWYG"/>
+					<Item id="6604" name="Շրջել"/>
+					<Item id="6605" name="Սև սպիտակի վրա"/>
+					<Item id="6606" name="Ֆոնի գույն չկա"/>
+					<Item id="6607" name="Լուսանցքի կարգավորումներ (միավոր: մմ)"/>
+					<Item id="6612" name="Ձախ"/>
+					<Item id="6613" name="Վերև"/>
+					<Item id="6614" name="Իրավունք"/>
+					<Item id="6615" name="Ներքևի"/>
+					<Item id="6706" name="Համարձակ"/>
+					<Item id="6707" name="Շեղ"/>
+					<Item id="6708" name="Վերնագիր"/>
+					<Item id="6709" name="Ձախ մաս"/>
+					<Item id="6710" name="Միջին մաս"/>
+					<Item id="6711" name="Աջ մաս"/>
+					<Item id="6717" name="Համարձակ"/>
+					<Item id="6718" name="Շեղ"/>
+					<Item id="6719" name="Ստորագիր"/>
+					<Item id="6720" name="Ձախ մաս"/>
+					<Item id="6721" name="Միջին մաս"/>
+					<Item id="6722" name="Աջ մաս"/>
+					<Item id="6723" name="Ավելացնել"/>
+					<ComboBox id="6724">
+						<Element name="Ֆայլի ամբողջական անվան ուղին"/>
+						<Element name="Ֆայլի անվանումը"/>
+						<Element name="Ֆայլերի տեղեկատու"/>
+						<Element name="Էջ"/>
+						<Element name="Կարճ ամսաթվի ձևաչափ"/>
+						<Element name="Երկար ամսաթվի ձևաչափ"/>
+						<Element name="Ժամանակը"/>
+					</ComboBox>
+					<Item id="6725" name="Փոփոխական՝"/>
+					<Item id="6727" name="Այստեղ ցուցադրեք ձեր փոփոխական պարամետրերը"/>
+					<Item id="6728" name="Վերնագիր և ստորագիր"/>
+				</Print>
+
+				<Searching title="Որոնում">
+					<Item id="6902" name="Գտնել երկխոսության մեջ օգտագործեք monospace տառատեսակ (Անհրաժեշտ է վերագործարկել Notepad++)"/>
+					<Item id="6903" name="Որոնումից հետո «Գտնել» երկխոսությունը բաց է մնում"/>
+					<Item id="6904" name="Հաստատեք Փոխարինել բոլորը բոլոր բացված փաստաթղթերում"/>
+					<Item id="6905" name="Փոխարինել. Մի անցեք հետևյալ երևույթին"/>
+					<Item id="6906" name="Որոնման արդյունքների պատուհան. հնարավորության դեպքում ցուցադրեք միայն մեկ մուտք յուրաքանչյուր գտնված տողում"/>
+					<Item id="6907" name="Երբ «Գտնել» երկխոսությունը կանչվում է"/>
+					<Item id="6908" name="Լրացրեք Գտեք դաշտը ընտրված տեքստով"/>
+					<Item id="6909" name="Ընտրեք Word Under Caret, երբ ոչինչ ընտրված չէ"/>
+					<Item id="6910" name="«Ընտրության մեջ» ավտոմատ ստուգման նվազագույն չափը՝"/>
+					<Item id="6913" name="Լրացրեք Գտնել ֆայլերի գրացուցակի դաշտը՝ հիմնված ակտիվ փաստաթղթի վրա"/>
+					<Item id="6916" name=": Առավելագույն նիշերը՝ ինքնալրացնելու համար Գտնել դաշտը ընտրվածից"/>
+				</Searching>
+
+				<RecentFilesHistory title="Վերջին ֆայլերի պատմություն">
+					<Item id="6304" name="Վերջին ֆայլերի պատմություն"/>
+					<Item id="6306" name="Մաքս.գրառումների քանակը՝"/>
+					<Item id="6305" name="Մի ստուգեք գործարկման ժամանակ"/>
+					<Item id="6429" name="Ցուցադրել"/>
+					<Item id="6424" name="Ենթամենյուում"/>
+					<Item id="6425" name="Միայն ֆայլի անունը"/>
+					<Item id="6426" name="Ամբողջական ֆայլի անվան ուղի"/>
+					<Item id="6427" name="Անհատականացրեք առավելագույն երկարությունը՝"/>
+				</RecentFilesHistory>
+
+				<Backup title="Կրկնօրինակում">
+					<Item id="6817" name="Նիստի պատկերը և պարբերական կրկնօրինակում"/>
+					<Item id="6818" name="Միացնել աշխատաշրջանի պատկերը և պարբերական պահուստավորումը"/>
+					<Item id="6819" name="Գործարկեք կրկնօրինակում յուրաքանչյուր"/>
+					<Item id="6821" name="փոփոխության դեպքումվայրկյան"/>
+					<Item id="6822" name="Պահուստային ուղի`"/>
+					<Item id="6309" name="Հիշեք ընթացիկ նիստը հաջորդ գործարկման համար"/>
+					<Item id="6825" name="Հիշել անհասանելի ֆայլերը անցյալ նստաշրջանից"/>
+					<Item id="6801" name="Պահուստավորում պահելու դեպքում"/>
+					<Item id="6315" name="Ոչ մի"/>
+					<Item id="6316" name="Պարզ կրկնօրինակում"/>
+					<Item id="6317" name="Բազմակողմանի կրկնօրինակում"/>
+					<Item id="6804" name="Պատվերով պահուստավորման գրացուցակ"/>
+					<Item id="6803" name="տեղեկատու՝"/>
+				</Backup>
+
+				<AutoCompletion title="Ավտոմատ լրացում">
+					<Item id="6807" name="Ավտոմատ լրացում"/>
+					<Item id="6808" name="Միացնել ավտոմատ լրացումը յուրաքանչյուր մուտքագրում"/>
+					<Item id="6809" name="Ֆունկցիայի ավարտը"/>
+					<Item id="6810" name="Բառի լրացում"/>
+					<Item id="6816" name="Գործառույթը և բառի լրացումը"/>
+					<Item id="6869" name="Տեղադրեք ընտրություն"/>
+					<Item id="6870" name="TAB"/><!-- TAB key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6871" name="ՄՏՆԵԼ"/><!-- ENTER key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6824" name="Անտեսել թվերը"/>
+					<Item id="6811" name="Սկսած"/>
+					<Item id="6813" name="րդ նիշը"/>
+					<Item id="6872" name="Ավտոմատ լրացման ցուցակը դարձնել համառոտ"/>
+					<Item id="6815" name="Ֆունկցիայի պարամետրերը հուշում են մուտքագրման վրա"/>
+					<Item id="6851" name="Ավտոմատ տեղադրում"/>
+					<Item id="6857" name="html/xml փակել պիտակը"/>
+					<Item id="6858" name="Բացել"/>
+					<Item id="6859" name="Փակել"/>
+					<Item id="6860" name="Համապատասխանեցված զույգ 1:"/>
+					<Item id="6863" name="Համապատասխանեցված զույգ 2՝"/>
+					<Item id="6866" name="Համապատասխանեցված զույգ 3՝"/>
+				</AutoCompletion>
+
+				<MultiInstance title="Բազմաթիվ Ամսաթիվ">
+					<Item id="6151" name="Բազմատյանների կարգավորումներ *"/>
+					<Item id="6152" name="Բացեք նիստը նոր օրինակում (և ավտոմատ կերպով պահեք նիստը ելքի ժամանակ)"/>
+					<Item id="6153" name="Միշտ բազմատյան ռեժիմում"/>
+					<Item id="6154" name="Կանխադրված (մոնո-ատյան)"/>
+					<Item id="6155" name="* Այս պարամետրի փոփոխությունը պետք է վերագործարկի Notepad++"/>
+					<Item id="6171" name="Անհատականացրեք ներդիրը Ամսաթիվ Ժամ"/>
+					<Item id="6175" name="Հակադարձել լռելյայն ամսաթվի ժամանակի կարգը (կարճ երկար ձևաչափեր)"/>
+					<Item id="6172" name="Հատուկ ձևաչափ՝"/>
+					<Item id="6181" name="Վահանակի վիճակը և [- nosession] *"/>
+					<Item id="6182" name="Հիշեք վահանակի վիճակը (վահանակը բաց է) այլ դեպքերում (բազմատյան ռեժիմ) կամ հրամանի տողի պարամետրը օգտագործելիս [-nosession]"/>
+					<Item id="6183" name="Clipboard պատմություն"/>
+					<Item id="6184" name="Փաստաթղթերի ցանկ"/>
+					<Item id="6185" name="Նիշերի վահանակ"/>
+					<Item id="6186" name="Թղթապանակը որպես աշխատանքային տարածք"/>
+					<Item id="6187" name="Ծրագրի վահանակներ"/>
+					<Item id="6188" name="Փաստաթղթի քարտեզ"/>
+					<Item id="6189" name="Գործառույթների ցանկ"/>
+					<Item id="6190" name="Պլագինների վահանակներ"/>
+				</MultiInstance>
+
+				<Delimiter title="Սահմանազատող">
+					<Item id="6251" name="Սահմանազատիչների ընտրության կարգավորումներ (Ctrl + մկնիկի կրկնակի սեղմում)"/>
+					<Item id="6252" name="Բացել"/>
+					<Item id="6255" name="Փակել"/>
+					<Item id="6256" name="Թույլատրել մի քանի տողերի վրա"/>
+					<Item id="6161" name="Բառի նիշերի ցանկ"/>
+					<Item id="6162" name="Օգտագործեք լռելյայն բառի նիշերի ցանկը, ինչպես որ կա"/>
+					<Item id="6163" name="Ավելացրեք ձեր բնավորությունը որպես բառի մաս
+(մի ընտրիր այն, քանի դեռ չգիտես, թե ինչ ես անում)"/>
+				</Delimiter>
+
+				<Performance title="Կատարման">
+					<Item id="7141" name="Ֆայլերի մեծ սահմանափակում"/>
+					<Item id="7143" name="Միացնել մեծ ֆայլի սահմանափակումը (առանց շարահյուսական ընդգծման)"/>
+					<Item id="7144" name="Սահմանել մեծ ֆայլի չափը՝"/>
+					<Item id="7146" name="ՄԲ (1 - 2046)"/>
+					<Item id="7147" name="Թույլատրել փակագծերի համընկնում"/>
+					<Item id="7148" name="Թույլատրել ավտոմատ լրացումը"/>
+					<Item id="7149" name="Թույլատրել խելացի ընդգծումը"/>
+					<Item id="7150" name="Ապաակտիվացնել Word Wrap-ը գլոբալ"/>
+					<Item id="7151" name="Թույլատրել URL-ի սեղմելի հղումը"/>
+					<Item id="7152" name="Չեղարկել զգուշացումը ≥2 ԳԲ ֆայլեր բացելիս"/>
+				</Performance>
+
+				<Cloud title="Ամպային կապ">
+					<Item id="6262" name="Կարգավորումներ ամպի վրա"/>
+					<Item id="6263" name="Ամպ չկա"/>
+					<Item id="6267" name="Սահմանեք ձեր ամպի գտնվելու վայրը այստեղ՝"/>
+					<Item id="6318" name="Սեղմվող հղման կարգավորումներ"/>
+					<Item id="6319" name="Միացնել"/>
+					<Item id="6320" name="Առանց ընդգծման"/>
+					<Item id="6350" name="Միացնել լրիվ տուփի ռեժիմը"/>
+					<Item id="6264" name="URI հարմարեցված սխեմաներ՝"/>
+				</Cloud>
+
+				<SearchEngine title="Որոնման համակարգ">
+					<Item id="6271" name="Որոնման համակարգ («Որոնել ինտերնետում» հրամանի համար)"/>
+					<Item id="6272" name="DuckDuckGo"/>
+					<Item id="6273" name="Google"/>
+					<Item id="6274" name="Բինգ"/>
+					<Item id="6275" name="Yahoo!"/>
+					<Item id="6276" name="Սահմանեք ձեր որոնման համակարգը այստեղ՝"/>
+					<!-- Don't change anything after Example: -->
+					<Item id="6278" name="Օրինակ՝ https://www.google.com/search?q=$(CURRENT_WORD)"/>
+				</SearchEngine>
+
+				<MISC title="MISC.">
+					<ComboBox id="6347">
+						<Element name="Միացնել ընթացիկ ֆայլի համար"/>
+						<Element name="Միացնել բոլոր բացված ֆայլերի համար"/>
+						<Element name="Անջատել"/>
+					</ComboBox>
+					<ComboBox id="6307">
+						<Element name="Գործողություն չկա"/>
+						<Element name="Նվազագույնի հասցնել մինչև"/>
+						<Element name="Մոտ"/>
+						<Element name="Նվազագույնի հասցնել / Մոտ"/>
+					</ComboBox>
+					<ComboBox id="6362">
+						<Element name="GDI (առավել համատեղելի)"/>
+						<Element name="DirectWrite (կանխադրված)"/>
+						<Element name="DirectWrite (պահպանել շրջանակները)"/>
+						<Element name="DirectWrite (ոչ ոքի GDI DC)"/>
+						<Element name="DirectWrite (DirectX 11)"/>
+					</ComboBox>
+					<ComboBox id="6364">
+						<Element name="Անջատել"/>
+						<Element name="Միացնել Notepad++ գործարկման ժամանակ"/>
+						<Element name="Միացնել Notepad++-ում ելքի"/>
+					</ComboBox>
+					<Item id="6308" name="համակարգի սկուտեղ"/>
+					<Item id="6363" name="մատուցման ռեժիմ"/>
+					<Item id="6365" name="Ավտոմատ թարմացվող՝"/>
+					<Item id="6312" name="Ֆայլի կարգավիճակի ավտոմատ հայտնաբերում"/>
+					<Item id="6313" name="Թարմացնել լուռ"/>
+					<Item id="6325" name="Թարմացումից հետո ոլորեք վերջին տողը"/>
+					<Item id="6322" name="Նիստի ֆայլը ext.:"/>
+					<Item id="6324" name="Փաստաթղթերի փոխարկիչ (Ctrl+TAB)"/>
+					<Item id="6331" name="Ցույց տալ միայն ֆայլի անունը վերնագրի տողում"/>
+					<Item id="6334" name="Ինքնորոշիչ նիշերի կոդավորում"/>
+					<Item id="6337" name="Աշխատանքային տարածքի ֆայլ ext.:"/>
+					<Item id="6114" name="Միացնել"/>
+					<Item id="6117" name="Միացնել MRU վարքագիծը"/>
+					<Item id="6344" name="Փաստաթղթի դիտող"/>
+					<Item id="6345" name="Նայեք ներդիրին"/>
+					<Item id="6346" name="Նայեք փաստաթղթի քարտեզին"/>
+					<Item id="6360" name="Անջատեք բոլոր հնչյունները"/>
+					<Item id="6361" name="Միացնել Պահպանել բոլորը հաստատել երկխոսություն"/>
+				</MISC>
+			</Preference>
+			<MultiMacro title="Գործարկել մի քանի անգամ մակրո">
+				<Item id="1" name="Վազել"/>
+				<Item id="2" name="Չեղարկել"/>
+				<Item id="8006" name="Մակրո գործարկելու"/>
+				<Item id="8001" name="Վազել"/>
+				<Item id="8005" name="անգամ"/>
+				<Item id="8002" name="Գործարկել մինչև ֆայլի ավարտը"/>
+			</MultiMacro>
+			<Window title="Պատուհաններ">
+				<Item id="1" name="Ակտիվացնել"/>
+				<Item id="2" name="Լավ"/>
+				<Item id="7002" name="Պահպանել"/>
+				<Item id="7003" name="Փակել պատուհան(ներ)ը"/>
+				<Item id="7004" name="Տեսակավորել ներդիրները"/>
+			</Window>
+			<ColumnEditor title="Սյունակի խմբագիր">
+				<Item id="2023" name="Տեքստ տեղադրելու համար"/>
+				<Item id="2033" name="Տեղադրելու համար"/>
+				<Item id="2030" name="Սկզբնական համարը`"/>
+				<Item id="2031" name="Աճել ըստ՝"/>
+				<Item id="2038" name="Առաջատար՝"/>
+				<ComboBox id="2039">
+					<Element name="Ոչ մի"/>
+					<Element name="Զրոներ"/>
+					<Element name="Տարածքներ"/>
+				</ComboBox>
+				<Item id="2036" name="Կրկնել՝"/>
+				<Item id="2032" name="Ձևաչափ"/>
+				<Item id="2024" name="դեկտեմբեր"/>
+				<Item id="2025" name="հոկտ"/>
+				<Item id="2026" name="Hex"/>
+				<Item id="2027" name="Աղբարկղ"/>
+				<Item id="1" name="Լավ"/>
+				<Item id="2" name="Չեղարկել"/>
+			</ColumnEditor>
+			<FindInFinder title="Գտեք որոնման արդյունքներում">
+				<Item id="1" name="Գտնել բոլորը"/>
+				<Item id="2" name="Փակել"/>
+				<Item id="1711" name="Գտեք ինչ՝"/>
+				<Item id="1713" name="Որոնել միայն գտնված տողերում"/>
+				<Item id="1714" name="Համապատասխանեցրեք միայն ամբողջ բառը"/>
+				<Item id="1715" name="Լուցկի գործ"/>
+				<Item id="1716" name="Որոնման ռեժիմ"/>
+				<Item id="1717" name="Նորմալ"/>
+				<Item id="1719" name="Կանոնավոր արտահայտություն"/>
+				<Item id="1718" name="Ընդլայնված (\n, \r, \t, \0, \x...)"/>
+				<Item id="1720" name=".համապատասխանում է նոր տողին"/>
+			</FindInFinder>
+			<DoSaveOrNot title="Պահպանել">
+				<Item id="1761" name="Պահե՞լ «$STR_REPLACE$» ֆայլը:"/>
+				<Item id="6" name="Այո"/>
+				<Item id="7" name="Ոչ"/>
+				<Item id="2" name="Չեղարկել"/>
+				<Item id="4" name="Այո բոլորին"/>
+				<Item id="5" name="Ոչ բոլորին"/>
+			</DoSaveOrNot>
+			<DoSaveAll title="Պահպանել բոլոր հաստատումները">
+				<Item id="1766" name="Վստա՞հ եք, որ ցանկանում եք պահպանել բոլոր փոփոխված փաստաթղթերը:
+
+Ընտրեք «Միշտ այո», եթե չեք ցանկանում նորից տեսնել այս երկխոսությունը:
+Դուք կարող եք ավելի ուշ նորից ակտիվացնել այս երկխոսությունը Preferences-ում:"/>
+				<Item id="6" name="Այո"/>
+				<Item id="7" name="Ոչ"/>
+				<Item id="4" name="Միշտ այո"/>
+			</DoSaveAll><!-- HowToReproduce: Check the "Enable Save All confirm dialog" checkbox in Preference->MISC, now click "Save all" -->
+
+			<DebugInfo title="Վրիպազերծման տեղեկատվությունը">
+				<Item id="1752" name="Պատճենել վրիպազերծման տվյալները clipboard"/>
+				<Item id="1" name="Լավ"/>
+			</DebugInfo>
+					<MacStrings>
+				<Item id="90001" name="Որոնման արդյունքներ"/>
+				<Item id="90002" name="Փակել որոնման արդյունքները"/>
+				<Item id="90003" name="Մաքրել բոլորը"/>
+				<Item id="90004" name="Փակել վահանակը"/>
+				<Item id="90005" name="Ծրագրի վահանակ"/>
+				<Item id="90006" name="Աղբյուրի վերահսկում"/>
+				<Item id="90007" name="Պարտավորել"/>
+				<Item id="90008" name="Կատարումը ձախողվեց"/>
+				<Item id="90009" name="Git պահոց չկա\nՕգտագործեք «Browse»՝ պահեստ բացելու համար:"/>
+				<Item id="90010" name="Փուլ"/>
+				<Item id="90011" name="Անբեմական"/>
+				<Item id="90012" name="Փուլ Բոլորը"/>
+				<Item id="90013" name="Բեմից հանել բոլորը"/>
+				<Item id="90014" name="Հաղորդագրության հանձնում\u2026"/>
+				<Item id="90015" name="Փնտրեք պահոցը\u2026"/>
+				<Item id="90016" name="Ընտրեք git repository թղթապանակ"/>
+				<Item id="90017" name="(պահեստ չկա)"/>
+				<Item id="90018" name="(անջատված)"/>
+				<Item id="90019" name="Անհայտ սխալ"/>
+				<Item id="90020" name="Գործառույթներ չեն գտնվել"/>
+				<Item id="90021" name="Որոնման ֆունկցիա..."/>
+				<Item id="90022" name="Ընդարձակել բոլորը"/>
+				<Item id="90023" name="Գտեք ընթացիկ ֆայլը"/>
+				<Item id="90024" name="Թարմացնել"/>
+				<Item id="90025" name="Տեսակավորել ֆունկցիաները (A-ից Z)"/>
+				<Item id="90026" name="Արդյունքներ"/>
+				<Item id="90027" name="Դադարեցնել"/>
+				<Item id="90028" name="Որոնումը դադարեցվեց։"/>
+				<Item id="90029" name="Որոնում\u2026"/>
+				<Item id="90030" name="Տեքստը որոնման համար"/>
+				<Item id="90031" name="*.txt, *.cpp, \u2026"/>
+				<Item id="90032" name="Որոնում..."/>
+				<Item id="90033" name="Փոխարինել՝"/>
+				<Item id="90034" name="Ամբողջ բառ"/>
+				<Item id="90035" name="Ամբողջ բառը"/>
+				<Item id="90036" name="Փաթաթել"/>
+				<Item id="90037" name="Բնավորություն"/>
+				<Item id="90038" name="HTML անուն"/>
+				<Item id="90039" name="HTML տասնորդական"/>
+				<Item id="90040" name="HTML տասնվեցական"/>
+				<Item id="90041" name="Արժեքը"/>
+				<Item id="90042" name="Դատարկ նիստ"/>
+				<Item id="90043" name="Ընտրված նստաշրջանի ֆայլը չի ​​պարունակում ներդիր:"/>
+				<Item id="90044" name="Բեռնել նիստը"/>
+				<Item id="90045" name="Պահպանել նիստը"/>
+				<Item id="90046" name="Մաքրել վերջին ֆայլերը"/>
+				<Item id="90047" name="Ֆայլը չի ​​գտնվել"/>
+				<Item id="90048" name="Մակրո չի գրանցվել"/>
+				<Item id="90049" name="Գրանցեք մակրո նախ՝ օգտագործելով «Սկսել ձայնագրումը»:"/>
+				<Item id="90050" name="Դյուրանցումների կոնֆլիկտներ չկան:"/>
+				<Item id="90051" name="Ֆայլի անվանումը"/>
+				<Item id="90052" name="Տեսակը"/>
+				<Item id="90053" name="Ճանապարհ"/>
+				<Item id="90054" name="Գնալ դեպի Line"/>
+				<Item id="90055" name="Տեղադրել ամսաթիվ/ժամ"/>
+				<Item id="90056" name="Կոդավորման փոփոխություն"/>
+				<Item id="90057" name="Պահպանեք պատճենը որպես"/>
+				<Item id="90058" name="Տեղափոխել աղբարկղ"/>
+				<Item id="90059" name="Title Bar"/>
+				<Item id="90060" name="Ցույց տալ ֆայլի ամբողջական ուղին վերնագրի տողում"/>
+				<Item id="90061" name="Ցույց տալ կարգավիճակի տողը"/>
+				<Item id="90062" name="Ներդիրի չափը՝"/>
+				<Item id="90063" name="Խոռոչի լայնությունը՝"/>
+				<Item id="90064" name="Զգեստի թարթման արագությունը (ms):"/>
+				<Item id="90065" name="Տառատեսակի ձևավորում՝"/>
+				<Item id="90066" name="Ներդիրի առավելագույն լայնությունը (պիքսելներ)՝"/>
+				<Item id="90067" name="Ուղղահայաց եզր"/>
+				<Item id="90068" name="Եզրային ռեժիմ՝"/>
+				<Item id="90069" name="Եզրային սյուն՝"/>
+				<Item id="90070" name="Դինամիկ գծի համարի լայնությունը"/>
+				<Item id="90071" name="Ձախ՝"/>
+				<Item id="90072" name="Աջ՝"/>
+				<Item id="90073" name="Կանխադրված տողի վերջավորությունը՝"/>
+				<Item id="90074" name="Կանխադրված կոդավորում՝"/>
+				<Item id="90075" name="Միացնել ավտոմատ պահուստավորումը"/>
+				<Item id="90076" name="Պահուստային ընդմիջում (վայրկյաններ)՝"/>
+				<Item id="90077" name="Պահուստային գտնվելու վայրը՝"/>
+				<Item id="90078" name="Գույնի ոճ"/>
+				<Item id="90079" name="(ժառանգել)"/>
+				<Item id="90080" name="Ներմուծման ոճի թեմա"/>
+				<Item id="90081" name="Կատեգորիա"/>
+				<Item id="90082" name="Մուտքագրեք զտելու համար..."/>
+				<Item id="90083" name="Այս տարրի համար դյուրանցումների հակասություններ չկան:"/>
+				<Item id="90084" name="Փլագին"/>
+				<Item id="90085" name="Տարբերակ"/>
+				<Item id="90086" name="Տեղադրումն ավարտված է"/>
+				<Item id="90087" name="Վերագործարկեք հավելվածը՝ տեղադրված պլագինները բեռնելու համար:"/>
+				<Item id="90088" name="Տեղադրեք պլագիններ"/>
+				<Item id="90089" name="Հեռացնել պլագինները"/>
+				<Item id="90090" name="Հրամաններ չեն գտնվել"/>
+				<Item id="90091" name="Մուտքագրեք որոնման համար\u2026"/>
+				<Item id="90092" name="Օգտագործողի կողմից սահմանված լեզու v.2.1"/>
+				<Item id="90093" name="Ստեղծել նոր լեզու"/>
+				<Item id="90094" name="Մուտքագրեք անունը՝"/>
+				<Item id="90095" name="Առաջին պլանի գույնը`"/>
+				<Item id="90096" name="Ֆոնի գույնը՝"/>
+				<Item id="90097" name="Մի պահիր"/>
+				<Item id="90098" name="Կատարված է"/>
+				<Item id="90099" name="Միացնել բառի փաթեթավորումը"/>
+				<Item id="90100" name="Ցույց տալ բոլոր կերպարները"/>
+				<Item id="90101" name="Ցույց տալ նիշերի ընտրանքները"/>
+				<Item id="90102" name="Փոխարկել նահանջի ուղեցույցը"/>
+				<Item id="90103" name="Դեռ չի իրականացվել"/>
+				<Item id="90104" name="Վերբեռնել սկավառակից"/>
+				<Item id="90105" name="Փոխել որոնման համակարգը"/>
+				<Item id="90106" name="Գործարկման սխալ"/>
+				<Item id="90107" name="Notepad++ Բեռնման ժամանակ"/>
+				<Item id="90108" name="Հնարավոր չէ ստուգել թարմացումները"/>
+				<Item id="90109" name="Դուք արդի եք"/>
+				<Item id="90110" name="Բեռնել"/>
+				<Item id="90111" name="Թողարկման էջ"/>
+				<Item id="90112" name="Հետագայում"/>
+				<Item id="90113" name="Զտել պլագինները\u2026"/>
+				<Item id="90114" name="Առկա"/>
+				<Item id="90115" name="Թարմացումներ"/>
+				<Item id="90116" name="Տեղադրված"/>
+				<Item id="90117" name="Անհամատեղելի"/>
+				<Item id="90118" name="Չհաջողվեց տեղադրել"/>
+				<Item id="90119" name="Հեռացնե՞լ հետևյալ պլագինները:"/>
+				<Item id="90120" name="Տեղադրե՞լ հետևյալ պլագինները:"/>
+				<Item id="90121" name="Սա կջնջի plugin ֆայլերը:"/>
+				<Item id="90122" name="Որոնման հրամաններ\u2026"/>
+				<Item id="90123" name="Առաջին պլանի գույնը"/>
+				<Item id="90124" name="Ֆոնի գույնը"/>
+				<Item id="90125" name="Մակրո անվանումը"/>
+				<Item id="90126" name="Մակրո անվանումը"/>
+				<Item id="90127" name="Ընթացիկ գրանցված մակրո"/>
+				<Item id="90128" name="Մակրո մենեջեր"/>
+				<Item id="90129" name="Պահված մակրոներ չկան"/>
+				<Item id="90130" name="Նախ ձայնագրեք և պահեք մակրո:"/>
+				<Item id="90131" name="Ջնջել դյուրանցումը"/>
+				<Item id="90132" name="Հիմնական մենյու"/>
+				<Item id="90133" name="Մակրոներ"/>
+				<Item id="90134" name="Գործարկել հրամանները"/>
+				<Item id="90135" name="Plugin հրամաններ"/>
+				<Item id="90136" name="Scintilla հրամաններ"/>
+				<Item id="90137" name="Հրամանի տողի փաստարկներ"/>
+				<Item id="90138" name="Հրամանի անունը Run մենյուի համար"/>
+				<Item id="90139" name="Բոլոր նշանները մաքրված են:"/>
+				<Item id="90140" name="Նշված տեքստը պատճենված է սեղմատախտակին:"/>
+				<Item id="90141" name="Պատճենելու համար նշված տեքստ չկա:"/>
+				<Item id="90142" name="Որոնում... %ld հարված(ներ) \u2014 %@"/>
+				<Item id="90143" name="Ֆայլերում փոխարինում..."/>
+				<Item id="90144" name="Փոխարինել նախագծերում՝ դեռ միացված չէ:"/>
+				<Item id="90145" name="Գտնել նախագծերում. դեռ միացված չէ Ծրագրի վահանակի ֆայլերի ցանկին:"/>
+				<Item id="90146" name="Աշխատանքային տարածքը փոփոխվել է."/>
+				<Item id="90147" name="Ցանկանու՞մ եք պահպանել փոփոխությունները:"/>
+				<Item id="90148" name="Որոնման արդյունքներ"/>
+				<Item id="90149" name="Նշեք ընթացիկ տողը"/>
+				<Item id="90150" name="Ցույց տալ տողերի համարները"/>
+				<Item id="90151" name="Ցույց տալ բացատը"/>
+				<Item id="90152" name="Ցույց տալ EOL մարկերները"/>
+				<Item id="90153" name="Ցույց տալ էջանիշի լուսանցքը"/>
+				<Item id="90154" name="Օգտագործել ներդիրները (բացատների փոխարեն)"/>
+				<Item id="90155" name="Ոլորեք վերջին տողից այն կողմ"/>
+				<Item id="90156" name="Պատճենել/կտրել տողը առանց ընտրության"/>
+				<Item id="90157" name="Անջատել ընտրված տեքստը քաշել-թողնել"/>
+				<Item id="90158" name="Միացնել խելացի ընդգծումը"/>
+				<Item id="90159" name="Խելացի ընդգծում. լուցկու պատյան"/>
+				<Item id="90160" name="Խելացի ընդգծում. միայն ամբողջ բառը"/>
+				<Item id="90161" name="Կրկնակի սեղմեք՝ ներդիրը փակելու համար"/>
+				<Item id="90162" name="Ցույց տալ փակման կոճակը ներդիրների վրա"/>
+				<Item id="90163" name="Հիշել վահանակի տեսանելիությունը աշխատաշրջաններում"/>
+				<Item id="90164" name="Պահպանեք բացակայող ֆայլերի գրառումները նիստում"/>
+				<Item id="90165" name="Հաստատեք նախքան Պահպանել բոլորը"/>
+				<Item id="90166" name="Հաստատել Փոխարինել բոլորը բաց փաստաթղթերում"/>
+				<Item id="90167" name="Փոխարինեք. մի անցեք հաջորդ դեպքին"/>
+				<Item id="90168" name="Գտնել երկխոսության"/>
+				<Item id="90169" name="-ում օգտագործեք միատարած տառատեսակԱջ սեղմումը պահպանում է ընտրությունը"/>
+				<Item id="90170" name="Հակադարձել կանխադրված ամսաթիվը/ժամը"/>
+				<Item id="90171" name="Օգտագործեք XML-ի վրա հիմնված գործառույթների ցուցակի վերլուծիչներ"/>
+				<Item id="90172" name="Ավտոմատ փակել փակագծերը ( ) [ ] { }"/>
+				<Item id="90173" name="N-րդ կերպարից՝"/>
+				<Item id="90174" name="Ընտրության ընթացքում ավտոմատ ստուգման շեմ (բայթ)՝"/>
+				<Item id="90175" name="Ընդլայնված (\\n, \\r, \\t, \\0, \\x...)"/>
+				<Item id="90176" name="Խմբագիր"/>
+				<Item id="90177" name="Լուսանցքներ"/>
+				<Item id="90178" name="Մութ"/>
+				<Item id="90179" name="Լույս"/>
+				<Item id="90180" name="Ավտոմատ (Հետևել համակարգին)"/>
+				<Item id="90181" name="Նիհար (1px)"/>
+				<Item id="90182" name="Միջին (2px)"/>
+				<Item id="90183" name="Հաստ (3px)"/>
+				<Item id="90184" name="Անջատված"/>
+				<Item id="90185" name="Նախապատմություն"/>
+				<Item id="90186" name="Antialiased"/>
+				<Item id="90187" name="LCD օպտիմիզացված"/>
+				<Item id="90188" name="Պարզ +/-"/>
+				<Item id="90189" name="Windows (CRLF)"/>
+				<Item id="90190" name="Mac (CR)"/>
+				<Item id="90191" name="Պլագինների ցուցակի պահեստ"/>
+				<Item id="90192" name="Ընտրեք Notepad++ թեմայի XML ֆայլ՝ կիրառելու համար"/>
+				<Item id="90193" name="Ստեղծել նոր\u2026"/>
+				<Item id="90194" name="Պահել որպես\u2026"/>
+				<Item id="90195" name="Օգտագործողի լեզուն՝"/>
+				<Item id="90196" name="Լեզվի անվանումը"/>
+				<Item id="90197" name="Ստեղծել"/>
+				<Item id="90198" name="Պահպանել որպես"/>
+				<Item id="90199" name="էս"/>
+				<Item id="90200" name="ամբողջ ֆայլում"/>
+				<Item id="90201" name="Օպերատորների սահմանազատիչներ"/>
+				<Item id="90202" name="Անվավեր միջակայք"/>
+				<Item id="90203" name="Շրջանակի արժեքները պետք է լինեն 0-255, իսկ սկիզբը պետք է լինի &lt;= վերջ:"/>
+				<Item id="90204" name="contextMenu.xml Չի գտնվել"/>
+				<Item id="90205" name="Վերագործարկեք Notepad++-ը՝ կանխադրված contextMenu.xml-ը վերականգնելու համար:"/>
+				<Item id="90206" name="Ֆայլն ունի չպահված փոփոխություններ:Նոր կոդավորման հետ վերաբեռնումը դրանք կհեռացվի:Շարունակե՞լ"/>
+				<Item id="90207" name="Ոչ մի պատասխան սերվերից:"/>
+				<Item id="90208" name="Սերվերը վերադարձրեց կարգավիճակը"/>
+				<Item id="90209" name="Պահեստը կարող է մասնավոր լինել:"/>
+				<Item id="90210" name="Հասանելի է"/>
+				<Item id="90211" name="վերջին տարբերակն է։"/>
+				<Item id="90212" name="Դուք ներկայումս վազում եք"/>
+				<Item id="90213" name="Finder Այստեղ"/>
+				<Item id="90214" name="Տերմինալ այստեղ"/>
+				<Item id="90215" name="Լեզուների լրացուցիչ ֆայլեր (.xml) կարող են տեղադրվել հետևյալում."/>
+							<Item id="90216" name="Հրամանների պալիտրա…"/>
+				<Item id="90217" name="Ուղղագրության ստուգում"/>
+				<Item id="90218" name="Մուտքագրեք որոնման համար…"/>
+				<Item id="90219" name="Նոր պատուհան"/>
+				<Item id="90220" name="Բաց թողնել ընթացիկ ուժեղացուցիչը;Գնացեք հաջորդ բազմակի ընտրություն"/>
+				<Item id="90221" name="Կողպված հատկանիշ (macOS)"/>
+				<Item id="90222" name="Ստուգեք թարմացումների համար…"/>
+				<Item id="90223" name="Բացեք Վերջին"/>
+			</MacStrings>
+		</Dialog>
+		<MessageBox>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<ContextMenuXmlEditWarning title="Համատեքստի խմբագրումՄենյու" message="ContextMenu.xml-ի խմբագրումը թույլ է տալիս փոփոխել ձեր Notepad++ բացվող համատեքստային ընտրացանկը:
+Դուք պետք է վերագործարկեք ձեր Notepad++-ը, որպեսզի ուժի մեջ մտնի contextMenu.xml-ը փոխելուց հետո:"/>
+			<SaveCurrentModifWarning title="Պահպանել ընթացիկ փոփոխությունը" message="Դուք պետք է պահպանեք ընթացիկ փոփոխությունը:
+Բոլոր պահպանված փոփոխությունները հնարավոր չէ հետարկել:
+
+Շարունակե՞լ"/><!-- HowToReproduce: when you openned file is modified but unsaved yet, and you are changing file encoding. -->
+			<LoseUndoAbilityWarning title="Զգուշացում կորցնելու հնարավորության հետ" message="Դուք պետք է պահպանեք ընթացիկ փոփոխությունը:
+Բոլոր պահպանված փոփոխությունները հնարավոր չէ հետարկել:
+
+Շարունակե՞լ"/><!-- HowToReproduce: when you openned file is modified and saved, then you are changing file encoding. -->
+			<CannotMoveDoc title="Տեղափոխել նոր Notepad++ օրինակ" message="Փաստաթուղթը փոփոխված է, պահեք այն և նորից փորձեք:"/><!-- HowToReproduce: From your Notepad++ drag & drop a clean (not dirty) file to outside of Notepad++, another instance of Notepad++ will be created. Then from your first Notepad++ drag & drop an unsaved file to the new instance. -->
+			<DocReloadWarning title="Վերաբեռնում" message="Վստա՞հ եք, որ ցանկանում եք վերաբեռնել ընթացիկ ֆայլը և կորցնել Notepad++-ում կատարված փոփոխությունները:"/>
+			<FileLockedWarning title="Պահպանումը ձախողվեց" message="Խնդրում ենք ստուգել, ​​արդյոք այս ֆայլը բացված է այլ ծրագրում"/>
+			<FileAlreadyOpenedInNpp title="" message="Ֆայլն արդեն բացված է Notepad++-ում:"/><!-- HowToReproduce: Open a new document and open a file "c:/tmp/foo", save this new document by choosing "c:/tmp/foo" as file to save, reply the override popup "yes", then this message appears. -->
+			<RenameTabTemporaryNameAlreadyInUse title="Չհաջողվեց վերանվանել" message="Նշված անունն արդեն օգտագործվում է մեկ այլ ներդիրում:"/><!-- HowToReproduce: Rename the tab of an untitled document and provide a name that is the same as an already-existing tab of an untitled document. -->
+			<RenameTabTemporaryNameIsEmpty title="Չհաջողվեց վերանվանել" message="Նշված անունը չի կարող դատարկ լինել, կամ այն ​​չի կարող պարունակել միայն բացատ(ներ) կամ TAB(ներ):"/><!-- HowToReproduce: Rename the tab of an untitled document and provide an empty string or only some white speces. -->
+			<DeleteFileFailed title="Ջնջել ֆայլը" message="Չհաջողվեց ջնջել ֆայլը"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+
+			<NbFileToOpenImportantWarning title="Բացվող ֆայլերի քանակը չափազանց մեծ է" message="$INT_REPLACE$ files are about to be opened.
+Are you sure you want to open them?"/><!-- HowToReproduce: Check "Open all files of folder instead of launching Folder as Workspace on folder dropping" in "Default Directory" of Preferences dialog, then drop a folder which contains more then 200 files into Notepad++. -->
+			<SettingsOnCloudError title="Կարգավորումներ Cloud-ում" message="Թվում է, թե ամպի վրա կարգավորումների ուղին դրված է միայն կարդալու սկավառակի վրա,
+կամ գրելու հասանելիության համար անհրաժեշտ արտոնյալ իրավունքի թղթապանակում:
+Ամպում ձեր կարգավորումները կչեղարկվեն:Խնդրում ենք վերակայել համահունչ արժեքը Preference երկխոսության միջոցով:"/>
+			<FilePathNotFoundWarning title="Բացել ֆայլը" message="Ֆայլը, որը փորձում եք բացել, գոյություն չունի:"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SessionFileInvalidError title="Չհաջողվեց բեռնել նիստը" message="Աշխատաշրջանի ֆայլը կամ վնասված է, կամ վավեր չէ:"/><!-- HowToReproduce: Save current session via menu "File -> Save Session...", use another editor to modify the session you saved to make it an invalid xml file. Then load this invalid session via menu "File -> Load Session...". -->
+			<DroppingFolderAsProjectModeWarning title="Անվավեր գործողություն" message="Դուք կարող եք բաց թողնել միայն ֆայլերը կամ թղթապանակները, բայց ոչ երկուսն էլ, քանի որ դուք թողնում եք Թղթապանակը որպես նախագծի ռեժիմ:
+Դուք պետք է միացնեք «Բացել թղթապանակի բոլոր ֆայլերը՝ թղթապանակը որպես աշխատանքային տարածք բացելու փոխարեն» Նախընտրանքների երկխոսության «Լռելյայն գրացուցակ» բաժնում, որպեսզի այս գործողությունն աշխատի:"/>
+			<SortingError title="Տեսակավորման սխալ" message="Հնարավոր չէ կատարել թվային տեսակավորում $INT_REPLACE$ տողի պատճառով:"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SortLocaleMultiple title="Տեսակավորումը չի կատարվել" message="Բազմաթիվ ընտրանքների տեսակավորումը չի աջակցվում:"/><!-- HowToReproduce: Make a multiple selection and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<SortLocaleUnknown title="Տեսակավորումը ձախողվեց" message="Տեսակավորման ձախողման պատճառը հնարավոր չէ պարզել:"/><!-- HowToReproduce: This condition is theoretical; it is unknown what could cause it. -->
+			<SortLocaleExcept title="Տեսակավորումը ձախողվեց" message="$STR_REPLACE$"/><!-- HowToReproduce: Open a large file, e.g. 500MB / 90k lines, in 32-bit Notepad++ and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<ColumnModeTip title="Սյունակի ռեժիմի հուշում" message="Սյունակի ընտրության ռեժիմին անցնելու 3 եղանակ կա.
+
+1. (Ստեղնաշար և մկնիկ) Պահեք Alt-ը՝ ձախ սեղմելով քաշելիս
+
+2. (Միայն ստեղնաշար) Պահեք Alt+Shift-ը՝ օգտագործելով սլաքների ստեղները
+
+3. (Ստեղնաշար կամ մկնիկ)
+Կարետը դրեք սյունակի բլոկի դիրքի ցանկալի սկզբում, այնուհետև
+կատարել «Սկիզբ/Վերջ ընտրել սյունակի ռեժիմում» հրամանը;
+Տեղափոխեք սյունը սյունակի բլոկի ցանկալի ծայրին, այնուհետև
+կրկին գործարկել «Սկիզբ/Վերջ ընտրել սյունակի ռեժիմում» հրամանը"/>
+			<BufferInvalidWarning title="Պահպանումը ձախողվեց" message="Հնարավոր չէ պահել. Buffer-ն անվավեր է:"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<DoCloseOrNot title="Պահպանեք գոյություն չունեցող ֆայլ" message="«$STR_REPLACE$» ֆայլն այլևս գոյություն չունի:
+Պահե՞լ այս ֆայլը խմբագրում:"/>
+			<DoDeleteOrNot title="Ջնջել ֆայլը" message="«$STR_REPLACE$» ֆայլը
+կտեղափոխվի ձեր թափոնարկղ, և այս փաստաթուղթը կփակվի:
+Շարունակե՞լ"/>
+			<NoBackupDoSaveFile title="Պահպանել" message="Ձեր պահուստային ֆայլը չի ​​գտնվել (ջնջված է դրսից):
+Պահպանեք այն, հակառակ դեպքում ձեր տվյալները կկորչեն
+Ցանկանու՞մ եք պահպանել «$STR_REPLACE$» ֆայլը:"/>
+			<DoReloadOrNot title="Վերաբեռնում" message="«$STR_REPLACE$»
+
+Այս ֆայլը փոփոխվել է մեկ այլ ծրագրի կողմից:
+Ցանկանու՞մ եք վերաբեռնել այն:"/>
+			<DoReloadOrNotAndLooseChange title="Վերաբեռնում" message="«$STR_REPLACE$»
+
+Այս ֆայլը փոփոխվել է մեկ այլ ծրագրի կողմից:
+Ցանկանու՞մ եք վերաբեռնել այն և կորցնել Notepad++-ում կատարված փոփոխությունները:"/>
+			<PrehistoricSystemDetected title="Հայտնաբերվել է նախապատմական համակարգ" message="Թվում է, թե դուք դեռ օգտագործում եք նախապատմական համակարգ:Այս ֆունկցիան աշխատում է միայն ժամանակակից համակարգում, կներեք:"/><!-- HowToReproduce: Launch "Document Map" under Windows XP. -->
+			<XpUpdaterProblem title="Notepad++ թարմացնող" message="Notepad++ թարմացնողը համատեղելի չէ XP-ի հետ XP-ի տակ գտնվող անվտանգության հնացած շերտի պատճառով:
+Ցանկանու՞մ եք գնալ Notepad++ էջ՝ վերջին տարբերակը ներբեռնելու համար:"/><!-- HowToReproduce: Run menu "? -> Update Notepad++" under Windows XP. -->
+			<GUpProxyConfNeedAdminMode title="Վստահված անձի կարգավորումներ" message="Խնդրում ենք վերագործարկել Notepad++-ը ադմինիստրատորի ռեժիմում՝ վստահված անձը կարգավորելու համար:"/>
+			<DocTooDirtyToMonitor title="Մոնիտորինգի խնդիր" message="Փաստաթուղթը կեղտոտ է.Խնդրում ենք պահպանել փոփոխությունը նախքան այն մշտադիտարկելը:"/>
+			<DocNoExistToMonitor title="Մոնիտորինգի խնդիր" message="Ֆայլը պետք է գոյություն ունենա, որպեսզի վերահսկվի:"/>
+			<FileTooBigToOpen title="Ֆայլի չափի խնդիր" message="Ֆայլը չափազանց մեծ է Notepad++-ով բացելու համար"/><!-- HowToReproduce: Try to open a 4GB file (it's not easy to reproduce, it depends on your system). -->
+			<FileLoadingException title="Բացառության կոդը՝ $STR_REPLACE$" message="Ֆայլը բեռնելիս սխալ է տեղի ունեցել:"/>
+			<WantToOpenHugeFile title="Հսկայական ֆայլի բացման նախազգուշացում" message="2 ԳԲ+ ծավալով հսկայական ֆայլ բացելը կարող է մի քանի րոպե տևել:
+Ցանկանու՞մ եք բացել։"/>
+			<CreateNewFileOrNot title="Ստեղծել նոր ֆայլ" message="«$STR_REPLACE$»-ը գոյություն չունի:Ստեղծե՞լ այն:"/>
+			<CreateNewFileError title="Ստեղծել նոր ֆայլ" message="Հնարավոր չէ ստեղծել «$STR_REPLACE$» ֆայլը:"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<OpenFileError title="ՍԽԱԼ" message="Հնարավոր չէ բացել «$STR_REPLACE$» ֆայլը:"/>
+			<OpenFileNoFolderError title="Հնարավոր չէ բացել ֆայլը" message="«$STR_REPLACE1$»-ը հնարավոր չէ բացել՝
+«$STR_REPLACE2$» պանակը գոյություն չունի:"/>
+			<FileBackupFailed title="Ֆայլի կրկնօրինակումը ձախողվեց" message="Ֆայլի նախորդ տարբերակը չհաջողվեց պահել «$STR_REPLACE$» պահուստային գրացուցակում:
+
+Ցանկանու՞մ եք, այնուամենայնիվ, պահպանել ընթացիկ ֆայլը:"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<LoadStylersFailed title="Չհաջողվեց բեռնել stylers.xml" message="«$STR_REPLACE$»-ի բեռնումը ձախողվեց:"/>
+			<LoadLangsFailed title="Կազմաձևիչ" message="Չհաջողվեց բեռնել langs.xml:
+Ցանկանու՞մ եք վերականգնել ձեր langs.xml:"/><!-- HowToReproduce: Close Notepad++. Use another editor to remove all content of "langs.xml" (0 length) then save it. Open Notepad++. -->
+			<LoadLangsFailedFinal title="Կազմաձևիչ" message="Չհաջողվեց բեռնել langs.xml:"/><!-- HowToReproduce: Close Notepad++. Use another editor to make "langs.xml" an invalid xml file then save it. Open Notepad++. -->
+			<FolderAsWorspaceSubfolderExists title="Թղթապանակը որպես աշխատանքային տարածք ավելացնելով թղթապանակի խնդիր" message="Գոյություն ունի այն թղթապանակի ենթապանակ, որը ցանկանում եք ավելացնել:
+Խնդրում ենք հեռացնել դրա արմատը վահանակից՝ նախքան «$STR_REPLACE$» պանակը ավելացնելը:"/><!-- HowToReproduce: Add a folder like "c:\temp\aFolder\" into "Folder as Workspace" panel, then try to add "c:\temp\". -->
+
+			<ProjectPanelChanged title="$STR_REPLACE$" message="Աշխատանքային տարածքը փոփոխվել է.Ցանկանու՞մ եք պահպանել այն:"/>
+			<ProjectPanelSaveError title="$STR_REPLACE$" message="Ձեր աշխատանքային տարածքի ֆայլը գրելիս սխալ տեղի ունեցավ:
+Ձեր աշխատանքային տարածքը չի պահպանվել:"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<ProjectPanelOpenDoSaveDirtyWsOrNot title="Բաց աշխատանքային տարածք" message="Ընթացիկ աշխատանքային տարածքը փոփոխվել է:Ցանկանու՞մ եք պահպանել ընթացիկ նախագիծը:"/>
+			<ProjectPanelNewDoSaveDirtyWsOrNot title="Նոր աշխատանքային տարածք" message="Ընթացիկ աշխատանքային տարածքը փոփոխվել է:Ցանկանու՞մ եք պահպանել ընթացիկ նախագիծը:"/>
+			<ProjectPanelOpenFailed title="Բաց աշխատանքային տարածք" message="Աշխատանքային տարածքը չհաջողվեց բացել:
+Թվում է, թե բացվող ֆայլը վավեր նախագծի ֆայլ չէ:"/>
+			<ProjectPanelRemoveFolderFromProject title="Հեռացնել թղթապանակը նախագծից" message="Բոլոր ենթակետերը կհեռացվեն։
+Իսկապե՞ս ուզում եք հեռացնել այս թղթապանակը նախագծից:"/>
+			<ProjectPanelRemoveFileFromProject title="Հեռացնել ֆայլը նախագծից" message="Իսկապե՞ս ուզում եք հեռացնել այս ֆայլը նախագծից:"/>
+			<ProjectPanelReloadError title="Վերբեռնել աշխատանքային տարածքը" message="Չհաջողվեց գտնել ֆայլը վերաբեռնելու համար:"/>
+			<ProjectPanelReloadDirty title="Վերբեռնել աշխատանքային տարածքը" message="Ընթացիկ աշխատանքային տարածքը փոփոխվել է:Վերաբեռնումը կհեռացնի բոլոր փոփոխությունները:
+Ցանկանու՞մ եք շարունակել։"/>
+			<UDLNewNameError title="UDL սխալ" message="Այս անունը օգտագործվում է մեկ այլ լեզվով,
+խնդրում եմ տալ ևս մեկը:"/>
+			<UDLRemoveCurrentLang title="Հեռացնել ընթացիկ լեզուն" message="Վստա՞հ ես։"/>
+			<UDL_importSuccessful title="Օգտագործողի կողմից սահմանված լեզու" message="Ներմուծումը հաջողվեց:"/>
+			<UDL_importFails title="Օգտագործողի կողմից սահմանված լեզու" message="Չհաջողվեց ներմուծել:"/>
+			<UDL_saveBeforeImport title="Օգտագործողի կողմից սահմանված լեզու" message="Արտահանելուց առաջ պահպանեք ձեր լեզվի սահմանումը` սեղմելով «Պահպանել որպես...» կոճակը:"/> <!-- HowToReproduce: Choose "User Defined Language" in User Language combobox, then click on "Export... button". -->
+			<UDL_exportSuccessful title="Օգտագործողի կողմից սահմանված լեզու" message="Արտահանումը հաջողվեց:"/>
+			<UDL_exportFails title="Օգտագործողի կողմից սահմանված լեզու" message="Չհաջողվեց արտահանել:"/>
+			<SCMapperDoDeleteOrNot title="Վստա՞հ ես։" message="Իսկապե՞ս ուզում եք ջնջել այս դյուրանցումը:"/>
+			<FindCharRangeValueError title="Շրջանակի արժեքի խնդիր" message="Դուք պետք է մուտքագրեք 0-ից մինչև 255:"/> <!-- HowToReproduce: Search menu, then Find characters in range, select Custom range, enter 999 in either edit box, press Find. -->
+			<OpenInAdminMode title="Պահպանումը ձախողվեց" message="Ֆայլը չի ​​կարող պահպանվել, և այն կարող է պաշտպանված լինել:
+Ցանկանու՞մ եք գործարկել Notepad++-ը Ադմինիստրատոր ռեժիմով:"/>
+			<OpenInAdminModeWithoutCloseCurrent title="Պահպանումը ձախողվեց" message="Ֆայլը չի ​​կարող պահպանվել, և այն կարող է պաշտպանված լինել:
+Ցանկանու՞մ եք գործարկել Notepad++-ը Ադմինիստրատոր ռեժիմով:"/>
+			<OpenInAdminModeFailed title="Ադմինիստրատորի ռեժիմում բացելը ձախողվեց" message="Notepad++-ը չի կարող բացվել Ադմինիստրատորի ռեժիմում:"/><!-- HowToReproduce: When you have no Admin privilege and you try to save a modified file in a protected location (for example: any file in sub-folder of "C:\Program Files\". This message will appear after replying "Yes" to "Open in Admin mode" dialog. -->
+			<ViewInBrowser title="Դիտեք ընթացիկ ֆայլը դիտարկիչում" message="Հավելվածը հնարավոր չէ գտնել ձեր համակարգում:"/>
+			<ExitToUpdatePlugins title="Notepad++-ը պատրաստվում է դուրս գալ" message="Եթե ​​սեղմեք YES, դուք դուրս կգաք Notepad++ գործողությունները շարունակելու համար:
+Notepad++-ը կվերագործարկվի բոլոր գործողությունների ավարտից հետո:
+Շարունակե՞լ"/>
+			<NeedToRestartToLoadPlugins title="Notepad++-ը պետք է վերագործարկվի" message="Դուք պետք է վերագործարկեք Notepad++՝ ձեր տեղադրած պլագինները բեռնելու համար:"/><!-- HowToReproduce: Import a plugin via menu "Settings->Import->Import Plugin(s)...". -->
+			<ChangeHistoryEnabledWarning title="Notepad++-ը պետք է վերագործարկվի" message="Փոփոխությունների պատմությունը միացնելու համար պետք է վերագործարկեք Notepad++-ը:"/><!-- HowToReproduce: uncheck "Display Change History" via Preferences dialog "Marges/Border/Edge. -->
+			<WindowsSessionExit title="Notepad++ - Windows նիստի ելք" message="Windows-ի աշխատաշրջանը շուտով կավարտվի, բայց որոշ տվյալներ ունեք չպահված:Ցանկանու՞մ եք դուրս գալ Notepad++-ից հիմա:"/>
+			<LanguageMenuCompactWarning title="Կոմպակտ լեզվի ընտրացանկ" message="Այս տարբերակը կփոխվի հաջորդ գործարկման ժամանակ:"/><!-- HowToReproduce: toggle "Make language menu compact" via Preferences dialog "Language/Language Menu. -->
+			<SwitchUnsavedThemeWarning title="$STR_REPLACE$" message="Չպահված փոփոխությունները պատրաստվում են մերժվել:
+Ցանկանու՞մ եք պահպանել ձեր փոփոխությունները նախքան թեմաները փոխելը:"/><!-- HowToReproduce: In the Style Configurator dialog change some theme and switch to other theme without saving. -->
+			<MacroAndRunCmdlWarning title="Մակրո և գործարկելու հրամանների համատեղելիություն" message="Ձեր Macro և Run հրամանները, որոնք պահպանված են Notepad++ v.8.5.2 (կամ ավելի հին) տարբերակում, կարող են համատեղելի չլինել Notepad++-ի ընթացիկ տարբերակի հետ:
+Խնդրում ենք ստուգել այդ հրամանները և, անհրաժեշտության դեպքում, վերախմբագրել դրանք:
+
+Որպես այլընտրանք, դուք կարող եք իջեցնել Notepad++ v8.5.2-ի և վերականգնել ձեր նախկին տվյալները:
+Notepad++-ը կկրկնօրինակի ձեր հին «shortcuts.xml»-ը և կպահի այն որպես «shortcuts.xml.v8.5.2.backup»:
+Վերանվանելով «shortcuts.xml.v8.5.2.backup» -&gt; «shortcuts.xml», ձեր հրամանները պետք է վերականգնվեն և ճիշտ աշխատեն:"/><!-- HowToReproduce: Close Notepad++, remove shortcuts.xml.v8.5.2.backup & v852ShortcutsCompatibilityWarning.xml if present, relaunch Notepad++, delete or modify a shortcuts via Shortcut Mapper, close Notepad++, then the message will show up -->
+			<FullReadOnlySavingForbidden title="Պահպանումը ձախողվեց" message="Հնարավոր չէ պահպանել ֆայլը:
+Notepad++ լրիվ միայն կարդալու պահպանման արգելված ռեժիմը կանխեց ֆայլի պահպանումը:"/>
+			<NotEnoughRoom4Saving title="Պահումը ձախողվեց" message="Չհաջողվեց պահել ֆայլը:
+Թվում է, թե սկավառակի վրա բավարար տարածք չկա ֆայլը պահելու համար:Ձեր ֆայլը չի ​​պահպանվել:"/>
+			<FileInaccessibleUserSession title="Ֆայլը անհասանելի է" message="Ձեր ձեռքով պահված «$STR_REPLACE$» աշխատաշրջանի որոշ ֆայլեր անհասանելի են:Դրանք կարող են բացվել որպես դատարկ և միայն կարդալու փաստաթղթեր՝ որպես տեղապահեր:
+
+Ցանկանու՞մ եք ստեղծել այդ տեղապահները:
+
+ԾԱՆՈԹՈՒԹՅՈՒՆ. Եթե ընտրեք չստեղծել տեղապահեր կամ փակել դրանք ավելի ուշ, ձեր ձեռքով պահված նստաշրջանը ՉԻ փոփոխվի դուրս գալուց հետո:"/>
+			<FileInaccessibleDefaultSessionXml title="Ֆայլը անհասանելի է" message="Ձեր անցյալ աշխատաշրջանի որոշ ֆայլեր անհասանելի են:Դրանք կարող են բացվել որպես դատարկ և միայն կարդալու փաստաթղթեր՝ որպես տեղապահեր:
+
+Ցանկանու՞մ եք ստեղծել այդ տեղապահները:
+
+ԾԱՆՈԹԱԳՐՈՒԹՅՈՒՆ. Եթե ընտրեք չստեղծել տեղապահներ կամ փակել դրանք ավելի ուշ, ձեր նիստը ԿՓՈՓՈԽՎԻ ԵԼՔԻՆ:Առաջարկում ենք հիմա կրկնօրինակել ձեր «session.xml»-ը:"/>
+			<RTLvsDirectWrite title="Հնարավոր չէ գործարկել RTL" message="RTL-ը համատեղելի չէ DirectWrite ռեժիմի հետ:Խնդրում ենք անջատել DirectWrite ռեժիմը MISC-ում:Preferences երկխոսության բաժինը և վերագործարկեք Notepad++-ը:"/>
+			<FileMemoryAllocationFailed title="Բացառություն. ֆայլի հիշողության բաշխումը ձախողվեց" message="Հավանաբար, Notepad++-ով բեռնվող ֆայլի համար բավարար հարակից ազատ հիշողություն չկա:"/><!-- HowToReproduce: Try to open multiple files with total size > ~700MB in the x86 Notepad++ (it will depend on the PC memory configuration and the current system memory usage...). -->
+			<FindRegexBackwardDisabled title="Regex հետընթաց որոնումն անջատված է" message="Լռելյայնորեն, հետընթաց ռեգեքսի որոնումն անջատված է հնարավոր անսպասելի արդյունքների պատճառով:Հետադարձ որոնում կատարելու համար բացեք «Գտնել» երկխոսությունը և սովորական արտահայտության փոխարեն ընտրեք սովորական կամ ընդլայնված որոնման ռեժիմ:
+Սեղմեք OK կոճակը՝ «Գտնել» երկխոսությունը բացելու կամ դրա վրա կենտրոնանալու համար:
+
+Եթե ​​Ձեզ անհրաժեշտ է հետամնաց ռեգեքսի որոնման հատկությունը, դիմեք օգտագործողի ձեռնարկին՝ այն միացնելու հրահանգների համար:"/>
+			<PrintError title="0" message="Հնարավոր չէ գործարկել տպիչի փաստաթուղթը:"/><!-- Use title="0" to use Windows OS default translated "Error" title. -->
+			<FindAutoChangeOfInSelectionWarning title="Որոնման նախազգուշացում" message="«Ընտրության մեջ» վանդակի վիճակը ավտոմատ կերպով փոփոխվել է:
+Խնդրում ենք ստուգել որոնման վիճակը նախքան գործողությունը կատարելը:"/> <!-- HowToReproduce: https://github.com/notepad-plus-plus/notepad-plus-plus/issues/14897#issuecomment-2564316224 -->
+			<Need2Restart2ShowMenuShortcuts title="Notepad++-ը պետք է վերագործարկվի" message="Ցուցանակի ճիշտ դյուրանցումները ցուցադրելու համար Notepad++-ը պետք է վերագործարկվի:"/>
+			<NoAdminRight2ChangeReadOnlyFileAttribute title="Ֆայլի միայն կարդալու հատկանիշի փոփոխությունը ձախողվեց" message="Խնդրում ենք գործարկել Notepad++-ը որպես ադմինիստրատոր՝ ֆայլի հատկանիշները փոխելու համար:"/>
+		</MessageBox>
+		<ClipboardHistory>
+			<PanelTitle name="Clipboard պատմություն"/>
+		</ClipboardHistory>
+		<DocList>
+			<PanelTitle name="Փաստաթղթերի ցանկ"/>
+			<ColumnName name="Անունը"/>
+			<ColumnExt name="Արտաք."/>
+			<ColumnPath name="Ճանապարհ"/>
+			<ListGroups name="Խմբավորում ըստ դիտման"/>
+		</DocList>
+		<WindowsDlg>
+			<ColumnName name="Անունը"/>
+			<ColumnPath name="Ճանապարհ"/>
+			<ColumnType name="Տեսակը"/>
+			<ColumnSize name="Չափս"/>
+			<ColumnDateTime name="Փոփոխված ժամանակը"/>
+			<NbDocsTotal name="ընդհանուր փաստաթղթերը`"/>
+			<MenuCopyName name="Պատճեն անուն(ներ)"/>
+			<MenuCopyPath name="Պատճենել ուղու անունը(ներ)ը"/>
+		</WindowsDlg>
+		<AsciiInsertion>
+			<PanelTitle name="ASCII ծածկագրերի տեղադրման վահանակ"/>
+			<ColumnVal name="Արժեքը"/>
+			<ColumnHex name="Hex"/>
+			<ColumnChar name="Բնավորություն"/>
+			<ColumnHtmlName name="HTML անուն"/>
+			<ColumnHtmlNumber name="HTML տասնորդական"/>
+			<ColumnHtmlHexNb name="HTML տասնվեցական"/>
+		</AsciiInsertion>
+		<DocumentMap>
+			<PanelTitle name="Փաստաթղթի քարտեզ"/>
+		</DocumentMap>
+		<FunctionList>
+			<PanelTitle name="Գործառույթների ցանկ"/>
+			<SortTip name="Տեսակավորել"/>
+			<ReloadTip name="Վերաբեռնում"/>
+			<PreferencesTip name="Նախապատվություններ"/>
+			<PreferencesInitialSort name="Տեսակավորել գործառույթները (A-ից Z) ըստ լռելյայն"/>
+		</FunctionList>
+		<FolderAsWorkspace>
+			<PanelTitle name="Թղթապանակը որպես աշխատանքային տարածք"/>
+			<SelectFolderFromBrowserString name="Ընտրեք թղթապանակ՝ ավելացնելու համար Թղթապանակ որպես աշխատանքային տարածքի վահանակ"/>
+			<ExpandAllFoldersTip name="Բացեք բոլոր"/>
+			<CollapseAllFoldersTip name="Ծալել բոլորը"/>
+			<LocateCurrentFileTip name="Տեղադրեք ընթացիկ ֆայլը"/>
+			<Menu>
+				<Item id="3511" name="Հեռացնել"/>
+				<Item id="3512" name="Հեռացնել բոլորը"/>
+				<Item id="3513" name="Ավելացնել"/>
+				<Item id="3514" name="Աշխատում է համակարգով"/>
+				<Item id="3515" name="Բացել"/>
+				<Item id="3516" name="Պատճենել ուղին"/>
+				<Item id="3517" name="Գտնել Ֆայլերում..."/>
+				<Item id="3518" name="Հետախույզ այստեղ"/>
+				<Item id="3519" name="CMD այստեղ"/>
+				<Item id="3520" name="Պատճենել ֆայլի անունը"/>
+			</Menu>
+		</FolderAsWorkspace>
+		<ProjectManager>
+			<PanelTitle name="Նախագիծ"/>
+			<WorkspaceRootName name="Աշխատանքային տարածք"/>
+			<NewProjectName name="Ծրագրի անվանումը"/>
+			<NewFolderName name="Թղթապանակի անվանումը"/>
+			<Menus>
+				<Entries>
+					<Item id="0" name="Աշխատանքային տարածք"/>
+					<Item id="1" name="Խմբագրել"/>
+				</Entries>
+				<WorkspaceMenu>
+					<Item id="3122" name="Նոր աշխատանքային տարածք"/>
+					<Item id="3123" name="Բաց աշխատանքային տարածք"/>
+					<Item id="3124" name="Վերբեռնել աշխատանքային տարածքը"/>
+					<Item id="3125" name="Պահպանել"/>
+					<Item id="3126" name="Պահպանել որպես..."/>
+					<Item id="3127" name="Պահպանել պատճենը որպես..."/>
+					<Item id="3121" name="Ավելացնել նոր նախագիծ"/>
+					<Item id="3128" name="Գտնել նախագծերում..."/>
+				</WorkspaceMenu>
+				<ProjectMenu>
+					<Item id="3111" name="Վերանվանել"/>
+					<Item id="3112" name="Թղթապանակ ավելացնել"/>
+					<Item id="3113" name="Ավելացնել ֆայլեր..."/>
+					<Item id="3117" name="Ավելացնել ֆայլեր գրացուցակից..."/>
+					<Item id="3114" name="Հեռացնել"/>
+					<Item id="3118" name="Շարժվել վերև"/>
+					<Item id="3119" name="Տեղափոխվել ներքև"/>
+				</ProjectMenu>
+				<FolderMenu>
+					<Item id="3111" name="Վերանվանել"/>
+					<Item id="3112" name="Թղթապանակ ավելացնել"/>
+					<Item id="3113" name="Ավելացնել ֆայլեր..."/>
+					<Item id="3117" name="Ավելացնել ֆայլեր գրացուցակից..."/>
+					<Item id="3114" name="Հեռացնել"/>
+					<Item id="3118" name="Տեղափոխվել վեր"/>
+					<Item id="3119" name="Տեղափոխվել ներքև"/>
+				</FolderMenu>
+				<FileMenu>
+					<Item id="3111" name="Վերանվանել"/>
+					<Item id="3115" name="Հեռացնել"/>
+					<Item id="3116" name="Փոփոխել ֆայլի ուղին"/>
+					<Item id="3118" name="Տեղափոխվել վեր"/>
+					<Item id="3119" name="Տեղափոխվել ներքև"/>
+				</FileMenu>
+			</Menus>
+		</ProjectManager>
+		<MiscStrings>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<word-chars-list-tip value="Սա թույլ է տալիս լրացուցիչ նիշ ներառել ընթացիկ բառի նիշերի մեջ՝ կրկնակի սեղմելով ընտրության համար կամ որոնելիս՝ նշելով «Համապատասխանել միայն ամբողջ բառը» տարբերակը:"/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, hover your mouse on the "?" button. -->
+
+			<!-- Don't translate "(&quot;EOL custom color&quot;)" -->
+			<eol-custom-color-tip value="Գնացեք Style Configurator՝ EOL-ի լռելյայն մաքսային գույնը փոխելու համար («EOL custom color»).."/>
+
+			<word-chars-list-warning-begin value="Իմացեք՝"/>
+			<word-chars-list-space-warning value="$INT_REPLACE$ space(s)"/>
+			<word-chars-list-tab-warning value="$INT_REPLACE$ TAB(s)"/>
+			<word-chars-list-warning-end value="ձեր կերպարների ցանկում:"/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, check "Add your character as part of word\r(don't choose it unless you know what you're doing)", then type a white-space in the text field. -->
+			<backup-select-folder value="Ընտրեք թղթապանակը որպես պահուստային գրացուցակ"/><!-- HowToReproduce: Settings > Preferences > Backup > [...] -->
+			<cloud-invalid-warning value="Անվավեր ուղի:"/>
+			<cloud-restart-warning value="Խնդրում ենք վերագործարկել Notepad++՝ ուժի մեջ մտնելու համար:"/>
+			<cloud-select-folder value="Ընտրեք թղթապանակ, որտեղից Notepad++ կարդում/գրում է իր կարգավորումները"/><!-- HowToReproduce: In "Cloud" section of Preferences dialog, check "Set your cloud location path here: ", then click the button "...". This message is displayed in the "Browse For Folder" dialog. -->
+			<default-open-save-select-folder value="Ընտրեք թղթապանակը որպես լռելյայն գրացուցակ"/><!-- HowToReproduce: Settings > Preferences > Default Directory > [...] -->
+			<shift-change-direction-tip value="Օգտագործեք Shift+Enter հակառակ ուղղությամբ որոնելու համար"/>
+			<two-find-buttons-tip value="2 գտնել կոճակների ռեժիմ"/>
+			<find-in-files-filter-tip value="Գտեք cpp, cxx, h, hxx hpp:
+*.cpp *.cxx *.h *.hxx *.hpp
+
+Գտեք բոլոր ֆայլերում, բացառությամբ exe-ի, obj log-ի.
+*.* !*.exe !*.obj !*.log
+
+Գտեք բոլոր ֆայլերում, բայց բացառեք թղթապանակների թեստերը, bin bin64:
+*.* !\թեստեր !\bin*
+
+Գտեք բոլոր ֆայլերում, բայց բացառեք բոլոր թղթապանակների մատյանները կամ տեղեկամատյանները ռեկուրսիվ կերպով.
+*.* ՜+\log*"/><!-- HowToReproduce: Tip of mouse hovered on "Filters" label in "Find in Files" section of Find dialog. -->
+			<find-in-files-select-folder value="Ընտրեք թղթապանակ, որտեղ որոնելու համար"/><!-- HowToReproduce: Search > Find in Files > [...] -->
+			<find-in-files-dir-from-active-doc-tip value="Լրացրեք տեղեկատու դաշտը՝ հիմնված ակտիվ փաստաթղթի"/><!-- HowToReproduce: Search > Find in Files > [<<] -->
+			<find-status-top-reached value="Գտեք. հասել է փաստաթղթի սկիզբը, առաջինը հայտնվել է ներքևից:"/>
+			<find-status-end-reached value="Գտեք. հասել է փաստաթղթի ավարտին, վերևից առաջին դեպքը գտնվել է:"/>
+			<find-status-replaceinfiles-1-replaced value="Փոխարինել ֆայլերում. 1 դեպք փոխարինվել է"/>
+			<find-status-replaceinfiles-nb-replaced value="Փոխարինեք ֆայլերում. $INT_REPLACE$-ի դեպքերը փոխարինվեցին"/>
+			<find-status-replaceinopenedfiles-1-replaced value="Փոխարինել բացված ֆայլերում. 1 դեպք փոխարինվել է"/>
+			<find-status-replaceinopenedfiles-nb-replaced value="Փոխարինեք բացված ֆայլերում. $INT_REPLACE$ դեպքերը փոխարինվեցին"/>
+			<find-status-invalid-re value="Գտեք՝ անվավեր կանոնավոր արտահայտություն"/>
+			<find-status-search-failed value="Գտեք. որոնումը ձախողվեց"/>
+			<find-status-mark-1-match value="Նիշ՝ 1 համընկնում"/>
+			<find-status-mark-nb-matches value="Նշել՝ $INT_REPLACE$ համընկնում է"/>
+			<find-status-count-1-match value="Հաշվարկ՝ 1 համընկնում"/>
+			<find-status-count-nb-matches value="Հաշվարկ՝ $INT_REPLACE$ համընկնում"/>
+			<find-status-replaceall-1-replaced value="Փոխարինել բոլորը. 1 դեպք փոխարինվել է"/>
+			<find-status-replaceall-nb-replaced value="Փոխարինել բոլորը. $INT_REPLACE$-ի դեպքերը փոխարինվել են"/>
+			<find-status-replaceall-readonly value="Փոխարինել բոլորը. հնարավոր չէ փոխարինել տեքստը:Ընթացիկ փաստաթուղթը կարդացվում է միայն"/>
+			<find-status-replace-end-reached value="Փոխարինել. հասել է փաստաթղթի ավարտին, սկսած վերևից:"/>
+			<find-status-replace-top-reached value="Փոխարինել. հասել է փաստաթղթի սկիզբը, սկսած ներքևից:"/>
+			<find-status-replaced-next-found value="Փոխարինել. 1 դեպք փոխարինվել է:Հայտնաբերվել է հաջորդ երևույթը."/>
+			<find-status-replaced-without-continuing value="Փոխարինել. 1 դեպք փոխարինվել է:"/>
+			<find-status-replaced-next-not-found value="Փոխարինել. 1 դեպք փոխարինվել է:Այլևս դեպքեր չեն հայտնաբերվել:"/>
+			<find-status-replace-not-found value="Փոխարինել. ոչ մի դեպք չի հայտնաբերվել"/>
+			<find-status-replace-readonly value="Փոխարինել. հնարավոր չէ փոխարինել տեքստը:Ընթացիկ փաստաթուղթը կարդացվում է միայն"/>
+			<find-status-cannot-find value="Գտնել. Չհաջողվեց գտնել «$STR_REPLACE$» տեքստը"/>
+			<find-status-cannot-find-pebkac-maybe value="Տվյալ երևույթը հնարավոր չէ գտնել:Հավանաբար մոռացել եք նշել «Փաթաթել շուրջը» (մինչև ՄԻԱՑՆԵԼ), «Միացնել պատյանը» (անջատել) կամ «Համապատասխանել միայն ամբողջ բառը» (անջատել):"/>
+			<find-status-scope-selection value="ընտրված տեքստում"/>
+			<find-status-scope-all value="ամբողջ ֆայլում"/>
+			<find-status-scope-backward value="ֆայլի սկզբից մինչև տարր"/>
+			<find-status-scope-forward value="caret-ից մինչև ֆայլի վերջ"/>
+			<find-status-invisible-chars-findWhat value="Անտեսանելի նիշերը տեղադրած «Գտիր ինչ» կամ «Փոխարինիր» բովանդակության մեջ"/>
+			<find-status-invisible-chars-findWhat-tip value="Զգուշացում. Անտեսանելի նիշերը որոնման (կամ փոխարինելու) դաշտում:
+Այս դաշտում տեղադրված տեքստը ներառում է անտեսանելի (գուցե տողով վերջացող) նիշեր:Եթե ​​շարունակեք առանց դրանք ջնջելու, դրանք կներառվեն որոնման (կամ փոխարինելու) տեքստում:"/>
+			<finder-find-in-finder value="Գտեք այս որոնման արդյունքներում..."/>
+			<finder-close-this value="Փակեք այս որոնման արդյունքները"/>
+			<finder-collapse-all value="Ծալեք բոլորը"/>
+			<finder-uncollapse-all value="Բացեք բոլոր"/>
+			<finder-copy value="Պատճենել ընտրված տող(ները)"/>
+			<finder-copy-selected-paths value="Պատճենել ընտրված ուղու անունը(ներ)ը"/>
+			<finder-clear-all value="Մաքրել բոլորը"/>
+			<finder-open-selected-paths value="Բացեք ընտրված ուղի(ներ)ը"/>
+			<finder-purge-for-every-search value="Մաքրում յուրաքանչյուր որոնման համար"/>
+			<finder-wrap-long-lines value="Բառի փաթաթան երկար տողեր"/>
+			<common-ok value="Լավ"/>
+			<common-cancel value="Չեղարկել"/>
+			<common-name value="Անունը"/>
+			<tabrename-title value="Վերանվանել ընթացիկ ներդիրը"/>
+			<tabrename-newname value="Նոր անուն"/>
+			<splitter-rotate-left value="Պտտել ձախ"/>
+			<splitter-rotate-right value="Պտտել դեպի աջ"/>
+			<userdefined-title-new value="Ստեղծել նոր լեզու..."/>
+			<userdefined-title-save value="Պահպանել ընթացիկ լեզվի անունը որպես..."/>
+			<userdefined-title-rename value="Վերանվանել ընթացիկ լեզվի անունը"/>
+			<summary value="Ամփոփում"/>
+			<summary-filepath value="Ֆայլի ամբողջական ուղին՝"/>
+			<summary-filecreatetime value="Ստեղծվել է:"/>
+			<summary-filemodifytime value="Փոփոխված՝"/>
+			<summary-nbchar value="Նիշեր (առանց տողերի վերջավորության)՝"/>
+			<summary-nbword value="Բառեր՝"/>
+			<summary-nbline value="Գծեր՝"/>
+			<summary-nbbyte value="Փաստաթղթի երկարությունը՝"/>
+			<summary-nbsel1 value="ընտրված նիշերը ("/>
+			<summary-nbsel2 value="բայթ)"/>
+			<summary-nbrange value="-ումմիջակայքերը"/>
+			<progress-hits-title value="Հիթեր՝"/>
+			<progress-cancel-info value="Գործողությունը չեղարկվում է, խնդրում ենք սպասել..."/>
+			<find-in-files-progress-title value="Գտնել Ֆայլերում առաջընթացը..."/>
+			<replace-in-files-confirm-title value="Վստա՞հ ես։"/>
+			<replace-in-files-confirm-directory value="Վստա՞հ եք, որ ցանկանում եք փոխարինել բոլոր երևույթները հետևյալում."/>
+			<replace-in-files-confirm-filetype value="Ֆայլի տեսակի համար՝"/>
+			<replace-in-files-progress-title value="Փոխարինել Ֆայլերում առաջընթաց..."/>
+			<replace-in-projects-confirm-title value="Վստա՞հ ես։"/>
+			<replace-in-projects-confirm-message value="Ցանկանու՞մ եք փոխարինել բոլոր դեպքերը բոլոր փաստաթղթերում ընտրված Ծրագրի վահանակ(ներ)ում:"/>
+			<replace-in-open-docs-confirm-title value="Վստա՞հ ես։"/>
+			<replace-in-open-docs-confirm-message value="Վստա՞հ եք, որ ցանկանում եք փոխարինել բոլոր դեպքերը բոլոր բաց փաստաթղթերում:"/>
+			<find-result-caption value="Որոնման արդյունքներ"/>
+			<find-result-title value="Որոնում"/><!-- Must not begin with space or tab character -->
+			<find-result-title-info value="($INT_REPLACE1$ դիտումներ $INT_REPLACE3$ փնտրված $INT_REPLACE2$ ֆայլերում)"/>
+			<find-result-title-info-selections value="($INT_REPLACE1$ դիտումներ $INT_REPLACE2$ $INT_REPLACE3$-ի որոնված ընտրանքներում)"/>
+			<find-result-title-info-options-searchmode-normal value="Նորմալ"/>
+			<find-result-title-info-options-searchmode-extended value="Ընդլայնված"/>
+			<find-result-title-info-options-searchmode-regexp value="RegEx"/>
+			<find-result-title-info-options-case value="Գործ"/>
+			<find-result-title-info-options-word value="Բառ"/>
+			<find-result-title-info-extra value="- Line Filter Mode. ցուցադրել միայն զտված արդյունքները"/>
+			<find-result-hits value="($INT_REPLACE$ հարվածներ)"/>
+			<find-result-line-prefix value="Գիծ"/><!-- Must not begin with space or tab character -->
+			<find-regex-zero-length-match value="զրոյական երկարության համընկնում"/>
+			<session-save-folder-as-workspace value="Պահպանել թղթապանակը որպես աշխատանքային տարածք"/>
+			<tab-untitled-string value="նոր"/>
+			<file-save-assign-type value="Կցել ընդլայնում"/>
+			<close-panel-tip value="Փակել"/>
+			<IncrementalFind-FSFound value="$INT_REPLACE$ matches"/>
+			<IncrementalFind-FSNotFound value="Արտահայտությունը չի գտնվել"/>
+			<IncrementalFind-FSTopReached value="Հասավ էջի վերևում, շարունակվում է ներքևից"/>
+			<IncrementalFind-FSEndReached value="Հասավ էջի վերջը, շարունակվում է վերևից"/>
+			<contextMenu-styleAlloccurrencesOfToken value="Ոճավորեք նշանների բոլոր երևույթները"/>
+			<contextMenu-styleOneToken value="Style one նշան"/>
+			<contextMenu-clearStyle value="Պարզ ոճ"/>
+			<contextMenu-PluginCommands value="Plugin հրամաններ"/>
+			<largeFileRestriction-tip value="Որոշ առանձնահատկություններ կարող են դանդաղեցնել աշխատանքը մեծ ֆայլերում:Այս գործառույթները կարող են ավտոմատ կերպով անջատվել մեծ ֆայլ բացելիս:Դուք կարող եք հարմարեցնել դրանք այստեղ:
+
+ԾԱՆՈԹՈՒԹՅՈՒՆ.
+1. Այստեղ ընտրանքները փոփոխելու համար անհրաժեշտ է վերաբացել ներկայումս բացված մեծ ֆայլերը՝ պատշաճ վարքագիծ ստանալու համար:
+
+2. Եթե «Ապաակտիվացնել Word Wrap-ը գլոբալ կերպով» նշված է, և դուք բացում եք մեծ ֆայլ, «Word Wrap»-ը բոլոր ֆայլերի համար կանջատվի:Դուք կարող եք նորից միացնել այն «View-&gt;Word Wrap» ընտրացանկի միջոցով:"/>
+			<npcNote-tip value="Ընտրված «ոչ ASCII» բացատների և չտպող (կառավարման) նիշերի ներկայացում:
+
+ԾԱՆՈԹՈՒԹՅՈՒՆ.
+Ներկայացման օգտագործումը կանջատի տեքստի վրա նիշերի էֆեկտները:
+
+Ընտրված բացատների և չտպող նիշերի ամբողջական ցանկի համար ստուգեք Օգտագործողի ձեռնարկը:
+
+Կտտացրեք այս կոճակին՝ Օգտագործողի ձեռնարկով կայքը բացելու համար:"/>
+			<npcAbbreviation-tip value="հապավում՝ անուն
+NBSP. առանց ընդմիջման տարածություն
+ZWSP՝ զրոյական լայնությամբ տարածություն
+ZWNBSP՝ զրոյական լայնությամբ առանց ընդմիջման տարածություն
+
+Ամբողջական ցանկի համար ստուգեք Օգտագործողի ձեռնարկը:
+Սեղմեք «?»աջ կողմում գտնվող կոճակը՝ Օգտագործողի ձեռնարկով կայքը բացելու համար:"/>
+			<npcCodepoint-tip value="Ծածկագիր: Անուն
+U+00A0՝ առանց ընդմիջման տարածություն
+U+200B՝ զրոյական լայնությամբ տարածություն
+U+FEFF՝ զրոյական լայնությամբ առանց ընդմիջման տարածություն
+
+Ամբողջական ցանկի համար ստուգեք Օգտագործողի ձեռնարկը:
+Սեղմեք «?»աջ կողմում գտնվող կոճակը՝ Օգտագործողի ձեռնարկով կայքը բացելու համար:"/>
+
+			<!-- Don't translate "(&quot;Non-printing characters custom color&quot;)" -->
+			<npcCustomColor-tip value="Գնացեք Style Configurator՝ ընտրված բացատների և չտպող նիշերի լռելյայն հատուկ գույնը փոխելու համար («Չտպվող նիշերի հատուկ գույն»):"/>
+			<npcIncludeCcUniEol-tip value="Կիրառեք չտպող նիշերի տեսքի կարգավորումները C0, C1 կառավարման և Unicode EOL (հաջորդ տող, տողերի բաժանարար և պարբերությունների բաժանարար) նիշերի վրա:"/>
+			<searchingInSelThresh-tip value="Ընտրված նիշերի նվազագույն քանակը խմբագրման գոտում՝ «Ընտրության մեջ» վանդակը ավտոմատ կերպով ստուգելու համար, երբ «Գտնել» երկխոսությունն ակտիվացված է:Առավելագույն արժեքը $INT_REPLACE$ է:Ավտոմատ ստուգումն անջատելու համար արժեքը սահմանեք 0:"/>
+			<searchingFillFindWhat-tip value="Ընտրված նիշերի առավելագույն քանակը խմբագրման գոտում՝ ավտոմատ կերպով «Գտեք ինչ» դաշտը լրացնելու համար, երբ Ctrl-F գործարկվի:Առավելագույն արժեքը $INT_REPLACE$ է, որը համակարգով սահմանափակված «Գտնել ինչ» դաշտի առավելագույն չափն է:"/>
+			<verticalEdge-tip value="Ավելացրեք ձեր սյունակի նշիչը՝ նշելով դրա դիրքը տասնորդական թվով:Դուք կարող եք սահմանել մի քանի սյունակային նշիչներ՝ օգտագործելով սպիտակ տարածություն՝ տարբեր թվերը առանձնացնելու համար:"/>
+			<fileSaveAsCopySaveButton-tip value="Պահեք Shift-ը` միաժամանակ սեղմելով Save` պահպանումից հետո պատճենը բացելու համար:"/>
+			<autoIndentBasic-tip value="Համոզվեք, որ ընթացիկ տողի (այսինքն՝ ENTER ստեղնը սեղմելով ստեղծված նոր գծի) հետքը համընկնում է նախորդ տողի հետքի հետ:"/>
+			<autoIndentAdvanced-tip value="Միացնել խելացի նահանջը «C-ի նման» լեզուների և Python-ի համար:«C-ի նման» լեզուները ներառում են.
+C, C++, Java, C#, Objective-C, PHP, JavaScript, JSP, CSS, Perl, Rust, PowerShell և JSON:
+
+Եթե ​​դուք ընտրում եք ընդլայնված ռեժիմ, բայց չեք խմբագրում ֆայլերը վերը նշված լեզուներով, ապա նահանջը կմնա հիմնական ռեժիմում:"/>
+
+			<!-- Don't translate "Global override" and "Default Style" -->
+			<global-override-tip value="«Global override»-ի ակտիվացումն այստեղ կվերացնի այդ պարամետրը բոլոր լեզվական ոճերում:Այն, ինչ դուք, հավանաբար, իսկապես ցանկանում եք, փոխարենը օգտագործել «Default Style» կարգավորումները"/>
+			<scintillaRenderingTechnology-tip value="Կարող է բարելավել հատուկ նիշերի մատուցումը կամ լուծել գրաֆիկական որոշ խնդիրներ, վերագործարկեք Notepad++՝ փոփոխությունները կիրառելու համար:"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'length' & 'lines' are much longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-length-lines value="երկարությունը՝ $STR_REPLACE1$ տողեր՝ $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Ln' & 'Col' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Ln-Col value="Ln՝ $STR_REPLACE1$ Col՝ $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Pos' & 'Sel' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Pos value="Pos:"/>
+			<statusbar-Sel value="Sel:"/>
+			<statusbar-Sel-number value="Սել"/>
+			<toolbar-accent-tip value="Այս տարբերակը ստիպում է ձեր գործիքագոտու պատկերակներին հետևել Windows համակարգի շեշտադրման գույնին:Ընդգծման գույնը Windows-ի կոճակների, եզրագծերի և Start ընտրացանկի սալիկներում օգտագործվող ընդգծված գույնն է:Այն փոխելու համար անցեք Կարգավորումներ &gt; Անհատականացում &gt; Գույներ, ապա ընտրեք ձեր նախընտրած շեշտադրման գույնը:"/>
+			<len-limit-exceeded-tip value="Երկարության սահմանաչափը գերազանցվել է. Ձեր մուտքագրումը կարող է գերազանցել թույլատրելի սահմանը և կարող էր կրճատվել, և այն չի պահվի հաջորդ աշխատաշրջանի համար:"/>
+			<max-len-on-search-tip value="Ձեր մուտքագրումը կարող է գերազանցել թույլատրելի սահմանաչափը և կարող էր կրճատվել, և այն չի պահվի հաջորդ աշխատաշրջանի համար:"/>
+			<max-len-on-save-tip value="Ձեր մուտքագրման տևողությունը շատ երկար է և կարող է չպահվել ձեր հաջորդ աշխատաշրջանի համար:"/>
+			<goto-setting-tip value="Գտեք ձեր կարգավորումն այստեղ"/>
+			<tabbar-tabcompactlabellen-tip value="Սահմանափակում է երկար ներդիրների անունների տեսանելի երկարությունը:Մուտքագրեք՝ տրված արժեքը կիրառելու համար:Արժեքների միջակայք՝ 1-257 նիշ (0-ն անջատում է կրճատումը):"/>
+		</MiscStrings>
+	</Native-Langue>
+</NotepadPlus>
+
+

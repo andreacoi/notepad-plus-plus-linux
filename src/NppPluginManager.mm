@@ -1,5 +1,6 @@
 #import "NppPluginManager.h"
 #import "MainWindowController.h"
+#import "PreferencesWindowController.h"
 #import "TabManager.h"
 #import "EditorView.h"
 #import "ScintillaView.h"
@@ -420,15 +421,33 @@ static NSString *pluginBaseDir(void) {
         // ── Editor / view queries ──────────────────────────────────────
         case NPPM_GETCURRENTSCINTILLA: {
             // Write 0 (main) or 1 (sub) to *lParam
-            // For now, always return 0 (primary view)
+            int viewId = MAIN_VIEW;
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:kPrefPluginSplitViewRouting]) {
+                MainWindowController *mwc = _mwc;
+                if (mwc) {
+                    EditorView *focused = [mwc currentEditor];
+                    EditorView *primary = [mwc editorForPluginView:MAIN_VIEW];
+                    if (focused && primary && focused != primary)
+                        viewId = SUB_VIEW;
+                }
+            }
             if (lParam) {
                 int *result = (int *)lParam;
-                *result = MAIN_VIEW;
+                *result = viewId;
             }
-            return 0;
+            return viewId;
         }
 
         case NPPM_GETCURRENTVIEW: {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:kPrefPluginSplitViewRouting]) {
+                MainWindowController *mwc = _mwc;
+                if (mwc) {
+                    EditorView *focused = [mwc currentEditor];
+                    EditorView *primary = [mwc editorForPluginView:MAIN_VIEW];
+                    if (focused && primary && focused != primary)
+                        return SUB_VIEW;
+                }
+            }
             return MAIN_VIEW;
         }
 
@@ -621,16 +640,20 @@ static NSString *pluginBaseDir(void) {
         // ── Toolbar icon registration ───────────────────────────────
         case NPPM_ADDTOOLBARICON_FORDARKMODE: {
             // wParam = cmdID assigned to a FuncItem
+            // lParam = (const char *) icon filename hint (optional, macOS extension)
+            //          if NULL, falls back to toolbar.png
             int cmdID = (int)wParam;
 
-            // Find which plugin owns this cmdID and load its toolbar.png
+            // Find which plugin owns this cmdID and load the icon
             std::string pluginDirName;
             std::string pluginDisplayName;
+            std::string funcItemName;
             for (auto &pi : _plugins) {
                 for (int i = 0; i < pi->nbFuncItems; i++) {
                     if (pi->funcItems[i]._cmdID == cmdID) {
                         pluginDirName = pi->moduleName;
                         pluginDisplayName = pi->displayName;
+                        funcItemName = pi->funcItems[i]._itemName;
                         break;
                     }
                 }
@@ -642,11 +665,25 @@ static NSString *pluginBaseDir(void) {
                 return 0;
             }
 
-            NSString *iconPath = [NSString stringWithFormat:@"%@/%s/toolbar.png",
-                                  pluginBaseDir(), pluginDirName.c_str()];
-            NSImage *icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
+            NSString *pluginDir = [NSString stringWithFormat:@"%@/%s",
+                                   pluginBaseDir(), pluginDirName.c_str()];
+
+            // Try icon name from lParam hint first
+            NSImage *icon = nil;
+            if (lParam) {
+                NSString *hintPath = [pluginDir stringByAppendingPathComponent:
+                    [NSString stringWithUTF8String:(const char *)lParam]];
+                icon = [[NSImage alloc] initWithContentsOfFile:hintPath];
+            }
+
+            // Fallback: toolbar.png (single-icon plugins)
             if (!icon) {
-                NSLog(@"[Plugins] ADDTOOLBARICON: toolbar.png not found at %@", iconPath);
+                NSString *iconPath = [pluginDir stringByAppendingPathComponent:@"toolbar.png"];
+                icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
+            }
+
+            if (!icon) {
+                NSLog(@"[Plugins] ADDTOOLBARICON: no icon found for cmdID %d in %@", cmdID, pluginDir);
                 return 0;
             }
             icon.size = NSMakeSize(16, 16);
@@ -840,12 +877,20 @@ static NSString *pluginBaseDir(void) {
     MainWindowController *mwc = _mwc;
     if (!mwc) return 0;
 
-    EditorView *ed = [mwc currentEditor];
+    EditorView *ed = nil;
+
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kPrefPluginSplitViewRouting]) {
+        // Route based on handle: main handle → primary editor, sub handle → secondary editor
+        int viewId = (handle == kHandleScintillaSub) ? SUB_VIEW : MAIN_VIEW;
+        ed = [mwc editorForPluginView:viewId];
+    }
+
+    // Fallback: route to current editor (original behavior)
+    if (!ed)
+        ed = [mwc currentEditor];
+
     if (!ed) return 0;
 
-    // Route to the appropriate ScintillaView
-    // For now, both main and sub handles route to the current editor.
-    // TODO: when split views have tabs, route sub handle to secondary editor
     ScintillaView *sv = ed.scintillaView;
     if (!sv) return 0;
 

@@ -1,4 +1,5 @@
 #import "CommandPalettePanel.h"
+#import "NppLocalizer.h"
 
 // ── Private row view (green selection highlight) ───────────────────────────
 
@@ -87,7 +88,7 @@ static const CGFloat kRowH    = 50;
     // Search field
     _searchField = [[NSTextField alloc] initWithFrame:
         NSMakeRect(46, kPanelH - kSearchH + 10, kPanelW - 62, 28)];
-    _searchField.placeholderString = @"Search commands…";
+    _searchField.placeholderString = [[NppLocalizer shared] translate:@"Search commands…"];
     _searchField.bordered           = NO;
     _searchField.backgroundColor    = NSColor.clearColor;
     _searchField.textColor          = NSColor.whiteColor;
@@ -133,7 +134,7 @@ static const CGFloat kRowH    = 50;
     [box addSubview:sv];
 
     // "No results" label
-    _emptyLabel = [NSTextField labelWithString:@"No commands found"];
+    _emptyLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"No commands found"]];
     _emptyLabel.frame = NSMakeRect(0, tableH / 2 - 12, kPanelW, 24);
     _emptyLabel.alignment   = NSTextAlignmentCenter;
     _emptyLabel.font = [NSFont systemFontOfSize:14 weight:NSFontWeightRegular];

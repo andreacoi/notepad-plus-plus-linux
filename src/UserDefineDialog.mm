@@ -1,5 +1,6 @@
 #import "UserDefineDialog.h"
 #import "UDLStylerDialog.h"
+#import "NppLocalizer.h"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -167,7 +168,7 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
                   styleMask:NSWindowStyleMaskTitled|NSWindowStyleMaskClosable|
                             NSWindowStyleMaskMiniaturizable
                     backing:NSBackingStoreBuffered defer:NO];
-    w.title = @"User Defined Language v.2.1";
+    w.title = [[NppLocalizer shared] translate:@"User Defined Language v.2.1"];
     [w center];
     self = [super initWithWindow:w];
     if (self) {
@@ -187,9 +188,10 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
 
 - (void)_buildUI {
     NSView *r = self.window.contentView;
+    NppLocalizer *loc = [NppLocalizer shared];
 
     // Row 1
-    NSTextField *ll = L(@"User language:");
+    NSTextField *ll = L([loc translate:@"User language:"]);
     ll.translatesAutoresizingMaskIntoConstraints = NO; [r addSubview:ll];
     _langPopup = [[NSPopUpButton alloc] init];
     _langPopup.translatesAutoresizingMaskIntoConstraints = NO;
@@ -197,7 +199,7 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
     [_langPopup.widthAnchor constraintGreaterThanOrEqualToConstant:180].active = YES;
     [r addSubview:_langPopup];
 
-    NSArray *bt = @[@"Create new…", @"Save as…", @"Rename", @"Remove"];
+    NSArray *bt = @[[loc translate:@"Create new…"], [loc translate:@"Save as…"], [loc translate:@"Rename"], [loc translate:@"Remove"]];
     SEL ba[] = {@selector(_createNew:), @selector(_saveAs:), @selector(_rename:), @selector(_remove:)};
     NSMutableArray *bs = [NSMutableArray array];
     for (int i = 0; i < 4; i++) {
@@ -207,13 +209,13 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
     }
 
     // Row 2
-    NSButton *bI = [NSButton buttonWithTitle:@"Import…" target:self action:@selector(_import:)];
-    NSButton *bE = [NSButton buttonWithTitle:@"Export…" target:self action:@selector(_export:)];
+    NSButton *bI = [NSButton buttonWithTitle:[loc translate:@"Import…"] target:self action:@selector(_import:)];
+    NSButton *bE = [NSButton buttonWithTitle:[loc translate:@"Export…"] target:self action:@selector(_export:)];
     for (NSButton *b in @[bI, bE]) { b.translatesAutoresizingMaskIntoConstraints = NO; b.font = [NSFont systemFontOfSize:11]; [r addSubview:b]; }
-    NSTextField *el = L(@"Ext.:"); el.translatesAutoresizingMaskIntoConstraints = NO; [r addSubview:el];
+    NSTextField *el = L([loc translate:@"Ext.:"]); el.translatesAutoresizingMaskIntoConstraints = NO; [r addSubview:el];
     _extField = [[NSTextField alloc] init]; _extField.translatesAutoresizingMaskIntoConstraints = NO; _extField.font = [NSFont systemFontOfSize:11];
     [_extField.widthAnchor constraintGreaterThanOrEqualToConstant:100].active = YES; [r addSubview:_extField];
-    _ignoreCaseCheck = chk(@"Ignore case"); _ignoreCaseCheck.translatesAutoresizingMaskIntoConstraints = NO; [r addSubview:_ignoreCaseCheck];
+    _ignoreCaseCheck = chk([loc translate:@"Ignore case"]); _ignoreCaseCheck.translatesAutoresizingMaskIntoConstraints = NO; [r addSubview:_ignoreCaseCheck];
 
     _tabView = [[NSTabView alloc] init]; _tabView.translatesAutoresizingMaskIntoConstraints = NO; [r addSubview:_tabView];
     [_tabView addTabViewItem:[self _tab1]]; [_tabView addTabViewItem:[self _tab2]];
@@ -253,7 +255,8 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
 #pragma mark — Tab 1: Folder & Default
 
 - (NSTabViewItem *)_tab1 {
-    NSTabViewItem *t = [[NSTabViewItem alloc] initWithIdentifier:@"f"]; t.label = @"Folder & Default";
+    NppLocalizer *loc = [NppLocalizer shared];
+    NSTabViewItem *t = [[NSTabViewItem alloc] initWithIdentifier:@"f"]; t.label = [loc translate:@"Folder & Default"];
     NSView *c = scrollableTab(t, 650);
     CGFloat W = 700, hw = W/2 - 16, y = 8;
 
@@ -297,7 +300,7 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
     [c addSubview:defBox]; y += 70;
 
     // Fold compact checkbox
-    _foldCompactCheck = chk(@"Fold compact (fold empty lines too)");
+    _foldCompactCheck = chk([loc translate:@"Fold compact (fold empty lines too)"]);
     _foldCompactCheck.frame = NSMakeRect(16, y, 350, 18);
     [c addSubview:_foldCompactCheck]; y += 128;
 
@@ -320,7 +323,8 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
 #pragma mark — Tab 2: Keywords Lists
 
 - (NSTabViewItem *)_tab2 {
-    NSTabViewItem *t = [[NSTabViewItem alloc] initWithIdentifier:@"k"]; t.label = @"Keywords Lists";
+    NppLocalizer *loc = [NppLocalizer shared];
+    NSTabViewItem *t = [[NSTabViewItem alloc] initWithIdentifier:@"k"]; t.label = [loc translate:@"Keywords Lists"];
     CGFloat colW = 310, rowH = 130, pad = 6;
     NSView *c = scrollableTab(t, 4 * (rowH + pad) + pad);
 
@@ -339,7 +343,7 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
         // Styler + Prefix at bottom (y=0 is bottom in NSBox contentView)
         NSButton *sb = stylerBtn(self, @selector(_stylerNYI:));
         sb.frame = NSMakeRect(4, 2, 70, 20); [bv addSubview:sb];
-        _kwPfx[i] = chk(@"Prefix mode"); _kwPfx[i].frame = NSMakeRect(80, 2, 110, 18); [bv addSubview:_kwPfx[i]];
+        _kwPfx[i] = chk([loc translate:@"Prefix mode"]); _kwPfx[i].frame = NSMakeRect(80, 2, 110, 18); [bv addSubview:_kwPfx[i]];
         // Keyword text area fills the rest above
         CGFloat aH = bvH - 28;
         _kwArea[i] = MF(aH - 15); _kwArea[i].frame = NSMakeRect(4, 28, bw - 20, aH - 15);
@@ -352,16 +356,17 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
 #pragma mark — Tab 3: Comment & Number
 
 - (NSTabViewItem *)_tab3 {
-    NSTabViewItem *t = [[NSTabViewItem alloc] initWithIdentifier:@"c"]; t.label = @"Comment & Number";
+    NppLocalizer *loc = [NppLocalizer shared];
+    NSTabViewItem *t = [[NSTabViewItem alloc] initWithIdentifier:@"c"]; t.label = [loc translate:@"Comment & Number"];
     CGFloat W = 700, hw = W/2 - 16;
     NSView *c = scrollableTab(t, 800);
     CGFloat y = 8;
 
     // Line comment position (left)
     NSBox *lcpBox = groupBox(@"Line comment position", 8, y, hw, 90);
-    _radioAny = [NSButton radioButtonWithTitle:@"Allow anywhere" target:nil action:nil];
-    _radioBOL = [NSButton radioButtonWithTitle:@"Force at beginning of line" target:nil action:nil];
-    _radioWS  = [NSButton radioButtonWithTitle:@"Allow preceding whitespace" target:nil action:nil];
+    _radioAny = [NSButton radioButtonWithTitle:[loc translate:@"Allow anywhere"] target:nil action:nil];
+    _radioBOL = [NSButton radioButtonWithTitle:[loc translate:@"Force at beginning of line"] target:nil action:nil];
+    _radioWS  = [NSButton radioButtonWithTitle:[loc translate:@"Allow preceding whitespace"] target:nil action:nil];
     _radioAny.state = NSControlStateValueOn;
     _radioAny.frame = NSMakeRect(10, 48, 250, 16);
     _radioBOL.frame = NSMakeRect(10, 28, 250, 16);
@@ -370,7 +375,7 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
     [c addSubview:lcpBox];
 
     // Allow folding (right)
-    _foldCmtCheck = chk(@"Allow folding of comments");
+    _foldCmtCheck = chk([loc translate:@"Allow folding of comments"]);
     _foldCmtCheck.frame = NSMakeRect(W/2 + 10, y + 10, 250, 18); [c addSubview:_foldCmtCheck];
     y += 100;
 
@@ -447,9 +452,9 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
     // Decimal separator box — below Range row, right column
     // ny is now at the Range field position; go below it
     NSBox *decBox = groupBox(@"Decimal separator", rx, ny - 44 - 35 + 50, 300, 44);
-    _decDot = [NSButton radioButtonWithTitle:@"Dot" target:nil action:nil];
-    _decComma = [NSButton radioButtonWithTitle:@"Comma" target:nil action:nil];
-    _decBoth = [NSButton radioButtonWithTitle:@"Both" target:nil action:nil];
+    _decDot = [NSButton radioButtonWithTitle:[loc translate:@"Dot"] target:nil action:nil];
+    _decComma = [NSButton radioButtonWithTitle:[loc translate:@"Comma"] target:nil action:nil];
+    _decBoth = [NSButton radioButtonWithTitle:[loc translate:@"Both"] target:nil action:nil];
     _decDot.state = NSControlStateValueOn;
     _decDot.frame = NSMakeRect(8, 4, 60, 16); _decComma.frame = NSMakeRect(78, 4, 80, 16); _decBoth.frame = NSMakeRect(168, 4, 60, 16);
     [decBox.contentView addSubview:_decDot]; [decBox.contentView addSubview:_decComma]; [decBox.contentView addSubview:_decBoth];
@@ -462,7 +467,8 @@ static void addFoldFields(NSBox *box, NSScrollView **oO, NSScrollView **oM, NSSc
 #pragma mark — Tab 4: Operators & Delimiters
 
 - (NSTabViewItem *)_tab4 {
-    NSTabViewItem *t = [[NSTabViewItem alloc] initWithIdentifier:@"o"]; t.label = @"Operators & Delimiters";
+    NppLocalizer *loc = [NppLocalizer shared];
+    NSTabViewItem *t = [[NSTabViewItem alloc] initWithIdentifier:@"o"]; t.label = [loc translate:@"Operators & Delimiters"];
     CGFloat W = 700, hw = W/2 - 16, dH = 98;
     NSView *c = scrollableTab(t, 130 + 4 * (dH + 6) + 10);
     CGFloat y = 8;
@@ -890,9 +896,10 @@ static NSString *getTextEscaped(NSScrollView *sv) {
 #pragma mark — CRUD
 
 - (void)_createNew:(id)s {
-    NSAlert *a=[[NSAlert alloc]init]; a.messageText=@"Create New Language"; a.informativeText=@"Enter a name:";
-    NSTextField *inp=[[NSTextField alloc]initWithFrame:NSMakeRect(0,0,250,24)]; inp.placeholderString=@"Language name";
-    a.accessoryView=inp; [a addButtonWithTitle:@"Create"]; [a addButtonWithTitle:@"Cancel"];
+    NppLocalizer *loc = [NppLocalizer shared];
+    NSAlert *a=[[NSAlert alloc]init]; a.messageText=[loc translate:@"Create New Language"]; a.informativeText=[loc translate:@"Enter a name:"];
+    NSTextField *inp=[[NSTextField alloc]initWithFrame:NSMakeRect(0,0,250,24)]; inp.placeholderString=[loc translate:@"Language name"];
+    a.accessoryView=inp; [a addButtonWithTitle:[loc translate:@"Create"]]; [a addButtonWithTitle:[loc translate:@"Cancel"]];
     if([a runModal]!=NSAlertFirstButtonReturn)return;
     NSString *nm=[inp.stringValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if(!nm.length||[[UserDefineLangManager shared]languageNamed:nm])return;
@@ -910,9 +917,9 @@ static NSString *getTextEscaped(NSScrollView *sv) {
     [x writeToFile:p atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
 - (void)_saveAs:(id)s {
-    if(!_cur)return; NSAlert *a=[[NSAlert alloc]init]; a.messageText=@"Save As";
+    if(!_cur)return; NppLocalizer *loc = [NppLocalizer shared]; NSAlert *a=[[NSAlert alloc]init]; a.messageText=[loc translate:@"Save As"];
     NSTextField *inp=[[NSTextField alloc]initWithFrame:NSMakeRect(0,0,250,24)]; inp.stringValue=_cur.name;
-    a.accessoryView=inp; [a addButtonWithTitle:@"Save"]; [a addButtonWithTitle:@"Cancel"];
+    a.accessoryView=inp; [a addButtonWithTitle:[loc translate:@"Save"]]; [a addButtonWithTitle:[loc translate:@"Cancel"]];
     if([a runModal]!=NSAlertFirstButtonReturn)return;
     NSString *nm=[inp.stringValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if(!nm.length||[nm isEqualToString:_cur.name])return;
@@ -924,16 +931,16 @@ static NSString *getTextEscaped(NSScrollView *sv) {
     [[UserDefineLangManager shared]loadAll]; [self _rebuildPopup]; [_langPopup selectItemWithTitle:nm]; [self _load];
 }
 - (void)_remove:(id)s {
-    if(!_cur)return; NSAlert *a=[[NSAlert alloc]init];
-    a.messageText=[NSString stringWithFormat:@"Remove \"%@\"?",_cur.name];
-    [a addButtonWithTitle:@"Remove"]; [a addButtonWithTitle:@"Cancel"]; a.buttons.firstObject.hasDestructiveAction=YES;
+    if(!_cur)return; NppLocalizer *loc = [NppLocalizer shared]; NSAlert *a=[[NSAlert alloc]init];
+    a.messageText=[NSString stringWithFormat:@"%@ \"%@\"?", [loc translate:@"Remove"], _cur.name];
+    [a addButtonWithTitle:[loc translate:@"Remove"]]; [a addButtonWithTitle:[loc translate:@"Cancel"]]; a.buttons.firstObject.hasDestructiveAction=YES;
     if([a runModal]!=NSAlertFirstButtonReturn)return;
     [[UserDefineLangManager shared]deleteLanguage:_cur]; _cur=nil; [self _rebuildPopup]; [self _load];
 }
 - (void)_rename:(id)s {
-    if(!_cur)return; NSAlert *a=[[NSAlert alloc]init]; a.messageText=@"Rename";
+    if(!_cur)return; NppLocalizer *loc = [NppLocalizer shared]; NSAlert *a=[[NSAlert alloc]init]; a.messageText=[loc translate:@"Rename"];
     NSTextField *inp=[[NSTextField alloc]initWithFrame:NSMakeRect(0,0,250,24)]; inp.stringValue=_cur.name;
-    a.accessoryView=inp; [a addButtonWithTitle:@"Rename"]; [a addButtonWithTitle:@"Cancel"];
+    a.accessoryView=inp; [a addButtonWithTitle:[loc translate:@"Rename"]]; [a addButtonWithTitle:[loc translate:@"Cancel"]];
     if([a runModal]!=NSAlertFirstButtonReturn)return;
     NSString *nm=[inp.stringValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if(!nm.length||[nm isEqualToString:_cur.name])return;

@@ -1,0 +1,2142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Myanmar (Burmese) (မြန်မာ) language file for Notepad++ macOS
+    Based on English template - community translations welcome
+    Created: 2026-04-04
+-->
+<NotepadPlus>
+	<Native-Langue name="မြန်မာ" filename="myanmar.xml" version="8.9">
+		<Menu>
+			<Main>
+				<!-- Main Menu Entries -->
+				<Entries>
+					<Item menuId="file" name="ဖိုင်"/>
+					<Item menuId="edit" name="တည်းဖြတ်"/>
+					<Item menuId="search" name="ရှာရန်"/>
+					<Item menuId="view" name="အမြင်"/>
+					<Item menuId="encoding" name="ကုဒ်"/>
+					<Item menuId="language" name="ဘာသာစကား"/>
+					<Item menuId="settings" name="ဆက်တင်များ"/>
+					<Item menuId="tools" name="ကိရိယာများ"/>
+					<Item menuId="macro" name="မက်ခရို"/>
+					<Item menuId="run" name="ပြေး"/>
+					<Item menuId="Plugins" name="ပလပ်အင်များ"/>
+					<Item menuId="Window" name="ပြတင်းပေါက်"/>
+				</Entries>
+				<!-- Sub Menu Entries -->
+				<SubEntries>
+					<Item subMenuId="file-openFolder" name="ပါဝင်သော Folder ကိုဖွင့်ပါ"/>
+					<Item subMenuId="file-closeMore" name="စာရွက်စာတမ်းများစွာ ပိတ်ရန်"/>
+					<Item subMenuId="file-recentFiles" name="လတ်တလော ဖိုင်များ"/>
+					<Item subMenuId="edit-insert" name=""/>
+					<Item subMenuId="edit-copyToClipboard" name="ထည့်သွင်းပါ။ကလစ်ဘုတ်သို့ ကူးယူပါ"/>
+					<Item subMenuId="edit-indent" name="အင်တင်း"/>
+					<Item subMenuId="edit-convertCaseTo" name="Case သို့ ပြောင်းပါ။"/>
+					<Item subMenuId="edit-lineOperations" name="လိုင်းပြေးဆွဲမှု"/>
+					<Item subMenuId="edit-comment" name="မှတ်ချက်/မှတ်ချက်"/>
+					<Item subMenuId="edit-autoCompletion" name="အလိုအလျောက် ဖြည့်သွင်းခြင်း"/>
+					<Item subMenuId="edit-eolConversion" name="EOL ပြောင်းလဲခြင်း"/>
+					<Item subMenuId="edit-blankOperations" name="ဗလာစစ်ဆင်ရေး"/>
+					<Item subMenuId="edit-pasteSpecial" name="အထူး"/>
+					<Item subMenuId="edit-onSelection" name="ကူးထည့်ပါ။ရွေးချယ်မှု"/>
+					<Item subMenuId="edit-multiSelectALL" name="အစုံ"/>
+					<Item subMenuId="edit-multiSelectNext" name="ALL ကို ရွေးပါ။Multi-select Next"/>
+					<Item subMenuId="edit-readonlyInNotepad++" name="Notepad++"/>
+					<Item subMenuId="search-changeHistory" name="တွင်သာ ဖတ်ရန်သမိုင်းပြောင်း"/>
+					<Item subMenuId="search-markAll" name="တိုကင်၏ဖြစ်ပျက်မှုအားလုံး ပုံစံ"/>
+					<Item subMenuId="search-markOne" name="ပုံစံ One Token"/>
+					<Item subMenuId="search-unmarkAll" name="ရှင်းလင်းသောပုံစံ"/>
+					<Item subMenuId="search-jumpUp" name="ခုန်တက်"/>
+					<Item subMenuId="search-jumpDown" name="ခုန်ဆင်း"/>
+					<Item subMenuId="search-copyStyledText" name="ပုံစံထုတ်ထားသောစာသား"/>
+					<Item subMenuId="search-bookmark" name="ကူးယူပါ။ညှပ်"/>
+					<Item subMenuId="view-currentFileIn" name=""/>
+					<Item subMenuId="view-showSymbol" name="တွင် လက်ရှိဖိုင်ကိုကြည့်ပါ။သင်္ကေတပြပါ။"/>
+					<Item subMenuId="view-zoom" name="ချဲ့"/>
+					<Item subMenuId="view-moveCloneDocument" name="လက်ရှိစာရွက်စာတမ်းကို ရွှေ့/ကလိုး"/>
+					<Item subMenuId="view-tab" name="တက်ဘ်"/>
+					<Item subMenuId="view-collapseLevel" name="အဆင့်"/>
+					<Item subMenuId="view-uncollapseLevel" name="ခေါက်အဆင့်"/>
+					<Item subMenuId="view-project" name="စီမံကိန်း"/>
+					<Item subMenuId="encoding-characterSets" name="ဇာတ်ကောင်သတ်မှတ်"/>
+					<Item subMenuId="encoding-arabic" name="အာရဗီ"/>
+					<Item subMenuId="encoding-baltic" name="ဘောလ်တစ်"/>
+					<Item subMenuId="encoding-celtic" name="ဆဲလ်တစ်"/>
+					<Item subMenuId="encoding-cyrillic" name="Cyrillic"/>
+					<Item subMenuId="encoding-centralEuropean" name="ဗဟိုဥရောပ"/>
+					<Item subMenuId="encoding-chinese" name="တရုတ်"/>
+					<Item subMenuId="encoding-easternEuropean" name="အရှေ့ဥရောပ"/>
+					<Item subMenuId="encoding-greek" name="ဂရိ"/>
+					<Item subMenuId="encoding-hebrew" name="ဟီး"/>
+					<Item subMenuId="encoding-japanese" name="ဂျပန်"/>
+					<Item subMenuId="encoding-korean" name="ကိုးရီးယား"/>
+					<Item subMenuId="encoding-northEuropean" name="မြောက်ဥရောပ"/>
+					<Item subMenuId="encoding-thai" name="ထိုင်း"/>
+					<Item subMenuId="encoding-turkish" name="တူရကီ"/>
+					<Item subMenuId="encoding-westernEuropean" name="အနောက်ဥရောပ"/>
+					<Item subMenuId="encoding-vietnamese" name="ဗီယက်နမ်"/>
+					<Item subMenuId="language-userDefinedLanguage" name="အသုံးပြုသူသတ်မှတ်ထားသော ဘာသာစကား"/>
+					<Item subMenuId="settings-import" name="တင်သွင်း"/>
+					<Item subMenuId="tools-md5" name="MD5"/>
+					<Item subMenuId="tools-sha1" name="SHA-1"/>
+					<Item subMenuId="tools-sha256" name="SHA-256"/>
+					<Item subMenuId="tools-sha512" name="SHA-512"/>
+					<Item subMenuId="window-sortby" name="စီရန်"/>
+				</SubEntries>
+
+				<!-- all menu item -->
+				<Commands>
+					<Item id="41001" name="အသစ်"/>
+					<Item id="41002" name="ဖွင့်..."/>
+					<Item id="41019" name="Explorer"/>
+					<Item id="41020" name="cmd"/>
+					<Item id="41025" name="အလုပ်နေရာ"/>
+					<Item id="41003" name="အဖြစ် ဖိုင်တွဲပိတ်"/>
+					<Item id="41004" name=""/>
+					<Item id="41005" name="အားလုံးပိတ်ပါ။ဒါပေမယ့် လက်ရှိ စာရွက်စာတမ်း အားလုံးကို ပိတ်ပါ"/>
+					<Item id="41026" name="သို့သော် ပင်ထိုးထားသော စာရွက်စာတမ်းများ အားလုံးကို ပိတ်ပါ"/>
+					<Item id="41009" name="ဘယ်ဘက်တွင် အားလုံးကို ပိတ်ပါ။"/>
+					<Item id="41018" name="အားလုံးကို ညာဘက်သို့ပိတ်"/>
+					<Item id="41024" name="မပြောင်းလဲသော"/>
+					<Item id="41006" name="အားလုံးကို ပိတ်ပါ။"/>
+					<Item id="41007" name="သိမ်းဆည်းပါ။"/>
+					<Item id="41008" name="အားလုံးကို သိမ်းဆည်းပါ။Save As..."/>
+					<Item id="41010" name="ပရင့်..."/>
+					<Item id="1001" name="Print Now"/>
+					<Item id="41011" name="ထွက်ရန်"/>
+					<Item id="41012" name="အပိုင်းကိုဖွင့်ရန်..."/>
+					<Item id="41013" name="ဆက်ရှင်..."/>
+					<Item id="41014" name="Disk"/>
+					<Item id="41015" name="မှ ပြန်လည်စတင်ပါ။ကော်ပီအဖြစ်..."/>
+					<Item id="41016" name="သိမ်းဆည်းပါ။Recycle Bin"/>
+					<Item id="41017" name="သို့ ရွှေ့ပါ။အမည်ပြောင်း..."/>
+					<Item id="41021" name="Recent Closed File"/>
+					<Item id="41022" name="ပြန်လည်ရယူပါ။အလုပ်နေရာအဖြစ် ဖိုင်တွဲကိုဖွင့်ပါ..."/>
+					<Item id="41023" name="မူရင်းကြည့်ရှုသူ"/>
+					<Item id="42001" name="ဖွင့်ပါ။ဖြတ်"/>
+					<Item id="42002" name="ကူးယူ"/>
+					<Item id="42003" name="မလုပ်တော့"/>
+					<Item id="42004" name="ပြန်လုပ်ပါ"/>
+					<Item id="42005" name="ငါးပိ"/>
+					<Item id="42006" name="ဖျက်"/>
+					<Item id="42007" name=""/>
+					<Item id="42020" name="အားလုံးကို ရွေးပါ။အစ/အဆုံး ရွေးပါ"/>
+					<Item id="42089" name="ကော်လံမုဒ်တွင် အစ/အဆုံး ရွေးပါ"/>
+					<Item id="42084" name="ရက်စွဲ အချိန် (တိုတောင်း)"/>
+					<Item id="42085" name="ရက်စွဲ အချိန် (ကြာ)"/>
+					<Item id="42086" name="ရက်စွဲ အချိန် (စိတ်ကြိုက်)"/>
+					<Item id="42008" name="Line Indent ကို တိုးရန်"/>
+					<Item id="42009" name="လိုင်းအင်တင်း"/>
+					<Item id="42010" name="လျှော့ပါ။လက်ရှိမျဉ်းပွား"/>
+					<Item id="42079" name="ထပ်နေသောလိုင်းများ"/>
+					<Item id="42077" name="ဖယ်ရှားပါ။ဆက်တိုက်ပွားနေသောလိုင်းများ"/>
+					<Item id="42012" name="ဖယ်ရှားပါ။မျဉ်းများခွဲ၍"/>
+					<Item id="42013" name="လိုင်းများ"/>
+					<Item id="42014" name="ချိတ်ဆက်ပါ။လက်ရှိလိုင်းကို ရွှေ့ပါ"/>
+					<Item id="42015" name="Down Current Line"/>
+					<Item id="42059" name="ရွှေ့ပါ။အဘိဓာန်အရ မျဉ်းများ စီရန်"/>
+					<Item id="42060" name="မျဉ်းများကို အဘိဓာန်အရ ကြီးစဉ်လိုက် စီပါ။"/>
+					<Item id="42080" name="လိုင်းများ Lex ကို စီပါ။ကြီးလာသည်ကို လျစ်လျူရှုခြင်း"/>
+					<Item id="42081" name="လိုင်းများ Lex ကို စီပါ။ကြီးစဉ်ငယ်လိုက် လျစ်လျူရှုခြင်း ကိစ္စ"/>
+					<Item id="42100" name="မျဉ်းကြောင်းများ စီရန်"/>
+					<Item id="42101" name="မျဉ်းကြောင်းများကို ဒေသအစဉ်လိုက် ကြီးစဉ်လိုက်"/>
+					<Item id="42104" name="အလျားအတက်အဆင်း"/>
+					<Item id="42105" name="မျဉ်းကြောင်းများစီပါ။အလျားအဆင်း"/>
+					<Item id="42061" name="မျဉ်းကြောင်းများစီပါ။မျဉ်းများကို ကိန်းပြည့်များ ကြီးနေမည်"/>
+					<Item id="42062" name="မျဥ်းများကို ကိန်းပြည့်များ ဆင်းနေသကဲ့သို့"/>
+					<Item id="42063" name="မျဉ်းကြောင်းများကို ဒဿမများအဖြစ်စီပါ (ကော်မာ) အတက်နေ"/>
+					<Item id="42064" name="မျဉ်းကြောင်းများကို ဒဿမများအဖြစ် စီပါ (ကော်မာ) အဆင်း"/>
+					<Item id="42065" name="မျဉ်းကြောင်းများကို ဒဿမများအဖြစ် (အစက်) အတက်နေ"/>
+					<Item id="42066" name="မျဉ်းကြောင်းများကို ဒဿမများ (အစက်) မှ ဆင်းသည်"/>
+					<Item id="42083" name="Reverse Line Order"/>
+					<Item id="42078" name="Randomize Line Order"/>
+					<Item id="42016" name="UPPERCASE"/>
+					<Item id="42017" name="စာလုံးသေး"/>
+					<Item id="42067" name="သင့်လျော်သောကိစ္စ"/>
+					<Item id="42068" name="Proper Case (ရောနှော)"/>
+					<Item id="42069" name="ဝါကျကိစ္စ"/>
+					<Item id="42070" name="ဝါကျကိစ္စ (ရောနှော)၊"/>
+					<Item id="42071" name="iNVERT ကိစ္စ"/>
+					<Item id="42072" name="ranDOm CaseE"/>
+					<Item id="42073" name="ဖိုင်ဖွင့်"/>
+					<Item id="42074" name="Explorer"/>
+					<Item id="42106" name="တွင်ပါဝင်သော ဖိုဒါကိုဖွင့်ပါ။ပြန်လည်ပြင်ဆင်ရွေးချယ်မှု █ (Shift: ●)"/>
+					<Item id="42075" name="အင်တာနက်"/>
+					<Item id="42076" name="ရှာပါ။Search Engine ပြောင်းပါ..."/>
+					<Item id="42090" name="Case တစ်ခုလုံးကို လျစ်လျူရှု"/>
+					<Item id="42091" name="ဖြစ်ရပ်မှန် တစ်ခုတည်းသာ"/>
+					<Item id="42092" name="စကားလုံးတစ်ခုလုံးကို ကိုက်ညီအောင်သာ"/>
+					<Item id="42093" name="ဖြစ်ရပ်တစ်ခုလုံးကို ယှဉ်တွဲပါ"/>
+					<Item id="42094" name="Case တစ်ခုလုံးကို လျစ်လျူရှု"/>
+					<Item id="42095" name="ဖြစ်ရပ်မှန် တစ်ခုတည်းသာ"/>
+					<Item id="42096" name="စကားလုံးတစ်ခုလုံးကို ကိုက်ညီအောင်သာ"/>
+					<Item id="42097" name="ဖြစ်ရပ်တစ်ခုလုံးကို ယှဉ်တွဲပါ"/>
+					<Item id="42098" name="နောက်ဆုံးထည့်သွင်းထားသော Multi-Select"/>
+					<Item id="42099" name="ကို ပြန်ဖျက်ပါ။Skip Current ကိုသွားပါ Next Multi-select"/>
+					<Item id="42018" name="စတင်ရိုက်ကူး"/>
+					<Item id="42019" name="မှတ်တမ်းတင်ခြင်း ရပ်ရန်"/>
+					<Item id="42021" name="ပြန်ဖွင့်သည်။"/>
+					<Item id="42022" name="Single Line Comment ကို ပြောင်းရန်"/>
+					<Item id="42023" name="မှတ်ချက်"/>
+					<Item id="42047" name="ပိတ်ဆို့ခြင်း။Uncomment ကိုပိတ်ပါ"/>
+					<Item id="42024" name="Trailing Space"/>
+					<Item id="42042" name="ချုံ့ပါ။ဦးဆောင်နေရာ"/>
+					<Item id="42043" name="ချုံ့ပါ။ရှေ့ဆောင်နှင့် နောက်လိုက်နေရာ"/>
+					<Item id="42044" name="ချုံ့ပါ။EOL to Space"/>
+					<Item id="42045" name="EOL နှင့် နှစ်ခုလုံးကို Space သို့ ချုံ့လိုက်ပါ"/>
+					<Item id="42046" name="TAB to Space"/>
+					<Item id="42054" name="TAB (အားလုံး)"/>
+					<Item id="42053" name="နေရာလွတ်Space to TAB (Leading)"/>
+					<Item id="42038" name="HTML အကြောင်းအရာ"/>
+					<Item id="42039" name="ကူးထည့်ပါ။RTF အကြောင်းအရာ"/>
+					<Item id="42048" name="ကူးထည့်ပါ။Binary အကြောင်းအရာ"/>
+					<Item id="42049" name="ကူးယူပါ။Binary အကြောင်းအရာ ဖြတ်တောက်ခြင်း"/>
+					<Item id="42050" name="Binary အကြောင်းအရာ"/>
+					<Item id="42082" name="ကူးထည့်ပါ။လင့်ခ်"/>
+					<Item id="42037" name="ကူးယူပါ။ကော်လံမုဒ်..."/>
+					<Item id="42034" name="ကော်လံတည်းဖြတ်သူ..."/>
+					<Item id="42051" name="ဇာတ်ကောင်အကန့်"/>
+					<Item id="42052" name="ကလစ်ဘုတ်မှတ်တမ်း"/>
+					<Item id="42025" name="လောလောဆယ် မှတ်တမ်းတင်ထားသော Macro..."/>
+					<Item id="42026" name="သိမ်းဆည်းပါ။စာသားလမ်းညွှန် RTL"/>
+					<Item id="42027" name="စာသားလမ်းညွှန် LTR"/>
+					<Item id="42028" name="လက်ရှိစာရွက်စာတမ်း"/>
+					<Item id="42102" name="တွင်သာ ဖတ်ရန်စာရွက်စာတမ်းအားလုံးအတွက်သာ ဖတ်ရန်"/>
+					<Item id="42103" name="စာရွက်စာတမ်းအားလုံးအတွက် Read-Only ကိုရှင်းလင်းပါ"/>
+					<Item id="42029" name="လက်ရှိ ဖိုင်လမ်းကြောင်း"/>
+					<Item id="42030" name="ကို ကူးယူပါ။လက်ရှိ ဖိုင်အမည်"/>
+					<Item id="42031" name="ကို ကူးယူပါ။လက်ရှိ Dir ကိုကူးယူပါ။မဂ်"/>
+					<Item id="42087" name="ဖိုင်အမည်များ"/>
+					<Item id="42088" name="အားလုံးကို ကူးယူပါ။ဖိုင်လမ်းကြောင်းများ"/>
+					<Item id="42032" name="အားလုံးကို ကူးယူပါ။Macro Multiple Times ကို run..."/>
+					<Item id="42033" name="Windows တွင် Read-Only Attribute"/>
+					<Item id="42035" name="Single Line Comment"/>
+					<Item id="42036" name="Single Line Uncomment"/>
+					<Item id="42055" name="ဗလာလိုင်းများ"/>
+					<Item id="42056" name="ဖယ်ရှားပါ။Empty Lines (အလွတ်စာလုံးများပါရှိသော)"/>
+					<Item id="42057" name="လက်ရှိ"/>
+					<Item id="42058" name="၏ အပေါ်မှ အလွတ်လိုင်းကို ထည့်ပါ။Current အောက်တွင် Blank Line ကိုထည့်ပါ။"/>
+					<Item id="43001" name="ရှာပါ..."/>
+					<Item id="43002" name="နောက်တစ်ခု ရှာပါ"/>
+					<Item id="43003" name="အစားထိုး..."/>
+					<Item id="43004" name="သွားပါ..."/>
+					<Item id="43005" name="လိပ်စာပြောင်းရန်"/>
+					<Item id="43006" name="နောက်တစ်ခု Bookmark"/>
+					<Item id="43007" name="ယခင် Bookmark"/>
+					<Item id="43008" name="စာညှပ်များ"/>
+					<Item id="43018" name="အားလုံးကို ရှင်းလင်းပါ။မှတ်သားထားသော လိုင်းများဖြတ်တောက်ခြင်း"/>
+					<Item id="43019" name="Bookmarked Lines"/>
+					<Item id="43020" name="ကူးယူပါ။(အစားထိုး) မှတ်သားထားသော လိုင်းများ"/>
+					<Item id="43021" name="သို့ ကူးထည့်ပါ။မှတ်သားထားသော လိုင်းများ"/>
+					<Item id="43051" name="ဖယ်ရှားပါ။စာညှပ်မဟုတ်သော လိုင်းများကို ဖယ်ရှားပါ"/>
+					<Item id="43050" name="စာညှပ်များ"/>
+					<Item id="43052" name="ပြောင်းပြန်အပိုင်းအခြားရှိ ဇာတ်ကောင်များကို ရှာပါ..."/>
+					<Item id="43053" name="All In-between {} [] သို့မဟုတ် ()"/>
+					<Item id="43009" name="ကို ရွေးပါ။Matching Brace"/>
+					<Item id="43010" name="သို့သွားပါ။ယခင်"/>
+					<Item id="43011" name="ရှာပါ။တိုးမြင့်ရှာဖွေမှု"/>
+					<Item id="43013" name="Files တွင်ရှာပါ။"/>
+					<Item id="43014" name="(Volatile) Next"/>
+					<Item id="43015" name="ရှာပါ။(Volatile) ယခင်"/>
+					<Item id="43022" name="ရှာပါ။1st Style"/>
+					<Item id="43023" name="အသုံးပြုခြင်း။ပထမပုံစံ"/>
+					<Item id="43024" name="ရှင်းလင်းပါ။2nd ပုံစံ"/>
+					<Item id="43025" name="အသုံးပြုခြင်း။ဒုတိယပုံစံ"/>
+					<Item id="43026" name="ရှင်းလင်းပါ။3rd ပုံစံ"/>
+					<Item id="43027" name="အသုံးပြုခြင်း။3rd ပုံစံ"/>
+					<Item id="43028" name="ရှင်းလင်းပါ။4th ပုံစံ"/>
+					<Item id="43029" name="အသုံးပြုခြင်း။4th ပုံစံ"/>
+					<Item id="43030" name="ရှင်းလင်းပါ။5th ပုံစံ"/>
+					<Item id="43031" name="အသုံးပြုခြင်း။5th Style"/>
+					<Item id="43032" name="ရှင်းလင်းပါ။ပုံစံများ"/>
+					<Item id="43033" name="အားလုံးကို ရှင်းလင်းပါ။1st ပုံစံ"/>
+					<Item id="43034" name="2nd ပုံစံ"/>
+					<Item id="43035" name="3rd ပုံစံ"/>
+					<Item id="43036" name="4th ပုံစံ"/>
+					<Item id="43037" name="၅ ခုမြောက် ပုံစံ"/>
+					<Item id="43038" name="Mark Style"/>
+					<Item id="43039" name="ရှာပါ။1st စတိုင်"/>
+					<Item id="43040" name="2nd ပုံစံ"/>
+					<Item id="43041" name="3rd ပုံစံ"/>
+					<Item id="43042" name="4th ပုံစံ"/>
+					<Item id="43043" name="၅ ခုမြောက် ပုံစံ"/>
+					<Item id="43044" name="Mark Style"/>
+					<Item id="43055" name="ရှာပါ။1st ပုံစံ"/>
+					<Item id="43056" name="2nd ပုံစံ"/>
+					<Item id="43057" name="3rd ပုံစံ"/>
+					<Item id="43058" name="4th ပုံစံ"/>
+					<Item id="43059" name="5th ပုံစံ"/>
+					<Item id="43060" name="ပုံစံအားလုံး"/>
+					<Item id="43061" name="Mark Style"/>
+					<Item id="43062" name="ရှာပါ။1st Style"/>
+					<Item id="43063" name="အသုံးပြုခြင်း။2nd ပုံစံ"/>
+					<Item id="43064" name="အသုံးပြုခြင်း။3rd ပုံစံ"/>
+					<Item id="43065" name="အသုံးပြုခြင်း။4th ပုံစံ"/>
+					<Item id="43066" name="အသုံးပြုခြင်း။5th ပုံစံ"/>
+					<Item id="43067" name="အသုံးပြုခြင်း။Next Change သို့သွားပါ"/>
+					<Item id="43068" name="ယခင်ပြောင်းလဲမှု"/>
+					<Item id="43069" name="သို့သွားပါ။ပြောင်းလဲမှုမှတ်တမ်းကို ရှင်းလင်းပါ။"/>
+					<Item id="43045" name="ရှာဖွေမှုရလဒ်များ Window"/>
+					<Item id="43046" name="နောက်တစ်ခု ရှာဖွေမှုရလဒ်"/>
+					<Item id="43047" name="ယခင်ရှာဖွေမှုရလဒ်"/>
+					<Item id="43048" name="ရွေးပြီး နောက်"/>
+					<Item id="43049" name="ရှာပါ။ရွေးပြီး ယခင်"/>
+					<Item id="43054" name="ရှာပါ။မာ..."/>
+					<Item id="43501" name="ရွေးထားသည်"/>
+					<Item id="43502" name="ပိတ်ပါ။အခြားသူများ"/>
+					<Item id="43503" name="ပိတ်ပါ။ရွေးချယ်ထားသော အမည်များ"/>
+					<Item id="43504" name="ကူးယူပါ။ရွေးချယ်ထားသောလမ်းကြောင်းများ"/>
+					<Item id="44009" name="ကူးယူပါ။Post-It"/>
+					<Item id="44010" name=""/>
+					<Item id="44011" name="အားလုံးခေါက်Distraction Free Mode"/>
+					<Item id="44019" name="ဇာတ်ကောင်အားလုံးကို ပြပါ"/>
+					<Item id="44020" name="Indent Guide ပြရန်"/>
+					<Item id="44022" name="နှုတ်ကပတ်တော်"/>
+					<Item id="44023" name="Zoom In (Ctrl+Mouse Wheel Up)"/>
+					<Item id="44024" name="Zoom Out (Ctrl+Mouse Wheel Down)"/>
+					<Item id="44025" name="Space နှင့် Tab ကိုပြပါ"/>
+					<Item id="44026" name="လိုင်း၏အဆုံးကိုပြပါ။"/>
+					<Item id="44029" name=""/>
+					<Item id="44030" name="အားလုံးကို ဖြည်လိုက်ပါ။လက်ရှိအဆင့်"/>
+					<Item id="44031" name="ခေါက်လက်ရှိအဆင့်"/>
+					<Item id="44049" name="ကိုဖွင့်ပါ။အနှစ်ချုပ်..."/>
+					<Item id="44080" name="စာရွက်စာတမ်းမြေပုံ"/>
+					<Item id="44070" name="စာရွက်စာတမ်းစာရင်း"/>
+					<Item id="44084" name="လုပ်ဆောင်ချက်စာရင်း"/>
+					<Item id="44085" name="အလုပ်နေရာ"/>
+					<Item id="44086" name="အဖြစ် ဖိုင်တွဲ1st Tab"/>
+					<Item id="44087" name="2nd Tab"/>
+					<Item id="44088" name="3rd Tab"/>
+					<Item id="44089" name="4th Tab"/>
+					<Item id="44090" name="5th Tab"/>
+					<Item id="44091" name="6th Tab"/>
+					<Item id="44092" name="7th Tab"/>
+					<Item id="44093" name="8th Tab"/>
+					<Item id="44094" name="9th Tab"/>
+					<Item id="44116" name="ပထမတဘ်"/>
+					<Item id="44117" name="နောက်ဆုံးတဘ်"/>
+					<Item id="44095" name="နောက်တဘ်"/>
+					<Item id="44096" name="ယခင် Tab"/>
+					<Item id="44097" name="စောင့်ကြည့်ခြင်း (အမြီး-f)"/>
+					<Item id="44098" name="တဘ်ရှေ့သို့ရွှေ့ပါ"/>
+					<Item id="44099" name="တဘ်ကို နောက်သို့ရွှေ့"/>
+					<Item id="44110" name="အရောင်ဖယ်ပါ"/>
+					<Item id="44111" name="အရောင် 1"/>
+					<Item id="44112" name="သုံးပါ။အရောင် 2"/>
+					<Item id="44113" name="အသုံးပြုပါ။အရောင် 3"/>
+					<Item id="44114" name="အသုံးပြုပါ။အရောင် 4"/>
+					<Item id="44115" name="အသုံးပြုပါ။အရောင် 5"/>
+					<Item id="44130" name="အသုံးပြုပါ။ပုံနှိပ်မဟုတ်သော အက္ခရာများကို ပြပါ"/>
+					<Item id="44131" name="ထိန်းချုပ်ဇာတ်ကောင်များ ယူနီကုဒ် EOL"/>
+					<Item id="44032" name="ပြရန်မျက်နှာပြင်အပြည့်မုဒ်ကို ပြောင်းရန်"/>
+					<Item id="44033" name="မူရင်း Zoom"/>
+					<Item id="44034" name="ပြန်လည်ရယူပါ။အမြဲတန်း"/>
+					<Item id="44035" name="ဒေါင်လိုက်ဆွဲခြင်း"/>
+					<Item id="44036" name="စင့်ခ်လုပ်ပါ။အလျားလိုက်ရွှေ့ခြင်း"/>
+					<Item id="44041" name="စင့်ခ်လုပ်ပါ။အထုပ်သင်္ကေတပြပါ"/>
+					<Item id="44072" name="အခြားမြင်ကွင်းကိုအာရုံစိုက်ပါ"/>
+					<Item id="44081" name="Project Panel ၁"/>
+					<Item id="44082" name="ပရောဂျက် panel 2"/>
+					<Item id="44083" name="ပရောဂျက် panel 3"/>
+					<Item id="45001" name="Windows (CR LF)"/>
+					<Item id="45002" name="Unix (LF)"/>
+					<Item id="45003" name="Macintosh (CR)"/>
+					<Item id="45004" name="ANSI"/>
+					<Item id="45005" name="UTF-8-BOM"/>
+					<Item id="45006" name="UTF-16 BE BOM"/>
+					<Item id="45007" name="UTF-16 LE BOM"/>
+					<Item id="45008" name="UTF-8"/>
+					<Item id="45009" name="ANSI"/>
+					<Item id="45010" name="သို့ပြောင်းပါ။UTF-8"/>
+					<Item id="45011" name="သို့ ပြောင်းပါ။UTF-8-BOM"/>
+					<Item id="45012" name="သို့ ပြောင်းပါ။UTF-16 BE BOM"/>
+					<Item id="45013" name="သို့ပြောင်းပါ။UTF-16 LE BOM"/>
+					<Item id="45060" name="သို့ပြောင်းပါ။Big5 (ရိုးရာ)"/>
+					<Item id="45061" name="GB2312 (ရိုးရှင်းသော)"/>
+					<Item id="45054" name="OEM 861- အိုက်စ်လန်ဒီ"/>
+					<Item id="45057" name="OEM 865- နော်ဒစ်"/>
+					<Item id="45053" name="OEM 860- ပေါ်တူဂီ"/>
+					<Item id="45056" name="OEM 863- ပြင်သစ်"/>
+					<Item id="10001" name="အခြားမြင်ကွင်းသို့ ရွှေ့ပါ။"/>
+					<Item id="10002" name="အခြားကြည့်ရှုရန်"/>
+					<Item id="10003" name="ကိုပွားပါ။New instance"/>
+					<Item id="10004" name="သို့ ရွှေ့ပါ။New Instance"/>
+					<Item id="10005" name="ဖွင့်ပါ။စတင်ရန်"/>
+					<Item id="10006" name="ရွှေ့ပါ။အဆုံးသို့ရွှေ့ရန်"/>
+					<Item id="46001" name="ပုံစံပြင်ဆင်မှု..."/>
+					<Item id="46016" name="မရှိ (Normal Text)"/>
+					<Item id="46250" name="သင့်ဘာသာစကားကို သတ်မှတ်ပါ..."/>
+					<Item id="46300" name="အသုံးပြုသူသတ်မှတ်ထားသော ဘာသာစကားဖိုင်တွဲကိုဖွင့်ပါ..."/>
+					<Item id="46301" name="Notepad++ အသုံးပြုသူသတ်မှတ်ထားသော ဘာသာစကားများစုစည်းမှု"/>
+					<Item id="46180" name="အသုံးပြုသူသတ်မှတ်ထားသော"/>
+					<Item id="47000" name="Notepad++"/>
+					<Item id="47010" name="အကြောင်းCommand Line Arguments..."/>
+					<Item id="47001" name="Notepad++ ပင်မ"/>
+					<Item id="47002" name="Notepad++ ပရောဂျက်စာမျက်နှာ"/>
+					<Item id="47003" name="Notepad++ အွန်လိုင်းအသုံးပြုသူလက်စွဲ"/>
+					<Item id="47004" name="Notepad++ အသိုင်းအဝိုင်း (ဖိုရမ်)"/>
+					<Item id="47012" name="အမှားရှာပြင်ခြင်း အချက်အလက်..."/>
+					<Item id="47005" name="နောက်ထပ် ပလပ်အင်များကို ရယူပါ"/>
+					<Item id="47006" name="Notepad++"/>
+					<Item id="47009" name="အပ်ဒိတ်လုပ်ပါ။Updater Proxy ကို သတ်မှတ်ပါ..."/>
+					<Item id="48005" name="ပလပ်အင်(များ)ကို တင်သွင်းပါ..."/>
+					<Item id="48006" name="စတိုင်အပြင်အဆင်(များ)ကို တင်သွင်းပါ..."/>
+					<Item id="48018" name="Popup ContextMenu"/>
+					<Item id="48009" name="တည်းဖြတ်ပါ။Shortcut Mapper..."/>
+					<Item id="48011" name="ဦးစားပေးများ..."/>
+					<Item id="48014" name="Plugins Folder ကိုဖွင့်ပါ..."/>
+					<Item id="48015" name="Plugins Admin..."/>
+					<Item id="48501" name="ထုတ်လုပ်..."/>
+					<Item id="48502" name="ဖိုင်များမှ ထုတ်လုပ်ပါ..."/>
+					<Item id="48503" name="ရွေးချယ်မှုမှ ကလစ်ဘုတ်သို့"/>
+					<Item id="48504" name="ဖန်တီးပါ။ထုတ်လုပ်..."/>
+					<Item id="48505" name="ဖိုင်များမှ ထုတ်လုပ်ပါ..."/>
+					<Item id="48506" name="ရွေးချယ်မှုမှ ကလစ်ဘုတ်သို့"/>
+					<Item id="48507" name="ဖန်တီးပါ။ထုတ်လုပ်..."/>
+					<Item id="48508" name="ဖိုင်များမှ ထုတ်လုပ်ပါ..."/>
+					<Item id="48509" name="ရွေးချယ်မှုမှ ကလစ်ဘုတ်သို့"/>
+					<Item id="48510" name="ဖန်တီးပါ။ထုတ်လုပ်ပါ..."/>
+					<Item id="48511" name="ဖိုင်များမှ ထုတ်လုပ်ပါ..."/>
+					<Item id="48512" name="ရွေးချယ်မှုမှ ကလစ်ဘုတ်သို့"/>
+					<Item id="49000" name="ဖန်တီးပါ။ပြေး..."/>
+
+					<Item id="50000" name="လုပ်ဆောင်ချက် ပြီးစီးမှု"/>
+					<Item id="50001" name="Word Completion"/>
+					<Item id="50002" name="လုပ်ဆောင်ချက် ကန့်သတ်ချက်များ အရိပ်အမြွက်"/>
+					<Item id="50010" name="လုပ်ဆောင်ချက် ကန့်သတ်ချက်များ ယခင် အရိပ်အမြွက်"/>
+					<Item id="50011" name="လုပ်ဆောင်ချက် ကန့်သတ်ချက်များ နောက်တစ်ခု အရိပ်အမြွက်"/>
+					<Item id="50005" name="မက်ခရိုမှတ်တမ်းကို ပြောင်းရန်"/>
+					<Item id="50006" name="လမ်းကြောင်းပြီးစီးခြင်း"/>
+					<Item id="44042" name="လိုင်းများ"/>
+					<Item id="42040" name="ဖျောက်လတ်တလောဖိုင်များ"/>
+					<Item id="42041" name="အားလုံးဖွင့်ပါ။ဗလာ လတ်တလော ဖိုင်များစာရင်း"/>
+					<Item id="48016" name="ဖြတ်လမ်းကို မွမ်းမံ/ဖျက်ရန် Macro..."/>
+					<Item id="48017" name="ဖြတ်လမ်းကို ပြုပြင်ပါ/ဖျက်ရန် အမိန့်ပေးစာ..."/>
+
+					<Item id="11001" name="Windows..."/>
+					<Item id="11002" name="အမည် A မှ Z"/>
+					<Item id="11003" name="Z မှ A"/>
+					<Item id="11004" name="အမည်ပေးပါ။လမ်းကြောင်း A မှ Z"/>
+					<Item id="11005" name="Z မှ A လမ်းကြောင်း"/>
+					<Item id="11006" name="A မှ Z"/>
+					<Item id="11007" name="ရိုက်ထည့်ပါ။Z မှ A"/>
+					<Item id="11008" name="ရိုက်ထည့်ပါ။အကြောင်းအရာ အရှည်တက်နေသည်"/>
+					<Item id="11009" name="အကြောင်းအရာ အရှည် နိမ့်ဆင်းသွားသည်"/>
+					<Item id="11010" name="မွမ်းမံထားသောအချိန် တိုးနေသည်"/>
+					<Item id="11011" name="မွမ်းမံထားသောအချိန် ကြီးစဉ်ငယ်လိုက်"/>
+				</Commands>
+			</Main>
+			<TabBar>
+				<Item CMDID="41003" name="ပိတ်"/>
+				<Item CMDID="0" name="တက်ဘ်များစွာ"/>
+				<Item CMDID="41005" name="ပိတ်ပါ။ဒါတွေအားလုံး ပိတ်လိုက်ပါ"/>
+				<Item CMDID="41026" name="အားလုံးပိတ်ပါ ဒါပေမယ့် ပင်ချိတ်ထား"/>
+				<Item CMDID="41009" name="အားလုံးကို ပိတ်ပါ"/>
+				<Item CMDID="41018" name="အားလုံးကို ညာဘက်သို့ပိတ်"/>
+				<Item CMDID="41024" name="မပြောင်းလဲသော"/>
+				<Item CMDID="44048" name="အားလုံးကို ပိတ်ပါ။Pin Tab" alternativeName="တဘ်ကို ပင်ဖြုတ်ပါ"/>
+				<Item CMDID="41006" name=""/>
+				<Item CMDID="41008" name="သိမ်းဆည်းပါ။Save As..."/>
+				<Item CMDID="1" name=""/>
+				<Item CMDID="41019" name="သို့ဖွင့်ပါ။Explorer"/>
+				<Item CMDID="41020" name="တွင်ပါဝင်သော ဖိုဒါကိုဖွင့်ပါ။ပါဝင်သောဖိုင်တွဲကို cmd တွင်ဖွင့်ပါ။"/>
+				<Item CMDID="41025" name="အလုပ်နေရာအဖြစ်"/>
+				<Item CMDID="41023" name="ပါဝင်သော ဖိုဒါကို ဖွင့်ပါ။မူရင်းကြည့်ရှုသူ"/>
+				<Item CMDID="41017" name="ဖွင့်ပါ။အမည်ပြောင်း..."/>
+				<Item CMDID="41016" name="Recycle Bin"/>
+				<Item CMDID="41014" name="သို့ ရွှေ့ပါ။"/>
+				<Item CMDID="41010" name="ပြန်ဆွဲပါ။ပရင့်..."/>
+				<Item CMDID="42028" name="Notepad++"/>
+				<Item CMDID="42033" name="တွင်သာ ဖတ်ရန်Windows တွင် Read-Only Attribute"/>
+				<Item CMDID="2" name="ကလစ်ဘုတ်သို့ ကူးယူပါ"/>
+				<Item CMDID="42029" name="ဖိုင်လမ်းကြောင်းအပြည့်အစုံ"/>
+				<Item CMDID="42030" name="ကူးယူပါ။ဖိုင်အမည်"/>
+				<Item CMDID="42031" name="ကူးယူပါ။လက်ရှိ Dir ကိုကူးယူပါ။မဂ်"/>
+				<Item CMDID="3" name="စာရွက်စာတမ်းရွှေ့ရန်"/>
+				<Item CMDID="10005" name="စတင်ရန်"/>
+				<Item CMDID="10006" name="ရွှေ့ပါ။အဆုံးသို့ရွှေ့ရန်"/>
+				<Item CMDID="10001" name="အခြားမြင်ကွင်းသို့ ရွှေ့ပါ။"/>
+				<Item CMDID="10002" name="အခြားကြည့်ရှုရန်"/>
+				<Item CMDID="10003" name="ကိုပွားပါ။New instance"/>
+				<Item CMDID="10004" name="သို့ ရွှေ့ပါ။New Instance"/>
+				<Item CMDID="4" name="ဖွင့်ပါ။တဘ်သို့ အရောင်ကို အသုံးပြုပါ။"/>
+				<Item CMDID="44111" name="အရောင် 1"/>
+				<Item CMDID="44112" name="သုံးပါ။အရောင် 2"/>
+				<Item CMDID="44113" name="အသုံးပြုပါ။အရောင် 3"/>
+				<Item CMDID="44114" name="အသုံးပြုပါ။အရောင် 4"/>
+				<Item CMDID="44115" name="အသုံးပြုပါ။အရောင် 5"/>
+				<Item CMDID="44110" name="အသုံးပြုပါ။အရောင်ဖယ်ပါ"/>
+			</TabBar>
+			<TrayIcon>
+				<Item id="43101" name=""/>
+				<Item id="43102" name="အသက်သွင်းပါ။အသစ်"/>
+				<Item id="43103" name="အသစ်နှင့် Paste"/>
+				<Item id="43104" name="ဖွင့်..."/>
+				<Item id="43013" name="Files တွင်ရှာပါ..."/>
+				<Item id="43105" name="Tray Icon"/>
+			</TrayIcon>
+		</Menu>
+
+		<Dialog>
+			<Find title="" titleFind="ပိတ်ပါ။" titleReplace="ရှာပါ။" titleFindInFiles="အစားထိုးပါ။ဖိုင်များ" titleFindInProjects="ရှာပါ။ပရောဂျက်များ" titleMark="ရှာပါ။မာကု">
+				<Item id="1" name="နောက်တစ်ခု ရှာပါ"/>
+				<Item id="1722" name="နောက်ပြန်ဦးတည်ချက်"/>
+				<Item id="2" name="ပိတ်လိုက်"/>
+				<Item id="1620" name="ရှာပါ-"/>
+				<Item id="1603" name="စကားလုံးတစ်ခုလုံးနှင့်သာ ကိုက်ညီသည်"/>
+				<Item id="1604" name="တိုက်ဆိုင်နေတယ်"/>
+				<Item id="1605" name="ပုံမှန်အသုံးအနှုန်း"/>
+				<Item id="1606" name="ခြုံ"/>
+				<Item id="1614" name="ရေတွက်"/>
+				<Item id="1615" name=""/>
+				<Item id="1616" name="အားလုံးကို အမှတ်အသားပြုပါ။ညှပ်မျဉ်း"/>
+				<Item id="1618" name="ရှာဖွေမှုတစ်ခုစီအတွက် ဖယ်ရှားရှင်းလင်းခြင်း"/>
+				<Item id="1611" name="-"/>
+				<Item id="1608" name="ဖြင့် အစားထိုးပါ။"/>
+				<Item id="1609" name="အစားထိုးပါ။အားလုံးကို အစားထိုး"/>
+				<Item id="1687" name="အာရုံမပျက်"/>
+				<Item id="1688" name="အမြဲတမ်း"/>
+				<Item id="1632" name="ရွေးချယ်မှုတွင်"/>
+				<Item id="1633" name="အမှတ်အသားအားလုံးကို ရှင်းပါ"/>
+				<Item id="1635" name="ဖွင့်ထားသော စာရွက်စာတမ်းများအားလုံးတွင် အားလုံးကို အစားထိုးပါ"/>
+				<Item id="1636" name="ဖွင့်ထားသော စာရွက်စာတမ်းများ အားလုံးကို ရှာပါ"/>
+				<Item id="1654" name="စစ်ထုတ်မှုများ-"/>
+				<Item id="1655" name="လမ်းညွှန်-"/>
+				<Item id="1656" name=""/>
+				<Item id="1658" name="အားလုံးရှာပါ။ဖိုင်တွဲခွဲများအားလုံးတွင်"/>
+				<Item id="1659" name="ဝှက်ထားသောဖိုင်တွဲများ"/>
+				<Item id="1624" name="ရှာဖွေမှုမုဒ်"/>
+				<Item id="1625" name="ပုံမှန်"/>
+				<Item id="1626" name="တိုးချဲ့ထားသည် (\n၊ \r၊ \t၊ \0၊ \x...)"/>
+				<Item id="1660" name="ဖိုင်များ"/>
+				<Item id="1665" name="တွင် အစားထိုးပါ။ပရောဂျက်များ"/>
+				<Item id="1662" name="တွင် အစားထိုးပါ။ပရောဂျက် အကန့် ၁"/>
+				<Item id="1663" name="ပရောဂျက် panel 2"/>
+				<Item id="1664" name="ပရောဂျက် panel 3"/>
+				<Item id="1641" name="လက်ရှိစာရွက်စာတမ်း"/>
+				<Item id="1686" name="အားလုံးရှာပါ။ထင်သာမြင်သာ"/>
+				<Item id="1703" name=".လိုင်းအသစ်"/>
+				<Item id="1721" name="ကိုက်ညီသည်။▲"/>
+				<Item id="1723" name="▼ နောက်တစ်ခု ရှာပါ"/>
+				<Item id="1725" name="အမှတ်အသားပြုထားသော စာသားကို ကူးယူပါ"/>
+				<Menu>
+					<Item id="1726" name="⇅ အစားထိုးရှာဖွေရန်"/>
+					<Item id="1727" name="လဲလှယ်ပါ။⤵ အစားထိုးရန် Find မှကူးယူပါ"/>
+					<Item id="1728" name="⤴ ရှာရန် အစားထိုးမှ ကူးယူပါ။"/>
+				</Menu>
+			</Find>
+
+			<IncrementalFind title="">
+				<Item id="1681" name="ရှာရန်-"/>
+				<Item id="1685" name="တိုက်ဆိုင်နေတယ်"/>
+				<Item id="1690" name="အားလုံးကို မီးမောင်းထိုးပြပါ"/>
+			</IncrementalFind>
+
+			<FindCharsInRange title="အပိုင်းအခြားရှိ ဇာတ်ကောင်များကို ရှာပါ...">
+				<Item id="2" name="ပိတ်"/>
+				<Item id="2901" name="ASCII မဟုတ်သော အက္ခရာများ (128–255)"/>
+				<Item id="2902" name="ASCII အက္ခရာ (0–127)"/>
+				<Item id="2903" name="စိတ်ကြိုက်အပိုင်းအခြား (0–255):"/>
+				<Item id="2906" name="တက်"/>
+				<Item id="2907" name="ဆင်း"/>
+				<Item id="2908" name="ဦးတည်ချက်"/>
+				<Item id="2909" name="ခြုံ"/>
+				<Item id="2910" name=""/>
+			</FindCharsInRange>
+
+			<GoToLine title="ရှာပါ။သွားပါ...">
+				<Item id="2007" name="လိုင်း"/>
+				<Item id="2008" name="ထေရ"/>
+				<Item id="1" name="သွားတော့"/>
+				<Item id="2" name="ငါဘယ်မှမသွားဘူး"/>
+				<Item id="2004" name="မင်းဒီမှာပါ-"/>
+				<Item id="2005" name="သင်သွားလိုသည်-"/>
+				<Item id="2006" name="သင်-"/>
+			</GoToLine>
+
+			<Run title="ထက် ပိုမသွားနိုင်ပါ။ပြေး...">
+				<Item id="1903" name="ပရိုဂရမ်ကို Run ရန်"/>
+				<Item id="1" name="ပြေး"/>
+				<Item id="2" name="လုပ်တော့"/>
+				<Item id="1904" name="သိမ်း..."/>
+			</Run>
+
+			<MD5FromFilesDlg title="">
+				<Item id="1922" name="ဖိုင်များမှ MD5 အချေအတင်ကို ဖန်တီးပါ။MD5 ကို ထုတ်လုပ်ရန် ဖိုင်များကို ရွေးပါ..."/>
+				<Item id="1924" name="ကလစ်ဘုတ်သို့ ကူးယူပါ"/>
+				<Item id="2" name="ပိတ်"/>
+			</MD5FromFilesDlg>
+
+			<MD5FromTextDlg title="MD5 အချေအတင်">
+				<Item id="1932" name="ဖန်တီးပါ။စာကြောင်းတစ်ခုစီကို သီးခြားကြိုးတစ်ချောင်းအဖြစ် ဆက်ဆံပါ။"/>
+				<Item id="1934" name="ကလစ်ဘုတ်သို့ ကူးယူပါ"/>
+				<Item id="2" name="ပိတ်"/>
+			</MD5FromTextDlg>
+
+			<SHA256FromFilesDlg title="">
+				<Item id="1922" name="ဖိုင်များမှ SHA-256 အချေအတင်ကို ဖန်တီးပါ။SHA-256 ထုတ်လုပ်ရန် ဖိုင်များကို ရွေးပါ..."/>
+				<Item id="1924" name="ကလစ်ဘုတ်သို့ ကူးယူပါ"/>
+				<Item id="2" name="ပိတ်"/>
+			</SHA256FromFilesDlg>
+
+			<SHA256FromTextDlg title="SHA-256 ချေဖျက်မှု">
+				<Item id="1932" name="ဖန်တီးပါ။စာကြောင်းတစ်ခုစီကို သီးခြားကြိုးတစ်ချောင်းအဖြစ် ဆက်ဆံပါ။"/>
+				<Item id="1934" name="ကလစ်ဘုတ်သို့ ကူးယူပါ"/>
+				<Item id="2" name="ပိတ်"/>
+			</SHA256FromTextDlg>
+
+			<SHA1FromFilesDlg title="">
+				<Item id="1922" name="ဖိုင်များမှ SHA-1 အချေအတင်ကို ဖန်တီးပါ။SHA-1 ထုတ်လုပ်ရန် ဖိုင်များကို ရွေးပါ..."/>
+				<Item id="1924" name="ကလစ်ဘုတ်သို့ ကူးယူပါ"/>
+				<Item id="2" name="ပိတ်"/>
+			</SHA1FromFilesDlg>
+
+			<SHA1FromTextDlg title="SHA-1 အချေအတင်">
+				<Item id="1932" name="ဖန်တီးပါ။စာကြောင်းတစ်ခုစီကို သီးခြားကြိုးတစ်ချောင်းအဖြစ် ဆက်ဆံပါ။"/>
+				<Item id="1934" name="ကလစ်ဘုတ်သို့ ကူးယူပါ"/>
+				<Item id="2" name="ပိတ်"/>
+			</SHA1FromTextDlg>
+
+			<SHA512FromFilesDlg title="">
+				<Item id="1922" name="ဖိုင်များမှ SHA-512 အချေအတင်ကို ဖန်တီးပါ။SHA-512 ထုတ်လုပ်ရန် ဖိုင်များကို ရွေးပါ..."/>
+				<Item id="1924" name="ကလစ်ဘုတ်သို့ ကူးယူပါ"/>
+				<Item id="2" name="ပိတ်"/>
+			</SHA512FromFilesDlg>
+
+			<SHA512FromTextDlg title="SHA-512 ချေဖျက်မှု">
+				<Item id="1932" name="ဖန်တီးပါ။စာကြောင်းတစ်ခုစီကို သီးခြားကြိုးတစ်ချောင်းအဖြစ် ဆက်ဆံပါ။"/>
+				<Item id="1934" name="ကလစ်ဘုတ်သို့ ကူးယူပါ"/>
+				<Item id="2" name="ပိတ်"/>
+			</SHA512FromTextDlg>
+			<PluginsAdminDlg title="ပလပ်အင်များ စီမံခန့်ခွဲသူ" titleAvailable="Available" titleUpdates="Updates" titleInstalled="Installed" titleIncompatible="Incompatible">
+				<ColumnPlugin name="ပလပ်အင်"/>
+				<ColumnVersion name="ဗားရှင်း"/>
+				<Item id="5501" name="ရှာဖွေရန်-"/>
+				<Item id="5503" name=""/>
+				<Item id="5504" name="ထည့်သွင်းပါ။Update"/>
+				<Item id="5505" name=""/>
+				<Item id="5508" name="ဖယ်ရှားပါ။နောက်တစ်ခု"/>
+				<Item id="5509" name="ပလပ်အင်စာရင်းဗားရှင်း-"/>
+				<Item id="5511" name="ပလပ်အင် စာရင်း သိုလှောင်မှု"/>
+				<Item id="2" name="ပိတ်"/>
+			</PluginsAdminDlg>
+
+			<StyleConfig title="ပုံစံပြင်ဆင်မှု">
+				<Item id="2" name="လုပ်တော့"/>
+				<Item id="2301" name=""/>
+				<Item id="2303" name="ပိတ်သိမ်းထင်သာမြင်သာ"/>
+				<Item id="2306" name="အပြင်အဆင်ကို ရွေးပါ-"/>
+				<SubDialog>
+					<Item id="2204" name="ရဲရင့်"/>
+					<Item id="2205" name="စာလုံးစောင်း"/>
+					<Item id="2206" name="ရှေ့ဘက်အရောင်"/>
+					<Item id="2207" name="နောက်ခံအရောင်"/>
+					<Item id="2208" name="ဖောင့်အမည်-"/>
+					<Item id="2209" name="ဖောင့်အရွယ်အစား-"/>
+					<Item id="2211" name="ပုံစံ-"/>
+					<Item id="2212" name="အရောင်ပုံစံ"/>
+					<Item id="2213" name="ဖောင့်ပုံစံ"/>
+					<Item id="2214" name="မူရင်း ext.:"/>
+					<Item id="2216" name="အသုံးပြုသူ ext.:"/>
+					<Item id="2218" name="မျဉ်းသား"/>
+					<Item id="2219" name="မူရင်းသော့ချက်စာလုံးများ"/>
+					<Item id="2221" name="အသုံးပြုသူသတ်မှတ်ထားသောသော့ချက်စာလုံးများ"/>
+					<Item id="2225" name="ဘာသာစကား-"/>
+					<Item id="2226" name="ပုံစံအားလုံးအတွက် အောက်ခြေအရောင်ကို အတင်းအကျပ်"/>
+					<Item id="2227" name="ပုံစံအားလုံးအတွက် နောက်ခံအရောင်ကို အတင်းအကျပ်"/>
+					<Item id="2228" name="ပုံစံအားလုံးအတွက် ဖောင့်ရွေးချယ်မှုကို အတင်းအကျပ်"/>
+					<Item id="2229" name="ပုံစံအားလုံးအတွက် ဖောင့်အရွယ်အစားရွေးချယ်မှုကို အတင်းအကျပ်"/>
+					<Item id="2230" name="ပုံစံအားလုံးအတွက် ရဲရင့်သောရွေးချယ်မှုကို အတင်းအကြပ်"/>
+					<Item id="2231" name="ပုံစံအားလုံးအတွက် စာလုံးစောင်းရွေးချယ်မှုကို အတင်းအကျပ်"/>
+					<Item id="2232" name="ပုံစံအားလုံးအတွက် မျဉ်းသားရွေးချယ်မှုကို အတင်းအကျပ်"/>
+					<Item id="2234" name="ဆက်တင်များ"/>
+					<!-- Don't translate "Global override" -->
+					<Item id="2235" name="သို့သွားပါ။Global override ဆိုတာ ဘာလဲ။"/>
+				</SubDialog>
+			</StyleConfig>
+
+			<ShortcutMapper title="Shortcut Mapper">
+				<Item id="2602" name="ပြင်ဆင်ပါ။"/>
+				<Item id="2603" name="ဖျက်"/>
+				<Item id="2606" name="ရှင်းလင်း"/>
+				<Item id="2607" name="စစ်ထုတ်ခြင်း-"/>
+				<Item id="1" name="ပိတ်"/>
+				<ColumnName name="အမည်"/>
+				<ColumnShortcut name="ဖြတ်လမ်း"/>
+				<ColumnCategory name="အမျိုးအစား"/>
+				<ColumnPlugin name="ပလပ်အင်"/>
+				<MainMenuTab name="ပင်မမီနူး"/>
+				<MacrosTab name="Macros"/>
+				<RunCommandsTab name="ညွှန်ကြားချက်များ"/>
+				<PluginCommandsTab name="လုပ်ဆောင်ပါ။ပလပ်အင် အမိန့်များ"/>
+				<ScintillaCommandsTab name="Scintilla အမိန့်များ"/>
+				<ConflictInfoOk name="ဤအရာအတွက် ဖြတ်လမ်းလင့်ခ် ကွဲလွဲမှုများမရှိပါ။"/>
+				<ConflictInfoEditing name="ပဋိပက္ခများမရှိပါ။.."/>
+				<AboutCategory name=""/>
+				<ModifyContextMenu name="အကြောင်းပြင်ဆင်ရန်"/>
+				<DeleteContextMenu name="ဖျက်"/>
+				<ClearContextMenu name="ရှင်းလင်း"/>
+				<MainCommandNames>
+					<Item id="41019" name="Explorer တွင်ပါဝင်သော folder ကိုဖွင့်ပါ။"/>
+					<Item id="41020" name="Command Prompt"/>
+					<Item id="41021" name="တွင်ပါဝင်သော folder ကိုဖွင့်ပါ။Recent Closed File"/>
+					<Item id="45001" name="ပြန်လည်ရယူပါ။EOL သို့ Windows (CR LF) သို့ ပြောင်းလဲခြင်း"/>
+					<Item id="45002" name="EOL သို့ Unix (LF) သို့ ပြောင်းလဲခြင်း"/>
+					<Item id="45003" name="EOL သို့ Macintosh (CR) သို့ ပြောင်းလဲခြင်း"/>
+					<Item id="43022" name="1st စတိုင်"/>
+					<Item id="43024" name="အသုံးပြုထားသော ပုံစံအားလုံး2nd စတိုင်"/>
+					<Item id="43026" name="အသုံးပြုထားသော ပုံစံအားလုံး3rd စတိုင်"/>
+					<Item id="43028" name="အသုံးပြုထားသော ပုံစံအားလုံး4th စတိုင်"/>
+					<Item id="43030" name="အသုံးပြုထားသော ပုံစံအားလုံး5th စတိုင်"/>
+					<Item id="43062" name="အသုံးပြုထားသော ပုံစံအားလုံး1st စတိုင်"/>
+					<Item id="43063" name="အသုံးပြုထားသော ပုံစံတစ်ခု2nd ပုံစံ"/>
+					<Item id="43064" name="အသုံးပြုထားသော ပုံစံတစ်ခု3rd ပုံစံ"/>
+					<Item id="43065" name="အသုံးပြုထားသော ပုံစံတစ်ခု4th ပုံစံ"/>
+					<Item id="43066" name="အသုံးပြုထားသော ပုံစံတစ်ခု5th ပုံစံ"/>
+					<Item id="43023" name="အသုံးပြုထားသော ပုံစံတစ်ခုပထမပုံစံ"/>
+					<Item id="43025" name="ရှင်းလင်းပါ။ဒုတိယပုံစံ ရှင်းရန်"/>
+					<Item id="43027" name="တတိယပုံစံ ရှင်းရန်"/>
+					<Item id="43029" name="4th style"/>
+					<Item id="43031" name="ရှင်းလင်းသည်။5th style ကိုရှင်းလင်းပါ။"/>
+					<Item id="43032" name="ပုံစံများ"/>
+					<Item id="43033" name="အားလုံးကို ရှင်းလင်းပါ။1st စတိုင်၏ ယခင်ပုံစံ"/>
+					<Item id="43034" name="2nd ပုံစံ၏ ယခင်ပုံစံ"/>
+					<Item id="43035" name="3rd ပုံစံ၏ ယခင်ပုံစံ"/>
+					<Item id="43036" name="4th ပုံစံ၏ ယခင်ပုံစံ"/>
+					<Item id="43037" name="5th ပုံစံ၏ ယခင်ပုံစံ"/>
+					<Item id="43038" name="ရှာရန် မာကုစတိုင်"/>
+					<Item id="43039" name="ယခင်ပုံစံ1st စတိုင်၏ နောက်ပုံစံ"/>
+					<Item id="43040" name="2nd ပုံစံ၏ နောက်ပုံစံ"/>
+					<Item id="43041" name="3rd ပုံစံ၏ နောက်ပုံစံ"/>
+					<Item id="43042" name="4th ပုံစံ၏ နောက်ပုံစံ"/>
+					<Item id="43043" name="5th စတိုင်၏ နောက်ပုံစံ"/>
+					<Item id="43044" name="Mark style"/>
+					<Item id="43055" name="ရှာရန် စတိုင်၏ နောက်တစ်ခု1st ပုံစံ"/>
+					<Item id="43056" name="၏ ပုံစံလုပ်ထားသော စာသားကို ကူးယူပါ။2nd ပုံစံ"/>
+					<Item id="43057" name="ပုံစံလုပ်ထားသော စာသားကို ကူးယူပါ။3rd ပုံစံ"/>
+					<Item id="43058" name="ပုံစံလုပ်ထားသော စာသားကို ကူးယူပါ။4th ပုံစံ"/>
+					<Item id="43059" name="ပုံစံလုပ်ထားသော စာသားကို ကူးယူပါ။5th ပုံစံ"/>
+					<Item id="43060" name="ပုံစံလုပ်ထားသော စာသားကို ကူးယူပါ။ပုံစံအားလုံး၏ ပုံစံတူစာသားကို ကူးယူပါ"/>
+					<Item id="43061" name="Find Mark စတိုင်၏ ပုံစံပြုလုပ်ထားသော စာသားကို ကူးယူပါ။"/>
+					<Item id="44100" name="Firefox"/>
+					<Item id="44101" name="တွင် လက်ရှိဖိုင်ကိုကြည့်ပါ။Chrome တွင် လက်ရှိဖိုင်ကိုကြည့်ပါ"/>
+					<Item id="44103" name="IE"/>
+					<Item id="44102" name="တွင် လက်ရှိဖိုင်ကိုကြည့်ပါ။Edge"/>
+					<Item id="50003" name="တွင် လက်ရှိဖိုင်ကိုကြည့်ပါ။ယခင်စာရွက်စာတမ်း"/>
+					<Item id="50004" name="သို့ပြောင်းပါ။နောက်စာရွက်စာတမ်းသို့ပြောင်းပါ"/>
+					<Item id="44051" name="အဆင့် ၁"/>
+					<Item id="44052" name="ခေါက်အဆင့် 2"/>
+					<Item id="44053" name="ခေါက်အဆင့် 3"/>
+					<Item id="44054" name="ခေါက်အဆင့် 4"/>
+					<Item id="44055" name="ခေါက်အဆင့် 5"/>
+					<Item id="44056" name="ခေါက်အဆင့် 6"/>
+					<Item id="44057" name="ခေါက်Level 7"/>
+					<Item id="44058" name="ခေါက်Level 8"/>
+					<Item id="44061" name="ခေါက်အဆင့် ၁"/>
+					<Item id="44062" name="ကိုဖွင့်ပါ။အဆင့် 2"/>
+					<Item id="44063" name="ကိုဖွင့်ပါ။အဆင့် 3"/>
+					<Item id="44064" name="ကိုဖွင့်ပါ။အဆင့် 4"/>
+					<Item id="44065" name="ကိုဖွင့်ပါ။အဆင့် 5"/>
+					<Item id="44066" name="ကိုဖွင့်ပါ။အဆင့် 6 ကိုဖွင့်ပါ။"/>
+					<Item id="44067" name="အဆင့် 7"/>
+					<Item id="44068" name="ကိုဖွင့်ပါ။အဆင့် ၈"/>
+					<Item id="44081" name="ကိုဖွင့်ပါ။ပရောဂျက်အကန့် 1"/>
+					<Item id="44082" name="ပြောင်းရန်ပရောဂျက်အကန့် 2"/>
+					<Item id="44083" name="ပြောင်းရန်ပရောဂျက်အကန့် 3"/>
+					<Item id="44085" name="ပြောင်းရန်အလုပ်နေရာအဖြစ် ဖိုင်တွဲကို ပြောင်းရန်"/>
+					<Item id="44080" name="စာရွက်စာတမ်းမြေပုံပြောင်းရန်"/>
+					<Item id="44070" name="စာရွက်စာတမ်းစာရင်းကို ပြောင်းရန်"/>
+					<Item id="44084" name="လုပ်ဆောင်ချက်စာရင်းကို ပြောင်းရန်"/>
+					<Item id="50005" name="မက်ခရိုရိုက်ကူးမှုကို ပြောင်းရန်"/>
+					<Item id="44104" name="Project Panel 1"/>
+					<Item id="44105" name="သို့ပြောင်းပါ။Project Panel 2"/>
+					<Item id="44106" name="သို့ပြောင်းပါ။Project Panel 3"/>
+					<Item id="44107" name="သို့ပြောင်းပါ။အလုပ်နေရာအဖြစ် ဖိုင်တွဲသို့ပြောင်းပါ"/>
+					<Item id="44109" name="စာရွက်စာတမ်းစာရင်း"/>
+					<Item id="44108" name="သို့ပြောင်းပါ။Function List"/>
+					<Item id="44110" name="သို့ပြောင်းပါ။တဘ်အရောင်"/>
+					<Item id="44111" name="ဖယ်ရှားပါ။တဘ်အရောင် 1"/>
+					<Item id="44112" name="အသုံးပြုပါ။Tab Color 2 ကို အသုံးပြုပါ"/>
+					<Item id="44113" name="Tab Color 3 ကို အသုံးပြုပါ။"/>
+					<Item id="44114" name="Tab Color 4 ကိုသုံးပါ"/>
+					<Item id="44115" name="Tab Color 5 ကိုသုံးပါ"/>
+					<Item id="11002" name="A မှ Z"/>
+					<Item id="11003" name="အမည်ဖြင့် စီပါ။Z မှ A"/>
+					<Item id="11004" name="အမည်ဖြင့် စီပါ။Path A မှ Z"/>
+					<Item id="11005" name="ဖြင့် စီပါ။Path Z မှ A"/>
+					<Item id="11006" name="ဖြင့် စီပါ။A မှ Z"/>
+					<Item id="11007" name="အမျိုးအစားအလိုက်စီပါ။Type Z မှ A"/>
+					<Item id="11008" name="ဖြင့်စီပါ။အကြောင်းအရာ အရှည် ကြီးနေ"/>
+					<Item id="11009" name="ဖြင့် စီပါ။အကြောင်းအရာ အရှည် ကြီးစဉ်ငယ်လိုက်"/>
+				</MainCommandNames>
+			</ShortcutMapper>
+			<ShortcutMapperSubDialg title="အလိုက်စီပါ။ဖြတ်လမ်း">
+				<Item id="1" name="အိုကေ"/>
+				<Item id="2" name="လုပ်တော့"/>
+				<Item id="5006" name="အမည်"/>
+				<Item id="5008" name="ထည့်"/>
+				<Item id="5009" name=""/>
+				<Item id="5010" name="ဖယ်ရှားပါ။လျှောက်ထား"/>
+				<Item id="5007" name="၎င်းသည် ဤ command မှ ဖြတ်လမ်းလင့်ခ်"/>
+				<Item id="5012" name="ကို ဖယ်ရှားပါမည်။ပဋိပက္ခတွေ့သည်။"/>
+			</ShortcutMapperSubDialg>
+			<UserDefine title="အသုံးပြုသူသတ်မှတ်ထားသည်။">
+				<Item id="20001" name="အထိုင်"/>
+				<Item id="20002" name="အမည်ပြောင်း"/>
+				<Item id="20003" name="အသစ်ဖန်တီးပါ..."/>
+				<Item id="20004" name=""/>
+				<Item id="20005" name="ဖယ်ရှားပါ။Save As..."/>
+				<Item id="20007" name="အသုံးပြုသူဘာသာစကား"/>
+				<Item id="20009" name="ဥပမာ-"/>
+				<Item id="20012" name="ကိစ္စ"/>
+				<Item id="20011" name="လျစ်လျူရှုထင်သာမြင်သာ"/>
+				<Item id="20015" name="သွင်းကုန်..."/>
+				<Item id="20016" name="ပို့ရန်..."/>
+				<Item id="20017" name="ဖြုတ်"/>
+				<StylerDialog title="Styler Dialog">
+					<Item id="25030" name="ဖောင့်ရွေးချယ်မှုများ"/>
+					<Item id="25006" name="ရှေ့ဘက်အရောင်"/>
+					<Item id="25007" name="နောက်ခံအရောင်"/>
+					<Item id="25031" name="အမည်-"/>
+					<Item id="25032" name="အရွယ်အစား-"/>
+					<Item id="25001" name="ရဲရင့်"/>
+					<Item id="25002" name="စာလုံးစောင်း"/>
+					<Item id="25003" name="မျဉ်းသား"/>
+					<Item id="25029" name="သိုက်"/>
+					<Item id="25008" name="ကန့်သတ်ချက် 1"/>
+					<Item id="25009" name="ကန့်သတ်ချက် 2"/>
+					<Item id="25010" name="ကန့်သတ်ချက် 3"/>
+					<Item id="25011" name="ကန့်သတ်ချက် 4"/>
+					<Item id="25012" name="အနားသတ် 5"/>
+					<Item id="25013" name="ကန့်သတ်ချက် 6"/>
+					<Item id="25014" name="အနားသတ် 7"/>
+					<Item id="25015" name="ကန့်သတ်ချက် ၈"/>
+					<Item id="25018" name="သော့ချက်စာလုံး ၁"/>
+					<Item id="25019" name="သော့ချက်စာလုံး 2"/>
+					<Item id="25020" name="သော့ချက်စာလုံး ၃"/>
+					<Item id="25021" name="သော့ချက်စာလုံး 4"/>
+					<Item id="25022" name="သော့ချက်စာလုံး ၅"/>
+					<Item id="25023" name="သော့ချက်စာလုံး ၆"/>
+					<Item id="25024" name="သော့ချက်စာလုံး 7"/>
+					<Item id="25025" name="သော့ချက်စာလုံး ၈"/>
+					<Item id="25016" name="မှတ်ချက်"/>
+					<Item id="25017" name="မှတ်ချက်လိုင်း"/>
+					<Item id="25026" name="အော်ပရေတာ ၁"/>
+					<Item id="25027" name="အော်ပရေတာ ၂"/>
+					<Item id="25028" name="နံပါတ်များ"/>
+					<Item id="25033" name="ဖောက်ထွင်း"/>
+					<Item id="25034" name="ဖောက်ထွင်း"/>
+					<Item id="1" name="အိုကေ"/>
+					<Item id="2" name="လုပ်တော့"/>
+				</StylerDialog>
+				<Folder title="ဖိုင်တွဲ မူရင်း">
+					<Item id="21101" name="ပုံသေပုံစံ"/>
+					<Item id="21102" name="Styler"/>
+					<Item id="21103" name="အသုံးပြုသူသတ်မှတ်ထားသော ဘာသာစကားများ အွန်လိုင်းအကူအညီ"/>
+					<Item id="21105" name="မှတ်တမ်း"/>
+					<Item id="21106" name="ကျစ်လျစ်သောခေါက် (လိုင်းအလွတ်ခေါက်လွန်း)"/>
+					<Item id="21220" name="ကုဒ် 1 စတိုင်"/>
+					<Item id="21224" name="ခေါက်ခြင်း။ဖွင့်:"/>
+					<Item id="21225" name="အလယ်-"/>
+					<Item id="21226" name="ပိတ်:"/>
+					<Item id="21227" name="Styler"/>
+					<Item id="21320" name="ကုဒ် 2 စတိုင်ဖြင့် ခေါက်ခြင်း (ခွဲထွက်ရန် လိုအပ်သည်)"/>
+					<Item id="21324" name="ဖွင့်ရန်-"/>
+					<Item id="21325" name="အလယ်-"/>
+					<Item id="21326" name="ပိတ်:"/>
+					<Item id="21327" name="Styler"/>
+					<Item id="21420" name="မှတ်ချက်စတိုင်"/>
+					<Item id="21424" name="ခေါက်ခြင်း။ဖွင့်:"/>
+					<Item id="21425" name="အလယ်-"/>
+					<Item id="21426" name="ပိတ်:"/>
+					<Item id="21427" name="Styler"/>
+				</Folder>
+				<Keywords title="သော့ချက်စာလုံးများစာရင်းများ">
+					<Item id="22101" name="1st Group"/>
+					<Item id="22201" name="2nd Group"/>
+					<Item id="22301" name="3rd Group"/>
+					<Item id="22401" name="4th Group"/>
+					<Item id="22451" name="5th Group"/>
+					<Item id="22501" name="6th Group"/>
+					<Item id="22551" name="7th Group"/>
+					<Item id="22601" name="8th Group"/>
+					<Item id="22121" name="ရှေ့ဆက်မုဒ်"/>
+					<Item id="22221" name="ရှေ့ဆက်မုဒ်"/>
+					<Item id="22321" name="ရှေ့မုဒ်"/>
+					<Item id="22421" name="ရှေ့ဆက်မုဒ်"/>
+					<Item id="22471" name="ရှေ့ဆက်မုဒ်"/>
+					<Item id="22521" name="ရှေ့ဆက်မုဒ်"/>
+					<Item id="22571" name="ရှေ့ဆက်မုဒ်"/>
+					<Item id="22621" name="ရှေ့ဆက်မုဒ်"/>
+					<Item id="22122" name="Styler"/>
+					<Item id="22222" name="Styler"/>
+					<Item id="22322" name="Styler"/>
+					<Item id="22422" name="Styler"/>
+					<Item id="22472" name="Styler"/>
+					<Item id="22522" name="Styler"/>
+					<Item id="22572" name="Styler"/>
+					<Item id="22622" name="Styler"/>
+				</Keywords>
+				<Comment title="မှတ်ချက်နံပါတ်">
+					<Item id="23003" name="စာကြောင်းမှတ်ချက်အနေအထား"/>
+					<Item id="23004" name=""/>
+					<Item id="23005" name="တနေရာရာကို ခွင့်ပြုပါ။မျဉ်း၏အစတွင် အတင်းအကြပ်"/>
+					<Item id="23006" name="ရှေ့နေရာလွတ်"/>
+					<Item id="23001" name="ခွင့်ပြုပါ။မှတ်ချက်"/>
+					<Item id="23326" name="ခေါက်ခြင်းကို ခွင့်ပြုပါ။Styler"/>
+					<Item id="23323" name="ဖွင့်"/>
+					<Item id="23324" name="ဆက်ရန်"/>
+					<Item id="23325" name="ပိတ်"/>
+					<Item id="23301" name="မှတ်ချက်လိုင်းစတိုင်"/>
+					<Item id="23124" name="Styler"/>
+					<Item id="23122" name="ဖွင့်"/>
+					<Item id="23123" name="ပိတ်"/>
+					<Item id="23101" name="မှတ်ချက်စတိုင်"/>
+					<Item id="23201" name="နံပါတ်စတိုင်"/>
+					<Item id="23220" name="Styler"/>
+					<Item id="23230" name="ရှေ့ဆက် 1"/>
+					<Item id="23232" name="ရှေ့ဆက် 2"/>
+					<Item id="23234" name="အပို 1"/>
+					<Item id="23236" name="အပို 2"/>
+					<Item id="23238" name="နောက်ဆက်တွဲ 1"/>
+					<Item id="23240" name="နောက်ဆက်တွဲ 2"/>
+					<Item id="23242" name="အပိုင်းအခြား-"/>
+					<Item id="23244" name="ဒဿမ ခြားနားချက်"/>
+					<Item id="23245" name="အစက်"/>
+					<Item id="23246" name="ကော်မာ"/>
+					<Item id="23247" name=""/>
+				</Comment>
+				<Operator title="နှစ်ခုလုံးအော်ပရေတာ ကန့်သတ်ချက်">
+					<Item id="24101" name="အော်ပရေတာစတိုင်"/>
+					<Item id="24113" name="Styler"/>
+					<Item id="24116" name="အော်ပရေတာ ၁"/>
+					<Item id="24117" name="အော်ပရေတာ 2 (ခွဲထွက်များ လိုအပ်သည်)"/>
+					<Item id="24201" name="ကန့်သတ်ချက် 1 စတိုင်"/>
+					<Item id="24220" name="ဖွင့်:"/>
+					<Item id="24221" name="လွတ်မြောက်ခြင်း-"/>
+					<Item id="24222" name="ပိတ်:"/>
+					<Item id="24223" name="Styler"/>
+					<Item id="24301" name="ကန့်သတ်ချက် 2 စတိုင်"/>
+					<Item id="24320" name="ဖွင့်:"/>
+					<Item id="24321" name="လွတ်မြောက်ခြင်း-"/>
+					<Item id="24322" name="ပိတ်:"/>
+					<Item id="24323" name="Styler"/>
+					<Item id="24401" name="ကန့်သတ်ချက် 3 စတိုင်"/>
+					<Item id="24420" name="ဖွင့်:"/>
+					<Item id="24421" name="လွတ်မြောက်ခြင်း-"/>
+					<Item id="24422" name="ပိတ်ရန်-"/>
+					<Item id="24423" name="Styler"/>
+					<Item id="24451" name="ကန့်သတ်ချက် 4 စတိုင်"/>
+					<Item id="24470" name="ဖွင့်:"/>
+					<Item id="24471" name="လွတ်မြောက်ခြင်း-"/>
+					<Item id="24472" name="ပိတ်:"/>
+					<Item id="24473" name="Styler"/>
+					<Item id="24501" name="ကန့်သတ်ချက် 5 စတိုင်"/>
+					<Item id="24520" name="ဖွင့်:"/>
+					<Item id="24521" name="လွတ်မြောက်ခြင်း-"/>
+					<Item id="24522" name="ပိတ်:"/>
+					<Item id="24523" name="Styler"/>
+					<Item id="24551" name="ကန့်သတ်ချက် 6 စတိုင်"/>
+					<Item id="24570" name="ဖွင့်:"/>
+					<Item id="24571" name="လွတ်မြောက်ခြင်း-"/>
+					<Item id="24572" name="ပိတ်:"/>
+					<Item id="24573" name="Styler"/>
+					<Item id="24601" name="အနားသတ် 7 စတိုင်"/>
+					<Item id="24620" name="ဖွင့်:"/>
+					<Item id="24621" name="လွတ်မြောက်ခြင်း-"/>
+					<Item id="24622" name="ပိတ်ရန်-"/>
+					<Item id="24623" name="Styler"/>
+					<Item id="24651" name="ကန့်သတ်ချက် 8 စတိုင်"/>
+					<Item id="24670" name="ဖွင့်:"/>
+					<Item id="24671" name="လွတ်မြောက်ခြင်း-"/>
+					<Item id="24672" name="ပိတ်:"/>
+					<Item id="24673" name="Styler"/>
+				</Operator>
+			</UserDefine>
+			<Preference title="ဦးစားပေးများ">
+				<Item id="6001" name="ပိတ်"/>
+				<Global title="အထွေထွေ">
+					<Item id="6123" name="Localization"/>
+					<Item id="6131" name="မီနူး"/>
+					<Item id="6122" name="ဝှက်ရန် (ပြောင်းရန် Alt သို့မဟုတ် F10 ကီးကိုသုံးပါ)"/>
+					<Item id="6132" name="ညာဘက်ဖြတ်လမ်းများကို ဝှက်ပါ ＋ ▼ ✕"/>
+					<Item id="6133" name="Status Bar"/>
+					<Item id="6134" name="ဖျောက်"/>
+				</Global>
+
+				<Toolbar title="တူးလ်ဘား">
+					<Item id="6102" name="ဖျောက်"/>
+					<Item id="6103" name="Fluent UI- အသေးစား"/>
+					<Item id="6104" name="Fluent UI- ကြီးမားသော"/>
+					<Item id="6129" name="ပြည့်စုံသော Fluent UI- သေးငယ်သည်။"/>
+					<Item id="6130" name="ပြည့်စုံသော Fluent UI- ကြီးမားသော"/>
+					<Item id="6105" name="ပုံမှန်အိုင်ကွန်များ- သေးငယ်"/>
+					<Item id="6011" name="အရောင်ခြယ်ခြင်း"/>
+					<Item id="6012" name="ပြီးအောင်"/>
+					<Item id="6013" name="တစ်ပိုင်းတစ်စ"/>
+					<Item id="6014" name="အရောင်ရွေးချယ်မှု"/>
+					<Item id="6015" name="ပုံသေ"/>
+					<Item id="6016" name="အနီရောင်"/>
+					<Item id="6017" name="အစိမ်း"/>
+					<Item id="6018" name="အပြာ"/>
+					<Item id="6019" name="ခရမ်းရောင်"/>
+					<Item id="6020" name="အစိမ်းနုရောင်"/>
+					<Item id="6021" name="သံလွင်"/>
+					<Item id="6022" name="အဝါရောင်"/>
+					<Item id="6023" name="စနစ်လေယူလေသိမ်း"/>
+					<Item id="6024" name="စိတ်ကြိုက်"/>
+				</Toolbar>
+
+				<Tabbar title="တဘ်ဘား">
+					<Item id="6107" name="လျှော့"/>
+					<Item id="6108" name="လော့ခ်ချခြင်း (ဆွဲယူ၍မရပါ)"/>
+					<Item id="6109" name="အသုံးမပြုသော တက်ဘ်အရောင်ကို ပြောင်းပါ။"/>
+					<Item id="6110" name="တက်ကြွသောတက်ဘ်"/>
+					<Item id="6111" name="တွင် ရောင်စုံဘားတစ်ခုဆွဲပါ။အလုပ်မလုပ်သော တက်ဘ်များ"/>
+					<Item id="6112" name="တွင် ခလုတ်များကို ပြပါ။ပိတ်ခလုတ်ကို ပြပါ"/>
+					<Item id="6113" name="စာရွက်စာတမ်းပိတ်ရန် နှစ်ချက်နှိပ်ပါ"/>
+					<Item id="6115" name="Pin တက်ဘ် လုပ်ဆောင်ချက်ကို ဖွင့်ပါ"/>
+					<Item id="6135" name="ပင်ထိုးထားသော ခလုတ်ကိုသာ ပြပါ"/>
+					<Item id="6118" name="ဖျောက်"/>
+					<Item id="6119" name="လိုင်းပေါင်းစုံ"/>
+					<Item id="6120" name="ဒေါင်လိုက်"/>
+					<Item id="6121" name="နောက်ဆုံးတက်ဘ်ကိုပိတ်ပြီး"/>
+					<Item id="6128" name="ထွက်လိုက်ပါ။သင်္ကေတများ"/>
+					<Item id="6125" name="အနေအထိုင်"/>
+					<Item id="6126" name="ခံစားကြည့်ပါ"/>
+					<Item id="6136" name="မက်တယ်။တက်ဘ်အညွှန်းအရှည်-"/>
+				</Tabbar>
+
+				<Scintillas title="တည်းဖြတ်ခြင်း 1">
+					<Item id="6216" name="Caret ဆက်တင်များ"/>
+					<Item id="6217" name="အကျယ်-"/>
+					<Item id="6219" name="မျက်တောင်ခတ်နှုန်း-"/>
+					<Item id="6221" name="F"/>
+					<Item id="6222" name="၎"/>
+					<Item id="6246" name="လက်ရှိအဆင့် ခေါက်ခြင်း/ဖွင့်ခြင်း ညွှန်ကြားချက်များကို ခလုတ်ဖွင့်နိုင်သော"/>
+					<Item id="6227" name="ပြုလုပ်ပါ။လိုင်းထုပ်"/>
+					<Item id="6228" name="ပုံသေ"/>
+					<Item id="6229" name="ညှိထားသည်"/>
+					<Item id="6230" name="အင်တင်း"/>
+					<Item id="6234" name="Touchpad ပြဿနာကြောင့်"/>
+					<Item id="6215" name="အဆင့်မြင့်လှိမ့်ခြင်း လုပ်ဆောင်ချက်ကို ပိတ်ပါ။ချောမွေ့သောဖောင့်ကို ဖွင့်ပါ"/>
+					<Item id="6236" name="နောက်ဆုံးစာကြောင်းကိုကျော်လွန်၍ လှိမ့်ခြင်းကိုဖွင့်ပါ"/>
+					<Item id="6239" name="ရွေးချယ်မှု၏အပြင်ဘက်တွင် ညာကလစ်နှိပ်ပါ"/>
+					<Item id="6245" name="ရွေးချယ်မှုကို ဆက်ထားပါ။virtual space"/>
+					<Item id="6214" name="ဖွင့်ပါ။"/>
+					<Item id="6225" name="ရွေးချယ်မှုမပါဘဲ ကော်ပီ/ဖြတ်မျဉ်းကို ဖွင့်ပါ။ရွေးချယ်ထားသော စာသား၏ အရှေ့ဘက်"/>
+					<Item id="6651" name="တွင် စိတ်ကြိုက်အရောင်ကို အသုံးပြုပါ။လက်ရှိလိုင်းညွှန်းကိန်း"/>
+					<Item id="6652" name="မရှိ"/>
+					<Item id="6653" name="နောက်ခံကို အသားပေးဖော်ပြပါ"/>
+					<Item id="6654" name="ဘောင်"/>
+					<Item id="6655" name="အကျယ်-"/>
+				</Scintillas>
+
+				<Scintillas2 title="Editing 2">
+					<Item id="6521" name="Multi-Editing"/>
+					<Item id="6522" name="Multi-Editing ကိုဖွင့်ပါ (Ctrl+Mouse ကလစ်/ရွေးချယ်မှု)"/>
+					<Item id="6523" name="Multi-Editing"/>
+					<Item id="6247" name="ကော်လံရွေးချယ်မှုကို ဖွင့်ပါ။EOL (CRLF)"/><!-- Don't translate "(CRLF)" -->
+					<Item id="6248" name="ပုံသေ"/>
+					<Item id="6249" name="ရိုးရိုးစာသား"/>
+					<Item id="6250" name="စိတ်ကြိုက်အရောင်"/>
+					<Item id="6252" name="ပုံနှိပ်မဟုတ်သော အက္ခရာများ"/>
+					<Item id="6260" name="အသွင်အပြင်"/>
+					<Item id="6254" name="အတိုကောက်"/>
+					<Item id="6255" name="Codepoint"/>
+					<Item id="6256" name="စိတ်ကြိုက်အရောင်"/>
+					<Item id="6258" name="အသွင်အပြင် ဆက်တင်များကို C0, C1 Unicode EOL"/>
+					<Item id="6259" name="တွင် အသုံးပြုပါ။စာရွက်စာတမ်း"/>
+				</Scintillas2>
+
+				<DarkMode title="စာရိုက်ခြင်းကို ထိန်းချုပ်သည့်စာလုံး (C0 ကုဒ်) ကို တားဆီးပါ။အမှောင်မုဒ်">
+					<Item id="7131" name="အလင်းမုဒ်"/>
+					<Item id="7132" name="အမှောင်မုဒ်"/>
+					<Item id="7133" name="Windows ကိုလိုက်နာပါ"/>
+					<Item id="7102" name="အနက်ရောင်"/>
+					<Item id="7103" name="အနီရောင်"/>
+					<Item id="7104" name="အစိမ်း"/>
+					<Item id="7105" name="အပြာ"/>
+					<Item id="7107" name="ခရမ်းရောင်"/>
+					<Item id="7108" name="အစိမ်းနုရောင်"/>
+					<Item id="7109" name="သံလွင်"/>
+					<Item id="7115" name="စိတ်ကြိုက်"/>
+					<Item id="7116" name="အကြောင်းအရာနောက်ခံ"/>
+					<Item id="7117" name="Hot track item"/>
+					<Item id="7118" name="နောက်ခံ ထိန်းချုပ်မှု"/>
+					<Item id="7119" name="ဒိုင်ယာလော့ဂ်နောက်ခံ"/>
+					<Item id="7120" name="အမှား"/>
+					<Item id="7121" name="စာသား"/>
+					<Item id="7122" name="ပိုနက်သောစာသား"/>
+					<Item id="7123" name="ပိတ်ထားသောစာသား"/>
+					<Item id="7124" name="အစွန်း"/>
+					<Item id="7125" name="လင့်"/>
+					<Item id="7126" name="အနားသတ်မီးမောင်းထိုးပြ"/>
+					<Item id="7127" name="အနားသတ်"/>
+					<Item id="7130" name="ပြန်သတ်မှတ်"/>
+					<Item id="7135" name="တီးတိုး"/>
+				</DarkMode>
+
+				<MarginsBorderEdge title="အနားသတ်များ/Border/Edge">
+					<Item id="6201" name="Margin Style ခေါက်ပါ။"/>
+					<Item id="6202" name="ရိုးရှင်း"/>
+					<Item id="6203" name="မြှား"/>
+					<Item id="6204" name="သစ်ပင်"/>
+					<Item id="6205" name="စက်ဝိုင်းဘောက်ပင်"/>
+					<Item id="6226" name="မရှိ"/>
+					<Item id="6291" name="လိုင်းနံပါတ်"/>
+					<Item id="6206" name="ပြကွက်"/>
+					<Item id="6292" name="လှုပ်ရှားနေသော အကျယ်"/>
+					<Item id="6293" name="အဆက်မပြတ်အကျယ်"/>
+					<Item id="6207" name="စာညှပ်ပြသခြင်း"/>
+					<Item id="6295" name="သမိုင်းပြောင်း"/>
+					<Item id="6223" name="အနားသတ်"/>
+					<Item id="6296" name="ပြပါ။"/>
+					<Item id="6211" name="စာသားဖြင့် ပြပါ။ဒေါင်လိုက် အစွန်း ဆက်တင်များ"/>
+					<Item id="6213" name="နောက်ခံမုဒ်"/>
+					<Item id="6231" name="နယ်နိမိတ် အကျယ်"/>
+					<Item id="6235" name="အစွန်းမရှိ"/>
+					<Item id="6208" name="အကွက်"/>
+					<Item id="6209" name="လက်ဝဲ"/>
+					<Item id="6210" name="မှန်တယ်။"/>
+					<Item id="6212" name="စိတ်အနှောက်အယှက်ကင်းသည်။"/>
+				</MarginsBorderEdge>
+
+				<NewDoc title="စာရွက်စာတမ်းအသစ်">
+					<Item id="6401" name="ဖော်မတ် (စာကြောင်းအဆုံးသတ်)"/>
+					<Item id="6402" name="Windows (CR LF)"/>
+					<Item id="6403" name="Unix (LF)"/>
+					<Item id="6404" name="Macintosh (CR)"/>
+					<Item id="6405" name="ြဖစ်သည်။"/>
+					<Item id="6406" name="ANSI"/>
+					<Item id="6407" name="UTF-8"/>
+					<Item id="6408" name="BOM ဖြင့် UTF-8"/>
+					<Item id="6409" name="BOM ဖြင့် UTF-16 Big Endian"/>
+					<Item id="6410" name="BOM နှင့် UTF-16 Little Endian"/>
+					<Item id="6411" name="မူရင်းဘာသာစကား-"/>
+					<Item id="6419" name="စာရွက်စာတမ်းအသစ်"/>
+					<Item id="6420" name="ဖွင့်လှစ်ထားသော ANSI ဖိုင်များကို အသုံးပြုပါ။"/>
+					<Item id="6432" name="စတင်ချိန်တွင် စာရွက်စာတမ်းအသစ်ကို အမြဲဖွင့်ပါ။"/>
+					<Item id="6433" name="ခေါင်းစဉ်မဲ့ တက်ဘ်အမည်အဖြစ် စာရွက်စာတမ်း၏ ပထမစာကြောင်းကို အသုံးပြုပါ။"/>
+				</NewDoc>
+
+				<DefaultDir title="မူရင်းလမ်းညွှန်">
+					<Item id="6413" name="မူရင်းဖိုင်လမ်းညွှန်ကို ဖွင့်/သိမ်းဆည်းပါ။"/>
+					<Item id="6414" name="လက်ရှိစာရွက်စာတမ်းကို လိုက်နာပါ။"/>
+					<Item id="6415" name="နောက်ဆုံးသုံးခဲ့သော လမ်းညွှန်"/>
+					<Item id="6431" name="ကို သတိရပါ။Folder ကိုဖွင့်မည့်အစား Folder ၏ Workspace ကိုဖွင့်မည့်အစား"/>
+				</DefaultDir>
+
+				<FileAssoc title="ဖိုင်အသင်း">
+					<Item id="4008" name="ကျေးဇူးပြု၍ Notepad++ မှထွက်ပြီး ဤအင်္ဂါရပ်ကိုအသုံးပြုရန်အတွက် စီမံခန့်ခွဲသူမုဒ်တွင် Notepad++ ကို ပြန်လည်စတင်ပါ။"/>
+					<Item id="4009" name="ပံ့ပိုးထားသော တိုးချဲ့မှုများ-"/>
+					<Item id="4010" name="မှတ်ပုံတင်ထားသော တိုးချဲ့မှုများ-"/>
+				</FileAssoc>
+
+
+				<Language title="ဘာသာစကား">
+					<Item id="6505" name="ရနိုင်သောပစ္စည်းများ"/>
+					<Item id="6506" name="မသန်စွမ်းသောအရာများ"/>
+					<Item id="6507" name="ဘာသာစကားမီနူးကို ကျစ်ကျစ်လစ်လစ်လုပ်ပါ"/>
+					<Item id="6508" name="ဘာသာစကား မီနူး"/>
+					<Item id="6335" name="backslash ကို SQL"/>
+				</Language>
+
+				<Indentation title="အတွက် ထွက်ပေါက်ဇာတ်ကောင်အဖြစ် သတ်မှတ်ပါ။Indentation">
+					<Item id="7161" name="အလိုအလျောက် အင်တင်း"/>
+					<Item id="7162" name="မရှိ"/>
+					<Item id="7163" name="အခြေခံ"/>
+					<Item id="7164" name="အဆင့်မြင့်"/>
+					<Item id="6301" name="Indent ဆက်တင်များ"/>
+					<Item id="6302" name="အာကာသ ဇာတ်ကောင်(များ)"/>
+					<Item id="6303" name="အင်တင်းအရွယ်အစား-"/>
+					<Item id="6310" name="အင်တင်း-"/>
+					<Item id="6311" name="ကို အသုံးပြုခြင်း။တဘ်ဇာတ်ကောင်"/>
+					<Item id="6510" name="မူရင်းတန်ဖိုး"/>
+					<Item id="6512" name="သုံးပါ။နေရာလွတ်တစ်ခုတည်းကို ဖယ်ရှားမည့်အစား Backspace key unindent များ"/>
+				</Indentation>
+
+				<Highlighting title="ထင်ရှားအောင်">
+					<Item id="6351" name="တိုကင်၏ဖြစ်ပျက်မှုအားလုံး ပုံစံ"/>
+					<Item id="6352" name="တိုက်ဆိုင်နေတယ်"/>
+					<Item id="6353" name="စကားလုံးတစ်ခုလုံးနှင့်သာ ကိုက်ညီသည်"/>
+					<Item id="6333" name="Smart Highlighting"/>
+					<Item id="6326" name="ဖွင့်"/>
+					<Item id="6354" name="ကိုက်ညီမှု"/>
+					<Item id="6332" name="တိုက်ဆိုင်နေတယ်"/>
+					<Item id="6338" name="စကားလုံးတစ်ခုလုံးနှင့်သာ ကိုက်ညီသည်"/>
+					<Item id="6339" name="Find dialog settings"/>
+					<Item id="6340" name="ကိုသုံးပါ။အခြားအမြင်ကို အသားပေးဖော်ပြပါ"/>
+					<Item id="6329" name="ကိုက်ညီသော အမှတ်အသားများကို အသားပေးဖော်ပြပါ"/>
+					<Item id="6327" name="ဖွင့်"/>
+					<Item id="6328" name="တဂ်ရည်ညွှန်းချက်များကို အသားပေးဖော်ပြပါ"/>
+					<Item id="6330" name="မှတ်ချက်/php/asp ဇုန်"/>
+				</Highlighting>
+
+				<Print title="ကို မီးမောင်းထိုးပြပါ။ညောင်ပင်">
+					<Item id="6601" name="ပုံနှိပ်လိုင်းနံပါတ်"/>
+					<Item id="6602" name="အရောင်ရွေးချယ်မှုများ"/>
+					<Item id="6603" name="WYSIWYG"/>
+					<Item id="6604" name="ပြောင်းပြန်"/>
+					<Item id="6605" name="အဖြူပေါ် အမည်း"/>
+					<Item id="6606" name="နောက်ခံအရောင်"/>
+					<Item id="6607" name="မရှိပါ။အနားသတ် ဆက်တင်များ (ယူနစ်:mm)"/>
+					<Item id="6612" name="လက်ဝဲ"/>
+					<Item id="6613" name="ထိပ်တန်း"/>
+					<Item id="6614" name="မှန်တယ်"/>
+					<Item id="6615" name="အောက်ခြေ"/>
+					<Item id="6706" name="ရဲရင့်"/>
+					<Item id="6707" name="စာလုံးစောင်း"/>
+					<Item id="6708" name="ခေါင်းစီး"/>
+					<Item id="6709" name="ဘယ်ဘက်အပိုင်း"/>
+					<Item id="6710" name="အလယ်အပိုင်း"/>
+					<Item id="6711" name="မှန်သောအပိုင်း"/>
+					<Item id="6717" name="ရဲရင့်"/>
+					<Item id="6718" name="စာလုံးစောင်း"/>
+					<Item id="6719" name="အောက်ခြေမှတ်တိုင်"/>
+					<Item id="6720" name="ဘယ်ဘက်အပိုင်း"/>
+					<Item id="6721" name="အလယ်အပိုင်း"/>
+					<Item id="6722" name="မှန်သောအပိုင်း"/>
+					<Item id="6723" name="ထည့်"/>
+					<ComboBox id="6724">
+						<Element name="ဖိုင်အမည် လမ်းကြောင်း အပြည့်အစုံ"/>
+						<Element name="ဖိုင်အမည်"/>
+						<Element name="ဖိုင်လမ်းညွှန်"/>
+						<Element name="စာမျက်နှာ"/>
+						<Element name="ရက်တိုပုံစံ"/>
+						<Element name="ရက်ရှည်ဖော်မက်"/>
+						<Element name="အချိန်"/>
+					</ComboBox>
+					<Item id="6725" name="ပြောင်းလဲနိုင်သော-"/>
+					<Item id="6727" name="ဤနေရာတွင် သင်၏ ပြောင်းလဲနိုင်သော ဆက်တင်များ"/>
+					<Item id="6728" name="ကို ပြသပါ။ခေါင်းစီးနှင့် အောက်ခြေမှတ်စု"/>
+				</Print>
+
+				<Searching title="ရှာဖွေခြင်း">
+					<Item id="6902" name="Find dialog တွင် monospaced font ကိုသုံးပါ (Notepad++ ကို ပြန်လည်စတင်ရန် လိုအပ်သည်)"/>
+					<Item id="6903" name="ရှာဖွေမှု ဒိုင်ယာလော့ခ်ကို ရှာဖွေပြီးနောက် ရလဒ်များ ဝင်းဒိုး"/>
+					<Item id="6904" name="ကို ထုတ်ပေးသည်။ဖွင့်ထားသောစာရွက်စာတမ်းများအားလုံးတွင် အားလုံးကို အစားထိုးအတည်ပြုပါ"/>
+					<Item id="6905" name="အစားထိုး- အောက်ပါ ဖြစ်ပျက်မှု"/>
+					<Item id="6906" name="သို့ မရွှေ့ပါနှင့်ရှာဖွေမှုရလဒ် ဝင်းဒိုး- ဖြစ်နိုင်ပါက တွေ့ရှိသော စာကြောင်းတစ်ခုလျှင် တစ်ခုသာ ပြပါ။"/>
+					<Item id="6907" name="Find Dialog ကိုခေါ်သောအခါ"/>
+					<Item id="6908" name="ရွေးချယ်ထားသော စာသား"/>
+					<Item id="6909" name="ဖြင့် အကွက်ရှာရန် ဖြည့်ပါ။ဘာကိုမှ မရွေးချယ်ထားတဲ့အခါ စကားလုံးအောက်က စကားလုံးကို ရွေးပါ"/>
+					<Item id="6910" name="&quot;ရွေးချယ်မှုတွင်&quot; အလိုအလျောက်စစ်ဆေးခြင်းအတွက် အနိမ့်ဆုံးအရွယ်အစား-"/>
+					<Item id="6913" name="Active Document"/>
+					<Item id="6916" name="ကိုအခြေခံ၍ ဖိုင်များ လမ်းညွှန်အကွက်တွင် Find ကိုဖြည့်ပါ။- ရွေးချယ်မှုမှ အကွက်ကို အလိုအလျောက်ဖြည့်ရန် စာလုံးအများဆုံး စာလုံးများ"/>
+				</Searching>
+
+				<RecentFilesHistory title="လတ်တလော ဖိုင်များ မှတ်တမ်း">
+					<Item id="6304" name="လတ်တလော ဖိုင်များ မှတ်တမ်း"/>
+					<Item id="6306" name="မက်တယ်။ထည့်သွင်းမှုအရေအတွက်-"/>
+					<Item id="6305" name="စတင်ချိန်"/>
+					<Item id="6429" name="မစစ်ဆေးပါနှင့်ပြကွက်"/>
+					<Item id="6424" name="Submenu တွင်"/>
+					<Item id="6425" name="File Name သာ"/>
+					<Item id="6426" name="Full File Name လမ်းကြောင်း"/>
+					<Item id="6427" name="အများဆုံး အရှည်ကို စိတ်ကြိုက်ပြင်ဆင်ပါ-"/>
+				</RecentFilesHistory>
+
+				<Backup title="အရန်">
+					<Item id="6817" name="စက်ရှင်လျှပ်တစ်ပြက်ရိုက်ချက်နှင့် အချိန်အပိုင်းအခြားအလိုက် အရန်သိမ်းဆည်းခြင်း"/>
+					<Item id="6818" name="စက်ရှင်လျှပ်တစ်ပြက်ရိုက်ချက်နှင့် အချိန်အပိုင်းအခြားအလိုက် အရန်ကူးယူခြင်းကို ဖွင့်ပါ"/>
+					<Item id="6819" name=""/>
+					<Item id="6821" name="တိုင်းတွင် ပြုပြင်မွမ်းမံမှုတွင် အရန်အရန်ကို အစပျိုးပါ။စက္ကန့်"/>
+					<Item id="6822" name="မိတ္တူလမ်းကြောင်း-"/>
+					<Item id="6309" name="နောက်လွှင့်တင်မှုအတွက် လက်ရှိစက်ရှင်ကို သတိရပါ။"/>
+					<Item id="6825" name="ယခင်စက်ရှင်"/>
+					<Item id="6801" name="မှ လက်လှမ်းမမီသောဖိုင်များကို မှတ်ထားပါ။သိမ်းဆည်းရန်"/>
+					<Item id="6315" name="မရှိ"/>
+					<Item id="6316" name="ရိုးရှင်းသော အရန်သိမ်းခြင်း"/>
+					<Item id="6317" name="စကားအဝိုင်း"/>
+					<Item id="6804" name="စိတ်ကြိုက် Backup Directory"/>
+					<Item id="6803" name="လမ်းညွှန်-"/>
+				</Backup>
+
+				<AutoCompletion title="အလိုအလျောက် ဖြည့်သွင်းခြင်း">
+					<Item id="6807" name="အလိုအလျောက် ဖြည့်သွင်းခြင်း"/>
+					<Item id="6808" name="ထည့်သွင်းမှုတစ်ခုစီတွင် အလိုအလျောက်ဖြည့်သွင်းမှုကို ဖွင့်ပါ"/>
+					<Item id="6809" name="လုပ်ဆောင်ချက် ပြီးစီးမှု"/>
+					<Item id="6810" name="နှုတ်ကပတ်တော်"/>
+					<Item id="6816" name="လုပ်ဆောင်ချက်နှင့် စကားလုံး ပြည့်စုံမှု"/>
+					<Item id="6869" name="ရွေးချယ်မှု"/>
+					<Item id="6870" name="ထည့်သွင်းပါ။TAB"/><!-- TAB key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6871" name="ENTER"/><!-- ENTER key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6824" name="နံပါတ်များ"/>
+					<Item id="6811" name="လျစ်လျူရှုထံမှ"/>
+					<Item id="6813" name="th ဇာတ်ကောင်"/>
+					<Item id="6872" name="အလိုအလျောက် ဖြည့်သွင်းမှုစာရင်း အကျဉ်းချုပ်"/>
+					<Item id="6815" name="ပြုလုပ်ပါ။လုပ်ဆောင်ချက် ကန့်သတ်ချက်များ ထည့်သွင်းခြင်း"/>
+					<Item id="6851" name="အရိပ်အမြွက်အလိုအလျောက်ထည့်သွင်းခြင်း"/>
+					<Item id="6857" name="html/xml အပိတ် tag"/>
+					<Item id="6858" name="ဖွင့်"/>
+					<Item id="6859" name="ပိတ်"/>
+					<Item id="6860" name="လိုက်ဖက်သောအတွဲ 1-"/>
+					<Item id="6863" name="လိုက်ဖက်သောအတွဲ 2-"/>
+					<Item id="6866" name="လိုက်ဖက်သောအတွဲ 3-"/>
+				</AutoCompletion>
+
+				<MultiInstance title="Multi-Instance နေ့စွဲ">
+					<Item id="6151" name="Multi-instance ဆက်တင်များ *"/>
+					<Item id="6152" name="ဥပမာအသစ်တစ်ခုတွင် စက်ရှင်ကိုဖွင့်ပါ (နှင့် ထွက်ပေါက်တွင် စက်ရှင်အလိုအလျောက် သိမ်းဆည်းပါ)"/>
+					<Item id="6153" name="Multi-instance မုဒ်တွင် အမြဲတမ်း"/>
+					<Item id="6154" name="ပုံသေ (မိုနို-ဥပမာ)"/>
+					<Item id="6155" name="* ဤဆက်တင်ကို ပြုပြင်မွမ်းမံခြင်းသည် Notepad++"/>
+					<Item id="6171" name="ကို ပြန်လည်စတင်ရန် လိုအပ်သည်။ရက်စွဲအချိန်"/>
+					<Item id="6175" name="ထည့်သွင်းရန် စိတ်ကြိုက်ပြင်ဆင်ပါ။မူရင်းရက်စွဲအချိန်ကို နောက်ပြန်လှည့်ပါ (တိုတောင်းသော အရှည်ဖော်မတ်များ)"/>
+					<Item id="6172" name="စိတ်ကြိုက်ဖော်မတ်-"/>
+					<Item id="6181" name="Panel State နှင့် [-nosession] *"/>
+					<Item id="6182" name="အခြားဥပမာများ (multi-instance မုဒ်) သို့မဟုတ် command line parameter [-nosession] ကိုအသုံးပြုသည့်အခါ panel state (အကန့်ကိုဖွင့်ထားသည်) ကိုသတိရပါ"/>
+					<Item id="6183" name="ကလစ်ဘုတ်မှတ်တမ်း"/>
+					<Item id="6184" name="စာရွက်စာတမ်းစာရင်း"/>
+					<Item id="6185" name="ဇာတ်ကောင်အကန့်"/>
+					<Item id="6186" name="အလုပ်နေရာ"/>
+					<Item id="6187" name="အဖြစ် ဖိုင်တွဲပရောဂျက် အကန့်များ"/>
+					<Item id="6188" name="စာရွက်စာတမ်းမြေပုံ"/>
+					<Item id="6189" name="လုပ်ဆောင်ချက်စာရင်း"/>
+					<Item id="6190" name="ပလပ်အင် အကန့်များ"/>
+				</MultiInstance>
+
+				<Delimiter title="ကန့်သတ်ချက်">
+					<Item id="6251" name="ကန့်သတ်ရွေးချယ်မှု ဆက်တင်များ (Ctrl + Mouse နှစ်ချက်နှိပ်)"/>
+					<Item id="6252" name="ဖွင့်"/>
+					<Item id="6255" name="ပိတ်"/>
+					<Item id="6256" name="လိုင်းအများအပြားတွင်"/>
+					<Item id="6161" name="ခွင့်ပြုပါ။စကားလုံးအက္ခရာစာရင်း"/>
+					<Item id="6162" name="မူရင်း Word စာလုံးစာရင်းကို အသုံးပြုပါ"/>
+					<Item id="6163" name="စကားလုံးအစိတ်အပိုင်းအဖြစ် သင့်ဇာတ်ကောင်ကို ထည့်ပါ။
+(မင်းဘာလုပ်နေလဲမသိရင် မရွေးပါနဲ့)"/>
+				</Delimiter>
+
+				<Performance title="စွမ်းဆောင်ရည်">
+					<Item id="7141" name="ကြီးမားသောဖိုင်ကန့်သတ်ချက်"/>
+					<Item id="7143" name="ကြီးမားသောဖိုင်ကန့်သတ်ချက်ကိုဖွင့်ပါ (အထားအသိုအသားပေးဖော်ပြခြင်းမပြုပါ)"/>
+					<Item id="7144" name="ဖိုင်အရွယ်အစားကို သတ်မှတ်ပါ-"/>
+					<Item id="7146" name="MB (1 - 2046)"/>
+					<Item id="7147" name="Brace Match ကို ခွင့်ပြုပါ"/>
+					<Item id="7148" name="အလိုအလျောက် ဖြည့်သွင်းခြင်း"/>
+					<Item id="7149" name="ခွင့်ပြုပါ။Smart Highlighting ကို ခွင့်ပြုပါ"/>
+					<Item id="7150" name="Word Wrap ကို တစ်ကမ္ဘာလုံး ပိတ်ထားပါ"/>
+					<Item id="7151" name="URL Clickable Link ကို ခွင့်ပြုပါ"/>
+					<Item id="7152" name="≥2GB ဖိုင်များ"/>
+				</Performance>
+
+				<Cloud title="ဖွင့်သည့်အခါ သတိပေးချက်ကို နှိမ်ပါ။Cloud Link">
+					<Item id="6262" name="cloud ပေါ်ရှိ ဆက်တင်များ"/>
+					<Item id="6263" name="မိုးတိမ်မရှိ"/>
+					<Item id="6267" name="သင်၏ cloud တည်နေရာလမ်းကြောင်းကို ဤနေရာတွင် သတ်မှတ်ပါ-"/>
+					<Item id="6318" name="နှိပ်နိုင်သော လင့်ခ်ဆက်တင်များ"/>
+					<Item id="6319" name="ဖွင့်"/>
+					<Item id="6320" name="မျဉ်းကြောင်းမရှိ"/>
+					<Item id="6350" name="fullbox မုဒ်"/>
+					<Item id="6264" name="ဖွင့်ပါ။URI စိတ်ကြိုက်အစီအစဥ်များ-"/>
+				</Cloud>
+
+				<SearchEngine title="ရှာဖွေရေးအင်ဂျင်">
+					<Item id="6271" name="ရှာဖွေရေးအင်ဂျင် (&quot;အင်တာနက်ပေါ်တွင်ရှာဖွေရန်&quot; အမိန့်အတွက်)"/>
+					<Item id="6272" name="DuckDuckGo"/>
+					<Item id="6273" name="Google"/>
+					<Item id="6274" name="Bing"/>
+					<Item id="6275" name="Yahoo!"/>
+					<Item id="6276" name="သင့်ရှာဖွေရေးအင်ဂျင်ကို ဤနေရာတွင် သတ်မှတ်ပါ-"/>
+					<!-- Don't change anything after Example: -->
+					<Item id="6278" name="ဥပမာ- https://www.google.com/search?q=$(CURRENT_WORD)"/>
+				</SearchEngine>
+
+				<MISC title="MISC">
+					<ComboBox id="6347">
+						<Element name="လက်ရှိဖိုင်"/>
+						<Element name="အတွက် ဖွင့်ပါ။ဖွင့်ထားသောဖိုင်များ"/>
+						<Element name="အားလုံးအတွက် ဖွင့်ပါ။ပိတ်"/>
+					</ComboBox>
+					<ComboBox id="6307">
+						<Element name=""/>
+						<Element name="တွင် လုပ်ဆောင်ချက်မရှိပါ။"/>
+						<Element name="သို့ လျှော့ပါ။"/>
+						<Element name="အနီးMinimize / Close to"/>
+					</ComboBox>
+					<ComboBox id="6362">
+						<Element name="GDI (လိုက်ဖက်ဆုံး)"/>
+						<Element name="DirectWrite (မူလ)"/>
+						<Element name="DirectWrite (ဘောင်များကို ထိန်းသိမ်းထားသည်)"/>
+						<Element name="DirectWrite (GDI DC သို့ဆွဲ)"/>
+						<Element name="DirectWrite (DirectX 11)"/>
+					</ComboBox>
+					<ComboBox id="6364">
+						<Element name="ပိတ်"/>
+						<Element name="Notepad++ စတင်ခြင်းတွင် ဖွင့်ပါ။"/>
+						<Element name="Notepad++ exit"/>
+					</ComboBox>
+					<Item id="6308" name="ကိုဖွင့်ပါ။စနစ်ဗန်း"/>
+					<Item id="6363" name="ပုံဖေါ်မုဒ်"/>
+					<Item id="6365" name="အလိုအလျောက် အပ်ဒိတ်လုပ်သူ-"/>
+					<Item id="6312" name="ဖိုင် အဆင့်အတန်း အလိုအလျောက် ထောက်လှမ်းခြင်း"/>
+					<Item id="6313" name="တိတ်တဆိတ် အပ်ဒိတ်လုပ်ပါ"/>
+					<Item id="6325" name="အပ်ဒိတ်လုပ်ပြီးနောက် နောက်ဆုံးစာကြောင်းသို့ ဆွဲချပါ"/>
+					<Item id="6322" name="ဆက်ရှင်ဖိုင် ext.:"/>
+					<Item id="6324" name="Document Switcher (Ctrl+TAB)"/>
+					<Item id="6331" name="ခေါင်းစဉ်ဘား"/>
+					<Item id="6334" name="တွင် ဖိုင်အမည်ကိုသာ ပြပါ။ဇာတ်ကောင်ကုဒ်နံပါတ်ကို အလိုအလျောက်ရှာဖွေစစ်ဆေးခြင်း"/>
+					<Item id="6337" name="Workspace ဖိုင် ext.:"/>
+					<Item id="6114" name="ဖွင့်"/>
+					<Item id="6117" name="MRU အပြုအမူ"/>
+					<Item id="6344" name="ဖွင့်ပါ။စာရွက်စာတမ်း Peeker"/>
+					<Item id="6345" name="တက်ဘ်ကို ကြည့်ပါ"/>
+					<Item id="6346" name="စာရွက်စာတမ်းမြေပုံ"/>
+					<Item id="6360" name="အသံများအားလုံးကို အသံတိတ်"/>
+					<Item id="6361" name="Save All confirm dialog"/>
+				</MISC>
+			</Preference>
+			<MultiMacro title="ကိုဖွင့်ပါ။Macro Multiple Times ကိုဖွင့်ပါ။">
+				<Item id="1" name="ပြေး"/>
+				<Item id="2" name="လုပ်တော့"/>
+				<Item id="8006" name="Macro လည်ပတ်ရန်"/>
+				<Item id="8001" name="ပြေး"/>
+				<Item id="8005" name="ကြိမ်"/>
+				<Item id="8002" name=""/>
+			</MultiMacro>
+			<Window title="ဖိုင်အဆုံးအထိ လုပ်ဆောင်ပါ။Windows">
+				<Item id="1" name=""/>
+				<Item id="2" name="အသက်သွင်းပါ။အိုကေ"/>
+				<Item id="7002" name=""/>
+				<Item id="7003" name="သိမ်းဆည်းပါ။ဝင်းဒိုး(များ)"/>
+				<Item id="7004" name="ပိတ်ပါ။တဘ်များ စီရန်"/>
+			</Window>
+			<ColumnEditor title="ကော်လံ တည်းဖြတ်">
+				<Item id="2023" name="စာသားထည့်သွင်းရန်"/>
+				<Item id="2033" name="ထည့်သွင်းရန် နံပါတ်"/>
+				<Item id="2030" name="ကနဦးနံပါတ်-"/>
+				<Item id="2031" name="တိုးလာသည်-"/>
+				<Item id="2038" name="ဦးဆောင်:"/>
+				<ComboBox id="2039">
+					<Element name="မရှိ"/>
+					<Element name="သုည"/>
+					<Element name="ပေ့"/>
+				</ComboBox>
+				<Item id="2036" name="အထပ်ထပ်:"/>
+				<Item id="2032" name="ပုံစံ"/>
+				<Item id="2024" name="ဒီဇင်ဘာ"/>
+				<Item id="2025" name="အောက်တိုဘာ"/>
+				<Item id="2026" name="Hex"/>
+				<Item id="2027" name="ဘင်"/>
+				<Item id="1" name="အိုကေ"/>
+				<Item id="2" name="လုပ်တော့"/>
+			</ColumnEditor>
+			<FindInFinder title="ရှာဖွေမှုရလဒ်များ">
+				<Item id="1" name="ရှာဖွေပါ။"/>
+				<Item id="2" name="အားလုံးရှာပါ။ပိတ်"/>
+				<Item id="1711" name="ရှာပါ-"/>
+				<Item id="1713" name="တွေ့သောစာကြောင်းများ"/>
+				<Item id="1714" name="တွင်သာရှာပါ။စကားလုံးတစ်ခုလုံးနှင့်သာ ကိုက်ညီသည်"/>
+				<Item id="1715" name="တိုက်ဆိုင်နေတယ်"/>
+				<Item id="1716" name="ရှာဖွေမှုမုဒ်"/>
+				<Item id="1717" name="ပုံမှန်"/>
+				<Item id="1719" name="ပုံမှန်အသုံးအနှုန်း"/>
+				<Item id="1718" name="တိုးချဲ့ထားသည် (\n၊ \r၊ \t၊ \0၊ \x...)"/>
+				<Item id="1720" name=".လိုင်းအသစ်"/>
+			</FindInFinder>
+			<DoSaveOrNot title="ကိုက်ညီသည်။">
+				<Item id="1761" name="သိမ်းဆည်းပါ။&quot;$STR_REPLACE$&quot; ဖိုင်ကို သိမ်းမလား။"/>
+				<Item id="6" name="ဟုတ်တယ်"/>
+				<Item id="7" name="မဟုတ်ဘူး"/>
+				<Item id="2" name="လုပ်တော့"/>
+				<Item id="4" name="ဟုတ်ကဲ့"/>
+				<Item id="5" name=""/>
+			</DoSaveOrNot>
+			<DoSaveAll title="အားလုံးအတွက် မရှိပါ။အတည်ပြုချက်အားလုံး">
+				<Item id="1766" name="သိမ်းဆည်းပါ။ပြုပြင်ထားသော စာရွက်စာတမ်းအားလုံးကို သိမ်းဆည်းလိုသည်မှာ သေချာပါသလား။
+
+ဤဒိုင်ယာလော့ခ်ကို ထပ်မံမတွေ့လိုပါက &quot;အမြဲတမ်း Yes&quot; ကို ရွေးပါ။
+နောက်ပိုင်းတွင် Preferences တွင် ဤဒိုင်ယာလော့ဂ်ကို ပြန်လည်အသက်သွင်းနိုင်ပါသည်။"/>
+				<Item id="6" name="ဟုတ်တယ်"/>
+				<Item id="7" name="မဟုတ်ဘူး"/>
+				<Item id="4" name="အမြဲတမ်း ဟုတ်တယ်"/>
+			</DoSaveAll><!-- HowToReproduce: Check the "Enable Save All confirm dialog" checkbox in Preference->MISC, now click "Save all" -->
+
+			<DebugInfo title="အမှားရှာပြင်ခြင်း အချက်အလက်">
+				<Item id="1752" name="အမှားရှာပြင်အချက်အလက်ကို ကလစ်ဘုတ်သို့ ကူးယူပါ"/>
+				<Item id="1" name="အိုကေ"/>
+			</DebugInfo>
+					<MacStrings>
+				<Item id="90001" name="ရှာဖွေမှုရလဒ်များ"/>
+				<Item id="90002" name="ရှာဖွေမှုရလဒ်များ ပိတ်ရန်"/>
+				<Item id="90003" name=""/>
+				<Item id="90004" name="အားလုံးကို ရှင်းလင်းပါ။အကန့်ကို ပိတ်ပါ။"/>
+				<Item id="90005" name="ပရောဂျက် panel"/>
+				<Item id="90006" name="အရင်းအမြစ်ထိန်းချုပ်မှု"/>
+				<Item id="90007" name="ကျူးလွန်"/>
+				<Item id="90008" name="ကတိမတည်"/>
+				<Item id="90009" name="git repository မရှိပါ\n repo ဖွင့်ရန် Browse ကိုသုံးပါ။"/>
+				<Item id="90010" name="ဇာတ်ခုံ"/>
+				<Item id="90011" name="စင်ပေါ်မှာ"/>
+				<Item id="90012" name="အဆင့်အားလုံး"/>
+				<Item id="90013" name="ဇာတ်ခုံအားလုံး"/>
+				<Item id="90014" name="မက်ဆေ့ချ်\u2026"/>
+				<Item id="90015" name="သိမ်းဆည်းရန်\u2026"/>
+				<Item id="90016" name="git repository folder"/>
+				<Item id="90017" name="ကို ရွေးပါ။(သိုလှောင်မှု မရှိပါ)"/>
+				<Item id="90018" name="(ခွာ)"/>
+				<Item id="90019" name="အမည်မသိ အမှားအယွင်း"/>
+				<Item id="90020" name="လုပ်ဆောင်ချက်များမတွေ့ပါ"/>
+				<Item id="90021" name="ရှာဖွေရန်လုပ်ဆောင်ချက်..."/>
+				<Item id="90022" name=""/>
+				<Item id="90023" name="အားလုံးကို ချဲ့ပါ။လက်ရှိဖိုင်ကိုရှာပါ"/>
+				<Item id="90024" name="ပြန်လည်စတင်ပါ။"/>
+				<Item id="90025" name="လုပ်ဆောင်ချက်များကို စီရန် (A မှ Z)"/>
+				<Item id="90026" name="ရလဒ်များ"/>
+				<Item id="90027" name="ရပ်လိုက်ပါ"/>
+				<Item id="90028" name="ရှာဖွေမှု ရပ်သွားသည်။"/>
+				<Item id="90029" name="ရှာဖွေနေသည်\u2026"/>
+				<Item id="90030" name=""/>
+				<Item id="90031" name="ရှာဖွေရန် စာသား*.txt၊ *.cpp၊ \u2026"/>
+				<Item id="90032" name="ရှာဖွေနေသည်..."/>
+				<Item id="90033" name="အစားထိုး-"/>
+				<Item id="90034" name="စကားတစ်ခွန်း"/>
+				<Item id="90035" name="စကားလုံးတစ်ခုလုံး"/>
+				<Item id="90036" name=""/>
+				<Item id="90037" name="ခြုံစာရိတ္တ"/>
+				<Item id="90038" name="HTML အမည်"/>
+				<Item id="90039" name="HTML Decimal"/>
+				<Item id="90040" name="HTML Hexadecimal"/>
+				<Item id="90041" name="တန်ဖိုး"/>
+				<Item id="90042" name="ဗလာအစည်းအဝေး"/>
+				<Item id="90043" name="ရွေးချယ်ထားသော စက်ရှင်ဖိုင်တွင် တက်ဘ်များမပါဝင်ပါ။"/>
+				<Item id="90044" name="အပိုင်းကို တင်ပါ။"/>
+				<Item id="90045" name="Session"/>
+				<Item id="90046" name="သိမ်းဆည်းပါ။လတ်တလော ဖိုင်များ"/>
+				<Item id="90047" name="ရှင်းပါ။ဖိုင်မတွေ့ပါ"/>
+				<Item id="90048" name="Macro Recorded မရှိပါ"/>
+				<Item id="90049" name="Start Recording ကို အသုံးပြု၍ မက်ခရိုကို ဦးစွာ မှတ်တမ်းတင်ပါ။"/>
+				<Item id="90050" name="ဖြတ်လမ်း ပဋိပက္ခများ မရှိပါ။"/>
+				<Item id="90051" name="File Name"/>
+				<Item id="90052" name=""/>
+				<Item id="90053" name="ရိုက်ပါ။မဂ်"/>
+				<Item id="90054" name="လိုင်းသို့သွားပါ"/>
+				<Item id="90055" name="ရက်စွဲ/အချိန်"/>
+				<Item id="90056" name="ထည့်ပါ။ကုဒ်ပြောင်းခြင်း"/>
+				<Item id="90057" name="ကော်ပီကို"/>
+				<Item id="90058" name="အဖြစ် သိမ်းဆည်းပါ။အမှိုက်ပုံးသို့ ရွှေ့ရန်"/>
+				<Item id="90059" name="ခေါင်းစဉ်ဘား"/>
+				<Item id="90060" name="ခေါင်းစဉ်ဘား"/>
+				<Item id="90061" name="တွင် ဖိုင်လမ်းကြောင်း အပြည့်အစုံကို ပြပါ။အခြေအနေဘားကိုပြပါ"/>
+				<Item id="90062" name="တက်ဘ်အရွယ်အစား-"/>
+				<Item id="90063" name="ဇာတာအကျယ်-"/>
+				<Item id="90064" name="မျက်တောင်ခတ်နှုန်း (ms)-"/>
+				<Item id="90065" name="ဖောင့် တင်ဆက်ခြင်း-"/>
+				<Item id="90066" name="အများဆုံး တက်ဘ်အကျယ် (pixels):"/>
+				<Item id="90067" name="ဒေါင်လိုက်အစွန်း"/>
+				<Item id="90068" name="အစွန်းမုဒ်-"/>
+				<Item id="90069" name="အစွန်းကော်လံ-"/>
+				<Item id="90070" name="Dynamic line နံပတ်အကျယ်"/>
+				<Item id="90071" name="ဘယ်ဘက်-"/>
+				<Item id="90072" name="ညာဘက်-"/>
+				<Item id="90073" name="မူရင်းစာကြောင်းအဆုံးသတ်-"/>
+				<Item id="90074" name="ပုံသေ ကုဒ်နံပါတ်-"/>
+				<Item id="90075" name="အလိုအလျောက် အရန်သိမ်းခြင်း"/>
+				<Item id="90076" name="ဖွင့်ပါ။အရန်သိမ်းချိန် (စက္ကန့်)-"/>
+				<Item id="90077" name="အရန်တည်နေရာ-"/>
+				<Item id="90078" name="အရောင်ပုံစံ"/>
+				<Item id="90079" name="(အမွေ)"/>
+				<Item id="90080" name="စတိုင်အပြင်အဆင်"/>
+				<Item id="90081" name="ထည့်သွင်းပါ။အမျိုးအစား"/>
+				<Item id="90082" name="စစ်ထုတ်ရန်..."/>
+				<Item id="90083" name="ဤအရာအတွက် ဖြတ်လမ်းလင့်ခ် ကွဲလွဲမှုများမရှိပါ။"/>
+				<Item id="90084" name="ပလပ်အင်"/>
+				<Item id="90085" name="ဗားရှင်း"/>
+				<Item id="90086" name="တပ်ဆင်ခြင်း အပြီးသတ်"/>
+				<Item id="90087" name="ထည့်သွင်းထားသော ပလပ်အင်များကို တင်ရန် အပလီကေးရှင်းကို ပြန်လည်စတင်ပါ။"/>
+				<Item id="90088" name="ပလပ်အင်များ"/>
+				<Item id="90089" name="ထည့်သွင်းပါ။ပလပ်အင်များကို ဖယ်ရှားရန်"/>
+				<Item id="90090" name="မည်သည့်အမိန့်ကိုမျှ ရှာမတွေ့ပါ"/>
+				<Item id="90091" name="ရှာဖွေရန် ရိုက်ထည့်ပါ\u2026"/>
+				<Item id="90092" name="အသုံးပြုသူသတ်မှတ်ထားသော ဘာသာစကား v.2.1"/>
+				<Item id="90093" name="ဘာသာစကားအသစ် ဖန်တီးပါ"/>
+				<Item id="90094" name="အမည်တစ်ခုထည့်ပါ-"/>
+				<Item id="90095" name="နောက်ခံအရောင်-"/>
+				<Item id="90096" name="နောက်ခံအရောင်-"/>
+				<Item id="90097" name="မသိမ်းဆည်းပါနှင့်"/>
+				<Item id="90098" name="ပြီးပြီ"/>
+				<Item id="90099" name="Word Wrap ကို ပြောင်းရန်"/>
+				<Item id="90100" name="ဇာတ်ကောင်အားလုံးကို ပြပါ"/>
+				<Item id="90101" name="ဇာတ်ကောင်ရွေးချယ်မှုများကို ပြပါ"/>
+				<Item id="90102" name="Indent Guide ကို ပြောင်းရန်"/>
+				<Item id="90103" name="အကောင်အထည်မဖော်သေး"/>
+				<Item id="90104" name="Disk မှ ပြန်လည်စတင်ပါ။"/>
+				<Item id="90105" name="Search Engine ပြောင်း"/>
+				<Item id="90106" name="Run Error"/>
+				<Item id="90107" name="Notepad++ Loading Time"/>
+				<Item id="90108" name="အပ်ဒိတ်များ"/>
+				<Item id="90109" name="စစ်ဆေး၍မရပါ။သင်သည် ခေတ်မီသည်"/>
+				<Item id="90110" name="Download"/>
+				<Item id="90111" name="ထုတ်ဝေခြင်း Page"/>
+				<Item id="90112" name="နောက်တော့"/>
+				<Item id="90113" name="ပလပ်အင်များကို စစ်ထုတ်ခြင်း\u2026"/>
+				<Item id="90114" name=""/>
+				<Item id="90115" name="ရရှိနိုင်ပါသည်။အပ်ဒိတ်များ"/>
+				<Item id="90116" name="ထည့်သွင်းပြီး"/>
+				<Item id="90117" name="သဟဇာတ"/>
+				<Item id="90118" name=""/>
+				<Item id="90119" name="ထည့်သွင်းရန် မအောင်မြင်ပါ။အောက်ပါပလပ်အင်များကို ဖယ်ရှားမလား။"/>
+				<Item id="90120" name="အောက်ပါပလပ်အင်များကို ထည့်သွင်းမလား။"/>
+				<Item id="90121" name="၎င်းသည် plugin ဖိုင်များကိုဖျက်လိမ့်မည်။"/>
+				<Item id="90122" name="ရှာဖွေရန် အမိန့်များ\u2026"/>
+				<Item id="90123" name="ရှေ့ဘက်အရောင်"/>
+				<Item id="90124" name="နောက်ခံအရောင်"/>
+				<Item id="90125" name="Macro နာမည်"/>
+				<Item id="90126" name="Macro အမည်"/>
+				<Item id="90127" name="လက်ရှိရိုက်ကူးထားသော မက်ခရို"/>
+				<Item id="90128" name="Macro Manager"/>
+				<Item id="90129" name="သိမ်းဆည်းထားသော Macros မရှိပါ။"/>
+				<Item id="90130" name="ပထမဆုံး မက်ခရိုကို မှတ်တမ်းတင်ပြီး သိမ်းဆည်းပါ။"/>
+				<Item id="90131" name="Shortcut ကို ဖျက်ပါ။"/>
+				<Item id="90132" name="ပင်မမီနူး"/>
+				<Item id="90133" name="မက်ခရို"/>
+				<Item id="90134" name="ညွှန်ကြားချက်များကို လုပ်ဆောင်ပါ။"/>
+				<Item id="90135" name="ပလပ်အင် အမိန့်များ"/>
+				<Item id="90136" name="စစင်တီလာ အမိန့်ပေးသည်။"/>
+				<Item id="90137" name="Command Line Arguments"/>
+				<Item id="90138" name="Run menu အတွက် command name"/>
+				<Item id="90139" name="အမှတ်အသားများ အားလုံး ရှင်းသွားပါပြီ။"/>
+				<Item id="90140" name="မှတ်ထားသော စာသားကို ကလစ်ဘုတ်သို့ ကူးယူထားသည်။"/>
+				<Item id="90141" name="ကူးယူရန် အမှတ်အသားပြုထားသည့် စာသားမရှိပါ။"/>
+				<Item id="90142" name="ရှာဖွေနေသည်... %ld hit(s) \u2014 %@"/>
+				<Item id="90143" name="ဖိုင်များကို အစားထိုးခြင်း..."/>
+				<Item id="90144" name="ပရောဂျက်များတွင် အစားထိုးပါ- မချိတ်ဆက်ရသေးပါ။"/>
+				<Item id="90145" name="ပရောဂျက်များတွင် ရှာပါ- Project Panel ဖိုင်စာရင်းသို့ မချိတ်ဆက်ရသေးပါ။"/>
+				<Item id="90146" name="အလုပ်ခွင်ကို ပြုပြင်ခဲ့သည်။"/>
+				<Item id="90147" name="အပြောင်းအလဲများကို သိမ်းဆည်းလိုပါသလား။"/>
+				<Item id="90148" name="ရှာဖွေမှုရလဒ်များ"/>
+				<Item id="90149" name="လက်ရှိလိုင်းကို အသားပေးဖော်ပြပါ"/>
+				<Item id="90150" name="လိုင်းနံပါတ်များ"/>
+				<Item id="90151" name="ပြပါ။နေရာလွတ်ပြရန်"/>
+				<Item id="90152" name="EOL အမှတ်အသားများကို ပြပါ"/>
+				<Item id="90153" name="စာညှပ်အနားသတ်"/>
+				<Item id="90154" name="ပြပါ။တဘ်များ (နေရာလွတ်များအစား)"/>
+				<Item id="90155" name="ကိုသုံးပါ။နောက်ဆုံးစာကြောင်းကို ကျော်ပြီး"/>
+				<Item id="90156" name="ရွေးချယ်မှုမပါဘဲ မျဉ်းကိုကူး/ဖြတ်"/>
+				<Item id="90157" name="ရွေးချယ်ထားသော စာသားကို ဆွဲချ"/>
+				<Item id="90158" name="ပိတ်ပါ။စမတ်မီးမောင်းထိုးပြခြင်း"/>
+				<Item id="90159" name="ဖွင့်ပါ။စမတ်ကျသော အသားပေးဖော်ပြမှု- ဖြစ်ရပ်မှန်"/>
+				<Item id="90160" name="စမတ်ကျသော အသားပေးဖော်ပြခြင်း- စကားလုံးတစ်ခုတည်းသာ"/>
+				<Item id="90161" name="တဘ်ပိတ်ရန် နှစ်ချက်နှိပ်ပါ"/>
+				<Item id="90162" name="တက်ဘ်များ"/>
+				<Item id="90163" name="ပိတ်ခလုတ်ကို ပြပါ။စက်ရှင်များတစ်လျှောက် အကန့်မြင်နိုင်စွမ်း"/>
+				<Item id="90164" name="မှတ်ထားပါ။ပျက်ကွက်သော ဖိုင်ထည့်သွင်းမှုများကို စက်ရှင်တွင် ထားရှိပါ။"/>
+				<Item id="90165" name="Save All"/>
+				<Item id="90166" name="မတိုင်မီ အတည်ပြုပါ။ဖွင့်ထားသောစာရွက်စာတမ်းများတွင် အားလုံးကို အစားထိုးအတည်ပြုပါ"/>
+				<Item id="90167" name="အစားထိုး- နောက်ဖြစ်ရပ်သို့ မရွှေ့ပါနှင့်"/>
+				<Item id="90168" name="Find dialog"/>
+				<Item id="90169" name="တွင် monospaced font ကိုသုံးပါ။ညာဘက်ကလစ်နှိပ်၍ ရွေးချယ်မှု"/>
+				<Item id="90170" name="မူရင်းရက်စွဲ/အချိန်ကို ပြောင်းပြန်"/>
+				<Item id="90171" name="XML-based function list parsers"/>
+				<Item id="90172" name="ကိုသုံးပါ။အလိုအလျောက်ပိတ်ကွင်းများ ( ) [ ] { }"/>
+				<Item id="90173" name="From Nth character:"/>
+				<Item id="90174" name="ရွေးချယ်မှုအတွင်း အလိုအလျောက်စစ်ဆေးသည့်အဆင့် (bytes):"/>
+				<Item id="90175" name="တိုးချဲ့ (\\n၊ \\r၊ \\t၊ \\0၊ \\x...)"/>
+				<Item id="90176" name="တည်းဖြတ်"/>
+				<Item id="90177" name="အနားသတ်"/>
+				<Item id="90178" name="အမှောင်"/>
+				<Item id="90179" name="အလင်း"/>
+				<Item id="90180" name="အလိုအလျောက် (Follow System)"/>
+				<Item id="90181" name="ထူးအိမ်သင် (1px)"/>
+				<Item id="90182" name="အလတ်စား (2px)"/>
+				<Item id="90183" name="အထူ (3px)"/>
+				<Item id="90184" name="ပိတ်သည်။"/>
+				<Item id="90185" name="နောက်ခံ"/>
+				<Item id="90186" name="Antialiased"/>
+				<Item id="90187" name="LCD Optimized"/>
+				<Item id="90188" name="ရိုးရိုး +/-"/>
+				<Item id="90189" name="Windows (CRLF)"/>
+				<Item id="90190" name="Mac (CR)"/>
+				<Item id="90191" name="ပလပ်အင် စာရင်း သိုလှောင်မှု"/>
+				<Item id="90192" name=""/>
+				<Item id="90193" name="အသုံးပြုရန် Notepad++ အပြင်အဆင် XML ဖိုင်ကို ရွေးပါ။အသစ်ဖန်တီးပါ\u2026"/>
+				<Item id="90194" name="သိမ်းဆည်းပါ\u2026"/>
+				<Item id="90195" name="အသုံးပြုသူ ဘာသာစကား-"/>
+				<Item id="90196" name="ဘာသာစကားအမည်"/>
+				<Item id="90197" name="ဖန်တီး"/>
+				<Item id="90198" name="Save As"/>
+				<Item id="90199" name="es"/>
+				<Item id="90200" name="ဖိုင်တစ်ခုလုံးတွင်"/>
+				<Item id="90201" name="အော်ပရေတာများ ကန့်သတ်ချက်များ"/>
+				<Item id="90202" name="မမှန်ကန်သော အပိုင်းအခြား"/>
+				<Item id="90203" name="အပိုင်းအခြားတန်ဖိုးများသည် 0-255 ဖြစ်ရမည် ဖြစ်ပြီး စတင်သည် &lt;= end ဖြစ်ရပါမည်။"/>
+				<Item id="90204" name="contextMenu.xml ရှာမတွေ့ပါ။"/>
+				<Item id="90205" name="မူရင်း contextMenu.xml ကို ပြန်ထုတ်ရန် Notepad++ ကို ပြန်လည်စတင်ပါ။"/>
+				<Item id="90206" name="ဖိုင်တွင် မသိမ်းဆည်းရသေးသော အပြောင်းအလဲများ ရှိပါသည်။ကုဒ်နံပါတ်အသစ်ဖြင့် ပြန်လည်စတင်ခြင်းသည် ၎င်းတို့ကို စွန့်ပစ်ပါမည်။ဆက်မလား။"/>
+				<Item id="90207" name="ဆာဗာမှ တုံ့ပြန်မှုမရှိပါ။"/>
+				<Item id="90208" name="ဆာဗာမှ ပြန်လာသော အခြေအနေ"/>
+				<Item id="90209" name="သိုလှောင်ခန်းသည် သီးသန့်ဖြစ်နိုင်သည်။"/>
+				<Item id="90210" name="ရနိုင်သည်"/>
+				<Item id="90211" name="နောက်ဆုံးထွက်ဗားရှင်းဖြစ်ပါတယ်။"/>
+				<Item id="90212" name="သင်သည် လက်ရှိ လုပ်ဆောင်နေသည်"/>
+				<Item id="90213" name="Finder Here"/>
+				<Item id="90214" name="Terminal Here"/>
+				<Item id="90215" name="နောက်ထပ်ဘာသာစကားဖိုင်များ (.xml) ကို-"/>
+							<Item id="90216" name="တွင် ထည့်နိုင်သည်။Command Palette…"/>
+				<Item id="90217" name="စာလုံးပေါင်းစစ်ဆေးခြင်း"/>
+				<Item id="90218" name="ရှာဖွေရန်…"/>
+				<Item id="90219" name="ရိုက်ထည့်ပါ။Window အသစ်"/>
+				<Item id="90220" name="လက်ရှိ amp ကို ကျော်ပါ။Next Multi-select"/>
+				<Item id="90221" name="သို့သွားပါ။လော့ခ်ချထားသော အရည်အချင်း (macOS)"/>
+				<Item id="90222" name="အပ်ဒိတ်များအတွက် စစ်ဆေးပါ…"/>
+				<Item id="90223" name="မကြာမှီဖွင့်"/>
+			</MacStrings>
+		</Dialog>
+		<MessageBox>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<ContextMenuXmlEditWarning title="contextMenu ကိုတည်းဖြတ်ခြင်း။" message="contextMenu.xml ကိုတည်းဖြတ်ခြင်းက သင့် Notepad++ ပေါ့ပ်အပ်ဆက်စပ်မီနူးကို ပြင်ဆင်နိုင်စေပါသည်။
+contextMenu.xml ကို မွမ်းမံပြင်ဆင်ပြီးနောက် အကျိုးသက်ရောက်စေရန် သင်၏ Notepad++ ကို ပြန်လည်စတင်ရပါမည်။"/>
+			<SaveCurrentModifWarning title="လက်ရှိ ပြုပြင်မွမ်းမံခြင်း" message="သိမ်းဆည်းပါ။လက်ရှိပြုပြင်မွမ်းမံမှုကို သိမ်းဆည်းထားသင့်သည်။
+သိမ်းဆည်းထားသော မွမ်းမံမှုများအားလုံးကို ပြန်ပြင်၍မရပါ။
+
+ဆက်မလား။"/><!-- HowToReproduce: when you openned file is modified but unsaved yet, and you are changing file encoding. -->
+			<LoseUndoAbilityWarning title="စွမ်းရည်သတိပေးချက်" message="မလုပ်တော့ပါ။လက်ရှိပြုပြင်မွမ်းမံမှုကို သိမ်းဆည်းထားသင့်သည်။
+သိမ်းဆည်းထားသော မွမ်းမံမှုများအားလုံးကို ပြန်ပြင်၍မရပါ။
+
+ဆက်မလား။"/><!-- HowToReproduce: when you openned file is modified and saved, then you are changing file encoding. -->
+			<CannotMoveDoc title="Notepad++ Instance" message="အသစ်သို့ ရွှေ့ပါ။စာရွက်စာတမ်းကို မွမ်းမံထားပြီး၊ ၎င်းကို သိမ်းဆည်းပြီးနောက် ထပ်စမ်းကြည့်ပါ။"/><!-- HowToReproduce: From your Notepad++ drag & drop a clean (not dirty) file to outside of Notepad++, another instance of Notepad++ will be created. Then from your first Notepad++ drag & drop an unsaved file to the new instance. -->
+			<DocReloadWarning title="" message="ပြန်ဆွဲပါ။လက်ရှိဖိုင်ကို ပြန်လည်စတင်ပြီး Notepad++ တွင် ပြုလုပ်ထားသော အပြောင်းအလဲများကို ဆုံးရှုံးလိုသည်မှာ သေချာပါသလား။"/>
+			<FileLockedWarning title="သိမ်းဆည်းခြင်း မအောင်မြင်ပါ" message="ဤဖိုင်ကို အခြားပရိုဂရမ်"/>
+			<FileAlreadyOpenedInNpp title="" message="တွင် ဖွင့်ထားခြင်း ရှိမရှိ စစ်ဆေးပါ။ဖိုင်ကို Notepad++ တွင် ဖွင့်ထားပြီးဖြစ်သည်။"/><!-- HowToReproduce: Open a new document and open a file "c:/tmp/foo", save this new document by choosing "c:/tmp/foo" as file to save, reply the override popup "yes", then this message appears. -->
+			<RenameTabTemporaryNameAlreadyInUse title="အမည်ပြောင်းရန် မအောင်မြင်ပါ" message="သတ်မှတ်ထားသောအမည်ကို အခြားတဘ်တွင် အသုံးပြုနေပါသည်။"/><!-- HowToReproduce: Rename the tab of an untitled document and provide a name that is the same as an already-existing tab of an untitled document. -->
+			<RenameTabTemporaryNameIsEmpty title="အမည်ပြောင်းရန် မအောင်မြင်ပါ" message="သတ်မှတ်ထားသောအမည်သည် ဗလာမဖြစ်နိုင်ပါ သို့မဟုတ် ၎င်းတွင် space(များ) သို့မဟုတ် TAB(များ) သာမပါဝင်နိုင်ပါ။"/><!-- HowToReproduce: Rename the tab of an untitled document and provide an empty string or only some white speces. -->
+			<DeleteFileFailed title="ဖိုင်ကိုဖျက်ပါ" message="ဖိုင်ကိုဖျက်၍မရပါ"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+
+			<NbFileToOpenImportantWarning title="ဖွင့်ရန်ဖိုင်ပမာဏသည် အလွန်ကြီးသည်" message="$INT_REPLACE$ files are about to be opened.
+Are you sure you want to open them?"/><!-- HowToReproduce: Check "Open all files of folder instead of launching Folder as Workspace on folder dropping" in "Default Directory" of Preferences dialog, then drop a folder which contains more then 200 files into Notepad++. -->
+			<SettingsOnCloudError title="Cloud ရှိ ဆက်တင်များ" message="cloud ပေါ်ရှိ ဆက်တင်များ၏ လမ်းကြောင်းကို read only drive တွင် သတ်မှတ်ထားပုံ၊
+သို့မဟုတ် စာရေးခွင့်အတွက် လိုအပ်သော ဖိုင်တွဲတစ်ခုပေါ်တွင်
+cloud ရှိ သင်၏ဆက်တင်များကို ပယ်ဖျက်လိုက်ပါမည်။ကျေးဇူးပြု၍ ဦးစားပေးဒိုင်ယာလော့ဂ်မှတစ်ဆင့် ပေါင်းစပ်တန်ဖိုးကို ပြန်လည်သတ်မှတ်ပါ။"/>
+			<FilePathNotFoundWarning title="ဖိုင်ဖွင့်" message="သင်ဖွင့်ရန်ကြိုးစားနေသောဖိုင် မရှိပါ။"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SessionFileInvalidError title="ဆက်ရှင်" message="မတင်နိုင်ခဲ့ပါ။စက်ရှင်ဖိုင်သည် ပျက်စီးနေသည် သို့မဟုတ် မမှန်ကန်ပါ။"/><!-- HowToReproduce: Save current session via menu "File -> Save Session...", use another editor to modify the session you saved to make it an invalid xml file. Then load this invalid session via menu "File -> Load Session...". -->
+			<DroppingFolderAsProjectModeWarning title="မမှန်ကန်သောလုပ်ဆောင်ချက်" message="သင်သည် ဖိုင်များ သို့မဟုတ် ဖိုင်တွဲများကိုသာ လွှတ်ချနိုင်သော်လည်း ဖိုင်တွဲများကို ပရောဂျက်မုဒ်အဖြစ် သင်စွန့်ပစ်ထားသောကြောင့် နှစ်ခုလုံးမရနိုင်ပါ။
+ဤလုပ်ဆောင်ချက်ကို လုပ်ဆောင်ရန် ဦးစားပေးများ ဒိုင်ယာလော့ဂ်၏ &quot;မူရင်းလမ်းညွှန်များ&quot; ကဏ္ဍရှိ &quot;ဖိုင်တွဲများ ကျဆင်းနေသည့် အလုပ်နေရာအဖြစ် ဖိုဒါကိုဖွင့်မည့်အစား ဖိုင်တွဲအားလုံးဖွင့်ရန်&quot; ကို ဖွင့်ရပါမည်။"/>
+			<SortingError title="စီခြင်းအမှား" message="$INT_REPLACE$ ကြောင့် ဂဏန်းများ စီခြင်း မလုပ်ဆောင်နိုင်ပါ။"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SortLocaleMultiple title="မဖျော်ဖြေပါ" message="အမျိုးအစားရွေးချယ်မှုများစွာကို စီရန်ကို မပံ့ပိုးပါ။"/><!-- HowToReproduce: Make a multiple selection and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<SortLocaleUnknown title="မအောင်မြင်ပါ" message="အမျိုးအစားမအောင်မြင်ရသည့်အကြောင်းရင်းကို မဆုံးဖြတ်နိုင်ပါ။"/><!-- HowToReproduce: This condition is theoretical; it is unknown what could cause it. -->
+			<SortLocaleExcept title="မအောင်မြင်ပါ" message="$STR_REPLACE$"/><!-- HowToReproduce: Open a large file, e.g. 500MB / 90k lines, in 32-bit Notepad++ and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<ColumnModeTip title="ကော်လံမုဒ် အကြံပြုချက်" message="ကော်လံ-ရွေးချယ်မုဒ်သို့ ပြောင်းရန် နည်းလမ်း 3 ခု ရှိပါသည်။
+
+1. (ကီးဘုတ်နှင့် မောက်စ်) ဘယ်ဘက်နှိပ်ဆွဲဆွဲနေစဉ် Alt ကို ဖိထားပါ။
+
+2. (ကီးဘုတ်သာ) မြှားခလုတ်များကို အသုံးပြုနေစဉ် Alt+Shift ကို ဖိထားပါ။
+
+3. (ကီးဘုတ် သို့မဟုတ် မောက်စ်)
+ထို့နောက် ကော်လံပိတ်ဆို့သည့် အနေအထားတွင် ကတ်ကို လိုချင်သောနေရာတွင် ထားပါ။
+&quot;Begin/End Select in Column Mode&quot; command ကို လုပ်ဆောင်ပါ။
+ထို့နောက် ကော်လံပိတ်ဆို့သည့် အနေအထားကို အလိုရှိသော ကော်လံအဆုံးသို့ စာရွက်ကို ရွှေ့ပါ။
+&quot;Begin/End Select in Column Mode&quot; command ကို ထပ်မံလုပ်ဆောင်ပါ"/>
+			<BufferInvalidWarning title="သိမ်းဆည်းခြင်း မအောင်မြင်ပါ" message="မသိမ်းဆည်းနိုင်ပါ- Buffer သည် မမှန်ကန်ပါ။"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<DoCloseOrNot title="ရှိပြီးသားမဟုတ်သောဖိုင်ကို သိမ်းဆည်းထားပါ" message="ဖိုင် &quot;$STR_REPLACE$&quot; မရှိတော့ပါ။
+ဤဖိုင်ကို တည်းဖြတ်သူတွင် ထားရှိမလား။"/>
+			<DoDeleteOrNot title="ဖိုင်ကိုဖျက်ပါ" message="ဖိုင် &quot;$STR_REPLACE$&quot;
+သင်၏ Recycle Bin သို့ ရွှေ့မည်ဖြစ်ပြီး ဤစာရွက်စာတမ်းကို ပိတ်ပါမည်။
+ဆက်မလား။"/>
+			<NoBackupDoSaveFile title="" message="သိမ်းဆည်းပါ။သင်၏ အရန်ဖိုင်ကို ရှာမတွေ့ပါ (ပြင်ပမှ ဖျက်လိုက်သည်)။
+မဟုတ်ရင် သင့်ဒေတာတွေ ဆုံးရှုံးသွားပါလိမ့်မယ်။
+&quot;$STR_REPLACE$&quot; ဖိုင်ကို သိမ်းဆည်းလိုပါသလား။"/>
+			<DoReloadOrNot title="" message="ပြန်ဆွဲပါ။&quot;$STR_REPLACE$&quot;
+
+ဤဖိုင်ကို အခြားပရိုဂရမ်မှ ပြုပြင်မွမ်းမံထားသည်။
+၎င်းကို ပြန်လည်စတင်လိုပါသလား။"/>
+			<DoReloadOrNotAndLooseChange title="" message="ပြန်ဆွဲပါ။&quot;$STR_REPLACE$&quot;
+
+ဤဖိုင်ကို အခြားပရိုဂရမ်မှ ပြုပြင်မွမ်းမံထားသည်။
+၎င်းကို ပြန်လည်စတင်ပြီး Notepad++ တွင် ပြုလုပ်ထားသော အပြောင်းအလဲများကို ဆုံးရှုံးလိုပါသလား။"/>
+			<PrehistoricSystemDetected title="သမိုင်းမတင်မီက စနစ်တစ်ခုကို တွေ့ရှိခဲ့သည်" message="သမိုင်းမတင်မီ စနစ်တစ်ခုကို သင်အသုံးပြုနေပုံရသည်။ဤအင်္ဂါရပ်သည် ခေတ်မီစနစ်တွင်သာ အလုပ်လုပ်သည်၊ ဝမ်းနည်းပါသည်။"/><!-- HowToReproduce: Launch "Document Map" under Windows XP. -->
+			<XpUpdaterProblem title="Notepad++ Updater" message="XP အောက်ရှိ အသုံးမပြုတော့သော လုံခြုံရေးအလွှာကြောင့် Notepad++ အပ်ဒိတ်ဒိတ်သည် XP နှင့် ကိုက်ညီမှုမရှိပါ။
+နောက်ဆုံးထွက်ဗားရှင်းကို ဒေါင်းလုဒ်လုပ်ရန် Notepad++ စာမျက်နှာသို့ သွားလိုပါသလား။"/><!-- HowToReproduce: Run menu "? -> Update Notepad++" under Windows XP. -->
+			<GUpProxyConfNeedAdminMode title="ပရောက်စီ ဆက်တင်များ" message="ပရောက်စီကို စီစဉ်သတ်မှတ်ရန် စီမံခန့်ခွဲသူမုဒ်တွင် Notepad++ ကို ပြန်လည်စတင်ပါ။"/>
+			<DocTooDirtyToMonitor title="စောင့်ကြည့်ရေးပြဿနာ" message="စာရွက်စာတမ်းက ညစ်ပတ်တယ်။၎င်းကိုမစောင့်ကြည့်မီ ပြုပြင်မွမ်းမံမှုကို သိမ်းဆည်းပါ။"/>
+			<DocNoExistToMonitor title="စောင့်ကြည့်ရေးပြဿနာ" message="စောင့်ကြည့်ရန် ဖိုင်သည် ရှိသင့်သည်။"/>
+			<FileTooBigToOpen title="ဖိုင်ဆိုဒ်ပြဿနာ" message="ဖိုင်သည် Notepad++ ဖြင့် ဖွင့်ရန် အလွန်ကြီးသည်။"/><!-- HowToReproduce: Try to open a 4GB file (it's not easy to reproduce, it depends on your system). -->
+			<FileLoadingException title="ခြွင်းချက်ကုဒ်- $STR_REPLACE$" message="ဖိုင်ကို တင်ရာတွင် အမှားအယွင်းတစ်ခု ဖြစ်ပေါ်ခဲ့သည်။"/>
+			<WantToOpenHugeFile title="ကြီးမားသောဖိုင်သတိပေးချက်" message="ဖွင့်ခြင်း။2GB+ ကြီးမားသော ဖိုင်ကို ဖွင့်ရန် မိနစ်များစွာ ကြာနိုင်သည်။
+ဖွင့်ချင်ပါသလား။"/>
+			<CreateNewFileOrNot title="ဖိုင်အသစ်ဖန်တီးပါ" message="&quot;$STR_REPLACE$&quot; မရှိပါ။ဖန်တီးမလား။"/>
+			<CreateNewFileError title="ဖိုင်အသစ်ဖန်တီးပါ" message="&quot;$STR_REPLACE$&quot; ဖိုင်ကို ဖန်တီး၍မရပါ။"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<OpenFileError title="အမှားအယွင်း" message="&quot;$STR_REPLACE$&quot; ဖိုင်ကို ဖွင့်၍မရပါ။"/>
+			<OpenFileNoFolderError title="ဖိုင်ကိုဖွင့်၍မရပါ" message="&quot;$STR_REPLACE1$&quot; ကို ဖွင့်၍မရပါ-
+&quot;$STR_REPLACE2$&quot; ဖိုင်တွဲ မရှိပါ။"/>
+			<FileBackupFailed title="ဖိုင် Backup မအောင်မြင်ပါ" message="ဖိုင်၏ယခင်ဗားရှင်းကို &quot;$STR_REPLACE$&quot; ရှိ အရန်လမ်းညွှန်တွင် မသိမ်းဆည်းနိုင်ပါ။
+
+မည်သို့ပင်ဖြစ်စေ လက်ရှိဖိုင်ကို သိမ်းဆည်းလိုပါသလား။"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<LoadStylersFailed title="stylers.xml ကို တင်ရန် မအောင်မြင်ပါ" message="&quot;$STR_REPLACE$&quot; ကို တင်ရန် မအောင်မြင်ပါ။"/>
+			<LoadLangsFailed title="ဖွဲ့စည်းမှုစနစ်" message="langs.xml ကို တင်ရန် မအောင်မြင်ပါ။
+သင်၏ langs.xml ကို ပြန်လည်ရယူလိုပါသလား။"/><!-- HowToReproduce: Close Notepad++. Use another editor to remove all content of "langs.xml" (0 length) then save it. Open Notepad++. -->
+			<LoadLangsFailedFinal title="ဖွဲ့စည်းမှုစနစ်" message="langs.xml ကို တင်ရန် မအောင်မြင်ပါ။"/><!-- HowToReproduce: Close Notepad++. Use another editor to make "langs.xml" an invalid xml file then save it. Open Notepad++. -->
+			<FolderAsWorspaceSubfolderExists title="ဖိုဒါကို အလုပ်နေရာအဖြစ် ဖိုင်တွဲထည့်ခြင်း ပြဿနာ" message="သင်ထည့်လိုသော ဖိုင်တွဲ၏ ဖိုင်တွဲခွဲတစ်ခု ရှိပါသည်။
+&quot;$STR_REPLACE$&quot; ဖိုင်တွဲကို မထည့်မီ ၎င်း၏ အမြစ်ကို အကန့်မှ ဖယ်ရှားပါ။"/><!-- HowToReproduce: Add a folder like "c:\temp\aFolder\" into "Folder as Workspace" panel, then try to add "c:\temp\". -->
+
+			<ProjectPanelChanged title="$STR_REPLACE$" message="အလုပ်ခွင်ကို ပြုပြင်ခဲ့သည်။၎င်းကို သိမ်းဆည်းလိုပါသလား။"/>
+			<ProjectPanelSaveError title="$STR_REPLACE$" message="သင့်အလုပ်ခွင်ဖိုင်ကို ရေးသားနေစဉ် အမှားအယွင်းတစ်ခု ဖြစ်ပွားခဲ့သည်။
+သင့်လုပ်ငန်းခွင်ကို မသိမ်းဆည်းရသေးပါ။"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<ProjectPanelOpenDoSaveDirtyWsOrNot title="အလုပ်နေရာ" message="ဖွင့်ပါ။လက်ရှိအလုပ်ခွင်ကို ပြုပြင်မွမ်းမံထားသည်။လက်ရှိပရောဂျက်ကို သိမ်းဆည်းလိုပါသလား။"/>
+			<ProjectPanelNewDoSaveDirtyWsOrNot title="အလုပ်နေရာအသစ်" message="လက်ရှိအလုပ်ခွင်ကို ပြုပြင်မွမ်းမံထားသည်။လက်ရှိပရောဂျက်ကို သိမ်းဆည်းလိုပါသလား။"/>
+			<ProjectPanelOpenFailed title="အလုပ်နေရာ" message="ဖွင့်ပါ။အလုပ်ခွင်ကို ဖွင့်၍မရပါ။
+ဖွင့်ရမည့်ဖိုင်သည် မှန်ကန်သော ပရောဂျက်ဖိုင်မဟုတ်ဟု ထင်ရသည်။"/>
+			<ProjectPanelRemoveFolderFromProject title="ပရောဂျက်မှ" message="ဖိုင်တွဲကို ဖယ်ရှားပါ။အပိုင်းခွဲအားလုံးကို ဖယ်ရှားပါမည်။
+ဤဖိုင်တွဲကို ပရောဂျက်မှ ဖယ်ရှားလိုသည်မှာ သေချာပါသလား။"/>
+			<ProjectPanelRemoveFileFromProject title="ပရောဂျက်" message="ဖိုင်ကို ဖယ်ရှားပါ။ဤဖိုင်ကို ပရောဂျက်မှ ဖယ်ရှားလိုသည်မှာ သေချာပါသလား။"/>
+			<ProjectPanelReloadError title="အလုပ်နေရာ" message="ပြန်လည်စတင်ပါ။ပြန်လည်စတင်ရန် ဖိုင်ကို ရှာမတွေ့ပါ။"/>
+			<ProjectPanelReloadDirty title="အလုပ်နေရာ" message="ပြန်လည်စတင်ပါ။လက်ရှိအလုပ်ခွင်ကို ပြုပြင်မွမ်းမံထားသည်။ပြန်လည်စတင်ခြင်းသည် ပြုပြင်မွမ်းမံမှုအားလုံးကို ဖျက်သိမ်းပါမည်။
+ဆက်လုပ်လိုပါသလား။"/>
+			<UDLNewNameError title="UDL အမှား" message="ဤအမည်ကို အခြားဘာသာစကားဖြင့် သုံးသည်၊
+ကျေးဇူးပြုပြီး နောက်တစ်ခုပေးပါ။"/>
+			<UDLRemoveCurrentLang title="လက်ရှိဘာသာစကား" message="ကို ဖယ်ရှားပါ။သေချာလား?"/>
+			<UDL_importSuccessful title="အသုံးပြုသူသတ်မှတ်ထားသော ဘာသာစကား" message="တင်သွင်းမှု အောင်မြင်သည်။"/>
+			<UDL_importFails title="အသုံးပြုသူသတ်မှတ်ထားသော ဘာသာစကား" message="တင်သွင်းရန် မအောင်မြင်ပါ။"/>
+			<UDL_saveBeforeImport title="အသုံးပြုသူသတ်မှတ်ထားသော ဘာသာစကား" message="တင်ပို့ခြင်းမပြုမီ &quot;Save As...&quot; ခလုတ်ကိုနှိပ်ခြင်းဖြင့် သင်၏ဘာသာစကားအဓိပ္ပါယ်ကို သိမ်းဆည်းပါ။"/> <!-- HowToReproduce: Choose "User Defined Language" in User Language combobox, then click on "Export... button". -->
+			<UDL_exportSuccessful title="အသုံးပြုသူသတ်မှတ်ထားသော ဘာသာစကား" message="တင်ပို့မှု အောင်မြင်သည်။"/>
+			<UDL_exportFails title="အသုံးပြုသူသတ်မှတ်ထားသော ဘာသာစကား" message="တင်ပို့၍မရပါ။"/>
+			<SCMapperDoDeleteOrNot title="သေချာလား?" message="ဤဖြတ်လမ်းလင့်ခ်ကို ဖျက်လိုသည်မှာ သေချာပါသလား။"/>
+			<FindCharRangeValueError title="Range Value ပြဿနာ" message="0 နှင့် 255 အကြား ရိုက်ထည့်သင့်သည်။"/> <!-- HowToReproduce: Search menu, then Find characters in range, select Custom range, enter 999 in either edit box, press Find. -->
+			<OpenInAdminMode title="သိမ်းဆည်းခြင်း မအောင်မြင်ပါ" message="ဖိုင်ကို သိမ်းဆည်း၍မရပါ၊ ၎င်းကို ကာကွယ်နိုင်ပါသည်။
+စီမံခန့်ခွဲသူမုဒ်တွင် Notepad++ ကိုဖွင့်လိုပါသလား။"/>
+			<OpenInAdminModeWithoutCloseCurrent title="သိမ်းဆည်းခြင်း မအောင်မြင်ပါ" message="ဖိုင်ကို သိမ်းဆည်း၍မရပါ၊ ၎င်းကို ကာကွယ်နိုင်ပါသည်။
+စီမံခန့်ခွဲသူမုဒ်တွင် Notepad++ ကိုဖွင့်လိုပါသလား။"/>
+			<OpenInAdminModeFailed title="စီမံခန့်ခွဲသူမုဒ်တွင် ဖွင့်ရန် မအောင်မြင်ပါ" message="Notepad++ ကို စီမံခန့်ခွဲသူမုဒ်တွင် ဖွင့်၍မရပါ။"/><!-- HowToReproduce: When you have no Admin privilege and you try to save a modified file in a protected location (for example: any file in sub-folder of "C:\Program Files\". This message will appear after replying "Yes" to "Open in Admin mode" dialog. -->
+			<ViewInBrowser title="Browser တွင် လက်ရှိဖိုင်ကိုကြည့်ပါ" message="လျှောက်လွှာကို သင့်စနစ်တွင် ရှာမတွေ့ပါ။"/>
+			<ExitToUpdatePlugins title="Notepad++ သည်" message="ထွက်တော့မည်။YES ကိုနှိပ်ပါက လုပ်ဆောင်ချက်များကို ဆက်လက်လုပ်ဆောင်ရန် Notepad++ မှထွက်ပါမည်။
+လုပ်ဆောင်ချက်အားလုံးကို ရပ်စဲပြီးနောက် Notepad++ ကို ပြန်လည်စတင်ပါမည်။
+ဆက်မလား။"/>
+			<NeedToRestartToLoadPlugins title="Notepad++ ကို ပြန်လည်စတင်ရန် လိုအပ်သည်" message="သင်ထည့်သွင်းထားသော ပလပ်အင်များကို တင်ရန် Notepad++ ကို ပြန်လည်စတင်ရပါမည်။"/><!-- HowToReproduce: Import a plugin via menu "Settings->Import->Import Plugin(s)...". -->
+			<ChangeHistoryEnabledWarning title="Notepad++ ကို ပြန်လည်စတင်ရန် လိုအပ်သည်" message="Change History ကိုဖွင့်ရန် Notepad++ ကို ပြန်လည်စတင်ရပါမည်။"/><!-- HowToReproduce: uncheck "Display Change History" via Preferences dialog "Marges/Border/Edge. -->
+			<WindowsSessionExit title="Notepad++ - Windows စက်ရှင်မှ ထွက်ရန်" message="Windows စက်ရှင်ကို ရပ်ဆိုင်းတော့မည်ဖြစ်သော်လည်း သင့်တွင် ဒေတာအချို့ကို မသိမ်းဆည်းရသေးပါ။Notepad++ ကို ယခုထွက်လိုပါသလား။"/>
+			<LanguageMenuCompactWarning title="Compact Language Menu" message="ဤရွေးချယ်မှုကို နောက်လာမည့် လွှင့်တင်မှုတွင် ပြောင်းလဲပါမည်။"/><!-- HowToReproduce: toggle "Make language menu compact" via Preferences dialog "Language/Language Menu. -->
+			<SwitchUnsavedThemeWarning title="$STR_REPLACE$" message="မသိမ်းဆည်းရသေးသော အပြောင်းအလဲများကို ဖျက်သိမ်းပါတော့မည်။
+အပြင်အဆင်မပြောင်းမီ သင့်အပြောင်းအလဲများကို သိမ်းဆည်းလိုပါသလား။"/><!-- HowToReproduce: In the Style Configurator dialog change some theme and switch to other theme without saving. -->
+			<MacroAndRunCmdlWarning title="Macro နှင့် Run Commands လိုက်ဖက်မှု" message="Notepad++ v.8.5.2 (သို့မဟုတ် အဟောင်း) တွင်သိမ်းဆည်းထားသော သင်၏ Macro နှင့် Run ညွှန်ကြားချက်များသည် Notepad++ ၏ လက်ရှိဗားရှင်းနှင့် တွဲဖက်အသုံးပြုနိုင်မည်မဟုတ်ပါ။
+ကျေးဇူးပြု၍ အဆိုပါအမိန့်များကို စမ်းသပ်ပြီး လိုအပ်ပါက ၎င်းတို့ကို ပြန်လည်ပြင်ဆင်ပါ။
+
+တစ်နည်းအားဖြင့် သင်သည် Notepad++ v8.5.2 သို့ အဆင့်နှိမ့်ချပြီး သင်၏ယခင်ဒေတာကို ပြန်လည်ရယူနိုင်ပါသည်။
+Notepad++ သည် သင်၏ &quot;shortcuts.xml&quot; အဟောင်းကို အရန်ကူးပြီး ၎င်းကို &quot;shortcuts.xml.v8.5.2.backup&quot; အဖြစ် သိမ်းဆည်းပါမည်။
+&quot;shortcuts.xml.v8.5.2.backup&quot; -&gt; &quot;shortcuts.xml&quot; ဟု အမည်ပြောင်းခြင်းဖြင့် သင့်အမိန့်များကို ပြန်လည်ရယူပြီး ကောင်းမွန်စွာ လုပ်ဆောင်သင့်သည်။"/><!-- HowToReproduce: Close Notepad++, remove shortcuts.xml.v8.5.2.backup & v852ShortcutsCompatibilityWarning.xml if present, relaunch Notepad++, delete or modify a shortcuts via Shortcut Mapper, close Notepad++, then the message will show up -->
+			<FullReadOnlySavingForbidden title="သိမ်းဆည်းခြင်း မအောင်မြင်ပါ" message="ဖိုင်ကို သိမ်းဆည်း၍မရပါ။
+Notepad++ သည် ဖိုင်ကို သိမ်းဆည်းခြင်းမပြုရန် တားမြစ်ထားသော တားမြစ်မုဒ် အပြည့်အစုံကို ဖတ်ရန်သာ သိမ်းဆည်းထားသည်။"/>
+			<NotEnoughRoom4Saving title="သိမ်းဆည်းခြင်း မအောင်မြင်ပါ။" message="ဖိုင်ကို သိမ်းဆည်းရန် မအောင်မြင်ပါ။
+ဖိုင်ကိုသိမ်းဆည်းရန် disk တွင် နေရာအလုံအလောက်မရှိပုံရသည်။သင့်ဖိုင်ကို မသိမ်းဆည်းပါ။"/>
+			<FileInaccessibleUserSession title="ဖိုင်ကို လက်လှမ်းမမီ" message="သင်ကိုယ်တိုင် သိမ်းဆည်းထားသော စက်ရှင် &quot;$STR_REPLACE$&quot; မှ ဖိုင်အချို့ကို သုံးစွဲ၍မရပါ။၎င်းတို့ကို အလွတ်နှင့် ဖတ်ရန်သာ စာရွက်စာတမ်းများအဖြစ် နေရာယူထားသူများအဖြစ် ဖွင့်နိုင်သည်။
+
+ထိုနေရာများကို ဖန်တီးလိုပါသလား။
+
+မှတ်ချက်- နေရာကိုင်ဆောင်ထားသူများကို မဖန်တီးရန် သို့မဟုတ် ၎င်းတို့ကို နောက်ပိုင်းတွင် ပိတ်ရန် မရွေးချယ်ဘဲ၊ သင့်ကိုယ်တိုင် သိမ်းဆည်းထားသော ဆက်ရှင်ကို ထွက်ပေါက်တွင် ပြုပြင်မည်မဟုတ်ပါ။"/>
+			<FileInaccessibleDefaultSessionXml title="ဖိုင်ကို လက်လှမ်းမမီ" message="သင်၏ယခင်စက်ရှင်မှ ဖိုင်အချို့ကို သုံးစွဲ၍မရပါ။၎င်းတို့ကို အလွတ်နှင့် ဖတ်ရန်သာ စာရွက်စာတမ်းများအဖြစ် နေရာယူထားသူများအဖြစ် ဖွင့်နိုင်သည်။
+
+ထိုနေရာများကို ဖန်တီးလိုပါသလား။
+
+မှတ်ချက်- နေရာကိုင်ဆောင်ထားသူများကို မဖန်တီးရန် သို့မဟုတ် ၎င်းတို့ကို နောက်ပိုင်းတွင် ပိတ်ရန် မရွေးချယ်ဘဲ၊ သင်၏ စက်ရှင်သည် ထွက်ပေါက်တွင် မွမ်းမံပြင်ဆင်မည်ဖြစ်သည်။သင်၏ &quot;session.xml&quot; ကို ယခု အရန်ကူးရန် အကြံပြုအပ်ပါသည်။"/>
+			<RTLvsDirectWrite title="RTL" message="မလုပ်ဆောင်နိုင်ပါ။RTL သည် DirectWrite မုဒ်နှင့် သဟဇာတမဖြစ်ပါ။ကျေးဇူးပြု၍ MISC တွင် DirectWrite မုဒ်ကို ပိတ်ပါ။နှစ်သက်ရာ ဒိုင်ယာလော့ဂ်၏ အပိုင်းနှင့် Notepad++ ကို ပြန်လည်စတင်ပါ။"/>
+			<FileMemoryAllocationFailed title="ခြွင်းချက်- ဖိုင်မှတ်ဉာဏ်ခွဲဝေမှု မအောင်မြင်ပါ" message="Notepad++ မှ တင်ဆောင်နေသည့် ဖိုင်အတွက် ဆက်စပ်နေသော အခမဲ့မှတ်ဉာဏ် လုံလောက်မှု မရှိပါ။"/><!-- HowToReproduce: Try to open multiple files with total size > ~700MB in the x86 Notepad++ (it will depend on the PC memory configuration and the current system memory usage...). -->
+			<FindRegexBackwardDisabled title="Regex နောက်ပြန်ရှာဖွေမှုကို ပိတ်ထားသည်" message="ပုံမှန်အားဖြင့်၊ မျှော်လင့်မထားသောရလဒ်များကြောင့် နောက်ပြန် regex ရှာဖွေခြင်းကို ပိတ်ထားသည်။နောက်ကြောင်းပြန်ရှာဖွေမှုလုပ်ဆောင်ရန်၊ ရှာဖွေရန် ဒိုင်ယာလော့ဂ်ကိုဖွင့်ပြီး ပုံမှန်ဖော်ပြချက်အစား ပုံမှန် သို့မဟုတ် တိုးချဲ့ရှာဖွေမှုမုဒ်ကို ရွေးချယ်ပါ။
+Find dialog ကိုဖွင့်ရန် သို့မဟုတ် ၎င်းကို focus သတ်မှတ်ရန် OK ခလုတ်ကိုနှိပ်ပါ။
+
+သင်သည် backward regex ရှာဖွေခြင်းအင်္ဂါရပ်ကို လိုအပ်ပါက၊ ၎င်းကိုဖွင့်ရန် ညွှန်ကြားချက်များအတွက် အသုံးပြုသူလက်စွဲကို တိုင်ပင်ပါ။"/>
+			<PrintError title="0" message="ပရင်တာစာရွက်စာတမ်းကို စတင်၍မရပါ။"/><!-- Use title="0" to use Windows OS default translated "Error" title. -->
+			<FindAutoChangeOfInSelectionWarning title="ရှာဖွေရန် သတိပေးချက်" message="&quot;ရွေးချယ်မှုတွင်&quot; အမှတ်ခြစ်ရန်အကွက်အခြေအနေကို အလိုအလျောက် ပြင်ဆင်ပြီးဖြစ်သည်။
+လုပ်ဆောင်ချက်မလုပ်ဆောင်မီ ရှာဖွေမှုအခြေအနေအား စစ်ဆေးအတည်ပြုပါ။"/> <!-- HowToReproduce: https://github.com/notepad-plus-plus/notepad-plus-plus/issues/14897#issuecomment-2564316224 -->
+			<Need2Restart2ShowMenuShortcuts title="Notepad++ ကို ပြန်လည်စတင်ရန် လိုအပ်သည်" message="ညာဘက်မီနူးဖြတ်လမ်းများကိုပြသရန် Notepad++ ကို ပြန်လည်စတင်ရန် လိုအပ်သည်။"/>
+			<NoAdminRight2ChangeReadOnlyFileAttribute title="ဖိုင်ဖတ်ရန်-သီးသန့်ရည်ညွှန်းချက်ကို ပြောင်းလဲခြင်း မအောင်မြင်ပါ" message="ဖိုင်၏အရည်အသွေးများကိုပြောင်းလဲရန် ကျေးဇူးပြု၍ Notepad++ ကို စီမံခန့်ခွဲသူအဖြစ် လုပ်ဆောင်ပါ။"/>
+		</MessageBox>
+		<ClipboardHistory>
+			<PanelTitle name="ကလစ်ဘုတ်မှတ်တမ်း"/>
+		</ClipboardHistory>
+		<DocList>
+			<PanelTitle name="စာရွက်စာတမ်းစာရင်း"/>
+			<ColumnName name="အမည်"/>
+			<ColumnExt name="Ext"/>
+			<ColumnPath name="မဂ်"/>
+			<ListGroups name="Group by View"/>
+		</DocList>
+		<WindowsDlg>
+			<ColumnName name="အမည်"/>
+			<ColumnPath name="မဂ်"/>
+			<ColumnType name=""/>
+			<ColumnSize name="ရိုက်ပါ။အရွယ်အစား"/>
+			<ColumnDateTime name="ပြင်ဆင်ချိန်"/>
+			<NbDocsTotal name="စုစုပေါင်းစာရွက်စာတမ်းများ-"/>
+			<MenuCopyName name="အမည်(များ)"/>
+			<MenuCopyPath name="မိတ္တူလမ်းကြောင်းအမည်(များ)"/>
+		</WindowsDlg>
+		<AsciiInsertion>
+			<PanelTitle name="ကူးယူပါ။ASCII ကုဒ်များ ထည့်သွင်းမှု အကန့်"/>
+			<ColumnVal name="တန်ဖိုး"/>
+			<ColumnHex name="Hex"/>
+			<ColumnChar name="စာရိတ္တ"/>
+			<ColumnHtmlName name="HTML အမည်"/>
+			<ColumnHtmlNumber name="HTML Decimal"/>
+			<ColumnHtmlHexNb name="HTML Hexadecimal"/>
+		</AsciiInsertion>
+		<DocumentMap>
+			<PanelTitle name="စာရွက်စာတမ်းမြေပုံ"/>
+		</DocumentMap>
+		<FunctionList>
+			<PanelTitle name="လုပ်ဆောင်ချက်စာရင်း"/>
+			<SortTip name="မျိုးတူစု"/>
+			<ReloadTip name=""/>
+			<PreferencesTip name="ပြန်ဆွဲပါ။ဦးစားပေးများ"/>
+			<PreferencesInitialSort name="ပုံမှန်အားဖြင့် လုပ်ဆောင်ချက်များ (A မှ Z) ကိုစီရန်"/>
+		</FunctionList>
+		<FolderAsWorkspace>
+			<PanelTitle name="အလုပ်နေရာ"/>
+			<SelectFolderFromBrowserString name="အဖြစ် ဖိုင်တွဲWorkspace panel အဖြစ် Folder တွင်ထည့်ရန် ဖိုဒါတစ်ခုကို ရွေးပါ"/>
+			<ExpandAllFoldersTip name=""/>
+			<CollapseAllFoldersTip name="အားလုံးကို ဖြည်လိုက်ပါ။"/>
+			<LocateCurrentFileTip name="အားလုံးခေါက်လက်ရှိဖိုင်ကိုရှာပါ"/>
+			<Menu>
+				<Item id="3511" name=""/>
+				<Item id="3512" name="ဖယ်ရှားပါ။"/>
+				<Item id="3513" name="အားလုံးကို ဖယ်ရှားပါ။ထည့်"/>
+				<Item id="3514" name="စနစ်ဖြင့် လုပ်ဆောင်သည်"/>
+				<Item id="3515" name="ဖွင့်"/>
+				<Item id="3516" name="ကူးယူလမ်းကြောင်း"/>
+				<Item id="3517" name="Files တွင်ရှာပါ..."/>
+				<Item id="3518" name="ဤနေရာတွင် ရှာဖွေပါ"/>
+				<Item id="3519" name="CMD ဒီမှာ"/>
+				<Item id="3520" name="ဖိုင်အမည်ကို ကူးယူပါ။"/>
+			</Menu>
+		</FolderAsWorkspace>
+		<ProjectManager>
+			<PanelTitle name="စီမံကိန်း"/>
+			<WorkspaceRootName name="အလုပ်နေရာ"/>
+			<NewProjectName name="ပရောဂျက်အမည်"/>
+			<NewFolderName name="ဖိုဒါအမည်"/>
+			<Menus>
+				<Entries>
+					<Item id="0" name="အလုပ်နေရာ"/>
+					<Item id="1" name="တည်းဖြတ်"/>
+				</Entries>
+				<WorkspaceMenu>
+					<Item id="3122" name="အလုပ်နေရာအသစ်"/>
+					<Item id="3123" name="အလုပ်နေရာ"/>
+					<Item id="3124" name="ဖွင့်ပါ။အလုပ်နေရာ"/>
+					<Item id="3125" name="ပြန်လည်စတင်ပါ။"/>
+					<Item id="3126" name="သိမ်းဆည်းပါ။Save As..."/>
+					<Item id="3127" name="ကော်ပီအဖြစ်..."/>
+					<Item id="3121" name="သိမ်းဆည်းပါ။ပရောဂျက်အသစ်"/>
+					<Item id="3128" name="ထည့်ပါ။ပရောဂျက်များတွင် ရှာပါ..."/>
+				</WorkspaceMenu>
+				<ProjectMenu>
+					<Item id="3111" name="အမည်ပြောင်း"/>
+					<Item id="3112" name="ဖိုင်တွဲထည့်ရန်"/>
+					<Item id="3113" name="ဖိုင်များထည့်ပါ..."/>
+					<Item id="3117" name="Directory မှ ဖိုင်များထည့်ပါ..."/>
+					<Item id="3114" name=""/>
+					<Item id="3118" name="ဖယ်ရှားပါ။အပေါ်ကိုရွှေ့ပါ။"/>
+					<Item id="3119" name="အောက်သို့ရွှေ့ပါ"/>
+				</ProjectMenu>
+				<FolderMenu>
+					<Item id="3111" name="အမည်ပြောင်း"/>
+					<Item id="3112" name="ဖိုင်တွဲထည့်ရန်"/>
+					<Item id="3113" name="ဖိုင်များထည့်ပါ..."/>
+					<Item id="3117" name="Directory မှ ဖိုင်များထည့်ပါ..."/>
+					<Item id="3114" name=""/>
+					<Item id="3118" name="ဖယ်ရှားပါ။အပေါ်ရွှေ့"/>
+					<Item id="3119" name="အောက်သို့ရွှေ့ပါ"/>
+				</FolderMenu>
+				<FileMenu>
+					<Item id="3111" name="အမည်ပြောင်း"/>
+					<Item id="3115" name=""/>
+					<Item id="3116" name="ဖယ်ရှားပါ။ဖိုင်လမ်းကြောင်းကို ပြင်ဆင်ပါ"/>
+					<Item id="3118" name="အပေါ်ရွှေ့"/>
+					<Item id="3119" name="အောက်သို့ရွှေ့ပါ"/>
+				</FileMenu>
+			</Menus>
+		</ProjectManager>
+		<MiscStrings>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<word-chars-list-tip value="၎င်းသည် ရွေးချယ်မှုအတွက် နှစ်ချက်နှိပ်ခြင်း သို့မဟုတ် &quot;Match whole word only&quot; option ကို အမှန်ခြစ်ထားခြင်းဖြင့် လက်ရှိစကားလုံးအက္ခရာများထဲသို့ ထပ်လောင်းထည့်သွင်းနိုင်စေမည်ဖြစ်သည်။"/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, hover your mouse on the "?" button. -->
+
+			<!-- Don't translate "(&quot;EOL custom color&quot;)" -->
+			<eol-custom-color-tip value="မူရင်း EOL စိတ်ကြိုက်အရောင် (&quot;EOL စိတ်ကြိုက်အရောင်&quot;) ကိုပြောင်းရန် Style Configurator သို့သွားပါ။"/>
+
+			<word-chars-list-warning-begin value="သတိထားပါ-"/>
+			<word-chars-list-space-warning value="$INT_REPLACE$ space(s)"/>
+			<word-chars-list-tab-warning value="$INT_REPLACE$ TAB(s)"/>
+			<word-chars-list-warning-end value="သင်၏ဇာတ်ကောင်စာရင်းတွင်။"/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, check "Add your character as part of word\r(don't choose it unless you know what you're doing)", then type a white-space in the text field. -->
+			<backup-select-folder value="အရန်လမ်းညွှန်"/><!-- HowToReproduce: Settings > Preferences > Backup > [...] -->
+			<cloud-invalid-warning value="အဖြစ် ဖိုင်တွဲတစ်ခုကို ရွေးပါ။မမှန်ကန်သောလမ်းကြောင်း။"/>
+			<cloud-restart-warning value="အကျိုးသက်ရောက်စေရန် Notepad++ ကို ပြန်လည်စတင်ပါ။"/>
+			<cloud-select-folder value="Notepad++ သည် ၎င်း၏ဆက်တင်များ"/><!-- HowToReproduce: In "Cloud" section of Preferences dialog, check "Set your cloud location path here: ", then click the button "...". This message is displayed in the "Browse For Folder" dialog. -->
+			<default-open-save-select-folder value="ဖတ်ရန်/ရေးသည့်နေရာမှ/သို့ ဖိုင်တွဲတစ်ခုကို ရွေးပါ။မူရင်းလမ်းညွှန်အဖြစ်"/><!-- HowToReproduce: Settings > Preferences > Default Directory > [...] -->
+			<shift-change-direction-tip value="ဖိုင်တွဲကို ရွေးပါ။ဆန့်ကျင်ဘက်သို့"/>
+			<two-find-buttons-tip value="ရှာဖွေရန် Shift+Enter ကိုသုံးပါ။2 ခလုတ်များမုဒ်ရှာရန်"/>
+			<find-in-files-filter-tip value="cpp၊ cxx၊ h၊ hxx hpp တွင် ရှာပါ
+*.cpp *.cxx *.h *.hxx *.hpp
+
+exe၊ obj မှတ်တမ်းမှလွဲ၍ ဖိုင်အားလုံးတွင် ရှာပါ-
+*.* !*.exe !*.obj !*.log
+
+ဖိုင်များအားလုံးတွင် ရှာဖွေသော်လည်း ဖိုင်တွဲစစ်ဆေးမှုများကို ဖယ်ထုတ်ပါ၊ bin bin64-
+*.* !\tests !\bin*
+
+ဖိုင်အားလုံးတွင် ရှာသော်လည်း၊ ဖိုင်တွဲအားလုံးကို မှတ်တမ်း သို့မဟုတ် မှတ်တမ်းများကို ထပ်ကာထပ်ကာ ဖယ်ထုတ်ပါ-
+*.* !+\log*"/><!-- HowToReproduce: Tip of mouse hovered on "Filters" label in "Find in Files" section of Find dialog. -->
+			<find-in-files-select-folder value=""/><!-- HowToReproduce: Search > Find in Files > [...] -->
+			<find-in-files-dir-from-active-doc-tip value="မှ ရှာဖွေရန် ဖိုင်တွဲတစ်ခုကို ရွေးပါ။အသက်ဝင်သောစာရွက်စာတမ်း"/><!-- HowToReproduce: Search > Find in Files > [<<] -->
+			<find-status-top-reached value="ကိုအခြေခံ၍ လမ်းညွှန်အကွက်ကိုဖြည့်ပါ။ရှာပါ- စာရွက်စာတမ်းအစတွင်ရောက်ရှိသည်၊ အောက်ခြေမှပထမဆုံးဖြစ်ပေါ်မှုကိုတွေ့ရှိသည်။"/>
+			<find-status-end-reached value="ရှာပါ- စာရွက်စာတမ်း အဆုံးကို ရောက်ပြီ၊ ထိပ်မှ ပထမဆုံး ဖြစ်ပျက်မှုကို တွေ့ရှိသည်။"/>
+			<find-status-replaceinfiles-1-replaced value="ဖိုင်များတွင် အစားထိုးခြင်း- ဖြစ်ပျက်မှု 1 ခုကို အစားထိုးခဲ့သည်"/>
+			<find-status-replaceinfiles-nb-replaced value="ဖိုင်များတွင် အစားထိုးခြင်း- $INT_REPLACE$ ဖြစ်ပျက်မှုများကို အစားထိုးခဲ့သည်"/>
+			<find-status-replaceinopenedfiles-1-replaced value="ဖွင့်ထားသောဖိုင်များတွင် အစားထိုးခြင်း- ဖြစ်ပျက်မှု 1 ခုကို အစားထိုးခဲ့သည်"/>
+			<find-status-replaceinopenedfiles-nb-replaced value="ဖွင့်ထားသောဖိုင်များတွင် အစားထိုးခြင်း- $INT_REPLACE$ ဖြစ်ပျက်မှုများကို အစားထိုးခဲ့သည်"/>
+			<find-status-invalid-re value="ရှာရန်- မမှန်ကန်သော ပုံမှန်စကားရပ်"/>
+			<find-status-search-failed value="ရှာရန်- ရှာဖွေမှု မအောင်မြင်ပါ"/>
+			<find-status-mark-1-match value="မာကု- ၁ ပွဲ"/>
+			<find-status-mark-nb-matches value="အမှတ်အသား- $INT_REPLACE$ ကိုက်ညီမှုများ"/>
+			<find-status-count-1-match value="အရေအတွက်- 1 ပွဲ"/>
+			<find-status-count-nb-matches value="အရေအတွက်- $INT_REPLACE$ ကိုက်ညီမှု"/>
+			<find-status-replaceall-1-replaced value="အားလုံးကို အစားထိုး- 1 ဖြစ်ပျက်မှုကို အစားထိုးခဲ့သည်။"/>
+			<find-status-replaceall-nb-replaced value="အားလုံးကို အစားထိုးသည်- $INT_REPLACE$ ဖြစ်ပျက်မှုများကို အစားထိုးခဲ့သည်"/>
+			<find-status-replaceall-readonly value="အားလုံးကို အစားထိုးပါ- စာသားကို အစားထိုး၍မရပါ။လက်ရှိစာတမ်းကို ဖတ်ရန်သာဖြစ်သည်"/>
+			<find-status-replace-end-reached value="အစားထိုးခြင်း- စာရွက်စာတမ်း အဆုံးသို့ ရောက်ရှိပြီး၊ အပေါ်မှ စတင်ခဲ့သည်။"/>
+			<find-status-replace-top-reached value="အစားထိုးခြင်း- အောက်ခြေမှ စတင်ခဲ့သော စာရွက်စာတမ်းကို စတင်ရောက်ရှိခဲ့သည်။"/>
+			<find-status-replaced-next-found value="အစားထိုးခြင်း- ဖြစ်ပျက်မှု 1 ခုကို အစားထိုးခဲ့သည်။နောက်တကြိမ်တွေ့တယ်။"/>
+			<find-status-replaced-without-continuing value="အစားထိုးခြင်း- ဖြစ်ပျက်မှု 1 ခုကို အစားထိုးခဲ့သည်။"/>
+			<find-status-replaced-next-not-found value="အစားထိုးခြင်း- ဖြစ်ပျက်မှု 1 ခုကို အစားထိုးခဲ့သည်။နောက်ထပ် အဖြစ်အပျက်တွေ မတွေ့ရဘူး။"/>
+			<find-status-replace-not-found value="အစားထိုး- မည်သည့်ဖြစ်ပျက်မှုမှ ရှာမတွေ့ပါ"/>
+			<find-status-replace-readonly value="အစားထိုးခြင်း- စာသားကို အစားထိုး၍မရပါ။လက်ရှိစာတမ်းကို ဖတ်ရန်သာဖြစ်သည်"/>
+			<find-status-cannot-find value="ရှာပါ- &quot;$STR_REPLACE$&quot;"/>
+			<find-status-cannot-find-pebkac-maybe value="စာသားကို ရှာမတွေ့ပါ။ပေးထားသည့် အဖြစ်အပျက်ကို ရှာမတွေ့ပါ။&quot;Wrap around&quot; (ON)၊ &quot;Match case&quot; (သို့) OFF) သို့မဟုတ် &quot;Match whole word only&quot; (off to) ကိုစစ်ဆေးရန် မေ့သွားနိုင်သည်။"/>
+			<find-status-scope-selection value="ရွေးချယ်ထားသော စာသား"/>
+			<find-status-scope-all value="ဖိုင်တစ်ခုလုံးတွင်"/>
+			<find-status-scope-backward value="start-of-file မှ caret အထိ"/>
+			<find-status-scope-forward value="ကာကတ်မှ ဖိုင်အဆုံးအထိ"/>
+			<find-status-invisible-chars-findWhat value="ကူးထည့်ထားသော &quot;Find what&quot; သို့မဟုတ် &quot;Replace with&quot; content"/>
+			<find-status-invisible-chars-findWhat-tip value="တွင် မမြင်နိုင်သော ဇာတ်ကောင်များသတိပေးချက်- ရှာဖွေမှု (သို့မဟုတ် အစားထိုး) အကွက်တွင် မမြင်နိုင်သော ဇာတ်ကောင်များ။
+ဤအကွက်သို့ ကူးထည့်ထားသော စာသားတွင် မမြင်နိုင်သော (စာကြောင်းအဆုံး ဖြစ်နိုင်သည်) စာလုံးများ ပါဝင်သည်။၎င်းတို့ကို မဖျက်ဘဲ ဆက်လက်လုပ်ဆောင်ပါက ၎င်းတို့ကို ရှာဖွေမှု (သို့မဟုတ် အစားထိုး) စာသားတွင် ထည့်သွင်းသွားမည်ဖြစ်သည်။"/>
+			<finder-find-in-finder value="ဤရှာဖွေမှုရလဒ်များတွင် ရှာပါ..."/>
+			<finder-close-this value="ဤရှာဖွေမှုရလဒ်များ"/>
+			<finder-collapse-all value="ပိတ်ပါ။အားလုံးခေါက်"/>
+			<finder-uncollapse-all value=""/>
+			<finder-copy value="အားလုံးကို ဖြည်လိုက်ပါ။ရွေးချယ်ထားသော စာကြောင်း(များ)"/>
+			<finder-copy-selected-paths value="ကူးယူပါ။ရွေးချယ်ထားသောလမ်းကြောင်းအမည်(များ)"/>
+			<finder-clear-all value="ကူးယူပါ။"/>
+			<finder-open-selected-paths value="အားလုံးကို ရှင်းလင်းပါ။ရွေးချယ်ထားသောလမ်းကြောင်းအမည်(များ)"/>
+			<finder-purge-for-every-search value="ကိုဖွင့်ပါ။ရှာဖွေမှုတိုင်းအတွက်"/>
+			<finder-wrap-long-lines value="ဖယ်ရှားပါ။စာကြောင်းရှည်"/>
+			<common-ok value="ခြုံငုံအိုကေ"/>
+			<common-cancel value="လုပ်တော့"/>
+			<common-name value="အမည်"/>
+			<tabrename-title value="လက်ရှိ တက်ဘ်အမည်ပြောင်း"/>
+			<tabrename-newname value="နာမည်အသစ်"/>
+			<splitter-rotate-left value="ဘယ်သို့ လှည့်"/>
+			<splitter-rotate-right value="ညာဘက်သို့လှည့်"/>
+			<userdefined-title-new value="ဘာသာစကားအသစ်ဖန်တီးပါ..."/>
+			<userdefined-title-save value="လက်ရှိ ဘာသာစကားအမည်အဖြစ်..."/>
+			<userdefined-title-rename value="လက်ရှိဘာသာစကားအမည်"/>
+			<summary value="အမည်ပြောင်းပါ။အနှစ်ချုပ်"/>
+			<summary-filepath value="ဖိုင်လမ်းကြောင်းအပြည့်အစုံ-"/>
+			<summary-filecreatetime value="ဖန်တီးထားသည်-"/>
+			<summary-filemodifytime value="ပြင်ဆင်ထားသည်-"/>
+			<summary-nbchar value="စာလုံးများ (စာကြောင်းအဆုံးမပါသော):"/>
+			<summary-nbword value="Words:"/>
+			<summary-nbline value="လိုင်းများ-"/>
+			<summary-nbbyte value="စာရွက်စာတမ်းအရှည်-"/>
+			<summary-nbsel1 value="ရွေးချယ်ထားသော စာလုံးများ ("/>
+			<summary-nbsel2 value="bytes)"/>
+			<summary-nbrange value="အပိုင်းအခြားများ"/>
+			<progress-hits-title value="Hits:"/>
+			<progress-cancel-info value="လုပ်ဆောင်ချက်ကို ပယ်ဖျက်နေသည်၊ ခဏစောင့်ပါ..."/>
+			<find-in-files-progress-title value="Find In Files တိုးတက်မှု..."/>
+			<replace-in-files-confirm-title value="သေချာလား?"/>
+			<replace-in-files-confirm-directory value="သင်သည်-"/>
+			<replace-in-files-confirm-filetype value="တွင် ဖြစ်ပေါ်မှုအားလုံးကို အစားထိုးလိုသည်မှာ သေချာပါသလား။ဖိုင်အမျိုးအစားအတွက်-"/>
+			<replace-in-files-progress-title value="ဖိုင်များတွင် အစားထိုးခြင်း လုပ်ဆောင်ဆဲ..."/>
+			<replace-in-projects-confirm-title value="သေချာလား?"/>
+			<replace-in-projects-confirm-message value="ရွေးချယ်ထားသော ပရောဂျက်အကန့်(များ)ရှိ စာရွက်စာတမ်းအားလုံးရှိ ဖြစ်ပျက်မှုအားလုံးကို အစားထိုးလိုပါသလား။"/>
+			<replace-in-open-docs-confirm-title value="သေချာလား?"/>
+			<replace-in-open-docs-confirm-message value="ဖွင့်ထားသောစာရွက်စာတမ်းများအားလုံးတွင် ဖြစ်ပျက်မှုအားလုံးကို အစားထိုးလိုသည်မှာ သေချာပါသလား။"/>
+			<find-result-caption value="ရှာဖွေမှုရလဒ်များ"/>
+			<find-result-title value="ရှာရန်"/><!-- Must not begin with space or tab character -->
+			<find-result-title-info value="($INT_REPLACE3$ ရှာဖွေထားသည့် $INT_REPLACE2$ ဖိုင်များတွင် $INT_REPLACE1$ ထိသွားသည်)"/>
+			<find-result-title-info-selections value="($INT_REPLACE3$ ရှာဖွေခဲ့သည့် $INT_REPLACE2$ ရွေးချယ်မှုများတွင် $INT_REPLACE1$ များထိသွားသည်)"/>
+			<find-result-title-info-options-searchmode-normal value="ပုံမှန်"/>
+			<find-result-title-info-options-searchmode-extended value="တိုးချဲ့"/>
+			<find-result-title-info-options-searchmode-regexp value="RegEx"/>
+			<find-result-title-info-options-case value="ဖြစ်ရပ်မှန်"/>
+			<find-result-title-info-options-word value="စကားလုံး"/>
+			<find-result-title-info-extra value="- Line Filter Mode- စစ်ထုတ်ထားသောရလဒ်များကိုသာပြသသည်"/>
+			<find-result-hits value="($INT_REPLACE$ hits)"/>
+			<find-result-line-prefix value="လိုင်း"/><!-- Must not begin with space or tab character -->
+			<find-regex-zero-length-match value="သုညအလျား ကိုက်ညီမှု"/>
+			<session-save-folder-as-workspace value="ဖိုင်တွဲကို အလုပ်နေရာအဖြစ်"/>
+			<tab-untitled-string value="သိမ်းဆည်းပါ။"/>
+			<file-save-assign-type value="အသစ်နောက်ဆက်တွဲ"/>
+			<close-panel-tip value="ပိတ်"/>
+			<IncrementalFind-FSFound value="$INT_REPLACE$ matches"/>
+			<IncrementalFind-FSNotFound value="စကားစု"/>
+			<IncrementalFind-FSTopReached value="မတွေ့ပါ။စာမျက်နှာ၏ထိပ်သို့ရောက်ရှိပြီး အောက်ခြေမှဆက်၍"/>
+			<IncrementalFind-FSEndReached value="စာမျက်နှာ၏အဆုံးသို့ရောက်ရှိပြီး"/>
+			<contextMenu-styleAlloccurrencesOfToken value="အပေါ်မှဆက်၍တိုကင်၏ ဖြစ်ပျက်မှုအားလုံးကို ပုံစံချပါ။"/>
+			<contextMenu-styleOneToken value="သင်္ကေတပုံစံတစ်ခု"/>
+			<contextMenu-clearStyle value="ရှင်းလင်းစတိုင်"/>
+			<contextMenu-PluginCommands value="ပလပ်အင် အမိန့်များ"/>
+			<largeFileRestriction-tip value="အချို့သောအင်္ဂါရပ်များသည် ကြီးမားသောဖိုင်များတွင် စွမ်းဆောင်ရည်နှေးကွေးနိုင်သည်။ဖိုင်ကြီးတစ်ခုဖွင့်သည့်အခါ ဤအင်္ဂါရပ်များကို အလိုအလျောက်ပိတ်နိုင်သည်။၎င်းတို့ကို ဤနေရာတွင် စိတ်ကြိုက်ပြင်ဆင်နိုင်ပါသည်။
+
+မှတ်ချက်-
+1. ဤနေရာတွင် ရွေးချယ်စရာများကို မွမ်းမံပြင်ဆင်ခြင်းသည် သင့်လျော်သောအပြုအမူရရှိရန် လက်ရှိဖွင့်ထားသော ဖိုင်ကြီးများကို ပြန်လည်ဖွင့်ရန် လိုအပ်သည်။
+
+2. &quot;Deactivate Word Wrap globally&quot; ကို အမှန်ခြစ်ပြီး ဖိုင်ကြီးတစ်ခုကို ဖွင့်ပါက၊ &quot;Word Wrap&quot; သည် ဖိုင်အားလုံးအတွက် ပိတ်သွားပါမည်။Menu &quot;View-&gt;Word Wrap&quot; မှတစ်ဆင့် ၎င်းကို ပြန်လည်ဖွင့်နိုင်သည်။"/>
+			<npcNote-tip value="ရွေးချယ်ထားသော &quot;ASCII&quot; အဖြူကွက်နှင့် ပုံနှိပ်ခြင်းမဟုတ်သော (ထိန်းချုပ်မှု) စာလုံးများကို ကိုယ်စားပြုခြင်း။
+
+မှတ်ချက်-
+ကိုယ်စားပြုမှုကို အသုံးပြုခြင်းဖြင့် စာသားပေါ်ရှိ ဇာတ်ကောင်အကျိုးသက်ရောက်မှုများကို ပိတ်ပါမည်။
+
+ရွေးချယ်ထားသော နေရာလွတ်များနှင့် ပုံနှိပ်မဟုတ်သော စာလုံးများစာရင်းအပြည့်အစုံအတွက် အသုံးပြုသူလက်စွဲကို စစ်ဆေးပါ။
+
+အသုံးပြုသူလက်စွဲဖြင့် ဝဘ်ဆိုဒ်ကိုဖွင့်ရန် ဤခလုတ်ကိုနှိပ်ပါ။"/>
+			<npcAbbreviation-tip value="အတိုကောက်: အမည်
+NBSP : မခွဲဘဲ နေရာလွတ်
+ZWSP : သုညအကျယ် နေရာလွတ်
+ZWNBSP − အနံ သုည-မချိုးနိုင်သော နေရာ
+
+စာရင်းအပြည့်အစုံအတွက် User Manual ကိုစစ်ဆေးပါ။
+&quot;?&quot; ကိုနှိပ်ပါ။အသုံးပြုသူလက်စွဲဖြင့် ဝဘ်ဆိုဒ်ကိုဖွင့်ရန် ညာဘက်ရှိခလုတ်။"/>
+			<npcCodepoint-tip value="Codepoint : အမည်
+U+00A0 : မခွဲဘဲ နေရာလွတ်
+U+200B : သုညအကျယ် နေရာလွတ်
+U+FEFF- အနံ သုည-မခွဲဘဲ နေရာလွတ်
+
+စာရင်းအပြည့်အစုံအတွက် User Manual ကိုစစ်ဆေးပါ။
+&quot;?&quot; ကိုနှိပ်ပါ။အသုံးပြုသူလက်စွဲဖြင့် ဝဘ်ဆိုဒ်ကိုဖွင့်ရန် ညာဘက်ရှိခလုတ်။"/>
+
+			<!-- Don't translate "(&quot;Non-printing characters custom color&quot;)" -->
+			<npcCustomColor-tip value="ရွေးချယ်ထားသော နေရာလွတ်များနှင့် ပုံနှိပ်စက်မဟုတ်သော စာလုံးများအတွက် ပုံသေစိတ်ကြိုက်အရောင်ကို ပြောင်းလဲရန် စတိုင်ဖွဲ့စည်းမှုစနစ်သို့ သွားပါ။"/>
+			<npcIncludeCcUniEol-tip value="ပုံနှိပ်ခြင်းမဟုတ်သော အက္ခရာများ အသွင်အပြင် ဆက်တင်များကို C0၊ C1 ထိန်းချုပ်မှုနှင့် ယူနီကုဒ် EOL (နောက်တစ်ကြောင်း၊ မျဉ်းခွဲခြင်းနှင့် စာပိုဒ်ခွဲသည့်ကိရိယာ) တွင် အသုံးပြုပါ။"/>
+			<searchingInSelThresh-tip value="Find dialog ကိုအသက်သွင်းသောအခါ &quot;ရွေးချယ်မှုတွင်&quot; အမှန်ခြစ်ဘောက်စ်ကို အလိုအလျောက်စစ်ဆေးရန် တည်းဖြတ်ဇုန်ရှိ ရွေးချယ်ထားသော အနိမ့်ဆုံးစာလုံးအရေအတွက်။အများဆုံးတန်ဖိုးမှာ $INT_REPLACE$ ဖြစ်သည်။အလိုအလျောက်စစ်ဆေးခြင်းကို ပိတ်ရန် တန်ဖိုးကို 0 ဟု သတ်မှတ်ပါ။"/>
+			<searchingFillFindWhat-tip value="Ctrl-F ကို အစပျိုးလိုက်သောအခါ &quot;Find what&quot; အကွက်ကို အလိုအလျောက်ဖြည့်ရန် တည်းဖြတ်ဇုန်ရှိ ရွေးချယ်ထားသော စာလုံးအရေအတွက် အများဆုံးအရေအတွက်။အမြင့်ဆုံးတန်ဖိုးမှာ $INT_REPLACE$ ဖြစ်ပြီး၊ စနစ်ကကန့်သတ်ထားသော &quot;Find what&quot; အကွက်၏ အများဆုံးအရွယ်အစားဖြစ်သည်။"/>
+			<verticalEdge-tip value="ဒဿမ နံပါတ်ဖြင့် ၎င်း၏ အနေအထားကို ညွှန်ပြခြင်းဖြင့် သင့်ကော်လံ အမှတ်အသားကို ထည့်ပါ။မတူညီသော နံပါတ်များကို ခွဲခြားရန် white space ကိုအသုံးပြုခြင်းဖြင့် ကော်လံအမှတ်အသားများစွာကို သင်သတ်မှတ်နိုင်ပါသည်။"/>
+			<fileSaveAsCopySaveButton-tip value="သိမ်းဆည်းပြီးနောက် မိတ္တူကိုဖွင့်ရန် သိမ်းဆည်းရန် Shift ကို ဖိထားပါ။"/>
+			<autoIndentBasic-tip value="လက်ရှိမျဉ်းကြောင်း၏ အင်တင်းအား (ဆိုလိုသည်မှာ ENTER ခလုတ်ကို နှိပ်ခြင်းဖြင့် ဖန်တီးထားသော လိုင်းအသစ်)သည် ယခင်စာကြောင်း၏ အင်တင်းနှင့် ကိုက်ညီကြောင်း သေချာပါစေ။"/>
+			<autoIndentAdvanced-tip value="&quot;C-like&quot; ဘာသာစကားများနှင့် Python အတွက် smart indentation ကိုဖွင့်ပါ။&quot;C-like&quot; ဘာသာစကားများ ပါဝင်သည်-
+C၊ C++၊ Java၊ C#၊ Objective-C၊ PHP၊ JavaScript၊ JSP၊ CSS၊ Perl၊ Rust၊ PowerShell နှင့် JSON။
+
+အဆင့်မြင့်မုဒ်ကို သင်ရွေးချယ်သော်လည်း အထက်ဖော်ပြပါဘာသာစကားများတွင် ဖိုင်များကို တည်းဖြတ်ခြင်းမပြုပါက၊ အင်တင်းသည် အခြေခံမုဒ်တွင် ရှိနေမည်ဖြစ်သည်။"/>
+
+			<!-- Don't translate "Global override" and "Default Style" -->
+			<global-override-tip value="ဤနေရာတွင် &quot;Global override&quot; ကိုဖွင့်ခြင်းသည် ဘာသာစကားစတိုင်များအားလုံးတွင် ထိုကန့်သတ်ချက်ကို အစားထိုးပါမည်။သင်အမှန်တကယ်လိုချင်သည်မှာ"/>
+			<scintillaRenderingTechnology-tip value="အစား &quot;မူလပုံစံ&quot; ဆက်တင်များကို အသုံးပြုရန်ဖြစ်သည်။အထူးဇာတ်ကောင်များ၏ ပုံဖေါ်ခြင်းကို ပိုမိုကောင်းမွန်စေခြင်း သို့မဟုတ် ဂရပ်ဖစ်ပြဿနာအချို့ကို ဖြေရှင်းနိုင်သည်၊ အပြောင်းအလဲများကို အသုံးပြုရန် Notepad++ ကို ပြန်လည်စတင်ပါ။"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'length' & 'lines' are much longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-length-lines value="အရှည်- $STR_REPLACE1$ လိုင်းများ- $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Ln' & 'Col' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Ln-Col value="Ln- $STR_REPLACE1$ Col- $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Pos' & 'Sel' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Pos value="Pos-"/>
+			<statusbar-Sel value="Sel:"/>
+			<statusbar-Sel-number value="Sel"/>
+			<toolbar-accent-tip value="ဤရွေးချယ်မှုသည် သင့်တူးလ်ဘားအိုင်ကွန်များကို Windows စနစ် လေယူလေသိမ်းအရောင်အတိုင်း လိုက်လုပ်စေသည်။Accent Color သည် Windows ရှိ ခလုတ်များ၊ ဘောင်များနှင့် Start Menu tiles များတွင် အသုံးပြုသည့် အသားပေးအရောင်ဖြစ်သည်။၎င်းကိုပြောင်းလဲရန် ဆက်တင်များ &gt; စိတ်ကြိုက်ပြင်ဆင်ခြင်း &gt; အရောင်များ သို့ သွားပါ၊ ထို့နောက် သင်နှစ်သက်သော လေယူလေသိမ်းအရောင်ကို ရွေးချယ်ပါ။"/>
+			<len-limit-exceeded-tip value="အရှည်ကန့်သတ်ချက်ကို ကျော်လွန်သွားသည်- သင်၏ထည့်သွင်းမှုသည် ခွင့်ပြုထားသည့် ကန့်သတ်ချက်ထက်ကျော်လွန်နိုင်ပြီး ဖြတ်တောက်ခံရနိုင်ပြီး ၎င်းကို နောက်ဆက်ရှင်အတွက် သိမ်းဆည်းမည်မဟုတ်ပါ။"/>
+			<max-len-on-search-tip value="သင်၏ထည့်သွင်းမှုသည် ခွင့်ပြုထားသော ကန့်သတ်ချက်ထက်ကျော်လွန်နိုင်ပြီး ဖြတ်တောက်ခံရနိုင်ပြီး ၎င်းကို လာမည့်စက်ရှင်အတွက် သိမ်းဆည်းမည်မဟုတ်ပါ။"/>
+			<max-len-on-save-tip value="သင့်ထည့်သွင်းမှု၏ကြာချိန်သည် အလွန်ရှည်လျားပြီး သင့်နောက်ဆက်ရှင်အတွက် သိမ်းဆည်းထားမည်မဟုတ်ပါ။"/>
+			<goto-setting-tip value="သင့်ဆက်တင်ကို ဤနေရာတွင် ရှာပါ"/>
+			<tabbar-tabcompactlabellen-tip value="ရှည်လျားသော တက်ဘ်အမည်များ၏ မြင်နိုင်သော အရှည်ကို ကန့်သတ်ထားသည်။ပေးထားသောတန်ဖိုးကိုအသုံးပြုရန် ရိုက်ထည့်ပါ။တန်ဖိုးအတိုင်းအတာ- စာလုံးရေ 1-257 လုံး (0 ဖြတ်တောက်ခြင်းကို ပိတ်သည်)။"/>
+		</MiscStrings>
+	</Native-Langue>
+</NotepadPlus>
+
+

@@ -1,0 +1,2142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Sesotho (Sesotho) language file for Notepad++ macOS
+    Based on English template - community translations welcome
+    Created: 2026-04-04
+-->
+<NotepadPlus>
+	<Native-Langue name="Sesotho" filename="sesotho.xml" version="8.9">
+		<Menu>
+			<Main>
+				<!-- Main Menu Entries -->
+				<Entries>
+					<Item menuId="file" name="Faele"/>
+					<Item menuId="edit" name="Fetola"/>
+					<Item menuId="search" name="Batla"/>
+					<Item menuId="view" name="Sheba"/>
+					<Item menuId="encoding" name="Khouto"/>
+					<Item menuId="language" name="Puo"/>
+					<Item menuId="settings" name="Litlhophiso"/>
+					<Item menuId="tools" name="Lisebelisoa"/>
+					<Item menuId="macro" name="Macro"/>
+					<Item menuId="run" name="Matha"/>
+					<Item menuId="Plugins" name="Li-plugins"/>
+					<Item menuId="Window" name="Fesetere"/>
+				</Entries>
+				<!-- Sub Menu Entries -->
+				<SubEntries>
+					<Item subMenuId="file-openFolder" name="Bula Sephutheli se Nang le"/>
+					<Item subMenuId="file-closeMore" name="Kwala Litokomane Tse Ngata"/>
+					<Item subMenuId="file-recentFiles" name="Lifaele tsa morao-rao"/>
+					<Item subMenuId="edit-insert" name="Kenya"/>
+					<Item subMenuId="edit-copyToClipboard" name="Kopitsa ho Clipboard"/>
+					<Item subMenuId="edit-indent" name="Indent"/>
+					<Item subMenuId="edit-convertCaseTo" name="Fetolela Taba ho"/>
+					<Item subMenuId="edit-lineOperations" name="Lits'ebetso tsa Line"/>
+					<Item subMenuId="edit-comment" name="Maikutlo/Tlosa maikutlo"/>
+					<Item subMenuId="edit-autoCompletion" name="Pheliso e Ikemetseng"/>
+					<Item subMenuId="edit-eolConversion" name="EOL Phetoho"/>
+					<Item subMenuId="edit-blankOperations" name="Lits'ebetso tse se nang letho"/>
+					<Item subMenuId="edit-pasteSpecial" name="Beha e khethehileng"/>
+					<Item subMenuId="edit-onSelection" name="Ka Khetho"/>
+					<Item subMenuId="edit-multiSelectALL" name="Khetho tse ngata KAOFELA"/>
+					<Item subMenuId="edit-multiSelectNext" name="Khethang hangata E latelang"/>
+					<Item subMenuId="edit-readonlyInNotepad++" name="Bala Feela ho Notepad++"/>
+					<Item subMenuId="search-changeHistory" name="Fetola Nalane"/>
+					<Item subMenuId="search-markAll" name="Style Liketsahalo Tsohle Tsa Letšoao"/>
+					<Item subMenuId="search-markOne" name="Style One Token"/>
+					<Item subMenuId="search-unmarkAll" name="Hlakola Setaele"/>
+					<Item subMenuId="search-jumpUp" name="Tlolela Holimo"/>
+					<Item subMenuId="search-jumpDown" name="Tlolela Fatše"/>
+					<Item subMenuId="search-copyStyledText" name="Copy Styled Text"/>
+					<Item subMenuId="search-bookmark" name="Bookmark"/>
+					<Item subMenuId="view-currentFileIn" name="Sheba Faele ea Hona Joale ho"/>
+					<Item subMenuId="view-showSymbol" name="Bontša Letšoao"/>
+					<Item subMenuId="view-zoom" name="Atometsa"/>
+					<Item subMenuId="view-moveCloneDocument" name="Move/Clone Current Document"/>
+					<Item subMenuId="view-tab" name="Taba"/>
+					<Item subMenuId="view-collapseLevel" name="Mena Boemo"/>
+					<Item subMenuId="view-uncollapseLevel" name="Bula Boemo"/>
+					<Item subMenuId="view-project" name="Morero"/>
+					<Item subMenuId="encoding-characterSets" name="Sete ya Tlhaku"/>
+					<Item subMenuId="encoding-arabic" name="Searabia"/>
+					<Item subMenuId="encoding-baltic" name="Baltic"/>
+					<Item subMenuId="encoding-celtic" name="Celtic"/>
+					<Item subMenuId="encoding-cyrillic" name="SeCyrillic"/>
+					<Item subMenuId="encoding-centralEuropean" name="Europe Bohareng"/>
+					<Item subMenuId="encoding-chinese" name="Sechaena"/>
+					<Item subMenuId="encoding-easternEuropean" name="Europe Bochabela"/>
+					<Item subMenuId="encoding-greek" name="Segerike"/>
+					<Item subMenuId="encoding-hebrew" name="Seheberu"/>
+					<Item subMenuId="encoding-japanese" name="Sejapane"/>
+					<Item subMenuId="encoding-korean" name="Sekorea"/>
+					<Item subMenuId="encoding-northEuropean" name="Europe Leboea"/>
+					<Item subMenuId="encoding-thai" name="Sethai"/>
+					<Item subMenuId="encoding-turkish" name="Turkish"/>
+					<Item subMenuId="encoding-westernEuropean" name="Europe Bophirimela"/>
+					<Item subMenuId="encoding-vietnamese" name="Sevietnam"/>
+					<Item subMenuId="language-userDefinedLanguage" name="Puo e Hlalositsoeng ke Mosebelisi"/>
+					<Item subMenuId="settings-import" name="Fumana"/>
+					<Item subMenuId="tools-md5" name="MD5"/>
+					<Item subMenuId="tools-sha1" name="SHA-1"/>
+					<Item subMenuId="tools-sha256" name="SHA-256"/>
+					<Item subMenuId="tools-sha512" name="SHA-512"/>
+					<Item subMenuId="window-sortby" name="Hlophisa Ka"/>
+				</SubEntries>
+
+				<!-- all menu item -->
+				<Commands>
+					<Item id="41001" name="Ncha"/>
+					<Item id="41002" name="Bula..."/>
+					<Item id="41019" name="Mofuputsi"/>
+					<Item id="41020" name="cmd"/>
+					<Item id="41025" name="Sephutheli joalo ka Sebaka sa Mosebetsi"/>
+					<Item id="41003" name="Kwala"/>
+					<Item id="41004" name="Koala Tsohle"/>
+					<Item id="41005" name="Kwala Tsohle EMPA Current Document"/>
+					<Item id="41026" name="Kwala Litokomane Tsohle EMPA tse Pintsoeng"/>
+					<Item id="41009" name="Koala Tsohle ka ho le Letshehadi"/>
+					<Item id="41018" name="Koala Tsohle ka ho Le letona"/>
+					<Item id="41024" name="Koala Tsohle Tse sa Fetoheng"/>
+					<Item id="41006" name="Boloka"/>
+					<Item id="41007" name="Boloka Tsohle"/>
+					<Item id="41008" name="Boloka Joalo ka..."/>
+					<Item id="41010" name="Hatisa..."/>
+					<Item id="1001" name="Hatisa Hona Joale"/>
+					<Item id="41011" name="Tsoa"/>
+					<Item id="41012" name="Laola Session..."/>
+					<Item id="41013" name="Boloka Seboka..."/>
+					<Item id="41014" name="Kenya hape ho tsoa ho Disk"/>
+					<Item id="41015" name="Boloka Kopi Joalo ka..."/>
+					<Item id="41016" name="Suthela ho Recycle Bin"/>
+					<Item id="41017" name="Reha bocha..."/>
+					<Item id="41021" name="Khutlisa Faele e Koetsoeng Haufinyane"/>
+					<Item id="41022" name="Bula Sephutheli joalo ka Sebaka sa Mosebetsi..."/>
+					<Item id="41023" name="Bula ho Default Viewer"/>
+					<Item id="42001" name="Khaola"/>
+					<Item id="42002" name="Kopi"/>
+					<Item id="42003" name="Etsolla"/>
+					<Item id="42004" name="Etsa hape"/>
+					<Item id="42005" name="Beha"/>
+					<Item id="42006" name="Hlakola"/>
+					<Item id="42007" name="Khetha Tsohle"/>
+					<Item id="42020" name="Qala/Qetella Khetha"/>
+					<Item id="42089" name="Qala/Qetella Khetha ka Mokhoa oa Kholomo"/>
+					<Item id="42084" name="Nako ea Letsatsi (e khuts'oane)"/>
+					<Item id="42085" name="Nako ea Letsatsi (nako e telele)"/>
+					<Item id="42086" name="Nako ea Letsatsi (e ikemiseditseng)"/>
+					<Item id="42008" name="Eketsa Line Indent"/>
+					<Item id="42009" name="Decrease Line Indent"/>
+					<Item id="42010" name="Duplicate Current Line"/>
+					<Item id="42079" name="Tlosa Duplicate Lines"/>
+					<Item id="42077" name="Tlosa Mela e Kopanetsoeng e Kopanetsoeng"/>
+					<Item id="42012" name="Arohane Lines"/>
+					<Item id="42013" name="Kopanya Lines"/>
+					<Item id="42014" name="Move Up Current Line"/>
+					<Item id="42015" name="Tsamaisa Mola oa Hona Joale"/>
+					<Item id="42059" name="Hlopha Mela ea Lexicographically Ho nyoloha"/>
+					<Item id="42060" name="Hlopha Mela e Theohang ka Lexicographical"/>
+					<Item id="42080" name="Hlopha Lines Lex.Nyeoe ea ho Itlhokomoloha"/>
+					<Item id="42081" name="Hlopha Lines Lex.Ho theoha ha Nyeoe ea ho Itlhokomoloha"/>
+					<Item id="42100" name="Hlopha Mela ka Taelo ea Sebaka e eang holimo"/>
+					<Item id="42101" name="Hlopha Mela ka Taelo ea Sebaka e theohang"/>
+					<Item id="42104" name="Hlopha Mela Ka Bolelele bo Nyolohang"/>
+					<Item id="42105" name="Hlopha Mela ka Bolelele bo Theohang"/>
+					<Item id="42061" name="Hlopha Mela Joalo ka Linomoro Tse Nyolohang"/>
+					<Item id="42062" name="Hlopha Mela Ha Linomoro li Theoha"/>
+					<Item id="42063" name="Hlopha Mela Joalo ka Li-Decimal (Comma) Ho nyoloha"/>
+					<Item id="42064" name="Hlopha Mela Joalo ka Li-decimal (Comma) Ho theoha"/>
+					<Item id="42065" name="Hlopha Mela Joalo ka Decimal (Dot) Ho nyoloha"/>
+					<Item id="42066" name="Hlopha Mela Joalo ka Decimal (Dot) Ho theoha"/>
+					<Item id="42083" name="Reverse Line Order"/>
+					<Item id="42078" name="Randomize Line Order"/>
+					<Item id="42016" name="TLHOKOMELISO"/>
+					<Item id="42017" name="litlhaku tse nyane"/>
+					<Item id="42067" name="Nyeoe e Loketseng"/>
+					<Item id="42068" name="Taba e nepahetseng (motsoako)"/>
+					<Item id="42069" name="Nyeoe ea kahlolo"/>
+					<Item id="42070" name="Nyeoe ea polelo (motsoako)"/>
+					<Item id="42071" name="iNVERT CASE"/>
+					<Item id="42072" name="ranDOm CasE"/>
+					<Item id="42073" name="Bula Faele"/>
+					<Item id="42074" name="Bula Sephutheli se Nang le ho Sebatli"/>
+					<Item id="42106" name="Khetho ea ho Fetola █ (Shift: ●)"/>
+					<Item id="42075" name="Batla Marang-rang"/>
+					<Item id="42076" name="Fetola Enjene ea ho Batla..."/>
+					<Item id="42090" name="Iphapanyetse Case Whole Word"/>
+					<Item id="42091" name="Metch Case Feela"/>
+					<Item id="42092" name="Match Whole Word Only"/>
+					<Item id="42093" name="Match Case Whole Word"/>
+					<Item id="42094" name="Iphapanyetse Case Whole Word"/>
+					<Item id="42095" name="Metch Case Feela"/>
+					<Item id="42096" name="Match Whole Word Only"/>
+					<Item id="42097" name="Match Case Whole Word"/>
+					<Item id="42098" name="Etsolla Likhetho tse ngata tsa morao-rao tse kentsoeng"/>
+					<Item id="42099" name="Tlola Hona Joale Eya ho E 'ngoe ea likhetho tse ngata tse latelang"/>
+					<Item id="42018" name="Qala ho Rekota"/>
+					<Item id="42019" name="Emisa ho Rekota"/>
+					<Item id="42021" name="Ho bapala"/>
+					<Item id="42022" name="Toggle Single Line Comment"/>
+					<Item id="42023" name="Thibela Maikutlo"/>
+					<Item id="42047" name="Thibela Uncomment"/>
+					<Item id="42024" name="Trim Trailing Space"/>
+					<Item id="42042" name="Fokotsa Sebaka se ka Sehloohong"/>
+					<Item id="42043" name="Fokotsa Sebaka se ka Sehloohong le se Tsamaeang"/>
+					<Item id="42044" name="EOL ho Space"/>
+					<Item id="42045" name="Fokotsa ka bobeli le EOL ho Space"/>
+					<Item id="42046" name="TAB to Space"/>
+					<Item id="42054" name="Sebaka ho TAB (Kaofela)"/>
+					<Item id="42053" name="Sebaka ho TAB (E etellang pele)"/>
+					<Item id="42038" name="Beha Litaba tsa HTML"/>
+					<Item id="42039" name="Beha litaba tsa RTF"/>
+					<Item id="42048" name="Kopitsa Binary Content"/>
+					<Item id="42049" name="Seha Binary Content"/>
+					<Item id="42050" name="Beha Binary Content"/>
+					<Item id="42082" name="Kopitsa sehokelo"/>
+					<Item id="42037" name="Mokhoa oa Kholomo..."/>
+					<Item id="42034" name="Mohlophisi oa Kholomo..."/>
+					<Item id="42051" name="Sehlopha sa Litlhaku"/>
+					<Item id="42052" name="Nalane ea Clipboard"/>
+					<Item id="42025" name="Boloka Macro e Rekotiloeng Hona Joale..."/>
+					<Item id="42026" name="Text Direction RTL"/>
+					<Item id="42027" name="Text Direction LTR"/>
+					<Item id="42028" name="Bala Feela ho Tokomane ea Hona Joale"/>
+					<Item id="42102" name="Bala Feela Bakeng sa Litokomane Tsohle"/>
+					<Item id="42103" name="Hlakola E Baloang Feela Bakeng sa Litokomane Tsohle"/>
+					<Item id="42029" name="Kopitsa Tsela ea Hona Joale ea Lifaele"/>
+					<Item id="42030" name="Kopitsa Filename ea Hona Joale"/>
+					<Item id="42031" name="Kopitsa Dir ea Hona joale.Tsela"/>
+					<Item id="42087" name="Kopitsa Mabitso Ohle a Lifaele"/>
+					<Item id="42088" name="Kopitsa Litsela Tsohle Tsa Lifaele"/>
+					<Item id="42032" name="Matha Macro Multiple Times..."/>
+					<Item id="42033" name="Tšobotsi ea ho Bala Feela ho Windows"/>
+					<Item id="42035" name="Single Line Comment"/>
+					<Item id="42036" name="Single Line Uncomment"/>
+					<Item id="42055" name="Tlosa Empty Lines"/>
+					<Item id="42056" name="Tlosa Mela e Hloekileng (E Nang le litlhaku tse se nang letho)"/>
+					<Item id="42057" name="Kenya Blank Line Kaholimo ho Hona Joale"/>
+					<Item id="42058" name="Kenya Blank Line Ka tlase ho Hona Joale"/>
+					<Item id="43001" name="Fumana..."/>
+					<Item id="43002" name="Fumana E latelang"/>
+					<Item id="43003" name="Fetosa..."/>
+					<Item id="43004" name="Eya ho..."/>
+					<Item id="43005" name="Toggle Bookmark"/>
+					<Item id="43006" name="Latelang Bookmark"/>
+					<Item id="43007" name="Bookmark e Fetileng"/>
+					<Item id="43008" name="Hlakola Li-Bookmarks Tsohle"/>
+					<Item id="43018" name="Cut Bookmarked Lines"/>
+					<Item id="43019" name="Copy Bookmarked Lines"/>
+					<Item id="43020" name="Peista ho (Fetola) Mela ea Bookmarked"/>
+					<Item id="43021" name="Tlosa Bookmarked Lines"/>
+					<Item id="43051" name="Tlosa Mela e sa ngolisoang ka Bookmark"/>
+					<Item id="43050" name="Li-bookmark tse fapaneng"/>
+					<Item id="43052" name="Fumana litlhaku tse fapaneng..."/>
+					<Item id="43053" name="Kgetha Tsohle tse Pakeng tsa {} [] kapa ()"/>
+					<Item id="43009" name="Eya ho Matching Brace"/>
+					<Item id="43010" name="Fumana e Fetileng"/>
+					<Item id="43011" name="Keketso Search"/>
+					<Item id="43013" name="Fumana ho Lifaele"/>
+					<Item id="43014" name="Fumana (Volatile) Next"/>
+					<Item id="43015" name="Fumana (Volatile) Previous"/>
+					<Item id="43022" name="Ho Sebelisa Mokhoa oa Pele"/>
+					<Item id="43023" name="Hlakola Mokhoa oa Pele"/>
+					<Item id="43024" name="Ho Sebelisa Mokhoa oa Bobeli"/>
+					<Item id="43025" name="Hlakola 2nd Style"/>
+					<Item id="43026" name="Ho Sebelisa Mokhoa oa Boraro"/>
+					<Item id="43027" name="Hlakola Mokhoa oa Boraro"/>
+					<Item id="43028" name="Ho Sebelisa Mokhoa oa 4"/>
+					<Item id="43029" name="Hlakola 4th Style"/>
+					<Item id="43030" name="Ho Sebelisa Mokhoa oa Bohlano"/>
+					<Item id="43031" name="Hlakola 5th Style"/>
+					<Item id="43032" name="Hlakola Litaele Tsohle"/>
+					<Item id="43033" name="Mokhoa oa pele"/>
+					<Item id="43034" name="Mokhoa oa bobeli"/>
+					<Item id="43035" name="Mokhoa oa boraro"/>
+					<Item id="43036" name="Mokhoa oa bo-4"/>
+					<Item id="43037" name="Mokhoa oa bo-5"/>
+					<Item id="43038" name="Fumana Mark Style"/>
+					<Item id="43039" name="Mokhoa oa pele"/>
+					<Item id="43040" name="Mokhoa oa bobeli"/>
+					<Item id="43041" name="Mokhoa oa boraro"/>
+					<Item id="43042" name="Mokhoa oa bo-4"/>
+					<Item id="43043" name="Mokhoa oa bo-5"/>
+					<Item id="43044" name="Fumana Mark Style"/>
+					<Item id="43055" name="Mokhoa oa Pele"/>
+					<Item id="43056" name="2nd Style"/>
+					<Item id="43057" name="3rd Style"/>
+					<Item id="43058" name="4th Style"/>
+					<Item id="43059" name="5th Style"/>
+					<Item id="43060" name="Litaele Tsohle"/>
+					<Item id="43061" name="Fumana Mark Style"/>
+					<Item id="43062" name="Ho Sebelisa Mokhoa oa Pele"/>
+					<Item id="43063" name="Ho Sebelisa Mokhoa oa Bobeli"/>
+					<Item id="43064" name="Ho Sebelisa Mokhoa oa Boraro"/>
+					<Item id="43065" name="Ho Sebelisa Mokhoa oa 4"/>
+					<Item id="43066" name="Ho Sebelisa Mokhoa oa Bohlano"/>
+					<Item id="43067" name="Eya ho Next Change"/>
+					<Item id="43068" name="Eya ho Fetoho e Fetileng"/>
+					<Item id="43069" name="Hlakola Histori ea Phetoho"/>
+					<Item id="43045" name="Search Results Window"/>
+					<Item id="43046" name="Sephetho se Latelang sa Patlisiso"/>
+					<Item id="43047" name="Sephetho se Fetileng sa Patlo"/>
+					<Item id="43048" name="Khetha 'me u Fumane E latelang"/>
+					<Item id="43049" name="Khetha 'me u Fumane Tse Fetileng"/>
+					<Item id="43054" name="Tšoaea..."/>
+					<Item id="43501" name="Koala Tse Khethiloeng"/>
+					<Item id="43502" name="Koala Ba Bang"/>
+					<Item id="43503" name="Kopitsa Mabitso a Khethiloeng"/>
+					<Item id="43504" name="Kopitsa Litsela Tse Khethiloeng"/>
+					<Item id="44009" name="Post-It"/>
+					<Item id="44010" name="Mena Kaofela"/>
+					<Item id="44011" name="Mokhoa oa Mahala oa Tšitiso"/>
+					<Item id="44019" name="Hlahisa Litlhaku Tsohle"/>
+					<Item id="44020" name="Hlahisa Tataiso ea ho Indent"/>
+					<Item id="44022" name="Ho phuthela mantswe"/>
+					<Item id="44023" name="Atometsa (Ctrl+Mouse Wheel Up)"/>
+					<Item id="44024" name="Atolosa (Ctrl+Mouse Wheel Down)"/>
+					<Item id="44025" name="Hlahisa Sebaka le Tab"/>
+					<Item id="44026" name="Bontša Qetellong ea Mola"/>
+					<Item id="44029" name="Bula Tsohle"/>
+					<Item id="44030" name="Mena Boemo ba Hona Joale"/>
+					<Item id="44031" name="Bula Boemo ba Hona Joale"/>
+					<Item id="44049" name="Kakaretso..."/>
+					<Item id="44080" name="'Mapa oa Tokomane"/>
+					<Item id="44070" name="Lethathamo la Litokomane"/>
+					<Item id="44084" name="Lenane la Mesebetsi"/>
+					<Item id="44085" name="Sephutheli joalo ka Sebaka sa Mosebetsi"/>
+					<Item id="44086" name="Taba ea Pele"/>
+					<Item id="44087" name="Taba ea Bobeli"/>
+					<Item id="44088" name="Taba ea boraro"/>
+					<Item id="44089" name="Taba ea 4"/>
+					<Item id="44090" name="Taba ea bo-5"/>
+					<Item id="44091" name="Taba ea bo 6"/>
+					<Item id="44092" name="Taba ea bo7"/>
+					<Item id="44093" name="Taba ea borobeli"/>
+					<Item id="44094" name="Taba ea bo-9"/>
+					<Item id="44116" name="Taba ea Pele"/>
+					<Item id="44117" name="Taba ea ho Qetela"/>
+					<Item id="44095" name="Taba e latelang"/>
+					<Item id="44096" name="Taba e Fetileng"/>
+					<Item id="44097" name="Tlhokomelo (mohatla -f)"/>
+					<Item id="44098" name="Tsamaisa Taba Pele"/>
+					<Item id="44099" name="Suthisa Tab Morao"/>
+					<Item id="44110" name="Tlosa Mmala"/>
+					<Item id="44111" name="Sebelisa Mmala 1"/>
+					<Item id="44112" name="Sebelisa Mmala 2"/>
+					<Item id="44113" name="Sebelisa Mmala 3"/>
+					<Item id="44114" name="Sebelisa Mmala 4"/>
+					<Item id="44115" name="Sebelisa Mmala 5"/>
+					<Item id="44130" name="Bontša Litlhaku Tse sa Hatiseng"/>
+					<Item id="44131" name="Hlahisa Litlhaku tsa Taolo Unicode EOL"/>
+					<Item id="44032" name="Fetola Mokhoa oa Sekrine se Tletseng"/>
+					<Item id="44033" name="Khutlisa Zoom e Ikemetseng"/>
+					<Item id="44034" name="Kamehla o Holimo"/>
+					<Item id="44035" name="Synchronize Vertical Scrolling"/>
+					<Item id="44036" name="Synchronize Horizontal Scrolling"/>
+					<Item id="44041" name="Hlahisa Letšoao la ho Koaela"/>
+					<Item id="44072" name="Tsepamisa Mohopolo ho E 'ngoe Pono"/>
+					<Item id="44081" name="Sehlopha sa morero 1"/>
+					<Item id="44082" name="Project Panel 2"/>
+					<Item id="44083" name="Project Panel 3"/>
+					<Item id="45001" name="Windows (CR LF)"/>
+					<Item id="45002" name="Unix (LF)"/>
+					<Item id="45003" name="Macintosh (CR)"/>
+					<Item id="45004" name="ANSI"/>
+					<Item id="45005" name="UTF-8-BOM"/>
+					<Item id="45006" name="UTF-16 BE BOM"/>
+					<Item id="45007" name="UTF-16 LE BOM"/>
+					<Item id="45008" name="UTF-8"/>
+					<Item id="45009" name="Fetolela ho ANSI"/>
+					<Item id="45010" name="Fetolela ho UTF-8"/>
+					<Item id="45011" name="Fetolela ho UTF-8-BOM"/>
+					<Item id="45012" name="Fetolela ho UTF-16 BE BOM"/>
+					<Item id="45013" name="Fetolela ho UTF-16 LE BOM"/>
+					<Item id="45060" name="Big5 (ea Setso)"/>
+					<Item id="45061" name="GB2312 (E Nolofalitsoeng)"/>
+					<Item id="45054" name="OEM 861: Icelandic"/>
+					<Item id="45057" name="OEM 865: Nordic"/>
+					<Item id="45053" name="OEM 860: Sepotoketsi"/>
+					<Item id="45056" name="OEM 863: Sefora"/>
+					<Item id="10001" name="Tsamaea ho Sheba Tse Ling"/>
+					<Item id="10002" name="Clone to Other View"/>
+					<Item id="10003" name="Fetela Boemong bo Bocha"/>
+					<Item id="10004" name="Bula ka Sebopeho se Secha"/>
+					<Item id="10005" name="Tsamaisa ho Qala"/>
+					<Item id="10006" name="Suthela Qetellong"/>
+					<Item id="46001" name="Mohlophisi oa Setaele..."/>
+					<Item id="46016" name="Ha ho letho (Mongolo o Tloaelehileng)"/>
+					<Item id="46250" name="Hlalosa puo ya hao..."/>
+					<Item id="46300" name="Bula sephutheli sa User Defined Language..."/>
+					<Item id="46301" name="Pokello ea Lipuo Tse Hlalositsoeng ke Basebelisi Notepad++"/>
+					<Item id="46180" name="Mosebelisi-Defined"/>
+					<Item id="47000" name="Mabapi le Notepad++"/>
+					<Item id="47010" name="Likhohlano tsa Line Line..."/>
+					<Item id="47001" name="Notepad++ Lehae"/>
+					<Item id="47002" name="Notepad++ Project Leqephe"/>
+					<Item id="47003" name="Notepad++ Online User Manual"/>
+					<Item id="47004" name="Sechaba sa Notepad++ (Forum)"/>
+					<Item id="47012" name="Litaba tsa ho lokisa..."/>
+					<Item id="47005" name="Fumana li-plugins tse ling"/>
+					<Item id="47006" name="Ntlafatsa Notepad++"/>
+					<Item id="47009" name="Beha Proxy ea ho Apdeita..."/>
+					<Item id="48005" name="Fumana li-plugin..."/>
+					<Item id="48006" name="Theme(li)"/>
+					<Item id="48018" name="Fetola Popup ContextMenu"/>
+					<Item id="48009" name="Shortcut Mapper..."/>
+					<Item id="48011" name="Likhetho..."/>
+					<Item id="48014" name="Bula Sephutheli sa li-plugins..."/>
+					<Item id="48015" name="Tsamaiso ea li-plugins..."/>
+					<Item id="48501" name="Hlahisa..."/>
+					<Item id="48502" name="Hlahisa ho tsoa ho lifaele..."/>
+					<Item id="48503" name="Hlahisa ho tsoa ho khetho ho clipboard"/>
+					<Item id="48504" name="Hlahisa..."/>
+					<Item id="48505" name="Hlahisa ho tsoa ho lifaele..."/>
+					<Item id="48506" name="Hlahisa ho tsoa ho khetho ho clipboard"/>
+					<Item id="48507" name="Hlahisa..."/>
+					<Item id="48508" name="Hlahisa ho tsoa ho lifaele..."/>
+					<Item id="48509" name="Hlahisa ho tsoa ho khetho ho clipboard"/>
+					<Item id="48510" name="Hlahisa..."/>
+					<Item id="48511" name="Hlahisa ho tsoa lifaeleng..."/>
+					<Item id="48512" name="Hlahisa ho tsoa ho khetho ho clipboard"/>
+					<Item id="49000" name="Matha..."/>
+
+					<Item id="50000" name="Ho Phetha Mosebetsi"/>
+					<Item id="50001" name="Ho Phetha Mantsoe"/>
+					<Item id="50002" name="Tlhahiso ea Mekhatlo ea Mosebetsi"/>
+					<Item id="50010" name="Mekhahlelo ea Mosebetsi Fetileng Tlhahiso"/>
+					<Item id="50011" name="Mekhahlelo ea Mosebetsi Latelang Tlhahiso"/>
+					<Item id="50005" name="Fetolela macro rekoto"/>
+					<Item id="50006" name="Pheletso ea Tsela"/>
+					<Item id="44042" name="Pata Lines"/>
+					<Item id="42040" name="Bula Lifaele Tsohle Tsa Haufinyane"/>
+					<Item id="42041" name="Lethathamo le Hloekileng la Lifaele Tsa Haufinyane"/>
+					<Item id="48016" name="Fetola Shortcut/Delete Macro..."/>
+					<Item id="48017" name="Fetola Shortcut/Delete Command..."/>
+
+					<Item id="11001" name="Windows..."/>
+					<Item id="11002" name="Lebitso A ho Z"/>
+					<Item id="11003" name="Lebitso Z ho A"/>
+					<Item id="11004" name="Tsela A ho ea Z"/>
+					<Item id="11005" name="Tsela ea Z ho ea ho A"/>
+					<Item id="11006" name="Mofuta oa A ho ea ho Z"/>
+					<Item id="11007" name="Mofuta oa Z ho ea ho A"/>
+					<Item id="11008" name="Bolelele ba Litaba bo ea nyoloha"/>
+					<Item id="11009" name="Bolelele ba Litaba bo ea theoha"/>
+					<Item id="11010" name="Nako e Fetohileng e ea nyoloha"/>
+					<Item id="11011" name="Nako e Fetohileng e ea theoha"/>
+				</Commands>
+			</Main>
+			<TabBar>
+				<Item CMDID="41003" name="Kwala"/>
+				<Item CMDID="0" name="Koala Li-tabs tse ngata"/>
+				<Item CMDID="41005" name="Koala Tsohle EMPA Sena"/>
+				<Item CMDID="41026" name="Koala Tsohle EMPA E Pinnoe"/>
+				<Item CMDID="41009" name="Koala Tsohle ho Le letšehali"/>
+				<Item CMDID="41018" name="Koala Tsohle ka ho Le letona"/>
+				<Item CMDID="41024" name="Koala Tsohle Tse sa Fetoheng"/>
+				<Item CMDID="44048" name="Pin Tab" alternativeName="Hlakola Tab"/>
+				<Item CMDID="41006" name="Boloka"/>
+				<Item CMDID="41008" name="Boloka Joalo ka..."/>
+				<Item CMDID="1" name="Bula ho"/>
+				<Item CMDID="41019" name="Bula Sephutheli se Nang le ho Sebatli"/>
+				<Item CMDID="41020" name="Bula Folder e nang le cmd"/>
+				<Item CMDID="41025" name="Bula Sephutheli se nang le Sephutheloana joalo ka Sebaka sa Mosebetsi"/>
+				<Item CMDID="41023" name="Bula ho Default Viewer"/>
+				<Item CMDID="41017" name="Reha bocha..."/>
+				<Item CMDID="41016" name="Suthela ho Recycle Bin"/>
+				<Item CMDID="41014" name="Kenya hape"/>
+				<Item CMDID="41010" name="Hatisa..."/>
+				<Item CMDID="42028" name="Bala Feela ho Notepad++"/>
+				<Item CMDID="42033" name="Tšobotsi ea ho Bala Feela ho Windows"/>
+				<Item CMDID="2" name="Kopitsa ho Clipboard"/>
+				<Item CMDID="42029" name="Kopitsa Tsela e Felletseng ea Lifaele"/>
+				<Item CMDID="42030" name="Kopitsa Filename"/>
+				<Item CMDID="42031" name="Kopitsa Dir ea Hona joale.Tsela"/>
+				<Item CMDID="3" name="Tsamaisa Tokomane"/>
+				<Item CMDID="10005" name="Tsamaisa ho Qala"/>
+				<Item CMDID="10006" name="Suthela Qetellong"/>
+				<Item CMDID="10001" name="Tsamaea ho Sheba Tse Ling"/>
+				<Item CMDID="10002" name="Clone to Other View"/>
+				<Item CMDID="10003" name="Fetela Boemong bo Bocha"/>
+				<Item CMDID="10004" name="Bula ka Sebopeho se Secha"/>
+				<Item CMDID="4" name="Kenya Mmala ho Tab"/>
+				<Item CMDID="44111" name="Sebelisa Mmala 1"/>
+				<Item CMDID="44112" name="Sebelisa Mmala 2"/>
+				<Item CMDID="44113" name="Sebelisa Mmala 3"/>
+				<Item CMDID="44114" name="Sebelisa Mmala 4"/>
+				<Item CMDID="44115" name="Sebelisa Mmala 5"/>
+				<Item CMDID="44110" name="Tlosa Mmala"/>
+			</TabBar>
+			<TrayIcon>
+				<Item id="43101" name="Kenya tshebetsong"/>
+				<Item id="43102" name="Ncha"/>
+				<Item id="43103" name="Ncha le Peista"/>
+				<Item id="43104" name="Bula..."/>
+				<Item id="43013" name="Fumana ho Lifaele..."/>
+				<Item id="43105" name="Koala Letšoao la Tray"/>
+			</TrayIcon>
+		</Menu>
+
+		<Dialog>
+			<Find title="" titleFind="Fumana" titleReplace="Kenya sebaka" titleFindInFiles="Fumana ho Lifaele" titleFindInProjects="Fumana ho Merero" titleMark="Tšoaea">
+				<Item id="1" name="Fumana E latelang"/>
+				<Item id="1722" name="Tsela ea morao"/>
+				<Item id="2" name="Koala"/>
+				<Item id="1620" name="Fumana eng:"/>
+				<Item id="1603" name="Bapisa lentsoe kaofela feela"/>
+				<Item id="1604" name="Nyeoe ea papali"/>
+				<Item id="1605" name="Mantsoe a tloaelehileng"/>
+				<Item id="1606" name="Qetella"/>
+				<Item id="1614" name="Palo"/>
+				<Item id="1615" name="Tšoaea Tsohle"/>
+				<Item id="1616" name="Mohala oa bookmark"/>
+				<Item id="1618" name="Hlakola bakeng sa patlisiso ka 'ngoe"/>
+				<Item id="1611" name="Kenya sebaka ka:"/>
+				<Item id="1608" name="Kenya sebaka"/>
+				<Item id="1609" name="Tlosa Tsohle"/>
+				<Item id="1687" name="Ho lahleheloa ke maikutlo"/>
+				<Item id="1688" name="Kamehla"/>
+				<Item id="1632" name="Ka khetho"/>
+				<Item id="1633" name="Hlakola matšoao ohle"/>
+				<Item id="1635" name="Fetola Tsohle Litokomaneng Tsohle Tse Butsoeng"/>
+				<Item id="1636" name="Fumana Tsohle Litokomaneng Tsohle Tse Butsoeng"/>
+				<Item id="1654" name="Lisefe:"/>
+				<Item id="1655" name="Directory:"/>
+				<Item id="1656" name="Fumana Tsohle"/>
+				<Item id="1658" name="Lifoldareng tsohle tse nyane"/>
+				<Item id="1659" name="Lifoldareng tse patiloeng"/>
+				<Item id="1624" name="Mokhoa oa ho batla"/>
+				<Item id="1625" name="Tloaelehileng"/>
+				<Item id="1626" name="E atolositsoe (\n, \r, \t, \0, \x...)"/>
+				<Item id="1660" name="Fetola ho Lifaele"/>
+				<Item id="1665" name="Fetola ho Merero"/>
+				<Item id="1662" name="Project Panel 1"/>
+				<Item id="1663" name="Project Panel 2"/>
+				<Item id="1664" name="Project Panel 3"/>
+				<Item id="1641" name="Fumana Tsohle ho Tokomane ea Hona Joale"/>
+				<Item id="1686" name="Ponaletso"/>
+				<Item id="1703" name=".e tsamaisanang le mola o mocha"/>
+				<Item id="1721" name="▲"/>
+				<Item id="1723" name="▼ Fumana E latelang"/>
+				<Item id="1725" name="Kopitsa Mongolo o tšoailoeng"/>
+				<Menu>
+					<Item id="1726" name="⇅ Fetola Fumana ka Sebaka"/>
+					<Item id="1727" name="⤵ Kopitsa ho tloha ho Fumana ho ea ho Replace"/>
+					<Item id="1728" name="⤴ Kopitsa ho tsoa sebakeng sa ho Fumana"/>
+				</Menu>
+			</Find>
+
+			<IncrementalFind title="">
+				<Item id="1681" name="Fumana:"/>
+				<Item id="1685" name="Nyeoe ea papali"/>
+				<Item id="1690" name="Totobatsa tsohle"/>
+			</IncrementalFind>
+
+			<FindCharsInRange title="Fumana Litlhaku ho Range...">
+				<Item id="2" name="Kwala"/>
+				<Item id="2901" name="Litlhaku tseo e seng tsa ASCII (128–255)"/>
+				<Item id="2902" name="Litlhaku tsa ASCII (0–127)"/>
+				<Item id="2903" name="Lethathamo le ikhethileng (0–255):"/>
+				<Item id="2906" name="Holimo"/>
+				<Item id="2907" name="Tlase"/>
+				<Item id="2908" name="Tataiso"/>
+				<Item id="2909" name="Qetella"/>
+				<Item id="2910" name="Fumana"/>
+			</FindCharsInRange>
+
+			<GoToLine title="Eya ho...">
+				<Item id="2007" name="Mola"/>
+				<Item id="2008" name="Offset"/>
+				<Item id="1" name="Eya"/>
+				<Item id="2" name="Ha ho moo ke eang"/>
+				<Item id="2004" name="U teng:"/>
+				<Item id="2005" name="U batla ho ea ho:"/>
+				<Item id="2006" name="Ha o khone ho ea hole ho feta:"/>
+			</GoToLine>
+
+			<Run title="Matha...">
+				<Item id="1903" name="Lenaneo la ho Matha"/>
+				<Item id="1" name="Matha"/>
+				<Item id="2" name="Hlakola"/>
+				<Item id="1904" name="Boloka..."/>
+			</Run>
+
+			<MD5FromFilesDlg title="Hlahisa MD5 digest ho tsoa lifaeleng">
+				<Item id="1922" name="Khetha lifaele ho hlahisa MD5..."/>
+				<Item id="1924" name="Kopitsa ho Clipboard"/>
+				<Item id="2" name="Kwala"/>
+			</MD5FromFilesDlg>
+
+			<MD5FromTextDlg title="Hlahisa MD5 digest">
+				<Item id="1932" name="Tšoara mola o mong le o mong e le khoele e arohaneng"/>
+				<Item id="1934" name="Kopitsa ho Clipboard"/>
+				<Item id="2" name="Kwala"/>
+			</MD5FromTextDlg>
+
+			<SHA256FromFilesDlg title="Hlahisa SHA-256 digest ho tsoa lifaeleng">
+				<Item id="1922" name="Khetha lifaele tseo u ka li hlahisang SHA-256..."/>
+				<Item id="1924" name="Kopitsa ho Clipboard"/>
+				<Item id="2" name="Kwala"/>
+			</SHA256FromFilesDlg>
+
+			<SHA256FromTextDlg title="Hlahisa SHA-256 digest">
+				<Item id="1932" name="Tšoara mola o mong le o mong e le khoele e arohaneng"/>
+				<Item id="1934" name="Kopitsa ho Clipboard"/>
+				<Item id="2" name="Kwala"/>
+			</SHA256FromTextDlg>
+
+			<SHA1FromFilesDlg title="Hlahisa SHA-1 digest ho tsoa lifaeleng">
+				<Item id="1922" name="Khetha lifaele tseo u ka li hlahisang SHA-1..."/>
+				<Item id="1924" name="Kopitsa ho Clipboard"/>
+				<Item id="2" name="Kwala"/>
+			</SHA1FromFilesDlg>
+
+			<SHA1FromTextDlg title="Etsa SHA-1 digest">
+				<Item id="1932" name="Tšoara mola o mong le o mong e le khoele e arohaneng"/>
+				<Item id="1934" name="Kopitsa ho Clipboard"/>
+				<Item id="2" name="Kwala"/>
+			</SHA1FromTextDlg>
+
+			<SHA512FromFilesDlg title="Hlahisa SHA-512 digest ho tsoa lifaeleng">
+				<Item id="1922" name="Khetha lifaele tseo u ka li hlahisang SHA-512..."/>
+				<Item id="1924" name="Kopitsa ho Clipboard"/>
+				<Item id="2" name="Kwala"/>
+			</SHA512FromFilesDlg>
+
+			<SHA512FromTextDlg title="Hlahisa SHA-512 digest">
+				<Item id="1932" name="Tšoara mola o mong le o mong e le khoele e arohaneng"/>
+				<Item id="1934" name="Kopitsa ho Clipboard"/>
+				<Item id="2" name="Kwala"/>
+			</SHA512FromTextDlg>
+			<PluginsAdminDlg title="Li-plugins Admin" titleAvailable="Available" titleUpdates="Updates" titleInstalled="Installed" titleIncompatible="Incompatible">
+				<ColumnPlugin name="Plugin"/>
+				<ColumnVersion name="Phetolelo"/>
+				<Item id="5501" name="Batla:"/>
+				<Item id="5503" name="Kenya"/>
+				<Item id="5504" name="Nchafatso"/>
+				<Item id="5505" name="Tlosa"/>
+				<Item id="5508" name="E latelang"/>
+				<Item id="5509" name="Mofuta oa lenane la plugin:"/>
+				<Item id="5511" name="Sebaka sa polokelo ea lenane la plugin"/>
+				<Item id="2" name="Kwala"/>
+			</PluginsAdminDlg>
+
+			<StyleConfig title="Style Configurator">
+				<Item id="2" name="Hlakola"/>
+				<Item id="2301" name="Boloka Koala"/>
+				<Item id="2303" name="Ponaletso"/>
+				<Item id="2306" name="Khetha sehlooho:"/>
+				<SubDialog>
+					<Item id="2204" name="Bold"/>
+					<Item id="2205" name="Mongolo o tšekaletseng"/>
+					<Item id="2206" name="Mmala o ka pele"/>
+					<Item id="2207" name="'Mala oa bokamorao"/>
+					<Item id="2208" name="Lebitso la mongolo:"/>
+					<Item id="2209" name="Boholo ba mongolo:"/>
+					<Item id="2211" name="Setaele:"/>
+					<Item id="2212" name="Setaele sa Mebala"/>
+					<Item id="2213" name="Setaele sa Mongolo"/>
+					<Item id="2214" name="Boemo ba kamehla.:"/>
+					<Item id="2216" name="Ext.:"/>
+					<Item id="2218" name="Seha tlase"/>
+					<Item id="2219" name="Mantsoe a mantlha a kamehla"/>
+					<Item id="2221" name="Mantsoe a hlalosoang ke basebelisi"/>
+					<Item id="2225" name="Puo:"/>
+					<Item id="2226" name="Qobella 'mala oa bokapele bakeng sa mefuta eohle"/>
+					<Item id="2227" name="Qobella bokamorao ba mebala bakeng sa mefuta eohle"/>
+					<Item id="2228" name="Qobella khetho ea litlhaku bakeng sa mefuta eohle"/>
+					<Item id="2229" name="Qobella khetho ea boholo ba fonte bakeng sa mefuta eohle"/>
+					<Item id="2230" name="Qobella khetho e sebete bakeng sa mefuta eohle"/>
+					<Item id="2231" name="Qobella khetho e sekameng bakeng sa mefuta eohle"/>
+					<Item id="2232" name="Qobella khetho ea setaele bakeng sa mefuta eohle"/>
+					<Item id="2234" name="Eya ho litlhophiso"/>
+					<!-- Don't translate "Global override" -->
+					<Item id="2235" name="Global override ke eng?"/>
+				</SubDialog>
+			</StyleConfig>
+
+			<ShortcutMapper title="Shortcut Mapper">
+				<Item id="2602" name="Fetola"/>
+				<Item id="2603" name="Hlakola"/>
+				<Item id="2606" name="Hlakola"/>
+				<Item id="2607" name="Sefe:"/>
+				<Item id="1" name="Kwala"/>
+				<ColumnName name="Lebitso"/>
+				<ColumnShortcut name="Shortcut"/>
+				<ColumnCategory name="Sehlopha"/>
+				<ColumnPlugin name="Plugin"/>
+				<MainMenuTab name="Lenane la mantlha"/>
+				<MacrosTab name="Macros"/>
+				<RunCommandsTab name="Matha litaelo"/>
+				<PluginCommandsTab name="Litaelo tsa plugin"/>
+				<ScintillaCommandsTab name="Litaelo tsa Scintilla"/>
+				<ConflictInfoOk name="Ha ho likhohlano tse khaoletsang bakeng sa ntho ena."/>
+				<ConflictInfoEditing name="Ha ho likhohlano ..."/>
+				<AboutCategory name="Mabapi le"/>
+				<ModifyContextMenu name="Fetola"/>
+				<DeleteContextMenu name="Hlakola"/>
+				<ClearContextMenu name="Hlakola"/>
+				<MainCommandNames>
+					<Item id="41019" name="Bula foldara e nang le ho Explorer"/>
+					<Item id="41020" name="Bula sephutheli se nang le Command Prompt"/>
+					<Item id="41021" name="Khutlisa Faele e Koetsoeng Haufinyane"/>
+					<Item id="45001" name="Phetoho ea EOL ho Windows (CR LF)"/>
+					<Item id="45002" name="EOL Conversion to Unix (LF)"/>
+					<Item id="45003" name="EOL Conversion to Macintosh (CR)"/>
+					<Item id="43022" name="Setaele kaofela u sebelisa mokhoa oa pele"/>
+					<Item id="43024" name="Setaele kaofela u sebelisa mokhoa oa bobeli"/>
+					<Item id="43026" name="Setaele kaofela u sebelisa mokhoa oa boraro"/>
+					<Item id="43028" name="Setaele kaofela u sebelisa mokhoa oa 4"/>
+					<Item id="43030" name="Setaele kaofela u sebelisa mokhoa oa bohlano"/>
+					<Item id="43062" name="Mokhoa oa pele o sebelisa mokhoa oa pele"/>
+					<Item id="43063" name="Mokhoa oa pele o sebelisa mokhoa oa bobeli"/>
+					<Item id="43064" name="Mokhoa oa pele o sebelisa mokhoa oa boraro"/>
+					<Item id="43065" name="Mokhoa oa pele o sebelisa mokhoa oa 4"/>
+					<Item id="43066" name="Mokhoa oa pele o sebelisa mokhoa oa bohlano"/>
+					<Item id="43023" name="Hlakola mokhoa oa pele"/>
+					<Item id="43025" name="Hlakola mokhoa oa bobeli"/>
+					<Item id="43027" name="Hlakola mokhoa oa boraro"/>
+					<Item id="43029" name="Hlakola mokhoa oa 4"/>
+					<Item id="43031" name="Hlakola mokhoa oa bo-5"/>
+					<Item id="43032" name="Hlakola mefuta eohle"/>
+					<Item id="43033" name="Setaele se fetileng sa mofuta oa pele"/>
+					<Item id="43034" name="Mokhoa o fetileng oa mofuta oa bobeli"/>
+					<Item id="43035" name="Setaele se fetileng sa 3rd style"/>
+					<Item id="43036" name="Setaele se fetileng sa 4th style"/>
+					<Item id="43037" name="Mokhoa o fetileng oa mokhoa oa bo-5"/>
+					<Item id="43038" name="Setaele se fetileng sa Find Mark style"/>
+					<Item id="43039" name="Mokhoa o latelang oa mokhoa oa pele"/>
+					<Item id="43040" name="Mokhoa o latelang oa mofuta oa bobeli"/>
+					<Item id="43041" name="Setaele se latelang sa 3rd style"/>
+					<Item id="43042" name="Setaele se latelang sa 4th style"/>
+					<Item id="43043" name="Setaele se latelang sa 5th style"/>
+					<Item id="43044" name="Setaele se latelang sa Find Mark style"/>
+					<Item id="43055" name="Copy Styled Text of 1st Style"/>
+					<Item id="43056" name="Copy Styled Text of 2nd Style"/>
+					<Item id="43057" name="Copy Styled Text of 3rd Style"/>
+					<Item id="43058" name="Copy Styled Text of 4th Style"/>
+					<Item id="43059" name="Copy Styled Text of 5th Style"/>
+					<Item id="43060" name="Copy Styled Text of All Styles"/>
+					<Item id="43061" name="Kopitsa mongolo o hlophisitsoeng oa mofuta oa Find Mark"/>
+					<Item id="44100" name="Sheba faele ea hajoale ho Firefox"/>
+					<Item id="44101" name="Sheba faele ea hajoale ho Chrome"/>
+					<Item id="44103" name="Sheba faele ea hajoale ho IE"/>
+					<Item id="44102" name="Sheba faele ea hajoale ho Edge"/>
+					<Item id="50003" name="Fetohela tokomaneng e fetileng"/>
+					<Item id="50004" name="Fetohela tokomaneng e latelang"/>
+					<Item id="44051" name="Mena Mohato 1"/>
+					<Item id="44052" name="Mena Mohato 2"/>
+					<Item id="44053" name="Mena Mohato 3"/>
+					<Item id="44054" name="Mena Mohato 4"/>
+					<Item id="44055" name="Mena Mohato 5"/>
+					<Item id="44056" name="Mena Mohato 6"/>
+					<Item id="44057" name="Mena Mohato 7"/>
+					<Item id="44058" name="Mena Mohato 8"/>
+					<Item id="44061" name="Hlahisa Boemo ba 1"/>
+					<Item id="44062" name="Hlahisa Boemo ba 2"/>
+					<Item id="44063" name="Hlahisa Boemo ba 3"/>
+					<Item id="44064" name="Hlahisa Boemo ba 4"/>
+					<Item id="44065" name="Hlahisa Boemo ba 5"/>
+					<Item id="44066" name="Fetola Mohato oa 6"/>
+					<Item id="44067" name="Hlahisa Boemo ba 7"/>
+					<Item id="44068" name="Hlahisa Boemo ba 8"/>
+					<Item id="44081" name="Toggle Project Panel 1"/>
+					<Item id="44082" name="Toggle Project Panel 2"/>
+					<Item id="44083" name="Toggle Project Panel 3"/>
+					<Item id="44085" name="Fetolela Sephutheli joalo ka Sebaka sa Mosebetsi"/>
+					<Item id="44080" name="Toggle Document Map"/>
+					<Item id="44070" name="Toggle Document List"/>
+					<Item id="44084" name="Toggle Function List"/>
+					<Item id="50005" name="Fetolela ho rekota ho makhro"/>
+					<Item id="44104" name="Fetolela ho Project Panel 1"/>
+					<Item id="44105" name="Fetolela ho Project Panel 2"/>
+					<Item id="44106" name="Fetolela ho Project Panel 3"/>
+					<Item id="44107" name="Fetolela ho Folder joalo ka Sebaka sa Mosebetsi"/>
+					<Item id="44109" name="Fetohela ho Lethathamo la Litokomane"/>
+					<Item id="44108" name="Fetohela ho Lenane la Mesebetsi"/>
+					<Item id="44110" name="Tlosa 'Mala oa Letlapa"/>
+					<Item id="44111" name="Kenya Mmala oa Letlapa 1"/>
+					<Item id="44112" name="Kenya Mmala oa Tab 2"/>
+					<Item id="44113" name="Kenya 'Mala oa Thebo 3"/>
+					<Item id="44114" name="Kenya Mobala oa Tab 4"/>
+					<Item id="44115" name="Kenya Mobala oa Tab 5"/>
+					<Item id="11002" name="Hlopha ka Lebitso la A ho ea ho Z"/>
+					<Item id="11003" name="Hlopha ka Lebitso la Z ho isa A"/>
+					<Item id="11004" name="Hlophisa ka Tsela ea A ho ea ho Z"/>
+					<Item id="11005" name="Hlophisa ka Tsela ea Z ho ea ho A"/>
+					<Item id="11006" name="Hlopha ka Mofuta oa A ho ea ho Z"/>
+					<Item id="11007" name="Hlopha ka Mofuta oa Z ho ea ho A"/>
+					<Item id="11008" name="Hlophisa ho ea ka Bolelele ba Boitsebiso bo nyolohang"/>
+					<Item id="11009" name="Hlophisa ho ea ka Bolelele ba Litaba bo theoha"/>
+				</MainCommandNames>
+			</ShortcutMapper>
+			<ShortcutMapperSubDialg title="Shortcut">
+				<Item id="1" name="OK"/>
+				<Item id="2" name="Hlakola"/>
+				<Item id="5006" name="Lebitso"/>
+				<Item id="5008" name="Kenya"/>
+				<Item id="5009" name="Tlosa"/>
+				<Item id="5010" name="Etsa kopo"/>
+				<Item id="5007" name="Sena se tla tlosa shortcut taelong ena"/>
+				<Item id="5012" name="TLHOKOMELISO E FUMANE!"/>
+			</ShortcutMapperSubDialg>
+			<UserDefine title="E hlalositsoe ke mosebelisi">
+				<Item id="20001" name="Boemakepe"/>
+				<Item id="20002" name="Reha lebitso bocha"/>
+				<Item id="20003" name="Theha e ncha..."/>
+				<Item id="20004" name="Tlosa"/>
+				<Item id="20005" name="Boloka Joalo ka..."/>
+				<Item id="20007" name="Puo ea mosebelisi"/>
+				<Item id="20009" name="Ext.:"/>
+				<Item id="20012" name="Iphapanyetse nyeoe"/>
+				<Item id="20011" name="Ponaletso"/>
+				<Item id="20015" name="Theha..."/>
+				<Item id="20016" name="Romella..."/>
+				<Item id="20017" name="Tlosa"/>
+				<StylerDialog title="Puisano ea Styler">
+					<Item id="25030" name="Likhetho tsa litlhaku"/>
+					<Item id="25006" name="Mmala o ka pele"/>
+					<Item id="25007" name="'Mala oa bokamorao"/>
+					<Item id="25031" name="Lebitso:"/>
+					<Item id="25032" name="Boholo:"/>
+					<Item id="25001" name="Bold"/>
+					<Item id="25002" name="Mongolo o tšekaletseng"/>
+					<Item id="25003" name="Seha tlase"/>
+					<Item id="25029" name="Nesting"/>
+					<Item id="25008" name="Delimiter 1"/>
+					<Item id="25009" name="Delimiter 2"/>
+					<Item id="25010" name="Delimiter 3"/>
+					<Item id="25011" name="Delimiter 4"/>
+					<Item id="25012" name="Delimiter 5"/>
+					<Item id="25013" name="Delimiter 6"/>
+					<Item id="25014" name="Delimiter 7"/>
+					<Item id="25015" name="Delimiter 8"/>
+					<Item id="25018" name="Keyword 1"/>
+					<Item id="25019" name="Keyword 2"/>
+					<Item id="25020" name="Keyword 3"/>
+					<Item id="25021" name="Keyword 4"/>
+					<Item id="25022" name="Keyword 5"/>
+					<Item id="25023" name="Keyword 6"/>
+					<Item id="25024" name="Keyword 7"/>
+					<Item id="25025" name="Keyword 8"/>
+					<Item id="25016" name="Maikutlo"/>
+					<Item id="25017" name="Mohala oa maikutlo"/>
+					<Item id="25026" name="Opereishene 1"/>
+					<Item id="25027" name="Opereishene 2"/>
+					<Item id="25028" name="Linomoro"/>
+					<Item id="25033" name="E pepenene"/>
+					<Item id="25034" name="E pepenene"/>
+					<Item id="1" name="OK"/>
+					<Item id="2" name="Hlakola"/>
+				</StylerDialog>
+				<Folder title="Mehala ea Sephutheli">
+					<Item id="21101" name="Setaele sa kamehla"/>
+					<Item id="21102" name="Styler"/>
+					<Item id="21103" name="User Defined Languages ​​online help"/>
+					<Item id="21105" name="Litokomane"/>
+					<Item id="21106" name="Mena compact (mena le mela e se nang letho)"/>
+					<Item id="21220" name="Ho mena ka khoutu 1 setaele"/>
+					<Item id="21224" name="Bula:"/>
+					<Item id="21225" name="Hare:"/>
+					<Item id="21226" name="Kwala:"/>
+					<Item id="21227" name="Styler"/>
+					<Item id="21320" name="Ho mena ka mokhoa oa 2 oa khoutu (ho hlokahala likarohano)"/>
+					<Item id="21324" name="Bula:"/>
+					<Item id="21325" name="Hare:"/>
+					<Item id="21326" name="Kwala:"/>
+					<Item id="21327" name="Styler"/>
+					<Item id="21420" name="Ho mena ka mokhoa oa maikutlo"/>
+					<Item id="21424" name="Bula:"/>
+					<Item id="21425" name="Hare:"/>
+					<Item id="21426" name="Kwala:"/>
+					<Item id="21427" name="Styler"/>
+				</Folder>
+				<Keywords title="Keywords Lists">
+					<Item id="22101" name="Sehlopha sa Pele"/>
+					<Item id="22201" name="Sehlopha sa 2"/>
+					<Item id="22301" name="Sehlopha sa 3"/>
+					<Item id="22401" name="Sehlopha sa 4"/>
+					<Item id="22451" name="Sehlopha sa 5"/>
+					<Item id="22501" name="Sehlopha sa 6"/>
+					<Item id="22551" name="Sehlopha sa bo7"/>
+					<Item id="22601" name="Sehlopha sa 8"/>
+					<Item id="22121" name="Mokhoa oa prefix"/>
+					<Item id="22221" name="Mokhoa oa prefix"/>
+					<Item id="22321" name="Boemo ba pele"/>
+					<Item id="22421" name="Mokhoa oa prefix"/>
+					<Item id="22471" name="Mokhoa oa prefix"/>
+					<Item id="22521" name="Mokhoa oa prefix"/>
+					<Item id="22571" name="Mokhoa oa prefix"/>
+					<Item id="22621" name="Mokhoa oa prefix"/>
+					<Item id="22122" name="Styler"/>
+					<Item id="22222" name="Styler"/>
+					<Item id="22322" name="Styler"/>
+					<Item id="22422" name="Styler"/>
+					<Item id="22472" name="Styler"/>
+					<Item id="22522" name="Styler"/>
+					<Item id="22572" name="Styler"/>
+					<Item id="22622" name="Styler"/>
+				</Keywords>
+				<Comment title="Nomoro ea Maikutlo">
+					<Item id="23003" name="Boemo ba maikutlo a mola"/>
+					<Item id="23004" name="Lumella kae kapa kae"/>
+					<Item id="23005" name="Matla qalong ea mola"/>
+					<Item id="23006" name="Dumella sebaka se sesweu se tlang pele"/>
+					<Item id="23001" name="Dumella ho menaha maikutlo"/>
+					<Item id="23326" name="Setaele"/>
+					<Item id="23323" name="Bula"/>
+					<Item id="23324" name="Tsoela pele ho sebapali"/>
+					<Item id="23325" name="Kwala"/>
+					<Item id="23301" name="Litlhaloso line style"/>
+					<Item id="23124" name="Styler"/>
+					<Item id="23122" name="Bula"/>
+					<Item id="23123" name="Kwala"/>
+					<Item id="23101" name="Mokhoa oa ho fana ka maikutlo"/>
+					<Item id="23201" name="Mokhoa oa linomoro"/>
+					<Item id="23220" name="Styler"/>
+					<Item id="23230" name="Sehlongoapele 1"/>
+					<Item id="23232" name="Sehlongoapele 2"/>
+					<Item id="23234" name="Keketso 1"/>
+					<Item id="23236" name="Keketso 2"/>
+					<Item id="23238" name="Suffix 1"/>
+					<Item id="23240" name="Suffix 2"/>
+					<Item id="23242" name="Sebaka:"/>
+					<Item id="23244" name="Searohanyi sa Decimal"/>
+					<Item id="23245" name="Ntlhe"/>
+					<Item id="23246" name="|Dikoma"/>
+					<Item id="23247" name="Ka bobeli"/>
+				</Comment>
+				<Operator title="Operators Delimiter">
+					<Item id="24101" name="Mokhoa oa li-operators"/>
+					<Item id="24113" name="Styler"/>
+					<Item id="24116" name="Basebelisi 1"/>
+					<Item id="24117" name="Basebelisi ba 2 (karohano e hlokahalang)"/>
+					<Item id="24201" name="Delimiter 1 style"/>
+					<Item id="24220" name="Bula:"/>
+					<Item id="24221" name="Pholoha:"/>
+					<Item id="24222" name="Kwala:"/>
+					<Item id="24223" name="Styler"/>
+					<Item id="24301" name="Delimiter 2 style"/>
+					<Item id="24320" name="Bula:"/>
+					<Item id="24321" name="Pholoha:"/>
+					<Item id="24322" name="Kwala:"/>
+					<Item id="24323" name="Styler"/>
+					<Item id="24401" name="Delimiter 3 style"/>
+					<Item id="24420" name="Bula:"/>
+					<Item id="24421" name="Pholoha:"/>
+					<Item id="24422" name="Kwala:"/>
+					<Item id="24423" name="Styler"/>
+					<Item id="24451" name="Delimiter 4 style"/>
+					<Item id="24470" name="Bula:"/>
+					<Item id="24471" name="Pholoha:"/>
+					<Item id="24472" name="Kwala:"/>
+					<Item id="24473" name="Styler"/>
+					<Item id="24501" name="Delimiter 5 style"/>
+					<Item id="24520" name="Bula:"/>
+					<Item id="24521" name="Pholoha:"/>
+					<Item id="24522" name="Kwala:"/>
+					<Item id="24523" name="Styler"/>
+					<Item id="24551" name="Delimiter 6 style"/>
+					<Item id="24570" name="Bula:"/>
+					<Item id="24571" name="Pholoha:"/>
+					<Item id="24572" name="Kwala:"/>
+					<Item id="24573" name="Styler"/>
+					<Item id="24601" name="Delimiter 7 style"/>
+					<Item id="24620" name="Bula:"/>
+					<Item id="24621" name="Pholoha:"/>
+					<Item id="24622" name="Kwala:"/>
+					<Item id="24623" name="Styler"/>
+					<Item id="24651" name="Delimiter 8 style"/>
+					<Item id="24670" name="Bula:"/>
+					<Item id="24671" name="Pholoha:"/>
+					<Item id="24672" name="Kwala:"/>
+					<Item id="24673" name="Styler"/>
+				</Operator>
+			</UserDefine>
+			<Preference title="Likhetho">
+				<Item id="6001" name="Kwala"/>
+				<Global title="Kakaretso">
+					<Item id="6123" name="Localization"/>
+					<Item id="6131" name="Lenane"/>
+					<Item id="6122" name="|Pata (sebelisa konopo ea Alt kapa F10 ho fetola)"/>
+					<Item id="6132" name="Pata likhatiso tse nepahetseng ＋ ▼ ✕"/>
+					<Item id="6133" name="Sebaka sa Boemo"/>
+					<Item id="6134" name="Pata"/>
+				</Global>
+
+				<Toolbar title="Toolbar">
+					<Item id="6102" name="Pata"/>
+					<Item id="6103" name="UI e hlakileng: e nyane"/>
+					<Item id="6104" name="UI e hlakileng: e kholo"/>
+					<Item id="6129" name="E Tlatsitse Fluent UI: e nyane"/>
+					<Item id="6130" name="E Tlatsitse Fluent UI: e kholo"/>
+					<Item id="6105" name="Litšoantšo tse tloaelehileng: tse nyenyane"/>
+					<Item id="6011" name="Colourization"/>
+					<Item id="6012" name="Felletse"/>
+					<Item id="6013" name="Karolelano"/>
+					<Item id="6014" name="Khetho ea mebala"/>
+					<Item id="6015" name="Ea kamehla"/>
+					<Item id="6016" name="Khubedu"/>
+					<Item id="6017" name="Botala"/>
+					<Item id="6018" name="Blue"/>
+					<Item id="6019" name="Pherese"/>
+					<Item id="6020" name="Cyan"/>
+					<Item id="6021" name="Mohloaare"/>
+					<Item id="6022" name="Yellow"/>
+					<Item id="6023" name="Sisteme Accent"/>
+					<Item id="6024" name="Tloaelo"/>
+				</Toolbar>
+
+				<Tabbar title="Tab Bar">
+					<Item id="6107" name="Fokotsa"/>
+					<Item id="6108" name="Notlela (ha ho ho hula le ho theola)"/>
+					<Item id="6109" name="Fetola 'mala oa tab e sa sebetseng"/>
+					<Item id="6110" name="Thala bar e mebala ho tab e sebetsang"/>
+					<Item id="6111" name="Hlahisa likonopo ho li-tab tse sa sebetseng"/>
+					<Item id="6112" name="Hlahisa konopo e koalang"/>
+					<Item id="6113" name="Tobetsa habeli ho koala tokomane"/>
+					<Item id="6115" name="Bulela karolo ea pin tab"/>
+					<Item id="6135" name="Hlahisa feela konopo e hatisitsoeng"/>
+					<Item id="6118" name="Pata"/>
+					<Item id="6119" name="Mehala e mengata"/>
+					<Item id="6120" name="E otlolohileng"/>
+					<Item id="6121" name="Tsoa ka ho koala tab ya ho qetela"/>
+					<Item id="6128" name="Matšoao a mang"/>
+					<Item id="6125" name="Boitšoaro"/>
+					<Item id="6126" name="Sheba ikutloa"/>
+					<Item id="6136" name="Max.Bolelele ba tabo:"/>
+				</Tabbar>
+
+				<Scintillas title="Fetola 1">
+					<Item id="6216" name="Litlhophiso tsa Caret"/>
+					<Item id="6217" name="Bophara:"/>
+					<Item id="6219" name="Sekhahla sa panya:"/>
+					<Item id="6221" name="F"/>
+					<Item id="6222" name="S"/>
+					<Item id="6246" name="Etsa hore litaelo tsa hajoale tse menahang / tse sa phutholohang li fetolehe"/>
+					<Item id="6227" name="Qela Mola"/>
+					<Item id="6228" name="Ea kamehla"/>
+					<Item id="6229" name="E tsamaellana"/>
+					<Item id="6230" name="Indent"/>
+					<Item id="6234" name="Thibela karolo e tsoetseng pele ea ho phenya ka lebaka la taba ea touchpad"/>
+					<Item id="6215" name="Numella fonte e boreleli"/>
+					<Item id="6236" name="Lumella ho tsamaisetsa ka nqane ho mola oa ho qetela"/>
+					<Item id="6239" name="Boloka khetho ha u tobetsa ka ho le letona ka ntle ho khetho"/>
+					<Item id="6245" name="Dumella sebaka sa sebele"/>
+					<Item id="6214" name="Numella Copy/Cut Line ntle le khetho"/>
+					<Item id="6225" name="Kenya 'mala o ikhethileng ho mongolo o khethiloeng"/>
+					<Item id="6651" name="Indicator Line ea Hona Joale"/>
+					<Item id="6652" name="Ha ho letho"/>
+					<Item id="6653" name="Highlight Background"/>
+					<Item id="6654" name="Frame"/>
+					<Item id="6655" name="Bophara:"/>
+				</Scintillas>
+
+				<Scintillas2 title="Editing 2">
+					<Item id="6521" name="Liphetoho tse ngata"/>
+					<Item id="6522" name="Etsa hore ho be le mekhoa e mengata ea ho fetola (Ctrl+Mouse to/ho khetha)"/>
+					<Item id="6523" name="Numella Khetho ea Kholomo ho Liphetoho tse ngata"/>
+					<Item id="6247" name="EOL (CRLF)"/><!-- Don't translate "(CRLF)" -->
+					<Item id="6248" name="Ea kamehla"/>
+					<Item id="6249" name="Mongolo o Hlakileng"/>
+					<Item id="6250" name="Mmala o Tloaelehileng"/>
+					<Item id="6252" name="Litlhaku Tse sa Hatiseng"/>
+					<Item id="6260" name="Ponahalo"/>
+					<Item id="6254" name="Kgutsufatso"/>
+					<Item id="6255" name="Codepoint"/>
+					<Item id="6256" name="Mmala o Tloaelehileng"/>
+					<Item id="6258" name="Kenya litlhophiso tsa Ponahalo ho C0, C1 Unicode EOL"/>
+					<Item id="6259" name="Thibela ho ngola tlhaku ea taolo (khoutu ea C0) ho tokomane"/>
+				</Scintillas2>
+
+				<DarkMode title="Mokhoa o Lefifi">
+					<Item id="7131" name="Mokhoa o khanyang"/>
+					<Item id="7132" name="Mokhoa o lefifi"/>
+					<Item id="7133" name="Latela Windows"/>
+					<Item id="7102" name="Ntsho"/>
+					<Item id="7103" name="Khubedu"/>
+					<Item id="7104" name="Botala"/>
+					<Item id="7105" name="Boputsoa"/>
+					<Item id="7107" name="Pherese"/>
+					<Item id="7108" name="Cyan"/>
+					<Item id="7109" name="Mohloaare"/>
+					<Item id="7115" name="Customized"/>
+					<Item id="7116" name="Litaba tse ka morao"/>
+					<Item id="7117" name="Ntho ea pina e chesang"/>
+					<Item id="7118" name="Bokaholimo ba taolo"/>
+					<Item id="7119" name="Bokaholimo ba puisano"/>
+					<Item id="7120" name="Phoso"/>
+					<Item id="7121" name="Mongolo"/>
+					<Item id="7122" name="Mongolo o lefifi"/>
+					<Item id="7123" name="Mongolo o holofalitsoeng"/>
+					<Item id="7124" name="Ntlheng"/>
+					<Item id="7125" name="Sehokelo"/>
+					<Item id="7126" name="Phatlalatso ea moeli"/>
+					<Item id="7127" name="Edge e holofetse"/>
+					<Item id="7130" name="Seta bocha"/>
+					<Item id="7135" name="Melumo"/>
+				</DarkMode>
+
+				<MarginsBorderEdge title="Margins/Border/Edge">
+					<Item id="6201" name="Mena Margin Style"/>
+					<Item id="6202" name="E bonolo"/>
+					<Item id="6203" name="Motsu"/>
+					<Item id="6204" name="Sefate sa selikalikoe"/>
+					<Item id="6205" name="Sefate sa lebokose"/>
+					<Item id="6226" name="Ha ho letho"/>
+					<Item id="6291" name="Nomoro ea Line"/>
+					<Item id="6206" name="Hlahisa"/>
+					<Item id="6292" name="Bophara bo matla"/>
+					<Item id="6293" name="Bophara ba kamehla"/>
+					<Item id="6207" name="Hlahisa bookmark"/>
+					<Item id="6295" name="Fetola Nalane"/>
+					<Item id="6223" name="Hlahisa moeling"/>
+					<Item id="6296" name="Hlahisa mongolong"/>
+					<Item id="6211" name="Vertical Edge Settings"/>
+					<Item id="6213" name="Mokhoa oa ka morao"/>
+					<Item id="6231" name="Bophara ba Moeli"/>
+					<Item id="6235" name="Ha ho na moeli"/>
+					<Item id="6208" name="Padding"/>
+					<Item id="6209" name="Ka ho le letšehali"/>
+					<Item id="6210" name="Ho lokile"/>
+					<Item id="6212" name="Free Distraction"/>
+				</MarginsBorderEdge>
+
+				<NewDoc title="Tokomane e Ncha">
+					<Item id="6401" name="Sebopeho (Qetello ea mohala)"/>
+					<Item id="6402" name="Windows (CR LF)"/>
+					<Item id="6403" name="Unix (LF)"/>
+					<Item id="6404" name="Macintosh (CR)"/>
+					<Item id="6405" name="Khouto"/>
+					<Item id="6406" name="ANSI"/>
+					<Item id="6407" name="UTF-8"/>
+					<Item id="6408" name="UTF-8 e nang le BOM"/>
+					<Item id="6409" name="UTF-16 Big Endian e nang le BOM"/>
+					<Item id="6410" name="UTF-16 Little Endian with BOM"/>
+					<Item id="6411" name="Puo ea kamehla:"/>
+					<Item id="6419" name="Tokomane e Ncha"/>
+					<Item id="6420" name="Etsa kopo ho lifaele tsa ANSI tse butsoeng"/>
+					<Item id="6432" name="Bula tokomane e ncha kamehla qalong"/>
+					<Item id="6433" name="Sebelisa mola oa pele oa tokomane joalo ka lebitso la tab e se nang sehlooho"/>
+				</NewDoc>
+
+				<DefaultDir title="Lenane la kamehla">
+					<Item id="6413" name="Kamehla Bula/Boloka Bukana ea faele"/>
+					<Item id="6414" name="Latela tokomane ea hajoale"/>
+					<Item id="6415" name="Hopola buka ea ho qetela e sebelisitsoeng"/>
+					<Item id="6431" name="Bula lifaele tsohle tsa foldara ho fapana le ho qala Folder joalo ka Sebaka sa Mosebetsi ho foldareng e theoha"/>
+				</DefaultDir>
+
+				<FileAssoc title="Mokhatlo oa Lifaele">
+					<Item id="4008" name="Ka kopo, tsoa Notepad++ 'me u tsosolose Notepad++ ka mokhoa oa Administrator ho sebelisa tšobotsi ena."/>
+					<Item id="4009" name="Katoloso e tšehelitsoeng:"/>
+					<Item id="4010" name="Katoloso e ngolisitsoeng:"/>
+				</FileAssoc>
+
+
+				<Language title="Puo">
+					<Item id="6505" name="Lintho tse teng"/>
+					<Item id="6506" name="Lintho tse holofetseng"/>
+					<Item id="6507" name="Etsa hore lenane la puo le kopane"/>
+					<Item id="6508" name="Lemeno la Puo"/>
+					<Item id="6335" name="Tšoara backslash joalo ka sebopeho sa phonyoho bakeng sa SQL"/>
+				</Language>
+
+				<Indentation title="Induction">
+					<Item id="7161" name="Auto-indent"/>
+					<Item id="7162" name="Ha ho letho"/>
+					<Item id="7163" name="Motheo"/>
+					<Item id="7164" name="E tsoetseng pele"/>
+					<Item id="6301" name="Litlhophiso tsa Indent"/>
+					<Item id="6302" name="Litlhaku tsa sebaka"/>
+					<Item id="6303" name="Boholo ba indent:"/>
+					<Item id="6310" name="Iketsetse u sebelisa:"/>
+					<Item id="6311" name="Sebapali sa thebo"/>
+					<Item id="6510" name="Sebelisa boleng ba kamehla"/>
+					<Item id="6512" name="Backspace key unindents sebakeng sa ho tlosa sebaka se le seng"/>
+				</Indentation>
+
+				<Highlighting title="E totobatsang">
+					<Item id="6351" name="Style Liketsahalo Tsohle Tsa Letšoao"/>
+					<Item id="6352" name="Nyeoe ea papali"/>
+					<Item id="6353" name="Bapisa lentsoe kaofela feela"/>
+					<Item id="6333" name="Smart Highlighting"/>
+					<Item id="6326" name="Dumella"/>
+					<Item id="6354" name="E tsamaellanang"/>
+					<Item id="6332" name="Nyeoe ea papali"/>
+					<Item id="6338" name="Bapisa lentsoe kaofela feela"/>
+					<Item id="6339" name="Sebelisa litlhophiso tsa &quot;Find dialog&quot;"/>
+					<Item id="6340" name="Totobatsa pono e 'ngoe"/>
+					<Item id="6329" name="Totobatsa Matching Tags"/>
+					<Item id="6327" name="Dumella"/>
+					<Item id="6328" name="Totobatsa litšobotsi tsa tag"/>
+					<Item id="6330" name="Totobatsa maikutlo/php/asp zone"/>
+				</Highlighting>
+
+				<Print title="Hatisa">
+					<Item id="6601" name="Nomoro ea ho hatisa"/>
+					<Item id="6602" name="Likhetho tsa Mebala"/>
+					<Item id="6603" name="WYSIWYG"/>
+					<Item id="6604" name="Fetolela"/>
+					<Item id="6605" name="E ntšo ka bosoeu"/>
+					<Item id="6606" name="Ha ho na bokamorao ba mmala"/>
+					<Item id="6607" name="Litlhophiso tsa Margin (Yuniti:mm)"/>
+					<Item id="6612" name="Ka ho le letšehali"/>
+					<Item id="6613" name="Holimo"/>
+					<Item id="6614" name="Ka ho le letona"/>
+					<Item id="6615" name="Tlase"/>
+					<Item id="6706" name="Bold"/>
+					<Item id="6707" name="Mongolo o tšekaletseng"/>
+					<Item id="6708" name="Sehlooho"/>
+					<Item id="6709" name="Karolo e ka ho le letšehali"/>
+					<Item id="6710" name="Karolo e bohareng"/>
+					<Item id="6711" name="Karolo e nepahetseng"/>
+					<Item id="6717" name="Bold"/>
+					<Item id="6718" name="Mongolo o tšekaletseng"/>
+					<Item id="6719" name="Botlase"/>
+					<Item id="6720" name="Karolo e ka ho le letšehali"/>
+					<Item id="6721" name="Karolo e bohareng"/>
+					<Item id="6722" name="Karolo e nepahetseng"/>
+					<Item id="6723" name="Kenya"/>
+					<ComboBox id="6724">
+						<Element name="Tsela e feletseng ea lebitso la faele"/>
+						<Element name="Lebitso la faele"/>
+						<Element name="Bukana ea faele"/>
+						<Element name="Leqephe"/>
+						<Element name="Sebopeho sa letsatsi le lekhutšoanyane"/>
+						<Element name="Sebopeho sa nako e telele"/>
+						<Element name="Nako"/>
+					</ComboBox>
+					<Item id="6725" name="E fetohang:"/>
+					<Item id="6727" name="Mona bonts'a litlhophiso tsa hau tse feto-fetohang"/>
+					<Item id="6728" name="Sehlooho le Botlaaseng"/>
+				</Print>
+
+				<Searching title="Batla">
+					<Item id="6902" name="Sebelisa mohala o nang le sebaka se le seng lebokoseng la Fumana (O hloka ho qala Notepad++ bocha)"/>
+					<Item id="6903" name="Fumana puisano e lula e butsoe ka mor'a ho batla e hlahang fensetereng ea liphetho"/>
+					<Item id="6904" name="Netefatsa Hore Tlosa Tsohle Litokomaneng Tsohle Tse Butsoeng"/>
+					<Item id="6905" name="Fetola: Se ke oa fetela ketsahalong e latelang"/>
+					<Item id="6906" name="Fesetere ea Sephetho sa Patlo: bonts'a keno e le 'ngoe feela moleng o fumanoeng haeba ho khonahala"/>
+					<Item id="6907" name="Ha Puisano ea ho Fumana e Bitsoa"/>
+					<Item id="6908" name="Tlatsa Sebaka sa Fumana ka Mongolo o Khethiloeng"/>
+					<Item id="6909" name="Khetha Lentsoe le Tlas'a Caret ha ho se Ntho e Khethiloeng"/>
+					<Item id="6910" name="Boholo bo fokolang ba ho Itlhahlobe ka Boiketsetso &quot;Ka khetho&quot;:"/>
+					<Item id="6913" name="Tlatsa Fumana ho Files Directory Field Thehilwe On Active Document"/>
+					<Item id="6916" name=": Litlhaku tse Hloahloa ho Tlatsa Sebaka sa Fumana ka Boiketsetso ho tsoa ho Khetho"/>
+				</Searching>
+
+				<RecentFilesHistory title="Recent Files History">
+					<Item id="6304" name="Recent Files History"/>
+					<Item id="6306" name="Max.palo ea likenyelletso:"/>
+					<Item id="6305" name="Se ke oa sheba ka nako ea ho qala"/>
+					<Item id="6429" name="Hlahisa"/>
+					<Item id="6424" name="Ka Submenu"/>
+					<Item id="6425" name="Feela File Name"/>
+					<Item id="6426" name="Full File Name Path"/>
+					<Item id="6427" name="Iketsetse Bolelele bo Holimo:"/>
+				</RecentFilesHistory>
+
+				<Backup title="Boloka">
+					<Item id="6817" name="Sets'oants'o sa kopano le bekapo ea nako le nako"/>
+					<Item id="6818" name="Dumella senepe sa seshene le bekapo ya nako le nako"/>
+					<Item id="6819" name="Qala ho boloka bekapo ho liphetoho ho e 'ngoe le e' ngoe"/>
+					<Item id="6821" name="metsotsoana"/>
+					<Item id="6822" name="Mokhoa oa ho boloka:"/>
+					<Item id="6309" name="Hopola lenaneo la hajoale bakeng sa phatlalatso e latelang"/>
+					<Item id="6825" name="Hopola lifaele tse sa fihlelleheng tsa lenaneo le fetileng"/>
+					<Item id="6801" name="Boloka ka ho boloka"/>
+					<Item id="6315" name="Ha ho letho"/>
+					<Item id="6316" name="Backup e bonolo"/>
+					<Item id="6317" name="Backup ea Verbose"/>
+					<Item id="6804" name="Bukana ea ho boloka e Tloaelehileng"/>
+					<Item id="6803" name="Lethathamo:"/>
+				</Backup>
+
+				<AutoCompletion title="Pheliso e Ikemetseng">
+					<Item id="6807" name="Pheliso e Ikemetseng"/>
+					<Item id="6808" name="Lumella ho phethela ka boits'oaro ho mongolo o mong le o mong"/>
+					<Item id="6809" name="Ho phethela mosebetsi"/>
+					<Item id="6810" name="Ho phethela mantsoe"/>
+					<Item id="6816" name="Mosebetsi le ho phethela mantsoe"/>
+					<Item id="6869" name="Kenya Khetho"/>
+					<Item id="6870" name="TAB"/><!-- TAB key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6871" name="KENA"/><!-- ENTER key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6824" name="Hlokomoloha linomoro"/>
+					<Item id="6811" name="Ho tloha"/>
+					<Item id="6813" name="tlhaku"/>
+					<Item id="6872" name="Etsa lethathamo la ho tlatsa ka bokhutšoanyane"/>
+					<Item id="6815" name="Liparamente tsa tšebetso li fana ka leseli mabapi le ho kenya"/>
+					<Item id="6851" name="Kenya Auto-Kenya"/>
+					<Item id="6857" name="html/xml koala tag"/>
+					<Item id="6858" name="Bula"/>
+					<Item id="6859" name="Kwala"/>
+					<Item id="6860" name="E tsamaellana le sehlopha sa 1:"/>
+					<Item id="6863" name="E tsamaellana le para 2:"/>
+					<Item id="6866" name="E tsamaellana le para 3:"/>
+				</AutoCompletion>
+
+				<MultiInstance title="Multi-Instance Date">
+					<Item id="6151" name="Litlhophiso tsa mefuta e mengata *"/>
+					<Item id="6152" name="Bula seshene ketsahalong e ncha ('me u boloke nako ka bo eona ha u tsoa)"/>
+					<Item id="6153" name="E lula e le maemong a mangata"/>
+					<Item id="6154" name="Ea kamehla (mono-setšoantšo)"/>
+					<Item id="6155" name="* Phetoho ea tlhophiso ena e hloka ho qala Notepad++"/>
+					<Item id="6171" name="Iketsetse kenya Nako ea Letsatsi"/>
+					<Item id="6175" name="Khutlisetsa morao tatellano ea nako ea kamehla (lifomate tse telele tse khutšoane)"/>
+					<Item id="6172" name="Mokhoa o ikhethileng:"/>
+					<Item id="6181" name="Phanele State le [-nosession] *"/>
+					<Item id="6182" name="Hopola boemo ba phanele (phanele e butsoe) maemong a mang (mokhoa oa mefuta e mengata) kapa ha o sebelisa parameter ea mola oa taelo [-nosession]"/>
+					<Item id="6183" name="Nalane ea Clipboard"/>
+					<Item id="6184" name="Lethathamo la Litokomane"/>
+					<Item id="6185" name="Sehlopha sa Litlhaku"/>
+					<Item id="6186" name="Sephutheli joalo ka Sebaka sa Mosebetsi"/>
+					<Item id="6187" name="Liphanele tsa Morero"/>
+					<Item id="6188" name="'Mapa oa Tokomane"/>
+					<Item id="6189" name="Lenane la Mesebetsi"/>
+					<Item id="6190" name="Liphanele tsa Plugin"/>
+				</MultiInstance>
+
+				<Delimiter title="Delimiter">
+					<Item id="6251" name="Litlhophiso tsa khetho ea Delimiter (Ctrl + Mouse tobetsa habeli)"/>
+					<Item id="6252" name="Bula"/>
+					<Item id="6255" name="Kwala"/>
+					<Item id="6256" name="Lumella meleng e 'maloa"/>
+					<Item id="6161" name="Lethathamo la litlhaku tsa mantsoe"/>
+					<Item id="6162" name="Sebelisa lethathamo la litlhaku tsa Lentsoe la kamehla kamoo le leng kateng"/>
+					<Item id="6163" name="Kenya semelo sa hau joalo ka karolo ea lentsoe
+(u se ke ua e khetha ntle le haeba u tseba seo u se etsang)"/>
+				</Delimiter>
+
+				<Performance title="Tshebetso">
+					<Item id="7141" name="Thibelo e Khōlō ea Lifaele"/>
+					<Item id="7143" name="Numella Thibelo e Kholo ea Faele (ha ho tlhakiso ea syntax)"/>
+					<Item id="7144" name="Hlalosa Boholo ba Faele e Kholo:"/>
+					<Item id="7146" name="MB (1 - 2046)"/>
+					<Item id="7147" name="Dumella Match a Brace"/>
+					<Item id="7148" name="Lumella ho Tlatseha ho Fetisisa"/>
+					<Item id="7149" name="Dumella Smart Highlighting"/>
+					<Item id="7150" name="Tlosa Word Wrap lefatšeng ka bophara"/>
+					<Item id="7151" name="Dumella Sehokelo se Tobehang sa URL"/>
+					<Item id="7152" name="Hatisa temoso ha u bula lifaele tsa ≥2GB"/>
+				</Performance>
+
+				<Cloud title="Cloud Link">
+					<Item id="6262" name="Litlhophiso ho cloud"/>
+					<Item id="6263" name="No Cloud"/>
+					<Item id="6267" name="Beha tsela ea sebaka sa hau sa maru mona:"/>
+					<Item id="6318" name="Litlhophiso tsa Lihokelo tse Tobehang"/>
+					<Item id="6319" name="Dumella"/>
+					<Item id="6320" name="Ha ho underline"/>
+					<Item id="6350" name="Lumella mokhoa oa lebokose le felletseng"/>
+					<Item id="6264" name="Merero e ikhethileng ea URI:"/>
+				</Cloud>
+
+				<SearchEngine title="Enjine ea ho Batla">
+					<Item id="6271" name="Search Engine (bakeng sa taelo &quot;Batla Inthaneteng&quot;)"/>
+					<Item id="6272" name="DuckDuckGo"/>
+					<Item id="6273" name="Google"/>
+					<Item id="6274" name="Bing"/>
+					<Item id="6275" name="Yahoo!"/>
+					<Item id="6276" name="Beha sebaka sa hau sa ho batla mona:"/>
+					<!-- Don't change anything after Example: -->
+					<Item id="6278" name="Mohlala: https://www.google.com/search?q=$(CURRENT_WORD)"/>
+				</SearchEngine>
+
+				<MISC title="MISC.">
+					<ComboBox id="6347">
+						<Element name="Bulela faele ea hajoale"/>
+						<Element name="Bulela lifaele tsohle tse butsoeng"/>
+						<Element name="Tlosa"/>
+					</ComboBox>
+					<ComboBox id="6307">
+						<Element name="Ha ho ketso ho"/>
+						<Element name="Fokotsa ho"/>
+						<Element name="Haufi le"/>
+						<Element name="Fokotsa / Haufi le"/>
+					</ComboBox>
+					<ComboBox id="6362">
+						<Element name="GDI (e lumellanang haholo)"/>
+						<Element name="DirectWrite (ea kamehla)"/>
+						<Element name="DirectWrite (boloka liforeimi)"/>
+						<Element name="DirectWrite ( hula ho GDI DC)"/>
+						<Element name="DirectWrite (DirectX 11)"/>
+					</ComboBox>
+					<ComboBox id="6364">
+						<Element name="Tlosa"/>
+						<Element name="E nolofalletsa ho qala Notepad++"/>
+						<Element name="Bulela ho Notepad++ ho tsoa"/>
+					</ComboBox>
+					<Item id="6308" name="terei ea tsamaiso"/>
+					<Item id="6363" name="mokhoa oa ho fana"/>
+					<Item id="6365" name="Ntlafatso e iketsang:"/>
+					<Item id="6312" name="Ho Fumana Boemo ba Faele ka Boiketsetso"/>
+					<Item id="6313" name="Ntlafatsa ka khutso"/>
+					<Item id="6325" name="Tsamaisetsa moleng oa ho qetela ka mor'a ho ntlafatsa"/>
+					<Item id="6322" name="Faele ea kopano ext.:"/>
+					<Item id="6324" name="Document Switcher (Ctrl+TAB)"/>
+					<Item id="6331" name="Hlahisa feela filename ho bar ea sehlooho"/>
+					<Item id="6334" name="Itlhahlobe ka ho iketsa khouto ea litlhaku"/>
+					<Item id="6337" name="Faele ea sebaka sa mosebetsi ext.:"/>
+					<Item id="6114" name="Dumella"/>
+					<Item id="6117" name="Numella boitšoaro ba MRU"/>
+					<Item id="6344" name="Tokomane Peeker"/>
+					<Item id="6345" name="Sheba ho tab"/>
+					<Item id="6346" name="Sheba 'mapeng oa litokomane"/>
+					<Item id="6360" name="Holisa melumo eohle"/>
+					<Item id="6361" name="Numella lebokose la ho netefatsa hore Save All"/>
+				</MISC>
+			</Preference>
+			<MultiMacro title="Matha Macro makhetlo a mangata">
+				<Item id="1" name="Matha"/>
+				<Item id="2" name="Hlakola"/>
+				<Item id="8006" name="Macro ho matha"/>
+				<Item id="8001" name="Matha"/>
+				<Item id="8005" name="linako"/>
+				<Item id="8002" name="Matha ho fihlela qetellong ea faele"/>
+			</MultiMacro>
+			<Window title="Windows">
+				<Item id="1" name="Kenya tshebetsong"/>
+				<Item id="2" name="OK"/>
+				<Item id="7002" name="Boloka"/>
+				<Item id="7003" name="Kwala lifensetere"/>
+				<Item id="7004" name="|Hlopha li-tabo"/>
+			</Window>
+			<ColumnEditor title="Mohlophisi oa Kholomo">
+				<Item id="2023" name="Mongolo o Tla Kenya"/>
+				<Item id="2033" name="Nomoro ea ho Kenya"/>
+				<Item id="2030" name="Nomoro ea pele:"/>
+				<Item id="2031" name="Eketsa ka:"/>
+				<Item id="2038" name="E etellang pele:"/>
+				<ComboBox id="2039">
+					<Element name="Ha ho letho"/>
+					<Element name="Zero"/>
+					<Element name="Libaka"/>
+				</ComboBox>
+				<Item id="2036" name="Pheta:"/>
+				<Item id="2032" name="Sebopeho"/>
+				<Item id="2024" name="Tšitoe"/>
+				<Item id="2025" name="Mphalane"/>
+				<Item id="2026" name="Hex"/>
+				<Item id="2027" name="Bin"/>
+				<Item id="1" name="OK"/>
+				<Item id="2" name="Hlakola"/>
+			</ColumnEditor>
+			<FindInFinder title="Fumana liphethong">
+				<Item id="1" name="Fumana Tsohle"/>
+				<Item id="2" name="Kwala"/>
+				<Item id="1711" name="Fumana eng:"/>
+				<Item id="1713" name="Batla feela meleng e fumanoeng"/>
+				<Item id="1714" name="Bapisa lentsoe kaofela feela"/>
+				<Item id="1715" name="Nyeoe ea papali"/>
+				<Item id="1716" name="Mokhoa oa ho Batla"/>
+				<Item id="1717" name="Tloaelehileng"/>
+				<Item id="1719" name="Mantsoe a tloaelehileng"/>
+				<Item id="1718" name="E atolositsoe (\n, \r, \t, \0, \x...)"/>
+				<Item id="1720" name=".e tsamaisanang le mola o mocha"/>
+			</FindInFinder>
+			<DoSaveOrNot title="Boloka">
+				<Item id="1761" name="Boloka faele &quot;$STR_REPLACE$&quot; ?"/>
+				<Item id="6" name="Ee"/>
+				<Item id="7" name="Che"/>
+				<Item id="2" name="Hlakola"/>
+				<Item id="4" name="E ho bohle"/>
+				<Item id="5" name="Che ho bohle"/>
+			</DoSaveOrNot>
+			<DoSaveAll title="Boloka Tiisetso Tsohle">
+				<Item id="1766" name="Na ehlile u batla ho boloka litokomane tsohle tse fetotsoeng?
+
+Khetha &quot;Kamehla e&quot; haeba u sa batle ho bona puisano ena hape.
+O ka kenya tshebetsong puisano ena hape ho Dikgethollo hamorao."/>
+				<Item id="6" name="Ee"/>
+				<Item id="7" name="Che"/>
+				<Item id="4" name="Kamehla ho joalo"/>
+			</DoSaveAll><!-- HowToReproduce: Check the "Enable Save All confirm dialog" checkbox in Preference->MISC, now click "Save all" -->
+
+			<DebugInfo title="Litaba tsa Debug">
+				<Item id="1752" name="Kopitsa lintlha tsa tharollo ho clipboard"/>
+				<Item id="1" name="OK"/>
+			</DebugInfo>
+					<MacStrings>
+				<Item id="90001" name="Liphetho tsa lipatlisiso"/>
+				<Item id="90002" name="Kwala Search Results"/>
+				<Item id="90003" name="Hlakola Tsohle"/>
+				<Item id="90004" name="Koala phanele"/>
+				<Item id="90005" name="Sehlopha sa Morero"/>
+				<Item id="90006" name="Control Control"/>
+				<Item id="90007" name="Boitlamo"/>
+				<Item id="90008" name="Boitlamo bo hlolehile"/>
+				<Item id="90009" name="Ha ho polokelo ea git\nSebelisa Browse ho bula repo."/>
+				<Item id="90010" name="Sethala"/>
+				<Item id="90011" name="E sa lebaleheng"/>
+				<Item id="90012" name="Stage All"/>
+				<Item id="90013" name="Unstage All"/>
+				<Item id="90014" name="Molaetsa oa boitlamo\u2026"/>
+				<Item id="90015" name="Batla sebaka sa polokelo\u2026"/>
+				<Item id="90016" name="Khetha foldara ea polokelo ea git"/>
+				<Item id="90017" name="(ha ho na polokelo)"/>
+				<Item id="90018" name="(e arotsoe)"/>
+				<Item id="90019" name="Phoso e sa tsejoeng"/>
+				<Item id="90020" name="Ha ho mesebetsi e fumanoeng"/>
+				<Item id="90021" name="Mosebetsi oa ho batla..."/>
+				<Item id="90022" name="Atolosa Tsohle"/>
+				<Item id="90023" name="Fumana Faele ea Hona Joale"/>
+				<Item id="90024" name="Hlasimolla"/>
+				<Item id="90025" name="Hlopha mesebetsi (A ho ea ho Z)"/>
+				<Item id="90026" name="Liphetho"/>
+				<Item id="90027" name="Emisa"/>
+				<Item id="90028" name="Ho batla ho emisitsoe."/>
+				<Item id="90029" name="E batla\u2026"/>
+				<Item id="90030" name="Mongolo o lokelang ho batloa"/>
+				<Item id="90031" name="*.txt, *.cpp, \u2026"/>
+				<Item id="90032" name="Batla..."/>
+				<Item id="90033" name="Kenya sebaka:"/>
+				<Item id="90034" name="Lentsoe lohle"/>
+				<Item id="90035" name="Lentsoe lohle"/>
+				<Item id="90036" name="Qela"/>
+				<Item id="90037" name="Motho"/>
+				<Item id="90038" name="Lebitso la HTML"/>
+				<Item id="90039" name="HTML Decimal"/>
+				<Item id="90040" name="HTML Hexadecimal"/>
+				<Item id="90041" name="Boleng"/>
+				<Item id="90042" name="Empty Session"/>
+				<Item id="90043" name="Faele e khethiloeng ea lenaneo ha e na li-tab."/>
+				<Item id="90044" name="Laola Session"/>
+				<Item id="90045" name="Boloka Seboka"/>
+				<Item id="90046" name="Hlakola Lifaele Tsa Haufinyane"/>
+				<Item id="90047" name="Faele ha e fumanehe"/>
+				<Item id="90048" name="Ha ho Macro e Rekotiloeng"/>
+				<Item id="90049" name="Rekota macro pele u sebelisa Start Recording."/>
+				<Item id="90050" name="Ha ho likhohlano tse khaoletsang."/>
+				<Item id="90051" name="File Name"/>
+				<Item id="90052" name="Mofuta"/>
+				<Item id="90053" name="Tsela"/>
+				<Item id="90054" name="Eya ho Line"/>
+				<Item id="90055" name="Kenya Letsatsi/Nako"/>
+				<Item id="90056" name="Phetoho ea Khouto"/>
+				<Item id="90057" name="Boloka Kopi Joalo ka"/>
+				<Item id="90058" name="Suthela ho Matlakala"/>
+				<Item id="90059" name="Sebaka sa Sehlooho"/>
+				<Item id="90060" name="Hlahisa tsela e felletseng ea faele ka har'a bareng ea sehlooho"/>
+				<Item id="90061" name="Hlahisa sebaka sa boemo"/>
+				<Item id="90062" name="Boholo ba li-tab:"/>
+				<Item id="90063" name="Bophara ba Caret:"/>
+				<Item id="90064" name="Sekhahla sa ho panya ha Caret (ms):"/>
+				<Item id="90065" name="Phetolelo ea litlhaku:"/>
+				<Item id="90066" name="Boholo ba li-tab tsa bophara (lipikseli):"/>
+				<Item id="90067" name="Moeli o Otlolohileng"/>
+				<Item id="90068" name="Mokhoa oa moeli:"/>
+				<Item id="90069" name="Kholomo ea moeli:"/>
+				<Item id="90070" name="Bophara ba mohala o matla"/>
+				<Item id="90071" name="Ka ho le letšehali:"/>
+				<Item id="90072" name="Ka ho le letona:"/>
+				<Item id="90073" name="Qetello ea mohala:"/>
+				<Item id="90074" name="Khouto ea kamehla:"/>
+				<Item id="90075" name="Numella bekapo ea boiketsetso"/>
+				<Item id="90076" name="Nako ea ho boloka (metsotsoana):"/>
+				<Item id="90077" name="Sebaka sa bekapo:"/>
+				<Item id="90078" name="Setaele sa Mebala"/>
+				<Item id="90079" name="(lefa)"/>
+				<Item id="90080" name="Theme ea Import Style"/>
+				<Item id="90081" name="Sehlopha"/>
+				<Item id="90082" name="Tlanya ho sefa..."/>
+				<Item id="90083" name="Ha ho likhohlano tse khaoletsang bakeng sa ntho ena."/>
+				<Item id="90084" name="Plugin"/>
+				<Item id="90085" name="Phetolelo"/>
+				<Item id="90086" name="Ho Kena ho Phethiloe"/>
+				<Item id="90087" name="Qala sesebelisoa bocha ho kenya li-plugins tse kentsoeng."/>
+				<Item id="90088" name="Kenya li-plugins"/>
+				<Item id="90089" name="Tlosa li-plugins"/>
+				<Item id="90090" name="Ha ho litaelo tse fumanoeng"/>
+				<Item id="90091" name="Tlanya ho batla\u2026"/>
+				<Item id="90092" name="Puo e Hlalositsoeng ke Mosebelisi v.2.1"/>
+				<Item id="90093" name="Theha Puo e Ncha"/>
+				<Item id="90094" name="Kenya lebitso:"/>
+				<Item id="90095" name="Mmala o ka pele:"/>
+				<Item id="90096" name="'Mala oa bokamorao:"/>
+				<Item id="90097" name="Se Boloke"/>
+				<Item id="90098" name="E entsoe"/>
+				<Item id="90099" name="Toggle Word Wrap"/>
+				<Item id="90100" name="Hlahisa Litlhaku Tsohle"/>
+				<Item id="90101" name="Hlahisa Likhetho tsa Litlhaku"/>
+				<Item id="90102" name="Toggle Indent Guide"/>
+				<Item id="90103" name="Ha e E-so Kenngoe"/>
+				<Item id="90104" name="Khoasolla hape ho tsoa ho Disk"/>
+				<Item id="90105" name="Fetola Enjine ea ho Batla"/>
+				<Item id="90106" name="Matha Phoso"/>
+				<Item id="90107" name="Notepad++ Loading Time"/>
+				<Item id="90108" name="Ha e khone ho Sheba Lintlafatso"/>
+				<Item id="90109" name="U Lingoliloeng Tsa Nako"/>
+				<Item id="90110" name="Khoasolla"/>
+				<Item id="90111" name="Leqephe la Phatlalatso"/>
+				<Item id="90112" name="Hamorao"/>
+				<Item id="90113" name="Sefa li-plugins\u2026"/>
+				<Item id="90114" name="E fumaneha"/>
+				<Item id="90115" name="Lintlafatso"/>
+				<Item id="90116" name="E kentsoe"/>
+				<Item id="90117" name="Ha e tsamaellane"/>
+				<Item id="90118" name="E hlolehile ho Kenya"/>
+				<Item id="90119" name="Tlosa li-plugins tse latelang?"/>
+				<Item id="90120" name="Kenya li-plugins tse latelang?"/>
+				<Item id="90121" name="Sena se tla hlakola lifaele tsa plugin."/>
+				<Item id="90122" name="Batla litaelo\u2026"/>
+				<Item id="90123" name="Mmala o ka pele"/>
+				<Item id="90124" name="'Mala oa bokamorao"/>
+				<Item id="90125" name="Macro lebitso"/>
+				<Item id="90126" name="Macro Lebitso"/>
+				<Item id="90127" name="Macro e rekotiloeng hajoale"/>
+				<Item id="90128" name="Macro Manager"/>
+				<Item id="90129" name="Ha ho na Macros e Bolokiloeng"/>
+				<Item id="90130" name="Rekota 'me u boloke macro pele."/>
+				<Item id="90131" name="Hlakola Shortcut"/>
+				<Item id="90132" name="Lenane la mantlha"/>
+				<Item id="90133" name="Macros"/>
+				<Item id="90134" name="Matha litaelo"/>
+				<Item id="90135" name="Litaelo tsa plugin"/>
+				<Item id="90136" name="Litaelo tsa Scintilla"/>
+				<Item id="90137" name="Likhohlano tsa Line Line"/>
+				<Item id="90138" name="Lebitso la taelo bakeng sa menu ea Run"/>
+				<Item id="90139" name="Matshwao kaofela a hlakotswe."/>
+				<Item id="90140" name="Mongolo o tšoailoeng o kopitsitsoe ho clipboard."/>
+				<Item id="90141" name="Ha ho mongolo o tšoailoeng o ka kopitsoang."/>
+				<Item id="90142" name="E batla... %ld hit(s) \u2014 %@"/>
+				<Item id="90143" name="Ho fetola lifaele..."/>
+				<Item id="90144" name="Fetola ho Merero: Ha e so hokahane."/>
+				<Item id="90145" name="Fumana ho Merero: Ha e so hokahane le lenane la lifaele tsa Project Panel."/>
+				<Item id="90146" name="Sebaka sa ho sebetsa se fetotsoe."/>
+				<Item id="90147" name="Na u batla ho boloka liphetoho?"/>
+				<Item id="90148" name="Liphetho tsa lipatlisiso"/>
+				<Item id="90149" name="Totobatsa mohala oa hajoale"/>
+				<Item id="90150" name="Hlahisa linomoro tsa mela"/>
+				<Item id="90151" name="Hlahisa sebaka se sesoeu"/>
+				<Item id="90152" name="Hlahisa matšoao a EOL"/>
+				<Item id="90153" name="Hlahisa moeli oa li-bookmark"/>
+				<Item id="90154" name="Sebelisa li-tab (ho e-na le libaka)"/>
+				<Item id="90155" name="Tsamaisetsa ho feta mola oa ho qetela"/>
+				<Item id="90156" name="Kopitsa/seha mohala ntle le khetho"/>
+				<Item id="90157" name="Thibela mongolo o khethiloeng oa ho hula"/>
+				<Item id="90158" name="Dumella ho totobatsa ka bohlale"/>
+				<Item id="90159" name="Khatiso e bohlale: mokotla oa papali"/>
+				<Item id="90160" name="Ho totobatsa ka bohlale: lentsoe kaofela feela"/>
+				<Item id="90161" name="Penya habeli ho koala tab"/>
+				<Item id="90162" name="Hlahisa konopo ea koala ho li-tab"/>
+				<Item id="90163" name="Hopola ponahalo ea phanele ho pholletsa le mananeo"/>
+				<Item id="90164" name="Boloka lifaele li le sieo nakong ea kopano"/>
+				<Item id="90165" name="Netefatsa pele ho Boloka Tsohle"/>
+				<Item id="90166" name="Netefatsa Tlosa Tsohle litokomaneng tse bulehileng"/>
+				<Item id="90167" name="Fetola: se fetele ketsahalong e latelang"/>
+				<Item id="90168" name="Sebelisa mohala o nang le sebaka se le seng ho Fumana lebokose"/>
+				<Item id="90169" name="Tlanya ka ho le letona ho boloka khetho"/>
+				<Item id="90170" name="Khutlisetsa morao letsatsi/otara ea nako"/>
+				<Item id="90171" name="Sebelisa li-parser tsa lenane la tšebetso tse thehiloeng ho XML"/>
+				<Item id="90172" name="Li-brackets tsa ho koala ka bohona ( ) [ ] { }"/>
+				<Item id="90173" name="Ho tsoa ho sebapali sa Nth:"/>
+				<Item id="90174" name="Mohaho oa khetho ea ho itlhahloba (li-byte):"/>
+				<Item id="90175" name="E atolositsoe (\\n, \\r, \\t, \\0, \\x...)"/>
+				<Item id="90176" name="Mohlophisi"/>
+				<Item id="90177" name="Margins"/>
+				<Item id="90178" name="Lefifi"/>
+				<Item id="90179" name="Leseli"/>
+				<Item id="90180" name="Auto (Latela Sistimi)"/>
+				<Item id="90181" name="O mosesane (1px)"/>
+				<Item id="90182" name="Mahareng (2px)"/>
+				<Item id="90183" name="Botenya (3px)"/>
+				<Item id="90184" name="E tima"/>
+				<Item id="90185" name="Background"/>
+				<Item id="90186" name="Antialiased"/>
+				<Item id="90187" name="LCD Optimized"/>
+				<Item id="90188" name="E bonolo +/-"/>
+				<Item id="90189" name="Windows (CRLF)"/>
+				<Item id="90190" name="Mac (CR)"/>
+				<Item id="90191" name="Sebaka sa polokelo ea lenane la plugin"/>
+				<Item id="90192" name="Khetha faele ea XML ea sehlooho sa Notepad++ eo u ka e sebelisang"/>
+				<Item id="90193" name="Etsa e ncha\u2026"/>
+				<Item id="90194" name="Boloka e le\u2026"/>
+				<Item id="90195" name="Puo ea mosebelisi:"/>
+				<Item id="90196" name="Lebitso la puo"/>
+				<Item id="90197" name="Theha"/>
+				<Item id="90198" name="Boloka Joalo ka"/>
+				<Item id="90199" name="ke"/>
+				<Item id="90200" name="ka faele eohle"/>
+				<Item id="90201" name="Li-Operators Delimiters"/>
+				<Item id="90202" name="Sebaka se Fosahetseng"/>
+				<Item id="90203" name="Boleng ba boleng bo tlameha ho ba 0-255 mme qalo e be &lt;= pheletso."/>
+				<Item id="90204" name="contextMenu.xml Ha e Fumane"/>
+				<Item id="90205" name="Qala hape Notepad++ ho nchafatsa moelelo oa kamehla oa Menu.xml."/>
+				<Item id="90206" name="Faele e na le liphetoho tse sa bolokoang.Ho kenya khouto e ncha ho tla li lahla.Na u batla ho tsoela pele?"/>
+				<Item id="90207" name="Ha ho karabo ho tsoa ho seva."/>
+				<Item id="90208" name="Boemo ba sevara bo khutlisitsoeng"/>
+				<Item id="90209" name="Sebaka sa polokelo e ka ba sa lekunutu."/>
+				<Item id="90210" name="ea Fumaneha"/>
+				<Item id="90211" name="ke phetolelo ea morao-rao."/>
+				<Item id="90212" name="U ntse u matha"/>
+				<Item id="90213" name="Fumana Mona"/>
+				<Item id="90214" name="Terminal Mona"/>
+				<Item id="90215" name="Lifaele tse ling tsa puo (.xml) li ka kenngoa ho:"/>
+							<Item id="90216" name="Taelo Palette…"/>
+				<Item id="90217" name="Tlhahlobo ea Mopeleto"/>
+				<Item id="90218" name="Tlanya ho batla…"/>
+				<Item id="90219" name="Fesetere e Ncha"/>
+				<Item id="90220" name="Tlola amp ea hona joale;Eya ho Next Multi-select"/>
+				<Item id="90221" name="Tšobotsi e Noetsoeng (macOS)"/>
+				<Item id="90222" name="Sheba Lintlafatso…"/>
+				<Item id="90223" name="Bula Haufinyane"/>
+			</MacStrings>
+		</Dialog>
+		<MessageBox>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<ContextMenuXmlEditWarning title="Editing contextMenu" message="Ho hlophisa contextMenu.xml ho u lumella ho fetola menu ea hau ea popup++ popup.
+U tlameha ho qala Notepad++ ea hau bocha hore e sebetse ka mor'a ho fetola contextMenu.xml."/>
+			<SaveCurrentModifWarning title="Boloka Phetoho ea Hona Joale" message="U lokela ho boloka phetoho ea hajoale.
+Liphetoho tsohle tse bolokiloeng li ke ke tsa etsolloa.
+
+Na u batla ho tsoela pele?"/><!-- HowToReproduce: when you openned file is modified but unsaved yet, and you are changing file encoding. -->
+			<LoseUndoAbilityWarning title="Lahleheloa Hlakola Temoso ea Bokhoni" message="U lokela ho boloka phetoho ea hajoale.
+Liphetoho tsohle tse bolokiloeng li ke ke tsa etsolloa.
+
+Na u batla ho tsoela pele?"/><!-- HowToReproduce: when you openned file is modified and saved, then you are changing file encoding. -->
+			<CannotMoveDoc title="Fetela ho Notepad++ e ncha Instance" message="Tokomane e fetotsoe, e boloke ebe u leka hape."/><!-- HowToReproduce: From your Notepad++ drag & drop a clean (not dirty) file to outside of Notepad++, another instance of Notepad++ will be created. Then from your first Notepad++ drag & drop an unsaved file to the new instance. -->
+			<DocReloadWarning title="Kenya hape" message="Na u na le bonnete ba hore u batla ho kenya faele ea hajoale bocha 'me u lahleheloe ke liphetoho tse entsoeng ho Notepad++?"/>
+			<FileLockedWarning title="Ho boloka ho hlolehile" message="Ka kopo sheba hore na faele ena e buletsoe lenaneong le leng"/>
+			<FileAlreadyOpenedInNpp title="" message="Faele e se e butsoe ho Notepad ++."/><!-- HowToReproduce: Open a new document and open a file "c:/tmp/foo", save this new document by choosing "c:/tmp/foo" as file to save, reply the override popup "yes", then this message appears. -->
+			<RenameTabTemporaryNameAlreadyInUse title="Ho reha bocha ho hlotsoe" message="Lebitso le boletsoeng le se le ntse le sebelisoa tabeng e 'ngoe."/><!-- HowToReproduce: Rename the tab of an untitled document and provide a name that is the same as an already-existing tab of an untitled document. -->
+			<RenameTabTemporaryNameIsEmpty title="Ho reha bocha ho hlotsoe" message="Lebitso le boletsoeng le ke ke la hloka letho, kapa le ke ke la ba le sebaka kapa libaka kapa TAB feela."/><!-- HowToReproduce: Rename the tab of an untitled document and provide an empty string or only some white speces. -->
+			<DeleteFileFailed title="Hlakola Faele" message="Ho phumula Faele ho hlolehile"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+
+			<NbFileToOpenImportantWarning title="Lifaele tse lokelang ho buloa li kholo haholo" message="$INT_REPLACE$ files are about to be opened.
+Are you sure you want to open them?"/><!-- HowToReproduce: Check "Open all files of folder instead of launching Folder as Workspace on folder dropping" in "Default Directory" of Preferences dialog, then drop a folder which contains more then 200 files into Notepad++. -->
+			<SettingsOnCloudError title="Litlhophiso ho Cloud" message="Ho bonahala eka tsela ea litlhophiso ho leru e behiloe ho drive ea ho bala feela,
+kapa foldareng ho hlokahala tokelo ea tokelo bakeng sa phihlello ea ho ngola.
+Litlhophiso tsa hau ho cloud li tla hlakoloa.Ka kopo, seta botjha boleng bo momahaneng ka puisano ya Dikgethollo."/>
+			<FilePathNotFoundWarning title="Faele Bula" message="Faele eo u lekang ho e bula ha e eo."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SessionFileInvalidError title="Ha e khone ho Laola Session" message="Faele ea Session e senyehile kapa ha e sebetse."/><!-- HowToReproduce: Save current session via menu "File -> Save Session...", use another editor to modify the session you saved to make it an invalid xml file. Then load this invalid session via menu "File -> Load Session...". -->
+			<DroppingFolderAsProjectModeWarning title="Ketso e fosahetseng" message="U ka liha lifaele kapa lifoldara feela empa eseng ka bobeli, hobane u ntse u theola Folder joalo ka Projeke.
+U tlameha ho nolofalletsa &quot;Bula lifaele tsohle tsa foldara ho e-na le ho qala Folder e le Sebaka sa Mosebetsi ho foldareng e theohang&quot; karolong ea &quot;Default Directory&quot; ea Likhetho ho etsa hore ts'ebetso ena e sebetse."/>
+			<SortingError title="Phoso ea ho Hlopha" message="Ha re khone ho hlophisa linomoro ka lebaka la mola $INT_REPLACE$."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SortLocaleMultiple title="Hlophisa ha e etsoe" message="Ho hlopha likhetho tse ngata ha hoa tšehetsoa."/><!-- HowToReproduce: Make a multiple selection and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<SortLocaleUnknown title="Hlophisa E hlolehile" message="Lebaka leo mofuta o hlōlehileng ka lona ha le khone ho tsejoa."/><!-- HowToReproduce: This condition is theoretical; it is unknown what could cause it. -->
+			<SortLocaleExcept title="Hlophisa E hlolehile" message="$STR_REPLACE$"/><!-- HowToReproduce: Open a large file, e.g. 500MB / 90k lines, in 32-bit Notepad++ and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<ColumnModeTip title="Keletso ea Mokhoa oa Kholomo" message="Ho na le mekhoa e 3 ea ho fetohela ho mokhoa oa ho khetha likholomo:
+
+1. (Keyboard le Mouse) Tšoara Alt ha u ntse u penya ka ho le letšehali
+
+2. (Keyboard feela) Tšoara Alt+Shift ha u ntse u sebelisa linotlolo tsa metsu
+
+3. (Keyboard kapa Tweba)
+Beha caret qalong eo u e batlang ea sebaka sa block block, ebe
+etsa taelo ea &quot;Qala / Qetella ho Khetha ka Mokhoa oa Kholomo&quot;;
+Tsamaisa caret pheletsong e lakatsehang ea sebaka sa block block, ebe
+etsa taelo ea &quot;Qala / Qetella ho Khetha ho Mokhoa oa Kholomo&quot; hape"/>
+			<BufferInvalidWarning title="Ho boloka ho hlolehile" message="Ha e khone ho boloka: Buffer ha e sebetse."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<DoCloseOrNot title="Boloka faele e seng teng" message="Faele &quot;$STR_REPLACE$&quot; ha e sa le eo.
+Boloka faele ee e le mohlophisi?"/>
+			<DoDeleteOrNot title="Hlakola faele" message="Faele &quot;$STR_REPLACE$&quot;
+e tla fetisetsoa ho Recycle Bin ea hau mme tokomane ena e tla koaloa.
+Na u batla ho tsoela pele?"/>
+			<NoBackupDoSaveFile title="Boloka" message="Faele ea hau ea bekapo ha e fumanehe (e hlakotsoe kantle).
+E boloke ho seng joalo data ea hau e tla lahleha
+Na u batla ho boloka faele &quot;$STR_REPLACE$&quot; ?"/>
+			<DoReloadOrNot title="Kenya hape" message="&quot;$STR_REPLACE$&quot;
+
+Faele ena e fetotsoe ke lenaneo le leng.
+Na u batla ho e kenya hape?"/>
+			<DoReloadOrNotAndLooseChange title="Kenya hape" message="&quot;$STR_REPLACE$&quot;
+
+Faele ena e fetotsoe ke lenaneo le leng.
+Na u batla ho e kenya hape 'me u lahleheloe ke liphetoho tse entsoeng ho Notepad++?"/>
+			<PrehistoricSystemDetected title="Sistimi ea prehistoric e fumanoe" message="Ho bonahala o ntse o sebelisa sistimi ea prehistoric.Karolo ena e sebetsa feela tsamaisong ea sejoale-joale, masoabi."/><!-- HowToReproduce: Launch "Document Map" under Windows XP. -->
+			<XpUpdaterProblem title="Notepad++ Updater" message="Notepad++ updater ha e tsamaellane le XP ka lebaka la lera la tšireletso le sa sebetseng tlas'a XP.
+Na u batla ho ea leqepheng la Notepad++ ho khoasolla mofuta oa morao-rao?"/><!-- HowToReproduce: Run menu "? -> Update Notepad++" under Windows XP. -->
+			<GUpProxyConfNeedAdminMode title="Litlhophiso tsa Proxy" message="Ka kopo qala Notepad++ hape ka mokhoa oa Admin ho lokisa proxy."/>
+			<DocTooDirtyToMonitor title="Bothata ba ho beha leihlo" message="Tokomane e litšila.Ka kopo, boloka phetoho pele u e beha leihlo."/>
+			<DocNoExistToMonitor title="Bothata ba ho beha leihlo" message="Faele e lokela ho ba teng hore e behoe leihlo."/>
+			<FileTooBigToOpen title="Bothata ba boholo ba faele" message="Faele e kholo haholo hore e ka buloa ke Notepad++"/><!-- HowToReproduce: Try to open a 4GB file (it's not easy to reproduce, it depends on your system). -->
+			<FileLoadingException title="Mokhelo khoutu: $STR_REPLACE$" message="Ho hlahile phoso ha re bula faele!"/>
+			<WantToOpenHugeFile title="Ho bula temoso e kholo ea faele" message="Ho bula faele e kholo ea 2GB+ ho ka nka metsotso e mengata.
+O batla ho e bula?"/>
+			<CreateNewFileOrNot title="Theha faele e ncha" message="&quot;$STR_REPLACE$&quot; ha e eo.E thehile?"/>
+			<CreateNewFileError title="Theha faele e ncha" message="Ha re khone ho theha faele &quot;$STR_REPLACE$&quot;."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<OpenFileError title="BOHLOKO" message="|Ha e khone ho bula faele &quot;$STR_REPLACE$&quot;."/>
+			<OpenFileNoFolderError title="Ha e khone ho bula faele" message="&quot;$STR_REPLACE1$&quot; ha e khone ho buloa:
+Sephutheli &quot;$STR_REPLACE2$&quot; ha se teng."/>
+			<FileBackupFailed title="Boloka Lifaele E hlolehile" message="Mofuta o fetileng oa faele ha o khone ho bolokoa bukeng ea bekapo ho &quot;$STR_REPLACE$&quot;.
+
+Na u batla ho boloka faele ea hajoale?"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<LoadStylersFailed title="Laola stylers.xml hlolehile" message="Mojaro &quot;$STR_REPLACE$&quot; o hlolehile!"/>
+			<LoadLangsFailed title="Configurator" message="Langs.xml e hlotsoe!
+Na u batla ho khutlisa langs.xml ea hau?"/><!-- HowToReproduce: Close Notepad++. Use another editor to remove all content of "langs.xml" (0 length) then save it. Open Notepad++. -->
+			<LoadLangsFailedFinal title="Configurator" message="Langs.xml e hlotsoe!"/><!-- HowToReproduce: Close Notepad++. Use another editor to make "langs.xml" an invalid xml file then save it. Open Notepad++. -->
+			<FolderAsWorspaceSubfolderExists title="Sephutheli joalo ka Sebaka sa Mosebetsi se eketsa bothata ba foldara" message="Sephutheli se senyane sa sephutheli seo u batlang ho se kenya se teng.
+Ka kopo tlosa motso oa eona phanele pele o kenya sephutheli &quot;$STR_REPLACE$&quot;."/><!-- HowToReproduce: Add a folder like "c:\temp\aFolder\" into "Folder as Workspace" panel, then try to add "c:\temp\". -->
+
+			<ProjectPanelChanged title="$STR_REPLACE$" message="Sebaka sa ho sebetsa se fetotsoe.O batla ho e boloka?"/>
+			<ProjectPanelSaveError title="$STR_REPLACE$" message="Ho hlahile phoso ha u ntse u ngola faele ea sebaka sa mosebetsi.
+Sebaka sa hau sa mosebetsi ha se so bolokoe."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<ProjectPanelOpenDoSaveDirtyWsOrNot title="Bula Sebaka sa Mosebetsi" message="Sebaka sa hona joale sa mosebetsi se fetotsoe.Na u batla ho boloka morero oa hajoale?"/>
+			<ProjectPanelNewDoSaveDirtyWsOrNot title="Sebaka se Secha sa Mosebetsi" message="Sebaka sa hona joale sa mosebetsi se fetotsoe.Na u batla ho boloka morero oa hajoale?"/>
+			<ProjectPanelOpenFailed title="Bula Sebaka sa Mosebetsi" message="Sebaka sa tšebetso ha se khone ho buloa.
+Ho bonahala faele e lokelang ho buloa ha se faele ea projeke e nepahetseng."/>
+			<ProjectPanelRemoveFolderFromProject title="Tlosa sephutheli ho morero" message="Lintho tse nyane kaofela li tla tlosoa.
+Na ehlile u batla ho tlosa sephutheli see mosebetsing?"/>
+			<ProjectPanelRemoveFileFromProject title="Tlosa faele ho morero" message="Na ehlile u batla ho tlosa faele ee mosebetsing?"/>
+			<ProjectPanelReloadError title="Khutlisa Sebaka sa Mosebetsi" message="Ha e khone ho fumana faele eo u ka e kenyang bocha."/>
+			<ProjectPanelReloadDirty title="Khutlisa Sebaka sa Mosebetsi" message="Sebaka sa hona joale sa mosebetsi se fetotsoe.Ho kenya hape ho tla lahla litokiso tsohle.
+Na u batla ho tsoela pele?"/>
+			<UDLNewNameError title="Phoso ea UDL" message="Lebitso lena le sebelisoa ke puo e 'ngoe,
+ke kopa o fane ka e 'ngoe."/>
+			<UDLRemoveCurrentLang title="Tlosa puo ea hajoale" message="U na le bonnete?"/>
+			<UDL_importSuccessful title="Puo e Hlalositsoeng ke Mosebelisi" message="Re atlehile ho reka thepa."/>
+			<UDL_importFails title="Puo e Hlalositsoeng ke Mosebelisi" message="E hlolehile ho reka kantle."/>
+			<UDL_saveBeforeImport title="Puo e Hlalositsoeng ke Mosebelisi" message="Pele o romela kantle, boloka tlhaloso ea puo ea hau ka ho tobetsa konopo ea &quot;Save As...&quot;."/> <!-- HowToReproduce: Choose "User Defined Language" in User Language combobox, then click on "Export... button". -->
+			<UDL_exportSuccessful title="Puo e Hlalositsoeng ke Mosebelisi" message="Thepa e atlehile."/>
+			<UDL_exportFails title="Puo e Hlalositsoeng ke Mosebelisi" message="E hlolehile ho romela kantle."/>
+			<SCMapperDoDeleteOrNot title="U na le bonnete?" message="Na ehlile u batla ho hlakola tsela ee e khaoletsang?"/>
+			<FindCharRangeValueError title="Bothata ba Boleng bo fapaneng" message="O lokela ho ngola pakeng tsa 0 le 255."/> <!-- HowToReproduce: Search menu, then Find characters in range, select Custom range, enter 999 in either edit box, press Find. -->
+			<OpenInAdminMode title="Ho boloka ho hlolehile" message="Faele e ka se bolokehe mme e kanna ya sireletsoa.
+Na u batla ho qala Notepad ++ ka mokhoa oa Administrator?"/>
+			<OpenInAdminModeWithoutCloseCurrent title="Ho boloka ho hlolehile" message="Faele e ka se bolokehe mme e kanna ya sireletsoa.
+Na u batla ho qala Notepad ++ ka mokhoa oa Administrator?"/>
+			<OpenInAdminModeFailed title="Ho buloa ka mokhoa oa Administrator ho hlotsoe" message="Notepad ++ e ke ke ea buloa ka mokhoa oa Administrator."/><!-- HowToReproduce: When you have no Admin privilege and you try to save a modified file in a protected location (for example: any file in sub-folder of "C:\Program Files\". This message will appear after replying "Yes" to "Open in Admin mode" dialog. -->
+			<ViewInBrowser title="Sheba Faele ea Hona Joale ho Sebatli" message="Sesebelisoa ha se fumanehe ho sistimi ea hau."/>
+			<ExitToUpdatePlugins title="Notepad++ e mothating oa ho tsoa" message="Haeba u tobetsa YES, u tla tlohela Notepad++ ho ntšetsa pele ts'ebetso.
+Notepad ++ e tla qala hape kamora hore lits'ebetso tsohle li felisoe.
+Na u batla ho tsoela pele?"/>
+			<NeedToRestartToLoadPlugins title="Notepad++ e hloka ho hlahisoa bocha" message="U tlameha ho qala Notepad ++ hape ho kenya li-plugins tseo u li kentseng."/><!-- HowToReproduce: Import a plugin via menu "Settings->Import->Import Plugin(s)...". -->
+			<ChangeHistoryEnabledWarning title="Notepad++ e hloka ho hlahisoa bocha" message="U tlameha ho qala Notepad ++ hape ho nolofalletsa Phetoho ea nalane."/><!-- HowToReproduce: uncheck "Display Change History" via Preferences dialog "Marges/Border/Edge. -->
+			<WindowsSessionExit title="Notepad++ - Ho tsoa ha nako ea Windows" message="Session ea Windows e haufi le ho felisoa empa u na le data e sa bolokoang.Na u batla ho tsoa Notepad++ hona joale?"/>
+			<LanguageMenuCompactWarning title="Menu ea Puo e Kopanetsoeng" message="Khetho ena e tla fetoloa lenaneong le latelang."/><!-- HowToReproduce: toggle "Make language menu compact" via Preferences dialog "Language/Language Menu. -->
+			<SwitchUnsavedThemeWarning title="$STR_REPLACE$" message="Liphetoho tse sa bolokehang li haufi le ho lahloa!
+Na u batla ho boloka liphetoho tsa hau pele u fetola lihlooho?"/><!-- HowToReproduce: In the Style Configurator dialog change some theme and switch to other theme without saving. -->
+			<MacroAndRunCmdlWarning title="Macro le Run Commands Compatibility" message="Litaelo tsa hau tsa Macro le Run tse bolokiloeng ho Notepad ++ v.8.5.2 (kapa ho feta) li ka 'na tsa se ke tsa lumellana le phetolelo ea morao-rao ea Notepad ++.
+Ka kopo, leka litaelo tseo, 'me, ha ho hlokahala, u li hlophise bocha.
+
+Ntle le moo, o ka theolela ho Notepad ++ v8.5.2 mme o khutlisa data ea hau e fetileng.
+Notepad++ e tla boloka &quot;shortcuts.xml&quot; ea hau ea khale 'me e e boloke e le &quot;shortcuts.xml.v8.5.2.backup&quot;.
+Ho reha &quot;shortcuts.xml.v8.5.2.backup&quot; -&gt; &quot;shortcuts.xml&quot;, litaelo tsa hau li lokela ho khutlisoa 'me li sebetse hantle."/><!-- HowToReproduce: Close Notepad++, remove shortcuts.xml.v8.5.2.backup & v852ShortcutsCompatibilityWarning.xml if present, relaunch Notepad++, delete or modify a shortcuts via Shortcut Mapper, close Notepad++, then the message will show up -->
+			<FullReadOnlySavingForbidden title="Ho boloka ho hlolehile" message="Ha e khone ho boloka faele.
+Mokhoa o thibetsoeng oa ho boloka ho bala feela oa Notepad++ o thibetse faele ho bolokoa."/>
+			<NotEnoughRoom4Saving title="Ho boloka ho hlolehile" message="E hlolehile ho boloka faele.
+Ho bonahala eka ha ho na sebaka se lekaneng disk ho boloka faele.Faele ea hau ha e ea bolokoa."/>
+			<FileInaccessibleUserSession title="Faele ha e fumanehe" message="Lifaele tse ling tsa lenaneo leo u li bolokileng ka letsoho &quot;$STR_REPLACE$&quot; ha li fumanehe.Li ka buloa e le litokomane tse se nang letho le tse baloang feela joalo ka litšoantšiso.
+
+O ka rata ho theha litšoantšiso tseo?
+
+ELA HLOKO: Ka ho khetha ho se thehe litšoantšiso kapa ho se koala hamorao, seshene sa hau se bolokoang ka letsoho TLA HLOKOA ha u tsoa."/>
+			<FileInaccessibleDefaultSessionXml title="Faele ha e fumanehe" message="Lifaele tse ling tsa nakong e fetileng ha li fumanehe.Li ka buloa e le litokomane tse se nang letho le tse baloang feela joalo ka litšoantšiso.
+
+O ka rata ho theha litšoantšiso tseo?
+
+ELA HLOKO: Ka ho khetha ho se thehe litšoantšiso kapa ho li koala hamorao, lenaneo la hau le TLA FETOLA HA U TSOA!Re khothaletsa hore u boloke &quot;session.xml&quot; ea hau hona joale."/>
+			<RTLvsDirectWrite title="Ha e khone ho matha RTL" message="RTL ha e tsamaisane le mokhoa oa DirectWrite.Ka kopo tima mokhoa oa DirectWrite ho MISC.karolo ea Likhetho, 'me u qale Notepad++ hape."/>
+			<FileMemoryAllocationFailed title="Mokhelo: Kabo ea memori ea faele e hlotsoe" message="Mohlomong ha ho na memori e lekaneng ea mahala bakeng sa faele e laetsoeng ke Notepad ++."/><!-- HowToReproduce: Try to open multiple files with total size > ~700MB in the x86 Notepad++ (it will depend on the PC memory configuration and the current system memory usage...). -->
+			<FindRegexBackwardDisabled title="Regex backward search e koetsoe" message="Ka kamehla, ho batla ka morao ho regex ho koetsoe ka lebaka la liphetho tse ka bang teng tse neng li sa lebelloa.Ho batlisisa ka morao, bula lebokose la Fumana 'me u khethe mokhoa oa ho batla o tloaelehileng kapa o atolositsoeng ho fapana le polelo e tloaelehileng.
+Tobetsa konopo ea OK ho bula lebokose la Fumana kapa ho beha tsepamiso ho eona.
+
+Haeba o hloka karolo ea morao-rao ea ho batla regex, sheba bukana ea mosebelisi bakeng sa litaelo tsa ho e nolofalletsa."/>
+			<PrintError title="0" message="Ha e khone ho qala tokomane ea khatiso."/><!-- Use title="0" to use Windows OS default translated "Error" title. -->
+			<FindAutoChangeOfInSelectionWarning title="Batla temoso" message="Boemo ba lebokose la &quot;Ho khetha&quot; bo fetotsoe ka bohona.
+Ka kopo, netefatsa boemo ba ho batla pele u etsa ketso."/> <!-- HowToReproduce: https://github.com/notepad-plus-plus/notepad-plus-plus/issues/14897#issuecomment-2564316224 -->
+			<Need2Restart2ShowMenuShortcuts title="Notepad++ e hloka ho qalisoa bocha" message="Notepad ++ e hloka ho qalisoa bocha ho bonts'a likhutšoane tse nepahetseng tsa menyu."/>
+			<NoAdminRight2ChangeReadOnlyFileAttribute title="Ho hloleha ho fetola faele e baloang feela" message="Ka kopo, tsamaisa Notepad ++ joalo ka molaoli ho fetola litšobotsi tsa faele."/>
+		</MessageBox>
+		<ClipboardHistory>
+			<PanelTitle name="Nalane ea Clipboard"/>
+		</ClipboardHistory>
+		<DocList>
+			<PanelTitle name="Lethathamo la Litokomane"/>
+			<ColumnName name="Lebitso"/>
+			<ColumnExt name="Ext."/>
+			<ColumnPath name="Tsela"/>
+			<ListGroups name="Sehlopha ka Pono"/>
+		</DocList>
+		<WindowsDlg>
+			<ColumnName name="Lebitso"/>
+			<ColumnPath name="Tsela"/>
+			<ColumnType name="Mofuta"/>
+			<ColumnSize name="Boholo"/>
+			<ColumnDateTime name="Nako e fetotsoeng"/>
+			<NbDocsTotal name="kakaretso ea litokomane:"/>
+			<MenuCopyName name="Kopitsa Lebitso (ma)"/>
+			<MenuCopyPath name="Kopitsa (ma)Pathname(ma)"/>
+		</WindowsDlg>
+		<AsciiInsertion>
+			<PanelTitle name="ASCII Codes Insertion Panel"/>
+			<ColumnVal name="Boleng"/>
+			<ColumnHex name="Hex"/>
+			<ColumnChar name="Motho"/>
+			<ColumnHtmlName name="Lebitso la HTML"/>
+			<ColumnHtmlNumber name="HTML Decimal"/>
+			<ColumnHtmlHexNb name="HTML Hexadecimal"/>
+		</AsciiInsertion>
+		<DocumentMap>
+			<PanelTitle name="'Mapa oa Tokomane"/>
+		</DocumentMap>
+		<FunctionList>
+			<PanelTitle name="Lenane la Mesebetsi"/>
+			<SortTip name="Hlopha"/>
+			<ReloadTip name="Kenya hape"/>
+			<PreferencesTip name="Likhetho"/>
+			<PreferencesInitialSort name="Hlopha mesebetsi (A ho ea ho Z) ka mokhoa oa kamehla"/>
+		</FunctionList>
+		<FolderAsWorkspace>
+			<PanelTitle name="Sephutheli joalo ka Sebaka sa Mosebetsi"/>
+			<SelectFolderFromBrowserString name="Kgetha foldara eo o ka e kenyang ho Folder joalo ka phanele ea Sebaka sa Mosebetsi"/>
+			<ExpandAllFoldersTip name="Hlalosa tsohle"/>
+			<CollapseAllFoldersTip name="Mena kaofela"/>
+			<LocateCurrentFileTip name="Fumana faele ea hajoale"/>
+			<Menu>
+				<Item id="3511" name="Tlosa"/>
+				<Item id="3512" name="Tlosa Tsohle"/>
+				<Item id="3513" name="Kenya"/>
+				<Item id="3514" name="Matha ka sistimi"/>
+				<Item id="3515" name="Bula"/>
+				<Item id="3516" name="Kopitsa tsela"/>
+				<Item id="3517" name="Fumana ho Lifaele..."/>
+				<Item id="3518" name="Mofuputsi mona"/>
+				<Item id="3519" name="CMD mona"/>
+				<Item id="3520" name="Kopitsa lebitso la faele"/>
+			</Menu>
+		</FolderAsWorkspace>
+		<ProjectManager>
+			<PanelTitle name="Morero"/>
+			<WorkspaceRootName name="Sebaka sa ho sebetsa"/>
+			<NewProjectName name="Lebitso la Morero"/>
+			<NewFolderName name="Lebitso la Sephutheli"/>
+			<Menus>
+				<Entries>
+					<Item id="0" name="Sebaka sa ho sebetsa"/>
+					<Item id="1" name="Fetola"/>
+				</Entries>
+				<WorkspaceMenu>
+					<Item id="3122" name="Sebaka se Secha sa Mosebetsi"/>
+					<Item id="3123" name="Bula Sebaka sa Mosebetsi"/>
+					<Item id="3124" name="Khutlisa Sebaka sa Mosebetsi"/>
+					<Item id="3125" name="Boloka"/>
+					<Item id="3126" name="Boloka Joalo ka..."/>
+					<Item id="3127" name="Boloka Kopi Joalo ka..."/>
+					<Item id="3121" name="Kenya Morero o Mocha"/>
+					<Item id="3128" name="Fumana ho Merero..."/>
+				</WorkspaceMenu>
+				<ProjectMenu>
+					<Item id="3111" name="Reha lebitso bocha"/>
+					<Item id="3112" name="Kenya Sephutheli"/>
+					<Item id="3113" name="Kenya Lifaele..."/>
+					<Item id="3117" name="Kenya Lifaele ho tsoa ho Directory..."/>
+					<Item id="3114" name="Tlosa"/>
+					<Item id="3118" name="Suthela Holimo"/>
+					<Item id="3119" name="Tsamaea Tlase"/>
+				</ProjectMenu>
+				<FolderMenu>
+					<Item id="3111" name="Reha lebitso bocha"/>
+					<Item id="3112" name="Kenya Sephutheli"/>
+					<Item id="3113" name="Kenya Lifaele..."/>
+					<Item id="3117" name="Kenya Lifaele ho tsoa ho Directory..."/>
+					<Item id="3114" name="Tlosa"/>
+					<Item id="3118" name="Suthela Holimo"/>
+					<Item id="3119" name="Tsamaea Tlase"/>
+				</FolderMenu>
+				<FileMenu>
+					<Item id="3111" name="Reha lebitso bocha"/>
+					<Item id="3115" name="Tlosa"/>
+					<Item id="3116" name="Fetola Tsela ea Lifaele"/>
+					<Item id="3118" name="Suthela Holimo"/>
+					<Item id="3119" name="Tsamaea Tlase"/>
+				</FileMenu>
+			</Menus>
+		</ProjectManager>
+		<MiscStrings>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<word-chars-list-tip value="Sena se o lumella ho kenyelletsa litlhaku tse ling ho litlhaku tsa hajoale ha o ntse o tobetsa habeli ho khetha kapa o batla ka khetho ea &quot;Match whole word only&quot; e khethiloe."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, hover your mouse on the "?" button. -->
+
+			<!-- Don't translate "(&quot;EOL custom color&quot;)" -->
+			<eol-custom-color-tip value="Eya ho Style Configurator ho fetola mmala wa kamehla wa EOL (&quot;EOL custom color&quot;).."/>
+
+			<word-chars-list-warning-begin value="Hlokomela:"/>
+			<word-chars-list-space-warning value="$INT_REPLACE$ space(s)"/>
+			<word-chars-list-tab-warning value="$INT_REPLACE$ TAB(s)"/>
+			<word-chars-list-warning-end value="lethathamong la libapali tsa hau."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, check "Add your character as part of word\r(don't choose it unless you know what you're doing)", then type a white-space in the text field. -->
+			<backup-select-folder value="Khetha foldara e le bukana ea bekapo"/><!-- HowToReproduce: Settings > Preferences > Backup > [...] -->
+			<cloud-invalid-warning value="Tsela e fosahetseng."/>
+			<cloud-restart-warning value="Ka kopo qala Notepad++ bocha hore e sebetse."/>
+			<cloud-select-folder value="Khetha foldara ho tloha/ho ea moo Notepad++ e balang/e ngolang litlhophiso tsa eona"/><!-- HowToReproduce: In "Cloud" section of Preferences dialog, check "Set your cloud location path here: ", then click the button "...". This message is displayed in the "Browse For Folder" dialog. -->
+			<default-open-save-select-folder value="Khetha foldara e le bukana ea kamehla"/><!-- HowToReproduce: Settings > Preferences > Default Directory > [...] -->
+			<shift-change-direction-tip value="Sebelisa Shift+Enter ho batla ka nqa e 'ngoe"/>
+			<two-find-buttons-tip value="2 fumana likonopo mokhoa"/>
+			<find-in-files-filter-tip value="Fumana ho cpp, cxx, h, hxx hpp:
+*.cpp *.cxx *.h *.hxx *.hpp
+
+Fumana lifaeleng tsohle ntle le exe, obj log:
+*.* !*.exe !*.obj !*.log
+
+Fumana lifaeleng tsohle empa u se kenye liteko tsa lifoldara, bin bin64:
+*.* !\liteko !\bin*
+
+Fumana lifaeleng tsohle empa u se kenye lifaele tsohle tsa log kapa logs ka makhetlo a mangata:
+*.* !+\log*"/><!-- HowToReproduce: Tip of mouse hovered on "Filters" label in "Find in Files" section of Find dialog. -->
+			<find-in-files-select-folder value="Khetha sephutheli seo u batlang ho se batla ho"/><!-- HowToReproduce: Search > Find in Files > [...] -->
+			<find-in-files-dir-from-active-doc-tip value="Tlatsa sebaka sa Directory ho latela tokomane e sebetsang"/><!-- HowToReproduce: Search > Find in Files > [<<] -->
+			<find-status-top-reached value="Fumana: Tokomane e fihletsoeng e qala, ketsahalo ea pele ho tloha tlase e fumanoe."/>
+			<find-status-end-reached value="Fumana: E fihlile pheletsong ea tokomane, ketsahalo ea pele ho tsoa holimo e fumanoeng."/>
+			<find-status-replaceinfiles-1-replaced value="Fetola ho Lifaele: Ketsahalo e le 'ngoe e ile ea nkeloa sebaka"/>
+			<find-status-replaceinfiles-nb-replaced value="Fetosa ho Lifaele: $INT_REPLACE$ liketsahalo li ile tsa nkeloa sebaka"/>
+			<find-status-replaceinopenedfiles-1-replaced value="Fetola Lifaeleng Tse Butsoeng: Ketsahalo e le 'ngoe e ile ea nkeloa sebaka"/>
+			<find-status-replaceinopenedfiles-nb-replaced value="Fetola Lifaeleng Tse Bulehileng: $INT_REPLACE$ makhetlo a fetotsoeng"/>
+			<find-status-invalid-re value="Fumana: Polelo ea kamehla e fosahetseng"/>
+			<find-status-search-failed value="Fumana: Ho batla ho hlolehile"/>
+			<find-status-mark-1-match value="Letšoao: papali e 1"/>
+			<find-status-mark-nb-matches value="Tšoaea: $INT_REPLACE$ e ts'oanang"/>
+			<find-status-count-1-match value="Palo: papali e le 1"/>
+			<find-status-count-nb-matches value="Palo: $INT_REPLACE$ e ts'oanang"/>
+			<find-status-replaceall-1-replaced value="Tlosa Tsohle: Ketsahalo e le 'ngoe e ile ea nkeloa sebaka"/>
+			<find-status-replaceall-nb-replaced value="Tlosa Tsohle: $INT_REPLACE$ liketsahalo li ile tsa nkeloa sebaka"/>
+			<find-status-replaceall-readonly value="Tlosa Tsohle: Ha e khone ho fetola mongolo.Tokomane ea hajoale e baloa feela"/>
+			<find-status-replace-end-reached value="Fetola: E fihlile pheletsong ea tokomane, e qalile ho tloha holimo."/>
+			<find-status-replace-top-reached value="Fetola: Tokomane e fihletsoeng e qala, e qala ho tloha tlase."/>
+			<find-status-replaced-next-found value="Fetosa: Ketsahalo e le 'ngoe e fetotsoe.Ketsahalo e latelang e fumanoe."/>
+			<find-status-replaced-without-continuing value="Fetosa: Ketsahalo e le 'ngoe e fetotsoe."/>
+			<find-status-replaced-next-not-found value="Fetosa: Ketsahalo e le 'ngoe e fetotsoe.Ha ho na liketsahalo tse ling tse fumanoeng."/>
+			<find-status-replace-not-found value="Kenya sebaka: ha ho ketsahalo e fumanoeng"/>
+			<find-status-replace-readonly value="Fetola: Ha e khone ho fetola mongolo.Tokomane ea hajoale e baloa feela"/>
+			<find-status-cannot-find value="Fumana: Ha e fumane mongolo &quot;$STR_REPLACE$&quot;"/>
+			<find-status-cannot-find-pebkac-maybe value="Ketsahalo e fanoeng ha e fumanehe.E ka 'na eaba u lebetse ho sheba &quot;Qetella&quot; (ho ON), &quot;Match case&quot; (ho TIMA), kapa &quot;Bapisa lentsoe kaofela feela&quot; (ho TIMA)."/>
+			<find-status-scope-selection value="mongolong o khethiloeng"/>
+			<find-status-scope-all value="ka faele eohle"/>
+			<find-status-scope-backward value="ho tloha qalong-ea-file ho ea ho caret"/>
+			<find-status-scope-forward value="ho tloha ho caret ho ea qetellong-ea-file"/>
+			<find-status-invisible-chars-findWhat value="Litlhaku tse sa bonahaleng ka har'a &quot;Find what&quot; or &quot;Replace with&quot; content"/>
+			<find-status-invisible-chars-findWhat-tip value="Tlhokomeliso: Litlhaku tse sa bonahaleng sebakeng sa ho batla (kapa se nkela sebaka).
+Mongolo o kentsoeng sebakeng sena o kenyelletsa litlhaku tse sa bonahaleng (mohlomong tse qetellang ka mela).Ha u ka tsoela pele ntle le ho li hlakola, li tla kenyeletsoa tabeng ea ho batla (kapa e nkele sebaka)."/>
+			<finder-find-in-finder value="Fumana liphethong tsena..."/>
+			<finder-close-this value="Koala liphetho tsena"/>
+			<finder-collapse-all value="Mena kaofela"/>
+			<finder-uncollapse-all value="Hlalosa tsohle"/>
+			<finder-copy value="Kopitsa Line(s) tse Khethiloeng"/>
+			<finder-copy-selected-paths value="Kopitsa Mabitso a Khethiloeng a Tsela"/>
+			<finder-clear-all value="Hlakola tsohle"/>
+			<finder-open-selected-paths value="Bula (ma)mabitso a Khethiloeng a Tsela"/>
+			<finder-purge-for-every-search value="Hlakola patlisiso e 'ngoe le e 'ngoe"/>
+			<finder-wrap-long-lines value="Ho thatela mantsoe mela e melelele"/>
+			<common-ok value="OK"/>
+			<common-cancel value="Hlakola"/>
+			<common-name value="Lebitso"/>
+			<tabrename-title value="Reha Lebitso la Hajoale Tab"/>
+			<tabrename-newname value="Lebitso le lecha"/>
+			<splitter-rotate-left value="Fetolela ho le letšehali"/>
+			<splitter-rotate-right value="Fetolela ho le letona"/>
+			<userdefined-title-new value="Theha Puo e Ncha..."/>
+			<userdefined-title-save value="Boloka Lebitso la Puo ea Hajoale Joaloka..."/>
+			<userdefined-title-rename value="Reha Lebitso le Lecha la Puo ea Hona Joale"/>
+			<summary value="Kakaretso"/>
+			<summary-filepath value="Tsela e feletseng ea faele:"/>
+			<summary-filecreatetime value="E entsoe:"/>
+			<summary-filemodifytime value="Fetisitsoe:"/>
+			<summary-nbchar value="Litlhaku (ntle le lipheletso tsa mela):"/>
+			<summary-nbword value="Mantsoe:"/>
+			<summary-nbline value="Mela:"/>
+			<summary-nbbyte value="Bolelele ba tokomane:"/>
+			<summary-nbsel1 value="litlhaku tse khethiloeng ("/>
+			<summary-nbsel2 value="byte) ho"/>
+			<summary-nbrange value="mekhahlelo"/>
+			<progress-hits-title value="Hits:"/>
+			<progress-cancel-info value="E hlakola ts'ebetso, ka kopo ema..."/>
+			<find-in-files-progress-title value="Tsoelopele ea Find In Files..."/>
+			<replace-in-files-confirm-title value="U na le bonnete?"/>
+			<replace-in-files-confirm-directory value="Na u na le bonnete ba hore u batla ho fetola liketsahalo tsohle ho:"/>
+			<replace-in-files-confirm-filetype value="Bakeng sa mofuta oa faele:"/>
+			<replace-in-files-progress-title value="Fetola In Files tsoelopele..."/>
+			<replace-in-projects-confirm-title value="U na le bonnete?"/>
+			<replace-in-projects-confirm-message value="Na u batla ho khutlisa liketsahalo tsohle litokomaneng tsohle ho Phanele ea Morero?"/>
+			<replace-in-open-docs-confirm-title value="U na le bonnete?"/>
+			<replace-in-open-docs-confirm-message value="A na u na le bonnete ba hore u batla ho khutlisa liketsahalo tsohle tse hlahang litokomaneng tsohle?"/>
+			<find-result-caption value="Liphetho tsa lipatlisiso"/>
+			<find-result-title value="Batla"/><!-- Must not begin with space or tab character -->
+			<find-result-title-info value="($INT_REPLACE1$ e otla ho $INT_REPLACE2$ lifaele tsa $INT_REPLACE3$ tse batliloeng)"/>
+			<find-result-title-info-selections value="($INT_REPLACE1$ e otla ho $INT_REPLACE2$ likhetho tsa $INT_REPLACE3$ tse batliloeng)"/>
+			<find-result-title-info-options-searchmode-normal value="Tloaelehileng"/>
+			<find-result-title-info-options-searchmode-extended value="E atolositsoe"/>
+			<find-result-title-info-options-searchmode-regexp value="RegEx"/>
+			<find-result-title-info-options-case value="Nyeoe"/>
+			<find-result-title-info-options-word value="Lentsoe"/>
+			<find-result-title-info-extra value="- Mokhoa oa Filter: hlahisa feela liphetho tse tlhotliloeng"/>
+			<find-result-hits value="($INT_REPLACE$ e otla)"/>
+			<find-result-line-prefix value="Mola"/><!-- Must not begin with space or tab character -->
+			<find-regex-zero-length-match value="papali ea bolelele ba zero"/>
+			<session-save-folder-as-workspace value="Boloka Sephutheli joalo ka Sebaka sa Mosebetsi"/>
+			<tab-untitled-string value="e ncha"/>
+			<file-save-assign-type value="Eketsa katoloso"/>
+			<close-panel-tip value="Kwala"/>
+			<IncrementalFind-FSFound value="$INT_REPLACE$ matches"/>
+			<IncrementalFind-FSNotFound value="Polelo ha e fumanehe"/>
+			<IncrementalFind-FSTopReached value="E fihlile holimo leqepheng, e tsoela pele ho tloha tlase"/>
+			<IncrementalFind-FSEndReached value="E fihlile qetellong ea leqephe, e tsoela pele ho tloha holimo"/>
+			<contextMenu-styleAlloccurrencesOfToken value="Fetola liketsahalo tsohle tsa token"/>
+			<contextMenu-styleOneToken value="Style one token"/>
+			<contextMenu-clearStyle value="Setaele se hlakileng"/>
+			<contextMenu-PluginCommands value="Litaelo tsa plugin"/>
+			<largeFileRestriction-tip value="Likarolo tse ling li ka liehisa ts'ebetso ho lifaele tse kholo.Likarolo tsena li ka koaloa ha u bula faele e kholo.U ka li etsa ka mokhoa o ikhethileng mona.
+
+ELA HLOKO:
+1. Likhetho tsa ho fetola mona li hloka ho bula hape lifaele tse kholo tse butsoeng hajoale ho fumana boitšoaro bo nepahetseng.
+
+2. Haeba &quot;Deactivate Word Wrap&quot; e hlahlojoe 'me u bula faele e kholo, &quot;Word Wrap&quot; e tla emisoa bakeng sa lifaele tsohle.U ka e nolofalletsa hape ka menu ea &quot;View-&gt; Word Wrap&quot;."/>
+			<npcNote-tip value="Kemelo ea litlhaku tse khethiloeng &quot;tseo e seng tsa ASCII&quot; le tse sa hatiseng (taolo).
+
+ELA HLOKO:
+Ho sebelisa kemeli ho tla tima litlamorao tsa litlhaku mongolong.
+
+Bakeng sa lenane le felletseng la libaka tse tšoeu tse khethiloeng le litlhaku tse sa hatisoeng, sheba Buka ea Mosebelisi.
+
+Tobetsa konopo ena ho bula sebaka sa Marang-rang ka Buka ea Mosebelisi."/>
+			<npcAbbreviation-tip value="Kgutsufatso : lebitso
+NBSP: sebaka se se nang khefu
+ZWSP : sebaka sa bophara ba zero
+ZWNBSP : sebaka se se nang khefu sa zero bophara
+
+Bakeng sa lenane le felletseng, sheba Buka ea Mosebelisi.
+Tobetsa ho &quot;?&quot;konopo e ka ho le letona ho bula sebaka sa marang-rang ka Buka ea Mosebelisi."/>
+			<npcCodepoint-tip value="Codepoint : lebitso
+U+00A0 : sebaka se se nang khefu
+U+200B : sebaka sa bophara ba zero
+U+FEFF : sebaka se se nang khefu sa zero-bophara
+
+Bakeng sa lenane le felletseng, sheba Buka ea Mosebelisi.
+Tobetsa ho &quot;?&quot;konopo e ka ho le letona ho bula sebaka sa marang-rang ka Buka ea Mosebelisi."/>
+
+			<!-- Don't translate "(&quot;Non-printing characters custom color&quot;)" -->
+			<npcCustomColor-tip value="Eya ho Style Configurator ho fetola 'mala o tloaelehileng oa sebaka se khethiloeng le litlhaku tse sa hatisoeng (&quot;'Mala oa tloaelo oa litlhaku tse sa hatiseng&quot;)."/>
+			<npcIncludeCcUniEol-tip value="Sebelisa litlhophiso tsa ponahalo ea litlhaku tse sa hatisoeng ho C0, taolo ea C1 le Unicode EOL (moleng o latelang, searolahi sa mela le searohanyi sa lirapa)."/>
+			<searchingInSelThresh-tip value="Bonyane palo ea litlhaku tse khethiloeng sebakeng sa ho hlophisa ho hlahloba ka bo eona lebokose la &quot;Ho khetha&quot; ha puisano ea Fumana e kentsoe tšebetsong.Theko e holimo ke $INT_REPLACE$.Beha boleng ho 0 ho thibela ho itlhahloba ka bohona."/>
+			<searchingFillFindWhat-tip value="Boholo ba litlhaku tse khethiloeng sebakeng sa ho hlophisa ho tlatsa ka bohona &quot;Fumana eng&quot; sebaka ha Ctrl-F e qala.Theko e phahameng ke $INT_REPLACE$, e leng boholo ba karolo ea &quot;Fumana eng&quot;, e lekanyelitsoeng ke sistimi."/>
+			<verticalEdge-tip value="Kenya lesupa la kholomo ea hau ka ho bontša boemo ba eona ka nomoro ea decimal.O ka hlalosa matšoao a 'maloa a likholomo ka ho sebelisa sebaka se sesoeu ho arola linomoro tse fapaneng."/>
+			<fileSaveAsCopySaveButton-tip value="Tšoara Shift ha u ntse u tobetsa Save ho bula kopi ka mor'a ho boloka."/>
+			<autoIndentBasic-tip value="Netefatsa hore ho kenyeletsoa ha mola oa hajoale (ke hore mola o mocha o entsoeng ka ho tobetsa konopo ea ENTER) o lumellana le mola o fetileng."/>
+			<autoIndentAdvanced-tip value="Numella indentation e bohlale bakeng sa lipuo tsa &quot;C-like&quot; le Python.Lipuo tsa &quot;C-like&quot; li kenyelletsa:
+C, C++, Java, C#, Objective-C, PHP, JavaScript, JSP, CSS, Perl, Rust, PowerShell le JSON.
+
+Haeba u khetha mokhoa o tsoetseng pele empa u sa ntlafatse lifaele ka lipuo tse boletsoeng ka holimo, indentation e tla lula e le mokhoa oa motheo."/>
+
+			<!-- Don't translate "Global override" and "Default Style" -->
+			<global-override-tip value="Ho bulela &quot;Global override&quot; mona ho tla hlakola paramethara ka mefuta eohle ea lipuo.Seo mohlomong u hlileng u se batlang ke ho sebelisa litlhophiso tsa &quot;Default Style&quot; ho fapana le"/>
+			<scintillaRenderingTechnology-tip value="E ka ntlafatsa tlhahiso ea litlhaku tse khethehileng kapa ea rarolla mathata a mang a litšoantšo, qala Notepad ++ hape ho sebelisa liphetoho."/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'length' & 'lines' are much longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-length-lines value="bolelele: $STR_REPLACE1$ mela: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Ln' & 'Col' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Ln-Col value="Ln: $STR_REPLACE1$ Col: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Pos' & 'Sel' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Pos value="Pos:"/>
+			<statusbar-Sel value="Sel:"/>
+			<statusbar-Sel-number value="Sel"/>
+			<toolbar-accent-tip value="Khetho ena e etsa hore li-icon tsa toolbar tsa hau li latele 'mala oa mokhoa oa Windows.'Mala oa accent ke' mala o hlahelletseng o sebelisoang ho likonopo, meeling le lithaeleng tsa Start menu ho Windows.Ho e fetola, e ea ho Litlhophiso &gt; Ho iketsetsa motho &gt; Mebala, ebe u khetha 'mala oa lentsoe oo u o ratang."/>
+			<len-limit-exceeded-tip value="Tekanyetso ea bolelele e tlositsoe: Seo u se ngotseng se ka 'na sa feta moeli o lumelletsoeng, 'me se ka fokotsoa, ​​​​'me se ke ke sa bolokeha nakong e tlang."/>
+			<max-len-on-search-tip value="Seo u se ngotseng se ka feta tekanyo e lumelletsoeng, 'me se ka be se fokotsehile, 'me se ka se bolokehe nakong e tlang."/>
+			<max-len-on-save-tip value="Bolelele ba seo u se kentseng bo bolelele haholo 'me mohlomong ha bo bolokehe bakeng sa lenaneo le latelang."/>
+			<goto-setting-tip value="Fumana litlhophiso tsa hau mona"/>
+			<tabbar-tabcompactlabellen-tip value="E fokotsa bolelele bo bonahalang ba mabitso a li-tab tse telele.Kenya ho sebelisa boleng bo fanoeng.Boleng bo fapaneng: litlhaku tse 1-257 (0 e thibela ho fokotseha)."/>
+		</MiscStrings>
+	</Native-Langue>
+</NotepadPlus>
+
+

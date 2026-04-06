@@ -40,7 +40,7 @@
     _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
     [self addSubview:_titleBar];
 
-    _titleLabel = [NSTextField labelWithString:@"Document List"];
+    _titleLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Document List"]];
     NSTextField *titleLabel = _titleLabel;
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     titleLabel.font = [NSFont boldSystemFontOfSize:11];

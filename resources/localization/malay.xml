@@ -1,0 +1,712 @@
+<NotepadPlus>
+	<!--
+Author: Andi Rady Kurniawan
+Date: 12 October 2008
+Desc: Malay translation for Notepad++
+-->
+	<Native-Langue name="Bahasa Melayu" filename="malay.xml">
+
+		<Menu>
+
+			<Main>
+				<!-- Main Menu Entries -->
+
+				<Entries>
+					<Item menuId="file" name="&amp;Fail"/>
+					<Item menuId="edit" name="&amp;Sunting"/>
+					<Item menuId="search" name="&amp;Carian"/>
+					<Item menuId="view" name="&amp;Pandangan"/>
+					<Item menuId="encoding" name="For&amp;mat"/>
+					<Item menuId="language" name="&amp;Bahasa"/>
+					<Item menuId="settings" name="&amp;Ketetapan"/>
+					<Item menuId="macro" name="Mak&amp;ro"/>
+					<Item menuId="run" name="&amp;Jalan"/>
+					<Item menuId="Plugins" name="Plu&amp;gin"/>
+					<Item menuId="Window" name="&amp;Tetingkap"/>
+				</Entries>
+				<!-- Sub Menu Entries -->
+
+				<SubEntries>
+					<Item subMenuId="view-collapseLevel" name="Lipat peringkat"/>
+					<Item subMenuId="view-uncollapseLevel" name="Bentang peringkat"/>
+				</SubEntries>
+				<!-- all menu item -->
+
+				<Commands>
+					<Item id="41001" name="&amp;Baru"/>
+					<Item id="41002" name="B&amp;uka"/>
+					<Item id="41003" name="&amp;Tutup"/>
+					<Item id="41004" name="Tutu&amp;p Semua"/>
+					<Item id="41005" name="Tutup Semua KECUALI Dokumen Kini"/>
+					<Item id="41006" name="&amp;Simpan"/>
+					<Item id="41007" name="Simpan Semua"/>
+					<Item id="41008" name="Simpan Sebagai..."/>
+					<Item id="41010" name="&amp;Cetak..."/>
+					<Item id="1001" name="Cetak Sekarang!"/>
+					<Item id="41011" name="&amp;Keluar"/>
+					<Item id="41012" name="Muat Sesi..."/>
+					<Item id="41013" name="Simpan Sesi..."/>
+					<Item id="41014" name="Muat Semula daripada Cakera"/>
+					<Item id="41015" name="Simpan satu Salinan Sebagai..."/>
+					<Item id="41016" name="&amp;Hapus daripada Cakera"/>
+					<Item id="41017" name="&amp;Namai Semula..."/>
+					<Item id="42001" name="&amp;Potong"/>
+					<Item id="42002" name="&amp;Salin"/>
+					<Item id="42003" name="Buat &amp;Asal"/>
+					<Item id="42004" name="Buat &amp;Semula"/>
+					<Item id="42005" name="&amp;Tampal"/>
+					<Item id="42006" name="&amp;Hapus"/>
+					<Item id="42007" name="Pilih Semua"/>
+					<Item id="42008" name="Masukkan TAB (Inden)"/>
+					<Item id="42009" name="Buang TAB (Nyahinden)"/>
+					<Item id="42010" name="Duakan baris kini"/>
+					<Item id="42012" name="Pisahkan barisan"/>
+					<Item id="42013" name="Gabungkan barisan"/>
+					<Item id="42014" name="Naikkan baris kini"/>
+					<Item id="42015" name="Turunkan baris kini"/>
+					<Item id="42016" name="huruf Besarkan"/>
+					<Item id="42017" name="huruf Kecilkan"/>
+					<Item id="42018" name="Mulakan Rakaman"/>
+					<Item id="42019" name="Hentikan Rakaman"/>
+					<Item id="42021" name="Main semula"/>
+					<Item id="42022" name="Komen/nyahkomen blok"/>
+					<Item id="42023" name="Komen strim"/>
+					<Item id="42024" name="Pepat Ruang Menjalar"/>
+					<Item id="42025" name="Simpan makro terakam kini"/>
+					<Item id="42026" name="Arah Teks Kn-Kr"/>
+					<Item id="42027" name="Arah Teks Kr-Kn"/>
+					<Item id="42028" name="Tetapkan Baca Sahaja"/>
+					<Item id="42029" name="Laluan fail kini ke Papan keratan"/>
+					<Item id="42030" name="Nama fail kini ke Papan keratan"/>
+					<Item id="42031" name="Laluan dir kini ke Papan keratan"/>
+					<Item id="42032" name="Jalankan makro berulang kali..."/>
+					<Item id="42035" name="Komen blok"/>
+					<Item id="42036" name="Nyahkomen blok"/>
+					<Item id="43001" name="Temukan..."/>
+					<Item id="43002" name="Temukan Berikutnya"/>
+					<Item id="43003" name="Ganti..."/>
+					<Item id="43004" name="Pergi ke baris..."/>
+					<Item id="43005" name="Togol Tanda Buku"/>
+					<Item id="43006" name="Tanda buku berikutnya"/>
+					<Item id="43007" name="Tanda buku seterusnya"/>
+					<Item id="43008" name="Bersihkan semua Tanda Buku"/>
+					<Item id="43009" name="Pergi ke kurungan yg padan"/>
+					<Item id="43010" name="Temukan sebelumnya"/>
+					<Item id="43011" name="Carian meningkat..."/>
+					<Item id="43013" name="Temukan dalam fail"/>
+					<Item id="43014" name="Temukan (ruap) Berikutnya"/>
+					<Item id="43015" name="Temukan (ruap) Sebelumnya"/>
+					<Item id="43016" name="Tanda semua"/>
+					<Item id="43017" name="Nyahtanda semua"/>
+					<Item id="43018" name="Potong barisan yg ditandabukukan"/>
+					<Item id="43019" name="Salin barisan yg ditandabukukan"/>
+					<Item id="43020" name="Tampal kpd (Ganti) barisan yg ditandabukukan"/>
+					<Item id="43021" name="Hapus barisan yg ditandabukukan"/>
+					<Item id="44010" name="Lipat semua"/>
+					<Item id="44011" name="Dialog Takrif Pengguna"/>
+					<Item id="44019" name="Tunjuk semua aksara"/>
+					<Item id="44020" name="Tunjuk Panduan inden"/>
+					<Item id="44022" name="Balut"/>
+					<Item id="44023" name="Zum &amp;masuk Ctrl-Mouse Wheel Up"/>
+					<Item id="44024" name="Zum &amp;keluar Ctrl-Mouse Wheel Down"/>
+					<Item id="44025" name="Tunjuk Ruang Putih dan TAB"/>
+					<Item id="44026" name="Tunjuk Penamat Baris"/>
+					<Item id="44029" name="Bentang Semua"/>
+					<Item id="44030" name="Lipat peringkat kini"/>
+					<Item id="44031" name="Bentang peringkat kini"/>
+					<Item id="44032" name="Togol Mod Layar Penuh"/>
+					<Item id="44033" name="Pulihkan ketetapan zum lalai Ctrl+/(keypad)"/>
+					<Item id="44034" name="Sentiasa di Puncak"/>
+					<Item id="44035" name="Segerakkan Penskrolan Menegak"/>
+					<Item id="44036" name="Segerakkan Penskrolan Melintang"/>
+					<Item id="44041" name="Tunjuk simbol balut"/>
+					<Item id="44070" name="Aktifkan pandangan utama"/>
+					<Item id="44071" name="Aktifkan pandangan sub"/>
+					<Item id="45001" name="Tukar kepada Format Windows"/>
+					<Item id="45002" name="Tukar kepada Format UNIX"/>
+					<Item id="45003" name="Tukar kepada Format MAC"/>
+					<Item id="45004" name="Kodkan dalam ANSI"/>
+					<Item id="45005" name="Kodkan dalam UTF-8"/>
+					<Item id="45006" name="Kodkan dalam UCS-2 Big Endian"/>
+					<Item id="45007" name="Kodkan dalam UCS-2 Little Endian"/>
+					<Item id="45008" name="Kodkan dalam UTF-8 tanpa BOM"/>
+					<Item id="45009" name="Tukar kepada ANSI"/>
+					<Item id="45010" name="Tukar kepada UTF-8 tanpa BOM"/>
+					<Item id="45011" name="Tukar kepada UTF-8"/>
+					<Item id="45012" name="Tukar kepada UCS-2 Big Endian"/>
+					<Item id="45013" name="Tukar kepada UCS-2 Little Endian"/>
+					<Item id="10001" name="Pergi ke Pandangan seterusnya"/>
+					<Item id="10002" name="Klonkan ke Pandangan seterusnya"/>
+					<Item id="46001" name="Penatarajah Penggaya..."/>
+					<Item id="47000" name="Tentang..."/>
+					<Item id="47001" name="Halaman Notepad++"/>
+					<Item id="47002" name="Laman Projek Notepad++"/>
+					<Item id="47003" name="Bantuan atas talian"/>
+					<Item id="47004" name="Forum"/>
+					<Item id="47005" name="Dapatkan lebih plugin"/>
+					<Item id="48009" name="Pemeta kekunci pintasan..."/>
+					<Item id="48011" name="Kehendak..."/>
+					<Item id="49000" name="Jalan..."/>
+					<Item id="50000" name="Lengkapi fungsi"/>
+					<Item id="50001" name="Lengkapi kata"/>
+					<Item id="50002" name="Petua parameter fungsi"/>
+					<Item id="42034" name="Penyunting Lajur..."/>
+					<Item id="44042" name="Sorok barisan"/>
+					<Item id="42040" name="Buka Semua Fail Terkini"/>
+					<Item id="42041" name="Bersihkan Senarai Fail Terkini"/>
+				</Commands>
+			</Main>
+			<Splitter>
+			</Splitter>
+
+			<TabBar>
+				<Item CMID="0" name="Tutup saya"/>
+				<Item CMID="1" name="Tutup semua kecuali saya"/>
+				<Item CMID="2" name="Simpan saya"/>
+				<Item CMID="3" name="Simpan saya Sebagai..."/>
+				<Item CMID="4" name="Cetak saya"/>
+				<Item CMID="5" name="Pergi ke Pandangan seterusnya"/>
+				<Item CMID="6" name="Klonkan ke Pandangan seterusnya"/>
+			</TabBar>
+		</Menu>
+
+		<Dialog>
+
+			<Find title="" titleFind="Temukan" titleReplace="Ganti" titleFindInFiles="Temukan dalam fail">
+				<Item id="1" name="Temukan berikutnya"/>
+				<Item id="2" name="Tutup"/>
+				<Item id="1620" name="Temukan apa :"/>
+				<Item id="1603" name="Padankan &amp;kata penuh sahaja"/>
+				<Item id="1604" name="Padankan atur &amp;huruf"/>
+				<Item id="1605" name="&amp;Ungkapan nalar"/>
+				<Item id="1606" name="Baluti"/>
+				<Item id="1614" name="Kira"/>
+				<Item id="1615" name="Temukan Semua"/>
+				<Item id="1616" name="Tandakan Baris"/>
+				<Item id="1618" name="Singkir bagi setiap carian"/>
+				<Item id="1611" name="Ganti &amp;dengan :"/>
+				<Item id="1608" name="&amp;Ganti"/>
+				<Item id="1609" name="Ganti &amp;Semua"/>
+				<Item id="1623" name="Kelutsinaran"/>
+				<Item id="1687" name="Tika hilang fokus"/>
+				<Item id="1688" name="Sentiasa"/>
+				<Item id="1632" name="Dalam pilihan"/>
+				<Item id="1633" name="Bersihkan"/>
+				<Item id="1635" name="Ganti semua dlm semua dokumen dibuka"/>
+				<Item id="1636" name="Temukan semua dlm semua dokumen dibuka"/>
+				<Item id="1654" name="Penapis :"/>
+				<Item id="1655" name="Direktori :"/>
+				<Item id="1656" name="Temukan semuanya"/>
+				<Item id="1658" name="Dlm semua subfolder"/>
+				<Item id="1659" name="Dlm folder tersorok"/>
+				<Item id="1624" name="Mod carian"/>
+				<Item id="1625" name="Biasa"/>
+				<Item id="1626" name="Canggih (\n, \r, \t, \0, \x...)"/>
+			</Find>
+
+			<GoToLine title="Pergi ke Baris #">
+				<Item id="2007" name="Baris"/>
+				<Item id="2008" name="Ofset"/>
+				<Item id="1" name="&amp;Pergi !"/>
+				<Item id="2" name="Saya batalkan niat"/>
+				<Item id="2004" name="Anda di sini :"/>
+				<Item id="2005" name="Anda ingin ke :"/>
+				<Item id="2006" name="Baris terakhir :"/>
+			</GoToLine>
+
+			<Run title="Jalan...">
+				<Item id="1903" name="Taip atur cara di sini"/>
+				<Item id="1" name="Jalan!"/>
+				<Item id="2" name="Batal"/>
+				<Item id="1904" name="Simpan..."/>
+			</Run>
+
+			<StyleConfig title="Penatarajah Gaya">
+				<Item id="1" name="Cubakan ia!"/>
+				<Item id="2" name="Batal"/>
+				<Item id="2301" name="Simpan &amp;&amp; Tutup"/>
+				<Item id="2303" name="Kelutsinaran"/>
+
+				<SubDialog>
+					<Item id="2204" name="Tebal"/>
+					<Item id="2205" name="Condong"/>
+					<Item id="2206" name="Warna tulisan"/>
+					<Item id="2207" name="Warna latar"/>
+					<Item id="2208" name="Nama fon :"/>
+					<Item id="2209" name="Saiz fon :"/>
+
+					<!--
+
+                    <Item id = "2210" name = "Attention : The definition of this style will be the default definition for all non defined styles"/>\
+
+-->
+					<Item id="2211" name="Perihal Gaya :"/>
+					<Item id="2212" name="Gaya warna"/>
+					<Item id="2213" name="Gaya fon"/>
+					<Item id="2214" name="Samb. lalai :"/>
+					<Item id="2216" name="Samb. pengguna :"/>
+					<Item id="2218" name="Bergaris"/>
+					<Item id="2219" name="Katakunci lalai"/>
+					<Item id="2221" name="Katakunci takrifan pengguna"/>
+					<Item id="2225" name="Bahasa :"/>
+					<Item id="2226" name="Bolehkan warna tulisan sejagat"/>
+					<Item id="2227" name="Bolehkan warna latar sejagat"/>
+					<Item id="2228" name="Bolehkan fon sejagat"/>
+					<Item id="2229" name="Bolehkan saiz fon sejagat"/>
+					<Item id="2230" name="Bolehkan gaya fon tebal sejagat"/>
+					<Item id="2231" name="Bolehkan gaya fon condong sejagat"/>
+					<Item id="2232" name="Bolehkan gaya fon bergaris sejagat"/>
+				</SubDialog>
+			</StyleConfig>
+
+			<UserDefine title="Takrif Pengguna">
+				<Item id="20002" name="Namai semula"/>
+				<Item id="20003" name="Cipta Baru..."/>
+				<Item id="20004" name="Buang"/>
+				<Item id="20005" name="Simpan Sebagai..."/>
+				<Item id="20007" name="Bahasa Pengguna : "/>
+				<Item id="20009" name="Samb :"/>
+				<Item id="20012" name="Abaikan atur huruf"/>
+				<Item id="20011" name="Kelutsinaran"/>
+				<Item id="0" name="Gaya warna"/>
+				<Item id="1" name="Warna tulisan"/>
+				<Item id="2" name="Warna latar"/>
+				<Item id="3" name="Gaya fon"/>
+				<Item id="4" name="Nama Fon :"/>
+				<Item id="5" name="Saiz fon :"/>
+				<Item id="6" name="Tebal"/>
+				<Item id="7" name="Condong"/>
+				<Item id="8" name="Bergaris"/>
+
+				<Folder title="Pelipat &amp;&amp; Lalai">
+					<Item id="21101" name="Ketetapan Gaya Lalai"/>
+					<Item id="21201" name="Ketetapan Katakunci Buka Pelipat"/>
+					<Item id="21301" name="Ketetapan Katakunci Tutup Pelipat"/>
+				</Folder>
+
+				<Keywords title="Senarai Katakunci">
+					<Item id="22101" name="Kumpulan ke-1"/>
+					<Item id="22201" name="Kumpulan ke-2"/>
+					<Item id="22301" name="Kumpulan ke-3"/>
+					<Item id="22401" name="Kumpulan ke-4"/>
+					<Item id="22113" name="Mod awalan"/>
+					<Item id="22213" name="Mod awalan"/>
+					<Item id="22313" name="Mod awalan"/>
+					<Item id="22413" name="Mod awalan"/>
+				</Keywords>
+
+				<Comment title="Komen &amp;&amp; Nombor">
+					<Item id="23301" name="Baris Komen"/>
+					<Item id="23101" name="Blok Komen"/>
+					<Item id="23113" name="Buka Komen :"/>
+					<Item id="23115" name="Tutup Komen :"/>
+					<Item id="23116" name="Anggap katakunci sebagai simbol"/>
+					<Item id="23117" name="Anggap katakunci sebagai simbol"/>
+					<Item id="23201" name="Nombor"/>
+				</Comment>
+
+				<Operator title="Pengendali">
+					<Item id="24107" name="Pengendali"/>
+					<Item id="24103" name="Simbol yang ada"/>
+					<Item id="24101" name="Pengendali yang diaktifkan"/>
+					<Item id="24201" name="Penyahhad 1"/>
+					<Item id="24211" name="Buka sempadan :"/>
+					<Item id="24214" name="Tutup sempadan :"/>
+					<Item id="24301" name="Penyahhad 2"/>
+					<Item id="24311" name="Buka sempadan :"/>
+					<Item id="24314" name="Tutup sempadan :"/>
+				</Operator>
+			</UserDefine>
+
+			<Preference title="Kehendak">
+				<Item id="6001" name="Tutup"/>
+
+				<Global title="Sejagat">
+					<Item id="6102" name="Sorok"/>
+					<Item id="6103" name="Arca kecil"/>
+					<Item id="6104" name="Arca besar"/>
+					<Item id="6105" name="Arca kecil piawai"/>
+					<Item id="6107" name="Kecilkan"/>
+					<Item id="6108" name="Kunci (Tiada Drag N Drop)"/>
+					<Item id="6109" name="Lukiskan tab-tab tak aktif"/>
+					<Item id="6110" name="Lukiskan palang puncak warna jingga"/>
+					<Item id="6112" name="Bolehkan butang tutup pd setiap tab"/>
+					<Item id="6113" name="Dwi-klik untuk menutup dokumen"/>
+					<Item id="6118" name="Sorok"/>
+					<Item id="6119" name="Berbilang Baris"/>
+					<Item id="6120" name="Menegak"/>
+					<Item id="6121" name="Palang menu"/>
+					<Item id="6122" name="Sorok (Guna kekunci Alt atau F10 untuk menogolkannya)"/>
+				</Global>
+
+				<Scintillas title="Komponen sunting">
+					<Item id="6216" name="Ketetapan karet"/>
+					<Item id="6217" name="Lebar :"/>
+					<Item id="6219" name="Kadar Kerlip :"/>
+					<Item id="6301" name="Ketetapan Tab"/>
+					<Item id="6302" name="Ganti dengan ruang"/>
+					<Item id="6303" name="Saiz tab : "/>
+					<Item id="6201" name="Gaya jidar pelipat"/>
+					<Item id="6202" name="Ringkas"/>
+					<Item id="6203" name="Anak panah"/>
+					<Item id="6204" name="Pokok bulatan"/>
+					<Item id="6205" name="Pokok kotak"/>
+					<Item id="6206" name="Paparkan Jidar nombor baris"/>
+					<Item id="6207" name="Paparkan Jidar tanda buku"/>
+					<Item id="6208" name="Tunjukkan Tepi Menegak"/>
+					<Item id="6209" name="Bilangan lajur : "/>
+					<Item id="6211" name="Ketetapan Tepi Menegak"/>
+					<Item id="6212" name="Mod baris"/>
+					<Item id="6213" name="mod latar"/>
+					<Item id="6214" name="Penyerlah baris aktif kini"/>
+				</Scintillas>
+
+				<NewDoc title="Dokumen baru">
+					<Item id="6401" name="Format"/>
+					<Item id="6402" name="Windows"/>
+					<Item id="6403" name="Unix"/>
+					<Item id="6404" name="Mac"/>
+					<Item id="6405" name="Pengekodan"/>
+					<Item id="6406" name="ANSI"/>
+					<Item id="6407" name="UTF-8 tanpa BOM"/>
+					<Item id="6408" name="UTF-8"/>
+					<Item id="6409" name="UCS-2 Big endian"/>
+					<Item id="6410" name="UCS-2 small endian"/>
+					<Item id="6411" name="Bahasa Lalai :"/>
+				</NewDoc>
+
+				<FileAssoc title="Pertalian Fail">
+					<Item id="4009" name="Samb. disokong :"/>
+					<Item id="4010" name="Samb. terdaftar :"/>
+				</FileAssoc>
+
+				<LangMenu title="Menu Bahasa">
+					<Item id="6505" name="Yang ada"/>
+					<Item id="6506" name="Yang dilumpuhkan"/>
+				</LangMenu>
+
+				<Print title="Cetak">
+					<Item id="6601" name="Cetak Nombor Baris"/>
+					<Item id="6602" name="Pilihan Warna"/>
+					<Item id="6603" name="WYSIWYG"/>
+					<Item id="6604" name="Terbalikkan"/>
+					<Item id="6605" name="Hitam putih"/>
+					<Item id="6606" name="Tiada warna latar"/>
+					<Item id="6607" name="Ketetapan Sempadan (Unit:mm)"/>
+					<Item id="6612" name="Kiri"/>
+					<Item id="6613" name="Puncak"/>
+					<Item id="6614" name="Kanan"/>
+					<Item id="6615" name="Bawah"/>
+					<Item id="6706" name="Tebal"/>
+					<Item id="6707" name="Condong"/>
+					<Item id="6708" name="Pengatas"/>
+					<Item id="6709" name="Bahagian kiri"/>
+					<Item id="6710" name="Bahagian tengah"/>
+					<Item id="6711" name="Bahagian kanan"/>
+					<Item id="6717" name="Tebal"/>
+					<Item id="6718" name="Condong"/>
+					<Item id="6719" name="Pembawah"/>
+					<Item id="6720" name="Bahagian kiri"/>
+					<Item id="6721" name="Bahagian tengah"/>
+					<Item id="6722" name="Bahagian kanan"/>
+					<Item id="6723" name="Tambah"/>
+					<Item id="6725" name="Pemboleh ubah :"/>
+				</Print>
+
+				<MISC title="Lain-lain">
+					<Item id="6304" name="Ketetapan Fail Sejarah"/>
+					<Item id="6305" name="Jangan tanda tika pelancaran"/>
+					<Item id="6306" name="Had bilangan fail sejarah :"/>
+					<Item id="6309" name="Ingat sesi kini untuk pelancaran seterusnya"/>
+					<Item id="6312" name="Pengesanan Sendiri Status Fail"/>
+					<Item id="6313" name="Kemaskini secara senyap"/>
+					<Item id="6318" name="Ketetapan pautan boleh klik"/>
+					<Item id="6325" name="Gulung ke baris terakhir selepas kemaskini"/>
+					<Item id="6319" name="Bolehkan"/>
+					<Item id="6320" name="Jangan gariskan"/>
+					<Item id="6323" name="Bolehkan swa-kemaskini Notepad++"/>
+					<Item id="6324" name="Penukar Dokumen (Ctrl+TAB)"/>
+					<Item id="6326" name="Bolehkan penyerlahan pintar"/>
+					<Item id="6114" name="Bolehkan penukar dokumen (Ctrl+Tab)"/>
+					<Item id="6116" name="Ingat direktori pengendalian terakhir"/>
+					<Item id="6117" name="Bolehkan perilaku MRU bagi penukar"/>
+					<Item id="6322" name="Samb. fail sesi:"/>
+				</MISC>
+
+				<Backup title="Sandaran/Swa-lengkap">
+					<Item id="6801" name="Sandaran"/>
+					<Item id="6315" name="Tiada"/>
+					<Item id="6316" name="Sandaran Ringkas"/>
+					<Item id="6317" name="Sandaran Berjela"/>
+					<Item id="6804" name="Direktori sandaran pilihan pengguna"/>
+					<Item id="6803" name="Direktori :"/>
+					<Item id="6807" name="Swa-lengkap"/>
+					<Item id="6808" name="Bolehkan Swa-lengkap di setiap masukan"/>
+					<Item id="6809" name="Pelengkapan fungsi"/>
+					<Item id="6810" name="Pelengkapan kata"/>
+					<Item id="6811" name="Dari aksara ke"/>
+					<Item id="6813" name=" "/>
+					<Item id="6814" name="Nilai sah : 1 - 9"/>
+					<Item id="6815" name="Petua parameter fungsi tika masukan"/>
+				</Backup>
+			</Preference>
+
+			<MultiMacro title="Jalankan Makro Berulang Kali">
+				<Item id="1" name="Jalan"/>
+				<Item id="2" name="Batal"/>
+				<Item id="8006" name="Jalankan Makro :"/>
+				<Item id="8001" name="Jalankan"/>
+				<Item id="8005" name="kali"/>
+				<Item id="8002" name="Jln hingga hujung fail"/>
+			</MultiMacro>
+
+			<Window title="Tetingkap">
+				<Item id="1" name="Aktifkan"/>
+				<Item id="2" name="Baik"/>
+				<Item id="7002" name="Simpan"/>
+				<Item id="7003" name="Tutup Tetingkap"/>
+				<Item id="7004" name="Isihkan Tab"/>
+			</Window>
+
+			<ColumnEditor title="Penyunting Lajur">
+				<Item id="2023" name="Teks untuk disisip"/>
+				<Item id="2033" name="Nombor untuk disisip"/>
+				<Item id="2030" name="Nombor awal :"/>
+				<Item id="2031" name="Naikkan sebanyak :"/>
+				<Item id="2035" name="Diawali sifar"/>
+				<Item id="2032" name="Format"/>
+				<Item id="2024" name="Per10an"/>
+				<Item id="2025" name="Per8an"/>
+				<Item id="2026" name="Per16an"/>
+				<Item id="2027" name="Per2an"/>
+				<Item id="1" name="Baik"/>
+				<Item id="2" name="Batal"/>
+			</ColumnEditor>
+					<MacStrings>
+				<Item id="90001" name="Hasil carian"/>
+				<Item id="90002" name="Tutup Hasil Carian"/>
+				<Item id="90003" name="Kosongkan Semua"/>
+				<Item id="90004" name="Tutup panel"/>
+				<Item id="90005" name="Panel Projek"/>
+				<Item id="90006" name="Kawalan Sumber"/>
+				<Item id="90007" name="Komit"/>
+				<Item id="90008" name="Komit Gagal"/>
+				<Item id="90009" name="Tiada repositori git\nGunakan Semak imbas untuk membuka repo."/>
+				<Item id="90010" name="Peringkat"/>
+				<Item id="90011" name="Buka pentas"/>
+				<Item id="90012" name="Peringkat Semua"/>
+				<Item id="90013" name="Nyahpentas Semua"/>
+				<Item id="90014" name="Komit mesej\u2026"/>
+				<Item id="90015" name="Semak imbas untuk repositori\u2026"/>
+				<Item id="90016" name="Pilih folder repositori git"/>
+				<Item id="90017" name="(tiada repositori)"/>
+				<Item id="90018" name="(berpisah)"/>
+				<Item id="90019" name="Ralat tidak diketahui"/>
+				<Item id="90020" name="Tiada fungsi ditemui"/>
+				<Item id="90021" name="Fungsi carian..."/>
+				<Item id="90022" name="Kembangkan Semua"/>
+				<Item id="90023" name="Cari Fail Semasa"/>
+				<Item id="90024" name="Muat semula"/>
+				<Item id="90025" name="Isih fungsi (A hingga Z)"/>
+				<Item id="90026" name="Keputusan"/>
+				<Item id="90027" name="Berhenti"/>
+				<Item id="90028" name="Carian berhenti."/>
+				<Item id="90029" name="Mencari\u2026"/>
+				<Item id="90030" name="Teks untuk mencari"/>
+				<Item id="90031" name="*.txt, *.cpp, \u2026"/>
+				<Item id="90032" name="Mencari..."/>
+				<Item id="90033" name="Gantikan:"/>
+				<Item id="90034" name="Seluruh Perkataan"/>
+				<Item id="90035" name="Seluruh perkataan"/>
+				<Item id="90036" name="Balut"/>
+				<Item id="90037" name="Watak"/>
+				<Item id="90038" name="Nama HTML"/>
+				<Item id="90039" name="Perpuluhan HTML"/>
+				<Item id="90040" name="HTML Heksadesimal"/>
+				<Item id="90041" name="Nilai"/>
+				<Item id="90042" name="Sesi Kosong"/>
+				<Item id="90043" name="Fail sesi yang dipilih tidak mengandungi tab."/>
+				<Item id="90044" name="Muatkan Sesi"/>
+				<Item id="90045" name="Simpan Sesi"/>
+				<Item id="90046" name="Kosongkan Fail Terbaharu"/>
+				<Item id="90047" name="Fail tidak ditemui"/>
+				<Item id="90048" name="Tiada Makro Dirakam"/>
+				<Item id="90049" name="Rakam makro dahulu menggunakan Mula Rakaman."/>
+				<Item id="90050" name="Tiada konflik jalan pintas."/>
+				<Item id="90051" name="Nama Fail"/>
+				<Item id="90052" name="Taip"/>
+				<Item id="90053" name="Laluan"/>
+				<Item id="90054" name="Pergi ke Talian"/>
+				<Item id="90055" name="Sisipkan Tarikh/Masa"/>
+				<Item id="90056" name="Perubahan Pengekodan"/>
+				<Item id="90057" name="Simpan Salinan Sebagai"/>
+				<Item id="90058" name="Alihkan ke Sampah"/>
+				<Item id="90059" name="Bar Tajuk"/>
+				<Item id="90060" name="Tunjukkan laluan fail penuh dalam bar tajuk"/>
+				<Item id="90061" name="Tunjukkan bar status"/>
+				<Item id="90062" name="Saiz tab:"/>
+				<Item id="90063" name="Lebar karet:"/>
+				<Item id="90064" name="Kadar kelipan karet (ms):"/>
+				<Item id="90065" name="Paparan fon:"/>
+				<Item id="90066" name="Lebar tab maksimum (piksel):"/>
+				<Item id="90067" name="Tepi Menegak"/>
+				<Item id="90068" name="Mod tepi:"/>
+				<Item id="90069" name="Lajur tepi:"/>
+				<Item id="90070" name="Lebar nombor baris dinamik"/>
+				<Item id="90071" name="Kiri:"/>
+				<Item id="90072" name="Kanan:"/>
+				<Item id="90073" name="Tamat baris lalai:"/>
+				<Item id="90074" name="Pengekodan lalai:"/>
+				<Item id="90075" name="Dayakan auto-sandar"/>
+				<Item id="90076" name="Selang sandaran (saat):"/>
+				<Item id="90077" name="Lokasi sandaran:"/>
+				<Item id="90078" name="Gaya Warna"/>
+				<Item id="90079" name="(warisi)"/>
+				<Item id="90080" name="Import Gaya Tema"/>
+				<Item id="90081" name="Kategori"/>
+				<Item id="90082" name="Taip untuk menapis..."/>
+				<Item id="90083" name="Tiada konflik pintasan untuk item ini."/>
+				<Item id="90084" name="Pemalam"/>
+				<Item id="90085" name="Versi"/>
+				<Item id="90086" name="Pemasangan Selesai"/>
+				<Item id="90087" name="Mulakan semula aplikasi untuk memuatkan pemalam yang dipasang."/>
+				<Item id="90088" name="Pasang Pemalam"/>
+				<Item id="90089" name="Alih Keluar Pemalam"/>
+				<Item id="90090" name="Tiada arahan ditemui"/>
+				<Item id="90091" name="Taip untuk mencari\u2026"/>
+				<Item id="90092" name="Bahasa Ditakrifkan Pengguna v.2.1"/>
+				<Item id="90093" name="Cipta Bahasa Baharu"/>
+				<Item id="90094" name="Masukkan nama:"/>
+				<Item id="90095" name="Warna latar depan:"/>
+				<Item id="90096" name="Warna latar belakang:"/>
+				<Item id="90097" name="Jangan Simpan"/>
+				<Item id="90098" name="Selesai"/>
+				<Item id="90099" name="Togol Bungkus Perkataan"/>
+				<Item id="90100" name="Tunjukkan Semua Aksara"/>
+				<Item id="90101" name="Tunjukkan Pilihan Aksara"/>
+				<Item id="90102" name="Togol Panduan Inden"/>
+				<Item id="90103" name="Belum Dilaksanakan"/>
+				<Item id="90104" name="Muat semula daripada Cakera"/>
+				<Item id="90105" name="Tukar Enjin Carian"/>
+				<Item id="90106" name="Ralat Jalankan"/>
+				<Item id="90107" name="Notepad++ Masa Memuatkan"/>
+				<Item id="90108" name="Tidak Dapat Menyemak Kemas Kini"/>
+				<Item id="90109" name="Anda Terkini"/>
+				<Item id="90110" name="Muat turun"/>
+				<Item id="90111" name="Halaman Keluaran"/>
+				<Item id="90112" name="Nanti"/>
+				<Item id="90113" name="Tapis pemalam\u2026"/>
+				<Item id="90114" name="Tersedia"/>
+				<Item id="90115" name="Kemas kini"/>
+				<Item id="90116" name="Dipasang"/>
+				<Item id="90117" name="Tidak serasi"/>
+				<Item id="90118" name="Gagal Memasang"/>
+				<Item id="90119" name="Alih keluar pemalam berikut?"/>
+				<Item id="90120" name="Pasang pemalam berikut?"/>
+				<Item id="90121" name="Ini akan memadamkan fail pemalam."/>
+				<Item id="90122" name="Perintah carian\u2026"/>
+				<Item id="90123" name="Warna latar depan"/>
+				<Item id="90124" name="Warna latar belakang"/>
+				<Item id="90125" name="Nama makro"/>
+				<Item id="90126" name="Nama Makro"/>
+				<Item id="90127" name="Makro direkodkan semasa"/>
+				<Item id="90128" name="Pengurus Makro"/>
+				<Item id="90129" name="Tiada Makro Disimpan"/>
+				<Item id="90130" name="Rakam dan simpan makro dahulu."/>
+				<Item id="90131" name="Padamkan Pintasan"/>
+				<Item id="90132" name="Menu utama"/>
+				<Item id="90133" name="Makro"/>
+				<Item id="90134" name="Jalankan arahan"/>
+				<Item id="90135" name="Perintah pemalam"/>
+				<Item id="90136" name="Perintah Scintilla"/>
+				<Item id="90137" name="Argumen Baris Perintah"/>
+				<Item id="90138" name="Nama arahan untuk menu Run"/>
+				<Item id="90139" name="Semua markah dibersihkan."/>
+				<Item id="90140" name="Teks bertanda disalin ke papan keratan."/>
+				<Item id="90141" name="Tiada teks bertanda untuk disalin."/>
+				<Item id="90142" name="Mencari... %ld hit(s) \u2014 %@"/>
+				<Item id="90143" name="Menggantikan dalam fail..."/>
+				<Item id="90144" name="Gantikan dalam Projek: Belum disambungkan."/>
+				<Item id="90145" name="Cari dalam Projek: Belum disambungkan ke senarai fail Panel Projek."/>
+				<Item id="90146" name="Ruang kerja telah diubah suai."/>
+				<Item id="90147" name="Adakah anda mahu menyimpan perubahan?"/>
+				<Item id="90148" name="Hasil carian"/>
+				<Item id="90149" name="Serlahkan baris semasa"/>
+				<Item id="90150" name="Tunjukkan nombor baris"/>
+				<Item id="90151" name="Tunjukkan ruang kosong"/>
+				<Item id="90152" name="Tunjukkan penanda EOL"/>
+				<Item id="90153" name="Tunjukkan jidar penanda halaman"/>
+				<Item id="90154" name="Gunakan tab (bukannya ruang)"/>
+				<Item id="90155" name="Tatal melepasi baris terakhir"/>
+				<Item id="90156" name="Salin/potong baris tanpa pilihan"/>
+				<Item id="90157" name="Lumpuhkan drag-drop teks yang dipilih"/>
+				<Item id="90158" name="Dayakan penonjolan pintar"/>
+				<Item id="90159" name="Sorotan pintar: sarung padanan"/>
+				<Item id="90160" name="Sorotan pintar: seluruh perkataan sahaja"/>
+				<Item id="90161" name="Klik dua kali untuk menutup tab"/>
+				<Item id="90162" name="Tunjukkan butang tutup pada tab"/>
+				<Item id="90163" name="Ingat keterlihatan panel merentas sesi"/>
+				<Item id="90164" name="Simpan entri fail yang tidak hadir dalam sesi"/>
+				<Item id="90165" name="Sahkan sebelum Simpan Semua"/>
+				<Item id="90166" name="Sahkan Gantikan Semua dalam dokumen terbuka"/>
+				<Item id="90167" name="Gantikan: jangan beralih ke kejadian seterusnya"/>
+				<Item id="90168" name="Gunakan fon monospace dalam dialog Cari"/>
+				<Item id="90169" name="Klik kanan mengekalkan pilihan"/>
+				<Item id="90170" name="Balikkan susunan tarikh/masa lalai"/>
+				<Item id="90171" name="Gunakan penghurai senarai fungsi berasaskan XML"/>
+				<Item id="90172" name="Autotutup kurungan ( ) [ ] { }"/>
+				<Item id="90173" name="Daripada aksara Nth:"/>
+				<Item id="90174" name="Ambang semak automatik dalam pilihan (bait):"/>
+				<Item id="90175" name="Dilanjutkan (\\n, \\r, \\t, \\0, \\x...)"/>
+				<Item id="90176" name="Editor"/>
+				<Item id="90177" name="Margin"/>
+				<Item id="90178" name="Gelap"/>
+				<Item id="90179" name="Cahaya"/>
+				<Item id="90180" name="Auto (Ikuti Sistem)"/>
+				<Item id="90181" name="Nipis (1px)"/>
+				<Item id="90182" name="Sederhana (2px)"/>
+				<Item id="90183" name="Tebal (3px)"/>
+				<Item id="90184" name="Mati"/>
+				<Item id="90185" name="Latar belakang"/>
+				<Item id="90186" name="Antialiased"/>
+				<Item id="90187" name="LCD Dioptimumkan"/>
+				<Item id="90188" name="Mudah +/-"/>
+				<Item id="90189" name="Windows (CRLF)"/>
+				<Item id="90190" name="Mac (CR)"/>
+				<Item id="90191" name="Repositori senarai pemalam"/>
+				<Item id="90192" name="Pilih fail XML tema Notepad++ untuk digunakan"/>
+				<Item id="90193" name="Buat baharu\u2026"/>
+				<Item id="90194" name="Simpan sebagai\u2026"/>
+				<Item id="90195" name="Bahasa pengguna:"/>
+				<Item id="90196" name="Nama bahasa"/>
+				<Item id="90197" name="Buat"/>
+				<Item id="90198" name="Simpan Sebagai"/>
+				<Item id="90199" name="es"/>
+				<Item id="90200" name="dalam keseluruhan fail"/>
+				<Item id="90201" name="Operator &amp; Pembatas"/>
+				<Item id="90202" name="Julat Tidak Sah"/>
+				<Item id="90203" name="Nilai julat mestilah 0-255 dan mula mestilah &lt;= tamat."/>
+				<Item id="90204" name="contextMenu.xml Tidak Ditemui"/>
+				<Item id="90205" name="Mulakan semula Notepad++ untuk menjana semula contextMenu.xml lalai."/>
+				<Item id="90206" name="Fail mempunyai perubahan yang belum disimpan.Memuatkan semula dengan pengekodan baharu akan membuangnya.teruskan?"/>
+				<Item id="90207" name="Tiada respons daripada pelayan."/>
+				<Item id="90208" name="Pelayan mengembalikan status"/>
+				<Item id="90209" name="Repositori mungkin peribadi."/>
+				<Item id="90210" name="tersedia"/>
+				<Item id="90211" name="ialah versi terkini."/>
+				<Item id="90212" name="Anda sedang menjalankan"/>
+				<Item id="90213" name="Pencari Di Sini"/>
+				<Item id="90214" name="Terminal Di Sini"/>
+				<Item id="90215" name="Fail bahasa tambahan (.xml) boleh diletakkan dalam:"/>
+							<Item id="90216" name="Palet Perintah…"/>
+				<Item id="90217" name="Semak Ejaan"/>
+				<Item id="90218" name="Taip untuk mencari…"/>
+				<Item id="90219" name="Tetingkap Baharu"/>
+				<Item id="90220" name="Langkau Semasa &amp;amp;Pergi ke Next Multi-select"/>
+				<Item id="90221" name="Atribut Terkunci (macOS)"/>
+				<Item id="90222" name="Semak Kemas Kini…"/>
+				<Item id="90223" name="Buka Baru-baru ini"/>
+			</MacStrings>
+		</Dialog>
+	</Native-Langue>
+</NotepadPlus>

@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<NotepadPlus>
+	<Native-Langue name="Estremeñu" filename="extremaduran.xml">
+		<Menu>
+			<Main>
+				<!-- Main Menu Entries -->
+				<Entries>
+					<Item menuId="file" name="A&amp;rchivu"/>
+					<Item menuId="edit" name="&amp;Eital"/>
+					<Item menuId="search" name="&amp;Landeal"/>
+					<Item menuId="view" name="&amp;Vel"/>
+					<Item menuId="encoding" name="Hor&amp;matu"/>
+					<Item menuId="language" name="L&amp;uenga"/>
+					<Item menuId="settings" name="&amp;Configurazión"/>
+					<Item menuId="macro" name="Macru"/>
+					<Item menuId="run" name="Ehecutal"/>
+					<Item menuId="Plugins" name="'Plugins'"/>
+					<Item menuId="Window" name="Ventana"/>
+				</Entries>
+
+				<!-- Sub Menu Entries -->
+				<SubEntries>
+					<Item subMenuId="view-collapseLevel" name="Estrechal el nivel"/>
+					<Item subMenuId="view-uncollapseLevel" name="Espandil"/>
+				</SubEntries>
+
+				<!-- all menu item -->
+				<Commands>
+					<Item id="41001" name="&amp;Nuevu"/>
+					<Item id="41002" name="&amp;Abril"/>
+					<Item id="41003" name="Fechal"/>
+					<Item id="41004" name="F&amp;echal tó"/>
+					<Item id="41005" name="Fechal tó ezeutu ahtual"/>
+					<Item id="41006" name="&amp;Guardal"/>
+					<Item id="41007" name="Guardal &amp;tós"/>
+					<Item id="41008" name="Guardal &amp;comu..."/>
+					<Item id="41010" name="Imprental..."/>
+					<Item id="1001" name="Imprental zuta!"/>
+					<Item id="41011" name="&amp;Salil"/>
+					<Item id="41012" name="Cargal sesión..."/>
+					<Item id="41013" name="Guardal sesión..."/>
+					<Item id="41014" name="Recargal dendi'l discu"/>
+
+					<Item id="42001" name="Cor&amp;tal"/>
+					<Item id="42002" name="&amp;Copial"/>
+					<Item id="42003" name="&amp;Deshazel"/>
+					<Item id="42004" name="&amp;Rehazel"/>
+					<Item id="42005" name="&amp;Pegal"/>
+					<Item id="42006" name="&amp;Borral"/>
+					<Item id="42007" name="Selezional &amp;tó"/>
+					<Item id="42008" name="Insertal tabulazión"/>
+					<Item id="42009" name="Borral tabulazión"/>
+					<Item id="42010" name="Duplical línia ahtual"/>
+					<Item id="42012" name="Desapartal línias"/>
+					<Item id="42013" name="Unil línias"/>
+					<Item id="42014" name="Movel línia ahtual pa zimará"/>
+					<Item id="42015" name="Movel línia ahtual pa embahu"/>
+					<Item id="42016" name="Escambial a mayúsculas"/>
+					<Item id="42017" name="Escambial a minúsculas"/>
+					<Item id="42018" name="&amp;Cominzial grabazión"/>
+					<Item id="42019" name="&amp;Paral grabazión"/>
+					<Item id="42021" name="&amp;Ehecutal macru"/>
+					<Item id="42022" name="(Des)comental selezión"/>
+					<Item id="42023" name="Convertil en comentariu"/>
+					<Item id="42024" name="Eliminal espazius finalis"/>
+					<Item id="42025" name="Guardal macru grabá ahtual"/>
+					<Item id="42026" name="Testu e direcha a gocha"/>
+					<Item id="42027" name="Testu e gocha a direcha"/>
+					<Item id="42028" name="Sólu lehtura"/>
+					<Item id="42029" name="Copial ruta i nombri el ficheru al portapapelis"/>
+					<Item id="42030" name="Copial nombri el ficheru al portapapelis"/>
+					<Item id="42031" name="Copial ruta el ficheru al portapapelis"/>
+					<Item id="42032" name="Ehecutal un macru varias vezis..."/>
+					<Item id="42035" name="Comental selezión"/>
+					<Item id="42036" name="Descomental selezión"/>
+
+					<Item id="43001" name="&amp;Landeal..."/>
+					<Item id="43002" name="Landeal &amp;siguienti"/>
+					<Item id="43003" name="Remprazal..."/>
+					<Item id="43004" name="Dil pa la línia..."/>
+					<Item id="43005" name="(Des)marcal amelgaol"/>
+					<Item id="43006" name="Siguienti amelgaol"/>
+					<Item id="43007" name="Anteriol amelgaol"/>
+					<Item id="43008" name="Achinal tolus amelgaoris"/>
+					<Item id="43009" name="Dil pa testu coincienti"/>
+					<Item id="43010" name="Landeal anteriol"/>
+					<Item id="43011" name="Landéu &amp;incremental..."/>
+					<Item id="43013" name="Landeal en ficherus"/>
+					<Item id="43014" name="Landeal siguienti (volatil)"/>
+					<Item id="43015" name="Landeal anteriol (siguienti)"/>
+					<Item id="43016" name="Amelgal tós"/>
+					<Item id="43017" name="Desamelgal tós"/>
+
+					<Item id="44010" name="Plegal tó"/>
+					<Item id="44011" name="Panel de definizionis del usuariu"/>
+					<Item id="44019" name="Muestral tolus carahteris"/>
+					<Item id="44020" name="Muestral guías de sangráu"/>
+					<Item id="44022" name="Ahusti e línia"/>
+					<Item id="44023" name="&amp;Aumental 'zoom' Ctrl-Mouse Wheel Up"/>
+					<Item id="44024" name="&amp;Disminuil 'zoom'	Ctrl-Mouse Wheel Down"/>
+					<Item id="44025" name="Muestral espazius en brancu i tabulazionis"/>
+					<Item id="44026" name="Muestral acabaizu e línia"/>
+					<Item id="44029" name="Despregal tó"/>
+					<Item id="44030" name="Estrechal el nivel ahtual"/>
+					<Item id="44031" name="Espandil"/>
+					<Item id="44032" name="Escambial a pantalla compreta"/>
+					<Item id="44033" name="Golvel a 'zoom' pol defeutu	Ctrl+/(keypad)"/>
+					<Item id="44034" name="Siempri'n zimará"/>
+					<Item id="44035" name="Sincronizal desprazamientu vertical"/>
+					<Item id="44036" name="Sincronizal desprazamientu orizontal"/>
+					<Item id="44041" name="Muestral símbolu d'ahusti"/>
+
+					<Item id="45001" name="Convertil a hormatu Windows"/>
+					<Item id="45002" name="Convertil a hormatu UNIX"/>
+					<Item id="45003" name="Convertil a hormatu MAC"/>
+					<Item id="45004" name="Coifical en ANSI"/>
+					<Item id="45005" name="Coifical en UTF-8"/>
+					<Item id="45006" name="Coifical en UCS-2 Big Endian"/>
+					<Item id="45007" name="Coifical en UCS-2 Little Endian"/>
+					<Item id="45008" name="Coifical en UTF-8 sin BOM"/>
+					<Item id="45009" name="Convertil a ANSI"/>
+					<Item id="45010" name="Convertil a UTF-8 sin BOM"/>
+					<Item id="45011" name="Convertil a UTF-8"/>
+					<Item id="45012" name="Convertil a UCS-2 Big Endian"/>
+					<Item id="45013" name="Convertil a UCS-2 Little Endian"/>
+
+					<Item id="10001" name="Dil pa otra vista"/>
+					<Item id="10002" name="Clonal n'otra vista"/>
+
+					<Item id="46001" name="Configuraol d'estilus..."/>
+					<Item id="47000" name="Azerca e..."/>
+					<Item id="47001" name="'Web' d'iniziu e Notepad++"/>
+					<Item id="47002" name="Proyehtu en Sourceforge"/>
+					<Item id="47003" name="Ayúa'n línia"/>
+					<Item id="47004" name="Foru"/>
+					<Item id="47005" name="Descargal mas 'plugins'"/>
+
+					<Item id="48009" name="Atahus de tecláu..."/>
+					<Item id="48011" name="Configurazión..."/>
+					<Item id="49000" name="&amp;Ehecutal..."/>
+
+					<Item id="50000" name="Compretal hunzionis"/>
+					<Item id="50001" name="Compretal parabras"/>
+					<Item id="42034" name="Eitol de colunas..."/>
+					<Item id="44042" name="Escuendel línias"/>
+					<Item id="42040" name="Abril tolus archivus rezientis"/>
+					<Item id="42041" name="Achinal listáu d'archivus rezientis"/>
+
+				</Commands>
+			</Main>
+			<Splitter>
+			</Splitter>
+			<TabBar>
+				<Item CMID="0" name="Fechal"/>
+				<Item CMID="1" name="Fechal tó ezeutu l'ahtual"/>
+				<Item CMID="2" name="Guardal"/>
+				<Item CMID="3" name="Guardal comu..."/>
+				<Item CMID="4" name="Imprental"/>
+				<Item CMID="5" name="Dil pa otru mó e vista"/>
+				<Item CMID="6" name="Clonal n'otra vista"/>
+			</TabBar>
+		</Menu>
+
+		<Dialog>
+			<Find title="" titleFind="Landeal" titleReplace="Remprazal" titleFindInFiles="Landeal en archivus">
+				<Item id="1" name="Landeal siguienti"/>
+				<Item id="2" name="Fechal"/>
+				<Item id="1620" name="Landeal qué :"/>
+				<Item id="1603" name="Coincíl &amp;parabra compreta sólu"/>
+				<Item id="1604" name="Coincíl &amp;may./min."/>
+				<Item id="1605" name="&amp;Espresión regulal"/>
+				<Item id="1606" name="Landeal en tó el &amp;documentu"/>
+				<Item id="1614" name="Cuental"/>
+				<Item id="1615" name="Landeal tó"/>
+				<Item id="1616" name="Marcal la línia"/>
+				<Item id="1618" name="Achinal en cá landéu"/>
+				<Item id="1611" name="Re&amp;mprazal con :"/>
+				<Item id="1608" name="&amp;Remprazal"/>
+				<Item id="1609" name="Remprazar &amp;tó"/>
+				<Item id="1623" name="Trasparenzia"/>
+				<Item id="1687" name="Nel focu escambullíu"/>
+				<Item id="1688" name="Siempri"/>
+				<Item id="1632" name="Ena selezión"/>
+				<Item id="1633" name="Achinal"/>
+				<Item id="1635" name="Remprazal tó en tolos documentus abiertus"/>
+				<Item id="1636" name="Landeal tó en tolos documentus abiertus"/>
+				<Item id="1654" name="Filtrus :"/>
+				<Item id="1655" name="Direhtoriu :"/>
+				<Item id="1656" name="Landealus tós"/>
+				<Item id="1658" name="En tolos sudirehtorius"/>
+			</Find>
+			<GoToLine title="Dil pa la línia #">
+				<Item id="1" name="&amp;Dil !"/>
+				<Item id="2" name="Nu voi a nenguna parti"/>
+				<Item id="2004" name="Está aquina :"/>
+				<Item id="2005" name="Quieri dil pa :"/>
+				<Item id="2006" name="Nu puei dil más p'allá e :"/>
+			</GoToLine>
+
+			<Run title="Ehecutal...">
+				<Item id="1903" name="Escreba la ruta u el pograma aquina"/>
+				<Item id="1" name="Ehecutal!"/>
+				<Item id="2" name="Canzelal"/>
+				<Item id="1904" name="Guardal..."/>
+			</Run>
+
+			<StyleConfig title="Configuraol d'estilu">
+				<Item id="1" name="Prebal!"/>
+				<Item id="2" name="Canzelal"/>
+				<Item id="2301" name="Guardal &amp;&amp; Fechal"/>
+				<Item id="2303" name="Trasparenzia"/>
+
+				<SubDialog>
+					<Item id="2204" name="Negrina"/>
+					<Item id="2205" name="Cursiva"/>
+					<Item id="2206" name="Colol de tipografía"/>
+					<Item id="2207" name="Colol de hondón"/>
+					<Item id="2208" name="Tipografía :"/>
+					<Item id="2209" name="Tamañu la tipografía :"/>
+					<!--
+                    <Item id = "2210" name = "Alvertenzia: esti estulu sedrá'l estabrezíu pol defeutu pa tolos ficherus sin estilu definíu"/>\
+					-->
+					<Item id="2211" name="Descrizión el estilu :"/>
+					<Item id="2212" name="Colol del estilu"/>
+					<Item id="2213" name="Estilu la tipografía"/>
+					<Item id="2214" name="Est. pol defeutu :"/>
+					<Item id="2216" name="Est. del usuariu :"/>
+					<Item id="2218" name="Surrayal"/>
+					<Item id="2219" name="Parabras cravi pol defeutu"/>
+					<Item id="2221" name="Parabras cravi definías pol usuariu"/>
+					<Item id="2225" name="Luenga :"/>
+					<Item id="2226" name="Ahtival colol de tipografía global"/>
+					<Item id="2227" name="Ahtival colol de hondón global"/>
+					<Item id="2228" name="Ahtival tipografía global"/>
+					<Item id="2229" name="Ahtival tamañu e tipografía global"/>
+					<Item id="2230" name="Ahtival estilu global e tipografía'n negrina"/>
+					<Item id="2231" name="Ahtival estilu global e tipografía'n cursiva"/>
+					<Item id="2232" name="Ahtival estilu global e tipografía surrayá"/>
+				</SubDialog>
+
+			</StyleConfig>
+
+			<UserDefine title="Definíu pol usuariu">
+				<Item id="20002" name="Renombral"/>
+				<Item id="20003" name="Creal nuevu..."/>
+				<Item id="20004" name="Borral"/>
+				<Item id="20005" name="Guardal comu..."/>
+				<Item id="20007" name="Luenga l'usuariu : "/>
+				<Item id="20009" name="Est :"/>
+				<Item id="20012" name="Inoral MAY./mín."/>
+				<Item id="20011" name="Trasparenzia"/>
+				<Item id="0" name="Estilu e colol"/>
+				<Item id="1" name="Colol e tipografía"/>
+				<Item id="2" name="Colol de hondón"/>
+				<Item id="3" name="Estilu e tipografía"/>
+				<Item id="4" name="Nombri e tipografía :"/>
+				<Item id="5" name="Tamañu e tipografía :"/>
+				<Item id="6" name="Negrina"/>
+				<Item id="7" name="Cursiva"/>
+				<Item id="8" name="Surrayáu"/>
+				<Folder title="Direhtoriu &amp;&amp; pol defeutu">
+					<Item id="21101" name="Config. d'estilu pol defeutu"/>
+					<Item id="21201" name="Cunfig. de parabras cravi p'abril direhtoriu"/>
+					<Item id="21301" name="Cunfig. de parabras cravi pa fechal direhtoriu"/>
+				</Folder>
+				<Keywords title="Listáu e parabras cravi">
+					<Item id="22101" name="1el grupu"/>
+					<Item id="22201" name="2u grupu"/>
+					<Item id="22301" name="3el grupu"/>
+					<Item id="22401" name="4u grupu"/>
+					<Item id="22113" name="Mó e prefihu"/>
+					<Item id="22213" name="Mó e prefihu"/>
+					<Item id="22313" name="Mó e prefihu"/>
+					<Item id="22413" name="Mó e prefihu"/>
+				</Keywords>
+				<Comment title="Comentariu &amp;&amp; Númiru">
+					<Item id="23301" name="Línia e comentariu"/>
+					<Item id="23101" name="Selezión de comentariu"/>
+					<Item id="23113" name="Apertura e comentariu :"/>
+					<Item id="23115" name="Fechaúra e comentariu :"/>
+					<Item id="23116" name="Tratal parabra cravi comu símbolu"/>
+					<Item id="23117" name="Tratal parabras cravi comu símbolus"/>
+					<Item id="23201" name="Númiru"/>
+				</Comment>
+				<Operator title="Operaoris">
+					<Item id="24107" name="Operaol"/>
+					<Item id="24103" name="Símbolus dispunibris"/>
+					<Item id="24101" name="Operaoris ahtivaus"/>
+					<Item id="24201" name="Delimitaol 1"/>
+					<Item id="24211" name="Límiti d'apertura :"/>
+					<Item id="24214" name="Límiti e fechaúra :"/>
+					<Item id="24301" name="Delimitaol 2"/>
+					<Item id="24311" name="Límiti d'apertura :"/>
+					<Item id="24314" name="Límiti e fechaúra :"/>
+				</Operator>
+			</UserDefine>
+			<Preference title="Ozionis">
+				<Item id="6001" name="Fechal"/>
+				<Global title="Global">
+					<Item id="6102" name="Escuendel"/>
+					<Item id="6103" name="Iconus caquerus"/>
+					<Item id="6104" name="Iconus grandis"/>
+					<Item id="6105" name="Iconus caquerus pol defeutu"/>
+
+					<Item id="6107" name="Reuzil"/>
+					<Item id="6108" name="Bloqueal (impíl horreal i soltal)"/>
+					<Item id="6109" name="Muestral pestañas inahtivas"/>
+					<Item id="6110" name="Muestra barra naranha ena pestaña ahtiva"/>
+
+					<Item id="6112" name="Botón de fechaúra huntu a cá pestaña"/>
+					<Item id="6113" name="Hadel dobli 'click' pa fechal documentu"/>
+					<Item id="6118" name="Escuendel"/>
+					<Item id="6119" name="Multi-línia"/>
+					<Item id="6120" name="Vertical"/>
+				</Global>
+				<Scintillas title="Eital compunentis">
+					<Item id="6201" name="Estilu e nivelis en marhin"/>
+					<Item id="6202" name="Guionis"/>
+					<Item id="6203" name="Frechas"/>
+					<Item id="6204" name="Círculus"/>
+					<Item id="6205" name="Cuairaus"/>
+
+					<Item id="6206" name="Muestral númirus de línia'n marhin"/>
+					<Item id="6207" name="Muestral amelgaoris en marhin"/>
+					<Item id="6208" name="Muestral franha vertical"/>
+					<Item id="6209" name="Númiru e colunas : "/>
+
+					<Item id="6211" name="Configuración de franha vertical"/>
+					<Item id="6212" name="Mó e línia"/>
+					<Item id="6213" name="Mó e hondón"/>
+					<Item id="6214" name="Muestral coloreá la línia ahtual"/>
+				</Scintillas>
+				<NewDoc title="Nuevu documentu">
+					<Item id="6401" name="Hormatu"/>
+					<Item id="6402" name="Windows"/>
+					<Item id="6403" name="Unix"/>
+					<Item id="6404" name="Mac"/>
+					<Item id="6405" name="Coificazión"/>
+					<Item id="6406" name="ANSI"/>
+					<Item id="6407" name="UTF-8 sin BOM"/>
+					<Item id="6408" name="UTF-8"/>
+					<Item id="6409" name="UCS2 Big endian"/>
+					<Item id="6410" name="UCS2 small endian"/>
+					<Item id="6411" name="Luenga pol defeutu :"/>
+				</NewDoc>
+				<FileAssoc title="Asoziazión d'archivus">
+					<Item id="4009" name="Est. soportás :"/>
+					<Item id="4010" name="Est. asoziás :"/>
+				</FileAssoc>
+				<LangMenu title="Menú e luengas">
+					<Item id="6505" name="Elementus dispunibris"/>
+					<Item id="6506" name="Elementus nu ahtivaus"/>
+				</LangMenu>
+				<Print title="Imprental">
+					<Item id="6601" name="Imprental númirus de línia"/>
+					<Item id="6602" name="Ozionis de colol"/>
+					<Item id="6603" name="'WYSIWYG'"/>
+					<Item id="6604" name="Invertil"/>
+					<Item id="6605" name="Brancu i nigru"/>
+					<Item id="6606" name="Sin colol de hondón"/>
+					<Item id="6607" name="Márhenis (en milímetrus)"/>
+					<Item id="6612" name="Gocha"/>
+					<Item id="6613" name="Zimará"/>
+					<Item id="6614" name="Direcha"/>
+					<Item id="6615" name="Embahu"/>
+					<Item id="6706" name="Negrina"/>
+					<Item id="6707" name="Cursiva"/>
+					<Item id="6708" name="Encabezá"/>
+					<Item id="6709" name="Parti gocha"/>
+					<Item id="6710" name="Parti el meyu"/>
+					<Item id="6711" name="Parti direcha"/>
+					<Item id="6717" name="Negrina"/>
+					<Item id="6718" name="Cursiva"/>
+					<Item id="6719" name="Pie"/>
+					<Item id="6720" name="Parti gocha"/>
+					<Item id="6721" name="Parti el meyu"/>
+					<Item id="6722" name="Parti direcha"/>
+					<Item id="6723" name="Añíl"/>
+					<Item id="6725" name="Variabri :"/>
+				</Print>
+				<MISC title="Varius">
+					<Item id="6301" name="Configurazión de tabulazionis"/>
+					<Item id="6302" name="Remprazal pol espazius"/>
+					<Item id="6303" name="Tamañu e tabulazión : "/>
+					<Item id="6304" name="Cunfiguración del historial d'archivus"/>
+					<Item id="6305" name="Nu comprebal al comincial"/>
+					<Item id="6306" name="Másimu d'archivus nel historial :"/>
+					<Item id="6309" name="Recuerdal sesión ahtual pa la prózima vezi"/>
+					<Item id="6312" name="Auto-comprebal el estáu el archivu"/>
+					<Item id="6313" name="Ahtualizal automáticamenti"/>
+					<Item id="6318" name="Configurazión d'enlazis"/>
+					<Item id="6319" name="Ahtival"/>
+					<Item id="6320" name="Nu surrayal"/>
+					<Item id="6323" name="Ahtival ahtualizazionis automáticas"/>
+					<Item id="6324" name="Escambiaol de documentus (Ctrl+TAB)"/>
+
+					<Item id="6114" name="Ahtival escambiaol de documentus (Ctrl+Tab)"/>
+					<Item id="6116" name="Recuerdal el direhtoriu e la úrtima operazión"/>
+					<Item id="6117" name="Ahtival mó MRU pal escambiaol de documentus"/>
+				</MISC>
+				<Backup title="Copia e siguriá/Compretal automáticamenti">
+					<Item id="6801" name="Copia e siguriá"/>
+					<Item id="6315" name="Nengunu"/>
+					<Item id="6316" name="Copia e siguriá simpri"/>
+					<Item id="6317" name="Copia e siguriá detallá"/>
+					<Item id="6804" name="Direhtoriu pa copias de siguriá personalizau"/>
+					<Item id="6803" name="Direhtoriu :"/>
+					<Item id="6807" name="Compretal automáticamenti"/>
+					<Item id="6808" name="Ahtival compretal automáticamenti'n cá entrá"/>
+					<Item id="6809" name="Compretal hunzionis"/>
+					<Item id="6810" name="Compretal parabras"/>
+					<Item id="6811" name="Dendi"/>
+					<Item id="6813" name="s carahteris"/>
+					<Item id="6814" name="Valol váliu : 1 - 9"/>
+				</Backup>
+			</Preference>
+			<MultiMacro title="Ehecutal macru varias vezis">
+				<Item id="1" name="Ehecutal"/>
+				<Item id="2" name="Canzelal"/>
+				<Item id="8006" name="Macru pa ehecutal :"/>
+				<Item id="8001" name="Ehecutal"/>
+				<Item id="8005" name="vezis"/>
+				<Item id="8002" name="Hasta'l acabaizu el ficheru"/>
+			</MultiMacro>
+			<Window title="Ventanas">
+				<Item id="1" name="Ahtival"/>
+				<Item id="2" name="Azehtal"/>
+				<Item id="7002" name="Guardal"/>
+				<Item id="7003" name="Fechal ventana(s)"/>
+				<Item id="7004" name="Ordinal pestañas"/>
+			</Window>
+			<ColumnEditor title="Eitol de colunas">
+				<Item id="2023" name="Testu pa insertal"/>
+				<Item id="2033" name="Númiru pa insertal"/>
+				<Item id="2030" name="Númiru e comienzu :"/>
+				<Item id="2031" name="Incrementáu'n :"/>
+				<Item id="2035" name="Zerus delanti"/>
+				<Item id="2032" name="Hormatu"/>
+				<Item id="2024" name="Dez"/>
+				<Item id="2025" name="Oht"/>
+				<Item id="2026" name="Hes"/>
+				<Item id="2027" name="Bin"/>
+				<Item id="1" name="Azehtal"/>
+				<Item id="2" name="Canzelal"/>
+			</ColumnEditor>
+					<MacStrings>
+				<Item id="90001" name="Search results"/>
+				<Item id="90002" name="Close Search Results"/>
+				<Item id="90003" name="Clear All"/>
+				<Item id="90004" name="Close panel"/>
+				<Item id="90005" name="Project Panel"/>
+				<Item id="90006" name="Source Control"/>
+				<Item id="90007" name="Commit"/>
+				<Item id="90008" name="Commit Failed"/>
+				<Item id="90009" name="No git repository\nUse Browse to open a repo."/>
+				<Item id="90010" name="Stage"/>
+				<Item id="90011" name="Unstage"/>
+				<Item id="90012" name="Stage All"/>
+				<Item id="90013" name="Unstage All"/>
+				<Item id="90014" name="Commit message\u2026"/>
+				<Item id="90015" name="Browse for repository\u2026"/>
+				<Item id="90016" name="Choose a git repository folder"/>
+				<Item id="90017" name="(no repository)"/>
+				<Item id="90018" name="(detached)"/>
+				<Item id="90019" name="Unknown error"/>
+				<Item id="90020" name="No functions found"/>
+				<Item id="90021" name="Search function..."/>
+				<Item id="90022" name="Expand All"/>
+				<Item id="90023" name="Locate Current File"/>
+				<Item id="90024" name="Refresh"/>
+				<Item id="90025" name="Sort functions (A to Z)"/>
+				<Item id="90026" name="Results"/>
+				<Item id="90027" name="Stop"/>
+				<Item id="90028" name="Search stopped."/>
+				<Item id="90029" name="Searching\u2026"/>
+				<Item id="90030" name="Text to search for"/>
+				<Item id="90031" name="*.txt, *.cpp, \u2026"/>
+				<Item id="90032" name="Searching..."/>
+				<Item id="90033" name="Replace:"/>
+				<Item id="90034" name="Whole Word"/>
+				<Item id="90035" name="Whole word"/>
+				<Item id="90036" name="Wrap"/>
+				<Item id="90037" name="Character"/>
+				<Item id="90038" name="HTML Name"/>
+				<Item id="90039" name="HTML Decimal"/>
+				<Item id="90040" name="HTML Hexadecimal"/>
+				<Item id="90041" name="Value"/>
+				<Item id="90042" name="Empty Session"/>
+				<Item id="90043" name="The selected session file contains no tabs."/>
+				<Item id="90044" name="Load Session"/>
+				<Item id="90045" name="Save Session"/>
+				<Item id="90046" name="Clear Recent Files"/>
+				<Item id="90047" name="File not found"/>
+				<Item id="90048" name="No Macro Recorded"/>
+				<Item id="90049" name="Record a macro first using Start Recording."/>
+				<Item id="90050" name="No shortcut conflicts."/>
+				<Item id="90051" name="File Name"/>
+				<Item id="90052" name="Type"/>
+				<Item id="90053" name="Path"/>
+				<Item id="90054" name="Go to Line"/>
+				<Item id="90055" name="Insert Date/Time"/>
+				<Item id="90056" name="Encoding Change"/>
+				<Item id="90057" name="Save a Copy As"/>
+				<Item id="90058" name="Move to Trash"/>
+				<Item id="90059" name="Title Bar"/>
+				<Item id="90060" name="Show full file path in title bar"/>
+				<Item id="90061" name="Show status bar"/>
+				<Item id="90062" name="Tab size:"/>
+				<Item id="90063" name="Caret width:"/>
+				<Item id="90064" name="Caret blink rate (ms):"/>
+				<Item id="90065" name="Font rendering:"/>
+				<Item id="90066" name="Max tab width (pixels):"/>
+				<Item id="90067" name="Vertical Edge"/>
+				<Item id="90068" name="Edge mode:"/>
+				<Item id="90069" name="Edge column:"/>
+				<Item id="90070" name="Dynamic line number width"/>
+				<Item id="90071" name="Left:"/>
+				<Item id="90072" name="Right:"/>
+				<Item id="90073" name="Default line ending:"/>
+				<Item id="90074" name="Default encoding:"/>
+				<Item id="90075" name="Enable auto-backup"/>
+				<Item id="90076" name="Backup interval (seconds):"/>
+				<Item id="90077" name="Backup location:"/>
+				<Item id="90078" name="Colour Style"/>
+				<Item id="90079" name="(inherit)"/>
+				<Item id="90080" name="Import Style Theme"/>
+				<Item id="90081" name="Category"/>
+				<Item id="90082" name="Type to filter..."/>
+				<Item id="90083" name="No shortcut conflicts for this item."/>
+				<Item id="90084" name="Plugin"/>
+				<Item id="90085" name="Version"/>
+				<Item id="90086" name="Installation Complete"/>
+				<Item id="90087" name="Restart the application to load the installed plugins."/>
+				<Item id="90088" name="Install Plugins"/>
+				<Item id="90089" name="Remove Plugins"/>
+				<Item id="90090" name="No commands found"/>
+				<Item id="90091" name="Type to search\u2026"/>
+				<Item id="90092" name="User Defined Language v.2.1"/>
+				<Item id="90093" name="Create New Language"/>
+				<Item id="90094" name="Enter a name:"/>
+				<Item id="90095" name="Foreground color:"/>
+				<Item id="90096" name="Background color:"/>
+				<Item id="90097" name="Don't Save"/>
+				<Item id="90098" name="Done"/>
+				<Item id="90099" name="Toggle Word Wrap"/>
+				<Item id="90100" name="Show All Characters"/>
+				<Item id="90101" name="Show Characters Options"/>
+				<Item id="90102" name="Toggle Indent Guide"/>
+				<Item id="90103" name="Not Yet Implemented"/>
+				<Item id="90104" name="Reload from Disk"/>
+				<Item id="90105" name="Change Search Engine"/>
+				<Item id="90106" name="Run Error"/>
+				<Item id="90107" name="Notepad++ Loading Time"/>
+				<Item id="90108" name="Unable to Check for Updates"/>
+				<Item id="90109" name="You're Up to Date"/>
+				<Item id="90110" name="Download"/>
+				<Item id="90111" name="Release Page"/>
+				<Item id="90112" name="Later"/>
+				<Item id="90113" name="Filter plugins\u2026"/>
+				<Item id="90114" name="Available"/>
+				<Item id="90115" name="Updates"/>
+				<Item id="90116" name="Installed"/>
+				<Item id="90117" name="Incompatible"/>
+				<Item id="90118" name="Failed to Install"/>
+				<Item id="90119" name="Remove the following plugins?"/>
+				<Item id="90120" name="Install the following plugins?"/>
+				<Item id="90121" name="This will delete the plugin files."/>
+				<Item id="90122" name="Search commands\u2026"/>
+				<Item id="90123" name="Foreground colour"/>
+				<Item id="90124" name="Background colour"/>
+				<Item id="90125" name="Macro name"/>
+				<Item id="90126" name="Macro Name"/>
+				<Item id="90127" name="Current recorded macro"/>
+				<Item id="90128" name="Macro Manager"/>
+				<Item id="90129" name="No Saved Macros"/>
+				<Item id="90130" name="Record and save a macro first."/>
+				<Item id="90131" name="Delete Shortcut"/>
+				<Item id="90132" name="Main menu"/>
+				<Item id="90133" name="Macros"/>
+				<Item id="90134" name="Run commands"/>
+				<Item id="90135" name="Plugin commands"/>
+				<Item id="90136" name="Scintilla commands"/>
+				<Item id="90137" name="Command Line Arguments"/>
+				<Item id="90138" name="Command name for Run menu"/>
+				<Item id="90139" name="All marks cleared."/>
+				<Item id="90140" name="Marked text copied to clipboard."/>
+				<Item id="90141" name="No marked text to copy."/>
+				<Item id="90142" name="Searching... %ld hit(s) \u2014 %@"/>
+				<Item id="90143" name="Replacing in files..."/>
+				<Item id="90144" name="Replace in Projects: Not yet connected."/>
+				<Item id="90145" name="Find in Projects: Not yet connected to Project Panel file list."/>
+				<Item id="90146" name="The workspace was modified."/>
+				<Item id="90147" name="Do you want to save changes?"/>
+				<Item id="90148" name="Search results"/>
+				<Item id="90149" name="Highlight current line"/>
+				<Item id="90150" name="Show line numbers"/>
+				<Item id="90151" name="Show whitespace"/>
+				<Item id="90152" name="Show EOL markers"/>
+				<Item id="90153" name="Show bookmark margin"/>
+				<Item id="90154" name="Use tabs (instead of spaces)"/>
+				<Item id="90155" name="Scroll beyond last line"/>
+				<Item id="90156" name="Copy/cut line without selection"/>
+				<Item id="90157" name="Disable selected text drag-drop"/>
+				<Item id="90158" name="Enable smart highlighting"/>
+				<Item id="90159" name="Smart highlighting: match case"/>
+				<Item id="90160" name="Smart highlighting: whole word only"/>
+				<Item id="90161" name="Double-click to close tab"/>
+				<Item id="90162" name="Show close button on tabs"/>
+				<Item id="90163" name="Remember panel visibility across sessions"/>
+				<Item id="90164" name="Keep absent file entries in session"/>
+				<Item id="90165" name="Confirm before Save All"/>
+				<Item id="90166" name="Confirm Replace All in open documents"/>
+				<Item id="90167" name="Replace: don't move to next occurrence"/>
+				<Item id="90168" name="Use monospaced font in Find dialog"/>
+				<Item id="90169" name="Right-click keeps selection"/>
+				<Item id="90170" name="Reverse default date/time order"/>
+				<Item id="90171" name="Use XML-based function list parsers"/>
+				<Item id="90172" name="Auto-close brackets ( ) [ ] { }"/>
+				<Item id="90173" name="From Nth character:"/>
+				<Item id="90174" name="In-selection auto-check threshold (bytes):"/>
+				<Item id="90175" name="Extended (\\n, \\r, \\t, \\0, \\x...)"/>
+				<Item id="90176" name="Editor"/>
+				<Item id="90177" name="Margins"/>
+				<Item id="90178" name="Dark"/>
+				<Item id="90179" name="Light"/>
+				<Item id="90180" name="Auto (Follow System)"/>
+				<Item id="90181" name="Thin (1px)"/>
+				<Item id="90182" name="Medium (2px)"/>
+				<Item id="90183" name="Thick (3px)"/>
+				<Item id="90184" name="Off"/>
+				<Item id="90185" name="Background"/>
+				<Item id="90186" name="Antialiased"/>
+				<Item id="90187" name="LCD Optimized"/>
+				<Item id="90188" name="Simple +/-"/>
+				<Item id="90189" name="Windows (CRLF)"/>
+				<Item id="90190" name="Mac (CR)"/>
+				<Item id="90191" name="Plugin list repository"/>
+				<Item id="90192" name="Select a Notepad++ theme XML file to apply"/>
+				<Item id="90193" name="Create new\u2026"/>
+				<Item id="90194" name="Save as\u2026"/>
+				<Item id="90195" name="User language:"/>
+				<Item id="90196" name="Language name"/>
+				<Item id="90197" name="Create"/>
+				<Item id="90198" name="Save As"/>
+				<Item id="90199" name="es"/>
+				<Item id="90200" name="in entire file"/>
+				<Item id="90201" name="Operators &amp; Delimiters"/>
+				<Item id="90202" name="Invalid Range"/>
+				<Item id="90203" name="Range values must be 0-255 and start must be &lt;= end."/>
+				<Item id="90204" name="contextMenu.xml Not Found"/>
+				<Item id="90205" name="Restart Notepad++ to regenerate the default contextMenu.xml."/>
+				<Item id="90206" name="The file has unsaved changes. Reloading with the new encoding will discard them. Continue?"/>
+				<Item id="90207" name="No response from server."/>
+				<Item id="90208" name="Server returned status"/>
+				<Item id="90209" name="The repository may be private."/>
+				<Item id="90210" name="is Available"/>
+				<Item id="90211" name="is the latest version."/>
+				<Item id="90212" name="You are currently running"/>
+				<Item id="90213" name="Finder Here"/>
+				<Item id="90214" name="Terminal Here"/>
+				<Item id="90215" name="Additional language files (.xml) can be placed in:"/>
+							<Item id="90216" name="Command Palette…"/>
+				<Item id="90217" name="Spell Check"/>
+				<Item id="90218" name="Type to search…"/>
+				<Item id="90219" name="New Window"/>
+				<Item id="90220" name="Skip Current &amp;amp; Go to Next Multi-select"/>
+				<Item id="90221" name="Locked Attribute (macOS)"/>
+				<Item id="90222" name="Check for Updates…"/>
+				<Item id="90223" name="Open Recent"/>
+			</MacStrings>
+		</Dialog>
+	</Native-Langue>
+</NotepadPlus>

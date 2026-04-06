@@ -1,0 +1,2142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Hmong (Hmoob) language file for Notepad++ macOS
+    Based on English template - community translations welcome
+    Created: 2026-04-04
+-->
+<NotepadPlus>
+	<Native-Langue name="Hmoob" filename="hmong.xml" version="8.9">
+		<Menu>
+			<Main>
+				<!-- Main Menu Entries -->
+				<Entries>
+					<Item menuId="file" name="Cov ntaub ntawv"/>
+					<Item menuId="edit" name="Kho kom raug"/>
+					<Item menuId="search" name="Nrhiav"/>
+					<Item menuId="view" name="Saib"/>
+					<Item menuId="encoding" name="Encoding"/>
+					<Item menuId="language" name="Lus"/>
+					<Item menuId="settings" name="Chaw"/>
+					<Item menuId="tools" name="Cov cuab yeej"/>
+					<Item menuId="macro" name="Macro"/>
+					<Item menuId="run" name="Khiav"/>
+					<Item menuId="Plugins" name="Plugins"/>
+					<Item menuId="Window" name="Qhov rai"/>
+				</Entries>
+				<!-- Sub Menu Entries -->
+				<SubEntries>
+					<Item subMenuId="file-openFolder" name="Qhib Cov Folder"/>
+					<Item subMenuId="file-closeMore" name="Kaw Ntau Cov Ntaub Ntawv"/>
+					<Item subMenuId="file-recentFiles" name="Cov ntaub ntawv tsis ntev los no"/>
+					<Item subMenuId="edit-insert" name="Ntxig"/>
+					<Item subMenuId="edit-copyToClipboard" name="Luam rau Daim Ntawv Teev Npe"/>
+					<Item subMenuId="edit-indent" name="Indent"/>
+					<Item subMenuId="edit-convertCaseTo" name="Hloov Case rau"/>
+					<Item subMenuId="edit-lineOperations" name="Kab Kev Ua Haujlwm"/>
+					<Item subMenuId="edit-comment" name="Comment/Uncomment"/>
+					<Item subMenuId="edit-autoCompletion" name="Auto-Completion"/>
+					<Item subMenuId="edit-eolConversion" name="Hloov ua lwm yam EOL"/>
+					<Item subMenuId="edit-blankOperations" name="Blank Operations"/>
+					<Item subMenuId="edit-pasteSpecial" name="Paste Tshwj Xeeb"/>
+					<Item subMenuId="edit-onSelection" name="Ntawm Kev Xaiv"/>
+					<Item subMenuId="edit-multiSelectALL" name="Multi-xaiv ALL"/>
+					<Item subMenuId="edit-multiSelectNext" name="Multi-xaiv Tom ntej"/>
+					<Item subMenuId="edit-readonlyInNotepad++" name="Nyeem-Tsuas yog hauv Notepad++"/>
+					<Item subMenuId="search-changeHistory" name="Hloov Keeb Kwm"/>
+					<Item subMenuId="search-markAll" name="Style Txhua Yam tshwm sim ntawm Token"/>
+					<Item subMenuId="search-markOne" name="Style Ib Token"/>
+					<Item subMenuId="search-unmarkAll" name="Clear Style"/>
+					<Item subMenuId="search-jumpUp" name="Dhia Ua Si"/>
+					<Item subMenuId="search-jumpDown" name="Dhia mus"/>
+					<Item subMenuId="search-copyStyledText" name="Copy Styled Text"/>
+					<Item subMenuId="search-bookmark" name="Bookmark"/>
+					<Item subMenuId="view-currentFileIn" name="Saib cov ntaub ntawv tam sim no hauv"/>
+					<Item subMenuId="view-showSymbol" name="Qhia Cim"/>
+					<Item subMenuId="view-zoom" name="Zoom"/>
+					<Item subMenuId="view-moveCloneDocument" name="Tsiv/Clone Cov Ntaub Ntawv Tam Sim No"/>
+					<Item subMenuId="view-tab" name="Tab"/>
+					<Item subMenuId="view-collapseLevel" name="Fold Level"/>
+					<Item subMenuId="view-uncollapseLevel" name="Qhib Qib"/>
+					<Item subMenuId="view-project" name="Qhov project"/>
+					<Item subMenuId="encoding-characterSets" name="Cim Cim"/>
+					<Item subMenuId="encoding-arabic" name="Arabic"/>
+					<Item subMenuId="encoding-baltic" name="Baltic"/>
+					<Item subMenuId="encoding-celtic" name="Celtic"/>
+					<Item subMenuId="encoding-cyrillic" name="Cyrillic"/>
+					<Item subMenuId="encoding-centralEuropean" name="Central Europe"/>
+					<Item subMenuId="encoding-chinese" name="Suav"/>
+					<Item subMenuId="encoding-easternEuropean" name="Eastern Europe"/>
+					<Item subMenuId="encoding-greek" name="Greek"/>
+					<Item subMenuId="encoding-hebrew" name="Hebrew"/>
+					<Item subMenuId="encoding-japanese" name="Japanese"/>
+					<Item subMenuId="encoding-korean" name="Korean"/>
+					<Item subMenuId="encoding-northEuropean" name="North Europe"/>
+					<Item subMenuId="encoding-thai" name="Thaib"/>
+					<Item subMenuId="encoding-turkish" name="Turkish"/>
+					<Item subMenuId="encoding-westernEuropean" name="Western Europe"/>
+					<Item subMenuId="encoding-vietnamese" name="Nyab Laj"/>
+					<Item subMenuId="language-userDefinedLanguage" name="Neeg txhais lus"/>
+					<Item subMenuId="settings-import" name="Ntshuam"/>
+					<Item subMenuId="tools-md5" name="MD5"/>
+					<Item subMenuId="tools-sha1" name="SHA-1"/>
+					<Item subMenuId="tools-sha256" name="SHA-256"/>
+					<Item subMenuId="tools-sha512" name="SHA-512"/>
+					<Item subMenuId="window-sortby" name="Sort By"/>
+				</SubEntries>
+
+				<!-- all menu item -->
+				<Commands>
+					<Item id="41001" name="Tshiab"/>
+					<Item id="41002" name="Qhib..."/>
+					<Item id="41019" name="Explorer"/>
+					<Item id="41020" name="cmd"/>
+					<Item id="41025" name="Folder as Workspace"/>
+					<Item id="41003" name="Kaw"/>
+					<Item id="41004" name="Kaw Txhua"/>
+					<Item id="41005" name="Kaw tag nrho TAB SIS Cov ntaub ntawv tam sim no"/>
+					<Item id="41026" name="Kaw tag nrho TAB SIS Pinned Cov ntaub ntawv"/>
+					<Item id="41009" name="Kaw tag nrho rau sab laug"/>
+					<Item id="41018" name="Kaw Txhua Yam"/>
+					<Item id="41024" name="Kaw Txhua Qhov Tsis Hloov"/>
+					<Item id="41006" name="Txuag"/>
+					<Item id="41007" name="Txuag Txhua"/>
+					<Item id="41008" name="Txuag As..."/>
+					<Item id="41010" name="Sau..."/>
+					<Item id="1001" name="Sau Tam Sim No"/>
+					<Item id="41011" name="Tawm"/>
+					<Item id="41012" name="Load Session..."/>
+					<Item id="41013" name="Txuag Session..."/>
+					<Item id="41014" name="Rov qab los ntawm Disk"/>
+					<Item id="41015" name="Txuag ib daim Copy As..."/>
+					<Item id="41016" name="Txav mus rau Recycle Bin"/>
+					<Item id="41017" name="Rename..."/>
+					<Item id="41021" name="Restore Cov ntaub ntawv kaw tsis ntev los no"/>
+					<Item id="41022" name="Qhib Folder li Chaw Ua Haujlwm..."/>
+					<Item id="41023" name="Qhib hauv Default Viewer"/>
+					<Item id="42001" name="Txiav"/>
+					<Item id="42002" name="Copy"/>
+					<Item id="42003" name="Tshem tawm"/>
+					<Item id="42004" name="Rov qab"/>
+					<Item id="42005" name="Muab tshuaj txhuam"/>
+					<Item id="42006" name="Rho tawm"/>
+					<Item id="42007" name="Xaiv Txhua"/>
+					<Item id="42020" name="Pib/End Xaiv"/>
+					<Item id="42089" name="Pib/End Xaiv nyob rau hauv kab hom"/>
+					<Item id="42084" name="Hnub Tim (luv luv)"/>
+					<Item id="42085" name="Hnub Tim (ntev)"/>
+					<Item id="42086" name="Hnub Tim (customized)"/>
+					<Item id="42008" name="Nce Kab Indent"/>
+					<Item id="42009" name="Txo Kab Indent"/>
+					<Item id="42010" name="Duplicate kab tam sim no"/>
+					<Item id="42079" name="Tshem cov kab duplicate"/>
+					<Item id="42077" name="Remove Consecutive Duplicate Kab"/>
+					<Item id="42012" name="Sib cais kab"/>
+					<Item id="42013" name="Koom Kab"/>
+					<Item id="42014" name="Txav Mus Los Tam Sim No"/>
+					<Item id="42015" name="Txav mus rau kab tam sim no"/>
+					<Item id="42059" name="Xaiv Kab Lexicographically Ascending"/>
+					<Item id="42060" name="Xaiv Kab Lexicographically Descending"/>
+					<Item id="42080" name="Xaiv Kab Lex.Ascending Ignoring Case"/>
+					<Item id="42081" name="Xaiv Kab Lex.Descending Ignoring Case"/>
+					<Item id="42100" name="Xaiv Kab Hauv Thaj Chaw Ascending"/>
+					<Item id="42101" name="Xaiv Kab Hauv Qhov Chaw Txiav Txim Siab"/>
+					<Item id="42104" name="Sort Lines By Length Ascending"/>
+					<Item id="42105" name="Ntaus Kab Los Ntev"/>
+					<Item id="42061" name="Cais Kab Raws Li Integers Ascending"/>
+					<Item id="42062" name="Cais Kab Raws Li Integers Descending"/>
+					<Item id="42063" name="Sort Lines As Decimals (Comma) Ascending"/>
+					<Item id="42064" name="Sort Lines As Decimals (Comma) Descending"/>
+					<Item id="42065" name="Sort Lines As Decimals (Dot) Ascending"/>
+					<Item id="42066" name="Sort Lines As Decimals (Dot) Descending"/>
+					<Item id="42083" name="Reverse Line Order"/>
+					<Item id="42078" name="Randomize Kab Order"/>
+					<Item id="42016" name="UPPERCASE"/>
+					<Item id="42017" name="ntawv qis"/>
+					<Item id="42067" name="Case"/>
+					<Item id="42068" name="Case (muab)"/>
+					<Item id="42069" name="Kab lus"/>
+					<Item id="42070" name="Sentence Case (kev sib txuas)"/>
+					<Item id="42071" name="iNVERT CAS"/>
+					<Item id="42072" name="ranDOm CasE"/>
+					<Item id="42073" name="Qhib Cov Ntaub Ntawv"/>
+					<Item id="42074" name="Qhib Cov Folder hauv Explorer"/>
+					<Item id="42106" name="Redact Xaiv █ (Shift: ●)"/>
+					<Item id="42075" name="Nrhiav hauv Internet"/>
+					<Item id="42076" name="Hloov Search Engine..."/>
+					<Item id="42090" name="Txhob Tos Lwm Tiam"/>
+					<Item id="42091" name="Match Case xwb"/>
+					<Item id="42092" name="Match Who Word Only"/>
+					<Item id="42093" name="Match Case Whole Word"/>
+					<Item id="42094" name="Txhob Tos Lwm Tiam"/>
+					<Item id="42095" name="Match Case xwb"/>
+					<Item id="42096" name="Match Who Word Only"/>
+					<Item id="42097" name="Match Case Whole Word"/>
+					<Item id="42098" name="Undo qhov tseeb Ntxiv Ntau-Xaiv"/>
+					<Item id="42099" name="Hla tam sim no Mus rau Tom ntej Multi-xaiv"/>
+					<Item id="42018" name="Pib Sau"/>
+					<Item id="42019" name="Nruas Recording"/>
+					<Item id="42021" name="Ua si"/>
+					<Item id="42022" name="Toggle Ib Kab Lus Qhia"/>
+					<Item id="42023" name="Thaiv Comment"/>
+					<Item id="42047" name="Thaiv Tsis Hais"/>
+					<Item id="42024" name="Trim Trailing Space"/>
+					<Item id="42042" name="Trim Leading Space"/>
+					<Item id="42043" name="Trim Leading and Trailing Space"/>
+					<Item id="42044" name="EOL to Space"/>
+					<Item id="42045" name="Trim ob qho tib si EOL rau Chaw"/>
+					<Item id="42046" name="TAB to Space"/>
+					<Item id="42054" name="Space to TAB (All)"/>
+					<Item id="42053" name="Space to TAB (Leading)"/>
+					<Item id="42038" name="Paste HTML Cov Ntsiab Lus"/>
+					<Item id="42039" name="Paste RTF Cov Ntsiab Lus"/>
+					<Item id="42048" name="Luam Binary Cov Ntsiab Lus"/>
+					<Item id="42049" name="Txiav Binary Ntsiab Lus"/>
+					<Item id="42050" name="Paste Binary Cov Ntsiab Lus"/>
+					<Item id="42082" name="Copy link"/>
+					<Item id="42037" name="Kum Hom..."/>
+					<Item id="42034" name="Kum Editor..."/>
+					<Item id="42051" name="Vaj Huam Sib Luag"/>
+					<Item id="42052" name="Phau Ntawv Keeb Kwm"/>
+					<Item id="42025" name="Txuag Tam Sim No Sau Macro..."/>
+					<Item id="42026" name="Cov Lus Qhia RTL"/>
+					<Item id="42027" name="Text Direction LTR"/>
+					<Item id="42028" name="Nyeem-Tsuas ntawm Cov Ntaub Ntawv Tam Sim No"/>
+					<Item id="42102" name="Nyeem-Tsuas rau Txhua Cov Ntaub Ntawv"/>
+					<Item id="42103" name="Clear Read-Tsuas rau Txhua Cov Ntaub Ntawv"/>
+					<Item id="42029" name="Luam cov ntaub ntawv tam sim no"/>
+					<Item id="42030" name="Copy Current Filename"/>
+					<Item id="42031" name="Copy tam sim no Dir.Txoj Kev"/>
+					<Item id="42087" name="Copy All Filenames"/>
+					<Item id="42088" name="Luam tag nrho Cov Ntaub Ntawv Txoj Kev"/>
+					<Item id="42032" name="Khiav Macro Ntau Lub Sijhawm..."/>
+					<Item id="42033" name="Nyeem-Tsuas Ntaus hauv Windows"/>
+					<Item id="42035" name="Ib Kab Lus Qhia"/>
+					<Item id="42036" name="Kab Npauj Ntsais Muas"/>
+					<Item id="42055" name="Tshem Tawm Kab Ntsig"/>
+					<Item id="42056" name="Tshem Tawm Kab Ntsig (muaj cov cim tsis muaj)"/>
+					<Item id="42057" name="Ntxig Kab Npauj Npaim Saum Ntuj Ceeb Tsheej"/>
+					<Item id="42058" name="Ntxig kab kab hauv qab tam sim no"/>
+					<Item id="43001" name="Nrhiav..."/>
+					<Item id="43002" name="Nrhiav Tom ntej"/>
+					<Item id="43003" name="Hloov..."/>
+					<Item id="43004" name="Mus rau..."/>
+					<Item id="43005" name="Toggle Bookmark"/>
+					<Item id="43006" name="Next Bookmark"/>
+					<Item id="43007" name="Previous Bookmark"/>
+					<Item id="43008" name="Clear All Bookmarks"/>
+					<Item id="43018" name="Txiav Bookmarked Kab"/>
+					<Item id="43019" name="Luam Bookmarked Kab"/>
+					<Item id="43020" name="Muab tshuaj txhuam rau (Hloov) Bookmarked Kab"/>
+					<Item id="43021" name="Tshem Tawm Cov Kab Ntsig"/>
+					<Item id="43051" name="Tshem Tawm Tsis-Bookmarked Kab"/>
+					<Item id="43050" name="Inverse Bookmarks"/>
+					<Item id="43052" name="Nrhiav cov cim hauv ntau..."/>
+					<Item id="43053" name="Xaiv Txhua Hauv-nruab nrab ntawm {} [] lossis ()"/>
+					<Item id="43009" name="Mus rau Matching Brace"/>
+					<Item id="43010" name="Nrhiav yav dhau los"/>
+					<Item id="43011" name="Tshawb nrhiav ntxiv"/>
+					<Item id="43013" name="Nrhiav hauv Cov Ntaub Ntawv"/>
+					<Item id="43014" name="Nrhiav (Volatile) Next"/>
+					<Item id="43015" name="Nrhiav (Volatile) Previous"/>
+					<Item id="43022" name="Siv 1st Style"/>
+					<Item id="43023" name="Clear 1st Style"/>
+					<Item id="43024" name="Siv 2nd Style"/>
+					<Item id="43025" name="Clear 2nd Style"/>
+					<Item id="43026" name="Siv 3rd Style"/>
+					<Item id="43027" name="Clear 3rd Style"/>
+					<Item id="43028" name="Siv 4th Style"/>
+					<Item id="43029" name="Clear 4th Style"/>
+					<Item id="43030" name="Siv 5th Style"/>
+					<Item id="43031" name="Clear 5th Style"/>
+					<Item id="43032" name="Clear All Styles"/>
+					<Item id="43033" name="1st style"/>
+					<Item id="43034" name="2nd style"/>
+					<Item id="43035" name="3rd style"/>
+					<Item id="43036" name="4th style"/>
+					<Item id="43037" name="5th style"/>
+					<Item id="43038" name="Nrhiav Mark Style"/>
+					<Item id="43039" name="1st style"/>
+					<Item id="43040" name="2nd style"/>
+					<Item id="43041" name="3rd style"/>
+					<Item id="43042" name="4th style"/>
+					<Item id="43043" name="5th style"/>
+					<Item id="43044" name="Nrhiav Mark Style"/>
+					<Item id="43055" name="1st Style"/>
+					<Item id="43056" name="2nd Style"/>
+					<Item id="43057" name="3rd Style"/>
+					<Item id="43058" name="4th Style"/>
+					<Item id="43059" name="5th Style"/>
+					<Item id="43060" name="Txhua Yam"/>
+					<Item id="43061" name="Nrhiav Mark Style"/>
+					<Item id="43062" name="Siv 1st Style"/>
+					<Item id="43063" name="Siv 2nd Style"/>
+					<Item id="43064" name="Siv 3rd Style"/>
+					<Item id="43065" name="Siv 4th Style"/>
+					<Item id="43066" name="Siv 5th Style"/>
+					<Item id="43067" name="Mus rau tom ntej Hloov"/>
+					<Item id="43068" name="Mus rau yav dhau los Hloov"/>
+					<Item id="43069" name="Clear Hloov Keeb Kwm"/>
+					<Item id="43045" name="Nrhiav Qhov rai"/>
+					<Item id="43046" name="Next Search Result"/>
+					<Item id="43047" name="Previous Tshawb nrhiav"/>
+					<Item id="43048" name="Xaiv thiab Nrhiav Tom ntej"/>
+					<Item id="43049" name="Xaiv thiab Nrhiav Yav dhau los"/>
+					<Item id="43054" name="Mark..."/>
+					<Item id="43501" name="Kaw Xaiv"/>
+					<Item id="43502" name="Kaw Lwm Tus"/>
+					<Item id="43503" name="Luam Cov Npe Xaiv"/>
+					<Item id="43504" name="Luam Xaiv Pathnames"/>
+					<Item id="44009" name="Post-It"/>
+					<Item id="44010" name="Fold All"/>
+					<Item id="44011" name="Distraction Dawb Hom"/>
+					<Item id="44019" name="Qhia Txhua Yam"/>
+					<Item id="44020" name="Qhia Indent Guide"/>
+					<Item id="44022" name="Lo lus qhwv"/>
+					<Item id="44023" name="Zoom In (Ctrl + Mouse Log Up)"/>
+					<Item id="44024" name="Zoom Out (Ctrl+Mouse Log Down)"/>
+					<Item id="44025" name="Qhia Chaw thiab Tab"/>
+					<Item id="44026" name="Qhia Xaus Kab"/>
+					<Item id="44029" name="Qhia tawm Txhua Yam"/>
+					<Item id="44030" name="Fold Current Level"/>
+					<Item id="44031" name="Qhib Qib Tam Sim No"/>
+					<Item id="44049" name="Summary..."/>
+					<Item id="44080" name="Document Map"/>
+					<Item id="44070" name="Daim ntawv teev npe"/>
+					<Item id="44084" name="Cov Npe Ua Haujlwm"/>
+					<Item id="44085" name="Folder as Workspace"/>
+					<Item id="44086" name="1st Tab"/>
+					<Item id="44087" name="2nd Tab"/>
+					<Item id="44088" name="3rd Tab"/>
+					<Item id="44089" name="4th Tab"/>
+					<Item id="44090" name="5th Tab"/>
+					<Item id="44091" name="6th Tab"/>
+					<Item id="44092" name="7th Tab"/>
+					<Item id="44093" name="8th Tab"/>
+					<Item id="44094" name="9th Tab"/>
+					<Item id="44116" name="First Tab"/>
+					<Item id="44117" name="Last Tab"/>
+					<Item id="44095" name="Next Tab"/>
+					<Item id="44096" name="Previous Tab"/>
+					<Item id="44097" name="Saib xyuas (tail -f)"/>
+					<Item id="44098" name="Tsiv Tab Forward"/>
+					<Item id="44099" name="Tsiv Tab Rov Qab"/>
+					<Item id="44110" name="Tshem Xim"/>
+					<Item id="44111" name="Thov Xim 1"/>
+					<Item id="44112" name="Thov Xim 2"/>
+					<Item id="44113" name="Thov Xim 3"/>
+					<Item id="44114" name="Thov Xim 4"/>
+					<Item id="44115" name="Thov Xim 5"/>
+					<Item id="44130" name="Qhia Cov Cim Tsis Sau Ntawv"/>
+					<Item id="44131" name="Qhia Tswj Cov Cim Unicode EOL"/>
+					<Item id="44032" name="Toggle puv npo hom"/>
+					<Item id="44033" name="Restore Default Zoom"/>
+					<Item id="44034" name="Ib txwm nyob saum"/>
+					<Item id="44035" name="Synchronize Vertical Scrolling"/>
+					<Item id="44036" name="Synchronize Kab rov tav Scrolling"/>
+					<Item id="44041" name="Qhia Wrap Cim"/>
+					<Item id="44072" name="Tsom ntsoov rau Lwm Tus Saib"/>
+					<Item id="44081" name="Vaj Huam Sib Luag 1"/>
+					<Item id="44082" name="Vaj Huam Sib Luag 2"/>
+					<Item id="44083" name="Vaj Huam Sib Luag 3"/>
+					<Item id="45001" name="Windows (CR LF)"/>
+					<Item id="45002" name="Unix (LF)"/>
+					<Item id="45003" name="Macintosh (CR)"/>
+					<Item id="45004" name="ANSI"/>
+					<Item id="45005" name="UTF-8-BOM"/>
+					<Item id="45006" name="UTF-16 BE BOM"/>
+					<Item id="45007" name="UTF-16 LE BOM"/>
+					<Item id="45008" name="UTF-8"/>
+					<Item id="45009" name="Hloov ua lwm yam ANSI"/>
+					<Item id="45010" name="Hloov ua lwm yam UTF-8"/>
+					<Item id="45011" name="Hloov ua lwm yam UTF-8-BOM"/>
+					<Item id="45012" name="Convert UTF-16 BE BOM"/>
+					<Item id="45013" name="Convert UTF-16 LE BOM"/>
+					<Item id="45060" name="Big5 (Tsab neeg)"/>
+					<Item id="45061" name="GB2312 (Lwm simplified)"/>
+					<Item id="45054" name="OEM 861: Icelandic"/>
+					<Item id="45057" name="OEM 865: Nordic"/>
+					<Item id="45053" name="OEM 860: Portuguese"/>
+					<Item id="45056" name="OEM 863: Fabkis"/>
+					<Item id="10001" name="Txav mus rau Lwm Saib"/>
+					<Item id="10002" name="Clone rau Lwm Tus Saib"/>
+					<Item id="10003" name="Txav mus rau Qhov Chaw Tshiab"/>
+					<Item id="10004" name="Qhib Hauv Qhov Tseeb Tshiab"/>
+					<Item id="10005" name="Txav mus Pib"/>
+					<Item id="10006" name="Txav mus kawg"/>
+					<Item id="46001" name="Style Configurator..."/>
+					<Item id="46016" name="Tsis muaj (Ntxhais Ntawv)"/>
+					<Item id="46250" name="Txhais koj hom lus..."/>
+					<Item id="46300" name="Qhib User Defined Language folder..."/>
+					<Item id="46301" name="Notepad ++ Tus Neeg Siv Lus Txhais Cov Lus Sau"/>
+					<Item id="46180" name="User-Defined"/>
+					<Item id="47000" name="Txog Notepad++"/>
+					<Item id="47010" name="Hais Hais Kab Lus Sib Tham..."/>
+					<Item id="47001" name="Notepad++ Tsev"/>
+					<Item id="47002" name="Notepad++ Project Page"/>
+					<Item id="47003" name="Notepad++ Online User Manual"/>
+					<Item id="47004" name="Notepad++ Community (Forum)"/>
+					<Item id="47012" name="Debug Info..."/>
+					<Item id="47005" name="Tau Ntau Plugins"/>
+					<Item id="47006" name="Hloov kho Notepad++"/>
+					<Item id="47009" name="Teem Updater Proxy..."/>
+					<Item id="48005" name="Import plugin(s)..."/>
+					<Item id="48006" name="Ntshuam style ntsiab(s)..."/>
+					<Item id="48018" name="Kho kom raug Popup ContextMenu"/>
+					<Item id="48009" name="Shortcut Mapper..."/>
+					<Item id="48011" name="Nyiam..."/>
+					<Item id="48014" name="Qhib Plugins Folder..."/>
+					<Item id="48015" name="Plugins Admin..."/>
+					<Item id="48501" name="Tsim..."/>
+					<Item id="48502" name="Tsim los ntawm cov ntaub ntawv..."/>
+					<Item id="48503" name="Tsim los ntawm kev xaiv rau hauv daim ntawv teev npe"/>
+					<Item id="48504" name="Tsim..."/>
+					<Item id="48505" name="Tsim los ntawm cov ntaub ntawv..."/>
+					<Item id="48506" name="Tsim los ntawm kev xaiv rau hauv daim ntawv teev npe"/>
+					<Item id="48507" name="Tsim..."/>
+					<Item id="48508" name="Tsim los ntawm cov ntaub ntawv..."/>
+					<Item id="48509" name="Tsim los ntawm kev xaiv rau hauv daim ntawv teev npe"/>
+					<Item id="48510" name="Tsim..."/>
+					<Item id="48511" name="Tsim los ntawm cov ntaub ntawv..."/>
+					<Item id="48512" name="Tsim los ntawm kev xaiv rau hauv daim ntawv teev npe"/>
+					<Item id="49000" name="Khiav..."/>
+
+					<Item id="50000" name="Function tiav"/>
+					<Item id="50001" name="Lo Lus Tiav"/>
+					<Item id="50002" name="Function Parameters Hint"/>
+					<Item id="50010" name="Function Parameters Previous Hint"/>
+					<Item id="50011" name="Function Parameters Next Hint"/>
+					<Item id="50005" name="Toggle macro record"/>
+					<Item id="50006" name="Txoj Kev Tiav"/>
+					<Item id="44042" name="Hide Kab"/>
+					<Item id="42040" name="Qhib Txhua Cov Ntaub Ntawv Tsis ntev los no"/>
+					<Item id="42041" name="Empty Recent Files List"/>
+					<Item id="48016" name="Modify Shortcut/Delete Macro..."/>
+					<Item id="48017" name="Modify Shortcut/Delete Command..."/>
+
+					<Item id="11001" name="Windows..."/>
+					<Item id="11002" name="Lub npe A rau Z"/>
+					<Item id="11003" name="Lub npe Z rau A"/>
+					<Item id="11004" name="Txoj Kev A to Z"/>
+					<Item id="11005" name="Txoj kev Z rau A"/>
+					<Item id="11006" name="Hom A rau Z"/>
+					<Item id="11007" name="Hom Z rau A"/>
+					<Item id="11008" name="Cov ntsiab lus Length Ascending"/>
+					<Item id="11009" name="Nthuav Nthuav Tawm"/>
+					<Item id="11010" name="Hloov Sijhawm Ascending"/>
+					<Item id="11011" name="Hloov Kho Lub Sij Hawm Ntxov"/>
+				</Commands>
+			</Main>
+			<TabBar>
+				<Item CMDID="41003" name="Kaw"/>
+				<Item CMDID="0" name="Kaw Ntau Tabs"/>
+				<Item CMDID="41005" name="Kaw Tshwm Sim No"/>
+				<Item CMDID="41026" name="Kaw Txhua TUG Pinned"/>
+				<Item CMDID="41009" name="Kaw tag nrho rau sab laug"/>
+				<Item CMDID="41018" name="Kaw Txhua Yam"/>
+				<Item CMDID="41024" name="Kaw Txhua Qhov Tsis Hloov"/>
+				<Item CMDID="44048" name="Pin Tab" alternativeName="Unpin Tab"/>
+				<Item CMDID="41006" name="Txuag"/>
+				<Item CMDID="41008" name="Txuag As..."/>
+				<Item CMDID="1" name="Qhib rau"/>
+				<Item CMDID="41019" name="Qhib Cov Folder hauv Explorer"/>
+				<Item CMDID="41020" name="Qhib Cov Folder hauv cmd"/>
+				<Item CMDID="41025" name="Qhib Muaj Folder li Chaw Ua Haujlwm"/>
+				<Item CMDID="41023" name="Qhib hauv Default Viewer"/>
+				<Item CMDID="41017" name="Rename..."/>
+				<Item CMDID="41016" name="Txav mus rau Recycle Bin"/>
+				<Item CMDID="41014" name="Reload"/>
+				<Item CMDID="41010" name="Sau..."/>
+				<Item CMDID="42028" name="Nyeem-Tsuas yog hauv Notepad++"/>
+				<Item CMDID="42033" name="Nyeem-Tsuas Ntaus hauv Windows"/>
+				<Item CMDID="2" name="Luam rau Daim Ntawv Teev Npe"/>
+				<Item CMDID="42029" name="Copy Full File Path"/>
+				<Item CMDID="42030" name="Copy Filename"/>
+				<Item CMDID="42031" name="Copy tam sim no Dir.Txoj Kev"/>
+				<Item CMDID="3" name="Tsiv Cov Ntaub Ntawv"/>
+				<Item CMDID="10005" name="Txav mus Pib"/>
+				<Item CMDID="10006" name="Txav mus kawg"/>
+				<Item CMDID="10001" name="Txav mus rau Lwm Saib"/>
+				<Item CMDID="10002" name="Clone rau Lwm Tus Saib"/>
+				<Item CMDID="10003" name="Txav mus rau Qhov Chaw Tshiab"/>
+				<Item CMDID="10004" name="Qhib Hauv Qhov Tseeb Tshiab"/>
+				<Item CMDID="4" name="Siv Xim rau Tab"/>
+				<Item CMDID="44111" name="Thov Xim 1"/>
+				<Item CMDID="44112" name="Thov Xim 2"/>
+				<Item CMDID="44113" name="Thov Xim 3"/>
+				<Item CMDID="44114" name="Thov Xim 4"/>
+				<Item CMDID="44115" name="Thov Xim 5"/>
+				<Item CMDID="44110" name="Tshem Xim"/>
+			</TabBar>
+			<TrayIcon>
+				<Item id="43101" name="Qhib"/>
+				<Item id="43102" name="Tshiab"/>
+				<Item id="43103" name="New and Paste"/>
+				<Item id="43104" name="Qhib..."/>
+				<Item id="43013" name="Nrhiav hauv Cov Ntaub Ntawv..."/>
+				<Item id="43105" name="Kaw Tais Icon"/>
+			</TrayIcon>
+		</Menu>
+
+		<Dialog>
+			<Find title="" titleFind="Nrhiav" titleReplace="Hloov" titleFindInFiles="Nrhiav hauv Cov Ntaub Ntawv" titleFindInProjects="Nrhiav hauv Projects" titleMark="Mark">
+				<Item id="1" name="Nrhiav Tom ntej"/>
+				<Item id="1722" name="Rov qab txoj kev"/>
+				<Item id="2" name="Kaw"/>
+				<Item id="1620" name="Nrhiav dab tsi:"/>
+				<Item id="1603" name="Muab tag nrho lo lus xwb"/>
+				<Item id="1604" name="Kev sib tw"/>
+				<Item id="1605" name="Kev qhia tsis tu ncua"/>
+				<Item id="1606" name="Khawv koob"/>
+				<Item id="1614" name="suav"/>
+				<Item id="1615" name="Mark All"/>
+				<Item id="1616" name="Bookmark kab"/>
+				<Item id="1618" name="Purge rau txhua qhov kev tshawb nrhiav"/>
+				<Item id="1611" name="Hloov nrog:"/>
+				<Item id="1608" name="Hloov"/>
+				<Item id="1609" name="Hloov Txhua"/>
+				<Item id="1687" name="Thaum poob tsom"/>
+				<Item id="1688" name="Ib txwm"/>
+				<Item id="1632" name="Hauv kev xaiv"/>
+				<Item id="1633" name="Tshem tag nrho cov cim"/>
+				<Item id="1635" name="Hloov Txhua yam hauv Txhua Cov Ntaub Ntawv Qhib"/>
+				<Item id="1636" name="Nrhiav Tag Nrho Hauv Txhua Cov Ntaub Ntawv Qhib"/>
+				<Item id="1654" name="Lim:"/>
+				<Item id="1655" name="Phau ntawv:"/>
+				<Item id="1656" name="Nrhiav Txhua Tus"/>
+				<Item id="1658" name="Nyob rau hauv tag nrho cov sub-folders"/>
+				<Item id="1659" name="Hauv cov ntawv zais"/>
+				<Item id="1624" name="Nrhiav hom"/>
+				<Item id="1625" name="Ib txwm"/>
+				<Item id="1626" name="Extended (\n, \r, \t, \0, \x...)"/>
+				<Item id="1660" name="Hloov hauv Cov Ntaub Ntawv"/>
+				<Item id="1665" name="Hloov hauv Cov Haujlwm"/>
+				<Item id="1662" name="Vaj Huam Sib Luag 1"/>
+				<Item id="1663" name="Vaj Huam Sib Luag 2"/>
+				<Item id="1664" name="Vaj Huam Sib Luag 3"/>
+				<Item id="1641" name="Nrhiav Txhua yam hauv Cov Ntaub Ntawv Tam Sim No"/>
+				<Item id="1686" name="Pob tshab"/>
+				<Item id="1703" name=".matches newline"/>
+				<Item id="1721" name="▲"/>
+				<Item id="1723" name="▼ Nrhiav Tom ntej"/>
+				<Item id="1725" name="Copy Marked Text"/>
+				<Menu>
+					<Item id="1726" name="⇅ Swap Nrhiav nrog Hloov"/>
+					<Item id="1727" name="⤵ Luam los ntawm Nrhiav Hloov"/>
+					<Item id="1728" name="⤴ Copy from Replace to Find"/>
+				</Menu>
+			</Find>
+
+			<IncrementalFind title="">
+				<Item id="1681" name="Nrhiav:"/>
+				<Item id="1685" name="Kev sib tw"/>
+				<Item id="1690" name="Qhia tag nrho"/>
+			</IncrementalFind>
+
+			<FindCharsInRange title="Nrhiav Cov Cwj Pwm Hauv Ntau...">
+				<Item id="2" name="Kaw"/>
+				<Item id="2901" name="Cov cim uas tsis yog ASCII (128–255)"/>
+				<Item id="2902" name="ASCII cim (0–127)"/>
+				<Item id="2903" name="Kev cai ntau yam (0–255):"/>
+				<Item id="2906" name="Up"/>
+				<Item id="2907" name="Hauv qab"/>
+				<Item id="2908" name="Kev taw qhia"/>
+				<Item id="2909" name="Khawv koob"/>
+				<Item id="2910" name="Nrhiav"/>
+			</FindCharsInRange>
+
+			<GoToLine title="Mus rau...">
+				<Item id="2007" name="Kab"/>
+				<Item id="2008" name="Offset"/>
+				<Item id="1" name="Mus"/>
+				<Item id="2" name="Kuv tsis mus qhov twg"/>
+				<Item id="2004" name="Koj nyob ntawm no:"/>
+				<Item id="2005" name="Koj xav mus rau:"/>
+				<Item id="2006" name="Koj mus tsis tau ntxiv li:"/>
+			</GoToLine>
+
+			<Run title="Khiav...">
+				<Item id="1903" name="Txoj Haujlwm Ua Haujlwm"/>
+				<Item id="1" name="Khiav"/>
+				<Item id="2" name="Ncua tseg"/>
+				<Item id="1904" name="Txuag..."/>
+			</Run>
+
+			<MD5FromFilesDlg title="Tsim MD5 digest los ntawm cov ntaub ntawv">
+				<Item id="1922" name="Xaiv cov ntaub ntawv los tsim MD5..."/>
+				<Item id="1924" name="Luam rau Daim Ntawv Teev Npe"/>
+				<Item id="2" name="Kaw"/>
+			</MD5FromFilesDlg>
+
+			<MD5FromTextDlg title="Tsim MD5 digest">
+				<Item id="1932" name="Kho txhua kab ua ib txoj hlua cais"/>
+				<Item id="1934" name="Luam rau Daim Ntawv Teev Npe"/>
+				<Item id="2" name="Kaw"/>
+			</MD5FromTextDlg>
+
+			<SHA256FromFilesDlg title="Tsim SHA-256 digest los ntawm cov ntaub ntawv">
+				<Item id="1922" name="Xaiv cov ntaub ntawv los tsim SHA-256..."/>
+				<Item id="1924" name="Luam rau Daim Ntawv Teev Npe"/>
+				<Item id="2" name="Kaw"/>
+			</SHA256FromFilesDlg>
+
+			<SHA256FromTextDlg title="Tsim SHA-256 digest">
+				<Item id="1932" name="Kho txhua kab raws li ib txoj hlua cais"/>
+				<Item id="1934" name="Luam rau Daim Ntawv Teev Npe"/>
+				<Item id="2" name="Kaw"/>
+			</SHA256FromTextDlg>
+
+			<SHA1FromFilesDlg title="Tsim SHA-1 digest los ntawm cov ntaub ntawv">
+				<Item id="1922" name="Xaiv cov ntaub ntawv los tsim SHA-1..."/>
+				<Item id="1924" name="Luam rau Daim Ntawv Teev Npe"/>
+				<Item id="2" name="Kaw"/>
+			</SHA1FromFilesDlg>
+
+			<SHA1FromTextDlg title="Tsim SHA-1 digest">
+				<Item id="1932" name="Kho txhua kab ua ib txoj hlua cais"/>
+				<Item id="1934" name="Luam rau Daim Ntawv Teev Npe"/>
+				<Item id="2" name="Kaw"/>
+			</SHA1FromTextDlg>
+
+			<SHA512FromFilesDlg title="Tsim SHA-512 digest los ntawm cov ntaub ntawv">
+				<Item id="1922" name="Xaiv cov ntaub ntawv los tsim SHA-512..."/>
+				<Item id="1924" name="Luam rau Daim Ntawv Teev Npe"/>
+				<Item id="2" name="Kaw"/>
+			</SHA512FromFilesDlg>
+
+			<SHA512FromTextDlg title="Tsim SHA-512 digest">
+				<Item id="1932" name="Kho txhua kab ua ib txoj hlua cais"/>
+				<Item id="1934" name="Luam rau Daim Ntawv Teev Npe"/>
+				<Item id="2" name="Kaw"/>
+			</SHA512FromTextDlg>
+			<PluginsAdminDlg title="Plugins Admin" titleAvailable="Available" titleUpdates="Updates" titleInstalled="Installed" titleIncompatible="Incompatible">
+				<ColumnPlugin name="Plugin"/>
+				<ColumnVersion name="Version"/>
+				<Item id="5501" name="Nrhiav:"/>
+				<Item id="5503" name="Nruab"/>
+				<Item id="5504" name="Hloov tshiab"/>
+				<Item id="5505" name="Tshem tawm"/>
+				<Item id="5508" name="Tom ntej no"/>
+				<Item id="5509" name="Plugin list version:"/>
+				<Item id="5511" name="Plugin list repository"/>
+				<Item id="2" name="Kaw"/>
+			</PluginsAdminDlg>
+
+			<StyleConfig title="Style Configurator">
+				<Item id="2" name="Ncua tseg"/>
+				<Item id="2301" name="Txuag Kaw"/>
+				<Item id="2303" name="Pob tshab"/>
+				<Item id="2306" name="Xaiv lub ntsiab:"/>
+				<SubDialog>
+					<Item id="2204" name="Bold"/>
+					<Item id="2205" name="Italic"/>
+					<Item id="2206" name="Pem hauv ntej xim"/>
+					<Item id="2207" name="Xim tom qab"/>
+					<Item id="2208" name="Font Name:"/>
+					<Item id="2209" name="Font loj:"/>
+					<Item id="2211" name="Style:"/>
+					<Item id="2212" name="Xim Style"/>
+					<Item id="2213" name="Font Style"/>
+					<Item id="2214" name="Default ext.:"/>
+					<Item id="2216" name="User ext.:"/>
+					<Item id="2218" name="Hauv qab"/>
+					<Item id="2219" name="Default keywords"/>
+					<Item id="2221" name="Tus neeg siv-txhais lo lus tseem ceeb"/>
+					<Item id="2225" name="Lus:"/>
+					<Item id="2226" name="Force foreground xim rau txhua yam"/>
+					<Item id="2227" name="Force tom qab xim rau txhua yam"/>
+					<Item id="2228" name="Force font xaiv rau txhua tus qauv"/>
+					<Item id="2229" name="Force font loj xaiv rau txhua tus qauv"/>
+					<Item id="2230" name="Force bold xaiv rau txhua yam"/>
+					<Item id="2231" name="Force italic xaiv rau txhua yam"/>
+					<Item id="2232" name="Force underline xaiv rau txhua yam"/>
+					<Item id="2234" name="Mus rau qhov chaw"/>
+					<!-- Don't translate "Global override" -->
+					<Item id="2235" name="Ntiaj teb no override yog dab tsi?"/>
+				</SubDialog>
+			</StyleConfig>
+
+			<ShortcutMapper title="Shortcut Mapper">
+				<Item id="2602" name="Hloov kho"/>
+				<Item id="2603" name="Rho tawm"/>
+				<Item id="2606" name="Clear"/>
+				<Item id="2607" name="Lim:"/>
+				<Item id="1" name="Kaw"/>
+				<ColumnName name="npe"/>
+				<ColumnShortcut name="Shortcut"/>
+				<ColumnCategory name="Qeb"/>
+				<ColumnPlugin name="Plugin"/>
+				<MainMenuTab name="Main zaub mov"/>
+				<MacrosTab name="Macros"/>
+				<RunCommandsTab name="Khiav cov lus txib"/>
+				<PluginCommandsTab name="Plugin commands"/>
+				<ScintillaCommandsTab name="Scintilla commands"/>
+				<ConflictInfoOk name="Tsis muaj shortcut tsis sib haum xeeb rau cov khoom no."/>
+				<ConflictInfoEditing name="Tsis muaj teeb meem..."/>
+				<AboutCategory name="Txog"/>
+				<ModifyContextMenu name="Hloov kho"/>
+				<DeleteContextMenu name="Rho tawm"/>
+				<ClearContextMenu name="Clear"/>
+				<MainCommandNames>
+					<Item id="41019" name="Qhib cov folders hauv Explorer"/>
+					<Item id="41020" name="Qhib cov ntawv tais ceev tseg hauv Command Prompt"/>
+					<Item id="41021" name="Restore Cov ntaub ntawv kaw tsis ntev los no"/>
+					<Item id="45001" name="Convert EOL to Windows (CR LF)"/>
+					<Item id="45002" name="Convert EOL to Unix (LF)"/>
+					<Item id="45003" name="Convert EOL to Macintosh (CR)"/>
+					<Item id="43022" name="Style tag nrho siv 1st style"/>
+					<Item id="43024" name="Style tag nrho siv 2nd style"/>
+					<Item id="43026" name="Style tag nrho siv 3rd style"/>
+					<Item id="43028" name="Style tag nrho siv 4th style"/>
+					<Item id="43030" name="Style tag nrho siv 5th style"/>
+					<Item id="43062" name="Style ib siv 1st style"/>
+					<Item id="43063" name="Style ib siv 2nd style"/>
+					<Item id="43064" name="Style ib siv 3rd style"/>
+					<Item id="43065" name="Style ib siv 4th style"/>
+					<Item id="43066" name="Style ib siv 5th style"/>
+					<Item id="43023" name="Clear 1st style"/>
+					<Item id="43025" name="Clear 2nd style"/>
+					<Item id="43027" name="Clear 3rd style"/>
+					<Item id="43029" name="Clear 4th style"/>
+					<Item id="43031" name="Clear 5th style"/>
+					<Item id="43032" name="Clear txhua yam"/>
+					<Item id="43033" name="Previous tsab xov xwm1st style"/>
+					<Item id="43034" name="Previous style 2nd style"/>
+					<Item id="43035" name="Previous tsab xov xwm3rd style"/>
+					<Item id="43036" name="Previous tsab xov xwm4th style"/>
+					<Item id="43037" name="Previous tsab xov xwm5th style"/>
+					<Item id="43038" name="Previous style Nrhiav Mark style"/>
+					<Item id="43039" name="Next style 1st style"/>
+					<Item id="43040" name="Next style 2nd style"/>
+					<Item id="43041" name="Tom ntej no tsab xov xwm3rd style"/>
+					<Item id="43042" name="Next style of 4th style"/>
+					<Item id="43043" name="Next style of 5th style"/>
+					<Item id="43044" name="Next style of Nrhiav Mark style"/>
+					<Item id="43055" name="Copy Styled Text of 1st Style"/>
+					<Item id="43056" name="Copy Styled Text of 2nd Style"/>
+					<Item id="43057" name="Copy Styled Text of 3rd Style"/>
+					<Item id="43058" name="Copy Styled Text of 4th Style"/>
+					<Item id="43059" name="Copy Styled Text of 5th Style"/>
+					<Item id="43060" name="Copy Styled Text of All Styles"/>
+					<Item id="43061" name="Copy Styled Text of Nrhiav Mark style"/>
+					<Item id="44100" name="Saib cov ntaub ntawv tam sim no hauv Firefox"/>
+					<Item id="44101" name="Saib cov ntaub ntawv tam sim no hauv Chrome"/>
+					<Item id="44103" name="Saib cov ntaub ntawv tam sim no hauv IE"/>
+					<Item id="44102" name="Saib cov ntaub ntawv tam sim no hauv Ntug"/>
+					<Item id="50003" name="Hloov mus rau cov ntaub ntawv dhau los"/>
+					<Item id="50004" name="Hloov mus rau daim ntawv tom ntej"/>
+					<Item id="44051" name="Quav Theem 1"/>
+					<Item id="44052" name="Quav Theem 2"/>
+					<Item id="44053" name="Quav Theem 3"/>
+					<Item id="44054" name="Quav Theem 4"/>
+					<Item id="44055" name="Quav Theem 5"/>
+					<Item id="44056" name="Quav Theem 6"/>
+					<Item id="44057" name="Quav Theem 7"/>
+					<Item id="44058" name="Quav Theem 8"/>
+					<Item id="44061" name="Unfold Theem 1"/>
+					<Item id="44062" name="Unfold Theem 2"/>
+					<Item id="44063" name="Unfold Theem 3"/>
+					<Item id="44064" name="Unfold Theem 4"/>
+					<Item id="44065" name="Unfold Theem 5"/>
+					<Item id="44066" name="Qhib Qib 6"/>
+					<Item id="44067" name="Unfold Theem 7"/>
+					<Item id="44068" name="Unfold Theem 8"/>
+					<Item id="44081" name="Toggle Project Vaj Huam Sib Luag 1"/>
+					<Item id="44082" name="Toggle Project Vaj Huam Sib Luag 2"/>
+					<Item id="44083" name="Toggle Project Vaj Huam Sib Luag 3"/>
+					<Item id="44085" name="Toggle Folder li Chaw Ua Haujlwm"/>
+					<Item id="44080" name="Toggle Document Map"/>
+					<Item id="44070" name="Toggle Document List"/>
+					<Item id="44084" name="Toggle Function List"/>
+					<Item id="50005" name="Toggle macro kaw"/>
+					<Item id="44104" name="Hloov mus rau Vaj Huam Sib Luag 1"/>
+					<Item id="44105" name="Hloov mus rau Vaj Huam Sib Luag 2"/>
+					<Item id="44106" name="Hloov mus rau Vaj Huam Sib Luag 3"/>
+					<Item id="44107" name="Hloov mus rau Folder li Chaw Ua Haujlwm"/>
+					<Item id="44109" name="Hloov mus rau Daim Ntawv Teev Npe"/>
+					<Item id="44108" name="Hloov mus rau Cov Npe Ua Haujlwm"/>
+					<Item id="44110" name="Tshem Tab Xim"/>
+					<Item id="44111" name="Thov Tab Xim 1"/>
+					<Item id="44112" name="Thov Tab Xim 2"/>
+					<Item id="44113" name="Siv Tab Xim 3"/>
+					<Item id="44114" name="Thov Tab Xim 4"/>
+					<Item id="44115" name="Thov Tab Xim 5"/>
+					<Item id="11002" name="Xaiv los ntawm lub npe A rau Z"/>
+					<Item id="11003" name="Sau npe Z rau A"/>
+					<Item id="11004" name="Sort by Path A to Z"/>
+					<Item id="11005" name="Sort by Path Z to A"/>
+					<Item id="11006" name="Ntaus los ntawm Hom A rau Z"/>
+					<Item id="11007" name="Ntaus los ntawm Hom Z rau A"/>
+					<Item id="11008" name="Sau los ntawm Cov Ntsiab Lus Ntev Ascending"/>
+					<Item id="11009" name="Ntaus los ntawm Cov Ntsiab Lus Nthuav Tawm"/>
+				</MainCommandNames>
+			</ShortcutMapper>
+			<ShortcutMapperSubDialg title="Shortcut">
+				<Item id="1" name="OK"/>
+				<Item id="2" name="Ncua tseg"/>
+				<Item id="5006" name="npe"/>
+				<Item id="5008" name="Ntxiv"/>
+				<Item id="5009" name="Tshem tawm"/>
+				<Item id="5010" name="Thov"/>
+				<Item id="5007" name="Qhov no yuav tshem tawm shortcut ntawm no hais kom ua"/>
+				<Item id="5012" name="Pom kev sib cav!"/>
+			</ShortcutMapperSubDialg>
+			<UserDefine title="Tus neeg siv-Defined">
+				<Item id="20001" name="Khob"/>
+				<Item id="20002" name="Rename"/>
+				<Item id="20003" name="Tsim tshiab..."/>
+				<Item id="20004" name="Tshem tawm"/>
+				<Item id="20005" name="Txuag As..."/>
+				<Item id="20007" name="Tus neeg siv lus"/>
+				<Item id="20009" name="Ext.:"/>
+				<Item id="20012" name="Tsis quav ntsej case"/>
+				<Item id="20011" name="Pob tshab"/>
+				<Item id="20015" name="Ntshuam..."/>
+				<Item id="20016" name="Export..."/>
+				<Item id="20017" name="Undock"/>
+				<StylerDialog title="Styler Dialog">
+					<Item id="25030" name="Font xaiv"/>
+					<Item id="25006" name="Pem hauv ntej xim"/>
+					<Item id="25007" name="Xim tom qab"/>
+					<Item id="25031" name="Lub npe:"/>
+					<Item id="25032" name="Loj:"/>
+					<Item id="25001" name="Bold"/>
+					<Item id="25002" name="Italic"/>
+					<Item id="25003" name="Hauv qab"/>
+					<Item id="25029" name="Neeb"/>
+					<Item id="25008" name="Delimiter 1"/>
+					<Item id="25009" name="Delimiter 2"/>
+					<Item id="25010" name="Delimiter 3"/>
+					<Item id="25011" name="Delimiter 4"/>
+					<Item id="25012" name="Delimiter 5"/>
+					<Item id="25013" name="Delimiter 6"/>
+					<Item id="25014" name="Delimiter 7"/>
+					<Item id="25015" name="Delimiter 8"/>
+					<Item id="25018" name="Lo lus tseem ceeb 1"/>
+					<Item id="25019" name="Lo lus tseem ceeb 2"/>
+					<Item id="25020" name="Lo lus tseem ceeb 3"/>
+					<Item id="25021" name="Lo lus tseem ceeb 4"/>
+					<Item id="25022" name="Lo lus tseem ceeb 5"/>
+					<Item id="25023" name="Lo lus tseem ceeb 6"/>
+					<Item id="25024" name="Lo lus tseem ceeb 7"/>
+					<Item id="25025" name="Lo lus tseem ceeb 8"/>
+					<Item id="25016" name="Saib"/>
+					<Item id="25017" name="Saib kab"/>
+					<Item id="25026" name="Operator 1"/>
+					<Item id="25027" name="Operator 2"/>
+					<Item id="25028" name="Numbers"/>
+					<Item id="25033" name="Pob tshab"/>
+					<Item id="25034" name="Pob tshab"/>
+					<Item id="1" name="OK"/>
+					<Item id="2" name="Ncua tseg"/>
+				</StylerDialog>
+				<Folder title="Folder Default">
+					<Item id="21101" name="Default style"/>
+					<Item id="21102" name="Styler"/>
+					<Item id="21103" name="Tus neeg siv txhais lus hauv online pab"/>
+					<Item id="21105" name="Cov ntaub ntawv"/>
+					<Item id="21106" name="Fold compact (fold khoob kab dhau)"/>
+					<Item id="21220" name="Folding in code 1 style"/>
+					<Item id="21224" name="Qhib:"/>
+					<Item id="21225" name="Nruab nrab:"/>
+					<Item id="21226" name="Kaw:"/>
+					<Item id="21227" name="Styler"/>
+					<Item id="21320" name="Folding hauv code 2 style (separators xav tau)"/>
+					<Item id="21324" name="Qhib:"/>
+					<Item id="21325" name="Nruab nrab:"/>
+					<Item id="21326" name="Kaw:"/>
+					<Item id="21327" name="Styler"/>
+					<Item id="21420" name="Fold in comment style"/>
+					<Item id="21424" name="Qhib:"/>
+					<Item id="21425" name="Nruab nrab:"/>
+					<Item id="21426" name="Kaw:"/>
+					<Item id="21427" name="Styler"/>
+				</Folder>
+				<Keywords title="Keywords List">
+					<Item id="22101" name="1st Group"/>
+					<Item id="22201" name="2nd Group"/>
+					<Item id="22301" name="3rd Group"/>
+					<Item id="22401" name="Pawg 4"/>
+					<Item id="22451" name="Pawg 5"/>
+					<Item id="22501" name="Pawg 6"/>
+					<Item id="22551" name="Pawg 7"/>
+					<Item id="22601" name="8th Group"/>
+					<Item id="22121" name="Prefix mode"/>
+					<Item id="22221" name="Prefix mode"/>
+					<Item id="22321" name="Prefix hom"/>
+					<Item id="22421" name="Prefix mode"/>
+					<Item id="22471" name="Prefix mode"/>
+					<Item id="22521" name="Prefix mode"/>
+					<Item id="22571" name="Prefix mode"/>
+					<Item id="22621" name="Prefix mode"/>
+					<Item id="22122" name="Styler"/>
+					<Item id="22222" name="Styler"/>
+					<Item id="22322" name="Styler"/>
+					<Item id="22422" name="Styler"/>
+					<Item id="22472" name="Styler"/>
+					<Item id="22522" name="Styler"/>
+					<Item id="22572" name="Styler"/>
+					<Item id="22622" name="Styler"/>
+				</Keywords>
+				<Comment title="Comment Number">
+					<Item id="23003" name="Kab lus txoj hauj lwm"/>
+					<Item id="23004" name="Cia nyob qhov twg"/>
+					<Item id="23005" name="Force pib kab"/>
+					<Item id="23006" name="Cia qhov chaw dawb ua ntej"/>
+					<Item id="23001" name="Tso folding cov lus"/>
+					<Item id="23326" name="Styler"/>
+					<Item id="23323" name="Qhib"/>
+					<Item id="23324" name="Txuas ntxiv cim"/>
+					<Item id="23325" name="Kaw"/>
+					<Item id="23301" name="Saib kab style"/>
+					<Item id="23124" name="Styler"/>
+					<Item id="23122" name="Qhib"/>
+					<Item id="23123" name="Kaw"/>
+					<Item id="23101" name="Hais lus style"/>
+					<Item id="23201" name="Tus lej style"/>
+					<Item id="23220" name="Styler"/>
+					<Item id="23230" name="Prefix 1"/>
+					<Item id="23232" name="Lub npe 2"/>
+					<Item id="23234" name="Ntxiv 1"/>
+					<Item id="23236" name="Ntxiv 2"/>
+					<Item id="23238" name="Suffix 1"/>
+					<Item id="23240" name="Suffix 2"/>
+					<Item id="23242" name="Ntau:"/>
+					<Item id="23244" name="Decimal separator"/>
+					<Item id="23245" name="Dot"/>
+					<Item id="23246" name="Comma"/>
+					<Item id="23247" name="Ob leeg"/>
+				</Comment>
+				<Operator title="Tus neeg khiav dej num Delimiter">
+					<Item id="24101" name="Operator style"/>
+					<Item id="24113" name="Styler"/>
+					<Item id="24116" name="Operator 1"/>
+					<Item id="24117" name="Operators 2 (yuav tsum tau sib cais)"/>
+					<Item id="24201" name="Delimiter 1 style"/>
+					<Item id="24220" name="Qhib:"/>
+					<Item id="24221" name="Kev khiav tawm:"/>
+					<Item id="24222" name="Kaw:"/>
+					<Item id="24223" name="Styler"/>
+					<Item id="24301" name="Delimiter 2 style"/>
+					<Item id="24320" name="Qhib:"/>
+					<Item id="24321" name="Kev khiav tawm:"/>
+					<Item id="24322" name="Kaw:"/>
+					<Item id="24323" name="Styler"/>
+					<Item id="24401" name="Delimiter 3 style"/>
+					<Item id="24420" name="Qhib:"/>
+					<Item id="24421" name="Kev khiav tawm:"/>
+					<Item id="24422" name="Kaw:"/>
+					<Item id="24423" name="Styler"/>
+					<Item id="24451" name="Delimiter 4 style"/>
+					<Item id="24470" name="Qhib:"/>
+					<Item id="24471" name="Kev khiav tawm:"/>
+					<Item id="24472" name="Kaw:"/>
+					<Item id="24473" name="Styler"/>
+					<Item id="24501" name="Delimiter 5 style"/>
+					<Item id="24520" name="Qhib:"/>
+					<Item id="24521" name="Kev khiav tawm:"/>
+					<Item id="24522" name="Kaw:"/>
+					<Item id="24523" name="Styler"/>
+					<Item id="24551" name="Delimiter 6 style"/>
+					<Item id="24570" name="Qhib:"/>
+					<Item id="24571" name="Kev khiav tawm:"/>
+					<Item id="24572" name="Kaw:"/>
+					<Item id="24573" name="Styler"/>
+					<Item id="24601" name="Delimiter 7 style"/>
+					<Item id="24620" name="Qhib:"/>
+					<Item id="24621" name="Kev khiav tawm:"/>
+					<Item id="24622" name="Kaw:"/>
+					<Item id="24623" name="Styler"/>
+					<Item id="24651" name="Delimiter 8 style"/>
+					<Item id="24670" name="Qhib:"/>
+					<Item id="24671" name="Kev khiav tawm:"/>
+					<Item id="24672" name="Kaw:"/>
+					<Item id="24673" name="Styler"/>
+				</Operator>
+			</UserDefine>
+			<Preference title="Nyiam">
+				<Item id="6001" name="Kaw"/>
+				<Global title="General">
+					<Item id="6123" name="Localization"/>
+					<Item id="6131" name="Menu"/>
+					<Item id="6122" name="Nkaum (siv Alt lossis F10 yuam sij rau toggle)"/>
+					<Item id="6132" name="Hide txoj cai shortcuts ＋ ▼ ✕"/>
+					<Item id="6133" name="Status Bar"/>
+					<Item id="6134" name="Nkaum"/>
+				</Global>
+
+				<Toolbar title="Toolbar">
+					<Item id="6102" name="Nkaum"/>
+					<Item id="6103" name="Fluent UI: me"/>
+					<Item id="6104" name="Fluent UI: loj"/>
+					<Item id="6129" name="Filled Fluent UI: me me"/>
+					<Item id="6130" name="Filled Fluent UI: loj"/>
+					<Item id="6105" name="Standard icons: me"/>
+					<Item id="6011" name="Colorization"/>
+					<Item id="6012" name="Ua kom tiav"/>
+					<Item id="6013" name="Ib nrab"/>
+					<Item id="6014" name="Xim xaiv"/>
+					<Item id="6015" name="Default"/>
+					<Item id="6016" name="Liab"/>
+					<Item id="6017" name="Ntsuab"/>
+					<Item id="6018" name="Xiav"/>
+					<Item id="6019" name="Ntshav"/>
+					<Item id="6020" name="Cyan"/>
+					<Item id="6021" name="Olive"/>
+					<Item id="6022" name="Yellow"/>
+					<Item id="6023" name="System Accent"/>
+					<Item id="6024" name="Kev cai"/>
+				</Toolbar>
+
+				<Tabbar title="Tab Bar">
+					<Item id="6107" name="Txo"/>
+					<Item id="6108" name="Xauv (tsis luag thiab poob)"/>
+					<Item id="6109" name="Hloov xim tab xim"/>
+					<Item id="6110" name="Kos ib lub xim xim rau ntawm lub tab tab"/>
+					<Item id="6111" name="Qhia cov nyees khawm ntawm cov tabs tsis ua haujlwm"/>
+					<Item id="6112" name="Qhia kaw khawm"/>
+					<Item id="6113" name="Ob npaug nias rau kaw cov ntaub ntawv"/>
+					<Item id="6115" name="Qhib tus pin tab feature"/>
+					<Item id="6135" name="Qhia pinned khawm"/>
+					<Item id="6118" name="Nkaum"/>
+					<Item id="6119" name="Ntau kab"/>
+					<Item id="6120" name="Vertical"/>
+					<Item id="6121" name="Tawm ntawm kaw lub xeem tab"/>
+					<Item id="6128" name="Hloov icons"/>
+					<Item id="6125" name="Cwj pwm"/>
+					<Item id="6126" name="Saib xav"/>
+					<Item id="6136" name="Max.tab label length:"/>
+				</Tabbar>
+
+				<Scintillas title="Khob 1">
+					<Item id="6216" name="Caret Chaw"/>
+					<Item id="6217" name="Dav:"/>
+					<Item id="6219" name="Blink rate:"/>
+					<Item id="6221" name="F"/>
+					<Item id="6222" name="S"/>
+					<Item id="6246" name="Ua kom theem tam sim no folding/unfolding commands toggleable"/>
+					<Item id="6227" name="Kab qhwv"/>
+					<Item id="6228" name="Default"/>
+					<Item id="6229" name="Aligned"/>
+					<Item id="6230" name="Indent"/>
+					<Item id="6234" name="Disable advanced scrolling feature vim qhov teeb meem touchpad"/>
+					<Item id="6215" name="Pab kom tus font du"/>
+					<Item id="6236" name="Pab kom scrolling dhau kab kawg"/>
+					<Item id="6239" name="Khaws kev xaiv thaum txoj cai-nias sab nraud ntawm kev xaiv"/>
+					<Item id="6245" name="Qhib chaw virtual"/>
+					<Item id="6214" name="Pab Copy/Cut Kab tsis xaiv"/>
+					<Item id="6225" name="Siv cov xim kev cai rau cov ntawv xaiv rau pem hauv ntej"/>
+					<Item id="6651" name="Qhov taw qhia kab tam sim no"/>
+					<Item id="6652" name="Tsis muaj"/>
+					<Item id="6653" name="Highlight Background"/>
+					<Item id="6654" name="Ncej"/>
+					<Item id="6655" name="Dav:"/>
+				</Scintillas>
+
+				<Scintillas2 title="Khob 2">
+					<Item id="6521" name="Multi-Editing"/>
+					<Item id="6522" name="Qhib Multi-Editing (Ctrl + Nas nyem / xaiv)"/>
+					<Item id="6523" name="Pab kom xaiv kab rau Multi-Editing"/>
+					<Item id="6247" name="EOL (CRLF)"/><!-- Don't translate "(CRLF)" -->
+					<Item id="6248" name="Default"/>
+					<Item id="6249" name="Plain Text"/>
+					<Item id="6250" name="Xim Xim"/>
+					<Item id="6252" name="Cov Cim Tsis Pub Luam"/>
+					<Item id="6260" name="Kev tshwm sim"/>
+					<Item id="6254" name="Abbreviation"/>
+					<Item id="6255" name="Codepoint"/>
+					<Item id="6256" name="Xim Xim"/>
+					<Item id="6258" name="Siv Cov Kev Pom Zoo rau C0, C1 Unicode EOL"/>
+					<Item id="6259" name="Tiv thaiv tus cwj pwm tswj (C0 code) ntaus ntawv rau hauv daim ntawv"/>
+				</Scintillas2>
+
+				<DarkMode title="Tsaus hom">
+					<Item id="7131" name="Lub teeb hom"/>
+					<Item id="7132" name="Tsaus ntuj"/>
+					<Item id="7133" name="Ua raws Windows"/>
+					<Item id="7102" name="Dub"/>
+					<Item id="7103" name="Liab"/>
+					<Item id="7104" name="Ntsuab"/>
+					<Item id="7105" name="Xiav"/>
+					<Item id="7107" name="Ntshav"/>
+					<Item id="7108" name="Cyan"/>
+					<Item id="7109" name="Olive"/>
+					<Item id="7115" name="Customized"/>
+					<Item id="7116" name="Cov ntsiab lus keeb kwm"/>
+					<Item id="7117" name="Top nkauj kho siab"/>
+					<Item id="7118" name="Tswj keeb kwm"/>
+					<Item id="7119" name="Dialog keeb kwm"/>
+					<Item id="7120" name="yuam kev"/>
+					<Item id="7121" name="Text"/>
+					<Item id="7122" name="Cov ntawv tsaus nti"/>
+					<Item id="7123" name="Lus tsis txaus siab"/>
+					<Item id="7124" name="Ntug"/>
+					<Item id="7125" name="Link"/>
+					<Item id="7126" name="Ntug highlight"/>
+					<Item id="7127" name="Ntug neeg xiam"/>
+					<Item id="7130" name="Rov pib dua"/>
+					<Item id="7135" name="Tones"/>
+				</DarkMode>
+
+				<MarginsBorderEdge title="Margins/Border/Edge">
+					<Item id="6201" name="Fold Margin Style"/>
+					<Item id="6202" name="Yooj yim"/>
+					<Item id="6203" name="Xub"/>
+					<Item id="6204" name="Paj vaj"/>
+					<Item id="6205" name="Box ntoo"/>
+					<Item id="6226" name="Tsis muaj"/>
+					<Item id="6291" name="Kab Number"/>
+					<Item id="6206" name="Zaub"/>
+					<Item id="6292" name="Dynamic dav"/>
+					<Item id="6293" name="Qhov dav tsis tu ncua"/>
+					<Item id="6207" name="Tso bookmark"/>
+					<Item id="6295" name="Hloov Keeb Kwm"/>
+					<Item id="6223" name="Qhia hauv kab ntawv"/>
+					<Item id="6296" name="Qhia hauv ntawv"/>
+					<Item id="6211" name="Vertical Edge nqis"/>
+					<Item id="6213" name="Tom qab hom"/>
+					<Item id="6231" name="Ciam teb dav"/>
+					<Item id="6235" name="Tsis muaj ntug"/>
+					<Item id="6208" name="Padding"/>
+					<Item id="6209" name="Sab laug"/>
+					<Item id="6210" name="Txoj cai"/>
+					<Item id="6212" name="Ntsuag Ntsuag"/>
+				</MarginsBorderEdge>
+
+				<NewDoc title="Cov Ntaub Ntawv Tshiab">
+					<Item id="6401" name="Format (Kab xaus)"/>
+					<Item id="6402" name="Windows (CR LF)"/>
+					<Item id="6403" name="Unix (LF)"/>
+					<Item id="6404" name="Macintosh (CR)"/>
+					<Item id="6405" name="Encoding"/>
+					<Item id="6406" name="ANSI"/>
+					<Item id="6407" name="UTF-8"/>
+					<Item id="6408" name="UTF-8 nrog BOM"/>
+					<Item id="6409" name="UTF-16 Big Endian nrog BOM"/>
+					<Item id="6410" name="UTF-16 Me Endian nrog BOM"/>
+					<Item id="6411" name="Hom lus:"/>
+					<Item id="6419" name="Cov Ntaub Ntawv Tshiab"/>
+					<Item id="6420" name="Thov qhib ANSI cov ntaub ntawv"/>
+					<Item id="6432" name="Ib txwm qhib ib daim ntawv tshiab ntxiv thaum pib"/>
+					<Item id="6433" name="Siv thawj kab ntawm cov ntaub ntawv uas tsis muaj npe tab npe"/>
+				</NewDoc>
+
+				<DefaultDir title="Default Directory">
+					<Item id="6413" name="Default Qhib/Save file Directory"/>
+					<Item id="6414" name="Ua raws li cov ntaub ntawv tam sim no"/>
+					<Item id="6415" name="Nco ntsoov siv lub xeem"/>
+					<Item id="6431" name="Qhib tag nrho cov ntaub ntawv ntawm nplaub tshev es tsis txhob launching Folder li Workspace ntawm nplaub tshev poob"/>
+				</DefaultDir>
+
+				<FileAssoc title="Cov ntaub ntawv koom haum">
+					<Item id="4008" name="Thov tawm Notepad ++ thiab rov qhib Notepad ++ hauv Administrator hom siv cov yam ntxwv no."/>
+					<Item id="4009" name="Txhawb kev txuas ntxiv:"/>
+					<Item id="4010" name="Registered extensions:"/>
+				</FileAssoc>
+
+
+				<Language title="Lus">
+					<Item id="6505" name="Cov khoom muaj"/>
+					<Item id="6506" name="Cov khoom xiam oob qhab"/>
+					<Item id="6507" name="Ua cov ntawv qhia zaub mov compact"/>
+					<Item id="6508" name="Lus Qhia"/>
+					<Item id="6335" name="Kho backslash li khiav tawm ua cim rau SQL"/>
+				</Language>
+
+				<Indentation title="Indentation">
+					<Item id="7161" name="Auto-indent"/>
+					<Item id="7162" name="Tsis muaj"/>
+					<Item id="7163" name="Basic"/>
+					<Item id="7164" name="Advanced"/>
+					<Item id="6301" name="Indent Settings"/>
+					<Item id="6302" name="Space character(s)"/>
+					<Item id="6303" name="Indent size:"/>
+					<Item id="6310" name="Indent siv:"/>
+					<Item id="6311" name="Tab character"/>
+					<Item id="6510" name="Siv tus nqi pib"/>
+					<Item id="6512" name="Backspace tseem ceeb unindents es tsis txhob tshem ib qho chaw"/>
+				</Indentation>
+
+				<Highlighting title="Highlight">
+					<Item id="6351" name="Style Txhua Yam tshwm sim ntawm Token"/>
+					<Item id="6352" name="Kev sib tw"/>
+					<Item id="6353" name="Muab tag nrho lo lus xwb"/>
+					<Item id="6333" name="Txawj Ntse"/>
+					<Item id="6326" name="Pab"/>
+					<Item id="6354" name="Sib phim"/>
+					<Item id="6332" name="Kev sib tw"/>
+					<Item id="6338" name="Muab tag nrho lo lus xwb"/>
+					<Item id="6339" name="Siv Nrhiav dialog nqis"/>
+					<Item id="6340" name="Highlight lwm saib"/>
+					<Item id="6329" name="Highlight matching Tags"/>
+					<Item id="6327" name="Pab"/>
+					<Item id="6328" name="Highlight tag attribute"/>
+					<Item id="6330" name="Highlight comment/php/asp zone"/>
+				</Highlighting>
+
+				<Print title="Luam tawm">
+					<Item id="6601" name="Sau kab zauv"/>
+					<Item id="6602" name="Xim xaiv"/>
+					<Item id="6603" name="WYSIWYG"/>
+					<Item id="6604" name="Invert"/>
+					<Item id="6605" name="Dub nyob dawb"/>
+					<Item id="6606" name="Tsis muaj xim tom qab"/>
+					<Item id="6607" name="Margin Settings (Unit:mm)"/>
+					<Item id="6612" name="Sab laug"/>
+					<Item id="6613" name="Top"/>
+					<Item id="6614" name="Yog"/>
+					<Item id="6615" name="Qab"/>
+					<Item id="6706" name="Bold"/>
+					<Item id="6707" name="Italic"/>
+					<Item id="6708" name="Lub taub hau"/>
+					<Item id="6709" name="sab laug"/>
+					<Item id="6710" name="Nruab nrab"/>
+					<Item id="6711" name="Txoj cai"/>
+					<Item id="6717" name="Bold"/>
+					<Item id="6718" name="Italic"/>
+					<Item id="6719" name="footer"/>
+					<Item id="6720" name="sab laug"/>
+					<Item id="6721" name="Nruab nrab"/>
+					<Item id="6722" name="Txoj cai"/>
+					<Item id="6723" name="Ntxiv"/>
+					<ComboBox id="6724">
+						<Element name="Tag nrho cov ntaub ntawv npe path"/>
+						<Element name="Cov ntaub ntawv npe"/>
+						<Element name="Cov ntaub ntawv teev npe"/>
+						<Element name="Page"/>
+						<Element name="Hnub luv format"/>
+						<Element name="Ntev hnub format"/>
+						<Element name="Sijhawm"/>
+					</ComboBox>
+					<Item id="6725" name="Variable:"/>
+					<Item id="6727" name="Ntawm no tso saib koj qhov chaw sib txawv"/>
+					<Item id="6728" name="Header and Footer"/>
+				</Print>
+
+				<Searching title="Nrhiav">
+					<Item id="6902" name="Siv monospaced font hauv Nrhiav dialog (Xav tau rov pib Notepad ++)"/>
+					<Item id="6903" name="Nrhiav dialog tseem qhib tom qab kev tshawb nrhiav uas tso tawm rau lub qhov rais tshwm sim"/>
+					<Item id="6904" name="Paub hloov pauv txhua yam hauv txhua cov ntaub ntawv qhib"/>
+					<Item id="6905" name="Hloov: Tsis txhob txav mus rau qhov tshwm sim hauv qab no"/>
+					<Item id="6906" name="Tshawb nrhiav qhov rai: pom tsuas yog ib qho nkag rau ib kab pom yog tias ua tau"/>
+					<Item id="6907" name="Thaum Nrhiav Dialog yog Invoked"/>
+					<Item id="6908" name="Sau Nrhiav teb nrog cov ntawv xaiv"/>
+					<Item id="6909" name="Xaiv Lo Lus Hauv Cuam Tshuam Thaum Tsis Muaj Dab Tsi Xaiv"/>
+					<Item id="6910" name="Yam tsawg kawg nkaus rau kev kuaj xyuas &quot;hauv kev xaiv&quot;:"/>
+					<Item id="6913" name="Sau Nrhiav hauv Cov Ntaub Ntawv Phau Ntawv Qhia Raws Li Cov Ntaub Ntawv Ua Haujlwm"/>
+					<Item id="6916" name=": Max Cim rau Nws Pib-Fill Nrhiav Field los ntawm Kev Xaiv"/>
+				</Searching>
+
+				<RecentFilesHistory title="Cov ntaub ntawv tsis ntev los no">
+					<Item id="6304" name="Cov ntaub ntawv tsis ntev los no"/>
+					<Item id="6306" name="Max.tus naj npawb ntawm nkag:"/>
+					<Item id="6305" name="Tsis txhob tshawb xyuas lub sijhawm tso tawm"/>
+					<Item id="6429" name="Zaub"/>
+					<Item id="6424" name="Hauv Submenu"/>
+					<Item id="6425" name="Tsuas yog File Name"/>
+					<Item id="6426" name="Full File Name Txoj Kev"/>
+					<Item id="6427" name="Customize Ntev Ntev:"/>
+				</RecentFilesHistory>
+
+				<Backup title="Thaub qab">
+					<Item id="6817" name="Session snapshot thiab periodic backup"/>
+					<Item id="6818" name="Qhib kev sib tham snapshot thiab ncua sij hawm thaub qab"/>
+					<Item id="6819" name="Ua rau thaub qab ntawm kev hloov kho hauv txhua qhov"/>
+					<Item id="6821" name="vib nas this"/>
+					<Item id="6822" name="Txoj kev thaub qab:"/>
+					<Item id="6309" name="Nco ntsoov qhov kev sib tham tam sim no rau kev tshaj tawm tom ntej"/>
+					<Item id="6825" name="Nco ntsoov cov ntaub ntawv nkag tsis tau los ntawm kev sib tham dhau los"/>
+					<Item id="6801" name="Thaub qab rau txuag"/>
+					<Item id="6315" name="Tsis muaj"/>
+					<Item id="6316" name="Yooj yim thaub qab"/>
+					<Item id="6317" name="Verbose thaub qab"/>
+					<Item id="6804" name="Custom Backup Directory"/>
+					<Item id="6803" name="Directory:"/>
+				</Backup>
+
+				<AutoCompletion title="Auto-Completion">
+					<Item id="6807" name="Auto-Completion"/>
+					<Item id="6808" name="Pab kom nws pib ua tiav ntawm txhua qhov kev tawm tswv yim"/>
+					<Item id="6809" name="Kev ua tiav"/>
+					<Item id="6810" name="Lo lus tiav"/>
+					<Item id="6816" name="Muaj nuj nqi thiab lo lus tiav"/>
+					<Item id="6869" name="Ntxig xaiv"/>
+					<Item id="6870" name="TAB"/><!-- TAB key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6871" name="ENTER"/><!-- ENTER key on the keyboard, it's not necessary to translate it normally -->
+					<Item id="6824" name="Tsis quav ntsej tus lej"/>
+					<Item id="6811" name="Los ntawm"/>
+					<Item id="6813" name="th cim"/>
+					<Item id="6872" name="Ua kom tiav daim ntawv teev npe luv luv"/>
+					<Item id="6815" name="Function parameters hint rau cov tswv yim"/>
+					<Item id="6851" name="Auto-Insert"/>
+					<Item id="6857" name="html/xml close tag"/>
+					<Item id="6858" name="Qhib"/>
+					<Item id="6859" name="Kaw"/>
+					<Item id="6860" name="Sib phim 1:"/>
+					<Item id="6863" name="Sib phim 2:"/>
+					<Item id="6866" name="Sib phim 3:"/>
+				</AutoCompletion>
+
+				<MultiInstance title="Multi-Instance Date">
+					<Item id="6151" name="Multi-instance settings *"/>
+					<Item id="6152" name="Qhib kev sib tham hauv ib qho piv txwv tshiab (thiab txuag kev sib kho cia li tawm ntawm kev tawm)"/>
+					<Item id="6153" name="Ib txwm nyob hauv ntau hom qauv"/>
+					<Item id="6154" name="Default (mono-instance)"/>
+					<Item id="6155" name="* Kev hloov kho ntawm qhov teeb tsa no yuav tsum rov pib Notepad ++"/>
+					<Item id="6171" name="Customize insert hnub tim"/>
+					<Item id="6175" name="Rov qab default date time orders (short long formats)"/>
+					<Item id="6172" name="Custom format:"/>
+					<Item id="6181" name="Vaj Huam Sib Luag Lub Xeev thiab [-nosession] *"/>
+					<Item id="6182" name="Nco ntsoov lub xeev lub vaj huam sib luag (lub vaj huam sib luag qhib) hauv lwm qhov xwm txheej (ntau hom piv txwv) lossis thaum siv cov kab lus hais kom ua [-nosession]"/>
+					<Item id="6183" name="Phau Ntawv Keeb Kwm"/>
+					<Item id="6184" name="Daim ntawv teev npe"/>
+					<Item id="6185" name="Vaj Huam Sib Luag"/>
+					<Item id="6186" name="Folder as Workspace"/>
+					<Item id="6187" name="Project Panels"/>
+					<Item id="6188" name="Document Map"/>
+					<Item id="6189" name="Cov Npe Ua Haujlwm"/>
+					<Item id="6190" name="Plugin Panels"/>
+				</MultiInstance>
+
+				<Delimiter title="Delimiter">
+					<Item id="6251" name="Delimiter xaiv chaw (Ctrl + Nas ob npaug nias)"/>
+					<Item id="6252" name="Qhib"/>
+					<Item id="6255" name="Kaw"/>
+					<Item id="6256" name="Tso rau ob peb kab"/>
+					<Item id="6161" name="Lo lus cim npe"/>
+					<Item id="6162" name="Siv default Word cim npe raws li nws yog"/>
+					<Item id="6163" name="Ntxiv koj tus cwj pwm ua ib feem ntawm lo lus
+(tsis txhob xaiv nws tshwj tsis yog koj paub tias koj ua dab tsi)"/>
+				</Delimiter>
+
+				<Performance title="Performance">
+					<Item id="7141" name="Cov ntaub ntawv loj txwv"/>
+					<Item id="7143" name="Pab Txhawb Cov Ntaub Ntawv Loj Loj (tsis muaj syntax highlighting)"/>
+					<Item id="7144" name="Txhais Cov Ntaub Ntawv Loj:"/>
+					<Item id="7146" name="MB (1 - 2046)"/>
+					<Item id="7147" name="Cia Brace Match"/>
+					<Item id="7148" name="Tso Auto-Completion"/>
+					<Item id="7149" name="Tso Kev Txawj Ntse"/>
+					<Item id="7150" name="Deactivate Word Wrap thoob ntiaj teb"/>
+					<Item id="7151" name="Tso URL Clickable Link"/>
+					<Item id="7152" name="Ncua lus ceeb toom thaum qhib ≥2GB cov ntaub ntawv"/>
+				</Performance>
+
+				<Cloud title="Huab Link">
+					<Item id="6262" name="Chaw nyob huab"/>
+					<Item id="6263" name="Tsis muaj huab"/>
+					<Item id="6267" name="Teem koj huab qhov chaw txoj kev ntawm no:"/>
+					<Item id="6318" name="Clickable Link Chaw"/>
+					<Item id="6319" name="Pab"/>
+					<Item id="6320" name="Tsis muaj underline"/>
+					<Item id="6350" name="Pab kom fullbox hom"/>
+					<Item id="6264" name="URI customized schemes:"/>
+				</Cloud>
+
+				<SearchEngine title="Nrhiav cav">
+					<Item id="6271" name="Search Engine (rau hais kom ua &quot;Tshawb hauv Internet&quot;)"/>
+					<Item id="6272" name="DuckDuckGo"/>
+					<Item id="6273" name="Google"/>
+					<Item id="6274" name="Bing"/>
+					<Item id="6275" name="Yahoo!"/>
+					<Item id="6276" name="Teem koj lub cav tshawb nrhiav ntawm no:"/>
+					<!-- Don't change anything after Example: -->
+					<Item id="6278" name="Piv txwv: https://www.google.com/search?q=$(CURRENT_WORD)"/>
+				</SearchEngine>
+
+				<MISC title="MISC.">
+					<ComboBox id="6347">
+						<Element name="Pab kom cov ntaub ntawv tam sim no"/>
+						<Element name="Qhib rau txhua cov ntaub ntawv qhib"/>
+						<Element name="Disable"/>
+					</ComboBox>
+					<ComboBox id="6307">
+						<Element name="Tsis ua rau"/>
+						<Element name="Tsawg kawg rau"/>
+						<Element name="Ze rau"/>
+						<Element name="Tsawg / Kaw rau"/>
+					</ComboBox>
+					<ComboBox id="6362">
+						<Element name="GDI (feem ntau tshaj)"/>
+						<Element name="DirectWrite (default)"/>
+						<Element name="DirectWrite ( khaws cov ncej)"/>
+						<Element name="DirectWrite (kos rau GDI DC)"/>
+						<Element name="DirectWrite (DirectX 11)"/>
+					</ComboBox>
+					<ComboBox id="6364">
+						<Element name="Disable"/>
+						<Element name="Qhib rau ntawm Notepad ++ pib"/>
+						<Element name="Pab rau Notepad++ tawm"/>
+					</ComboBox>
+					<Item id="6308" name="system tais"/>
+					<Item id="6363" name="rendering mode"/>
+					<Item id="6365" name="Auto-updater:"/>
+					<Item id="6312" name="File Status Auto-Detection"/>
+					<Item id="6313" name="Hloov kho ntsiag to"/>
+					<Item id="6325" name="Scroll mus rau kab kawg tom qab hloov tshiab"/>
+					<Item id="6322" name="Session file ext.:"/>
+					<Item id="6324" name="Document Switcher (Ctrl+TAB)"/>
+					<Item id="6331" name="Qhia tsuas yog filename hauv lub npe bar"/>
+					<Item id="6334" name="Autodetect cim encoding"/>
+					<Item id="6337" name="Workspace file ext.:"/>
+					<Item id="6114" name="Pab"/>
+					<Item id="6117" name="Pab kom MRU cwj pwm"/>
+					<Item id="6344" name="Document Peeker"/>
+					<Item id="6345" name="Peek on tab"/>
+					<Item id="6346" name="Saib ntawm daim duab qhia chaw"/>
+					<Item id="6360" name="Mute txhua lub suab"/>
+					<Item id="6361" name="Pab Kom Txuag Tag Nrho Kev Pom Zoo dialog"/>
+				</MISC>
+			</Preference>
+			<MultiMacro title="Khiav Macro Ntau Lub Sijhawm">
+				<Item id="1" name="Khiav"/>
+				<Item id="2" name="Ncua tseg"/>
+				<Item id="8006" name="Macro khiav"/>
+				<Item id="8001" name="Khiav"/>
+				<Item id="8005" name="lub sij hawm"/>
+				<Item id="8002" name="Khiav kom txog thaum kawg ntawm cov ntaub ntawv"/>
+			</MultiMacro>
+			<Window title="Windows">
+				<Item id="1" name="Qhib"/>
+				<Item id="2" name="OK"/>
+				<Item id="7002" name="Txuag"/>
+				<Item id="7003" name="Kaw qhov rai (s)"/>
+				<Item id="7004" name="Sort tabs"/>
+			</Window>
+			<ColumnEditor title="Kum Editor">
+				<Item id="2023" name="Text to Insert"/>
+				<Item id="2033" name="Naj npawb rau Insert"/>
+				<Item id="2030" name="Tus lej pib:"/>
+				<Item id="2031" name="Nce los ntawm:"/>
+				<Item id="2038" name="Txoj Kev:"/>
+				<ComboBox id="2039">
+					<Element name="Tsis muaj"/>
+					<Element name="Zeros"/>
+					<Element name="Chaw"/>
+				</ComboBox>
+				<Item id="2036" name="Repeat:"/>
+				<Item id="2032" name="Format"/>
+				<Item id="2024" name="Dec"/>
+				<Item id="2025" name="Oct"/>
+				<Item id="2026" name="Hex"/>
+				<Item id="2027" name="Ib"/>
+				<Item id="1" name="OK"/>
+				<Item id="2" name="Ncua tseg"/>
+			</ColumnEditor>
+			<FindInFinder title="Nrhiav hauv kev tshawb nrhiav">
+				<Item id="1" name="Nrhiav Txhua Tus"/>
+				<Item id="2" name="Kaw"/>
+				<Item id="1711" name="Nrhiav dab tsi:"/>
+				<Item id="1713" name="Tshawb nrhiav hauv cov kab pom xwb"/>
+				<Item id="1714" name="Muab tag nrho lo lus xwb"/>
+				<Item id="1715" name="Kev sib tw"/>
+				<Item id="1716" name="Nrhiav hom"/>
+				<Item id="1717" name="Ib txwm"/>
+				<Item id="1719" name="Kev qhia tsis tu ncua"/>
+				<Item id="1718" name="Extended (\n, \r, \t, \0, \x...)"/>
+				<Item id="1720" name=".matches newline"/>
+			</FindInFinder>
+			<DoSaveOrNot title="Txuag">
+				<Item id="1761" name="Txuag cov ntaub ntawv &quot;$STR_REPLACE$&quot;?"/>
+				<Item id="6" name="Yog"/>
+				<Item id="7" name="Tsis muaj"/>
+				<Item id="2" name="Ncua tseg"/>
+				<Item id="4" name="Yog txhua tus"/>
+				<Item id="5" name="Tsis yog txhua tus"/>
+			</DoSaveOrNot>
+			<DoSaveAll title="Txuag Txhua Qhov Kev Pom Zoo">
+				<Item id="1766" name="Koj puas paub tseeb tias koj xav khaws tag nrho cov ntaub ntawv hloov kho?
+
+Xaiv &quot;Ib txwm yog&quot; yog tias koj tsis xav pom qhov kev sib tham no dua.
+Koj tuaj yeem rov qhib qhov kev sib tham no hauv Preferences tom qab."/>
+				<Item id="6" name="Yog"/>
+				<Item id="7" name="Tsis muaj"/>
+				<Item id="4" name="Ib txwm muaj"/>
+			</DoSaveAll><!-- HowToReproduce: Check the "Enable Save All confirm dialog" checkbox in Preference->MISC, now click "Save all" -->
+
+			<DebugInfo title="Debug Info">
+				<Item id="1752" name="Luam cov ntaub ntawv debug rau cov ntawv teev cia"/>
+				<Item id="1" name="OK"/>
+			</DebugInfo>
+					<MacStrings>
+				<Item id="90001" name="Nrhiav tau"/>
+				<Item id="90002" name="Kaw Kev Tshawb Nrhiav"/>
+				<Item id="90003" name="Clear All"/>
+				<Item id="90004" name="Kaw lub vaj huam sib luag"/>
+				<Item id="90005" name="Vaj Huam Sib Luag"/>
+				<Item id="90006" name="Qhov Chaw Tswj"/>
+				<Item id="90007" name="Ua"/>
+				<Item id="90008" name="Ua Tsis Tau"/>
+				<Item id="90009" name="Tsis muaj git repository\nSiv Browse los qhib repo."/>
+				<Item id="90010" name="Theem"/>
+				<Item id="90011" name="Unstage"/>
+				<Item id="90012" name="Kauj Ruam Txhua"/>
+				<Item id="90013" name="Unstage All"/>
+				<Item id="90014" name="Hais lus\u2026"/>
+				<Item id="90015" name="Xauj rau qhov chaw khaws cia\u2026"/>
+				<Item id="90016" name="Xaiv git repository folder"/>
+				<Item id="90017" name="(tsis muaj chaw cia)"/>
+				<Item id="90018" name="(dab neeg)"/>
+				<Item id="90019" name="Unknown yuam kev"/>
+				<Item id="90020" name="Tsis pom muaj haujlwm"/>
+				<Item id="90021" name="Nrhiav haujlwm..."/>
+				<Item id="90022" name="nthuav tag nrho"/>
+				<Item id="90023" name="Nrhiav cov ntaub ntawv tam sim no"/>
+				<Item id="90024" name="Hloov tshiab"/>
+				<Item id="90025" name="Xaiv cov haujlwm (A txog Z)"/>
+				<Item id="90026" name="Cov txiaj ntsig"/>
+				<Item id="90027" name="Nres"/>
+				<Item id="90028" name="Kev tshawb nrhiav nres."/>
+				<Item id="90029" name="Nrhiav\u2026"/>
+				<Item id="90030" name="Sau ntawv mus nrhiav"/>
+				<Item id="90031" name="*.txt, *.cpp, \u2026"/>
+				<Item id="90032" name="Nrhiav..."/>
+				<Item id="90033" name="Hloov:"/>
+				<Item id="90034" name="Lus Qhuab Qhia"/>
+				<Item id="90035" name="Tag nrho lo lus"/>
+				<Item id="90036" name="Khob"/>
+				<Item id="90037" name="Cim"/>
+				<Item id="90038" name="HTML Name"/>
+				<Item id="90039" name="HTML Decimal"/>
+				<Item id="90040" name="HTML Hexadecimal"/>
+				<Item id="90041" name="Tus nqi"/>
+				<Item id="90042" name="Session Empty"/>
+				<Item id="90043" name="Cov ntaub ntawv kev sib tham xaiv tsis muaj tabs."/>
+				<Item id="90044" name="Load Session"/>
+				<Item id="90045" name="Txuag Session"/>
+				<Item id="90046" name="Clear Cov ntaub ntawv tsis ntev los no"/>
+				<Item id="90047" name="Tsis pom cov ntaub ntawv"/>
+				<Item id="90048" name="Tsis Muaj Macro Sau"/>
+				<Item id="90049" name="Sau tus macro thawj zaug siv Start Recording."/>
+				<Item id="90050" name="Tsis muaj shortcut tsis sib haum xeeb."/>
+				<Item id="90051" name="File Name"/>
+				<Item id="90052" name="Hom"/>
+				<Item id="90053" name="Txoj Kev"/>
+				<Item id="90054" name="Mus rau Kab"/>
+				<Item id="90055" name="Ntxig Hnub/Lub Sijhawm"/>
+				<Item id="90056" name="Hloov pauv hloov"/>
+				<Item id="90057" name="Txuag ib daim Copy As"/>
+				<Item id="90058" name="Txav mus thoob khib nyiab"/>
+				<Item id="90059" name="Title Bar"/>
+				<Item id="90060" name="Qhia tag nrho cov ntaub ntawv txoj hauv kab npe"/>
+				<Item id="90061" name="Qhia xwm txheej bar"/>
+				<Item id="90062" name="Tab size:"/>
+				<Item id="90063" name="Kev dav dav:"/>
+				<Item id="90064" name="Caret blink rate (ms):"/>
+				<Item id="90065" name="Font rendering:"/>
+				<Item id="90066" name="Max tab dav (pixels):"/>
+				<Item id="90067" name="Vertical Ntug"/>
+				<Item id="90068" name="Ntug hom:"/>
+				<Item id="90069" name="Ntug kab:"/>
+				<Item id="90070" name="Dynamic kab zauv dav"/>
+				<Item id="90071" name="Sab laug:"/>
+				<Item id="90072" name="Txoj cai:"/>
+				<Item id="90073" name="Default kab xaus:"/>
+				<Item id="90074" name="Default encoding:"/>
+				<Item id="90075" name="Pab kom nws pib thaub qab"/>
+				<Item id="90076" name="Backup ncua sij hawm (thib ob):"/>
+				<Item id="90077" name="Backup qhov chaw:"/>
+				<Item id="90078" name="Xim Style"/>
+				<Item id="90079" name="(xov xwm)"/>
+				<Item id="90080" name="Ntshuam Style ntsiab"/>
+				<Item id="90081" name="Qeb"/>
+				<Item id="90082" name="Hom lim..."/>
+				<Item id="90083" name="Tsis muaj shortcut tsis sib haum xeeb rau cov khoom no."/>
+				<Item id="90084" name="Plugin"/>
+				<Item id="90085" name="Version"/>
+				<Item id="90086" name="Installation Tiav"/>
+				<Item id="90087" name="Rov pib dua daim ntawv thov kom thauj cov plugins ntsia."/>
+				<Item id="90088" name="Nruab Plugins"/>
+				<Item id="90089" name="Tshem Plugins"/>
+				<Item id="90090" name="Tsis pom cov lus txib"/>
+				<Item id="90091" name="Ntaus mus nrhiav\u2026"/>
+				<Item id="90092" name="User Defined Language v.2.1"/>
+				<Item id="90093" name="Tsim Cov Lus Tshiab"/>
+				<Item id="90094" name="Sau npe:"/>
+				<Item id="90095" name="Foreground xim:"/>
+				<Item id="90096" name="Xim hauv qab:"/>
+				<Item id="90097" name="Txhob Txuag"/>
+				<Item id="90098" name="Ua tsaug"/>
+				<Item id="90099" name="Toggle Word Wrap"/>
+				<Item id="90100" name="Qhia Txhua Yam"/>
+				<Item id="90101" name="Qhia Cov Cim Xaiv"/>
+				<Item id="90102" name="Toggle Indent Guide"/>
+				<Item id="90103" name="Tseem Tsis Tau Ua"/>
+				<Item id="90104" name="Reload los ntawm Disk"/>
+				<Item id="90105" name="Hloov Nrhiav Cav"/>
+				<Item id="90106" name="Khiav yuam kev"/>
+				<Item id="90107" name="Notepad++ Loading Time"/>
+				<Item id="90108" name="Tsis Muaj Peev Xwm Saib Xyuas Kev Hloov Kho"/>
+				<Item id="90109" name="Koj Nyob Qhov Twg"/>
+				<Item id="90110" name="Download"/>
+				<Item id="90111" name="Tso Page"/>
+				<Item id="90112" name="Tom qab"/>
+				<Item id="90113" name="Lim plugins\u2026"/>
+				<Item id="90114" name="Muaj"/>
+				<Item id="90115" name="Hloov tshiab"/>
+				<Item id="90116" name="Nruab"/>
+				<Item id="90117" name="Tsis sib tau"/>
+				<Item id="90118" name="Txhim kho"/>
+				<Item id="90119" name="Tshem tawm cov plugins hauv qab no?"/>
+				<Item id="90120" name="Nruab cov plugins hauv qab no?"/>
+				<Item id="90121" name="Qhov no yuav rho tawm cov ntaub ntawv plugin."/>
+				<Item id="90122" name="Nrhiav cov lus txib\u2026"/>
+				<Item id="90123" name="Pem hauv ntej xim"/>
+				<Item id="90124" name="Xim tom qab"/>
+				<Item id="90125" name="Macro npe"/>
+				<Item id="90126" name="Lub npe macro"/>
+				<Item id="90127" name="Tam sim no kaw macro"/>
+				<Item id="90128" name="Macro Manager"/>
+				<Item id="90129" name="Tsis Muaj Txuag Macros"/>
+				<Item id="90130" name="Sau thiab txuag lub macro ua ntej."/>
+				<Item id="90131" name="Rho tawm Shortcut"/>
+				<Item id="90132" name="Main zaub mov"/>
+				<Item id="90133" name="Macros"/>
+				<Item id="90134" name="Khiav cov lus txib"/>
+				<Item id="90135" name="Plugin commands"/>
+				<Item id="90136" name="Scintilla commands"/>
+				<Item id="90137" name="Cov Lus Hais Hais Lus"/>
+				<Item id="90138" name="Hais kom ua lub npe rau Run menu"/>
+				<Item id="90139" name="Tag nrho cov cim tau raug tshem tawm."/>
+				<Item id="90140" name="Cov ntawv cim tau theej rau hauv daim ntawv teev cia."/>
+				<Item id="90141" name="Tsis muaj ntawv cim rau luam."/>
+				<Item id="90142" name="Nrhiav... %ld hit(s) \u2014 %@"/>
+				<Item id="90143" name="Hloov cov ntaub ntawv..."/>
+				<Item id="90144" name="Hloov hauv Cov Haujlwm: Tseem tsis tau txuas nrog."/>
+				<Item id="90145" name="Nrhiav hauv Cov Haujlwm: Tseem tsis tau txuas nrog Project Vaj Huam Sib Luag daim ntawv teev npe."/>
+				<Item id="90146" name="Qhov chaw ua haujlwm tau hloov kho."/>
+				<Item id="90147" name="Koj puas xav khaws cov kev hloov pauv?"/>
+				<Item id="90148" name="Nrhiav tau"/>
+				<Item id="90149" name="Highlight kab tam sim no"/>
+				<Item id="90150" name="Qhia kab zauv"/>
+				<Item id="90151" name="Qhia whitespace"/>
+				<Item id="90152" name="Qhia EOL cov cim"/>
+				<Item id="90153" name="Qhia bookmark margin"/>
+				<Item id="90154" name="Siv tabs (tsis yog qhov chaw)"/>
+				<Item id="90155" name="Scroll dhau kab kawg"/>
+				<Item id="90156" name="Luam/txiav kab tsis xaiv"/>
+				<Item id="90157" name="Disable xaiv cov ntawv drag-poob"/>
+				<Item id="90158" name="Pab kom ntse highlighting"/>
+				<Item id="90159" name="Ntse highlights: match case"/>
+				<Item id="90160" name="Smart highlighting: tag lo lus xwb"/>
+				<Item id="90161" name="Ob npaug nias rau kaw tab"/>
+				<Item id="90162" name="Qhia kaw khawm ntawm tabs"/>
+				<Item id="90163" name="Nco ntsoov lub vaj huam sib luag pom kev hla ntu"/>
+				<Item id="90164" name="Khaws cov ntawv tsis tuaj yeem nkag rau hauv kev sib kho"/>
+				<Item id="90165" name="Paub meej ua ntej Txuag Tag Nrho"/>
+				<Item id="90166" name="Paub meej Hloov Txhua yam hauv cov ntaub ntawv qhib"/>
+				<Item id="90167" name="Hloov: tsis txhob txav mus rau qhov tshwm sim tom ntej"/>
+				<Item id="90168" name="Siv monospaced font hauv Nrhiav dialog"/>
+				<Item id="90169" name="Right-click khaws xaiv"/>
+				<Item id="90170" name="Rov qab default date/time order"/>
+				<Item id="90171" name="Siv XML-raws li muaj nuj nqi npe parsers"/>
+				<Item id="90172" name="Auto-kaw brackets ( ) [ ] { }"/>
+				<Item id="90173" name="From Nth character:"/>
+				<Item id="90174" name="Nyob rau hauv-xaiv auto-check pib (bytes):"/>
+				<Item id="90175" name="Extended (\\n, \\r, \\t, \\0, \\x...)"/>
+				<Item id="90176" name="Editor"/>
+				<Item id="90177" name="Margins"/>
+				<Item id="90178" name="Tsaus ntuj"/>
+				<Item id="90179" name="Teeb"/>
+				<Item id="90180" name="Nws pib (Ua raws System)"/>
+				<Item id="90181" name="Nyias (1px)"/>
+				<Item id="90182" name="Nruab nrab (2px)"/>
+				<Item id="90183" name="Thick (3px)"/>
+				<Item id="90184" name="Tawm"/>
+				<Item id="90185" name="Keeb kwm"/>
+				<Item id="90186" name="Antialiased"/>
+				<Item id="90187" name="LCD Optimized"/>
+				<Item id="90188" name="Yooj yim +/-"/>
+				<Item id="90189" name="Windows (CRLF)"/>
+				<Item id="90190" name="Mac (CR)"/>
+				<Item id="90191" name="Plugin list repository"/>
+				<Item id="90192" name="Xaiv ib Notepad++ ntsiab XML cov ntaub ntawv thov"/>
+				<Item id="90193" name="Tsim tshiab\u2026"/>
+				<Item id="90194" name="Txuag li\u2026"/>
+				<Item id="90195" name="Tus neeg siv lus:"/>
+				<Item id="90196" name="Hom lus"/>
+				<Item id="90197" name="Tsim"/>
+				<Item id="90198" name="Txuag li"/>
+				<Item id="90199" name="yog"/>
+				<Item id="90200" name="hauv tag nrho cov ntaub ntawv"/>
+				<Item id="90201" name="Cov Neeg Ua Haujlwm Delimiters"/>
+				<Item id="90202" name="Invalid Range"/>
+				<Item id="90203" name="Cov nqi ntau yuav tsum yog 0-255 thiab pib yuav tsum yog &lt;= kawg."/>
+				<Item id="90204" name="contextMenu.xml Tsis pom"/>
+				<Item id="90205" name="Rov pib Notepad ++ kom rov tsim dua qhov default contextMenu.xml."/>
+				<Item id="90206" name="Cov ntaub ntawv muaj kev hloov pauv tsis tau khaws tseg.Reloading nrog tus tshiab encoding yuav muab pov tseg.Txuas ntxiv?"/>
+				<Item id="90207" name="Tsis muaj lus teb los ntawm server."/>
+				<Item id="90208" name="Neeg rau zaub mov xa rov qab cov xwm txheej"/>
+				<Item id="90209" name="Lub chaw cia khoom yuav yog tus kheej."/>
+				<Item id="90210" name="muaj"/>
+				<Item id="90211" name="yog qhov tseeb version."/>
+				<Item id="90212" name="Koj tab tom khiav"/>
+				<Item id="90213" name="Nrhiav Ntawm no"/>
+				<Item id="90214" name="Terminal Ntawm no"/>
+				<Item id="90215" name="Cov ntaub ntawv lus ntxiv (.xml) tuaj yeem muab tso rau hauv:"/>
+							<Item id="90216" name="Command Palette…"/>
+				<Item id="90217" name="Spell Check"/>
+				<Item id="90218" name="Ntaus mus nrhiav…"/>
+				<Item id="90219" name="Qhov rai tshiab"/>
+				<Item id="90220" name="Hla tam sim no amp;Mus rau Next Multi-xaiv"/>
+				<Item id="90221" name="Xauv Attribute (macOS)"/>
+				<Item id="90222" name="Tshawb nrhiav cov tshiab…"/>
+				<Item id="90223" name="Qhib Tsis ntev los no"/>
+			</MacStrings>
+		</Dialog>
+		<MessageBox>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<ContextMenuXmlEditWarning title="Editing contextMenu" message="Kho cov ntsiab lus contextMenu.xml tso cai rau koj hloov kho koj Notepad ++ popup cov ntsiab lus ntawv qhia zaub mov.
+Koj yuav tsum rov pib dua koj Notepad ++ kom muaj txiaj ntsig tom qab hloov contextMenu.xml."/>
+			<SaveCurrentModifWarning title="Txuag Tam Sim No Hloov Kho" message="Koj yuav tsum txuag qhov kev hloov kho tam sim no.
+Txhua qhov kev hloov kho uas tau khaws tseg tsis tuaj yeem thim rov qab.
+
+Txuas ntxiv?"/><!-- HowToReproduce: when you openned file is modified but unsaved yet, and you are changing file encoding. -->
+			<LoseUndoAbilityWarning title="Poob Undo Muaj peev xwm ceeb toom" message="Koj yuav tsum txuag qhov kev hloov kho tam sim no.
+Txhua qhov kev hloov kho uas tau khaws tseg tsis tuaj yeem thim rov qab.
+
+Txuas ntxiv?"/><!-- HowToReproduce: when you openned file is modified and saved, then you are changing file encoding. -->
+			<CannotMoveDoc title="Txav mus rau Notepad ++ tshiab" message="Cov ntaub ntawv raug hloov kho, txuag nws thiab rov sim dua."/><!-- HowToReproduce: From your Notepad++ drag & drop a clean (not dirty) file to outside of Notepad++, another instance of Notepad++ will be created. Then from your first Notepad++ drag & drop an unsaved file to the new instance. -->
+			<DocReloadWarning title="Reload" message="Koj puas paub tseeb tias koj xav rov rub tawm cov ntaub ntawv tam sim no thiab poob cov kev hloov pauv hauv Notepad ++?"/>
+			<FileLockedWarning title="Txuag tsis tau" message="Thov xyuas seb puas yog cov ntaub ntawv no qhib rau lwm qhov kev pab cuam"/>
+			<FileAlreadyOpenedInNpp title="" message="Cov ntaub ntawv twb qhib lawm hauv Notepad ++."/><!-- HowToReproduce: Open a new document and open a file "c:/tmp/foo", save this new document by choosing "c:/tmp/foo" as file to save, reply the override popup "yes", then this message appears. -->
+			<RenameTabTemporaryNameAlreadyInUse title="Hloov npe tsis tau" message="Lub npe teev npe twb tau siv rau ntawm lwm lub tab."/><!-- HowToReproduce: Rename the tab of an untitled document and provide a name that is the same as an already-existing tab of an untitled document. -->
+			<RenameTabTemporaryNameIsEmpty title="Hloov npe tsis tau" message="Lub npe teev tsis tuaj yeem khoob, lossis nws tsis tuaj yeem muaj qhov chaw xwb lossis TAB(s)."/><!-- HowToReproduce: Rename the tab of an untitled document and provide an empty string or only some white speces. -->
+			<DeleteFileFailed title="Rho tawm cov ntaub ntawv" message="Rho tawm cov ntaub ntawv ua tsis tau tejyam"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+
+			<NbFileToOpenImportantWarning title="Cov ntaub ntawv qhib ntau dhau" message="$INT_REPLACE$ files are about to be opened.
+Are you sure you want to open them?"/><!-- HowToReproduce: Check "Open all files of folder instead of launching Folder as Workspace on folder dropping" in "Default Directory" of Preferences dialog, then drop a folder which contains more then 200 files into Notepad++. -->
+			<SettingsOnCloudError title="Kev teeb tsa ntawm Cloud" message="Nws zoo li txoj hauv kev ntawm kev teeb tsa ntawm huab tau teeb tsa ntawm kev nyeem ntawv nkaus xwb,
+los yog ntawm ib daim nplaub tshev xav tau txoj cai rau kev sau ntawv.
+Koj qhov chaw nyob hauv huab yuav raug muab tso tseg.Thov rov pib dua tus nqi sib txuam ntawm Preference dialog."/>
+			<FilePathNotFoundWarning title="Cov ntaub ntawv Qhib" message="Cov ntaub ntawv koj tab tom sim qhib tsis muaj nyob."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SessionFileInvalidError title="Tsis Tau Load Session" message="Session file yog corrupted los yog tsis siv tau."/><!-- HowToReproduce: Save current session via menu "File -> Save Session...", use another editor to modify the session you saved to make it an invalid xml file. Then load this invalid session via menu "File -> Load Session...". -->
+			<DroppingFolderAsProjectModeWarning title="Invalid action" message="Koj tuaj yeem tso cov ntaub ntawv lossis cov folders nkaus xwb tab sis tsis yog ob qho tib si, vim tias koj nyob hauv kev poob Folder li Project hom.
+Koj yuav tsum ua kom &quot;Qhib tag nrho cov ntaub ntawv ntawm cov ntawv tais ceev tseg es tsis txhob tso tawm Folder li Chaw Ua Haujlwm ntawm daim nplaub tshev poob&quot; hauv &quot;Default Directory&quot; ntu ntawm Kev Nyiam dialog los ua qhov haujlwm no."/>
+			<SortingError title="Soj ntsuam yuam kev" message="Tsis tuaj yeem ua tus lej txheeb xyuas vim kab $INT_REPLACE$."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<SortLocaleMultiple title="Tsis ua cas" message="Kev xaiv ntau yam tsis txaus siab."/><!-- HowToReproduce: Make a multiple selection and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<SortLocaleUnknown title="Xaiv Tsis Tau" message="Qhov laj thawj qhov kev ua tsis tiav tsis tuaj yeem txiav txim siab."/><!-- HowToReproduce: This condition is theoretical; it is unknown what could cause it. -->
+			<SortLocaleExcept title="Xaiv Tsis Tau" message="$STR_REPLACE$"/><!-- HowToReproduce: Open a large file, e.g. 500MB / 90k lines, in 32-bit Notepad++ and choose Edit | Line Operations | Sort Lines In Locale Order. -->
+			<ColumnModeTip title="Kum Hom Tswv Yim" message="Muaj 3 txoj hauv kev los hloov mus rau kab-xaiv hom:
+
+1. (Keyboard thiab nas) Tuav Alt thaum laug-nias luag
+
+2. (Keyboard nkaus xwb) Tuav Alt+Shift thaum siv cov yuam sij xub xub
+
+3. (Keyboard lossis nas)
+Muab cart ntawm qhov xav tau pib ntawm kab thaiv txoj haujlwm, tom qab ntawd
+ua &quot;Begin/End Select in Column Mode&quot; hais kom ua;
+Txav mus rau qhov xav tau kawg ntawm kab thaiv txoj haujlwm, tom qab ntawd
+ua &quot;Begin/End Select in Kum Mode&quot; hais kom ua dua"/>
+			<BufferInvalidWarning title="Txuag tsis tau" message="Txuag tsis tau: Buffer tsis raug."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<DoCloseOrNot title="Khaws cov ntaub ntawv uas twb muaj lawm" message="Cov ntaub ntawv &quot;$STR_REPLACE$&quot; tsis muaj lawm.
+Khaws cov ntaub ntawv no hauv editor?"/>
+			<DoDeleteOrNot title="Rho tawm cov ntaub ntawv" message="Cov ntaub ntawv &quot;$STR_REPLACE$&quot;
+yuav raug xa mus rau koj lub Recycle Bin thiab daim ntawv no yuav raug kaw.
+Txuas ntxiv?"/>
+			<NoBackupDoSaveFile title="Txuag" message="Koj tsis tuaj yeem pom koj cov ntaub ntawv thaub qab (tshem tawm sab nraud).
+Txuag nws txwv tsis pub koj cov ntaub ntawv yuav ploj
+Koj puas xav khaws cov ntaub ntawv &quot;$STR_REPLACE$&quot;?"/>
+			<DoReloadOrNot title="Reload" message="&quot;$STR_REPLACE$&quot;
+
+Cov ntaub ntawv no tau raug hloov kho los ntawm lwm qhov kev pab cuam.
+Koj puas xav reload nws?"/>
+			<DoReloadOrNotAndLooseChange title="Reload" message="&quot;$STR_REPLACE$&quot;
+
+Cov ntaub ntawv no tau raug hloov kho los ntawm lwm qhov kev pab cuam.
+Koj puas xav rov thauj nws thiab poob cov kev hloov pauv hauv Notepad ++?"/>
+			<PrehistoricSystemDetected title="Prehistoric system kuaj pom" message="Nws zoo nkaus li koj tseem siv lub prehistoric system.Qhov no feature ua hauj lwm tsuas yog nyob rau hauv ib tug niaj hnub system, thov txim."/><!-- HowToReproduce: Launch "Document Map" under Windows XP. -->
+			<XpUpdaterProblem title="Notepad++ Updater" message="Notepad ++ updater tsis sib xws nrog XP vim yog txheej txheem kev ruaj ntseg uas tsis siv nyob rau hauv XP.
+Koj puas xav mus rau nplooj ntawv Notepad ++ txhawm rau rub tawm qhov tseeb version?"/><!-- HowToReproduce: Run menu "? -> Update Notepad++" under Windows XP. -->
+			<GUpProxyConfNeedAdminMode title="Chaw Pov Thawj" message="Thov rov qhib Notepad ++ hauv Admin hom kom teeb tsa npe."/>
+			<DocTooDirtyToMonitor title="Saib xyuas teeb meem" message="Cov ntaub ntawv yog qias neeg.Thov txuag qhov kev hloov kho ua ntej saib xyuas nws."/>
+			<DocNoExistToMonitor title="Saib xyuas teeb meem" message="Cov ntaub ntawv yuav tsum muaj nyob kom saib xyuas."/>
+			<FileTooBigToOpen title="Cov ntaub ntawv loj teeb meem" message="Cov ntaub ntawv loj dhau los qhib los ntawm Notepad ++"/><!-- HowToReproduce: Try to open a 4GB file (it's not easy to reproduce, it depends on your system). -->
+			<FileLoadingException title="Exception code: $STR_REPLACE$" message="Ib qho yuam kev tshwm sim thaum thauj cov ntaub ntawv!"/>
+			<WantToOpenHugeFile title="Qhib cov ntaub ntawv loj loj ceeb toom" message="Qhib cov ntaub ntawv loj ntawm 2GB + tuaj yeem siv sijhawm ob peb feeb.
+Koj puas xav qhib nws?"/>
+			<CreateNewFileOrNot title="Tsim cov ntaub ntawv tshiab" message="&quot;$STR_REPLACE$&quot; tsis muaj nyob.Tsim nws?"/>
+			<CreateNewFileError title="Tsim cov ntaub ntawv tshiab" message="Tsim tsis tau cov ntaub ntawv &quot;$STR_REPLACE$&quot;."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<OpenFileError title="UA TSAUG" message="Tsis tuaj yeem qhib cov ntaub ntawv &quot;$STR_REPLACE$&quot;."/>
+			<OpenFileNoFolderError title="Qhib tsis tau ntaub ntawv" message="&quot;$STR_REPLACE1$&quot; qhib tsis tau:
+Folder &quot;$STR_REPLACE2$&quot; tsis muaj nyob."/>
+			<FileBackupFailed title="Cov ntaub ntawv thaub qab tsis tau" message="Cov ntawv dhau los ntawm cov ntaub ntawv tsis tuaj yeem khaws cia rau hauv phau ntawv thaub qab ntawm &quot;$STR_REPLACE$&quot;.
+
+Koj puas xav khaws cov ntaub ntawv tam sim no lawm?"/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<LoadStylersFailed title="Load stylers.xml ua tsis tau tejyam" message="Load &quot;$STR_REPLACE$&quot; ua tsis tiav!"/>
+			<LoadLangsFailed title="Configurator" message="Load langs.xml ua tsis tau!
+Koj puas xav rov qab koj langs.xml?"/><!-- HowToReproduce: Close Notepad++. Use another editor to remove all content of "langs.xml" (0 length) then save it. Open Notepad++. -->
+			<LoadLangsFailedFinal title="Configurator" message="Load langs.xml ua tsis tau!"/><!-- HowToReproduce: Close Notepad++. Use another editor to make "langs.xml" an invalid xml file then save it. Open Notepad++. -->
+			<FolderAsWorspaceSubfolderExists title="Folder li Workspace ntxiv cov teeb meem folder" message="Ib sub-folder ntawm cov ntawv tais ceev tseg koj xav ntxiv muaj.
+Thov tshem nws cov hauv paus ntawm lub vaj huam sib luag ua ntej koj ntxiv nplaub tshev &quot;$STR_REPLACE$&quot;."/><!-- HowToReproduce: Add a folder like "c:\temp\aFolder\" into "Folder as Workspace" panel, then try to add "c:\temp\". -->
+
+			<ProjectPanelChanged title="$STR_REPLACE$" message="Qhov chaw ua haujlwm tau hloov kho.Koj puas xav txuag nws?"/>
+			<ProjectPanelSaveError title="$STR_REPLACE$" message="Ib qho yuam kev tshwm sim thaum sau koj cov ntaub ntawv chaw ua haujlwm.
+Koj qhov chaw ua haujlwm tsis tau txais kev cawmdim."/><!-- HowToReproduce: this message prevents from system failure. It's hard to reproduce. -->
+			<ProjectPanelOpenDoSaveDirtyWsOrNot title="Qhib Chaw Ua Haujlwm" message="Qhov chaw ua haujlwm tam sim no tau hloov kho.Koj puas xav txuag qhov project tam sim no?"/>
+			<ProjectPanelNewDoSaveDirtyWsOrNot title="Chaw Ua Haujlwm Tshiab" message="Qhov chaw ua haujlwm tam sim no tau hloov kho.Koj puas xav txuag qhov project tam sim no?"/>
+			<ProjectPanelOpenFailed title="Qhib Chaw Ua Haujlwm" message="Lub chaw ua haujlwm tsis tuaj yeem qhib.
+Nws zoo li cov ntaub ntawv qhib tsis yog cov ntaub ntawv siv tau."/>
+			<ProjectPanelRemoveFolderFromProject title="Tshem tawm cov ntawv tais ceev tseg ntawm qhov project" message="Tag nrho cov sub-khoom yuav raug tshem tawm.
+Koj puas paub tseeb tias koj xav tshem tawm cov ntawv tais ceev tseg ntawm qhov project?"/>
+			<ProjectPanelRemoveFileFromProject title="Tshem tawm cov ntaub ntawv los ntawm qhov project" message="Koj puas paub tseeb tias koj xav tshem tawm cov ntaub ntawv no los ntawm qhov project?"/>
+			<ProjectPanelReloadError title="Reload Workspace" message="Nrhiav tsis tau cov ntaub ntawv rov qab."/>
+			<ProjectPanelReloadDirty title="Reload Workspace" message="Qhov chaw ua haujlwm tam sim no tau hloov kho.Reloading yuav muab pov tseg tag nrho cov kev hloov kho.
+Koj puas xav mus ntxiv?"/>
+			<UDLNewNameError title="UDL yuam kev" message="Lub npe no yog siv los ntawm lwm hom lus,
+thov muab rau lwm tus."/>
+			<UDLRemoveCurrentLang title="Tshem tawm cov lus tam sim no" message="Koj puas paub tseeb?"/>
+			<UDL_importSuccessful title="Neeg txhais lus" message="Import tiav."/>
+			<UDL_importFails title="Neeg txhais lus" message="ntshuam tsis tau."/>
+			<UDL_saveBeforeImport title="Neeg txhais lus" message="Ua ntej xa tawm, txuag koj cov lus txhais los ntawm nias &quot;Txuag li ...&quot; khawm."/> <!-- HowToReproduce: Choose "User Defined Language" in User Language combobox, then click on "Export... button". -->
+			<UDL_exportSuccessful title="Neeg txhais lus" message="Export tiav."/>
+			<UDL_exportFails title="Neeg txhais lus" message="Ua tsis tiav rau kev xa tawm."/>
+			<SCMapperDoDeleteOrNot title="Koj puas paub tseeb?" message="Koj puas paub tseeb tias koj xav rho tawm qhov shortcut?"/>
+			<FindCharRangeValueError title="Range Value teeb meem" message="Koj yuav tsum ntaus ntawm 0 thiab 255."/> <!-- HowToReproduce: Search menu, then Find characters in range, select Custom range, enter 999 in either edit box, press Find. -->
+			<OpenInAdminMode title="Txuag tsis tau" message="Cov ntaub ntawv tsis tuaj yeem raug cawm thiab nws yuav raug tiv thaiv.
+Koj puas xav tso Notepad ++ hauv Administrator hom?"/>
+			<OpenInAdminModeWithoutCloseCurrent title="Txuag tsis tau" message="Cov ntaub ntawv tsis tuaj yeem raug cawm thiab nws yuav raug tiv thaiv.
+Koj puas xav tso Notepad ++ hauv Administrator hom?"/>
+			<OpenInAdminModeFailed title="Qhib hauv Administrator hom ua tsis tau tejyam" message="Notepad ++ tsis tuaj yeem qhib hauv Administrator hom."/><!-- HowToReproduce: When you have no Admin privilege and you try to save a modified file in a protected location (for example: any file in sub-folder of "C:\Program Files\". This message will appear after replying "Yes" to "Open in Admin mode" dialog. -->
+			<ViewInBrowser title="Saib cov ntaub ntawv tam sim no hauv Browser" message="Daim ntawv thov tsis tuaj yeem pom hauv koj qhov system."/>
+			<ExitToUpdatePlugins title="Notepad++ tab tom yuav tawm" message="Yog tias koj nyem YOG, koj yuav tawm ntawm Notepad ++ txhawm rau ua haujlwm txuas ntxiv.
+Notepad ++ yuav rov pib dua tom qab tag nrho cov haujlwm raug kaw.
+Txuas ntxiv?"/>
+			<NeedToRestartToLoadPlugins title="Notepad++ yuav tsum tau rov pib dua" message="Koj yuav tsum rov pib Notepad ++ kom thauj cov plugins uas koj tau teeb tsa."/><!-- HowToReproduce: Import a plugin via menu "Settings->Import->Import Plugin(s)...". -->
+			<ChangeHistoryEnabledWarning title="Notepad++ yuav tsum tau rov pib dua" message="Koj yuav tsum rov pib Notepad ++ kom pab Hloov Keeb Kwm."/><!-- HowToReproduce: uncheck "Display Change History" via Preferences dialog "Marges/Border/Edge. -->
+			<WindowsSessionExit title="Notepad++ - Qhov kev sib kho Windows tawm" message="Windows kev sib kho yuav raug txiav tawm tab sis koj muaj qee cov ntaub ntawv tsis tau khaws cia.Koj puas xav tawm Notepad ++ tam sim no?"/>
+			<LanguageMenuCompactWarning title="Compact Language Menu" message="Qhov kev xaiv no yuav raug hloov ntawm lub community launch tom ntej."/><!-- HowToReproduce: toggle "Make language menu compact" via Preferences dialog "Language/Language Menu. -->
+			<SwitchUnsavedThemeWarning title="$STR_REPLACE$" message="Cov kev hloov pauv uas tsis tau khaws tseg tab tom yuav muab pov tseg!
+Koj puas xav txuag koj cov kev hloov pauv ua ntej hloov cov ntsiab lus?"/><!-- HowToReproduce: In the Style Configurator dialog change some theme and switch to other theme without saving. -->
+			<MacroAndRunCmdlWarning title="Macro thiab Khiav Commands Compatibility" message="Koj cov Macro thiab Khiav cov lus txib tau khaws tseg hauv Notepad ++ v.8.5.2 (lossis laus dua) yuav tsis sib haum nrog Notepad ++ tam sim no.
+Thov sim cov lus txib thiab, yog tias xav tau, rov kho lawv.
+
+Xwb, koj tuaj yeem downgrade rau Notepad ++ v8.5.2 thiab rov kho koj cov ntaub ntawv dhau los.
+Notepad ++ yuav backup koj qub &quot;shortcuts.xml&quot; thiab txuag nws li &quot;shortcuts.xml.v8.5.2.backup&quot;.
+Renaming &quot;shortcuts.xml.v8.5.2.backup&quot; -&gt; &quot;shortcuts.xml&quot;, koj cov lus txib yuav tsum rov qab los thiab ua haujlwm zoo."/><!-- HowToReproduce: Close Notepad++, remove shortcuts.xml.v8.5.2.backup & v852ShortcutsCompatibilityWarning.xml if present, relaunch Notepad++, delete or modify a shortcuts via Shortcut Mapper, close Notepad++, then the message will show up -->
+			<FullReadOnlySavingForbidden title="Txuag tsis tau" message="Khaws tsis tau ntaub ntawv.
+Lub Notepad ++ tag nrho nyeem-tsuas yog txuag hom txwv txwv tsis pub cov ntaub ntawv khaws tseg."/>
+			<NotEnoughRoom4Saving title="Txuag tsis tau" message="Ua tsis tiav cov ntaub ntawv.
+Nws zoo nkaus li tsis muaj chaw txaus ntawm disk los khaws cov ntaub ntawv.Koj cov ntaub ntawv tsis raug cawm."/>
+			<FileInaccessibleUserSession title="Cov ntaub ntawv nkag tsis tau" message="Qee cov ntaub ntawv los ntawm koj qhov kev khaws cia &quot;$STR_REPLACE$&quot; yog siv tsis tau.Lawv tuaj yeem qhib raws li cov ntaub ntawv khoob thiab nyeem nkaus xwb raws li qhov chaw.
+
+Koj puas xav tsim cov placeholder?
+
+CEEB TOOM: Xaiv tsis tsim cov chaw tuav lossis kaw lawv tom qab, koj qhov kev khaws cia yuav tsis raug hloov kho thaum tawm mus."/>
+			<FileInaccessibleDefaultSessionXml title="Cov ntaub ntawv nkag tsis tau" message="Qee cov ntaub ntawv los ntawm koj qhov kev sib tham yav dhau los yog siv tsis tau.Lawv tuaj yeem qhib raws li cov ntaub ntawv khoob thiab nyeem nkaus xwb raws li qhov chaw.
+
+Koj puas xav tsim cov placeholder?
+
+CEEB TOOM: Xaiv tsis tsim cov chaw tuav lossis kaw lawv tom qab, koj qhov kev sib kho yuav raug hloov kho ntawm EXIT!Peb xav kom koj backup koj &quot;session.xml&quot; tam sim no."/>
+			<RTLvsDirectWrite title="Tsis tuaj yeem khiav RTL" message="RTL tsis sib xws nrog DirectWrite hom.Thov lov tes taw DirectWrite hom hauv MISC.ntu ntawm Preferences dialog, thiab pib dua Notepad ++."/>
+			<FileMemoryAllocationFailed title="Kev zam: Cov ntaub ntawv nco faib ua tsis tiav" message="Muaj tej zaum tsis txaus sib txuas dawb nco rau cov ntaub ntawv raug loaded los ntawm Notepad ++."/><!-- HowToReproduce: Try to open multiple files with total size > ~700MB in the x86 Notepad++ (it will depend on the PC memory configuration and the current system memory usage...). -->
+			<FindRegexBackwardDisabled title="Regex rov qab nrhiav neeg xiam" message="Los ntawm lub neej ntawd, kev tshawb nrhiav regex rov qab raug kaw vim muaj qhov tshwm sim tsis tau xav txog.Txhawm rau ua qhov kev tshawb nrhiav rov qab, qhib qhov Nrhiav dialog thiab xaiv hom kev tshawb nrhiav ib txwm lossis txuas ntxiv es tsis txhob hais tawm.
+Nias lub OK khawm kom qhib qhov Nrhiav dialog lossis teeb tsom rau nws.
+
+Yog tias koj xav tau qhov rov qab regex searching feature, sab laj tus neeg siv phau ntawv rau cov lus qhia ntawm kev qhib nws."/>
+			<PrintError title="0" message="Tsis tuaj yeem pib daim ntawv tshuab luam ntawv."/><!-- Use title="0" to use Windows OS default translated "Error" title. -->
+			<FindAutoChangeOfInSelectionWarning title="Nrhiav ceeb toom" message="Lub xeev &quot;Nyob rau hauv xaiv&quot; checkbox tau raug hloov kho.
+Thov txheeb xyuas qhov kev tshawb nrhiav ua ntej ua qhov kev txiav txim."/> <!-- HowToReproduce: https://github.com/notepad-plus-plus/notepad-plus-plus/issues/14897#issuecomment-2564316224 -->
+			<Need2Restart2ShowMenuShortcuts title="Notepad++ yuav tsum tau rov pib dua" message="Notepad ++ yuav tsum tau rov pib dua kom pom txoj cai shortcuts."/>
+			<NoAdminRight2ChangeReadOnlyFileAttribute title="Hloov cov ntaub ntawv nyeem nkaus xwb tsis ua tiav" message="Thov khiav Notepad ++ ua tus thawj coj los hloov cov ntaub ntawv cwj pwm."/>
+		</MessageBox>
+		<ClipboardHistory>
+			<PanelTitle name="Phau Ntawv Keeb Kwm"/>
+		</ClipboardHistory>
+		<DocList>
+			<PanelTitle name="Daim ntawv teev npe"/>
+			<ColumnName name="npe"/>
+			<ColumnExt name="Ext."/>
+			<ColumnPath name="Txoj Kev"/>
+			<ListGroups name="Group by Saib"/>
+		</DocList>
+		<WindowsDlg>
+			<ColumnName name="npe"/>
+			<ColumnPath name="Txoj Kev"/>
+			<ColumnType name="Hom"/>
+			<ColumnSize name="Loj"/>
+			<ColumnDateTime name="Hloov sijhawm"/>
+			<NbDocsTotal name="Tag nrho cov ntaub ntawv:"/>
+			<MenuCopyName name="Copy Name(s)"/>
+			<MenuCopyPath name="Copy Pathname(s)"/>
+		</WindowsDlg>
+		<AsciiInsertion>
+			<PanelTitle name="ASCII Codes Insertion Vaj Huam Sib Luag"/>
+			<ColumnVal name="Tus nqi"/>
+			<ColumnHex name="Hex"/>
+			<ColumnChar name="Cim"/>
+			<ColumnHtmlName name="HTML Name"/>
+			<ColumnHtmlNumber name="HTML Decimal"/>
+			<ColumnHtmlHexNb name="HTML Hexadecimal"/>
+		</AsciiInsertion>
+		<DocumentMap>
+			<PanelTitle name="Daim ntawv qhia"/>
+		</DocumentMap>
+		<FunctionList>
+			<PanelTitle name="Cov Npe Ua Haujlwm"/>
+			<SortTip name="Sib"/>
+			<ReloadTip name="Reload"/>
+			<PreferencesTip name="Nyiam"/>
+			<PreferencesInitialSort name="Xaiv cov haujlwm (A rau Z) los ntawm lub neej ntawd"/>
+		</FunctionList>
+		<FolderAsWorkspace>
+			<PanelTitle name="Folder as Workspace"/>
+			<SelectFolderFromBrowserString name="Xaiv ib daim nplaub tshev ntxiv rau hauv Folder li Workspace vaj huam sib luag"/>
+			<ExpandAllFoldersTip name="Qhia tawm txhua yam"/>
+			<CollapseAllFoldersTip name="Khawb txhua yam"/>
+			<LocateCurrentFileTip name="Nrhiav cov ntaub ntawv tam sim no"/>
+			<Menu>
+				<Item id="3511" name="Tshem tawm"/>
+				<Item id="3512" name="Tshem tag nrho"/>
+				<Item id="3513" name="Ntxiv"/>
+				<Item id="3514" name="Khiav ntawm qhov system"/>
+				<Item id="3515" name="Qhib"/>
+				<Item id="3516" name="Txoj kev"/>
+				<Item id="3517" name="Nrhiav hauv Cov Ntaub Ntawv..."/>
+				<Item id="3518" name="Explorer ntawm no"/>
+				<Item id="3519" name="CMD ntawm no"/>
+				<Item id="3520" name="Luam cov ntaub ntawv npe"/>
+			</Menu>
+		</FolderAsWorkspace>
+		<ProjectManager>
+			<PanelTitle name="Qhov project"/>
+			<WorkspaceRootName name="Chaw ua haujlwm"/>
+			<NewProjectName name="Project Name"/>
+			<NewFolderName name="Folder Name"/>
+			<Menus>
+				<Entries>
+					<Item id="0" name="Chaw ua haujlwm"/>
+					<Item id="1" name="Kho kom raug"/>
+				</Entries>
+				<WorkspaceMenu>
+					<Item id="3122" name="Chaw Ua Haujlwm Tshiab"/>
+					<Item id="3123" name="Qhib Chaw Ua Haujlwm"/>
+					<Item id="3124" name="Reload Workspace"/>
+					<Item id="3125" name="Txuag"/>
+					<Item id="3126" name="Txuag As..."/>
+					<Item id="3127" name="Txuag ib daim Copy As..."/>
+					<Item id="3121" name="Ntxiv Txoj Haujlwm Tshiab"/>
+					<Item id="3128" name="Nrhiav hauv Projects..."/>
+				</WorkspaceMenu>
+				<ProjectMenu>
+					<Item id="3111" name="Rename"/>
+					<Item id="3112" name="Ntxiv Folder"/>
+					<Item id="3113" name="Ntxiv Cov Ntaub Ntawv..."/>
+					<Item id="3117" name="Ntxiv cov ntaub ntawv los ntawm Directory..."/>
+					<Item id="3114" name="Tshem tawm"/>
+					<Item id="3118" name="Txav mus"/>
+					<Item id="3119" name="Txav mus"/>
+				</ProjectMenu>
+				<FolderMenu>
+					<Item id="3111" name="Rename"/>
+					<Item id="3112" name="Ntxiv Folder"/>
+					<Item id="3113" name="Ntxiv Cov Ntaub Ntawv..."/>
+					<Item id="3117" name="Ntxiv cov ntaub ntawv los ntawm Directory..."/>
+					<Item id="3114" name="Tshem tawm"/>
+					<Item id="3118" name="Txav mus"/>
+					<Item id="3119" name="Txav mus"/>
+				</FolderMenu>
+				<FileMenu>
+					<Item id="3111" name="Rename"/>
+					<Item id="3115" name="Tshem tawm"/>
+					<Item id="3116" name="Hloov Cov Ntaub Ntawv Txoj Kev"/>
+					<Item id="3118" name="Txav mus"/>
+					<Item id="3119" name="Txav mus"/>
+				</FileMenu>
+			</Menus>
+		</ProjectManager>
+		<MiscStrings>
+			<!-- $INT_REPLACE$ and $STR_REPLACE$ are place holders, don't translate these place holders. -->
+			<word-chars-list-tip value="Qhov no tso cai rau koj suav nrog cov cim ntxiv rau hauv cov cim tam sim no thaum nias ob npaug rau kev xaiv lossis tshawb nrog &quot;Match tag nrho lo lus nkaus xwb&quot; xaiv xaiv."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, hover your mouse on the "?" button. -->
+
+			<!-- Don't translate "(&quot;EOL custom color&quot;)" -->
+			<eol-custom-color-tip value="Mus rau Style Configurator hloov lub neej ntawd EOL kev cai xim (&quot;EOL kev cai xim&quot;).."/>
+
+			<word-chars-list-warning-begin value="Nco ntsoov:"/>
+			<word-chars-list-space-warning value="$INT_REPLACE$ space(s)"/>
+			<word-chars-list-tab-warning value="$INT_REPLACE$ TAB(s)"/>
+			<word-chars-list-warning-end value="hauv koj daim ntawv teev npe."/><!-- HowToReproduce: In "Delimiter" section of Preferences dialog, check "Add your character as part of word\r(don't choose it unless you know what you're doing)", then type a white-space in the text field. -->
+			<backup-select-folder value="Xaiv ib daim nplaub tshev raws li backup directory"/><!-- HowToReproduce: Settings > Preferences > Backup > [...] -->
+			<cloud-invalid-warning value="Txoj kev tsis raug."/>
+			<cloud-restart-warning value="Thov rov pib dua Notepad ++ kom siv tau."/>
+			<cloud-select-folder value="Xaiv ib lub nplaub tshev los ntawm / mus rau qhov twg Notepad ++ nyeem / sau nws cov chaw"/><!-- HowToReproduce: In "Cloud" section of Preferences dialog, check "Set your cloud location path here: ", then click the button "...". This message is displayed in the "Browse For Folder" dialog. -->
+			<default-open-save-select-folder value="Xaiv ib daim nplaub tshev raws li default directory"/><!-- HowToReproduce: Settings > Preferences > Default Directory > [...] -->
+			<shift-change-direction-tip value="Siv Shift+Enter los tshawb nrhiav nyob rau hauv qhov kev coj rov qab"/>
+			<two-find-buttons-tip value="2 nrhiav khawm hom"/>
+			<find-in-files-filter-tip value="Nrhiav hauv cpp, cxx, h, hxx hpp:
+*.cpp *.cxx *.h *.hxx *.hpp
+
+Nrhiav hauv txhua cov ntaub ntawv tshwj tsis yog exe, obj log:
+*.* !*.exe !*.obj !*.log
+
+Nrhiav hauv txhua cov ntaub ntawv tab sis tsis suav nrog cov ntawv xeem, hauv bin64:
+*.* !\tests !\bin*
+
+Nrhiav nyob rau hauv tag nrho cov ntaub ntawv tab sis tsis suav tag nrho cov folders cav los yog cav recursively:
+*.* !+\log*"/><!-- HowToReproduce: Tip of mouse hovered on "Filters" label in "Find in Files" section of Find dialog. -->
+			<find-in-files-select-folder value="Xaiv ib lub nplaub tshev los tshawb ntawm"/><!-- HowToReproduce: Search > Find in Files > [...] -->
+			<find-in-files-dir-from-active-doc-tip value="Sau Daim Ntawv Teev Npe raws li cov ntaub ntawv nquag"/><!-- HowToReproduce: Search > Find in Files > [<<] -->
+			<find-status-top-reached value="Nrhiav: Tau txais cov ntaub ntawv pib, thawj zaug tshwm sim hauv qab pom."/>
+			<find-status-end-reached value="Nrhiav: ncav cuag cov ntaub ntawv kawg, thawj zaug tshwm sim los ntawm sab saum toj pom."/>
+			<find-status-replaceinfiles-1-replaced value="Hloov hauv Cov Ntaub Ntawv: 1 qhov tshwm sim raug hloov"/>
+			<find-status-replaceinfiles-nb-replaced value="Hloov hauv Cov Ntaub Ntawv: $INT_REPLACE$ tshwm sim tau hloov"/>
+			<find-status-replaceinopenedfiles-1-replaced value="Hloov hauv Cov Ntaub Ntawv Qhib: 1 qhov tshwm sim raug hloov"/>
+			<find-status-replaceinopenedfiles-nb-replaced value="Hloov hauv Opened Files: $INT_REPLACE$ tshwm sim tau hloov"/>
+			<find-status-invalid-re value="Nrhiav: Cov lus qhia tsis raug cai"/>
+			<find-status-search-failed value="Nrhiav: Nrhiav tsis tau"/>
+			<find-status-mark-1-match value="Mark: 1 match"/>
+			<find-status-mark-nb-matches value="Mark: $INT_REPLACE$ sib tw"/>
+			<find-status-count-1-match value="suav: 1 match"/>
+			<find-status-count-nb-matches value="Suav: $INT_REPLACE$ ntais ntawv"/>
+			<find-status-replaceall-1-replaced value="Hloov tag nrho: 1 qhov tshwm sim tau hloov"/>
+			<find-status-replaceall-nb-replaced value="Hloov Tag Nrho: $INT_REPLACE$ tshwm sim tau hloov"/>
+			<find-status-replaceall-readonly value="Hloov Tag Nrho: Hloov tsis tau ntawv.Cov ntaub ntawv tam sim no tsuas yog nyeem"/>
+			<find-status-replace-end-reached value="Hloov: ncav cuag cov ntaub ntawv kawg, pib los ntawm sab saum toj."/>
+			<find-status-replace-top-reached value="Hloov: Tau txais cov ntaub ntawv pib, pib los ntawm hauv qab."/>
+			<find-status-replaced-next-found value="Hloov: 1 qhov tshwm sim tau hloov.Qhov tshwm sim tom ntej pom."/>
+			<find-status-replaced-without-continuing value="Hloov: 1 qhov tshwm sim tau hloov."/>
+			<find-status-replaced-next-not-found value="Hloov: 1 qhov tshwm sim tau hloov.Tsis pom muaj tshwm sim ntxiv lawm."/>
+			<find-status-replace-not-found value="Hloov: tsis pom qhov tshwm sim"/>
+			<find-status-replace-readonly value="Hloov: Hloov tsis tau ntawv.Cov ntaub ntawv tam sim no tsuas yog nyeem"/>
+			<find-status-cannot-find value="Nrhiav: Nrhiav tsis tau cov ntawv &quot;$STR_REPLACE$&quot;"/>
+			<find-status-cannot-find-pebkac-maybe value="Qhov tshwm sim tsis tuaj yeem pom.Tej zaum koj yuav tsis nco qab kos &quot;Wrap around&quot; (rau ON), &quot;Match case&quot; (rau OFF), lossis &quot;Match tag nrho lo lus nkaus xwb&quot; (rau OFF)."/>
+			<find-status-scope-selection value="hauv cov ntawv xaiv"/>
+			<find-status-scope-all value="hauv tag nrho cov ntaub ntawv"/>
+			<find-status-scope-backward value="los ntawm start-of-file rau caret"/>
+			<find-status-scope-forward value="los ntawm caret mus rau qhov kawg ntawm cov ntaub ntawv"/>
+			<find-status-invisible-chars-findWhat value="Cov cim tsis pom hauv pasted &quot;Nrhiav dab tsi&quot; lossis &quot;Hloov nrog&quot; cov ntsiab lus"/>
+			<find-status-invisible-chars-findWhat-tip value="Ceeb Toom: Cov cim tsis pom hauv kev tshawb nrhiav (lossis hloov) teb.
+Cov ntawv muab tso rau hauv daim teb no suav nrog pom tsis pom (tej zaum kab-kawg) cov cim.Yog tias koj txuas ntxiv yam tsis tau muab tshem tawm, lawv yuav suav nrog hauv kev tshawb nrhiav (lossis hloov) cov ntawv nyeem."/>
+			<finder-find-in-finder value="Nrhiav hauv cov kev tshawb fawb no..."/>
+			<finder-close-this value="Kaw cov kev tshawb fawb no"/>
+			<finder-collapse-all value="Quav tag nrho"/>
+			<finder-uncollapse-all value="Qhia tawm txhua yam"/>
+			<finder-copy value="Copy Xaiv Kab (s)"/>
+			<finder-copy-selected-paths value="Copy Xaiv Pathname(s)"/>
+			<finder-clear-all value="Clear tag nrho"/>
+			<finder-open-selected-paths value="Qhib Xaiv Pathname(s)"/>
+			<finder-purge-for-every-search value="Purge rau txhua qhov kev tshawb nrhiav"/>
+			<finder-wrap-long-lines value="Lo lus qhwv kab ntev"/>
+			<common-ok value="OK"/>
+			<common-cancel value="Ncua tseg"/>
+			<common-name value="npe"/>
+			<tabrename-title value="Rename Tam Sim No Tab"/>
+			<tabrename-newname value="Lub npe tshiab"/>
+			<splitter-rotate-left value="Tig rau sab laug"/>
+			<splitter-rotate-right value="Tig mus rau sab xis"/>
+			<userdefined-title-new value="Tsim Cov Lus Tshiab..."/>
+			<userdefined-title-save value="Txuag Tam Sim No Lub Npe Ua..."/>
+			<userdefined-title-rename value="Rename Tam Sim No Lub Npe"/>
+			<summary value="Summary"/>
+			<summary-filepath value="Cov ntaub ntawv tag nrho:"/>
+			<summary-filecreatetime value="Tsim:"/>
+			<summary-filemodifytime value="Hloov kho:"/>
+			<summary-nbchar value="Cov cim (tsis muaj kab xaus):"/>
+			<summary-nbword value="Cov lus:"/>
+			<summary-nbline value="Kab:"/>
+			<summary-nbbyte value="Cov ntaub ntawv ntev:"/>
+			<summary-nbsel1 value="xaiv cov cim ("/>
+			<summary-nbsel2 value="bytes) hauv"/>
+			<summary-nbrange value="ntau"/>
+			<progress-hits-title value="Hits:"/>
+			<progress-cancel-info value="Tso tseg txoj haujlwm, thov tos..."/>
+			<find-in-files-progress-title value="Nrhiav hauv cov ntaub ntawv kev kawm..."/>
+			<replace-in-files-confirm-title value="Koj puas paub tseeb?"/>
+			<replace-in-files-confirm-directory value="Koj puas paub tseeb tias koj xav hloov txhua qhov tshwm sim hauv:"/>
+			<replace-in-files-confirm-filetype value="Rau hom ntaub ntawv:"/>
+			<replace-in-files-progress-title value="Hloov Hauv Cov Ntaub Ntawv Kev Txhim Kho..."/>
+			<replace-in-projects-confirm-title value="Koj puas paub tseeb?"/>
+			<replace-in-projects-confirm-message value="Koj puas xav hloov txhua qhov tshwm sim hauv tag nrho cov ntaub ntawv hauv qhov Project Panel xaiv?"/>
+			<replace-in-open-docs-confirm-title value="Koj puas paub tseeb?"/>
+			<replace-in-open-docs-confirm-message value="Koj puas paub tseeb tias koj xav hloov txhua qhov tshwm sim hauv txhua cov ntaub ntawv qhib?"/>
+			<find-result-caption value="Tshawb nrhiav"/>
+			<find-result-title value="Nrhiav"/><!-- Must not begin with space or tab character -->
+			<find-result-title-info value="($INT_REPLACE1$ hits hauv $INT_REPLACE2$ cov ntaub ntawv ntawm $INT_REPLACE3$ tshawb)"/>
+			<find-result-title-info-selections value="($INT_REPLACE1$ hits hauv $INT_REPLACE2$ xaiv ntawm $INT_REPLACE3$ nrhiav)"/>
+			<find-result-title-info-options-searchmode-normal value="Ib txwm"/>
+			<find-result-title-info-options-searchmode-extended value="Txuas ntxiv"/>
+			<find-result-title-info-options-searchmode-regexp value="RegEx"/>
+			<find-result-title-info-options-case value="Case"/>
+			<find-result-title-info-options-word value="Lo lus"/>
+			<find-result-title-info-extra value="- Kab Lim Hom: tsuas yog tso saib cov txiaj ntsig lim"/>
+			<find-result-hits value="($INT_REPLACE$ hits)"/>
+			<find-result-line-prefix value="Kab"/><!-- Must not begin with space or tab character -->
+			<find-regex-zero-length-match value="xoom ntev match"/>
+			<session-save-folder-as-workspace value="Txuag Folder li Chaw Ua Haujlwm"/>
+			<tab-untitled-string value="new"/>
+			<file-save-assign-type value="Txuas ntxiv"/>
+			<close-panel-tip value="Kaw"/>
+			<IncrementalFind-FSFound value="$INT_REPLACE$ matches"/>
+			<IncrementalFind-FSNotFound value="Lo lus tsis pom"/>
+			<IncrementalFind-FSTopReached value="Mus txog sab saum toj ntawm nplooj ntawv, txuas ntxiv hauv qab"/>
+			<IncrementalFind-FSEndReached value="Mus txog qhov kawg ntawm nplooj ntawv, txuas ntxiv los ntawm sab saum toj"/>
+			<contextMenu-styleAlloccurrencesOfToken value="Style txhua qhov tshwm sim ntawm token"/>
+			<contextMenu-styleOneToken value="Style ib token"/>
+			<contextMenu-clearStyle value="Clear style"/>
+			<contextMenu-PluginCommands value="Plugin commands"/>
+			<largeFileRestriction-tip value="Qee cov nta yuav ua haujlwm qeeb hauv cov ntaub ntawv loj.Cov yam ntxwv no tuaj yeem ua haujlwm tsis siv neeg thaum qhib cov ntaub ntawv loj.Koj tuaj yeem kho lawv ntawm no.
+
+CEEB TOOM:
+1. Hloov kho cov kev xaiv ntawm no yuav tsum tau rov qhib tam sim no qhib cov ntaub ntawv loj kom tau txais tus cwj pwm zoo.
+
+2. Yog tias &quot;Deactivate Word Wrap globally&quot; raug kuaj xyuas thiab koj qhib cov ntaub ntawv loj, &quot;Word Wrap&quot; yuav raug xiam rau tag nrho cov ntaub ntawv.Koj tuaj yeem rov qhib nws ntawm cov ntawv qhia zaub mov &quot;View-&gt; Word Wrap&quot;."/>
+			<npcNote-tip value="Sawv cev ntawm xaiv &quot;tsis yog-ASCII&quot; qhov chaw dawb thiab tsis luam tawm (tswj) cov cim.
+
+CEEB TOOM:
+Kev siv tus sawv cev yuav cuam tshuam tus cwj pwm cuam tshuam ntawm cov ntawv.
+
+Rau tag nrho cov npe ntawm qhov chaw dawb thiab cov cim uas tsis yog luam tawm kos tus neeg siv phau ntawv.
+
+Nyem rau ntawm lub pob no txhawm rau qhib lub vev xaib nrog Cov Neeg Siv Khoom Siv."/>
+			<npcAbbreviation-tip value="Abbreviation: npe
+NBSP: tsis muaj qhov chaw tawg
+ZWSP : zero-width space
+ZWNBSP : xoom-dav tsis muaj qhov chaw tawg
+
+Rau daim ntawv teev tag nrho kos Tus Neeg Siv Phau Ntawv Qhia.
+Nyem rau &quot;?&quot;khawm ntawm sab xis qhib lub vev xaib nrog Cov Neeg Siv Phau Ntawv Qhia."/>
+			<npcCodepoint-tip value="Codepoint: npe
+U+00A0: tsis muaj qhov chaw tawg
+U + 200B: zero-dav qhov chaw
+U + FEFF: xoom-dav tsis muaj qhov chaw tawg
+
+Rau daim ntawv teev tag nrho kos Tus Neeg Siv Phau Ntawv Qhia.
+Nyem rau &quot;?&quot;khawm ntawm sab xis qhib lub vev xaib nrog Cov Neeg Siv Phau Ntawv Qhia."/>
+
+			<!-- Don't translate "(&quot;Non-printing characters custom color&quot;)" -->
+			<npcCustomColor-tip value="Mus rau Style Configurator los hloov lub neej ntawd kev cai xim rau xaiv whitespace thiab tsis-printing cim (&quot;Non-printing cim kev cai xim&quot;)."/>
+			<npcIncludeCcUniEol-tip value="Siv cov cim tsis-luam tawm cov teeb tsa rau C0, C1 tswj thiab Unicode EOL (kab tom ntej, kab cais thiab kab lus cais) cov cim."/>
+			<searchingInSelThresh-tip value="Yam tsawg kawg ntawm cov cim xaiv hauv thaj chaw kho kom raug kuaj xyuas &quot;Nyob hauv kev xaiv&quot; checkbox thaum nrhiav dialog qhib.Tus nqi siab tshaj plaws yog $INT_REPLACE$.Teem tus nqi rau 0 kom lov tes taw auto-checking."/>
+			<searchingFillFindWhat-tip value="Ntau tus naj npawb ntawm cov cim uas tau xaiv hauv thaj chaw kho kom raug sau cia li &quot;Nrhiav dab tsi&quot; teb thaum Ctrl-F tshwm sim.Tus nqi siab tshaj plaws yog $INT_REPLACE$, uas yog qhov loj tshaj plaws ntawm &quot;Nrhiav dab tsi&quot; teb, txwv los ntawm qhov system."/>
+			<verticalEdge-tip value="Ntxiv koj tus cim kab ke los ntawm kev qhia nws txoj haujlwm nrog tus lej lej.Koj tuaj yeem txhais ob peb kab cim los ntawm kev siv qhov chaw dawb cais cov lej sib txawv."/>
+			<fileSaveAsCopySaveButton-tip value="Tuav Shift thaum nias Txuag kom qhib daim ntawv luam tom qab txuag."/>
+			<autoIndentBasic-tip value="Xyuas kom meej tias qhov indentation ntawm cov kab tam sim no (piv txwv li cov kab tshiab tsim los ntawm nias tus yuam sij ENTER) sib tw rau qhov indentation ntawm kab dhau los."/>
+			<autoIndentAdvanced-tip value="Pab kom ntse indentation rau &quot;C-zoo li&quot; hom lus thiab Python.Cov lus &quot;C-zoo li&quot; muaj xws li:
+C, C ++, Java, C#, Objective-C, PHP, JavaScript, JSP, CSS, Perl, Rust, PowerShell thiab JSON.
+
+Yog tias koj xaiv hom qib siab tab sis tsis hloov cov ntaub ntawv hauv cov lus hais saum toj no, qhov indentation yuav nyob twj ywm hauv hom yooj yim."/>
+
+			<!-- Don't translate "Global override" and "Default Style" -->
+			<global-override-tip value="Enabling &quot;Global override&quot; ntawm no yuav override qhov parameter hauv txhua hom lus.Qhov koj xav tau tiag tiag yog siv qhov &quot;Default Style&quot; chaw hloov"/>
+			<scintillaRenderingTechnology-tip value="Tej zaum yuav txhim kho kev ua haujlwm ntawm cov cim tshwj xeeb lossis daws qee qhov teeb meem duab, rov pib Notepad ++ kom siv cov kev hloov pauv."/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'length' & 'lines' are much longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-length-lines value="ntev: $STR_REPLACE1$ kab: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Ln' & 'Col' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Ln-Col value="Ln: $STR_REPLACE1$ Col: $STR_REPLACE2$"/>
+
+			<!-- Due to the limited space on the status bar, if the translations for 'Pos' & 'Sel' are longer than the English words, please leave them in English instead of translating them. -->
+			<statusbar-Pos value="Pos:"/>
+			<statusbar-Sel value="Sel:"/>
+			<statusbar-Sel-number value="Sel"/>
+			<toolbar-accent-tip value="Qhov kev xaiv no ua rau koj lub cim icons ua raws li Windows system accent xim.Accent xim yog cov xim tseem ceeb uas siv hauv cov nyees khawm, ciam teb, thiab Pib cov ntawv qhia zaub mov hauv Windows.Txhawm rau hloov nws, mus rau Chaw&gt; Tus Kheej&gt; Xim, tom qab ntawd xaiv cov xim uas koj nyiam."/>
+			<len-limit-exceeded-tip value="Ntev ntev dhau lawm: Koj cov tswv yim tuaj yeem tshaj qhov txwv tau tso cai thiab tuaj yeem raug txiav, thiab nws yuav tsis raug cawm rau kev sib tham tom ntej."/>
+			<max-len-on-search-tip value="Koj cov tswv yim tuaj yeem dhau qhov txwv tau tso cai thiab tuaj yeem raug txiav, thiab nws yuav tsis raug cawm rau kev sib tham tom ntej."/>
+			<max-len-on-save-tip value="Qhov ntev ntawm koj cov tswv yim yog ntev heev thiab tej zaum yuav tsis tau txais kev cawmdim rau koj qhov kev sib tham tom ntej."/>
+			<goto-setting-tip value="Nrhiav koj qhov chaw ntawm no"/>
+			<tabbar-tabcompactlabellen-tip value="Txwv qhov pom ntev ntawm cov npe ntev tab.Nkag mus siv tus nqi muab.Tus nqi ntau: 1-257 cim (0 disables lub truncation)."/>
+		</MiscStrings>
+	</Native-Langue>
+</NotepadPlus>
+
+

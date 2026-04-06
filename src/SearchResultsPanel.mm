@@ -1,6 +1,7 @@
 #import "SearchResultsPanel.h"
 #import "NppThemeManager.h"
 #import "StyleConfiguratorWindowController.h"
+#import "NppLocalizer.h"
 #import "ScintillaView.h"
 #import "Scintilla.h"
 #import "SciLexer.h"
@@ -118,7 +119,7 @@ struct _SRLineInfo {
     _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
     NSView *titleBar = _titleBar;
 
-    NSTextField *titleLabel = [NSTextField labelWithString:@"Search results"];
+    NSTextField *titleLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Search results"]];
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     titleLabel.font = [NSFont systemFontOfSize:11];
     [titleBar addSubview:titleLabel];
@@ -129,7 +130,7 @@ struct _SRLineInfo {
     closeBtn.bordered = NO;
     closeBtn.title = @"\u2715";
     closeBtn.font = [NSFont systemFontOfSize:10];
-    closeBtn.toolTip = @"Close Search Results";
+    closeBtn.toolTip = [[NppLocalizer shared] translate:@"Close Search Results"];
     closeBtn.target = self;
     closeBtn.action = @selector(_closePanel:);
     [closeBtn.widthAnchor constraintEqualToConstant:18].active = YES;
@@ -506,13 +507,14 @@ static sptr_t _srSciColor(NSColor *c) {
 
 - (NSMenu *)menuForEvent:(NSEvent *)event {
     NSMenu *m = [[NSMenu alloc] init];
-    [m addItemWithTitle:@"Copy"       action:@selector(copy:)       keyEquivalent:@"c"];
-    [m addItemWithTitle:@"Select All" action:@selector(selectAll:)  keyEquivalent:@"a"];
+    NppLocalizer *loc = [NppLocalizer shared];
+    [m addItemWithTitle:[loc translate:@"Copy"]       action:@selector(copy:)       keyEquivalent:@"c"];
+    [m addItemWithTitle:[loc translate:@"Select All"] action:@selector(selectAll:)  keyEquivalent:@"a"];
     [m addItem:[NSMenuItem separatorItem]];
-    [m addItemWithTitle:@"Clear All"    action:@selector(_clearAll:)    keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Clear All"]    action:@selector(_clearAll:)    keyEquivalent:@""];
     [m addItem:[NSMenuItem separatorItem]];
-    [m addItemWithTitle:@"Fold All"     action:@selector(_foldAll:)     keyEquivalent:@""];
-    [m addItemWithTitle:@"Unfold All"   action:@selector(_unfoldAll:)   keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Fold All"]     action:@selector(_foldAll:)     keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Unfold All"]   action:@selector(_unfoldAll:)   keyEquivalent:@""];
     for (NSMenuItem *mi in m.itemArray) mi.target = self;
     return m;
 }

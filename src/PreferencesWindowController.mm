@@ -34,6 +34,7 @@ NSString *const kPrefFuncParamsHint      = @"funcParamsHint";
 NSString *const kPrefShowStatusBar       = @"showStatusBar";
 NSString *const kPrefMuteSounds          = @"muteSounds";
 NSString *const kPrefSaveAllConfirm      = @"saveAllConfirm";
+NSString *const kPrefPluginSplitViewRouting = @"pluginSplitViewRouting";
 NSString *const kPrefRightClickKeepsSel  = @"rightClickKeepsSel";
 NSString *const kPrefDisableTextDragDrop = @"disableTextDragDrop";
 NSString *const kPrefMonoFontFind        = @"monoFontFind";
@@ -136,6 +137,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         kPrefShowStatusBar:        @YES,
         kPrefMuteSounds:           @NO,
         kPrefSaveAllConfirm:       @NO,
+        kPrefPluginSplitViewRouting: @YES,
         kPrefRightClickKeepsSel:   @NO,
         kPrefDisableTextDragDrop:  @NO,
         kPrefMonoFontFind:         @NO,
@@ -206,6 +208,27 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
 - (void)retranslateUI {
     NppLocalizer *loc = [NppLocalizer shared];
     self.window.title = [loc translate:@"Preferences"];
+
+    // Rebuild sidebar page names with new translations
+    _pageNames = [NSMutableArray arrayWithArray:@[
+        [loc translate:@"General"],
+        [loc translate:@"Editor"],
+        [loc translate:@"Tab Bar"],
+        [loc translate:@"Dark Mode"],
+        [loc translate:@"Margins"],
+        [loc translate:@"New Document"],
+        [loc translate:@"Backup"],
+        [loc translate:@"Auto-Completion"],
+        [loc translate:@"Searching"],
+        [loc translate:@"MISC."],
+    ]];
+    // Invalidate cached page views so they rebuild with new translations
+    [_pageViews removeAllObjects];
+    [_sidebarTable reloadData];
+
+    // Re-show current page
+    NSInteger row = _sidebarTable.selectedRow;
+    if (row >= 0) [self _showPageAtIndex:row];
 }
 
 - (void)registerDefaults {
@@ -231,16 +254,16 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
 
     // ── Page names (sidebar rows) ────────────────────────────────────────────
     _pageNames = [NSMutableArray arrayWithArray:@[
-        @"General",
-        @"Editor",
-        @"Tab Bar",
-        @"Dark Mode",
-        @"Margins",
-        @"New Document",
-        @"Backup",
-        @"Auto-Completion",
-        @"Searching",
-        @"MISC.",
+        [[NppLocalizer shared] translate:@"General"],
+        [[NppLocalizer shared] translate:@"Editor"],
+        [[NppLocalizer shared] translate:@"Tab Bar"],
+        [[NppLocalizer shared] translate:@"Dark Mode"],
+        [[NppLocalizer shared] translate:@"Margins"],
+        [[NppLocalizer shared] translate:@"New Document"],
+        [[NppLocalizer shared] translate:@"Backup"],
+        [[NppLocalizer shared] translate:@"Auto-Completion"],
+        [[NppLocalizer shared] translate:@"Searching"],
+        [[NppLocalizer shared] translate:@"MISC."],
     // Future pages can be added here
     // @"Performance",
     // @"Delimiter",
@@ -285,7 +308,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     _contentScroll.documentView = _contentArea;
 
     // ── Close button ─────────────────────────────────────────────────────────
-    NSButton *closeBtn = [NSButton buttonWithTitle:@"Close"
+    NSButton *closeBtn = [NSButton buttonWithTitle:[[NppLocalizer shared] translate:@"Close"]
                                             target:self action:@selector(closePrefs:)];
     closeBtn.translatesAutoresizingMaskIntoConstraints = NO;
     closeBtn.keyEquivalent = @"\033";
@@ -436,16 +459,17 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
 }
 
 - (NSView *)_buildPageForName:(NSString *)name {
-    if ([name isEqualToString:@"General"])         return [self _buildGeneralPage];
-    if ([name isEqualToString:@"Editor"])          return [self _buildEditorPage];
-    if ([name isEqualToString:@"Tab Bar"])         return [self _buildTabBarPage];
-    if ([name isEqualToString:@"Dark Mode"])       return [self _buildDarkModePage];
-    if ([name isEqualToString:@"Margins"])          return [self _buildMarginsPage];
-    if ([name isEqualToString:@"New Document"])     return [self _buildNewDocPage];
-    if ([name isEqualToString:@"Backup"])           return [self _buildBackupPage];
-    if ([name isEqualToString:@"Auto-Completion"])  return [self _buildAutoCompletionPage];
-    if ([name isEqualToString:@"Searching"])        return [self _buildSearchingPage];
-    if ([name isEqualToString:@"MISC."])            return [self _buildMiscPage];
+    NppLocalizer *loc = [NppLocalizer shared];
+    if ([name isEqualToString:[loc translate:@"General"]])         return [self _buildGeneralPage];
+    if ([name isEqualToString:[loc translate:@"Editor"]])          return [self _buildEditorPage];
+    if ([name isEqualToString:[loc translate:@"Tab Bar"]])         return [self _buildTabBarPage];
+    if ([name isEqualToString:[loc translate:@"Dark Mode"]])       return [self _buildDarkModePage];
+    if ([name isEqualToString:[loc translate:@"Margins"]])          return [self _buildMarginsPage];
+    if ([name isEqualToString:[loc translate:@"New Document"]])     return [self _buildNewDocPage];
+    if ([name isEqualToString:[loc translate:@"Backup"]])           return [self _buildBackupPage];
+    if ([name isEqualToString:[loc translate:@"Auto-Completion"]])  return [self _buildAutoCompletionPage];
+    if ([name isEqualToString:[loc translate:@"Searching"]])        return [self _buildSearchingPage];
+    if ([name isEqualToString:[loc translate:@"MISC."]])            return [self _buildMiscPage];
     return nil;
 }
 
@@ -460,13 +484,13 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     CGFloat y = 380;
 
     // ── Localization ──
-    NSTextField *sectionLabel = [NSTextField labelWithString:@"Localization"];
+    NSTextField *sectionLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Localization"]];
     sectionLabel.font = [NSFont boldSystemFontOfSize:NSFont.systemFontSize];
     sectionLabel.frame = NSMakeRect(20, y, 300, 20);
     [v addSubview:sectionLabel];
     y -= 30;
 
-    NSTextField *langLabel = [NSTextField labelWithString:@"Language:"];
+    NSTextField *langLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Language:"]];
     langLabel.frame = NSMakeRect(20, y, 90, 20);
     [v addSubview:langLabel];
 
@@ -479,8 +503,9 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     y -= 36;
 
     NSTextField *hint = [NSTextField wrappingLabelWithString:
-        @"Additional language files (.xml) can be placed in:\n"
-         "~/Library/Application Support/Notepad++/nativeLang/"];
+        [NSString stringWithFormat:@"%@\n%@",
+         [[NppLocalizer shared] translate:@"Additional language files (.xml) can be placed in:"],
+         @"~/Library/Application Support/Notepad++/localization/"]];
     hint.font = [NSFont systemFontOfSize:NSFont.smallSystemFontSize];
     hint.textColor = NSColor.secondaryLabelColor;
     hint.frame = NSMakeRect(20, y - 16, 400, 44);
@@ -488,13 +513,13 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     y -= 70;
 
     // ── Title Bar ──
-    NSTextField *tbSection = [NSTextField labelWithString:@"Title Bar"];
+    NSTextField *tbSection = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Title Bar"]];
     tbSection.font = [NSFont boldSystemFontOfSize:NSFont.systemFontSize];
     tbSection.frame = NSMakeRect(20, y, 300, 20);
     [v addSubview:tbSection];
     y -= 28;
 
-    NSButton *fullPath = [NSButton checkboxWithTitle:@"Show full file path in title bar"
+    NSButton *fullPath = [NSButton checkboxWithTitle:[[NppLocalizer shared] translate:@"Show full file path in title bar"]
                                               target:self action:@selector(prefChanged:)];
     fullPath.frame = NSMakeRect(20, y, 350, 20);
     fullPath.state = [[NSUserDefaults standardUserDefaults] boolForKey:kPrefShowFullPathInTitle]
@@ -504,13 +529,13 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     y -= 32;
 
     // ── Status Bar ──
-    NSTextField *sbSection = [NSTextField labelWithString:@"Status Bar"];
+    NSTextField *sbSection = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Status Bar"]];
     sbSection.font = [NSFont boldSystemFontOfSize:NSFont.systemFontSize];
     sbSection.frame = NSMakeRect(20, y, 300, 20);
     [v addSubview:sbSection];
     y -= 28;
 
-    NSButton *showSB = [NSButton checkboxWithTitle:@"Show status bar"
+    NSButton *showSB = [NSButton checkboxWithTitle:[[NppLocalizer shared] translate:@"Show status bar"]
                                             target:self action:@selector(prefChanged:)];
     showSB.frame = NSMakeRect(20, y, 350, 20);
     showSB.state = [[NSUserDefaults standardUserDefaults] boolForKey:kPrefShowStatusBar]
@@ -528,7 +553,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     CGFloat y = 380;
 
-    NSTextField *tabLabel = [NSTextField labelWithString:@"Tab size:"];
+    NSTextField *tabLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Tab size:"]];
     tabLabel.frame = NSMakeRect(20, y, 80, 20);
     [v addSubview:tabLabel];
 
@@ -540,20 +565,21 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     [v addSubview:tabField];
     y -= 30;
 
+    NppLocalizer *loc = [NppLocalizer shared];
     NSArray *checks = @[
-        @[@"Use tabs (instead of spaces)",    @101, kPrefUseTabs],
-        @[@"Auto-indent",                     @102, kPrefAutoIndent],
-        @[@"Show line numbers",               @103, kPrefShowLineNumbers],
-        @[@"Highlight current line",          @105, kPrefHighlightCurrentLine],
-        @[@"Auto-close brackets ( ) [ ] { }", @700, kPrefAutoCloseBrackets],
-        @[@"Enable virtual space",            @702, kPrefVirtualSpace],
-        @[@"Scroll beyond last line",         @703, kPrefScrollBeyondLastLine],
-        @[@"Copy/cut line without selection",  @706, kPrefCopyLineNoSelection],
-        @[@"Right-click keeps selection",      @707, kPrefRightClickKeepsSel],
-        @[@"Disable selected text drag-drop",  @708, kPrefDisableTextDragDrop],
-        @[@"Show bookmark margin",             @709, kPrefShowBookmarkMargin],
-        @[@"Show EOL markers",                 @710, kPrefShowEOL],
-        @[@"Show whitespace",                  @711, kPrefShowWhitespace],
+        @[[loc translate:@"Use tabs (instead of spaces)"],    @101, kPrefUseTabs],
+        @[[loc translate:@"Auto-indent"],                     @102, kPrefAutoIndent],
+        @[[loc translate:@"Show line numbers"],               @103, kPrefShowLineNumbers],
+        @[[loc translate:@"Highlight current line"],          @105, kPrefHighlightCurrentLine],
+        @[[loc translate:@"Auto-close brackets ( ) [ ] { }"], @700, kPrefAutoCloseBrackets],
+        @[[loc translate:@"Enable virtual space"],            @702, kPrefVirtualSpace],
+        @[[loc translate:@"Scroll beyond last line"],         @703, kPrefScrollBeyondLastLine],
+        @[[loc translate:@"Copy/cut line without selection"],  @706, kPrefCopyLineNoSelection],
+        @[[loc translate:@"Right-click keeps selection"],      @707, kPrefRightClickKeepsSel],
+        @[[loc translate:@"Disable selected text drag-drop"],  @708, kPrefDisableTextDragDrop],
+        @[[loc translate:@"Show bookmark margin"],             @709, kPrefShowBookmarkMargin],
+        @[[loc translate:@"Show EOL markers"],                 @710, kPrefShowEOL],
+        @[[loc translate:@"Show whitespace"],                  @711, kPrefShowWhitespace],
     ];
     for (NSArray *def in checks) {
         NSButton *chk = [NSButton checkboxWithTitle:def[0] target:self action:@selector(prefChanged:)];
@@ -566,18 +592,18 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
 
     y -= 8;
     // Caret width
-    NSTextField *cwLabel = [NSTextField labelWithString:@"Caret width:"];
+    NSTextField *cwLabel = [NSTextField labelWithString:[loc translate:@"Caret width:"]];
     cwLabel.frame = NSMakeRect(20, y, 100, 20);
     [v addSubview:cwLabel];
     NSPopUpButton *cwPopup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(130, y-2, 120, 26) pullsDown:NO];
-    [cwPopup addItemsWithTitles:@[@"Thin (1px)", @"Medium (2px)", @"Thick (3px)"]];
+    [cwPopup addItemsWithTitles:@[[loc translate:@"Thin (1px)"], [loc translate:@"Medium (2px)"], [loc translate:@"Thick (3px)"]]];
     [cwPopup selectItemAtIndex:[ud integerForKey:kPrefCaretWidth] - 1];
     cwPopup.tag = 701; cwPopup.target = self; cwPopup.action = @selector(prefChanged:);
     [v addSubview:cwPopup];
     y -= 32;
 
     // Caret blink rate
-    NSTextField *brLabel = [NSTextField labelWithString:@"Caret blink rate (ms):"];
+    NSTextField *brLabel = [NSTextField labelWithString:[loc translate:@"Caret blink rate (ms):"]];
     brLabel.frame = NSMakeRect(20, y, 160, 20);
     [v addSubview:brLabel];
     NSTextField *brField = [[NSTextField alloc] initWithFrame:NSMakeRect(190, y-2, 60, 22)];
@@ -587,11 +613,11 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     y -= 32;
 
     // Font quality
-    NSTextField *fqLabel = [NSTextField labelWithString:@"Font rendering:"];
+    NSTextField *fqLabel = [NSTextField labelWithString:[loc translate:@"Font rendering:"]];
     fqLabel.frame = NSMakeRect(20, y, 120, 20);
     [v addSubview:fqLabel];
     NSPopUpButton *fqPopup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(150, y-2, 180, 26) pullsDown:NO];
-    [fqPopup addItemsWithTitles:@[@"Default", @"None", @"Antialiased", @"LCD Optimized"]];
+    [fqPopup addItemsWithTitles:@[[loc translate:@"Default"], [loc translate:@"None"], [loc translate:@"Antialiased"], [loc translate:@"LCD Optimized"]]];
     [fqPopup selectItemAtIndex:[ud integerForKey:kPrefFontQuality]];
     fqPopup.tag = 705; fqPopup.target = self; fqPopup.action = @selector(prefChanged:);
     [v addSubview:fqPopup];
@@ -605,10 +631,11 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     NSView *v = [[NSView alloc] init];
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     CGFloat y = 380;
+    NppLocalizer *loc = [NppLocalizer shared];
 
     NSArray *checks = @[
-        @[@"Show close button on tabs",        @800, kPrefTabCloseButton],
-        @[@"Double-click to close tab",        @801, kPrefDoubleClickTabClose],
+        @[[loc translate:@"Show close button on tabs"],        @800, kPrefTabCloseButton],
+        @[[loc translate:@"Double-click to close tab"],        @801, kPrefDoubleClickTabClose],
     ];
     for (NSArray *def in checks) {
         NSButton *chk = [NSButton checkboxWithTitle:def[0] target:self action:@selector(prefChanged:)];
@@ -620,7 +647,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     }
 
     y -= 8;
-    NSTextField *mwLabel = [NSTextField labelWithString:@"Max tab width (pixels):"];
+    NSTextField *mwLabel = [NSTextField labelWithString:[loc translate:@"Max tab width (pixels):"]];
     mwLabel.frame = NSMakeRect(20, y, 170, 20);
     [v addSubview:mwLabel];
     NSTextField *mwField = [[NSTextField alloc] initWithFrame:NSMakeRect(200, y-2, 60, 22)];
@@ -637,25 +664,26 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     NSView *v = [[NSView alloc] init];
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     CGFloat y = 380;
+    NppLocalizer *loc = [NppLocalizer shared];
 
     // ── Edge Column ──
-    NSTextField *edgeSection = [NSTextField labelWithString:@"Vertical Edge"];
+    NSTextField *edgeSection = [NSTextField labelWithString:[loc translate:@"Vertical Edge"]];
     edgeSection.font = [NSFont boldSystemFontOfSize:NSFont.systemFontSize];
     edgeSection.frame = NSMakeRect(20, y, 300, 20);
     [v addSubview:edgeSection];
     y -= 28;
 
-    NSTextField *emLabel = [NSTextField labelWithString:@"Edge mode:"];
+    NSTextField *emLabel = [NSTextField labelWithString:[loc translate:@"Edge mode:"]];
     emLabel.frame = NSMakeRect(20, y, 90, 20);
     [v addSubview:emLabel];
     NSPopUpButton *emPopup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(120, y-2, 160, 26) pullsDown:NO];
-    [emPopup addItemsWithTitles:@[@"Off", @"Line", @"Background"]];
+    [emPopup addItemsWithTitles:@[[loc translate:@"Off"], [loc translate:@"Line"], [loc translate:@"Background"]]];
     [emPopup selectItemAtIndex:[ud integerForKey:kPrefEdgeMode]];
     emPopup.tag = 1101; emPopup.target = self; emPopup.action = @selector(prefChanged:);
     [v addSubview:emPopup];
     y -= 30;
 
-    NSTextField *ecLabel = [NSTextField labelWithString:@"Edge column:"];
+    NSTextField *ecLabel = [NSTextField labelWithString:[loc translate:@"Edge column:"]];
     ecLabel.frame = NSMakeRect(20, y, 100, 20);
     [v addSubview:ecLabel];
     NSTextField *ecField = [[NSTextField alloc] initWithFrame:NSMakeRect(130, y-2, 50, 22)];
@@ -665,21 +693,21 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     y -= 36;
 
     // ── Fold Margin Style ──
-    NSTextField *foldSection = [NSTextField labelWithString:@"Fold Margin Style"];
+    NSTextField *foldSection = [NSTextField labelWithString:[loc translate:@"Fold Margin Style"]];
     foldSection.font = [NSFont boldSystemFontOfSize:NSFont.systemFontSize];
     foldSection.frame = NSMakeRect(20, y, 300, 20);
     [v addSubview:foldSection];
     y -= 28;
 
     NSPopUpButton *foldPopup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(20, y-2, 180, 26) pullsDown:NO];
-    [foldPopup addItemsWithTitles:@[@"Box tree", @"Circle tree", @"Arrow", @"Simple +/-", @"None"]];
+    [foldPopup addItemsWithTitles:@[[loc translate:@"Box tree"], [loc translate:@"Circle tree"], [loc translate:@"Arrow"], [loc translate:@"Simple +/-"], [loc translate:@"None"]]];
     [foldPopup selectItemAtIndex:[ud integerForKey:kPrefFoldStyle]];
     foldPopup.tag = 1104; foldPopup.target = self; foldPopup.action = @selector(prefChanged:);
     [v addSubview:foldPopup];
     y -= 36;
 
     // ── Line Numbers ──
-    NSButton *dynWidth = [NSButton checkboxWithTitle:@"Dynamic line number width"
+    NSButton *dynWidth = [NSButton checkboxWithTitle:[loc translate:@"Dynamic line number width"]
                                               target:self action:@selector(prefChanged:)];
     dynWidth.frame = NSMakeRect(20, y, 350, 20);
     dynWidth.state = [ud boolForKey:kPrefLineNumDynWidth] ? NSControlStateValueOn : NSControlStateValueOff;
@@ -688,13 +716,13 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     y -= 36;
 
     // ── Padding ──
-    NSTextField *padSection = [NSTextField labelWithString:@"Padding"];
+    NSTextField *padSection = [NSTextField labelWithString:[loc translate:@"Padding"]];
     padSection.font = [NSFont boldSystemFontOfSize:NSFont.systemFontSize];
     padSection.frame = NSMakeRect(20, y, 300, 20);
     [v addSubview:padSection];
     y -= 28;
 
-    NSTextField *plLabel = [NSTextField labelWithString:@"Left:"];
+    NSTextField *plLabel = [NSTextField labelWithString:[loc translate:@"Left:"]];
     plLabel.frame = NSMakeRect(20, y, 40, 20);
     [v addSubview:plLabel];
     NSTextField *plField = [[NSTextField alloc] initWithFrame:NSMakeRect(65, y-2, 50, 22)];
@@ -702,7 +730,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     plField.tag = 1102; plField.target = self; plField.action = @selector(prefChanged:);
     [v addSubview:plField];
 
-    NSTextField *prLabel = [NSTextField labelWithString:@"Right:"];
+    NSTextField *prLabel = [NSTextField labelWithString:[loc translate:@"Right:"]];
     prLabel.frame = NSMakeRect(140, y, 50, 20);
     [v addSubview:prLabel];
     NSTextField *prField = [[NSTextField alloc] initWithFrame:NSMakeRect(195, y-2, 50, 22)];
@@ -719,13 +747,14 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     NSView *v = [[NSView alloc] init];
     CGFloat y = 380;
 
-    NSTextField *dmLabel = [NSTextField labelWithString:@"Appearance"];
+    NppLocalizer *loc = [NppLocalizer shared];
+    NSTextField *dmLabel = [NSTextField labelWithString:[loc translate:@"Appearance"]];
     dmLabel.font = [NSFont boldSystemFontOfSize:NSFont.systemFontSize];
     dmLabel.frame = NSMakeRect(20, y, 300, 20);
     [v addSubview:dmLabel];
     y -= 32;
 
-    NSArray *titles = @[@"Auto (Follow System)", @"Light", @"Dark"];
+    NSArray *titles = @[[loc translate:@"Auto (Follow System)"], [loc translate:@"Light"], [loc translate:@"Dark"]];
     for (NSInteger i = 0; i < 3; i++) {
         NSButton *radio = [NSButton radioButtonWithTitle:titles[i] target:self action:@selector(_darkModeRadioChanged:)];
         radio.frame = NSMakeRect(20, y, 300, 20);
@@ -769,12 +798,13 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     CGFloat y = 380;
 
-    NSTextField *eolLabel = [NSTextField labelWithString:@"Default line ending:"];
+    NppLocalizer *loc = [NppLocalizer shared];
+    NSTextField *eolLabel = [NSTextField labelWithString:[loc translate:@"Default line ending:"]];
     eolLabel.frame = NSMakeRect(20, y, 150, 20);
     [v addSubview:eolLabel];
 
     NSPopUpButton *eolPopup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(180, y-2, 180, 26) pullsDown:NO];
-    [eolPopup addItemsWithTitles:@[@"Windows (CRLF)", @"Unix (LF)", @"Mac (CR)"]];
+    [eolPopup addItemsWithTitles:@[[loc translate:@"Windows (CRLF)"], [loc translate:@"Unix (LF)"], [loc translate:@"Mac (CR)"]]];
     [eolPopup selectItemAtIndex:[ud integerForKey:kPrefEOLType]];
     eolPopup.tag = 200;
     eolPopup.target = self;
@@ -782,7 +812,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     [v addSubview:eolPopup];
     y -= 36;
 
-    NSTextField *encLabel = [NSTextField labelWithString:@"Default encoding:"];
+    NSTextField *encLabel = [NSTextField labelWithString:[loc translate:@"Default encoding:"]];
     encLabel.frame = NSMakeRect(20, y, 150, 20);
     [v addSubview:encLabel];
 
@@ -804,7 +834,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     CGFloat y = 380;
 
-    NSButton *autoBackup = [NSButton checkboxWithTitle:@"Enable auto-backup"
+    NSButton *autoBackup = [NSButton checkboxWithTitle:[[NppLocalizer shared] translate:@"Enable auto-backup"]
                                                 target:self action:@selector(prefChanged:)];
     autoBackup.frame = NSMakeRect(20, y, 350, 20);
     autoBackup.state = [ud boolForKey:kPrefAutoBackup] ? NSControlStateValueOn : NSControlStateValueOff;
@@ -812,7 +842,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     [v addSubview:autoBackup];
     y -= 30;
 
-    NSTextField *intLabel = [NSTextField labelWithString:@"Backup interval (seconds):"];
+    NSTextField *intLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Backup interval (seconds):"]];
     intLabel.frame = NSMakeRect(20, y, 200, 20);
     [v addSubview:intLabel];
 
@@ -824,7 +854,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     [v addSubview:intField];
     y -= 36;
 
-    NSTextField *backupDirLabel = [NSTextField labelWithString:@"Backup location:"];
+    NSTextField *backupDirLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Backup location:"]];
     backupDirLabel.frame = NSMakeRect(20, y, 140, 20);
     [v addSubview:backupDirLabel];
     y -= 20;
@@ -844,10 +874,11 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     NSView *v = [[NSView alloc] init];
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     CGFloat y = 380;
+    NppLocalizer *loc = [NppLocalizer shared];
 
     NSArray *checks = @[
-        @[@"Enable auto-completion on each input",     @600, kPrefAutoCompleteEnable],
-        @[@"Function parameters hint on input",        @602, kPrefFuncParamsHint],
+        @[[loc translate:@"Enable auto-completion on each input"],     @600, kPrefAutoCompleteEnable],
+        @[[loc translate:@"Function parameters hint on input"],        @602, kPrefFuncParamsHint],
     ];
     for (NSArray *def in checks) {
         NSButton *chk = [NSButton checkboxWithTitle:def[0] target:self action:@selector(prefChanged:)];
@@ -859,7 +890,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     }
 
     y -= 4;
-    NSTextField *minLabel = [NSTextField labelWithString:@"From Nth character:"];
+    NSTextField *minLabel = [NSTextField labelWithString:[loc translate:@"From Nth character:"]];
     minLabel.frame = NSMakeRect(20, y, 160, 20);
     [v addSubview:minLabel];
 
@@ -879,15 +910,16 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     NSView *v = [[NSView alloc] init];
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     CGFloat y = 380;
+    NppLocalizer *loc = [NppLocalizer shared];
 
     NSArray *checks = @[
-        @[@"Enable smart highlighting",              @1000, kPrefSmartHighlight],
-        @[@"Smart highlighting: match case",          @1002, kPrefSmartHiliteCase],
-        @[@"Smart highlighting: whole word only",     @1003, kPrefSmartHiliteWord],
-        @[@"Fill find field with selected text",      @1001, kPrefFillFindWithSelection],
-        @[@"Use monospaced font in Find dialog",      @1004, kPrefMonoFontFind],
-        @[@"Confirm Replace All in open documents",   @1005, kPrefConfirmReplaceAll],
-        @[@"Replace: don't move to next occurrence",  @1006, kPrefReplaceAndStop],
+        @[[loc translate:@"Enable smart highlighting"],              @1000, kPrefSmartHighlight],
+        @[[loc translate:@"Smart highlighting: match case"],          @1002, kPrefSmartHiliteCase],
+        @[[loc translate:@"Smart highlighting: whole word only"],     @1003, kPrefSmartHiliteWord],
+        @[[loc translate:@"Fill find field with selected text"],      @1001, kPrefFillFindWithSelection],
+        @[[loc translate:@"Use monospaced font in Find dialog"],      @1004, kPrefMonoFontFind],
+        @[[loc translate:@"Confirm Replace All in open documents"],   @1005, kPrefConfirmReplaceAll],
+        @[[loc translate:@"Replace: don't move to next occurrence"],  @1006, kPrefReplaceAndStop],
     ];
     for (NSArray *def in checks) {
         NSButton *chk = [NSButton checkboxWithTitle:def[0] target:self action:@selector(prefChanged:)];
@@ -899,7 +931,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     }
 
     y -= 8;
-    NSTextField *threshLabel = [NSTextField labelWithString:@"In-selection auto-check threshold (bytes):"];
+    NSTextField *threshLabel = [NSTextField labelWithString:[loc translate:@"In-selection auto-check threshold (bytes):"]];
     threshLabel.frame = NSMakeRect(20, y, 300, 20);
     [v addSubview:threshLabel];
     NSTextField *threshField = [[NSTextField alloc] initWithFrame:NSMakeRect(330, y-2, 60, 22)];
@@ -918,14 +950,16 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     NSView *v = [[NSView alloc] init];
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     CGFloat y = 380;
+    NppLocalizer *loc = [NppLocalizer shared];
 
     NSArray *checks = @[
-        @[@"Mute all sounds",                          @1200, kPrefMuteSounds],
-        @[@"Confirm before Save All",                  @1201, kPrefSaveAllConfirm],
-        @[@"Reverse default date/time order",          @1202, kPrefDateTimeReverse],
-        @[@"Keep absent file entries in session",      @1203, kPrefKeepAbsentSession],
-        @[@"Remember panel visibility across sessions", @1204, kPrefPanelKeepState],
-        @[@"Use XML-based function list parsers",      @1205, kPrefFuncListUseXML],
+        @[[loc translate:@"Mute all sounds"],                          @1200, kPrefMuteSounds],
+        @[[loc translate:@"Confirm before Save All"],                  @1201, kPrefSaveAllConfirm],
+        @[[loc translate:@"Reverse default date/time order"],          @1202, kPrefDateTimeReverse],
+        @[[loc translate:@"Keep absent file entries in session"],      @1203, kPrefKeepAbsentSession],
+        @[[loc translate:@"Remember panel visibility across sessions"], @1204, kPrefPanelKeepState],
+        @[[loc translate:@"Use XML-based function list parsers"],      @1205, kPrefFuncListUseXML],
+        @[@"Route plugin messages to split view editors",            @1206, kPrefPluginSplitViewRouting],
     ];
     for (NSArray *def in checks) {
         NSButton *chk = [NSButton checkboxWithTitle:def[0] target:self action:@selector(prefChanged:)];
@@ -983,11 +1017,15 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         case 400: {
             NSPopUpButton *popup = (NSPopUpButton *)sender;
             NSString *selectedName = popup.selectedItem.title;
+            NSLog(@"[Prefs] Language popup changed to: '%@' (len=%lu)", selectedName, (unsigned long)selectedName.length);
             if (selectedName.length > 0) {
                 NSDictionary *langMap = [NppLocalizer availableLanguagesMap];
                 NSString *stem = langMap[selectedName];
+                NSLog(@"[Prefs] langMap lookup: '%@' -> stem='%@' (map has %lu entries)", selectedName, stem, (unsigned long)langMap.count);
                 if (stem) {
                     [[NppLocalizer shared] loadLanguageNamed:stem];
+                } else {
+                    NSLog(@"[Prefs] FAILED: No stem found for '%@'", selectedName);
                 }
             }
             return;
@@ -1040,6 +1078,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         case 1203: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefKeepAbsentSession]; break;
         case 1204: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefPanelKeepState]; break;
         case 1205: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefFuncListUseXML]; break;
+        case 1206: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefPluginSplitViewRouting]; break;
     }
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"NPPPreferencesChanged" object:nil];

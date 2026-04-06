@@ -43,6 +43,58 @@
     // Load User Defined Languages from bundled + user directories.
     [[UserDefineLangManager shared] loadAll];
 
+    // On first launch, auto-detect language from macOS system preferences.
+    // Maps ISO language codes to our XML filename stems.
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:kPrefLanguage]) {
+        static NSDictionary *langCodeMap = nil;
+        static dispatch_once_t once;
+        dispatch_once(&once, ^{
+            langCodeMap = @{
+                @"af": @"afrikaans", @"sq": @"albanian", @"am": @"amharic",
+                @"ar": @"arabic", @"hy": @"armenian", @"az": @"azerbaijani",
+                @"eu": @"basque", @"be": @"belarusian", @"bn": @"bengali",
+                @"bs": @"bosnian", @"pt-BR": @"brazilian_portuguese",
+                @"bg": @"bulgarian", @"ca": @"catalan",
+                @"zh-Hans": @"chineseSimplified", @"zh": @"chineseSimplified",
+                @"hr": @"croatian", @"cs": @"czech", @"da": @"danish",
+                @"nl": @"dutch", @"et": @"estonian", @"fi": @"finnish",
+                @"fr": @"french", @"gl": @"galician", @"ka": @"georgian",
+                @"de": @"german", @"el": @"greek", @"gu": @"gujarati",
+                @"he": @"hebrew", @"hi": @"hindi", @"hu": @"hungarian",
+                @"id": @"indonesian", @"ga": @"irish", @"it": @"italian",
+                @"ja": @"japanese", @"kn": @"kannada", @"kk": @"kazakh",
+                @"ko": @"korean", @"ku": @"kurdish", @"ky": @"kyrgyz",
+                @"lo": @"lao", @"lv": @"latvian", @"lt": @"lithuanian",
+                @"lb": @"luxembourgish", @"mk": @"macedonian", @"ms": @"malay",
+                @"ml": @"malayalam", @"mr": @"marathi", @"mn": @"mongolian",
+                @"my": @"myanmar", @"ne": @"nepali", @"nb": @"norwegian",
+                @"nn": @"nynorsk", @"or": @"odia", @"ps": @"pashto",
+                @"fa": @"farsi", @"pl": @"polish", @"pt": @"portuguese",
+                @"pa": @"punjabi", @"ro": @"romanian", @"ru": @"russian",
+                @"sr": @"serbian", @"si": @"sinhala", @"sk": @"slovak",
+                @"sl": @"slovenian", @"so": @"somali", @"es": @"spanish",
+                @"sw": @"swahili", @"sv": @"swedish", @"tl": @"tagalog",
+                @"zh-Hant": @"taiwaneseMandarin", @"ta": @"tamil",
+                @"te": @"telugu", @"th": @"thai", @"ti": @"tigrinya",
+                @"tr": @"turkish", @"tk": @"turkmen", @"uk": @"ukrainian",
+                @"ur": @"urdu", @"uz": @"uzbek", @"vi": @"vietnamese",
+                @"cy": @"welsh", @"xh": @"xhosa", @"yo": @"yoruba",
+                @"zu": @"zulu",
+            };
+        });
+
+        NSString *systemLang = [NSLocale preferredLanguages].firstObject;
+        NSString *stem = langCodeMap[systemLang];
+        // Try base code if full code didn't match (e.g., "fr-FR" → "fr")
+        if (!stem && systemLang.length > 2) {
+            NSString *base = [systemLang componentsSeparatedByString:@"-"].firstObject;
+            stem = langCodeMap[base];
+        }
+        if (stem) {
+            [[NSUserDefaults standardUserDefaults] setObject:stem forKey:kPrefLanguage];
+        }
+    }
+
     // Apply the user's saved language to the freshly-built English menu.
     [[NppLocalizer shared] autoLoad];
 
@@ -128,7 +180,7 @@
         NSTimeInterval elapsed = -[self.launchStart timeIntervalSinceNow];
         NSString *msg = [NSString stringWithFormat:@"Loading time: %.2f seconds", elapsed];
         NSAlert *a = [[NSAlert alloc] init];
-        a.messageText = @"Notepad++ Loading Time";
+        a.messageText = [[NppLocalizer shared] translate:@"Notepad++ Loading Time"];
         a.informativeText = msg;
         a.icon = [[NSImage alloc] initWithContentsOfFile:
             [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/plugins/Config/logo100px.png"]];
@@ -525,7 +577,7 @@
     }
     if (logo) about.icon = logo;
 
-    [about addButtonWithTitle:@"OK"];
+    [about addButtonWithTitle:[[NppLocalizer shared] translate:@"OK"]];
     [about runModal];
 }
 
@@ -560,9 +612,10 @@ static NSString *const kUpdateMenuItemTag = @"checkForUpdatesMenuItem";
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error || !data) {
                 if (userInitiated) {
+                    NppLocalizer *loc = [NppLocalizer shared];
                     NSAlert *a = [[NSAlert alloc] init];
-                    a.messageText = @"Unable to Check for Updates";
-                    a.informativeText = error.localizedDescription ?: @"No response from server.";
+                    a.messageText = [loc translate:@"Unable to Check for Updates"];
+                    a.informativeText = error.localizedDescription ?: [loc translate:@"No response from server."];
                     [a runModal];
                 }
                 return;
@@ -571,10 +624,11 @@ static NSString *const kUpdateMenuItemTag = @"checkForUpdatesMenuItem";
             NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
             if (statusCode != 200) {
                 if (userInitiated) {
+                    NppLocalizer *loc = [NppLocalizer shared];
                     NSAlert *a = [[NSAlert alloc] init];
-                    a.messageText = @"Unable to Check for Updates";
+                    a.messageText = [loc translate:@"Unable to Check for Updates"];
                     a.informativeText = [NSString stringWithFormat:
-                        @"Server returned status %ld. The repository may be private.", (long)statusCode];
+                        @"%@ %ld. %@", [loc translate:@"Server returned status"], (long)statusCode, [loc translate:@"The repository may be private."]];
                     [a runModal];
                 }
                 return;
@@ -608,10 +662,11 @@ static NSString *const kUpdateMenuItemTag = @"checkForUpdatesMenuItem";
                 }
             } else {
                 if (userInitiated) {
+                    NppLocalizer *loc = [NppLocalizer shared];
                     NSAlert *a = [[NSAlert alloc] init];
-                    a.messageText = @"You're Up to Date";
+                    a.messageText = [loc translate:@"You're Up to Date"];
                     a.informativeText = [NSString stringWithFormat:
-                        @"Notepad++ %@ is the latest version.", currentVersion];
+                        @"Notepad++ %@ %@", currentVersion, [loc translate:@"is the latest version."]];
                     [a runModal];
                 }
             }
@@ -626,15 +681,17 @@ static NSString *const kUpdateMenuItemTag = @"checkForUpdatesMenuItem";
                           assets:(NSArray *)assets {
     NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ?: @"0.0.0";
 
+    NppLocalizer *loc = [NppLocalizer shared];
     NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = [NSString stringWithFormat:@"Notepad++ v%@ is Available", version];
+    alert.messageText = [NSString stringWithFormat:@"Notepad++ v%@ %@", version, [loc translate:@"is Available"]];
     alert.informativeText = [NSString stringWithFormat:
-        @"You are currently running v%@.\n\n%@",
+        @"%@ v%@.\n\n%@",
+        [loc translate:@"You are currently running"],
         currentVersion,
         (notes.length > 500) ? [[notes substringToIndex:500] stringByAppendingString:@"…"] : (notes ?: @"")];
-    [alert addButtonWithTitle:@"Download"];
-    [alert addButtonWithTitle:@"Release Page"];
-    [alert addButtonWithTitle:@"Later"];
+    [alert addButtonWithTitle:[loc translate:@"Download"]];
+    [alert addButtonWithTitle:[loc translate:@"Release Page"]];
+    [alert addButtonWithTitle:[loc translate:@"Later"]];
 
     NSModalResponse resp = [alert runModal];
 

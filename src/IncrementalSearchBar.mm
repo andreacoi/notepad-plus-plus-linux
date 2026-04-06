@@ -38,7 +38,7 @@ static const CGFloat kBarHeight = 36.0;
 
     // Search field
     _searchField = [NSTextField textFieldWithString:@""];
-    _searchField.placeholderString = @"Type to search…";
+    _searchField.placeholderString = [[NppLocalizer shared] translate:@"Type to search…"];
     _searchField.translatesAutoresizingMaskIntoConstraints = NO;
     _searchField.delegate = self;
     [[_searchField cell] setScrollable:YES];

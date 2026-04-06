@@ -1,5 +1,6 @@
 #import "StyleConfiguratorWindowController.h"
 #import "PreferencesWindowController.h"
+#import "NppLocalizer.h"
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MARK: - NPPStyleEntry
@@ -631,7 +632,7 @@ static NSString *_userThemesDir(void) {
                   styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable
                     backing:NSBackingStoreBuffered
                       defer:NO];
-    win.title = @"Style Configurator";
+    win.title = [[NppLocalizer shared] translate:@"Style Configurator"];
     win.releasedWhenClosed = NO;
     self = [super initWithWindow:win];
     if (self) {
@@ -650,7 +651,7 @@ static NSString *_userThemesDir(void) {
 
     // Theme row
     CGFloat y = H - 30;
-    NSTextField *themeLbl = [self _label:@"Select theme:"];
+    NSTextField *themeLbl = [self _label:[[NppLocalizer shared] translate:@"Select theme:"]];
     themeLbl.frame = NSMakeRect(W - pad - 250 - 110, y - 3, 110, 20);
     [cv addSubview:themeLbl];
 
@@ -669,7 +670,7 @@ static NSString *_userThemesDir(void) {
     CGFloat lcH = lc.bounds.size.height;
     CGFloat lcW = lc.bounds.size.width;
 
-    NSTextField *langLbl = [self _label:@"Language:"];
+    NSTextField *langLbl = [self _label:[[NppLocalizer shared] translate:@"Language:"]];
     langLbl.frame = NSMakeRect(6, lcH - 24, lcW - 12, 18);
     [lc addSubview:langLbl];
 
@@ -679,7 +680,7 @@ static NSString *_userThemesDir(void) {
     _langPopup.action = @selector(_langChanged:);
     [lc addSubview:_langPopup];
 
-    NSTextField *styleLbl = [self _label:@"Style:"];
+    NSTextField *styleLbl = [self _label:[[NppLocalizer shared] translate:@"Style:"]];
     styleLbl.frame = NSMakeRect(6, lcH - 76, lcW - 12, 18);
     [lc addSubview:styleLbl];
 
@@ -723,23 +724,23 @@ static NSString *_userThemesDir(void) {
     CGFloat fsW  = rw - csW - 10;
 
     NSBox *colourBox = [[NSBox alloc] initWithFrame:NSMakeRect(rx, boxY, csW, boxH)];
-    colourBox.title = @"Colour Style";
+    colourBox.title = [[NppLocalizer shared] translate:@"Colour Style"];
     [cv addSubview:colourBox];
     [self _buildColourBox:colourBox];
 
     NSBox *fontBox = [[NSBox alloc] initWithFrame:NSMakeRect(fsX, boxY, fsW, boxH)];
-    fontBox.title = @"Font Style";
+    fontBox.title = [[NppLocalizer shared] translate:@"Font Style"];
     [cv addSubview:fontBox];
     [self _buildFontBox:fontBox];
 
     // Buttons
-    NSButton *cancelBtn = [NSButton buttonWithTitle:@"Cancel"
+    NSButton *cancelBtn = [NSButton buttonWithTitle:[[NppLocalizer shared] translate:@"Cancel"]
                                              target:self action:@selector(_cancel:)];
     cancelBtn.frame = NSMakeRect(W - pad - 90, 14, 90, 28);
     cancelBtn.keyEquivalent = @"\033";
     [cv addSubview:cancelBtn];
 
-    NSButton *saveBtn = [NSButton buttonWithTitle:@"Save && Close"
+    NSButton *saveBtn = [NSButton buttonWithTitle:[[NppLocalizer shared] translate:@"Save && Close"]
                                            target:self action:@selector(_saveAndClose:)];
     saveBtn.frame = NSMakeRect(W - pad - 90 - 120 - 8, 14, 120, 28);
     saveBtn.keyEquivalent = @"\r";
@@ -753,7 +754,7 @@ static NSString *_userThemesDir(void) {
     CGFloat cH  = cv.bounds.size.height;
     CGFloat midY = cH / 2.0;
 
-    _fgLabel = [self _label:@"Foreground colour"];
+    _fgLabel = [self _label:[[NppLocalizer shared] translate:@"Foreground colour"]];
     _fgLabel.frame = NSMakeRect(10, midY + 8, cW - 65, 18);
     [cv addSubview:_fgLabel];
     _fgSwatch = [[_SCColorSwatch alloc] initWithFrame:NSMakeRect(cW - 54, midY + 5, 42, 24)];
@@ -761,7 +762,7 @@ static NSString *_userThemesDir(void) {
     _fgSwatch.colorAction = @selector(_fgColorChanged:);
     [cv addSubview:_fgSwatch];
 
-    _bgLabel = [self _label:@"Background colour"];
+    _bgLabel = [self _label:[[NppLocalizer shared] translate:@"Background colour"]];
     _bgLabel.frame = NSMakeRect(10, midY - 28, cW - 65, 18);
     [cv addSubview:_bgLabel];
     _bgSwatch = [[_SCColorSwatch alloc] initWithFrame:NSMakeRect(cW - 54, midY - 31, 42, 24)];
@@ -775,12 +776,13 @@ static NSString *_userThemesDir(void) {
     CGFloat cW = cv.bounds.size.width;
     CGFloat cH = cv.bounds.size.height;
 
-    NSTextField *fnLbl = [self _label:@"Font name:"];
+    NppLocalizer *loc = [NppLocalizer shared];
+    NSTextField *fnLbl = [self _label:[loc translate:@"Font name:"]];
     fnLbl.frame = NSMakeRect(8, cH - 32, 72, 18);
     [cv addSubview:fnLbl];
     _fontNamePopup = [[NSPopUpButton alloc]
         initWithFrame:NSMakeRect(82, cH - 35, cW - 90, 22) pullsDown:NO];
-    [_fontNamePopup addItemWithTitle:@"(inherit)"];
+    [_fontNamePopup addItemWithTitle:[loc translate:@"(inherit)"]];
     NSArray<NSString *> *families = [[[NSFontManager sharedFontManager]
         availableFontFamilies] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
     for (NSString *f in families) [_fontNamePopup addItemWithTitle:f];
@@ -789,24 +791,24 @@ static NSString *_userThemesDir(void) {
     [cv addSubview:_fontNamePopup];
 
     CGFloat checkX = 8, checkY = cH - 68;
-    _boldCheck = [NSButton checkboxWithTitle:@"Bold"      target:self action:@selector(_boldChanged:)];
+    _boldCheck = [NSButton checkboxWithTitle:[loc translate:@"Bold"]      target:self action:@selector(_boldChanged:)];
     _boldCheck.frame = NSMakeRect(checkX, checkY, 80, 18);
     [cv addSubview:_boldCheck];
     checkY -= 22;
-    _italicCheck = [NSButton checkboxWithTitle:@"Italic"  target:self action:@selector(_italicChanged:)];
+    _italicCheck = [NSButton checkboxWithTitle:[loc translate:@"Italic"]  target:self action:@selector(_italicChanged:)];
     _italicCheck.frame = NSMakeRect(checkX, checkY, 80, 18);
     [cv addSubview:_italicCheck];
     checkY -= 22;
-    _underlineCheck = [NSButton checkboxWithTitle:@"Underline" target:self action:@selector(_underlineChanged:)];
+    _underlineCheck = [NSButton checkboxWithTitle:[loc translate:@"Underline"] target:self action:@selector(_underlineChanged:)];
     _underlineCheck.frame = NSMakeRect(checkX, checkY, 90, 18);
     [cv addSubview:_underlineCheck];
 
-    NSTextField *szLbl = [self _label:@"Font size:"];
+    NSTextField *szLbl = [self _label:[loc translate:@"Font size:"]];
     szLbl.frame = NSMakeRect(cW - 130, cH - 68, 70, 18);
     [cv addSubview:szLbl];
     _fontSizePopup = [[NSPopUpButton alloc]
         initWithFrame:NSMakeRect(cW - 58, cH - 71, 50, 22) pullsDown:NO];
-    [_fontSizePopup addItemWithTitle:@"(inherit)"];
+    [_fontSizePopup addItemWithTitle:[loc translate:@"(inherit)"]];
     for (NSNumber *sz in @[@6,@7,@8,@9,@10,@11,@12,@14,@16,@18,@20,@22,@24,@28,@36,@48,@72])
         [_fontSizePopup addItemWithTitle:[sz stringValue]];
     _fontSizePopup.target = self;
@@ -970,15 +972,15 @@ static NSString *_userThemesDir(void) {
     if (_suppressActions) return;
     NPPStyleEntry *e = [self _currentEntry];
     if (!e) return;
-    NSString *title = [_fontNamePopup titleOfSelectedItem];
-    e.fontName = [title isEqualToString:@"(inherit)"] ? @"" : title;
+    NSInteger idx = _fontNamePopup.indexOfSelectedItem;
+    e.fontName = (idx == 0) ? @"" : [_fontNamePopup titleOfSelectedItem];
 }
 - (void)_fontSizeChanged:(id)sender {
     if (_suppressActions) return;
     NPPStyleEntry *e = [self _currentEntry];
     if (!e) return;
-    NSString *t = [_fontSizePopup titleOfSelectedItem];
-    e.fontSize = [t isEqualToString:@"(inherit)"] ? 0 : t.intValue;
+    NSInteger szIdx = _fontSizePopup.indexOfSelectedItem;
+    e.fontSize = (szIdx == 0) ? 0 : [_fontSizePopup titleOfSelectedItem].intValue;
 }
 - (void)_boldChanged:(id)sender {
     if (_suppressActions) return;
@@ -1015,9 +1017,9 @@ static NSString *_userThemesDir(void) {
 - (void)importTheme:(id)sender {
     if (!self.window.isVisible) [self showWindow:nil];
     NSOpenPanel *panel = [NSOpenPanel openPanel];
-    panel.title = @"Import Style Theme";
+    panel.title = [[NppLocalizer shared] translate:@"Import Style Theme"];
     panel.allowedFileTypes = @[@"xml"];
-    panel.message = @"Select a Notepad++ theme XML file to apply";
+    panel.message = [[NppLocalizer shared] translate:@"Select a Notepad++ theme XML file to apply"];
     [panel beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse result) {
         if (result != NSModalResponseOK) return;
         [self _loadNppThemeXML:panel.URL];

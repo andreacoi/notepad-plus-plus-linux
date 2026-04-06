@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="utf-8"?>
+<NotepadPlus>
+	<Native-Langue name="Aranese" filename="aranese.xml">
+		<Menu>
+			<Main>
+				<!-- Main Menu Entries -->
+				<Entries>
+					<Item menuId="file" name="&amp;Archiu"/>
+					<Item menuId="edit" name="&amp;Editar"/>
+					<Item menuId="search" name="&amp;Cercar"/>
+					<Item menuId="view" name="&amp;Veir"/>
+					<Item menuId="encoding" name="Fo&amp;rmat"/>
+					<Item menuId="language" name="&amp;Lenguatge"/>
+					<Item menuId="settings" name="Con&amp;figuracions"/>
+					<Item menuId="macro" name="&amp;Macro"/>
+					<Item menuId="run" name="La&amp;nçar"/>
+					<Item menuId="Plugins" name="&amp;Pedaçi"/>
+					<Item menuId="Window" name="&amp;Hiestra"/>
+				</Entries>
+
+				<!-- Sub Menu Entries -->
+				<SubEntries>
+					<Item subMenuId="view-collapseLevel" name="Comprimir eth nivèu"/>
+					<Item subMenuId="view-uncollapseLevel" name="Expandir eth nivèu"/>
+				</SubEntries>
+
+				<!-- all menu item -->
+				<Commands>
+					<Item id="41001" name="&amp;Nau	Ctrl+N"/>
+					<Item id="41002" name="&amp;Daurir	Ctrl+O"/>
+					<Item id="41003" name="&amp;Barrar	Ctrl+W"/>
+					<Item id="41004" name="Barrar T&amp;ot"/>
+					<Item id="41005" name="Barrar Tot MENS eth Document Actuau"/>
+					<Item id="41006" name="&amp;Sauvar	Ctrl+S"/>
+					<Item id="41007" name="Sau&amp;var Tot	Ctrl+Majús+S"/>
+					<Item id="41008" name="Sauvar &amp;Coma..."/>
+					<Item id="41010" name="Imprimir...	Ctrl+P"/>
+					<Item id="1001" name="Imprimir Ara!"/>
+					<Item id="41011" name="G&amp;esser"/>
+					<Item id="41012" name="Carregar Session..."/>
+					<Item id="41013" name="Sauvar Session..."/>
+					<Item id="42001" name="Ta&amp;lhar	Ctrl+X"/>
+					<Item id="42002" name="&amp;Copiar	Ctrl+C"/>
+					<Item id="42003" name="&amp;Desheir	Ctrl+Z"/>
+					<Item id="42004" name="&amp;Tornar a Hèr	Ctrl+Y"/>
+					<Item id="42005" name="&amp;Pegar	Ctrl+V"/>
+					<Item id="42006" name="&amp;Borrar	Del"/>
+					<Item id="42007" name="Seleccio&amp;nar Tot	Ctrl+A"/>
+					<Item id="42008" name="Mèter TAB (Endicar)	TAB"/>
+					<Item id="42009" name="Treir TAB (Desendicar)	Majús+TAB"/>
+					<Item id="42010" name="Duplicar era linha actuau	Ctrl+D"/>
+					<Item id="42012" name="Talhar linhes	Ctrl+I"/>
+					<Item id="42013" name="Júnher linhes	Ctrl+J"/>
+					<Item id="42014" name="Botjar entà  Naut era linha actuau	Ctrl+Majús+Naut"/>
+					<Item id="42015" name="Botjar entà  Baish era linha actuau	Ctrl+Majús+Baish"/>
+					<Item id="42016" name="Méter en Majúscules	Ctrl+Majús+U"/>
+					<Item id="42017" name="Méter en Minúscules	Ctrl+U"/>
+					<Item id="42018" name="&amp;Començar Grabacion	Ctrl+Majús+R"/>
+					<Item id="42019" name="&amp;Arturar Grabacion	Ctrl+Majús+R"/>
+					<Item id="42021" name="&amp;Tornar a Vèir	Ctrl+Majús+P"/>
+					<Item id="42022" name="Bloquejar comentar/descomentar"/>
+					<Item id="42023" name="Comentari comun"/>
+					<Item id="42024" name="Talhar peth Rastre d'Espais"/>
+					<Item id="42025" name="Sauvar eth macro gravat ara"/>
+					<Item id="42026" name="Direccion deth tèxte RTL	Ctrl+Alt+R"/>
+					<Item id="42027" name="Direccion deth tèxte LTR	Ctrl+Alt+L"/>
+					<Item id="42028" name="Mèter Sonque Lectura"/>
+					<Item id="42029" name="Mèter era direccion sencera actuau en eth Pòrta Papèrs"/>
+					<Item id="42030" name="Mèter eth nòm deth document actuau en eth Pòrta Papèrs"/>
+					<Item id="42031" name="Mèter era direccion actuau en eth Pòrta Papèrs"/>
+					<Item id="42032" name="Lançar eth macro molti viatges..."/>
+
+					<Item id="43001" name="&amp;Cercar...	Ctrl+F"/>
+					<Item id="43002" name="Cercar &amp;Següent	F3"/>
+					<Item id="43003" name="&amp;Escambiar...	Ctrl+H"/>
+					<Item id="43004" name="Anar entà  era lihna...	Ctrl+G"/>
+					<Item id="43005" name="Fixar Mèrca	Ctrl+F2"/>
+					<Item id="43006" name="Següenta Mèrca	F2"/>
+					<Item id="43007" name="Mèrca Anterior	Majús+F2"/>
+					<Item id="43008" name="Borra totes es Mèrques"/>
+					<Item id="43009" name="Anar entà era cerca corresponenta	Ctrl+B"/>
+					<Item id="43010" name="Cercar &amp;Anterior	Majús+F3"/>
+					<Item id="43011" name="Cerca Incrementau...	Ctrl+Alt+I"/>
+					<Item id="43013" name="Cercar en archius	Ctrl+Majús+F"/>
+					<Item id="43014" name="Cercar (volatil) Següent	Ctrl+F3"/>
+					<Item id="43015" name="Cercar (volatil) Anterior	Ctrl+Majús+F3"/>
+
+					<Item id="44010" name="Direccionar tot	Alt+0"/>
+					<Item id="44011" name="Preferències d'usuari"/>
+					<Item id="44019" name="Ensenhar toti es caracters"/>
+					<Item id="44020" name="Ensenhar era guia d'endicat"/>
+					<Item id="44022" name="Plegar"/>
+					<Item id="44023" name="&amp;Ampliar Vision	Ctrl-Arrat Rodar Naut"/>
+					<Item id="44024" name="&amp;Reduir Vision	Ctrl-Arrat Rodar Baish"/>
+					<Item id="44025" name="Ensenhar Espais en Blanc e TAB"/>
+					<Item id="44026" name="Ensenhar Finau de Linha"/>
+					<Item id="44029" name="Unfold all	Alt+Majús+0"/>
+					<Item id="44030" name="Comprimir eth nivèu actuau	Ctrl+Alt+F"/>
+					<Item id="44031" name="Expandir eth nivèu actuau	Ctrl+Alt+Majús+F"/>
+					<Item id="44032" name="Mèter en Mode Pantalla	F11"/>
+					<Item id="44033" name="Mèter era ampliacion per defecte	Ctrl+/(keypad)"/>
+					<Item id="44034" name="Tostemp naut"/>
+					<Item id="44035" name="Sincronitzar era Barra de Desplaçament Verticau"/>
+					<Item id="44036" name="Sincronitzar era Barra de Desplaçament Horitzontau"/>
+
+					<Item id="45001" name="Convertir entà  Format de Windows"/>
+					<Item id="45002" name="Convertir entà  Format de UNIX"/>
+					<Item id="45003" name="Convertir entà  format MAC"/>
+					<Item id="45004" name="Codificar en ANSI"/>
+					<Item id="45005" name="Codificar en UTF-8"/>
+					<Item id="45006" name="Codificar en UCS-2 Indi Expandit"/>
+					<Item id="45007" name="Codificar en UCS-2 Indi Reduít"/>
+					<Item id="45008" name="Codificar en UTF-8 (sense BOM)"/>
+
+					<Item id="10001" name="Anar entà auta Vista"/>
+					<Item id="10002" name="Duplicar entà auta Vista"/>
+
+					<Item id="46001" name="Configurador D'estil..."/>
+					<Item id="47000" name="Sus...	F1"/>
+					<Item id="48009" name="Dresseres..."/>
+					<Item id="48011" name="Preferències..."/>
+					<Item id="49000" name="&amp;Lançar..."/>
+				</Commands>
+			</Main>
+			<Splitter>
+			</Splitter>
+			<TabBar>
+				<Item CMID="0" name="Barrar aguesta"/>
+				<Item CMID="1" name="Barrar totes excepte aguesta"/>
+				<Item CMID="2" name="Sauvar aguesta"/>
+				<Item CMID="3" name="Sauvar aguesta coma..."/>
+				<Item CMID="4" name="Imprimir aguesta"/>
+				<Item CMID="5" name="Anar a d'auta Vista"/>
+				<Item CMID="6" name="Duplicar en auta Vista"/>
+			</TabBar>
+		</Menu>
+
+		<Dialog>
+			<Find title="Find...">
+				<Item id="1" name="Cercar Següent"/>
+				<Item id="2" name="&amp;Barrar"/>
+				<Item id="1620" name="&amp;Que cercar :"/>
+				<Item id="1603" name="Trapar &amp;paraules senceres"/>
+				<Item id="1604" name="Trapar ma&amp;júscules"/>
+				<Item id="1605" name="Expression &amp;Regular"/>
+				<Item id="1606" name="Cercar en tot eth &amp;Document"/>
+				<Item id="1614" name="Condar"/>
+				<Item id="1615" name="Cercar totes"/>
+				<Item id="1616" name="Mercar Linha"/>
+				<Item id="1618" name="Trèir en cada cerca"/>
+				<Item id="1611" name="Esca&amp;mbiar per :"/>
+				<Item id="1608" name="&amp;Escambiar"/>
+				<Item id="1609" name="Escambia'c &amp;Tot"/>
+				<Item id="1623" name="Transparencia"/>
+				<Item id="1632" name="Ena seleccion"/>
+				<Item id="1633" name="Limpiar"/>
+				<Item id="1635" name="Escambia'c tot en toti es documents duberts"/>
+				<Item id="1636" name="Cerca'c tot en toti es documents duberts"/>
+			</Find>
+			<GoToLine title="Anar ara Linha #">
+				<Item id="1" name="&amp;Anar !"/>
+				<Item id="2" name="Non estongui anant en lòc"/>
+				<Item id="2004" name="Tu es ena linha :"/>
+				<Item id="2005" name="A quina linha vòs anar :"/>
+				<Item id="2006" name="Non pòs anar mès enlà de:"/>
+			</GoToLine>
+
+			<Run title="Lançar...">
+				<Item id="1903" name="Escriu eth tòn programa enta lança-lo"/>
+				<Item id="1" name="Lançar!"/>
+				<Item id="2" name="Cancellar"/>
+				<Item id="1904" name="Sauvar..."/>
+			</Run>
+
+			<StyleConfig title="Configurador d'Estil">
+				<Item id="1" name="&amp;Provar!"/>
+				<Item id="2" name="&amp;Cancellar"/>
+				<Item id="2301" name="Sauvar e Ba&amp;rrar"/>
+				<Item id="2303" name="Transparencia"/>
+
+				<SubDialog>
+					<Item id="2204" name="Nereta"/>
+					<Item id="2205" name="Cursiva"/>
+					<Item id="2206" name="Color de letra"/>
+					<Item id="2207" name="Color de fons"/>
+					<Item id="2208" name="Nòm dera Hont :"/>
+					<Item id="2209" name="Granor :"/>
+					<Item id="2210" name="Atencion : Era definicion d'aguest estil serà  era definicion per defecte entà  toti es estils non definits"/>
+					<Item id="2211" name="Descripcion d'Estil :"/>
+					<Item id="2212" name="Color d'estil"/>
+					<Item id="2213" name="Hont d'estil"/>
+					<Item id="2214" name="Exten. per Defecte :"/>
+					<Item id="2216" name="Exten. d'Usuari :"/>
+					<Item id="2218" name="Suslinhat"/>
+					<Item id="2219" name="Paraules clau per defecte"/>
+					<Item id="2221" name="Paraules clau entà  er usuari"/>
+				</SubDialog>
+
+			</StyleConfig>
+
+			<UserDefine title="Definicions d'Usuari">
+				<Item id="20002" name="Renombrar"/>
+				<Item id="20003" name="Crar Nau..."/>
+				<Item id="20004" name="Borrar"/>
+				<Item id="20005" name="Sauvar Coma..."/>
+				<Item id="20007" name="Lenguatge d'usuari : "/>
+				<Item id="20009" name="Extension :"/>
+				<Item id="20012" name="Ignorar majúsc."/>
+				<Item id="20011" name="Transparencia"/>
+				<Item id="0" name="Color d'estil"/>
+				<Item id="1" name="Color de letra"/>
+				<Item id="2" name="Color de fons"/>
+				<Item id="3" name="Estil dera Hont"/>
+				<Item id="4" name="Nòm :"/>
+				<Item id="5" name="Granor :"/>
+				<Item id="6" name="Nereta"/>
+				<Item id="7" name="Cursiva"/>
+				<Item id="8" name="Suslinhat"/>
+				<Folder title="Direcctòri e preferències">
+					<Item id="21101" name="Configuracion d'Estil per Defecte"/>
+					<Item id="21201" name="Eth directòri Daurís era configuracion des Paraules clau"/>
+					<Item id="21301" name="Eth directòri Barre era configuracion des Paraules clau"/>
+				</Folder>
+				<Keywords title="Lista Paraules Clau">
+					<Item id="22101" name="1er Grup"/>
+					<Item id="22201" name="2on Grup"/>
+					<Item id="22301" name="3au Grup"/>
+					<Item id="22401" name="4au Grup"/>
+					<Item id="22113" name="Mòde Prefixe"/>
+					<Item id="22213" name="Mòde Prefixe"/>
+					<Item id="22313" name="Mòde Prefixe"/>
+					<Item id="22413" name="Mòde Prefixe"/>
+				</Keywords>
+				<Comment title="Comentaris e Nombres">
+					<Item id="23301" name="Comentari Linha"/>
+					<Item id="23101" name="Comentari Blòc"/>
+					<Item id="23113" name="Comentari Daurir :"/>
+					<Item id="23115" name="Comentari Barrar :"/>
+					<Item id="23116" name="Tractar paraula clau coma simbol"/>
+					<Item id="23117" name="Tractar paraules clau coma simbols"/>
+					<Item id="23201" name="Nombre"/>
+				</Comment>
+				<Operator title="Operadors">
+					<Item id="24107" name="Operador"/>
+					<Item id="24103" name="Simbols Disponibles"/>
+					<Item id="24101" name="Operadors Activats"/>
+					<Item id="24201" name="Delimitador 1"/>
+					<Item id="24211" name="Limit entà  daurir :"/>
+					<Item id="24214" name="Limit entà  barrar :"/>
+					<Item id="24301" name="Delimitador 2"/>
+					<Item id="24311" name="Limit entà  daurir :"/>
+					<Item id="24314" name="Limit entà  barrar :"/>
+				</Operator>
+			</UserDefine>
+			<Preference title="Preferències">
+				<Item id="6001" name="Barrar"/>
+				<Global title="Globau">
+					<Item id="6102" name="Amagar"/>
+					<Item id="6103" name="Icònes petites"/>
+					<Item id="6104" name="Icònes Granes"/>
+					<Item id="6105" name="Icònes petites estandard"/>
+
+					<Item id="6107" name="Reduir"/>
+					<Item id="6108" name="Bloquejar (Non Arrastar)"/>
+					<Item id="6109" name="Diboishar es pestanhes inactiues"/>
+					<Item id="6110" name="Diboishar era barra iranja de naut"/>
+
+				</Global>
+				<Scintillas title="Editar Components">
+					<Item id="6201" name="Estil deth marge des directòris"/>
+					<Item id="6202" name="Simple"/>
+					<Item id="6203" name="Corsor"/>
+					<Item id="6204" name="Circle tree"/>
+					<Item id="6205" name="Arbe de carpetes"/>
+
+					<Item id="6206" name="Ensenahar es nombres de linha en eth marge"/>
+					<Item id="6207" name="Ensenhar es Mèrques en eth marge"/>
+					<Item id="6208" name="Ensenhar Vòra Verticau"/>
+					<Item id="6209" name="Nombre de columna : "/>
+
+					<Item id="6211" name="Configuracion dera Vòra Verticau"/>
+					<Item id="6212" name="Mode de Linha"/>
+					<Item id="6213" name="Mode de fons"/>
+					<Item id="6214" name="Activar Active lum de linha actuau"/>
+				</Scintillas>
+				<NewDoc title="Nau Document">
+					<Item id="6401" name="Format"/>
+					<Item id="6402" name="Windows"/>
+					<Item id="6403" name="Unix"/>
+					<Item id="6404" name="Mac"/>
+					<Item id="6405" name="Codificacion"/>
+					<Item id="6406" name="ANSI"/>
+					<Item id="6407" name="UTF-8 sense BOM"/>
+					<Item id="6408" name="UTF-8"/>
+					<Item id="6409" name="UCS2 Indi extenut"/>
+					<Item id="6410" name="UCS2 Indi reduí­t"/>
+					<Item id="6411" name="Lenguatge per defecte :"/>
+				</NewDoc>
+				<FileAssoc title="Associacion d'Archius">
+					<Item id="4009" name="Extens. Suportades :"/>
+					<Item id="4010" name="Extens. Registrades :"/>
+				</FileAssoc>
+				<LangMenu title="Menu Lenguatges">
+					<Item id="6505" name="Elements disponibles"/>
+					<Item id="6506" name="Elements desactivats"/>
+				</LangMenu>
+				<Print title="Imprimir">
+					<Item id="6601" name="Imprimir Nombre de Linhes"/>
+					<Item id="6602" name="Opcion de Color"/>
+					<Item id="6603" name="WYSIWYG"/>
+					<Item id="6604" name="Invertir"/>
+					<Item id="6605" name="Nere sus Blanc"/>
+					<Item id="6606" name="Sense color de fons"/>
+					<Item id="6607" name="Configuracion des Marges (Unitat:mm)"/>
+					<Item id="6612" name="Quèrra"/>
+					<Item id="6613" name="Naut"/>
+					<Item id="6614" name="Dreta"/>
+					<Item id="6615" name="Baish"/>
+					<Item id="6706" name="Nereta"/>
+					<Item id="6707" name="Cursiva"/>
+					<Item id="6708" name="Entesta"/>
+					<Item id="6709" name="Part quèrra"/>
+					<Item id="6710" name="Part centrau"/>
+					<Item id="6711" name="Part dreta"/>
+					<Item id="6717" name="Nereta"/>
+					<Item id="6718" name="Cursiva"/>
+					<Item id="6719" name="Pè"/>
+					<Item id="6720" name="Part esquerra"/>
+					<Item id="6721" name="Part centrau"/>
+					<Item id="6722" name="Part dreta"/>
+					<Item id="6723" name="Híger"/>
+					<Item id="6725" name="Variable :"/>
+				</Print>
+				<MISC title="MISC">
+					<Item id="6301" name="Configuracion de pestanhes"/>
+					<Item id="6302" name="Cambiar damb espai"/>
+					<Item id="6303" name="Granor dera Pestanha : "/>
+					<Item id="6304" name="Configuracion der Istòria de archius"/>
+					<Item id="6305" name="Non comprovar quan se daurís"/>
+					<Item id="6306" name="Nombre màxim deth archiu de istòria :"/>
+					<Item id="6309" name="Rebrembar es sessions actuaus entà auta session"/>
+					<Item id="6312" name="Auto-detecion de Estat des Fichers"/>
+					<Item id="6313" name="Actualitzar sileciosament"/>
+				</MISC>
+			</Preference>
+
+			<MultiMacro title="Lançar Macro Multi Viatges">
+				<Item id="1" name="Lançar"/>
+				<Item id="2" name="Cancellar"/>
+				<Item id="8006" name="Macro entà  lançar :"/>
+				<Item id="8001" name="Lançar"/>
+				<Item id="8005" name="viatges"/>
+				<Item id="8002" name="Lançar enquia eth fin"/>
+			</MultiMacro>
+			<Window title="Hiestres">
+				<Item id="1" name="Activar"/>
+				<Item id="2" name="D'acord"/>
+				<Item id="7002" name="Sauvar"/>
+				<Item id="7003" name="Barrar Hiestres"/>
+				<Item id="7004" name="Ordenar Pest."/>
+			</Window>
+					<MacStrings>
+				<Item id="90001" name="Search results"/>
+				<Item id="90002" name="Close Search Results"/>
+				<Item id="90003" name="Clear All"/>
+				<Item id="90004" name="Close panel"/>
+				<Item id="90005" name="Project Panel"/>
+				<Item id="90006" name="Source Control"/>
+				<Item id="90007" name="Commit"/>
+				<Item id="90008" name="Commit Failed"/>
+				<Item id="90009" name="No git repository\nUse Browse to open a repo."/>
+				<Item id="90010" name="Stage"/>
+				<Item id="90011" name="Unstage"/>
+				<Item id="90012" name="Stage All"/>
+				<Item id="90013" name="Unstage All"/>
+				<Item id="90014" name="Commit message\u2026"/>
+				<Item id="90015" name="Browse for repository\u2026"/>
+				<Item id="90016" name="Choose a git repository folder"/>
+				<Item id="90017" name="(no repository)"/>
+				<Item id="90018" name="(detached)"/>
+				<Item id="90019" name="Unknown error"/>
+				<Item id="90020" name="No functions found"/>
+				<Item id="90021" name="Search function..."/>
+				<Item id="90022" name="Expand All"/>
+				<Item id="90023" name="Locate Current File"/>
+				<Item id="90024" name="Refresh"/>
+				<Item id="90025" name="Sort functions (A to Z)"/>
+				<Item id="90026" name="Results"/>
+				<Item id="90027" name="Stop"/>
+				<Item id="90028" name="Search stopped."/>
+				<Item id="90029" name="Searching\u2026"/>
+				<Item id="90030" name="Text to search for"/>
+				<Item id="90031" name="*.txt, *.cpp, \u2026"/>
+				<Item id="90032" name="Searching..."/>
+				<Item id="90033" name="Replace:"/>
+				<Item id="90034" name="Whole Word"/>
+				<Item id="90035" name="Whole word"/>
+				<Item id="90036" name="Wrap"/>
+				<Item id="90037" name="Character"/>
+				<Item id="90038" name="HTML Name"/>
+				<Item id="90039" name="HTML Decimal"/>
+				<Item id="90040" name="HTML Hexadecimal"/>
+				<Item id="90041" name="Value"/>
+				<Item id="90042" name="Empty Session"/>
+				<Item id="90043" name="The selected session file contains no tabs."/>
+				<Item id="90044" name="Load Session"/>
+				<Item id="90045" name="Save Session"/>
+				<Item id="90046" name="Clear Recent Files"/>
+				<Item id="90047" name="File not found"/>
+				<Item id="90048" name="No Macro Recorded"/>
+				<Item id="90049" name="Record a macro first using Start Recording."/>
+				<Item id="90050" name="No shortcut conflicts."/>
+				<Item id="90051" name="File Name"/>
+				<Item id="90052" name="Type"/>
+				<Item id="90053" name="Path"/>
+				<Item id="90054" name="Go to Line"/>
+				<Item id="90055" name="Insert Date/Time"/>
+				<Item id="90056" name="Encoding Change"/>
+				<Item id="90057" name="Save a Copy As"/>
+				<Item id="90058" name="Move to Trash"/>
+				<Item id="90059" name="Title Bar"/>
+				<Item id="90060" name="Show full file path in title bar"/>
+				<Item id="90061" name="Show status bar"/>
+				<Item id="90062" name="Tab size:"/>
+				<Item id="90063" name="Caret width:"/>
+				<Item id="90064" name="Caret blink rate (ms):"/>
+				<Item id="90065" name="Font rendering:"/>
+				<Item id="90066" name="Max tab width (pixels):"/>
+				<Item id="90067" name="Vertical Edge"/>
+				<Item id="90068" name="Edge mode:"/>
+				<Item id="90069" name="Edge column:"/>
+				<Item id="90070" name="Dynamic line number width"/>
+				<Item id="90071" name="Left:"/>
+				<Item id="90072" name="Right:"/>
+				<Item id="90073" name="Default line ending:"/>
+				<Item id="90074" name="Default encoding:"/>
+				<Item id="90075" name="Enable auto-backup"/>
+				<Item id="90076" name="Backup interval (seconds):"/>
+				<Item id="90077" name="Backup location:"/>
+				<Item id="90078" name="Colour Style"/>
+				<Item id="90079" name="(inherit)"/>
+				<Item id="90080" name="Import Style Theme"/>
+				<Item id="90081" name="Category"/>
+				<Item id="90082" name="Type to filter..."/>
+				<Item id="90083" name="No shortcut conflicts for this item."/>
+				<Item id="90084" name="Plugin"/>
+				<Item id="90085" name="Version"/>
+				<Item id="90086" name="Installation Complete"/>
+				<Item id="90087" name="Restart the application to load the installed plugins."/>
+				<Item id="90088" name="Install Plugins"/>
+				<Item id="90089" name="Remove Plugins"/>
+				<Item id="90090" name="No commands found"/>
+				<Item id="90091" name="Type to search\u2026"/>
+				<Item id="90092" name="User Defined Language v.2.1"/>
+				<Item id="90093" name="Create New Language"/>
+				<Item id="90094" name="Enter a name:"/>
+				<Item id="90095" name="Foreground color:"/>
+				<Item id="90096" name="Background color:"/>
+				<Item id="90097" name="Don't Save"/>
+				<Item id="90098" name="Done"/>
+				<Item id="90099" name="Toggle Word Wrap"/>
+				<Item id="90100" name="Show All Characters"/>
+				<Item id="90101" name="Show Characters Options"/>
+				<Item id="90102" name="Toggle Indent Guide"/>
+				<Item id="90103" name="Not Yet Implemented"/>
+				<Item id="90104" name="Reload from Disk"/>
+				<Item id="90105" name="Change Search Engine"/>
+				<Item id="90106" name="Run Error"/>
+				<Item id="90107" name="Notepad++ Loading Time"/>
+				<Item id="90108" name="Unable to Check for Updates"/>
+				<Item id="90109" name="You're Up to Date"/>
+				<Item id="90110" name="Download"/>
+				<Item id="90111" name="Release Page"/>
+				<Item id="90112" name="Later"/>
+				<Item id="90113" name="Filter plugins\u2026"/>
+				<Item id="90114" name="Available"/>
+				<Item id="90115" name="Updates"/>
+				<Item id="90116" name="Installed"/>
+				<Item id="90117" name="Incompatible"/>
+				<Item id="90118" name="Failed to Install"/>
+				<Item id="90119" name="Remove the following plugins?"/>
+				<Item id="90120" name="Install the following plugins?"/>
+				<Item id="90121" name="This will delete the plugin files."/>
+				<Item id="90122" name="Search commands\u2026"/>
+				<Item id="90123" name="Foreground colour"/>
+				<Item id="90124" name="Background colour"/>
+				<Item id="90125" name="Macro name"/>
+				<Item id="90126" name="Macro Name"/>
+				<Item id="90127" name="Current recorded macro"/>
+				<Item id="90128" name="Macro Manager"/>
+				<Item id="90129" name="No Saved Macros"/>
+				<Item id="90130" name="Record and save a macro first."/>
+				<Item id="90131" name="Delete Shortcut"/>
+				<Item id="90132" name="Main menu"/>
+				<Item id="90133" name="Macros"/>
+				<Item id="90134" name="Run commands"/>
+				<Item id="90135" name="Plugin commands"/>
+				<Item id="90136" name="Scintilla commands"/>
+				<Item id="90137" name="Command Line Arguments"/>
+				<Item id="90138" name="Command name for Run menu"/>
+				<Item id="90139" name="All marks cleared."/>
+				<Item id="90140" name="Marked text copied to clipboard."/>
+				<Item id="90141" name="No marked text to copy."/>
+				<Item id="90142" name="Searching... %ld hit(s) \u2014 %@"/>
+				<Item id="90143" name="Replacing in files..."/>
+				<Item id="90144" name="Replace in Projects: Not yet connected."/>
+				<Item id="90145" name="Find in Projects: Not yet connected to Project Panel file list."/>
+				<Item id="90146" name="The workspace was modified."/>
+				<Item id="90147" name="Do you want to save changes?"/>
+				<Item id="90148" name="Search results"/>
+				<Item id="90149" name="Highlight current line"/>
+				<Item id="90150" name="Show line numbers"/>
+				<Item id="90151" name="Show whitespace"/>
+				<Item id="90152" name="Show EOL markers"/>
+				<Item id="90153" name="Show bookmark margin"/>
+				<Item id="90154" name="Use tabs (instead of spaces)"/>
+				<Item id="90155" name="Scroll beyond last line"/>
+				<Item id="90156" name="Copy/cut line without selection"/>
+				<Item id="90157" name="Disable selected text drag-drop"/>
+				<Item id="90158" name="Enable smart highlighting"/>
+				<Item id="90159" name="Smart highlighting: match case"/>
+				<Item id="90160" name="Smart highlighting: whole word only"/>
+				<Item id="90161" name="Double-click to close tab"/>
+				<Item id="90162" name="Show close button on tabs"/>
+				<Item id="90163" name="Remember panel visibility across sessions"/>
+				<Item id="90164" name="Keep absent file entries in session"/>
+				<Item id="90165" name="Confirm before Save All"/>
+				<Item id="90166" name="Confirm Replace All in open documents"/>
+				<Item id="90167" name="Replace: don't move to next occurrence"/>
+				<Item id="90168" name="Use monospaced font in Find dialog"/>
+				<Item id="90169" name="Right-click keeps selection"/>
+				<Item id="90170" name="Reverse default date/time order"/>
+				<Item id="90171" name="Use XML-based function list parsers"/>
+				<Item id="90172" name="Auto-close brackets ( ) [ ] { }"/>
+				<Item id="90173" name="From Nth character:"/>
+				<Item id="90174" name="In-selection auto-check threshold (bytes):"/>
+				<Item id="90175" name="Extended (\\n, \\r, \\t, \\0, \\x...)"/>
+				<Item id="90176" name="Editor"/>
+				<Item id="90177" name="Margins"/>
+				<Item id="90178" name="Dark"/>
+				<Item id="90179" name="Light"/>
+				<Item id="90180" name="Auto (Follow System)"/>
+				<Item id="90181" name="Thin (1px)"/>
+				<Item id="90182" name="Medium (2px)"/>
+				<Item id="90183" name="Thick (3px)"/>
+				<Item id="90184" name="Off"/>
+				<Item id="90185" name="Background"/>
+				<Item id="90186" name="Antialiased"/>
+				<Item id="90187" name="LCD Optimized"/>
+				<Item id="90188" name="Simple +/-"/>
+				<Item id="90189" name="Windows (CRLF)"/>
+				<Item id="90190" name="Mac (CR)"/>
+				<Item id="90191" name="Plugin list repository"/>
+				<Item id="90192" name="Select a Notepad++ theme XML file to apply"/>
+				<Item id="90193" name="Create new\u2026"/>
+				<Item id="90194" name="Save as\u2026"/>
+				<Item id="90195" name="User language:"/>
+				<Item id="90196" name="Language name"/>
+				<Item id="90197" name="Create"/>
+				<Item id="90198" name="Save As"/>
+				<Item id="90199" name="es"/>
+				<Item id="90200" name="in entire file"/>
+				<Item id="90201" name="Operators &amp; Delimiters"/>
+				<Item id="90202" name="Invalid Range"/>
+				<Item id="90203" name="Range values must be 0-255 and start must be &lt;= end."/>
+				<Item id="90204" name="contextMenu.xml Not Found"/>
+				<Item id="90205" name="Restart Notepad++ to regenerate the default contextMenu.xml."/>
+				<Item id="90206" name="The file has unsaved changes. Reloading with the new encoding will discard them. Continue?"/>
+				<Item id="90207" name="No response from server."/>
+				<Item id="90208" name="Server returned status"/>
+				<Item id="90209" name="The repository may be private."/>
+				<Item id="90210" name="is Available"/>
+				<Item id="90211" name="is the latest version."/>
+				<Item id="90212" name="You are currently running"/>
+				<Item id="90213" name="Finder Here"/>
+				<Item id="90214" name="Terminal Here"/>
+				<Item id="90215" name="Additional language files (.xml) can be placed in:"/>
+							<Item id="90216" name="Command Palette…"/>
+				<Item id="90217" name="Spell Check"/>
+				<Item id="90218" name="Type to search…"/>
+				<Item id="90219" name="New Window"/>
+				<Item id="90220" name="Skip Current &amp;amp; Go to Next Multi-select"/>
+				<Item id="90221" name="Locked Attribute (macOS)"/>
+				<Item id="90222" name="Check for Updates…"/>
+				<Item id="90223" name="Open Recent"/>
+			</MacStrings>
+		</Dialog>
+	</Native-Langue>
+</NotepadPlus>

@@ -34,6 +34,7 @@ extern NSString *const kPrefFuncParamsHint;      // BOOL, default NO
 extern NSString *const kPrefShowStatusBar;       // BOOL, default YES
 extern NSString *const kPrefMuteSounds;          // BOOL, default NO
 extern NSString *const kPrefSaveAllConfirm;      // BOOL, default NO
+extern NSString *const kPrefPluginSplitViewRouting; // BOOL, default YES — route plugin SCI messages to split view
 extern NSString *const kPrefRightClickKeepsSel;  // BOOL, default NO
 extern NSString *const kPrefDisableTextDragDrop; // BOOL, default NO
 extern NSString *const kPrefMonoFontFind;        // BOOL, default NO

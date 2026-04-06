@@ -75,12 +75,12 @@ extern NSString * const kPrefLanguage;
 /// e.g. @{ @"Français" : @"french", @"English" : @"english", … }
 + (NSDictionary<NSString *, NSString *> *)availableLanguagesMap;
 
-/// Path of the per-user nativeLang directory.
+/// Path of the per-user localization directory.
 /// Users can drop additional XML files here to add languages.
-/// ~/Library/Application Support/Notepad++/nativeLang/
+/// ~/Library/Application Support/Notepad++/localization/
 + (NSString *)userLanguageDirectory;
 
-/// Path of the nativeLang directory bundled inside the app.
+/// Path of the localization directory bundled inside the app.
 + (NSString *)bundledLanguageDirectory;
 
 @end

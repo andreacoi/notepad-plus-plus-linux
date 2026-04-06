@@ -91,12 +91,15 @@ static NSString * const kLastRepoRootKey = @"GitPanelLastRepoRoot";
 - (void)_locChanged:(NSNotification *)n { [self retranslateUI]; }
 - (void)retranslateUI {
     NppLocalizer *loc = [NppLocalizer shared];
-    _titleLabel.stringValue = [loc translate:@"Source Control"];
-    _refreshButton.toolTip  = [loc translate:@"Refresh"];
-    _closeButton.toolTip    = [loc translate:@"Close"];
-    _stageAllButton.title   = [loc translate:@"Stage All"];
-    _unstageAllButton.title = [loc translate:@"Unstage All"];
-    _commitButton.title     = [loc translate:@"Commit"];
+    _titleLabel.stringValue       = [loc translate:@"Source Control"];
+    _refreshButton.toolTip        = [loc translate:@"Refresh"];
+    _browseRepoButton.toolTip     = [loc translate:@"Browse for repository…"];
+    _closeButton.toolTip           = [loc translate:@"Close panel"];
+    _stageAllButton.title          = [loc translate:@"Stage All"];
+    _unstageAllButton.title        = [loc translate:@"Unstage All"];
+    _commitButton.title            = [loc translate:@"Commit"];
+    _commitField.placeholderString = [loc translate:@"Commit message\u2026"];
+    _noRepoLabel.stringValue       = [loc translate:@"No git repository\nUse Browse to open a repo."];
 }
 
 - (void)_loadBulletImage {
@@ -154,6 +157,7 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
 // ── UI Construction ───────────────────────────────────────────────────────────
 
 - (void)_buildUI {
+    NppLocalizer *loc = [NppLocalizer shared];
     NSFont *titleFont = [NSFont boldSystemFontOfSize:11];
     NSFont *smallFont = [NSFont systemFontOfSize:11];
     NSFont *monoFont  = [NSFont monospacedSystemFontOfSize:11 weight:NSFontWeightRegular];
@@ -164,7 +168,7 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
     _titleBar.wantsLayer = YES;
     _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
 
-    _titleLabel = [NSTextField labelWithString:@"Source Control"];
+    _titleLabel = [NSTextField labelWithString:[loc translate:@"Source Control"]];
     _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _titleLabel.font = titleFont;
     _titleLabel.textColor = [NSColor labelColor];
@@ -172,9 +176,9 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
     [_titleBar addSubview:_titleLabel];
 
     _refreshButton = _gitPanelBtn(@"funclstReload",          @"icons/standard/panels/toolbar",
-                                   @"Refresh",                self, @selector(_refresh:), 10);
+                                   [loc translate:@"Refresh"],                self, @selector(_refresh:), 10);
     _browseRepoButton = _gitPanelBtn(@"project_folder_open",  @"icons/light/panels/treeview",
-                                     @"Browse for repository…", self, @selector(_browseForRepo:), 12);
+                                     [loc translate:@"Browse for repository…"], self, @selector(_browseForRepo:), 12);
 
     _closeButton = [[NSButton alloc] init];
     _closeButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -182,7 +186,7 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
     _closeButton.bordered   = NO;
     _closeButton.title      = @"✕";
     _closeButton.font       = [NSFont systemFontOfSize:11];
-    _closeButton.toolTip    = @"Close panel";
+    _closeButton.toolTip    = [loc translate:@"Close panel"];
     _closeButton.target     = self;
     _closeButton.action     = @selector(_closePanel:);
     [_closeButton.widthAnchor  constraintEqualToConstant:20].active = YES;
@@ -257,10 +261,10 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
 
     // Context menu
     NSMenu *ctxMenu = [[NSMenu alloc] init];
-    [ctxMenu addItemWithTitle:@"Stage"     action:@selector(_stageSelected:)   keyEquivalent:@""];
-    [ctxMenu addItemWithTitle:@"Unstage"   action:@selector(_unstageSelected:) keyEquivalent:@""];
+    [ctxMenu addItemWithTitle:[loc translate:@"Stage"]     action:@selector(_stageSelected:)   keyEquivalent:@""];
+    [ctxMenu addItemWithTitle:[loc translate:@"Unstage"]   action:@selector(_unstageSelected:) keyEquivalent:@""];
     [ctxMenu addItem:[NSMenuItem separatorItem]];
-    [ctxMenu addItemWithTitle:@"Open File" action:@selector(_openSelected:)    keyEquivalent:@""];
+    [ctxMenu addItemWithTitle:[loc translate:@"Open File"] action:@selector(_openSelected:)    keyEquivalent:@""];
     _tableView.menu = ctxMenu;
     ctxMenu.itemArray[0].target = self;
     ctxMenu.itemArray[1].target = self;
@@ -274,13 +278,13 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
     _scrollView.documentView = _tableView;
 
     // ── Stage / Unstage All ───────────────────────────────────────────────────
-    _stageAllButton = [NSButton buttonWithTitle:@"Stage All" target:self
+    _stageAllButton = [NSButton buttonWithTitle:[loc translate:@"Stage All"] target:self
                                          action:@selector(_stageAll:)];
     _stageAllButton.translatesAutoresizingMaskIntoConstraints = NO;
     _stageAllButton.bezelStyle = NSBezelStyleRounded;
     _stageAllButton.font = smallFont;
 
-    _unstageAllButton = [NSButton buttonWithTitle:@"Unstage All" target:self
+    _unstageAllButton = [NSButton buttonWithTitle:[loc translate:@"Unstage All"] target:self
                                            action:@selector(_unstageAll:)];
     _unstageAllButton.translatesAutoresizingMaskIntoConstraints = NO;
     _unstageAllButton.bezelStyle = NSBezelStyleRounded;
@@ -306,14 +310,14 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
     // ── Commit message ────────────────────────────────────────────────────────
     _commitField = [[NSTextField alloc] init];
     _commitField.translatesAutoresizingMaskIntoConstraints = NO;
-    _commitField.placeholderString = @"Commit message\u2026";
+    _commitField.placeholderString = [loc translate:@"Commit message\u2026"];
     _commitField.font = monoFont;
     _commitField.cell.wraps = YES;
     _commitField.cell.scrollable = NO;
     _commitField.delegate = (id<NSTextFieldDelegate>)self;
 
     // ── Commit button ─────────────────────────────────────────────────────────
-    _commitButton = [NSButton buttonWithTitle:@"Commit" target:self
+    _commitButton = [NSButton buttonWithTitle:[loc translate:@"Commit"] target:self
                                        action:@selector(_commit:)];
     _commitButton.translatesAutoresizingMaskIntoConstraints = NO;
     _commitButton.bezelStyle = NSBezelStyleRounded;
@@ -322,7 +326,7 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
     _commitButton.keyEquivalent = @"\r";
 
     // ── No-repo label ─────────────────────────────────────────────────────────
-    _noRepoLabel = [NSTextField labelWithString:@"No git repository\nUse Browse to open a repo."];
+    _noRepoLabel = [NSTextField labelWithString:[loc translate:@"No git repository\nUse Browse to open a repo."]];
     _noRepoLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _noRepoLabel.font = [NSFont systemFontOfSize:13];
     _noRepoLabel.textColor = [NSColor secondaryLabelColor];
@@ -390,7 +394,7 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
     _unstageAllButton.hidden = noRepo;
     _commitField.hidden      = noRepo;
     _commitButton.hidden     = noRepo;
-    if (noRepo) _branchLabel.stringValue = @"(no repository)";
+    if (noRepo) _branchLabel.stringValue = [[NppLocalizer shared] translate:@"(no repository)"];
 }
 
 // ── Public API ────────────────────────────────────────────────────────────────
@@ -418,7 +422,7 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
             __strong typeof(weakSelf) self = weakSelf;
             if (!self) return;
             self->_branchLabel.stringValue =
-                branch ? [NSString stringWithFormat:@"\u2387 %@", branch] : @"(detached)";
+                branch ? [NSString stringWithFormat:@"\u2387 %@", branch] : [[NppLocalizer shared] translate:@"(detached)"];
             NSMutableArray *items = [NSMutableArray array];
             for (NSDictionary *d in status) {
                 _GitStatusItem *it = [[_GitStatusItem alloc] init];
@@ -553,7 +557,7 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
     panel.canChooseFiles = NO;
     panel.canChooseDirectories = YES;
     panel.allowsMultipleSelection = NO;
-    panel.message = @"Choose a git repository folder";
+    panel.message = [[NppLocalizer shared] translate:@"Choose a git repository folder"];
     if ([panel runModal] == NSModalResponseOK) {
         NSURL *url = panel.URLs.firstObject;
         NSString *root = [GitHelper gitRootForPath:url.path];
@@ -578,8 +582,8 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
             [self refresh];
         } else {
             NSAlert *alert = [[NSAlert alloc] init];
-            alert.messageText = @"Commit Failed";
-            alert.informativeText = errMsg ?: @"Unknown error";
+            alert.messageText = [[NppLocalizer shared] translate:@"Commit Failed"];
+            alert.informativeText = errMsg ?: [[NppLocalizer shared] translate:@"Unknown error"];
             [alert runModal];
         }
         self->_commitButton.enabled = self->_commitField.stringValue.length > 0;

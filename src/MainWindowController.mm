@@ -29,6 +29,7 @@
 #import "UserDefineLangManager.h"
 #import "UserDefineDialog.h"
 #import "NppThemeManager.h"
+#import "NppLocalizer.h"
 #import <objc/runtime.h>
 #include <sys/sysctl.h>
 #include <sys/resource.h>
@@ -1398,6 +1399,15 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
 /// Returns the current editor in whichever view the user last interacted with.
 - (EditorView *)currentEditor { return _activeTabManager.currentEditor; }
 
+/// Returns the editor for a specific plugin view ID (0=primary, 1=secondary vertical split).
+/// Falls back to primary editor if secondary has no tabs or doesn't exist.
+- (EditorView *)editorForPluginView:(int)viewId {
+    if (viewId == 1 && _subTabManagerV && _subTabManagerV.allEditors.count > 0) {
+        return _subTabManagerV.currentEditor;
+    }
+    return _tabManager.currentEditor;
+}
+
 /// Returns the EditorView that owns the window's first responder, falling back to currentEditor.
 - (EditorView *)focusedEditor {
     NSView *v = [self.window.firstResponder isKindOfClass:[NSView class]]
@@ -1846,7 +1856,7 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     wrapBtn.image   = nppToolbarIcon(@"wrap");
     wrapBtn.action  = @selector(toggleWordWrap:);
     wrapBtn.target  = self;
-    wrapBtn.toolTip = @"Toggle Word Wrap";
+    wrapBtn.toolTip = [[NppLocalizer shared] translate:@"Toggle Word Wrap"];
     wrapBtn.useBlueHighlight = YES;
     [outer addSubview:wrapBtn];
     _tbWrap = wrapBtn;
@@ -1864,7 +1874,7 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     charsBtn.image   = nppToolbarIcon(@"allChars");
     charsBtn.action  = @selector(toggleShowAllChars:);
     charsBtn.target  = self;
-    charsBtn.toolTip = @"Show All Characters";
+    charsBtn.toolTip = [[NppLocalizer shared] translate:@"Show All Characters"];
     [hoverGroup addSubview:charsBtn];
 
     _DropArrowButton *dropBtn = [[_DropArrowButton alloc]
@@ -1872,7 +1882,7 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     [dropBtn setBordered:NO];
     dropBtn.buttonType = NSButtonTypeMomentaryChange;
     dropBtn.title      = @"";   // drawn manually in drawRect:
-    dropBtn.toolTip    = @"Show Characters Options";
+    dropBtn.toolTip    = [[NppLocalizer shared] translate:@"Show Characters Options"];
     dropBtn.action     = @selector(_showAllCharsDropdown:);
     dropBtn.target     = self;
     [hoverGroup addSubview:dropBtn];
@@ -1886,7 +1896,7 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     indentBtn.image   = nppToolbarIcon(@"indentGuide");
     indentBtn.action  = @selector(toggleIndentGuides:);
     indentBtn.target  = self;
-    indentBtn.toolTip = @"Toggle Indent Guide";
+    indentBtn.toolTip = [[NppLocalizer shared] translate:@"Toggle Indent Guide"];
     indentBtn.useBlueHighlight = YES;
     indentBtn.toggledOn = _showIndentGuides;
     [outer addSubview:indentBtn];
@@ -2649,8 +2659,8 @@ static void removeMacroFromShortcutsXML(NSString *name) {
     NSArray<NSDictionary *> *tabs = session[@"tabs"];
     if (!tabs.count) {
         NSAlert *a = [[NSAlert alloc] init];
-        a.messageText = @"Empty Session";
-        a.informativeText = @"The selected session file contains no tabs.";
+        a.messageText = [[NppLocalizer shared] translate:@"Empty Session"];
+        a.informativeText = [[NppLocalizer shared] translate:@"The selected session file contains no tabs."];
         [a runModal];
         return;
     }
@@ -2681,7 +2691,7 @@ static void removeMacroFromShortcutsXML(NSString *name) {
 
 - (void)loadSession:(id)sender {
     NSOpenPanel *p = [NSOpenPanel openPanel];
-    p.title = @"Load Session";
+    p.title = [[NppLocalizer shared] translate:@"Load Session"];
     p.allowedFileTypes = @[@"plist"];
     if ([p runModal] != NSModalResponseOK) return;
     [self loadSessionFromPath:p.URL.path];
@@ -2689,7 +2699,7 @@ static void removeMacroFromShortcutsXML(NSString *name) {
 
 - (void)saveSessionAs:(id)sender {
     NSSavePanel *p = [NSSavePanel savePanel];
-    p.title = @"Save Session";
+    p.title = [[NppLocalizer shared] translate:@"Save Session"];
     p.nameFieldStringValue = @"session.plist";
     p.allowedFileTypes = @[@"plist"];
     if ([p runModal] != NSModalResponseOK) return;
@@ -2747,7 +2757,7 @@ static void removeMacroFromShortcutsXML(NSString *name) {
     }
     if (recents.count) {
         [recentMenu addItem:[NSMenuItem separatorItem]];
-        [recentMenu addItem:[[NSMenuItem alloc] initWithTitle:@"Clear Recent Files"
+        [recentMenu addItem:[[NSMenuItem alloc] initWithTitle:[[NppLocalizer shared] translate:@"Clear Recent Files"]
                                                        action:@selector(clearRecentFiles:)
                                                 keyEquivalent:@""]];
     }
@@ -2757,7 +2767,7 @@ static void removeMacroFromShortcutsXML(NSString *name) {
     NSString *path = [sender representedObject];
     if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
         NSAlert *a = [[NSAlert alloc] init];
-        a.messageText = @"File not found";
+        a.messageText = [[NppLocalizer shared] translate:@"File not found"];
         a.informativeText = path;
         [a runModal];
         return;
@@ -2932,7 +2942,7 @@ static void removeMacroFromShortcutsXML(NSString *name) {
 
     // Build macro name list: "Current recorded macro" + saved macros
     NSMutableArray<NSString *> *macroNames = [NSMutableArray array];
-    [macroNames addObject:@"Current recorded macro"];
+    [macroNames addObject:[[NppLocalizer shared] translate:@"Current recorded macro"]];
     for (NSDictionary *m in savedMacros)
         [macroNames addObject:m[@"name"]];
 
@@ -2941,12 +2951,12 @@ static void removeMacroFromShortcutsXML(NSString *name) {
         initWithContentRect:NSMakeRect(0, 0, 340, 180)
                   styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
                     backing:NSBackingStoreBuffered defer:NO];
-    panel.title = @"Run a Macro Multiple Times";
+    panel.title = [[NppLocalizer shared] translate:@"Run a Macro Multiple Times"];
     [panel center];
     NSView *cv = panel.contentView;
 
     // "Macro to run" label
-    NSTextField *lbl = [NSTextField labelWithString:@"Macro to run"];
+    NSTextField *lbl = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Macro to run"]];
     lbl.frame = NSMakeRect(110, 148, 120, 16);
     lbl.alignment = NSTextAlignmentCenter;
     [cv addSubview:lbl];
@@ -2964,7 +2974,7 @@ static void removeMacroFromShortcutsXML(NSString *name) {
     [cv addSubview:macroPopup];
 
     // "Run N times" radio + text field
-    NSButton *radioN = [NSButton radioButtonWithTitle:@"Run" target:nil action:nil];
+    NSButton *radioN = [NSButton radioButtonWithTitle:[[NppLocalizer shared] translate:@"Run"] target:nil action:nil];
     radioN.frame = NSMakeRect(20, 85, 60, 20);
     radioN.state = NSControlStateValueOn;
     [cv addSubview:radioN];
@@ -2973,12 +2983,12 @@ static void removeMacroFromShortcutsXML(NSString *name) {
     timesField.integerValue = 1;
     [cv addSubview:timesField];
 
-    NSTextField *timesLabel = [NSTextField labelWithString:@"times"];
+    NSTextField *timesLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"times"]];
     timesLabel.frame = NSMakeRect(140, 87, 40, 16);
     [cv addSubview:timesLabel];
 
     // "Run until end of file" radio
-    NSButton *radioEOF = [NSButton radioButtonWithTitle:@"Run until the end of file" target:nil action:nil];
+    NSButton *radioEOF = [NSButton radioButtonWithTitle:[[NppLocalizer shared] translate:@"Run until the end of file"] target:nil action:nil];
     radioEOF.frame = NSMakeRect(20, 58, 250, 20);
     radioEOF.state = NSControlStateValueOff;
     [cv addSubview:radioEOF];
@@ -2993,7 +3003,7 @@ static void removeMacroFromShortcutsXML(NSString *name) {
 
     // Run / Cancel buttons
     NSButton *btnRun = [[NSButton alloc] initWithFrame:NSMakeRect(130, 12, 85, 28)];
-    btnRun.title = @"Run";
+    btnRun.title = [[NppLocalizer shared] translate:@"Run"];
     btnRun.bezelStyle = NSBezelStyleRounded;
     btnRun.keyEquivalent = @"\r";
     btnRun.target = NSApp;
@@ -3001,7 +3011,7 @@ static void removeMacroFromShortcutsXML(NSString *name) {
     [cv addSubview:btnRun];
 
     NSButton *btnCancel = [[NSButton alloc] initWithFrame:NSMakeRect(223, 12, 85, 28)];
-    btnCancel.title = @"Cancel";
+    btnCancel.title = [[NppLocalizer shared] translate:@"Cancel"];
     btnCancel.bezelStyle = NSBezelStyleRounded;
     btnCancel.keyEquivalent = @"\033";
     btnCancel.target = NSApp;
@@ -3092,8 +3102,8 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     NSArray *actions = ed.macroActions;
     if (!actions.count) {
         NSAlert *a = [[NSAlert alloc] init];
-        a.messageText = @"No Macro Recorded";
-        a.informativeText = @"Record a macro first using Start Recording.";
+        a.messageText = [[NppLocalizer shared] translate:@"No Macro Recorded"];
+        a.informativeText = [[NppLocalizer shared] translate:@"Record a macro first using Start Recording."];
         a.icon = [[NSImage alloc] initWithContentsOfFile:
             [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/plugins/Config/logo100px.png"]];
         [a runModal];
@@ -3105,33 +3115,33 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         initWithContentRect:NSMakeRect(0, 0, 400, 240)
                   styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
                     backing:NSBackingStoreBuffered defer:NO];
-    panel.title = @"Shortcut";
+    panel.title = [[NppLocalizer shared] translate:@"Shortcut"];
     [panel center];
     NSView *cv = panel.contentView;
 
     // Name field
-    NSTextField *nameLbl = [NSTextField labelWithString:@"Name:"];
+    NSTextField *nameLbl = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Name:"]];
     nameLbl.frame = NSMakeRect(20, 205, 50, 16);
     [cv addSubview:nameLbl];
 
     NSTextField *nameField = [[NSTextField alloc] initWithFrame:NSMakeRect(75, 201, 305, 24)];
-    nameField.placeholderString = @"Macro name";
+    nameField.placeholderString = [[NppLocalizer shared] translate:@"Macro name"];
     [cv addSubview:nameField];
 
     // Modifier checkboxes
-    NSButton *chkCmd = [NSButton checkboxWithTitle:@"\u2318 Command" target:nil action:nil];
+    NSButton *chkCmd = [NSButton checkboxWithTitle:[[NppLocalizer shared] translate:@"\u2318 Command"] target:nil action:nil];
     chkCmd.frame = NSMakeRect(20, 170, 140, 20);
     [cv addSubview:chkCmd];
 
-    NSButton *chkCtrl = [NSButton checkboxWithTitle:@"\u2303 Control" target:nil action:nil];
+    NSButton *chkCtrl = [NSButton checkboxWithTitle:[[NppLocalizer shared] translate:@"\u2303 Control"] target:nil action:nil];
     chkCtrl.frame = NSMakeRect(170, 170, 140, 20);
     [cv addSubview:chkCtrl];
 
-    NSButton *chkOpt = [NSButton checkboxWithTitle:@"\u2325 Option" target:nil action:nil];
+    NSButton *chkOpt = [NSButton checkboxWithTitle:[[NppLocalizer shared] translate:@"\u2325 Option"] target:nil action:nil];
     chkOpt.frame = NSMakeRect(20, 143, 140, 20);
     [cv addSubview:chkOpt];
 
-    NSButton *chkShift = [NSButton checkboxWithTitle:@"\u21E7 Shift" target:nil action:nil];
+    NSButton *chkShift = [NSButton checkboxWithTitle:[[NppLocalizer shared] translate:@"\u21E7 Shift"] target:nil action:nil];
     chkShift.frame = NSMakeRect(170, 143, 100, 20);
     [cv addSubview:chkShift];
 
@@ -3209,7 +3219,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
             conflictLabel.stringValue = msg;
         } else {
             conflictLabel.textColor = [NSColor secondaryLabelColor];
-            conflictLabel.stringValue = @"No shortcut conflicts.";
+            conflictLabel.stringValue = [[NppLocalizer shared] translate:@"No shortcut conflicts."];
         }
     };
 
@@ -3222,7 +3232,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
     // OK / Cancel
     NSButton *btnOK = [[NSButton alloc] initWithFrame:NSMakeRect(195, 12, 90, 28)];
-    btnOK.title = @"OK";
+    btnOK.title = [[NppLocalizer shared] translate:@"OK"];
     btnOK.bezelStyle = NSBezelStyleRounded;
     btnOK.keyEquivalent = @"\r";
     btnOK.target = NSApp;
@@ -3230,7 +3240,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     [cv addSubview:btnOK];
 
     NSButton *btnCancel = [[NSButton alloc] initWithFrame:NSMakeRect(293, 12, 90, 28)];
-    btnCancel.title = @"Cancel";
+    btnCancel.title = [[NppLocalizer shared] translate:@"Cancel"];
     btnCancel.bezelStyle = NSBezelStyleRounded;
     btnCancel.keyEquivalent = @"\033";
     btnCancel.target = NSApp;
@@ -3357,9 +3367,8 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 }
 
 - (void)rebuildRunMenu {
-    NSMenu *runMenu = nil;
-    for (NSMenuItem *mi in [NSApp mainMenu].itemArray)
-        if ([mi.submenu.title isEqualToString:@"Run"]) { runMenu = mi.submenu; break; }
+    NSMenuItem *runItem = [[NSApp mainMenu] itemWithTag:9902];
+    NSMenu *runMenu = runItem.submenu;
     if (!runMenu) return;
 
     // Remove previously inserted user commands (between last built-in item and final separator)
@@ -3803,7 +3812,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
                                                           NSWindowStyleMaskResizable
                                                   backing:NSBackingStoreBuffered
                                                     defer:NO];
-    panel.title = @"Windows";
+    panel.title = [[NppLocalizer shared] translate:@"Windows"];
     [panel center];
 
     NSView *content = panel.contentView;
@@ -3816,11 +3825,11 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     tv.rowHeight = 17;
 
     NSTableColumn *col1 = [[NSTableColumn alloc] initWithIdentifier:@"name"];
-    col1.title = @"File Name";  col1.width = 160; col1.resizingMask = NSTableColumnUserResizingMask;
+    col1.title = [[NppLocalizer shared] translate:@"File Name"];  col1.width = 160; col1.resizingMask = NSTableColumnUserResizingMask;
     NSTableColumn *col2 = [[NSTableColumn alloc] initWithIdentifier:@"ext"];
-    col2.title = @"Type";       col2.width = 60;  col2.resizingMask = NSTableColumnUserResizingMask;
+    col2.title = [[NppLocalizer shared] translate:@"Type"];       col2.width = 60;  col2.resizingMask = NSTableColumnUserResizingMask;
     NSTableColumn *col3 = [[NSTableColumn alloc] initWithIdentifier:@"path"];
-    col3.title = @"Path";       col3.width = 260; col3.resizingMask = NSTableColumnUserResizingMask;
+    col3.title = [[NppLocalizer shared] translate:@"Path"];       col3.width = 260; col3.resizingMask = NSTableColumnUserResizingMask;
     [tv addTableColumn:col1]; [tv addTableColumn:col2]; [tv addTableColumn:col3];
 
     // Use a simple block-based datasource object.
@@ -3830,10 +3839,10 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     sv.documentView = tv;
     [content addSubview:sv];
 
-    NSButton *activateBtn = [NSButton buttonWithTitle:@"Activate" target:nil action:nil];
+    NSButton *activateBtn = [NSButton buttonWithTitle:[[NppLocalizer shared] translate:@"Activate"] target:nil action:nil];
     activateBtn.translatesAutoresizingMaskIntoConstraints = NO;
     activateBtn.keyEquivalent = @"\r";
-    NSButton *closeBtn = [NSButton buttonWithTitle:@"Close" target:nil action:nil];
+    NSButton *closeBtn = [NSButton buttonWithTitle:[[NppLocalizer shared] translate:@"Close"] target:nil action:nil];
     closeBtn.translatesAutoresizingMaskIntoConstraints = NO;
     closeBtn.keyEquivalent = @"\033";
     [content addSubview:activateBtn];
@@ -4268,9 +4277,9 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     EditorView *ed = [self currentEditor];
     if (!ed) return;
     NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = @"Go to Line";
-    [alert addButtonWithTitle:@"Go"];
-    [alert addButtonWithTitle:@"Cancel"];
+    alert.messageText = [[NppLocalizer shared] translate:@"Go to Line"];
+    [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"Go"]];
+    [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"Cancel"]];
     NSTextField *input = [[NSTextField alloc] initWithFrame:NSMakeRect(0,0,160,22)];
     input.placeholderString = [NSString stringWithFormat:@"1 – %ld", (long)ed.lineCount];
     alert.accessoryView = input;
@@ -4501,10 +4510,10 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
 - (void)insertDateTimeCustom:(id)sender {
     NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = @"Insert Date/Time";
-    alert.informativeText = @"Enter an NSDateFormatter format string:";
-    [alert addButtonWithTitle:@"Insert"];
-    [alert addButtonWithTitle:@"Cancel"];
+    alert.messageText = [[NppLocalizer shared] translate:@"Insert Date/Time"];
+    alert.informativeText = [[NppLocalizer shared] translate:@"Enter an NSDateFormatter format string:"];
+    [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"Insert"]];
+    [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"Cancel"]];
     NSTextField *input = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 260, 22)];
     input.stringValue = @"yyyy-MM-dd HH:mm:ss";
     alert.accessoryView = input;
@@ -4707,8 +4716,8 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 - (void)notYetImplemented:(id)sender {
     NSString *title = [(NSMenuItem *)sender title];
     NSAlert *a = [[NSAlert alloc] init];
-    a.messageText = @"Not Yet Implemented";
-    a.informativeText = [NSString stringWithFormat:@"'%@' is not yet implemented in this version.", title];
+    a.messageText = [[NppLocalizer shared] translate:@"Not Yet Implemented"];
+    a.informativeText = [NSString stringWithFormat:[[NppLocalizer shared] translate:@"'%@' is not yet implemented in this version."], title];
     [a runModal];
 }
 
@@ -5084,10 +5093,10 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         // Warn about losing undo history
         if (ed.isModified) {
             NSAlert *a = [[NSAlert alloc] init];
-            a.messageText = @"Encoding Change";
-            a.informativeText = @"The file has unsaved changes. Reloading with the new encoding will discard them. Continue?";
-            [a addButtonWithTitle:@"Reload"];
-            [a addButtonWithTitle:@"Cancel"];
+            a.messageText = [[NppLocalizer shared] translate:@"Encoding Change"];
+            a.informativeText = [[NppLocalizer shared] translate:@"The file has unsaved changes. Reloading with the new encoding will discard them. Continue?"];
+            [a addButtonWithTitle:[[NppLocalizer shared] translate:@"Reload"]];
+            [a addButtonWithTitle:[[NppLocalizer shared] translate:@"Cancel"]];
             a.alertStyle = NSAlertStyleWarning;
             if ([a runModal] != NSAlertFirstButtonReturn) return;
         }
@@ -5448,9 +5457,9 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     if (!_editorContextMenu) {
         // Ultimate fallback: minimal menu
         _editorContextMenu = [[NSMenu alloc] initWithTitle:@""];
-        [_editorContextMenu addItemWithTitle:@"Cut" action:@selector(cut:) keyEquivalent:@""];
-        [_editorContextMenu addItemWithTitle:@"Copy" action:@selector(copy:) keyEquivalent:@""];
-        [_editorContextMenu addItemWithTitle:@"Paste" action:@selector(paste:) keyEquivalent:@""];
+        [_editorContextMenu addItemWithTitle:[[NppLocalizer shared] translate:@"Cut"] action:@selector(cut:) keyEquivalent:@""];
+        [_editorContextMenu addItemWithTitle:[[NppLocalizer shared] translate:@"Copy"] action:@selector(copy:) keyEquivalent:@""];
+        [_editorContextMenu addItemWithTitle:[[NppLocalizer shared] translate:@"Paste"] action:@selector(paste:) keyEquivalent:@""];
     }
     // Prevent macOS from injecting AutoFill, Services, and other system items
     _editorContextMenu.allowsContextMenuPlugIns = NO;
@@ -5562,11 +5571,11 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     if (!path) return;
     if (ed.isModified) {
         NSAlert *alert = [[NSAlert alloc] init];
-        alert.messageText = @"Reload from Disk";
-        alert.informativeText = [NSString stringWithFormat:@"'%@' has unsaved changes.\nReload and discard changes?",
+        alert.messageText = [[NppLocalizer shared] translate:@"Reload from Disk"];
+        alert.informativeText = [NSString stringWithFormat:[[NppLocalizer shared] translate:@"'%@' has unsaved changes.\nReload and discard changes?"],
                                  path.lastPathComponent];
-        [alert addButtonWithTitle:@"Reload"];
-        [alert addButtonWithTitle:@"Cancel"];
+        [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"Reload"]];
+        [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"Cancel"]];
         if ([alert runModal] != NSAlertFirstButtonReturn) return;
     }
     NSError *err;
@@ -5596,7 +5605,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     EditorView *ed = [self currentEditor];
     if (!ed) return;
     NSSavePanel *panel = [NSSavePanel savePanel];
-    panel.title = @"Save a Copy As";
+    panel.title = [[NppLocalizer shared] translate:@"Save a Copy As"];
     if (ed.filePath)
         panel.directoryURL = [NSURL fileURLWithPath:ed.filePath.stringByDeletingLastPathComponent];
     panel.nameFieldStringValue = ed.displayName;
@@ -5613,13 +5622,13 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     NSString *path = ed.filePath;
     if (!path) return;
     NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = @"Rename";
-    alert.informativeText = @"Enter a new filename:";
+    alert.messageText = [[NppLocalizer shared] translate:@"Rename"];
+    alert.informativeText = [[NppLocalizer shared] translate:@"Enter a new filename:"];
     NSTextField *tf = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 260, 22)];
     tf.stringValue = path.lastPathComponent;
     alert.accessoryView = tf;
-    [alert addButtonWithTitle:@"Rename"];
-    [alert addButtonWithTitle:@"Cancel"];
+    [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"Rename"]];
+    [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"Cancel"]];
     alert.window.initialFirstResponder = tf;
     if ([alert runModal] != NSAlertFirstButtonReturn) return;
     NSString *newName = tf.stringValue;
@@ -5642,11 +5651,11 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     NSString *path = ed.filePath;
     if (!path) return;
     NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = @"Move to Trash";
-    alert.informativeText = [NSString stringWithFormat:@"Move '%@' to the Trash?",
+    alert.messageText = [[NppLocalizer shared] translate:@"Move to Trash"];
+    alert.informativeText = [NSString stringWithFormat:[[NppLocalizer shared] translate:@"Move '%@' to the Trash?"],
                              path.lastPathComponent];
-    [alert addButtonWithTitle:@"Move to Trash"];
-    [alert addButtonWithTitle:@"Cancel"];
+    [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"Move to Trash"]];
+    [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"Cancel"]];
     if ([alert runModal] != NSAlertFirstButtonReturn) return;
     NSError *err;
     if ([[NSFileManager defaultManager] trashItemAtURL:[NSURL fileURLWithPath:path]
@@ -5674,10 +5683,10 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 - (BOOL)_promptSaveBeforeClose:(EditorView *)ed {
     if (!ed.isModified) return YES;
     NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = [NSString stringWithFormat:@"Save '%@' before closing?", ed.displayName];
-    [alert addButtonWithTitle:@"Save"];
-    [alert addButtonWithTitle:@"Don't Save"];
-    [alert addButtonWithTitle:@"Cancel"];
+    alert.messageText = [NSString stringWithFormat:[[NppLocalizer shared] translate:@"Save '%@' before closing?"], ed.displayName];
+    [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"Save"]];
+    [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"Don't Save"]];
+    [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"Cancel"]];
     NSModalResponse r = [alert runModal];
     if (r == NSAlertThirdButtonReturn) return NO;  // Cancel
     if (r == NSAlertFirstButtonReturn) {            // Save
@@ -5765,8 +5774,8 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 - (void)columnMode:(id)sender {
     // Show the informational tip dialog (same as Windows NPP "Column Mode…" menu item)
     NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = @"Column Mode Tip";
-    alert.informativeText =
+    alert.messageText = [[NppLocalizer shared] translate:@"Column Mode Tip"];
+    alert.informativeText = [[NppLocalizer shared] translate:
         @"There are 3 ways to switch to column-select mode:\n\n"
          "1. (Keyboard and Mouse)  Hold Option while left-click dragging\n\n"
          "2. (Keyboard only)  Hold Option+Shift while using arrow keys\n\n"
@@ -5774,8 +5783,8 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
          "   Put caret at desired start of column block position, then\n"
          "   execute \u201cBegin/End Select in Column Mode\u201d command;\n"
          "   Move caret to desired end of column block position, then\n"
-         "   execute \u201cBegin/End Select in Column Mode\u201d command again";
-    [alert addButtonWithTitle:@"OK"];
+         "   execute \u201cBegin/End Select in Column Mode\u201d command again"];
+    [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"OK"]];
     [alert beginSheetModalForWindow:self.window completionHandler:nil];
 }
 - (void)selectAllInBraces:(id)sender   { [[self currentEditor] selectAllInBraces:sender]; }
@@ -5910,10 +5919,10 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     NSString *current = [[NSUserDefaults standardUserDefaults] stringForKey:@"kPrefSearchEngineURL"]
                         ?: @"https://www.google.com/search?q=";
     NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText     = @"Change Search Engine";
-    alert.informativeText = @"Enter the search URL. Use %s as the query placeholder (or append the query at the end):";
-    [alert addButtonWithTitle:@"OK"];
-    [alert addButtonWithTitle:@"Cancel"];
+    alert.messageText     = [[NppLocalizer shared] translate:@"Change Search Engine"];
+    alert.informativeText = [[NppLocalizer shared] translate:@"Enter the search URL. Use %s as the query placeholder (or append the query at the end):"];
+    [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"OK"]];
+    [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"Cancel"]];
     NSTextField *tf = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 380, 22)];
     tf.stringValue = current;
     alert.accessoryView = tf;
@@ -6150,13 +6159,13 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
                                            styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable
                                              backing:NSBackingStoreBuffered
                                                defer:NO];
-        panel.title = @"Run...";
+        panel.title = [[NppLocalizer shared] translate:@"Run..."];
         panel.releasedWhenClosed = NO;
         panel.hidesOnDeactivate = NO;
         NSView *v = panel.contentView;
 
         // Title label
-        NSTextField *titleLabel = [NSTextField labelWithString:@"The Program to Run"];
+        NSTextField *titleLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"The Program to Run"]];
         titleLabel.frame = NSMakeRect(0, 118, 560, 18);
         titleLabel.alignment = NSTextAlignmentCenter;
         titleLabel.font = [NSFont systemFontOfSize:13];
@@ -6166,7 +6175,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         cmdCombo = [[NSComboBox alloc] initWithFrame:NSMakeRect(20, 82, 440, 24)];
         cmdCombo.editable = YES;
         cmdCombo.completes = NO;
-        cmdCombo.placeholderString = @"Enter command or URL...";
+        cmdCombo.placeholderString = [[NppLocalizer shared] translate:@"Enter command or URL..."];
         cmdCombo.numberOfVisibleItems = 10;
         [v addSubview:cmdCombo];
 
@@ -6193,7 +6202,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
         // Bottom buttons: Run, Save..., Cancel
         NSButton *runBtn = [[NSButton alloc] initWithFrame:NSMakeRect(165, 16, 80, 28)];
-        runBtn.title = @"Run";
+        runBtn.title = [[NppLocalizer shared] translate:@"Run"];
         runBtn.bezelStyle = NSBezelStyleRounded;
         runBtn.keyEquivalent = @"\r";
         runBtn.target = self;
@@ -6201,14 +6210,14 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         [v addSubview:runBtn];
 
         NSButton *saveBtn = [[NSButton alloc] initWithFrame:NSMakeRect(255, 16, 80, 28)];
-        saveBtn.title = @"Save...";
+        saveBtn.title = [[NppLocalizer shared] translate:@"Save..."];
         saveBtn.bezelStyle = NSBezelStyleRounded;
         saveBtn.target = self;
         saveBtn.action = @selector(_runDlgSave:);
         [v addSubview:saveBtn];
 
         NSButton *cancelBtn = [[NSButton alloc] initWithFrame:NSMakeRect(345, 16, 80, 28)];
-        cancelBtn.title = @"Cancel";
+        cancelBtn.title = [[NppLocalizer shared] translate:@"Cancel"];
         cancelBtn.bezelStyle = NSBezelStyleRounded;
         cancelBtn.keyEquivalent = @"\033";
         cancelBtn.target = panel;
@@ -6327,8 +6336,8 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
                 [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:@[@"-c", openCmd]];
             } @catch (NSException *e) {
                 NSAlert *alert = [[NSAlert alloc] init];
-                alert.messageText = @"Run Error";
-                alert.informativeText = [NSString stringWithFormat:@"Failed to execute:\n%@\n\n%@", openCmd, e.reason];
+                alert.messageText = [[NppLocalizer shared] translate:@"Run Error"];
+                alert.informativeText = [NSString stringWithFormat:[[NppLocalizer shared] translate:@"Failed to execute:\n%@\n\n%@"], openCmd, e.reason];
                 [alert runModal];
             }
         } else {
@@ -6336,8 +6345,8 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
                 [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:@[@"-c", cmd]];
             } @catch (NSException *e) {
                 NSAlert *alert = [[NSAlert alloc] init];
-                alert.messageText = @"Run Error";
-                alert.informativeText = [NSString stringWithFormat:@"Failed to execute:\n%@\n\n%@", cmd, e.reason];
+                alert.messageText = [[NppLocalizer shared] translate:@"Run Error"];
+                alert.informativeText = [NSString stringWithFormat:[[NppLocalizer shared] translate:@"Failed to execute:\n%@\n\n%@"], cmd, e.reason];
                 [alert runModal];
             }
         }
@@ -6360,33 +6369,33 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         initWithContentRect:NSMakeRect(0, 0, 400, 240)
                   styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
                     backing:NSBackingStoreBuffered defer:NO];
-    panel.title = @"Shortcut";
+    panel.title = [[NppLocalizer shared] translate:@"Shortcut"];
     [panel center];
     NSView *cv = panel.contentView;
 
     // Name field
-    NSTextField *nameLbl = [NSTextField labelWithString:@"Name:"];
+    NSTextField *nameLbl = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Name:"]];
     nameLbl.frame = NSMakeRect(20, 205, 50, 16);
     [cv addSubview:nameLbl];
 
     NSTextField *nameField = [[NSTextField alloc] initWithFrame:NSMakeRect(75, 201, 305, 24)];
-    nameField.placeholderString = @"Command name for Run menu";
+    nameField.placeholderString = [[NppLocalizer shared] translate:@"Command name for Run menu"];
     [cv addSubview:nameField];
 
     // Modifier checkboxes — same layout as Shortcut Mapper
-    NSButton *chkCmd = [NSButton checkboxWithTitle:@"\u2318 Command" target:nil action:nil];
+    NSButton *chkCmd = [NSButton checkboxWithTitle:[[NppLocalizer shared] translate:@"\u2318 Command"] target:nil action:nil];
     chkCmd.frame = NSMakeRect(20, 170, 140, 20);
     [cv addSubview:chkCmd];
 
-    NSButton *chkCtrl = [NSButton checkboxWithTitle:@"\u2303 Control" target:nil action:nil];
+    NSButton *chkCtrl = [NSButton checkboxWithTitle:[[NppLocalizer shared] translate:@"\u2303 Control"] target:nil action:nil];
     chkCtrl.frame = NSMakeRect(170, 170, 140, 20);
     [cv addSubview:chkCtrl];
 
-    NSButton *chkOpt = [NSButton checkboxWithTitle:@"\u2325 Option" target:nil action:nil];
+    NSButton *chkOpt = [NSButton checkboxWithTitle:[[NppLocalizer shared] translate:@"\u2325 Option"] target:nil action:nil];
     chkOpt.frame = NSMakeRect(20, 143, 140, 20);
     [cv addSubview:chkOpt];
 
-    NSButton *chkShift = [NSButton checkboxWithTitle:@"\u21E7 Shift" target:nil action:nil];
+    NSButton *chkShift = [NSButton checkboxWithTitle:[[NppLocalizer shared] translate:@"\u21E7 Shift"] target:nil action:nil];
     chkShift.frame = NSMakeRect(170, 143, 100, 20);
     [cv addSubview:chkShift];
 
@@ -6461,7 +6470,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
             conflictLabel.stringValue = msg;
         } else {
             conflictLabel.textColor = [NSColor secondaryLabelColor];
-            conflictLabel.stringValue = @"No shortcut conflicts.";
+            conflictLabel.stringValue = [[NppLocalizer shared] translate:@"No shortcut conflicts."];
         }
     };
 
@@ -6474,7 +6483,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
     // OK / Cancel
     NSButton *btnOK = [[NSButton alloc] initWithFrame:NSMakeRect(195, 12, 90, 28)];
-    btnOK.title = @"OK";
+    btnOK.title = [[NppLocalizer shared] translate:@"OK"];
     btnOK.bezelStyle = NSBezelStyleRounded;
     btnOK.keyEquivalent = @"\r";
     btnOK.target = NSApp;
@@ -6482,7 +6491,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     [cv addSubview:btnOK];
 
     NSButton *btnCancel = [[NSButton alloc] initWithFrame:NSMakeRect(293, 12, 90, 28)];
-    btnCancel.title = @"Cancel";
+    btnCancel.title = [[NppLocalizer shared] translate:@"Cancel"];
     btnCancel.bezelStyle = NSBezelStyleRounded;
     btnCancel.keyEquivalent = @"\033";
     btnCancel.target = NSApp;
@@ -6644,7 +6653,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
                                            styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable
                                              backing:NSBackingStoreBuffered
                                                defer:NO];
-        panel.title = @"Find Characters in Range...";
+        panel.title = [[NppLocalizer shared] translate:@"Find Characters in Range..."];
         panel.releasedWhenClosed = NO;
         panel.hidesOnDeactivate = NO;
         NSView *v = panel.contentView;
@@ -6657,7 +6666,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         };
 
         // Radio buttons — range selection
-        radioNonASCII = [NSButton radioButtonWithTitle:@"Non-ASCII characters (128\u2013255)"
+        radioNonASCII = [NSButton radioButtonWithTitle:[[NppLocalizer shared] translate:@"Non-ASCII characters (128\u2013255)"]
                                                 target:self action:@selector(_findCharRangeRadio:)];
         radioNonASCII.frame = NSMakeRect(20, y, 300, 20);
         radioNonASCII.tag = 1;
@@ -6665,14 +6674,14 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         [v addSubview:radioNonASCII];
         y -= 24;
 
-        radioASCII = [NSButton radioButtonWithTitle:@"ASCII characters (0\u2013127)"
+        radioASCII = [NSButton radioButtonWithTitle:[[NppLocalizer shared] translate:@"ASCII characters (0\u2013127)"]
                                              target:self action:@selector(_findCharRangeRadio:)];
         radioASCII.frame = NSMakeRect(20, y, 300, 20);
         radioASCII.tag = 2;
         [v addSubview:radioASCII];
         y -= 24;
 
-        radioCustom = [NSButton radioButtonWithTitle:@"Custom range (0\u2013255):"
+        radioCustom = [NSButton radioButtonWithTitle:[[NppLocalizer shared] translate:@"Custom range (0\u2013255):"]
                                               target:self action:@selector(_findCharRangeRadio:)];
         radioCustom.frame = NSMakeRect(20, y, 190, 20);
         radioCustom.tag = 3;
@@ -6697,15 +6706,15 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         // Direction group
         y -= 34;
         NSBox *dirBox = [[NSBox alloc] initWithFrame:NSMakeRect(20, y - 30, 150, 55)];
-        dirBox.title = @"Direction";
+        dirBox.title = [[NppLocalizer shared] translate:@"Direction"];
         dirBox.titlePosition = NSAtTop;
 
-        radioDirUp = [NSButton radioButtonWithTitle:@"Up" target:self action:@selector(_findCharDirRadio:)];
+        radioDirUp = [NSButton radioButtonWithTitle:[[NppLocalizer shared] translate:@"Up"] target:self action:@selector(_findCharDirRadio:)];
         radioDirUp.frame = NSMakeRect(10, 5, 50, 18);
         radioDirUp.tag = 10;
         [dirBox addSubview:radioDirUp];
 
-        radioDirDown = [NSButton radioButtonWithTitle:@"Down" target:self action:@selector(_findCharDirRadio:)];
+        radioDirDown = [NSButton radioButtonWithTitle:[[NppLocalizer shared] translate:@"Down"] target:self action:@selector(_findCharDirRadio:)];
         radioDirDown.frame = NSMakeRect(65, 5, 60, 18);
         radioDirDown.tag = 11;
         radioDirDown.state = NSControlStateValueOn;
@@ -6713,13 +6722,13 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         [v addSubview:dirBox];
 
         // Wrap around
-        wrapCheck = [NSButton checkboxWithTitle:@"Wrap around" target:nil action:nil];
+        wrapCheck = [NSButton checkboxWithTitle:[[NppLocalizer shared] translate:@"Wrap around"] target:nil action:nil];
         wrapCheck.frame = NSMakeRect(185, y - 15, 120, 20);
         [v addSubview:wrapCheck];
 
         // Find and Close buttons — horizontal at the bottom
         NSButton *findBtn = [[NSButton alloc] initWithFrame:NSMakeRect(200, 12, 85, 28)];
-        findBtn.title = @"Find";
+        findBtn.title = [[NppLocalizer shared] translate:@"Find"];
         findBtn.bezelStyle = NSBezelStyleRounded;
         findBtn.keyEquivalent = @"\r";
         findBtn.target = self;
@@ -6727,7 +6736,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         [v addSubview:findBtn];
 
         NSButton *closeBtn = [[NSButton alloc] initWithFrame:NSMakeRect(295, 12, 85, 28)];
-        closeBtn.title = @"Close";
+        closeBtn.title = [[NppLocalizer shared] translate:@"Close"];
         closeBtn.bezelStyle = NSBezelStyleRounded;
         closeBtn.target = panel;
         closeBtn.action = @selector(close);
@@ -6818,8 +6827,8 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         int e = rangeEndField ? rangeEndField.intValue : 255;
         if (s < 0 || s > 255 || e < 0 || e > 255 || s > e) {
             NSAlert *alert = [[NSAlert alloc] init];
-            alert.messageText = @"Invalid Range";
-            alert.informativeText = @"Range values must be 0-255 and start must be <= end.";
+            alert.messageText = [[NppLocalizer shared] translate:@"Invalid Range"];
+            alert.informativeText = [[NppLocalizer shared] translate:@"Range values must be 0-255 and start must be <= end."];
             [alert runModal];
             return;
         }
@@ -7002,8 +7011,8 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         [self openFileAtPath:ctxPath];
     } else {
         NSAlert *a = [[NSAlert alloc] init];
-        a.messageText     = @"contextMenu.xml Not Found";
-        a.informativeText = @"Restart Notepad++ to regenerate the default contextMenu.xml.";
+        a.messageText     = [[NppLocalizer shared] translate:@"contextMenu.xml Not Found"];
+        a.informativeText = [[NppLocalizer shared] translate:@"Restart Notepad++ to regenerate the default contextMenu.xml."];
         [a runModal];
     }
 }
@@ -7026,7 +7035,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
                   styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
                     backing:NSBackingStoreBuffered
                       defer:NO];
-    panel.title = @"Command Line Arguments";
+    panel.title = [[NppLocalizer shared] translate:@"Command Line Arguments"];
     [panel center];
 
     NSScrollView *scroll = [[NSScrollView alloc] initWithFrame:NSMakeRect(15, 45, 590, 460)];
@@ -7086,7 +7095,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     [panel.contentView addSubview:scroll];
 
     NSButton *btnOK = [[NSButton alloc] initWithFrame:NSMakeRect(265, 8, 90, 28)];
-    btnOK.title = @"OK";
+    btnOK.title = [[NppLocalizer shared] translate:@"OK"];
     btnOK.bezelStyle = NSBezelStyleRounded;
     btnOK.keyEquivalent = @"\r";
     btnOK.target = NSApp;
@@ -7150,8 +7159,8 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     for (NSDictionary *m in macroList) [names addObject:m[@"name"]];
     if (!names.count) {
         NSAlert *a = [[NSAlert alloc] init];
-        a.messageText = @"No Saved Macros";
-        a.informativeText = @"Record and save a macro first.";
+        a.messageText = [[NppLocalizer shared] translate:@"No Saved Macros"];
+        a.informativeText = [[NppLocalizer shared] translate:@"Record and save a macro first."];
         [a runModal];
         return;
     }
@@ -7160,14 +7169,14 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
                                                 styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable
                                                   backing:NSBackingStoreBuffered
                                                     defer:NO];
-    panel.title = @"Macro Manager";
+    panel.title = [[NppLocalizer shared] translate:@"Macro Manager"];
     [panel center];
     NSView *cv = panel.contentView;
 
     NSTableView *tv = [[NSTableView alloc] init];
     tv.allowsMultipleSelection = NO;
     NSTableColumn *col = [[NSTableColumn alloc] initWithIdentifier:@"name"];
-    col.title = @"Macro Name"; col.resizingMask = NSTableColumnAutoresizingMask;
+    col.title = [[NppLocalizer shared] translate:@"Macro Name"]; col.resizingMask = NSTableColumnAutoresizingMask;
     [tv addTableColumn:col];
     NSScrollView *sv = [[NSScrollView alloc] init];
     sv.translatesAutoresizingMaskIntoConstraints = NO;
@@ -7175,9 +7184,9 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     sv.documentView = tv;
     [cv addSubview:sv];
 
-    NSButton *delBtn  = [NSButton buttonWithTitle:@"Delete" target:nil action:nil];
+    NSButton *delBtn  = [NSButton buttonWithTitle:[[NppLocalizer shared] translate:@"Delete"] target:nil action:nil];
     delBtn.translatesAutoresizingMaskIntoConstraints = NO;
-    NSButton *doneBtn = [NSButton buttonWithTitle:@"Done" target:nil action:nil];
+    NSButton *doneBtn = [NSButton buttonWithTitle:[[NppLocalizer shared] translate:@"Done"] target:nil action:nil];
     doneBtn.translatesAutoresizingMaskIntoConstraints = NO;
     doneBtn.keyEquivalent = @"\r";
     [cv addSubview:delBtn]; [cv addSubview:doneBtn];
@@ -7258,7 +7267,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://notepad-plus-plus-mac.org"]];
 }
 - (void)openNppProjectPage:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/orgs/nppmss/repositories"]];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/notepad-plus-plus-mac"]];
 }
 - (void)openNppManual:(id)sender {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://npp-user-manual.org"]];
@@ -7499,11 +7508,11 @@ static int64_t _sysctlInt(const char *name) {
 
     // Use NSAlert instead of NSPanel — no modal locking issues
     NSAlert *a = [[NSAlert alloc] init];
-    a.messageText = @"Debug Info";
+    a.messageText = [[NppLocalizer shared] translate:@"Debug Info"];
     a.icon = [[NSImage alloc] initWithContentsOfFile:
         [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/plugins/Config/logo100px.png"]];
-    [a addButtonWithTitle:@"Copy"];
-    [a addButtonWithTitle:@"OK"];
+    [a addButtonWithTitle:[[NppLocalizer shared] translate:@"Copy"]];
+    [a addButtonWithTitle:[[NppLocalizer shared] translate:@"OK"]];
 
     // Scrollable text view as accessory
     NSScrollView *scroll = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 480, 320)];

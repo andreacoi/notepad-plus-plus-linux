@@ -108,6 +108,7 @@ static NSString *normalizeForLookup(NSString *s) {
 }
 
 - (BOOL)loadLanguageNamed:(nullable NSString *)languageName {
+    NSLog(@"[NppLocalizer] loadLanguageNamed: '%@'", languageName);
     // Normalise: nil/empty/"english" all mean "reset to English".
     NSString *stem = [languageName lowercaseString];
     BOOL resetToEnglish = (stem.length == 0 || [stem isEqualToString:@"english"]);
@@ -141,8 +142,10 @@ static NSString *normalizeForLookup(NSString *s) {
     // Parse both XML files.
     NSDictionary *englishRaw = [self _parseXMLAtPath:englishPath];
     NSDictionary *targetRaw  = [self _parseXMLAtPath:targetPath];
+    NSLog(@"[NppLocalizer] englishRaw=%lu entries, targetRaw=%lu entries for '%@'",
+          (unsigned long)englishRaw.count, (unsigned long)targetRaw.count, stem);
     if (englishRaw.count == 0 || targetRaw.count == 0) {
-        NSLog(@"NppLocalizer: failed to parse XML for '%@'.", stem);
+        NSLog(@"NppLocalizer: failed to parse XML for '%@'. path=%@", stem, targetPath);
         return NO;
     }
 
@@ -245,6 +248,7 @@ static NSString *normalizeForLookup(NSString *s) {
     if (english.length == 0) return english;
     NSString *key = normalizeForLookup(english);
     NSString *translated = self.translationMap[key];
+    // Uncomment for debug: if (!translated) NSLog(@"[NppLocalizer] MISS: \"%@\"", english);
     return translated ?: english;
 }
 
@@ -296,7 +300,7 @@ static NSString *normalizeForLookup(NSString *s) {
     NSString *appSupport = [NSSearchPathForDirectoriesInDomains(
         NSApplicationSupportDirectory, NSUserDomainMask, YES) firstObject];
     NSString *dir = [appSupport stringByAppendingPathComponent:
-                     @"Notepad++/nativeLang"];
+                     @"Notepad++/localization"];
     [[NSFileManager defaultManager] createDirectoryAtPath:dir
                               withIntermediateDirectories:YES
                                                attributes:nil
@@ -306,7 +310,7 @@ static NSString *normalizeForLookup(NSString *s) {
 
 + (NSString *)bundledLanguageDirectory {
     return [NSBundle.mainBundle.resourcePath
-            stringByAppendingPathComponent:@"nativeLang"];
+            stringByAppendingPathComponent:@"localization"];
 }
 
 // ---------------------------------------------------------------------------
@@ -389,9 +393,13 @@ static NSString *normalizeForLookup(NSString *s) {
         initWithData:data
              options:NSXMLNodeOptionsNone
                error:&error];
-    if (!doc || error) {
-        NSLog(@"NppLocalizer: XML parse error in %@: %@", path.lastPathComponent, error);
+    if (!doc) {
+        NSLog(@"NppLocalizer: XML parse FAILED for %@: %@", path.lastPathComponent, error);
         return @{};
+    }
+    if (error) {
+        NSLog(@"NppLocalizer: XML parse WARNING for %@ (continuing): %@", path.lastPathComponent, error);
+        // Continue — NSXMLDocument may return a valid doc with non-fatal warnings
     }
 
     NSXMLElement *root = doc.rootElement; // <NotepadPlus>
