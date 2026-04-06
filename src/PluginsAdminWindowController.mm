@@ -23,6 +23,8 @@
 @property (nonatomic, copy) NSString *macVersion;         // macOS version
 @property (nonatomic, copy) NSString *macRepository;      // macOS download URL
 @property (nonatomic, copy) NSString *macPluginID;        // macOS SHA-256 of zip
+@property (nonatomic, copy) NSString *macAuthor;          // macOS port author
+@property (nonatomic, copy) NSString *macHomepage;        // macOS port homepage
 @end
 
 @implementation NppPluginEntry
@@ -416,6 +418,8 @@ static NSString *const kPluginListVersion = @"0.1.0";
             pe.macVersion     = macEntry[@"version"] ?: pe.version;
             pe.macRepository  = macEntry[@"repository"] ?: @"";
             pe.macPluginID    = macEntry[@"id"] ?: @"";
+            pe.macAuthor      = macEntry[@"mac-author"] ?: @"";
+            pe.macHomepage    = macEntry[@"mac-homepage"] ?: @"";
             // Use macOS folder name for install path if it differs
             NSString *macFolder = macEntry[@"folder-name"];
             if (macFolder.length > 0 && ![macFolder isEqualToString:pe.folderName]) {
@@ -631,6 +635,10 @@ static NSString *const kPluginListVersion = @"0.1.0";
         [desc appendFormat:@"Author: %@\n", pe.author];
     if (pe.homepage.length > 0)
         [desc appendFormat:@"Homepage: %@\n", pe.homepage];
+    if (pe.macAuthor.length > 0)
+        [desc appendFormat:@"macOS Port Author: %@\n", pe.macAuthor];
+    if (pe.macHomepage.length > 0)
+        [desc appendFormat:@"macOS Homepage: %@\n", pe.macHomepage];
 
     [_descriptionView setString:desc];
 }
