@@ -1017,15 +1017,11 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         case 400: {
             NSPopUpButton *popup = (NSPopUpButton *)sender;
             NSString *selectedName = popup.selectedItem.title;
-            NSLog(@"[Prefs] Language popup changed to: '%@' (len=%lu)", selectedName, (unsigned long)selectedName.length);
             if (selectedName.length > 0) {
                 NSDictionary *langMap = [NppLocalizer availableLanguagesMap];
                 NSString *stem = langMap[selectedName];
-                NSLog(@"[Prefs] langMap lookup: '%@' -> stem='%@' (map has %lu entries)", selectedName, stem, (unsigned long)langMap.count);
                 if (stem) {
                     [[NppLocalizer shared] loadLanguageNamed:stem];
-                } else {
-                    NSLog(@"[Prefs] FAILED: No stem found for '%@'", selectedName);
                 }
             }
             return;

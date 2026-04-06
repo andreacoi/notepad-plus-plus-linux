@@ -108,7 +108,6 @@ static NSString *normalizeForLookup(NSString *s) {
 }
 
 - (BOOL)loadLanguageNamed:(nullable NSString *)languageName {
-    NSLog(@"[NppLocalizer] loadLanguageNamed: '%@'", languageName);
     // Normalise: nil/empty/"english" all mean "reset to English".
     NSString *stem = [languageName lowercaseString];
     BOOL resetToEnglish = (stem.length == 0 || [stem isEqualToString:@"english"]);
@@ -142,10 +141,8 @@ static NSString *normalizeForLookup(NSString *s) {
     // Parse both XML files.
     NSDictionary *englishRaw = [self _parseXMLAtPath:englishPath];
     NSDictionary *targetRaw  = [self _parseXMLAtPath:targetPath];
-    NSLog(@"[NppLocalizer] englishRaw=%lu entries, targetRaw=%lu entries for '%@'",
-          (unsigned long)englishRaw.count, (unsigned long)targetRaw.count, stem);
     if (englishRaw.count == 0 || targetRaw.count == 0) {
-        NSLog(@"NppLocalizer: failed to parse XML for '%@'. path=%@", stem, targetPath);
+        NSLog(@"NppLocalizer: failed to parse XML for '%@'.", stem);
         return NO;
     }
 

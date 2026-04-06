@@ -1,5 +1,9 @@
 # Build output
 build/
+build-release/
+
+# Release artifacts (DMGs go as GitHub Release assets, not in repo)
+downloads/*.dmg
 
 # Temporary working files
 tmp/
