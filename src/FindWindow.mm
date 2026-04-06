@@ -20,9 +20,11 @@ static const CGFloat kLeftM     = 30;    // left margin for checkboxes
 static const CGFloat kLabelR    = 140;   // right edge of "Find what:" label
 static const CGFloat kFieldL    = 145;   // left edge of combo boxes
 static const CGFloat kFieldR    = 410;   // right edge of combo boxes (from left)
-static const CGFloat kBtnL      = 450;   // left edge of buttons column
-static const CGFloat kBtnW      = 155;   // button width
-static const CGFloat kBtnH      = 28;    // button height
+// Button width: computed in +initialize so "Find All in All Opened" fits on one line
+// and "Documents" wraps to the next line.
+static CGFloat kBtnW = 200;
+static CGFloat kBtnL = 408;
+static const CGFloat kBtnH      = 28;    // single-line button height
 static const CGFloat kRowH      = 32;    // vertical spacing between rows
 static const CGFloat kChkH      = 20;    // checkbox height
 
@@ -68,23 +70,30 @@ static const CGFloat kChkH      = 20;    // checkbox height
 
 static FindWindow *_sharedInstance = nil;
 
++ (void)initialize {
+    if (self != [FindWindow class]) return;
+    NSFont *font = [NSFont systemFontOfSize:12];
+    NSString *longestPrefix = @"Replace All in All Opened";
+    NSSize sz = [longestPrefix sizeWithAttributes:@{NSFontAttributeName: font}];
+    kBtnW = ceil(sz.width) + 30;
+    kBtnL = kWinW - kBtnW - 12;
+}
+
 + (instancetype)sharedWindow {
     if (!_sharedInstance) _sharedInstance = [[FindWindow alloc] init];
     return _sharedInstance;
 }
 
 - (instancetype)init {
-    NSPanel *panel = [[NSPanel alloc]
+    NSWindow *win = [[NSWindow alloc]
         initWithContentRect:NSMakeRect(0, 0, kWinW, 420)
                   styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable)
                     backing:NSBackingStoreBuffered defer:NO];
-    panel.title = [[NppLocalizer shared] translate:@"Find"];
-    panel.floatingPanel = YES;
-    panel.becomesKeyOnlyIfNeeded = YES;
-    panel.minSize = NSMakeSize(540, 350);
-    [panel center];
+    win.title = [[NppLocalizer shared] translate:@"Find"];
+    win.minSize = NSMakeSize(540, 350);
+    [win center];
 
-    self = [super initWithWindow:panel];
+    self = [super initWithWindow:win];
     if (self) {
         _currentTab = FindWindowTabFind;
         [self _buildAllTabs];
@@ -232,10 +241,60 @@ static void _placeFieldRow(NSView *parent, NSTextField *label, NSComboBox *combo
     combo.frame  = NSMakeRect(fieldLeft, topY, fieldRight - fieldLeft, 24);
 }
 
-/// Place a button in the right column.
+/// Place a button in the right column (fixed frame, for tabs that don't need dynamic height).
 static void _placeBtn(NSView *parent, NSButton *btn, CGFloat topY) {
+    btn.translatesAutoresizingMaskIntoConstraints = YES;
     [parent addSubview:btn];
     btn.frame = NSMakeRect(kBtnL, topY, kBtnW, kBtnH);
+}
+
+/// Check if title text fits in one line at kBtnW. If not, find the natural
+/// break point and insert a newline so NSButton renders it as two lines.
+static NSString *_wrapTitle(NSString *title, NSFont *font) {
+    CGFloat innerW = kBtnW - 20;
+    NSSize sz = [title sizeWithAttributes:@{NSFontAttributeName: font}];
+    if (sz.width <= innerW) return title; // fits in one line
+
+    // Find the last space that fits on the first line
+    NSArray *words = [title componentsSeparatedByString:@" "];
+    NSMutableString *line1 = [NSMutableString string];
+    NSInteger breakIdx = 0;
+    for (NSInteger i = 0; i < (NSInteger)words.count; i++) {
+        NSString *test = line1.length > 0
+            ? [NSString stringWithFormat:@"%@ %@", line1, words[i]]
+            : words[i];
+        NSSize testSz = [test sizeWithAttributes:@{NSFontAttributeName: font}];
+        if (testSz.width > innerW && line1.length > 0) {
+            breakIdx = i;
+            break;
+        }
+        [line1 setString:test];
+        breakIdx = i + 1;
+    }
+    if (breakIdx >= (NSInteger)words.count) return title; // couldn't break
+
+    NSString *part1 = [[words subarrayWithRange:NSMakeRange(0, breakIdx)]
+                        componentsJoinedByString:@" "];
+    NSString *part2 = [[words subarrayWithRange:NSMakeRange(breakIdx, words.count - breakIdx)]
+                        componentsJoinedByString:@" "];
+    return [NSString stringWithFormat:@"%@\n%@", part1, part2];
+}
+
+/// Place a button with dynamic height. Returns Y for next button.
+static CGFloat _placeBtnDyn(NSView *parent, NSButton *btn, CGFloat topY) {
+    btn.translatesAutoresizingMaskIntoConstraints = YES;
+    btn.alignment = NSTextAlignmentCenter;
+
+    NSString *wrapped = _wrapTitle(btn.title, btn.font);
+    BOOL multiLine = [wrapped containsString:@"\n"];
+    if (multiLine) {
+        btn.title = wrapped;
+    }
+
+    CGFloat h = multiLine ? kBtnH + 18 : kBtnH;
+    [parent addSubview:btn];
+    btn.frame = NSMakeRect(kBtnL, topY, kBtnW, h);
+    return topY - h - 4;
 }
 
 /// Place a checkbox at the given position.
@@ -343,12 +402,14 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     _frInSelection = _mkChk([[NppLocalizer shared] translate:@"In selection"]);
     _placeChk(v, _frInSelection, kFieldR - 60, H - 70);
 
-    // Buttons (right column, matching Windows vertical stack)
-    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Find Next"],                        @selector(_findNext:), self),        H - 34);
-    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Count"],                            @selector(_count:), self),           H - 66);
-    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Find All in Current Document"],     @selector(_findAllCurrent:), self),  H - 98);
-    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Find All in All Opened Documents"], @selector(_findAllOpened:), self),   H - 130);
-    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Close"],                            @selector(_close:), self),           H - 162);
+    // Buttons (right column, dynamic height for wrapping labels)
+    NppLocalizer *loc = [NppLocalizer shared];
+    CGFloat btnY = H - 34;
+    btnY = _placeBtnDyn(v, _mkBtn([loc translate:@"Find Next"],                        @selector(_findNext:), self),        btnY);
+    btnY = _placeBtnDyn(v, _mkBtn([loc translate:@"Count"],                            @selector(_count:), self),           btnY);
+    btnY = _placeBtnDyn(v, _mkBtn([loc translate:@"Find in Current Document"],     @selector(_findAllCurrent:), self),  btnY);
+    btnY = _placeBtnDyn(v, _mkBtn([loc translate:@"Find in All Documents"], @selector(_findAllOpened:), self),   btnY);
+    btnY = _placeBtnDyn(v, _mkBtn([loc translate:@"Close"],                            @selector(_close:), self),           btnY);
 
     // Left-side checkboxes (below the field row, matching Windows)
     _frBackward  = _mkChk([[NppLocalizer shared] translate:@"Backward direction"]);
@@ -392,7 +453,7 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Find Next"],                            @selector(_findNext:), self),        H - 34);
     _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Replace"],                              @selector(_replace:), self),         H - 66);
     _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Replace All"],                          @selector(_replaceAll:), self),      H - 98);
-    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Replace All in All Opened Documents"],  @selector(_replaceAllOpened:), self),H - 130);
+    _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Replace in All Documents"],  @selector(_replaceAllOpened:), self),H - 130);
     _placeBtn(v, _mkBtn([[NppLocalizer shared] translate:@"Close"],                                @selector(_close:), self),           H - 162);
 
     // Checkboxes (same as Find tab, reuse the same ivars since only one tab visible at a time)
