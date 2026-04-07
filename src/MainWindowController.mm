@@ -7008,15 +7008,17 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 }
 
 - (void)editPopupContextMenu:(id)sender {
+    NppLocalizer *loc = [NppLocalizer shared];
+    NSAlert *a = [[NSAlert alloc] init];
+    a.messageText = [loc translate:@"Editing contextMenu"];
+    a.informativeText = [loc translate:@"Editing contextMenu.xml allows you to modify your Notepad++ popup context menu on edit zone.\nYou have to restart your Notepad++ to take effect after modifying contextMenu.xml."];
+    [a addButtonWithTitle:[loc translate:@"OK"]];
+    [a runModal];
+
     // Open ~/.notepad++/contextMenu.xml for editing in Notepad++ itself
     NSString *ctxPath = [nppConfigDir() stringByAppendingPathComponent:@"contextMenu.xml"];
     if ([[NSFileManager defaultManager] fileExistsAtPath:ctxPath]) {
         [self openFileAtPath:ctxPath];
-    } else {
-        NSAlert *a = [[NSAlert alloc] init];
-        a.messageText     = [[NppLocalizer shared] translate:@"contextMenu.xml Not Found"];
-        a.informativeText = [[NppLocalizer shared] translate:@"Restart Notepad++ to regenerate the default contextMenu.xml."];
-        [a runModal];
     }
 }
 
