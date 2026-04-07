@@ -1978,11 +1978,6 @@ static const sptr_t  kMarkColors[5]  = {
     0xFF64C8, // style 5: violet (R=200, G=100, B=255)
 };
 
-// Scintilla indicator-range messages not in the main header
-static const unsigned int kSCI_IndicatorNext     = 2432;
-static const unsigned int kSCI_IndicatorPrevious = 2433;
-static const unsigned int kSCI_IndicatorEnd      = 2552;
-
 // Spell-check indicator (slot 17, INDIC_SQUIGGLE red)
 static const int kSpellIndicator = 17;
 
@@ -2655,18 +2650,30 @@ static const unsigned int kSCI_SetRectSelAnchor          = 2590;
 
 #pragma mark - Change History Navigation
 
-static const int kHistoryMask =
-    (1 << SC_MARKNUM_HISTORY_MODIFIED) |
-    (1 << SC_MARKNUM_HISTORY_SAVED) |
-    (1 << SC_MARKNUM_HISTORY_REVERTED_TO_MODIFIED) |
-    (1 << SC_MARKNUM_HISTORY_REVERTED_TO_ORIGIN);
+// Only jump to unsaved modifications (not saved/reverted-to-origin lines)
+static const int kHistoryMask = (1 << SC_MARKNUM_HISTORY_MODIFIED);
 
 - (void)goToNextChange:(id)sender {
     ScintillaView *sci = _scintillaView;
     sptr_t cur = [sci message:SCI_LINEFROMPOSITION
                        wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]];
     sptr_t count = [sci message:SCI_GETLINECOUNT];
-    for (sptr_t ln = cur + 1; ln < count; ln++) {
+
+    // Skip past the current block of modified lines
+    sptr_t ln = cur + 1;
+    while (ln < count && ([sci message:SCI_MARKERGET wParam:(uptr_t)ln] & kHistoryMask))
+        ln++;
+    // Now find the start of the next modified block
+    while (ln < count) {
+        if ([sci message:SCI_MARKERGET wParam:(uptr_t)ln] & kHistoryMask) {
+            [sci message:SCI_GOTOLINE wParam:(uptr_t)ln];
+            [sci message:SCI_SCROLLCARET];
+            return;
+        }
+        ln++;
+    }
+    // Wrap: search from top
+    for (ln = 0; ln < cur; ln++) {
         if ([sci message:SCI_MARKERGET wParam:(uptr_t)ln] & kHistoryMask) {
             [sci message:SCI_GOTOLINE wParam:(uptr_t)ln];
             [sci message:SCI_SCROLLCARET];
@@ -2680,9 +2687,32 @@ static const int kHistoryMask =
     ScintillaView *sci = _scintillaView;
     sptr_t cur = [sci message:SCI_LINEFROMPOSITION
                        wParam:(uptr_t)[sci message:SCI_GETCURRENTPOS]];
-    for (sptr_t ln = cur - 1; ln >= 0; ln--) {
+    sptr_t count = [sci message:SCI_GETLINECOUNT];
+
+    // Skip past the current block of modified lines going backward
+    sptr_t ln = cur - 1;
+    while (ln >= 0 && ([sci message:SCI_MARKERGET wParam:(uptr_t)ln] & kHistoryMask))
+        ln--;
+    // Now find the end of the previous modified block, then jump to its start
+    while (ln >= 0) {
         if ([sci message:SCI_MARKERGET wParam:(uptr_t)ln] & kHistoryMask) {
-            [sci message:SCI_GOTOLINE wParam:(uptr_t)ln];
+            // Found the end of a block — walk back to its start
+            sptr_t blockStart = ln;
+            while (blockStart > 0 && ([sci message:SCI_MARKERGET wParam:(uptr_t)(blockStart - 1)] & kHistoryMask))
+                blockStart--;
+            [sci message:SCI_GOTOLINE wParam:(uptr_t)blockStart];
+            [sci message:SCI_SCROLLCARET];
+            return;
+        }
+        ln--;
+    }
+    // Wrap: search from bottom
+    for (ln = count - 1; ln > cur; ln--) {
+        if ([sci message:SCI_MARKERGET wParam:(uptr_t)ln] & kHistoryMask) {
+            sptr_t blockStart = ln;
+            while (blockStart > 0 && ([sci message:SCI_MARKERGET wParam:(uptr_t)(blockStart - 1)] & kHistoryMask))
+                blockStart--;
+            [sci message:SCI_GOTOLINE wParam:(uptr_t)blockStart];
             [sci message:SCI_SCROLLCARET];
             return;
         }
@@ -4540,6 +4570,55 @@ static const unsigned int kSCI_GetBidirectional = 2708;
     for (NSInteger i = 1; i <= 5; i++) [self clearMarkStyle:i];
 }
 
+/// Find the next indicator range start for any of the 5 mark styles, searching forward from pos.
+/// Returns -1 if none found.
+- (sptr_t)_findNextMarkFrom:(sptr_t)from limit:(sptr_t)limit {
+    ScintillaView *sci = _scintillaView;
+    sptr_t best = -1;
+    for (int i = 0; i < 5; i++) {
+        int ind = kMarkInds[i];
+        [sci message:SCI_SETINDICATORCURRENT wParam:(uptr_t)ind];
+        sptr_t pos = from;
+        while (pos < limit) {
+            sptr_t val = [sci message:SCI_INDICATORVALUEAT wParam:(uptr_t)ind lParam:pos];
+            if (val != 0) {
+                if (best < 0 || pos < best) best = pos;
+                break;
+            }
+            sptr_t end = [sci message:SCI_INDICATOREND wParam:(uptr_t)ind lParam:pos];
+            if (end <= pos) break;
+            pos = end;
+        }
+    }
+    return best;
+}
+
+/// Find the previous indicator range for any of the 5 mark styles, searching backward from pos.
+/// Returns -1 if none found.
+- (sptr_t)_findPrevMarkFrom:(sptr_t)from {
+    ScintillaView *sci = _scintillaView;
+    sptr_t best = -1;
+    for (int i = 0; i < 5; i++) {
+        int ind = kMarkInds[i];
+        [sci message:SCI_SETINDICATORCURRENT wParam:(uptr_t)ind];
+        sptr_t pos = from;
+        while (pos > 0) {
+            pos--;
+            sptr_t val = [sci message:SCI_INDICATORVALUEAT wParam:(uptr_t)ind lParam:pos];
+            if (val != 0) {
+                // Found — get the start of this indicator range
+                sptr_t start = [sci message:SCI_INDICATORSTART wParam:(uptr_t)ind lParam:pos];
+                if (best < 0 || start > best) best = start;
+                break;
+            }
+            sptr_t start = [sci message:SCI_INDICATORSTART wParam:(uptr_t)ind lParam:pos];
+            if (start <= 0) break;
+            pos = start;
+        }
+    }
+    return best;
+}
+
 - (void)jumpToNextMark:(NSInteger)dir {
     ScintillaView *sci = _scintillaView;
     sptr_t caretPos = [sci message:SCI_GETCURRENTPOS];
@@ -4547,29 +4626,31 @@ static const unsigned int kSCI_GetBidirectional = 2708;
     sptr_t best = -1;
 
     if (dir > 0) {
-        sptr_t from = caretPos + 1;
+        // If caret is inside a marked range, skip past its end first
+        sptr_t searchFrom = caretPos + 1;
         for (int i = 0; i < 5; i++) {
-            sptr_t p = [sci message:kSCI_IndicatorNext wParam:(uptr_t)kMarkInds[i] lParam:from];
-            if (p >= 0 && (best < 0 || p < best)) best = p;
-        }
-        if (best < 0) { // wrap
-            for (int i = 0; i < 5; i++) {
-                sptr_t p = [sci message:kSCI_IndicatorNext wParam:(uptr_t)kMarkInds[i] lParam:0];
-                if (p >= 0 && (best < 0 || p < best)) best = p;
+            int ind = kMarkInds[i];
+            if ([sci message:SCI_INDICATORVALUEAT wParam:(uptr_t)ind lParam:caretPos]) {
+                sptr_t end = [sci message:SCI_INDICATOREND wParam:(uptr_t)ind lParam:caretPos];
+                if (end > searchFrom) searchFrom = end;
             }
         }
+        best = [self _findNextMarkFrom:searchFrom limit:docLen];
+        if (best < 0) // wrap
+            best = [self _findNextMarkFrom:0 limit:caretPos];
     } else {
-        sptr_t from = caretPos > 0 ? caretPos - 1 : 0;
+        // If caret is inside a marked range, skip before its start first
+        sptr_t searchFrom = caretPos;
         for (int i = 0; i < 5; i++) {
-            sptr_t p = [sci message:kSCI_IndicatorPrevious wParam:(uptr_t)kMarkInds[i] lParam:from];
-            if (p >= 0 && (best < 0 || p > best)) best = p;
-        }
-        if (best < 0) { // wrap
-            for (int i = 0; i < 5; i++) {
-                sptr_t p = [sci message:kSCI_IndicatorPrevious wParam:(uptr_t)kMarkInds[i] lParam:docLen];
-                if (p >= 0 && (best < 0 || p > best)) best = p;
+            int ind = kMarkInds[i];
+            if ([sci message:SCI_INDICATORVALUEAT wParam:(uptr_t)ind lParam:caretPos]) {
+                sptr_t start = [sci message:SCI_INDICATORSTART wParam:(uptr_t)ind lParam:caretPos];
+                if (start >= 0 && start < searchFrom) searchFrom = start;
             }
         }
+        best = [self _findPrevMarkFrom:searchFrom];
+        if (best < 0) // wrap
+            best = [self _findPrevMarkFrom:docLen];
     }
     if (best >= 0) {
         [sci message:SCI_GOTOPOS wParam:(uptr_t)best];
@@ -4582,26 +4663,37 @@ static const unsigned int kSCI_GetBidirectional = 2708;
     ScintillaView *sci = _scintillaView;
     int ind = kMarkInds[style - 1];
     sptr_t docLen = [sci message:SCI_GETLENGTH];
-    char *buf = (char *)calloc((size_t)docLen + 1, 1);
-    [sci message:SCI_GETTEXT wParam:(uptr_t)(docLen + 1) lParam:(sptr_t)buf];
 
     NSMutableString *result = [NSMutableString string];
     sptr_t pos = 0;
     while (pos < docLen) {
-        sptr_t start = [sci message:kSCI_IndicatorNext wParam:(uptr_t)ind lParam:pos];
-        if (start < 0 || start >= docLen) break;
-        sptr_t end = [sci message:kSCI_IndicatorEnd  wParam:(uptr_t)ind lParam:start];
-        if (end <= start) { pos = start + 1; continue; }
-        NSString *chunk = [[NSString alloc] initWithBytes:buf + start
-                                                   length:(NSUInteger)(end - start)
-                                                 encoding:NSUTF8StringEncoding];
+        sptr_t val = [sci message:SCI_INDICATORVALUEAT wParam:(uptr_t)ind lParam:pos];
+        if (val == 0) {
+            // Not in an indicator range — skip to end of this non-indicator run
+            sptr_t end = [sci message:SCI_INDICATOREND wParam:(uptr_t)ind lParam:pos];
+            if (end <= pos) break;
+            pos = end;
+            continue;
+        }
+        // In an indicator range — get the end
+        sptr_t end = [sci message:SCI_INDICATOREND wParam:(uptr_t)ind lParam:pos];
+        if (end <= pos) break;
+
+        sptr_t len = end - pos;
+        char *buf = (char *)calloc((size_t)len + 1, 1);
+        struct Sci_TextRangeFull tr = {};
+        tr.chrg.cpMin = pos;
+        tr.chrg.cpMax = end;
+        tr.lpstrText = buf;
+        [sci message:SCI_GETTEXTRANGEFULL wParam:0 lParam:(sptr_t)&tr];
+        NSString *chunk = [NSString stringWithUTF8String:buf];
+        free(buf);
         if (chunk) {
             if (result.length) [result appendString:@"\n"];
             [result appendString:chunk];
         }
         pos = end;
     }
-    free(buf);
     if (result.length) {
         NSPasteboard *pb = [NSPasteboard generalPasteboard];
         [pb clearContents];
