@@ -975,4 +975,10 @@ static sptr_t _srSciColor(NSColor *c) {
     return [paths array];
 }
 
+#pragma mark - Panel Zoom
+
+- (void)panelZoomIn   { [_sci message:SCI_ZOOMIN]; }
+- (void)panelZoomOut  { [_sci message:SCI_ZOOMOUT]; }
+- (void)panelZoomReset { [_sci message:SCI_SETZOOM wParam:0]; }
+
 @end

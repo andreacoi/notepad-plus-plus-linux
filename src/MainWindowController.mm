@@ -4871,7 +4871,22 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     [self _refreshToolbarStates];
 }
 
+/// Walk the first responder's superview chain looking for a zoomable panel.
+/// Returns the panel NSView if found, nil otherwise.
+- (NSView *)_focusedZoomablePanel {
+    NSView *v = [self.window.firstResponder isKindOfClass:[NSView class]]
+                ? (NSView *)self.window.firstResponder : nil;
+    while (v) {
+        if ([v respondsToSelector:@selector(panelZoomIn)] &&
+            ![v isKindOfClass:[EditorView class]]) return v;
+        v = v.superview;
+    }
+    return nil;
+}
+
 - (void)zoomIn:(id)sender {
+    NSView *panel = [self _focusedZoomablePanel];
+    if (panel) { [panel performSelector:@selector(panelZoomIn)]; return; }
     EditorView *ed = [self focusedEditor];
     if (!ed) return;
     [ed.scintillaView message:SCI_ZOOMIN];
@@ -4880,6 +4895,8 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 }
 
 - (void)zoomOut:(id)sender {
+    NSView *panel = [self _focusedZoomablePanel];
+    if (panel) { [panel performSelector:@selector(panelZoomOut)]; return; }
     EditorView *ed = [self focusedEditor];
     if (!ed) return;
     [ed.scintillaView message:SCI_ZOOMOUT];
@@ -4888,6 +4905,8 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 }
 
 - (void)resetZoom:(id)sender {
+    NSView *panel = [self _focusedZoomablePanel];
+    if (panel) { [panel performSelector:@selector(panelZoomReset)]; return; }
     EditorView *ed = [self focusedEditor];
     if (!ed) return;
     [ed.scintillaView message:SCI_SETZOOM wParam:0];

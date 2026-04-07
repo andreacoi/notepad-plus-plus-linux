@@ -1331,4 +1331,25 @@ static NSString *_userFuncPatternForLanguage(NSString *lang, NSString * __autore
 - (void)_darkModeChanged:(NSNotification *)n {
     _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
 }
+
+#pragma mark - Panel Zoom
+
+- (void)panelZoomIn {
+    NSFont *f = _outlineView.font ?: [NSFont systemFontOfSize:12];
+    _outlineView.font = [NSFont fontWithName:f.fontName size:f.pointSize + 1];
+    _outlineView.rowHeight = f.pointSize + 1 + 8;
+    [_outlineView reloadData];
+}
+- (void)panelZoomOut {
+    NSFont *f = _outlineView.font ?: [NSFont systemFontOfSize:12];
+    if (f.pointSize <= 6) return;
+    _outlineView.font = [NSFont fontWithName:f.fontName size:f.pointSize - 1];
+    _outlineView.rowHeight = f.pointSize - 1 + 8;
+    [_outlineView reloadData];
+}
+- (void)panelZoomReset {
+    _outlineView.font = [NSFont systemFontOfSize:12];
+    _outlineView.rowHeight = 20;
+    [_outlineView reloadData];
+}
 @end

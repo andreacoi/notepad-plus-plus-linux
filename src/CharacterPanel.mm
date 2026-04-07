@@ -448,4 +448,25 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
     _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
 }
 
+#pragma mark - Panel Zoom
+
+- (void)panelZoomIn {
+    NSFont *f = _tableView.font ?: [NSFont systemFontOfSize:12];
+    _tableView.font = [NSFont fontWithName:f.fontName size:f.pointSize + 1];
+    _tableView.rowHeight = f.pointSize + 1 + 8;
+    [_tableView reloadData];
+}
+- (void)panelZoomOut {
+    NSFont *f = _tableView.font ?: [NSFont systemFontOfSize:12];
+    if (f.pointSize <= 6) return;
+    _tableView.font = [NSFont fontWithName:f.fontName size:f.pointSize - 1];
+    _tableView.rowHeight = f.pointSize - 1 + 8;
+    [_tableView reloadData];
+}
+- (void)panelZoomReset {
+    _tableView.font = [NSFont systemFontOfSize:12];
+    _tableView.rowHeight = 20;
+    [_tableView reloadData];
+}
+
 @end

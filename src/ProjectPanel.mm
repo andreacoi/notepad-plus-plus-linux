@@ -1183,4 +1183,25 @@ static NSString * const kPrefWSPath     = @"ProjectPanelWorkspace%ld";  // forma
     [super keyDown:event];
 }
 
+#pragma mark - Panel Zoom
+
+- (void)panelZoomIn {
+    NSFont *f = _outlineView.font ?: [NSFont systemFontOfSize:12];
+    _outlineView.font = [NSFont fontWithName:f.fontName size:f.pointSize + 1];
+    _outlineView.rowHeight = f.pointSize + 1 + 8;
+    [_outlineView reloadData];
+}
+- (void)panelZoomOut {
+    NSFont *f = _outlineView.font ?: [NSFont systemFontOfSize:12];
+    if (f.pointSize <= 6) return;
+    _outlineView.font = [NSFont fontWithName:f.fontName size:f.pointSize - 1];
+    _outlineView.rowHeight = f.pointSize - 1 + 8;
+    [_outlineView reloadData];
+}
+- (void)panelZoomReset {
+    _outlineView.font = [NSFont systemFontOfSize:12];
+    _outlineView.rowHeight = 22;
+    [_outlineView reloadData];
+}
+
 @end
