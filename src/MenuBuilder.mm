@@ -809,7 +809,7 @@ static NSMenu *buildLanguageMenu() {
     [settingsMenu addItem:item(@"Shortcut Mapper…", @selector(showShortcutMapper:), @"")];
     addSep(settingsMenu);
     NSMenu *importMenu = submenu(@"Import");
-    [importMenu addItem:nyi(@"Import Plugin(s)…")];
+    [importMenu addItem:item(@"Import Plugin(s)…", @selector(importPlugin:), @"")];
     [importMenu addItem:item(@"Import Style Theme(s)…", @selector(importStyleTheme:), @"")];
     [settingsMenu addItem:withSubmenu(@"Import", importMenu)];
     addSep(settingsMenu);

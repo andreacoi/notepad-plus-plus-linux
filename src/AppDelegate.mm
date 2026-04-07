@@ -529,9 +529,32 @@
 }
 
 - (void)importStyleTheme:(id)sender {
-    [[StyleConfiguratorWindowController sharedController] showWindow:nil];
-    [[StyleConfiguratorWindowController sharedController] performSelector:@selector(importTheme:)
-                                                               withObject:sender];
+    NppLocalizer *loc = [NppLocalizer shared];
+
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    panel.title = [loc translate:@"Import Style Theme"];
+    panel.allowedFileTypes = @[@"xml"];
+    panel.allowsMultipleSelection = YES;
+    panel.canChooseDirectories = NO;
+    if ([panel runModal] != NSModalResponseOK) return;
+
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSString *themesDir = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/themes"];
+    [fm createDirectoryAtPath:themesDir withIntermediateDirectories:YES attributes:nil error:nil];
+
+    NSInteger imported = 0;
+    for (NSURL *url in panel.URLs) {
+        NSString *destPath = [themesDir stringByAppendingPathComponent:url.lastPathComponent];
+        [fm removeItemAtPath:destPath error:nil]; // overwrite existing
+        if ([fm copyItemAtPath:url.path toPath:destPath error:nil]) {
+            imported++;
+        }
+    }
+
+    if (imported > 0) {
+        // Open Style Configurator so user can select the newly imported theme
+        [[StyleConfiguratorWindowController sharedController] showWindow:nil];
+    }
 }
 
 - (void)showAboutPanel:(id)sender {

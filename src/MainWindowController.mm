@@ -4731,6 +4731,88 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     [a runModal];
 }
 
+#pragma mark - Import Plugin / Style Theme
+
+- (void)importPlugin:(id)sender {
+    NppLocalizer *loc = [NppLocalizer shared];
+
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    panel.title = [loc translate:@"Import Plugin"];
+    panel.allowedFileTypes = @[@"zip"];
+    panel.allowsMultipleSelection = YES;
+    panel.canChooseDirectories = NO;
+    if ([panel runModal] != NSModalResponseOK) return;
+
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSString *pluginsDir = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++/plugins"];
+    [fm createDirectoryAtPath:pluginsDir withIntermediateDirectories:YES attributes:nil error:nil];
+
+    NSInteger imported = 0;
+    for (NSURL *url in panel.URLs) {
+        NSString *zipPath = url.path;
+
+        // Extract to a temp directory first to verify contents
+        NSString *tmpDir = [NSTemporaryDirectory() stringByAppendingPathComponent:
+            [[NSUUID UUID] UUIDString]];
+        [fm createDirectoryAtPath:tmpDir withIntermediateDirectories:YES attributes:nil error:nil];
+
+        // Extract ZIP using /usr/bin/ditto
+        NSTask *task = [[NSTask alloc] init];
+        task.launchPath = @"/usr/bin/ditto";
+        task.arguments = @[@"-xk", zipPath, tmpDir];
+        task.standardOutput = [NSPipe pipe];
+        task.standardError  = [NSPipe pipe];
+        @try {
+            [task launch];
+            [task waitUntilExit];
+        } @catch (NSException *e) {
+            [fm removeItemAtPath:tmpDir error:nil];
+            continue;
+        }
+
+        if (task.terminationStatus != 0) {
+            [fm removeItemAtPath:tmpDir error:nil];
+            continue;
+        }
+
+        // Find the plugin subdirectory containing a .dylib
+        NSArray *extracted = [fm contentsOfDirectoryAtPath:tmpDir error:nil];
+        BOOL found = NO;
+        for (NSString *item in extracted) {
+            NSString *itemPath = [tmpDir stringByAppendingPathComponent:item];
+            BOOL isDir = NO;
+            [fm fileExistsAtPath:itemPath isDirectory:&isDir];
+            if (isDir) {
+                // Check if this directory contains a .dylib
+                NSArray *contents = [fm contentsOfDirectoryAtPath:itemPath error:nil];
+                for (NSString *file in contents) {
+                    if ([file.pathExtension isEqualToString:@"dylib"]) {
+                        // Valid plugin folder — copy to plugins directory
+                        NSString *destPath = [pluginsDir stringByAppendingPathComponent:item];
+                        [fm removeItemAtPath:destPath error:nil]; // overwrite existing
+                        if ([fm copyItemAtPath:itemPath toPath:destPath error:nil]) {
+                            imported++;
+                            found = YES;
+                        }
+                        break;
+                    }
+                }
+            }
+            if (found) break;
+        }
+
+        [fm removeItemAtPath:tmpDir error:nil];
+    }
+
+    if (imported > 0) {
+        NSAlert *a = [[NSAlert alloc] init];
+        a.messageText = [loc translate:@"Restart Required"];
+        a.informativeText = [loc translate:@"Restart the application to load the installed plugins."];
+        [a addButtonWithTitle:[loc translate:@"OK"]];
+        [a runModal];
+    }
+}
+
 #pragma mark - Edit: Column editor
 
 - (void)showColumnEditor:(id)sender {
