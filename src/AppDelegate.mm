@@ -607,7 +607,7 @@
 
 // ── Update check (GitHub Releases API) ──────────────────────────────────────
 
-static NSString *const kGitHubReleasesAPI = @"https://api.github.com/repos/nppmss/notepad-plus-plus-macos/releases/latest";
+static NSString *const kGitHubReleasesAPI = @"https://api.github.com/repos/notepad-plus-plus-mac/notepad-plus-plus-macos/releases/latest";
 static NSString *const kUpdateMenuItemTag = @"checkForUpdatesMenuItem";
 
 /// Find the "Check for Updates..." menu item in the app menu.
@@ -675,7 +675,7 @@ static NSString *const kUpdateMenuItemTag = @"checkForUpdatesMenuItem";
                 // Update available — badge the menu item
                 NSMenuItem *mi = [self _updateMenuItem];
                 if (mi) {
-                    mi.title = [NSString stringWithFormat:@"🟢 Update Available (v%@)", latestVersion];
+                    mi.title = [NSString stringWithFormat:@"🟠 Update Available (v%@)", latestVersion];
                 }
 
                 if (userInitiated) {
@@ -685,6 +685,12 @@ static NSString *const kUpdateMenuItemTag = @"checkForUpdatesMenuItem";
                                            assets:json[@"assets"]];
                 }
             } else {
+                // Up to date — badge the menu item green
+                NSMenuItem *mi = [self _updateMenuItem];
+                if (mi) {
+                    mi.title = @"🟢 Check for Updates…";
+                }
+
                 if (userInitiated) {
                     NppLocalizer *loc = [NppLocalizer shared];
                     NSAlert *a = [[NSAlert alloc] init];
