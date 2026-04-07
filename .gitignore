@@ -31,3 +31,13 @@ Makefile
 # Documentation and screenshots (local only)
 docs/
 screenshots/
+
+# Build/release tools (local only)
+tools/
+
+# Code signing — NEVER commit certificates, keys, or passwords
+*.p12
+*.cer
+*.certSigningRequest
+*.provisionprofile
+signing-config.sh
