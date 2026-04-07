@@ -488,8 +488,8 @@ static NSMenu *buildLanguageMenu() {
     [searchMenu addItem:item(@"Incremental Search", @selector(showIncrementalSearch:), @"i")];
     addSep(searchMenu);
     [searchMenu addItem:item(@"Search Results Window",  @selector(showSearchResultsWindow:), @"")];
-    [searchMenu addItem:item(@"Next Search Result",     @selector(nextSearchResult:),        @"")];
-    [searchMenu addItem:item(@"Previous Search Result", @selector(previousSearchResult:),    @"")];
+    [searchMenu addItem:itemFn(@"Next Search Result",     @selector(nextSearchResult:),     NSF4FunctionKey, 0)];
+    [searchMenu addItem:itemFn(@"Previous Search Result", @selector(previousSearchResult:), NSF4FunctionKey, NSEventModifierFlagShift)];
     addSep(searchMenu);
     [searchMenu addItem:itemMod(@"Go to…",           @selector(goToLine:),    @"g",
                                 NSEventModifierFlagCommand | NSEventModifierFlagOption)];

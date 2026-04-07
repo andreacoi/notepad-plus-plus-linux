@@ -6957,11 +6957,15 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 }
 
 - (void)nextSearchResult:(id)sender {
-    if (_searchResultsPanel) [_searchResultsPanel navigateToNextResult];
+    if (!_searchResultsPanel) return;
+    [self _showSearchResultsPanelIfHidden];
+    [_searchResultsPanel navigateToNextResult];
 }
 
 - (void)previousSearchResult:(id)sender {
-    if (_searchResultsPanel) [_searchResultsPanel navigateToPreviousResult];
+    if (!_searchResultsPanel) return;
+    [self _showSearchResultsPanelIfHidden];
+    [_searchResultsPanel navigateToPreviousResult];
 }
 
 - (void)_toggleSearchResultsPanel {
