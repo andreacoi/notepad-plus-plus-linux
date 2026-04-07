@@ -46,6 +46,9 @@ struct _SRLineInfo {
     NSButton            *_filterWholeWord;
     NSTextField         *_filterStatusLabel;
     NSLayoutConstraint  *_filterBarHeight;
+
+    // Key event monitor for Cmd+C interception
+    id _keyMonitor;
 }
 
 - (instancetype)initWithFrame:(NSRect)frame {
@@ -62,6 +65,27 @@ struct _SRLineInfo {
                                                      name:@"NPPPreferencesChanged" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_darkModeChanged:)
                                                      name:NPPDarkModeChangedNotification object:nil];
+
+        // Intercept Cmd+C when our ScintillaView has focus — route to visibility-aware copy
+        __weak typeof(self) wSelf = self;
+        _keyMonitor = [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskKeyDown handler:^NSEvent *(NSEvent *event) {
+            typeof(self) sSelf = wSelf;
+            if (!sSelf) return event;
+            if ((event.modifierFlags & NSEventModifierFlagCommand) &&
+                [event.charactersIgnoringModifiers isEqualToString:@"c"]) {
+                // Check if our ScintillaView (or its content view) is the first responder
+                NSResponder *fr = event.window.firstResponder;
+                NSView *v = [fr isKindOfClass:[NSView class]] ? (NSView *)fr : nil;
+                while (v) {
+                    if (v == sSelf->_sci) {
+                        [sSelf _copy:nil];
+                        return nil; // consume the event
+                    }
+                    v = v.superview;
+                }
+            }
+            return event;
+        }];
     }
     return self;
 }
@@ -69,6 +93,7 @@ struct _SRLineInfo {
 - (instancetype)init { return [self initWithFrame:NSZeroRect]; }
 
 - (void)dealloc {
+    if (_keyMonitor) [NSEvent removeMonitor:_keyMonitor];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -717,7 +742,7 @@ static sptr_t _srSciColor(NSColor *c) {
 - (void)_unfoldAll:(id)sender { [self unfoldAll]; }
 
 - (void)_copyLines:(id)sender {
-    // Copy only visible result lines, stripping "Line NNN: " prefix
+    // Copy only visible result lines WITH line numbers (exactly as shown)
     sptr_t selStart = [_sci message:SCI_GETSELECTIONSTART];
     sptr_t selEnd   = [_sci message:SCI_GETSELECTIONEND];
     sptr_t lineStart = [_sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selStart];
@@ -728,13 +753,10 @@ static sptr_t _srSciColor(NSColor *c) {
         NSString *lineText = [self _visibleLineText:line];
         if (!lineText) continue;
 
-        // Only include result lines (tab-prefixed), strip "Line NNN: " prefix
+        // Include result lines (tab-prefixed) with their line numbers
         if ([lineText hasPrefix:@"\t"]) {
-            NSRange colonRange = [lineText rangeOfString:@": "];
-            if (colonRange.location != NSNotFound) {
-                NSString *content = [lineText substringFromIndex:colonRange.location + 2];
-                [result appendFormat:@"%@\n", content];
-            }
+            // Remove leading tab, keep "Line NNN: content"
+            [result appendFormat:@"%@\n", [lineText substringFromIndex:1]];
         }
     }
 
