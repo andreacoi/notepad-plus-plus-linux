@@ -326,14 +326,15 @@ static void _placeChk(NSView *parent, NSButton *chk, CGFloat x, CGFloat y) {
     _smExtended[idx].target = self; _smExtended[idx].action = @selector(_modeChanged:);
     _smRegex[idx].target = self;    _smRegex[idx].action = @selector(_modeChanged:);
 
-    _placeChk(bc, _smNormal[idx],   8, 48);
-    _placeChk(bc, _smExtended[idx], 8, 28);
-    _placeChk(bc, _smRegex[idx],    8, 8);
+    CGFloat radioShift = (idx == 0) ? -8 : -8; // Find tab: 8px down, others: 8px down
+    _placeChk(bc, _smNormal[idx],   8, 48 + radioShift);
+    _placeChk(bc, _smExtended[idx], 8, 28 + radioShift);
+    _placeChk(bc, _smRegex[idx],    8, 8 + radioShift);
 
     [bc addSubview:_smDotNL[idx]];
     [_smDotNL[idx] sizeToFit];
     NSRect rf = _smRegex[idx].frame;
-    _smDotNL[idx].frame = NSMakeRect(NSMaxX(rf) + 16, 8,
+    _smDotNL[idx].frame = NSMakeRect(NSMaxX(rf) + 16, 8 + radioShift,
                                      _smDotNL[idx].frame.size.width,
                                      _smDotNL[idx].frame.size.height);
 }
@@ -506,10 +507,10 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
 
     // Browse & fill buttons next to directory
     NSButton *browseBtn = _mkBtn(@"...", @selector(_browseDir:), self);
-    browseBtn.frame = NSMakeRect(kFieldR - 65, H - 126, 30, 24);
+    browseBtn.frame = NSMakeRect(kFieldR - 70, H - 131, 30, 24);
     [v addSubview:browseBtn];
     NSButton *fillBtn = _mkBtn(@"<<", @selector(_fillDirFromDoc:), self);
-    fillBtn.frame = NSMakeRect(kFieldR - 32, H - 126, 30, 24);
+    fillBtn.frame = NSMakeRect(kFieldR - 37, H - 131, 30, 24);
     [v addSubview:fillBtn];
 
     // Buttons
