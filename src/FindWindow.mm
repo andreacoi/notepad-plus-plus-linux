@@ -1122,7 +1122,7 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     while (pos < docLen) {
         sptr_t start = [sci message:SCI_INDICATORSTART wParam:31 lParam:pos];
         sptr_t val   = [sci message:SCI_INDICATORVALUEAT wParam:31 lParam:start];
-        if (val == 0) { pos = start + 1; continue; }
+        if (val == 0) { pos = [sci message:SCI_INDICATOREND wParam:31 lParam:start]; continue; }
         sptr_t end   = [sci message:SCI_INDICATOREND wParam:31 lParam:start];
         if (end <= start) break;
         sptr_t len = end - start;

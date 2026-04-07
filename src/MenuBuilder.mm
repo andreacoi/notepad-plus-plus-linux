@@ -564,9 +564,12 @@ static NSMenu *buildLanguageMenu() {
     [searchMenu addItem:withSubmenu(@"Jump Down", jumpDownMenu)];
 
     NSMenu *copyStyledMenu = submenu(@"Copy Styled Text");
-    for (int i = 1; i <= 5; i++)
-        [copyStyledMenu addItem:itemTag([NSString stringWithFormat:@"Copy %d%@ Style Text", i, kOrd[i-1]],
-                                         @selector(copyStyledText:), i)];
+    for (int i = 1; i <= 5; i++) {
+        NSMenuItem *mi = itemTag([NSString stringWithFormat:@"Copy %d%@ Style Text", i, kOrd[i-1]],
+                                         @selector(copyStyledText:), i);
+        mi.image = markSwatch(i - 1);
+        [copyStyledMenu addItem:mi];
+    }
     [searchMenu addItem:withSubmenu(@"Copy Styled Text", copyStyledMenu)];
 
     NSMenu *bmMenu = submenu(@"Bookmark");
