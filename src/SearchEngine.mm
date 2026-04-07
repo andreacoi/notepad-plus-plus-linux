@@ -398,7 +398,8 @@
 + (NSArray<NPPFileResults *> *)findInDirectory:(NSString *)directory
                                        options:(NPPFindOptions *)opts
                                  progressBlock:(nullable void(^)(NSString *currentFile, NSInteger hits))progressBlock
-                                    cancelFlag:(BOOL *)cancelFlag {
+                                    cancelFlag:(BOOL *)cancelFlag
+                            totalFilesScanned:(nullable NSInteger *)totalFilesScanned {
     NSFileManager *fm = [NSFileManager defaultManager];
     NSDirectoryEnumerator *en = [fm enumeratorAtPath:directory];
     if (!opts.isRecursive) [en skipDescendants];
@@ -419,6 +420,7 @@
     NSStringCompareOptions cmpOpts = opts.matchCase ? 0 : NSCaseInsensitiveSearch;
     NSMutableArray<NPPFileResults *> *allResults = [NSMutableArray array];
     __block NSInteger totalHits = 0;
+    NSInteger filesScanned = 0;
     NSString *rel;
 
     while ((rel = [en nextObject])) {
@@ -446,6 +448,8 @@
         }
         if (!pass) continue;
 
+        filesScanned++;
+
         // Read file
         NSString *content = [NSString stringWithContentsOfFile:full
                                                      encoding:NSUTF8StringEncoding error:nil];
@@ -466,7 +470,7 @@
                 if (opts.dotMatchesNewline) reOpts |= NSRegularExpressionDotMatchesLineSeparators;
                 NSRegularExpression *re = [NSRegularExpression regularExpressionWithPattern:searchText
                                                                                    options:reOpts error:nil];
-                if (!re) return allResults;
+                if (!re) { if (totalFilesScanned) *totalFilesScanned = filesScanned; return allResults; }
                 NSTextCheckingResult *m = [re firstMatchInString:line options:0
                                                           range:NSMakeRange(0, line.length)];
                 if (!m) continue;
@@ -517,6 +521,7 @@
             }
         }
     }
+    if (totalFilesScanned) *totalFilesScanned = filesScanned;
     return allResults;
 }
 

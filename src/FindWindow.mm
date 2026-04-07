@@ -360,7 +360,7 @@ static void _placeChk(NSView *parent, NSButton *chk, CGFloat x, CGFloat y) {
     // ── Status bar (bottom) ──────────────────────────────────────────────
     _statusLabel = [NSTextField labelWithString:@""];
     _statusLabel.frame = NSMakeRect(12, 6, kWinW - 24, 18);
-    _statusLabel.font = [NSFont boldSystemFontOfSize:12];
+    _statusLabel.font = [NSFont boldSystemFontOfSize:10];
     _statusLabel.textColor = [NSColor secondaryLabelColor];
     _statusLabel.autoresizingMask = NSViewWidthSizable | NSViewMaxYMargin;
     [cv addSubview:_statusLabel];
@@ -849,6 +849,7 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
     [self _showStatus:[[NppLocalizer shared] translate:@"Searching..."] found:YES];
 
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        NSInteger scannedCount = 0;
         NSArray<NPPFileResults *> *results = [SearchEngine findInDirectory:opts.directory
             options:opts
             progressBlock:^(NSString *file, NSInteger hits) {
@@ -857,12 +858,13 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
                         (long)hits, file.lastPathComponent] found:YES];
                 });
             }
-            cancelFlag:&self->_cancelSearch];
+            cancelFlag:&self->_cancelSearch
+            totalFilesScanned:&scannedCount];
 
         dispatch_async(dispatch_get_main_queue(), ^{
             if (results.count) {
                 [self->_delegate findWindow:self showResults:results forSearchText:opts.searchText
-                              options:opts filesSearched:-1];
+                              options:opts filesSearched:scannedCount];
                 [self->_delegate findWindowShowSearchResultsPanel:self];
                 NSInteger totalHits = 0;
                 for (NPPFileResults *fr in results) totalHits += (NSInteger)fr.results.count;
@@ -895,7 +897,7 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
 
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
         NSArray<NPPFileResults *> *results = [SearchEngine findInDirectory:opts.directory
-            options:opts progressBlock:nil cancelFlag:NULL];
+            options:opts progressBlock:nil cancelFlag:NULL totalFilesScanned:NULL];
         __block NSInteger totalReplacements = 0;
         dispatch_async(dispatch_get_main_queue(), ^{
             for (NPPFileResults *fr in results) {
