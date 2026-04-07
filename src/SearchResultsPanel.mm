@@ -47,6 +47,8 @@ struct _SRLineInfo {
     NSTextField         *_filterStatusLabel;
     NSLayoutConstraint  *_filterBarHeight;
 
+    NSBox               *_filterSep;
+
     // Key event monitor for Cmd+C interception
     id _keyMonitor;
 }
@@ -276,6 +278,9 @@ struct _SRLineInfo {
     [self addSubview:_filterBar];
 
     _filterBarHeight = [_filterBar.heightAnchor constraintEqualToConstant:0];
+    _filterBar.hidden = YES;
+    sep2.hidden = YES;
+    _filterSep = sep2;
 
     [NSLayoutConstraint activateConstraints:@[
         [titleBar.topAnchor      constraintEqualToAnchor:self.topAnchor],
@@ -796,12 +801,14 @@ static sptr_t _srSciColor(NSColor *c) {
     // Show the filter bar
     _filterBarHeight.constant = 30;
     _filterBar.hidden = NO;
+    _filterSep.hidden = NO;
     [self.window makeFirstResponder:_filterField];
 }
 
 - (void)_closeFilterBar:(id)sender {
     _filterBarHeight.constant = 0;
     _filterBar.hidden = YES;
+    _filterSep.hidden = YES;
     _filterField.stringValue = @"";
     _filterStatusLabel.stringValue = @"";
     // Unhide all lines
