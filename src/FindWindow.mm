@@ -507,10 +507,10 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
 
     // Browse & fill buttons next to directory
     NSButton *browseBtn = _mkBtn(@"...", @selector(_browseDir:), self);
-    browseBtn.frame = NSMakeRect(kFieldR - 70, H - 131, 30, 24);
+    browseBtn.frame = NSMakeRect(kFieldR - 78, H - 131, 30, 24);
     [v addSubview:browseBtn];
     NSButton *fillBtn = _mkBtn(@"<<", @selector(_fillDirFromDoc:), self);
-    fillBtn.frame = NSMakeRect(kFieldR - 37, H - 131, 30, 24);
+    fillBtn.frame = NSMakeRect(kFieldR - 45, H - 131, 30, 24);
     [v addSubview:fillBtn];
 
     // Buttons
