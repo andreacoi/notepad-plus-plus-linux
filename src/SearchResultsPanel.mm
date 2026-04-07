@@ -34,6 +34,18 @@ struct _SRLineInfo {
     // SearchResultMarkings for the lexer
     std::vector<SearchResultMarkingLine> _markingLines;
     SearchResultMarkings _markingsStruct;
+
+    // Toggle states
+    BOOL _wordWrapEnabled;
+    BOOL _purgeBeforeSearch;
+
+    // Filter bar (incremental search within results)
+    NSView              *_filterBar;
+    NSTextField         *_filterField;
+    NSButton            *_filterMatchCase;
+    NSButton            *_filterWholeWord;
+    NSTextField         *_filterStatusLabel;
+    NSLayoutConstraint  *_filterBarHeight;
 }
 
 - (instancetype)initWithFrame:(NSRect)frame {
@@ -43,6 +55,8 @@ struct _SRLineInfo {
         [self _applyTheme];
         _markingsStruct._length   = 0;
         _markingsStruct._markings = nullptr;
+        _wordWrapEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"SearchResultsWordWrap"];
+        _purgeBeforeSearch = [[NSUserDefaults standardUserDefaults] boolForKey:@"SearchResultsPurge"];
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_themeChanged:)
                                                      name:@"NPPPreferencesChanged" object:nil];
@@ -112,6 +126,13 @@ struct _SRLineInfo {
     // Set self as ScintillaView delegate to receive notifications
     _sci.delegate = (id)self;
 
+    // Replace default Scintilla context menu with our custom one
+    _sci.menu = [self _buildContextMenu];
+
+    // Apply persisted word wrap setting
+    if (_wordWrapEnabled)
+        [_sci message:SCI_SETWRAPMODE wParam:SC_WRAP_WORD];
+
     // ── Title bar with close button ─────────────────────────────────────
     _titleBar = [[NSView alloc] init];
     _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
@@ -149,9 +170,88 @@ struct _SRLineInfo {
     sep.boxType = NSBoxSeparator;
     sep.translatesAutoresizingMaskIntoConstraints = NO;
 
+    // ── Filter bar (incremental search within results) ─────────────────
+    _filterBar = [[NSView alloc] init];
+    _filterBar.translatesAutoresizingMaskIntoConstraints = NO;
+    _filterBar.wantsLayer = YES;
+    _filterBar.layer.backgroundColor = [NSColor controlBackgroundColor].CGColor;
+
+    NppLocalizer *loc = [NppLocalizer shared];
+
+    NSTextField *filterLabel = [NSTextField labelWithString:[loc translate:@"Find:"]];
+    filterLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    filterLabel.font = [NSFont systemFontOfSize:11];
+    [_filterBar addSubview:filterLabel];
+
+    _filterField = [[NSTextField alloc] init];
+    _filterField.translatesAutoresizingMaskIntoConstraints = NO;
+    _filterField.font = [NSFont systemFontOfSize:11];
+    _filterField.placeholderString = [loc translate:@"Type to search\u2026"];
+    _filterField.delegate = (id)self;
+    [_filterBar addSubview:_filterField];
+
+    _filterMatchCase = [NSButton checkboxWithTitle:[loc translate:@"Match case"] target:nil action:nil];
+    _filterMatchCase.translatesAutoresizingMaskIntoConstraints = NO;
+    _filterMatchCase.font = [NSFont systemFontOfSize:11];
+    _filterMatchCase.target = self;
+    _filterMatchCase.action = @selector(_filterChanged:);
+    [_filterBar addSubview:_filterMatchCase];
+
+    _filterWholeWord = [NSButton checkboxWithTitle:[loc translate:@"Whole word"] target:nil action:nil];
+    _filterWholeWord.translatesAutoresizingMaskIntoConstraints = NO;
+    _filterWholeWord.font = [NSFont systemFontOfSize:11];
+    _filterWholeWord.target = self;
+    _filterWholeWord.action = @selector(_filterChanged:);
+    [_filterBar addSubview:_filterWholeWord];
+
+    _filterStatusLabel = [NSTextField labelWithString:@""];
+    _filterStatusLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    _filterStatusLabel.font = [NSFont systemFontOfSize:11];
+    _filterStatusLabel.textColor = [NSColor secondaryLabelColor];
+    [_filterBar addSubview:_filterStatusLabel];
+
+    NSButton *filterClose = [[NSButton alloc] init];
+    filterClose.translatesAutoresizingMaskIntoConstraints = NO;
+    filterClose.bezelStyle = NSBezelStyleSmallSquare;
+    filterClose.bordered = NO;
+    filterClose.title = @"\u2715";
+    filterClose.font = [NSFont systemFontOfSize:10];
+    filterClose.target = self;
+    filterClose.action = @selector(_closeFilterBar:);
+    [filterClose.widthAnchor constraintEqualToConstant:18].active = YES;
+    [filterClose.heightAnchor constraintEqualToConstant:18].active = YES;
+    [_filterBar addSubview:filterClose];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [filterLabel.leadingAnchor constraintEqualToAnchor:_filterBar.leadingAnchor constant:6],
+        [filterLabel.centerYAnchor constraintEqualToAnchor:_filterBar.centerYAnchor],
+        [_filterField.leadingAnchor constraintEqualToAnchor:filterLabel.trailingAnchor constant:4],
+        [_filterField.centerYAnchor constraintEqualToAnchor:_filterBar.centerYAnchor],
+        [_filterField.widthAnchor constraintGreaterThanOrEqualToConstant:150],
+        [_filterMatchCase.leadingAnchor constraintEqualToAnchor:_filterField.trailingAnchor constant:8],
+        [_filterMatchCase.centerYAnchor constraintEqualToAnchor:_filterBar.centerYAnchor],
+        [_filterWholeWord.leadingAnchor constraintEqualToAnchor:_filterMatchCase.trailingAnchor constant:8],
+        [_filterWholeWord.centerYAnchor constraintEqualToAnchor:_filterBar.centerYAnchor],
+        [_filterStatusLabel.leadingAnchor constraintEqualToAnchor:_filterWholeWord.trailingAnchor constant:8],
+        [_filterStatusLabel.centerYAnchor constraintEqualToAnchor:_filterBar.centerYAnchor],
+        [_filterStatusLabel.widthAnchor constraintGreaterThanOrEqualToConstant:60],
+        [filterClose.trailingAnchor constraintEqualToAnchor:_filterBar.trailingAnchor constant:-4],
+        [filterClose.centerYAnchor constraintEqualToAnchor:_filterBar.centerYAnchor],
+    ]];
+
+    NSBox *sep2 = [[NSBox alloc] init];
+    sep2.boxType = NSBoxSeparator;
+    sep2.translatesAutoresizingMaskIntoConstraints = NO;
+
+    // ── Layout ───────────────────────────────────────────────────────────
     [self addSubview:titleBar];
     [self addSubview:sep];
     [self addSubview:_sci];
+    [self addSubview:sep2];
+    [self addSubview:_filterBar];
+
+    _filterBarHeight = [_filterBar.heightAnchor constraintEqualToConstant:0];
+
     [NSLayoutConstraint activateConstraints:@[
         [titleBar.topAnchor      constraintEqualToAnchor:self.topAnchor],
         [titleBar.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
@@ -163,7 +263,15 @@ struct _SRLineInfo {
         [_sci.topAnchor          constraintEqualToAnchor:sep.bottomAnchor],
         [_sci.leadingAnchor      constraintEqualToAnchor:self.leadingAnchor],
         [_sci.trailingAnchor     constraintEqualToAnchor:self.trailingAnchor],
-        [_sci.bottomAnchor       constraintEqualToAnchor:self.bottomAnchor],
+        [_sci.bottomAnchor       constraintEqualToAnchor:sep2.topAnchor],
+        [sep2.leadingAnchor      constraintEqualToAnchor:self.leadingAnchor],
+        [sep2.trailingAnchor     constraintEqualToAnchor:self.trailingAnchor],
+        [sep2.heightAnchor       constraintEqualToConstant:1],
+        [_filterBar.topAnchor    constraintEqualToAnchor:sep2.bottomAnchor],
+        [_filterBar.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
+        [_filterBar.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+        [_filterBar.bottomAnchor   constraintEqualToAnchor:self.bottomAnchor],
+        _filterBarHeight,
     ]];
 }
 
@@ -249,8 +357,10 @@ static sptr_t _srSciColor(NSColor *c) {
         [_sci message:SCI_MARKERSETBACK wParam:mn lParam:_srSciColor(foldBack)];
     }
 
-    // ── Title bar background ─────────────────────────────────────────────
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+    // ── Title bar and filter bar background ─────────────────────────────
+    NSColor *panelBg = [NppThemeManager shared].panelBackground;
+    _titleBar.layer.backgroundColor = panelBg.CGColor;
+    _filterBar.layer.backgroundColor = panelBg.CGColor;
 
     // ── Appearance for dark/light disclosure triangles ────────────────────
     _sci.appearance = [NSAppearance appearanceNamed:
@@ -304,6 +414,9 @@ static sptr_t _srSciColor(NSColor *c) {
            options:(NPPFindOptions *)opts
       filesSearched:(NSInteger)filesSearched {
     if (!fileResults.count) return;
+
+    // Purge previous results if enabled
+    if (_purgeBeforeSearch) [self clearAll];
 
     [_sci message:SCI_SETREADONLY wParam:0];
 
@@ -505,24 +618,332 @@ static sptr_t _srSciColor(NSColor *c) {
 
 #pragma mark - Context menu
 
-- (NSMenu *)menuForEvent:(NSEvent *)event {
+- (NSMenu *)_buildContextMenu {
     NSMenu *m = [[NSMenu alloc] init];
+    m.delegate = (id)self;
     NppLocalizer *loc = [NppLocalizer shared];
-    [m addItemWithTitle:[loc translate:@"Copy"]       action:@selector(copy:)       keyEquivalent:@"c"];
-    [m addItemWithTitle:[loc translate:@"Select All"] action:@selector(selectAll:)  keyEquivalent:@"a"];
+
+    // 1. Find in these search results...
+    [m addItemWithTitle:[loc translate:@"Find in these search results..."]
+                 action:@selector(_findInResults:) keyEquivalent:@""];
     [m addItem:[NSMenuItem separatorItem]];
-    [m addItemWithTitle:[loc translate:@"Clear All"]    action:@selector(_clearAll:)    keyEquivalent:@""];
+
+    // 2-3. Fold/Unfold
+    [m addItemWithTitle:[loc translate:@"Fold all"]   action:@selector(_foldAll:)   keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Unfold all"] action:@selector(_unfoldAll:) keyEquivalent:@""];
     [m addItem:[NSMenuItem separatorItem]];
-    [m addItemWithTitle:[loc translate:@"Fold All"]     action:@selector(_foldAll:)     keyEquivalent:@""];
-    [m addItemWithTitle:[loc translate:@"Unfold All"]   action:@selector(_unfoldAll:)   keyEquivalent:@""];
-    for (NSMenuItem *mi in m.itemArray) mi.target = self;
+
+    // 4-8. Copy, Copy Lines, Copy Paths, Select all, Clear all
+    [m addItemWithTitle:[loc translate:@"Copy"]                      action:@selector(_copy:)          keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Copy Selected Line(s)"]     action:@selector(_copyLines:)     keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Copy Selected Pathname(s)"] action:@selector(_copyPathnames:) keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Select all"]                action:@selector(_selectAll:)     keyEquivalent:@""];
+    [m addItemWithTitle:[loc translate:@"Clear all"]                 action:@selector(_clearAll:)      keyEquivalent:@""];
+    [m addItem:[NSMenuItem separatorItem]];
+
+    // 9. Open Selected Pathname(s)
+    [m addItemWithTitle:[loc translate:@"Open Selected Pathname(s)"] action:@selector(_openPathnames:) keyEquivalent:@""];
+    [m addItem:[NSMenuItem separatorItem]];
+
+    // 10-11. Toggles
+    NSMenuItem *wrapItem = [[NSMenuItem alloc] initWithTitle:[loc translate:@"Word wrap long lines"]
+                                                     action:@selector(_toggleWordWrap:) keyEquivalent:@""];
+    wrapItem.tag = 1001;
+    [m addItem:wrapItem];
+
+    NSMenuItem *purgeItem = [[NSMenuItem alloc] initWithTitle:[loc translate:@"Purge for every search"]
+                                                      action:@selector(_togglePurge:) keyEquivalent:@""];
+    purgeItem.tag = 1002;
+    [m addItem:purgeItem];
+
+    for (NSMenuItem *mi in m.itemArray) {
+        if (!mi.isSeparatorItem) mi.target = self;
+    }
     return m;
 }
 
-- (void)copy:(id)sender      { [_sci message:SCI_COPY]; }
-- (void)selectAll:(id)sender  { [_sci message:SCI_SELECTALL]; }
-- (void)_clearAll:(id)sender  { [self clearAll]; }
-- (void)_foldAll:(id)sender   { [self foldAll]; }
+// Update checkmarks before menu is shown
+- (void)menuNeedsUpdate:(NSMenu *)menu {
+    for (NSMenuItem *mi in menu.itemArray) {
+        if (mi.tag == 1001) mi.state = _wordWrapEnabled ? NSControlStateValueOn : NSControlStateValueOff;
+        if (mi.tag == 1002) mi.state = _purgeBeforeSearch ? NSControlStateValueOn : NSControlStateValueOff;
+    }
+}
+
+#pragma mark - Context menu actions
+
+/// Get text of a single line, or nil if line is hidden or empty.
+- (NSString *)_visibleLineText:(sptr_t)line {
+    if (![_sci message:SCI_GETLINEVISIBLE wParam:(uptr_t)line]) return nil;
+    sptr_t linePos = [_sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)line];
+    sptr_t lineEndPos = [_sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)line];
+    sptr_t len = lineEndPos - linePos;
+    if (len <= 0) return nil;
+    char *buf = (char *)calloc(len + 1, 1);
+    struct Sci_TextRangeFull tr = {};
+    tr.chrg.cpMin = linePos;
+    tr.chrg.cpMax = lineEndPos;
+    tr.lpstrText = buf;
+    [_sci message:SCI_GETTEXTRANGEFULL wParam:0 lParam:(sptr_t)&tr];
+    NSString *text = [NSString stringWithUTF8String:buf] ?: @"";
+    free(buf);
+    return text;
+}
+
+- (void)_copy:(id)sender {
+    // Copy only visible lines in selection
+    sptr_t selStart = [_sci message:SCI_GETSELECTIONSTART];
+    sptr_t selEnd   = [_sci message:SCI_GETSELECTIONEND];
+    sptr_t lineStart = [_sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selStart];
+    sptr_t lineEnd   = [_sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selEnd];
+
+    NSMutableString *result = [NSMutableString string];
+    for (sptr_t line = lineStart; line <= lineEnd; line++) {
+        NSString *text = [self _visibleLineText:line];
+        if (text) [result appendFormat:@"%@\n", text];
+    }
+    if (result.length > 0) {
+        [[NSPasteboard generalPasteboard] clearContents];
+        [[NSPasteboard generalPasteboard] setString:result forType:NSPasteboardTypeString];
+    }
+}
+
+- (void)_selectAll:(id)sender { [_sci message:SCI_SELECTALL]; }
+
+- (void)_clearAll:(id)sender { [self clearAll]; }
+
+- (void)_foldAll:(id)sender { [self foldAll]; }
+
 - (void)_unfoldAll:(id)sender { [self unfoldAll]; }
+
+- (void)_copyLines:(id)sender {
+    // Copy only visible result lines, stripping "Line NNN: " prefix
+    sptr_t selStart = [_sci message:SCI_GETSELECTIONSTART];
+    sptr_t selEnd   = [_sci message:SCI_GETSELECTIONEND];
+    sptr_t lineStart = [_sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selStart];
+    sptr_t lineEnd   = [_sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selEnd];
+
+    NSMutableString *result = [NSMutableString string];
+    for (sptr_t line = lineStart; line <= lineEnd; line++) {
+        NSString *lineText = [self _visibleLineText:line];
+        if (!lineText) continue;
+
+        // Only include result lines (tab-prefixed), strip "Line NNN: " prefix
+        if ([lineText hasPrefix:@"\t"]) {
+            NSRange colonRange = [lineText rangeOfString:@": "];
+            if (colonRange.location != NSNotFound) {
+                NSString *content = [lineText substringFromIndex:colonRange.location + 2];
+                [result appendFormat:@"%@\n", content];
+            }
+        }
+    }
+
+    if (result.length > 0) {
+        [[NSPasteboard generalPasteboard] clearContents];
+        [[NSPasteboard generalPasteboard] setString:result forType:NSPasteboardTypeString];
+    }
+}
+
+- (void)_copyPathnames:(id)sender {
+    NSArray<NSString *> *paths = [self _selectedPathnames];
+    if (paths.count == 0) return;
+    NSString *joined = [paths componentsJoinedByString:@"\n"];
+    [[NSPasteboard generalPasteboard] clearContents];
+    [[NSPasteboard generalPasteboard] setString:joined forType:NSPasteboardTypeString];
+}
+
+- (void)_openPathnames:(id)sender {
+    NSArray<NSString *> *paths = [self _selectedPathnames];
+    for (NSString *path in paths) {
+        [_delegate searchResultsPanel:self navigateToFile:path atLine:1 matchText:@"" matchCase:NO];
+    }
+}
+
+- (void)_toggleWordWrap:(id)sender {
+    _wordWrapEnabled = !_wordWrapEnabled;
+    [_sci message:SCI_SETWRAPMODE wParam:_wordWrapEnabled ? SC_WRAP_WORD : SC_WRAP_NONE];
+    [[NSUserDefaults standardUserDefaults] setBool:_wordWrapEnabled forKey:@"SearchResultsWordWrap"];
+}
+
+- (void)_togglePurge:(id)sender {
+    _purgeBeforeSearch = !_purgeBeforeSearch;
+    [[NSUserDefaults standardUserDefaults] setBool:_purgeBeforeSearch forKey:@"SearchResultsPurge"];
+}
+
+- (void)_findInResults:(id)sender {
+    // Show the filter bar
+    _filterBarHeight.constant = 30;
+    _filterBar.hidden = NO;
+    [self.window makeFirstResponder:_filterField];
+}
+
+- (void)_closeFilterBar:(id)sender {
+    _filterBarHeight.constant = 0;
+    _filterBar.hidden = YES;
+    _filterField.stringValue = @"";
+    _filterStatusLabel.stringValue = @"";
+    // Unhide all lines
+    [self _showAllLines];
+}
+
+- (void)_filterChanged:(id)sender {
+    [self _applyFilter];
+}
+
+// NSTextFieldDelegate — live filtering as user types
+- (void)controlTextDidChange:(NSNotification *)obj {
+    if (obj.object == _filterField) {
+        [self _applyFilter];
+    }
+}
+
+// Handle Escape key in filter field
+- (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)commandSelector {
+    if (control == _filterField && commandSelector == @selector(cancelOperation:)) {
+        [self _closeFilterBar:nil];
+        return YES;
+    }
+    return NO;
+}
+
+- (void)_applyFilter {
+    NSString *filter = _filterField.stringValue;
+    if (!filter.length) {
+        [self _showAllLines];
+        _filterStatusLabel.stringValue = @"";
+        return;
+    }
+
+    BOOL matchCase = (_filterMatchCase.state == NSControlStateValueOn);
+    BOOL wholeWord = (_filterWholeWord.state == NSControlStateValueOn);
+    NSStringCompareOptions cmpOpts = matchCase ? 0 : NSCaseInsensitiveSearch;
+
+    sptr_t lineCount = [_sci message:SCI_GETLINECOUNT];
+    NSInteger matchCount = 0;
+
+    // First pass: determine which result lines match
+    // Track which file headers have matching children
+    NSMutableIndexSet *matchingLines = [NSMutableIndexSet indexSet];
+    NSMutableIndexSet *fileHeadersWithMatches = [NSMutableIndexSet indexSet];
+    NSMutableIndexSet *searchHeaders = [NSMutableIndexSet indexSet];
+
+    sptr_t currentFileHeader = -1;
+
+    for (sptr_t line = 0; line < lineCount; line++) {
+        sptr_t linePos = [_sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)line];
+        sptr_t lineEndPos = [_sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)line];
+        sptr_t len = lineEndPos - linePos;
+        if (len <= 0) continue;
+
+        char firstChar = (char)[_sci message:SCI_GETCHARAT wParam:(uptr_t)linePos];
+
+        if (firstChar != '\t' && firstChar != ' ') {
+            // Search header — always visible
+            [searchHeaders addIndex:(NSUInteger)line];
+            [matchingLines addIndex:(NSUInteger)line];
+            continue;
+        }
+
+        if (firstChar == ' ') {
+            // File header — remember it, show later if children match
+            currentFileHeader = line;
+            continue;
+        }
+
+        // Result line (tab-prefixed) — check if it matches filter
+        char *buf = (char *)calloc(len + 1, 1);
+        struct Sci_TextRangeFull tr = {};
+        tr.chrg.cpMin = linePos;
+        tr.chrg.cpMax = lineEndPos;
+        tr.lpstrText = buf;
+        [_sci message:SCI_GETTEXTRANGEFULL wParam:0 lParam:(sptr_t)&tr];
+        NSString *lineText = [NSString stringWithUTF8String:buf] ?: @"";
+        free(buf);
+
+        NSRange matchRange = [lineText rangeOfString:filter options:cmpOpts];
+        BOOL matched = (matchRange.location != NSNotFound);
+
+        // Whole word check
+        if (matched && wholeWord) {
+            NSCharacterSet *wordChars = [NSCharacterSet alphanumericCharacterSet];
+            if (matchRange.location > 0) {
+                unichar c = [lineText characterAtIndex:matchRange.location - 1];
+                if ([wordChars characterIsMember:c] || c == '_') matched = NO;
+            }
+            NSUInteger endPos = matchRange.location + matchRange.length;
+            if (matched && endPos < lineText.length) {
+                unichar c = [lineText characterAtIndex:endPos];
+                if ([wordChars characterIsMember:c] || c == '_') matched = NO;
+            }
+        }
+
+        if (matched) {
+            [matchingLines addIndex:(NSUInteger)line];
+            matchCount++;
+            if (currentFileHeader >= 0) {
+                [fileHeadersWithMatches addIndex:(NSUInteger)currentFileHeader];
+            }
+        }
+    }
+
+    // Add file headers that have matching children
+    [matchingLines addIndexes:fileHeadersWithMatches];
+
+    // Second pass: show/hide lines
+    [_sci message:SCI_SETREADONLY wParam:0];
+    for (sptr_t line = 0; line < lineCount; line++) {
+        if ([matchingLines containsIndex:(NSUInteger)line]) {
+            [_sci message:SCI_SHOWLINES wParam:(uptr_t)line lParam:(uptr_t)line];
+        } else {
+            [_sci message:SCI_HIDELINES wParam:(uptr_t)line lParam:(uptr_t)line];
+        }
+    }
+    [_sci message:SCI_SETREADONLY wParam:1];
+
+    // Update status
+    if (matchCount > 0) {
+        _filterStatusLabel.stringValue = [NSString stringWithFormat:@"%ld match%@",
+            (long)matchCount, matchCount == 1 ? @"" : @"es"];
+        _filterStatusLabel.textColor = [NSColor secondaryLabelColor];
+    } else {
+        _filterStatusLabel.stringValue = [[NppLocalizer shared] translate:@"Not found"];
+        _filterStatusLabel.textColor = [NSColor systemRedColor];
+    }
+}
+
+- (void)_showAllLines {
+    sptr_t lineCount = [_sci message:SCI_GETLINECOUNT];
+    [_sci message:SCI_SETREADONLY wParam:0];
+    [_sci message:SCI_SHOWLINES wParam:0 lParam:(uptr_t)(lineCount - 1)];
+    [_sci message:SCI_SETREADONLY wParam:1];
+}
+
+#pragma mark - Helpers
+
+- (NSArray<NSString *> *)_selectedPathnames {
+    sptr_t selStart = [_sci message:SCI_GETSELECTIONSTART];
+    sptr_t selEnd   = [_sci message:SCI_GETSELECTIONEND];
+    sptr_t lineStart = [_sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selStart];
+    sptr_t lineEnd   = [_sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)selEnd];
+
+    // If nothing selected, use all lines
+    if (selStart == selEnd) {
+        lineStart = 0;
+        lineEnd = (sptr_t)_lineInfos.size() - 1;
+    }
+
+    NSMutableOrderedSet<NSString *> *paths = [NSMutableOrderedSet orderedSet];
+    for (sptr_t line = lineStart; line <= lineEnd; line++) {
+        // Skip hidden lines
+        if (![_sci message:SCI_GETLINEVISIBLE wParam:(uptr_t)line]) continue;
+        if ((size_t)line < _lineInfos.size() && _lineInfos[line].filePath.length() > 0) {
+            NSString *path = [NSString stringWithUTF8String:_lineInfos[line].filePath.c_str()];
+            if (path.length && [[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                [paths addObject:path];
+            }
+        }
+    }
+    return [paths array];
+}
 
 @end
