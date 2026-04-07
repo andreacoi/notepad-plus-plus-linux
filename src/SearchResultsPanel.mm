@@ -160,6 +160,11 @@ struct _SRLineInfo {
     if (_wordWrapEnabled)
         [_sci message:SCI_SETWRAPMODE wParam:SC_WRAP_WORD];
 
+    // Apply persisted zoom level
+    NSInteger savedZoom = [[NSUserDefaults standardUserDefaults] integerForKey:@"PanelZoom_SearchResults"];
+    if (savedZoom != 0)
+        [_sci message:SCI_SETZOOM wParam:(uptr_t)savedZoom];
+
     // ── Title bar with close button ─────────────────────────────────────
     _titleBar = [[NSView alloc] init];
     _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
@@ -977,8 +982,8 @@ static sptr_t _srSciColor(NSColor *c) {
 
 #pragma mark - Panel Zoom
 
-- (void)panelZoomIn   { [_sci message:SCI_ZOOMIN]; }
-- (void)panelZoomOut  { [_sci message:SCI_ZOOMOUT]; }
-- (void)panelZoomReset { [_sci message:SCI_SETZOOM wParam:0]; }
+- (void)panelZoomIn   { [_sci message:SCI_ZOOMIN]; [[NSUserDefaults standardUserDefaults] setInteger:[_sci message:SCI_GETZOOM] forKey:@"PanelZoom_SearchResults"]; }
+- (void)panelZoomOut  { [_sci message:SCI_ZOOMOUT]; [[NSUserDefaults standardUserDefaults] setInteger:[_sci message:SCI_GETZOOM] forKey:@"PanelZoom_SearchResults"]; }
+- (void)panelZoomReset { [_sci message:SCI_SETZOOM wParam:0]; [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"PanelZoom_SearchResults"]; }
 
 @end

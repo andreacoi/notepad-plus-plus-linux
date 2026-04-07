@@ -33,6 +33,7 @@
     // Table
     NSScrollView         *_scrollView;
     NSTableView          *_tableView;
+    CGFloat               _panelFontSize;
 
     // Buttons
     NSButton             *_stageAllButton;
@@ -55,6 +56,7 @@ static NSString * const kLastRepoRootKey = @"GitPanelLastRepoRoot";
     self = [super initWithFrame:frame];
     if (self) {
         _items = @[];
+        { CGFloat z = [[NSUserDefaults standardUserDefaults] floatForKey:@"PanelZoom_Git"]; _panelFontSize = z >= 8 ? z : 11; }
         [self _loadBulletImage];
         [self _buildUI];
         [self _setNoRepo:YES];
@@ -472,6 +474,7 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
         }
         label.stringValue = item.path;
         label.textColor = fg;
+        label.font = [NSFont monospacedSystemFontOfSize:_panelFontSize weight:NSFontWeightRegular];
         return label;
     }
 }
@@ -605,22 +608,8 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
 
 #pragma mark - Panel Zoom
 
-- (void)panelZoomIn {
-    NSFont *f = _tableView.font ?: [NSFont systemFontOfSize:12];
-    _tableView.font = [NSFont fontWithName:f.fontName size:f.pointSize + 1];
-    _tableView.rowHeight = f.pointSize + 1 + 8;
-    [_tableView reloadData];
-}
-- (void)panelZoomOut {
-    NSFont *f = _tableView.font ?: [NSFont systemFontOfSize:12];
-    if (f.pointSize <= 6) return;
-    _tableView.font = [NSFont fontWithName:f.fontName size:f.pointSize - 1];
-    _tableView.rowHeight = f.pointSize - 1 + 8;
-    [_tableView reloadData];
-}
-- (void)panelZoomReset {
-    _tableView.font = [NSFont systemFontOfSize:12];
-    _tableView.rowHeight = 20;
-    [_tableView reloadData];
-}
+- (void)_saveZoom { [[NSUserDefaults standardUserDefaults] setFloat:_panelFontSize forKey:@"PanelZoom_Git"]; }
+- (void)panelZoomIn    { _panelFontSize = MIN(_panelFontSize + 1, 28); _tableView.rowHeight = _panelFontSize + 8; [_tableView reloadData]; [self _saveZoom]; }
+- (void)panelZoomOut   { _panelFontSize = MAX(_panelFontSize - 1, 8);  _tableView.rowHeight = _panelFontSize + 8; [_tableView reloadData]; [self _saveZoom]; }
+- (void)panelZoomReset { _panelFontSize = 11; _tableView.rowHeight = 19; [_tableView reloadData]; [self _saveZoom]; }
 @end

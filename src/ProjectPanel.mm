@@ -300,6 +300,7 @@ static NSString * const kPrefWSPath     = @"ProjectPanelWorkspace%ld";  // forma
     // 3 workspaces (one per tab)
     _ProjectWorkspace  *_workspaces[3];
     NSInteger           _activeTab;
+    CGFloat             _panelFontSize;
 
     // UI
     NSView             *_titleBar;
@@ -316,6 +317,7 @@ static NSString * const kPrefWSPath     = @"ProjectPanelWorkspace%ld";  // forma
         for (int i = 0; i < 3; i++)
             _workspaces[i] = [[_ProjectWorkspace alloc] init];
         _activeTab = 0;
+        { CGFloat z = [[NSUserDefaults standardUserDefaults] floatForKey:@"PanelZoom_Project"]; _panelFontSize = z >= 8 ? z : 11; }
         [self _buildUI];
         [self _applyTheme];
         [self _restoreState];
@@ -1128,11 +1130,16 @@ static NSString * const kPrefWSPath     = @"ProjectPanelWorkspace%ld";  // forma
         }
     }
     cell.imageView.image = icon;
+    cell.textField.font = [NSFont systemFontOfSize:_panelFontSize];
+    for (NSLayoutConstraint *c in cell.imageView.constraints) {
+        if (c.firstAttribute == NSLayoutAttributeWidth || c.firstAttribute == NSLayoutAttributeHeight)
+            c.constant = _panelFontSize + 4;
+    }
     return cell;
 }
 
 - (CGFloat)outlineView:(NSOutlineView *)ov heightOfRowByItem:(id)item {
-    return 22;
+    return _panelFontSize + 10;
 }
 
 #pragma mark - NSTextFieldDelegate (inline rename)
@@ -1185,23 +1192,9 @@ static NSString * const kPrefWSPath     = @"ProjectPanelWorkspace%ld";  // forma
 
 #pragma mark - Panel Zoom
 
-- (void)panelZoomIn {
-    NSFont *f = _outlineView.font ?: [NSFont systemFontOfSize:12];
-    _outlineView.font = [NSFont fontWithName:f.fontName size:f.pointSize + 1];
-    _outlineView.rowHeight = f.pointSize + 1 + 8;
-    [_outlineView reloadData];
-}
-- (void)panelZoomOut {
-    NSFont *f = _outlineView.font ?: [NSFont systemFontOfSize:12];
-    if (f.pointSize <= 6) return;
-    _outlineView.font = [NSFont fontWithName:f.fontName size:f.pointSize - 1];
-    _outlineView.rowHeight = f.pointSize - 1 + 8;
-    [_outlineView reloadData];
-}
-- (void)panelZoomReset {
-    _outlineView.font = [NSFont systemFontOfSize:12];
-    _outlineView.rowHeight = 22;
-    [_outlineView reloadData];
-}
+- (void)_saveZoom { [[NSUserDefaults standardUserDefaults] setFloat:_panelFontSize forKey:@"PanelZoom_Project"]; }
+- (void)panelZoomIn    { _panelFontSize = MIN(_panelFontSize + 1, 28); [_outlineView reloadData]; [_outlineView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_outlineView numberOfRows])]]; [self _saveZoom]; }
+- (void)panelZoomOut   { _panelFontSize = MAX(_panelFontSize - 1, 8);  [_outlineView reloadData]; [_outlineView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_outlineView numberOfRows])]]; [self _saveZoom]; }
+- (void)panelZoomReset { _panelFontSize = 11; [_outlineView reloadData]; [_outlineView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_outlineView numberOfRows])]]; [self _saveZoom]; }
 
 @end

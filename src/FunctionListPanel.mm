@@ -119,6 +119,7 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
     // Data
     NSMutableArray<_FuncItem *> *_rootItems;     // full tree
     NSMutableArray<_FuncItem *> *_filteredItems;  // search-filtered tree
+    CGFloat _panelFontSize;
     __weak EditorView *_editor;
 
     // State
@@ -149,6 +150,7 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
     if (self) {
         _rootItems    = [NSMutableArray array];
         _filteredItems = [NSMutableArray array];
+        { CGFloat z = [[NSUserDefaults standardUserDefaults] floatForKey:@"PanelZoom_FunctionList"]; _panelFontSize = z >= 8 ? z : 11; }
         _searchText   = @"";
         [self _loadIcons];
         [self _buildLayout];
@@ -257,7 +259,7 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
     // ── Outline view (tree) ──────────────────────────────────────────────────
     _outlineView = [[NSOutlineView alloc] init];
     _outlineView.headerView = nil;
-    _outlineView.rowHeight = 20;
+    _outlineView.rowHeight = 19;
     _outlineView.indentationPerLevel = 16;
     _outlineView.intercellSpacing = NSMakeSize(0, 1);
     _outlineView.allowsMultipleSelection = NO;
@@ -1300,6 +1302,12 @@ static NSString *_userFuncPatternForLanguage(NSString *lang, NSString * __autore
 
     cell.imageView.image = fi.isNode ? _nodeIcon : _leafIcon;
     cell.textField.stringValue = fi.name;
+    cell.textField.font = [NSFont systemFontOfSize:_panelFontSize];
+    // Update icon size constraints
+    for (NSLayoutConstraint *c in cell.imageView.constraints) {
+        if (c.firstAttribute == NSLayoutAttributeWidth || c.firstAttribute == NSLayoutAttributeHeight)
+            c.constant = _panelFontSize + 2;
+    }
     return cell;
 }
 
@@ -1334,22 +1342,8 @@ static NSString *_userFuncPatternForLanguage(NSString *lang, NSString * __autore
 
 #pragma mark - Panel Zoom
 
-- (void)panelZoomIn {
-    NSFont *f = _outlineView.font ?: [NSFont systemFontOfSize:12];
-    _outlineView.font = [NSFont fontWithName:f.fontName size:f.pointSize + 1];
-    _outlineView.rowHeight = f.pointSize + 1 + 8;
-    [_outlineView reloadData];
-}
-- (void)panelZoomOut {
-    NSFont *f = _outlineView.font ?: [NSFont systemFontOfSize:12];
-    if (f.pointSize <= 6) return;
-    _outlineView.font = [NSFont fontWithName:f.fontName size:f.pointSize - 1];
-    _outlineView.rowHeight = f.pointSize - 1 + 8;
-    [_outlineView reloadData];
-}
-- (void)panelZoomReset {
-    _outlineView.font = [NSFont systemFontOfSize:12];
-    _outlineView.rowHeight = 20;
-    [_outlineView reloadData];
-}
+- (void)_saveZoom { [[NSUserDefaults standardUserDefaults] setFloat:_panelFontSize forKey:@"PanelZoom_FunctionList"]; }
+- (void)panelZoomIn    { _panelFontSize = MIN(_panelFontSize + 1, 28); _outlineView.rowHeight = _panelFontSize + 8; [_outlineView reloadData]; [self _saveZoom]; }
+- (void)panelZoomOut   { _panelFontSize = MAX(_panelFontSize - 1, 8);  _outlineView.rowHeight = _panelFontSize + 8; [_outlineView reloadData]; [self _saveZoom]; }
+- (void)panelZoomReset { _panelFontSize = 11; _outlineView.rowHeight = 19; [_outlineView reloadData]; [self _saveZoom]; }
 @end

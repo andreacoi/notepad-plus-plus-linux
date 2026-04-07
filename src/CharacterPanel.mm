@@ -155,6 +155,7 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
     NSTextField  *_titleLabel;
     // _rows[v] = @[dec, hex, charDisplay, htmlName, htmlDecimal, htmlHex]
     NSArray<NSArray<NSString *> *> *_rows;
+    CGFloat _panelFontSize;
     // UTF-8 strings to insert when clicking the Character column
     NSArray<NSString *> *_insertStrings;
     // Title bar reference kept for theme updates
@@ -164,6 +165,7 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
 - (instancetype)init {
     self = [super initWithFrame:NSZeroRect];
     if (self) {
+        { CGFloat z = [[NSUserDefaults standardUserDefaults] floatForKey:@"PanelZoom_Character"]; _panelFontSize = z >= 8 ? z : 11; }
         [self _buildData];
         [self _buildLayout];
         [self retranslateUI];
@@ -412,6 +414,7 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
     }
     cell.stringValue = text;
     cell.textColor   = [[NPPStyleStore sharedStore] globalFg];
+    cell.font = [NSFont monospacedSystemFontOfSize:_panelFontSize weight:NSFontWeightRegular];
     return cell;
 }
 
@@ -450,23 +453,9 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
 
 #pragma mark - Panel Zoom
 
-- (void)panelZoomIn {
-    NSFont *f = _tableView.font ?: [NSFont systemFontOfSize:12];
-    _tableView.font = [NSFont fontWithName:f.fontName size:f.pointSize + 1];
-    _tableView.rowHeight = f.pointSize + 1 + 8;
-    [_tableView reloadData];
-}
-- (void)panelZoomOut {
-    NSFont *f = _tableView.font ?: [NSFont systemFontOfSize:12];
-    if (f.pointSize <= 6) return;
-    _tableView.font = [NSFont fontWithName:f.fontName size:f.pointSize - 1];
-    _tableView.rowHeight = f.pointSize - 1 + 8;
-    [_tableView reloadData];
-}
-- (void)panelZoomReset {
-    _tableView.font = [NSFont systemFontOfSize:12];
-    _tableView.rowHeight = 20;
-    [_tableView reloadData];
-}
+- (void)_saveZoom { [[NSUserDefaults standardUserDefaults] setFloat:_panelFontSize forKey:@"PanelZoom_Character"]; }
+- (void)panelZoomIn    { _panelFontSize = MIN(_panelFontSize + 1, 28); _tableView.rowHeight = _panelFontSize + 8; [_tableView reloadData]; [self _saveZoom]; }
+- (void)panelZoomOut   { _panelFontSize = MAX(_panelFontSize - 1, 8);  _tableView.rowHeight = _panelFontSize + 8; [_tableView reloadData]; [self _saveZoom]; }
+- (void)panelZoomReset { _panelFontSize = 11; _tableView.rowHeight = 19; [_tableView reloadData]; [self _saveZoom]; }
 
 @end

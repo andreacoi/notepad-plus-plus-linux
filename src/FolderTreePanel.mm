@@ -121,12 +121,16 @@ static NSString * const kTreeviewSubdir     = @"icons/standard/panels/treeview";
 
     // Data — multiple user-added root folders
     NSMutableArray<_FTItem *> *_roots;
+
+    // Zoom
+    CGFloat _panelFontSize;
 }
 
 - (instancetype)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         _roots = [NSMutableArray array];
+        { CGFloat z = [[NSUserDefaults standardUserDefaults] floatForKey:@"PanelZoom_FolderTree"]; _panelFontSize = z >= 8 ? z : 11; }
         [self _buildUI];
         [self _applyTheme];
         [self _restoreRoots];
@@ -828,13 +832,12 @@ static _FTPanelButton *_panelBtn(NSString *iconName, NSString *subdir, NSString 
         NSImageView *iv = [[NSImageView alloc] init];
         iv.translatesAutoresizingMaskIntoConstraints = NO;
         iv.imageFrameStyle = NSImageFrameNone;
-        [iv.widthAnchor  constraintEqualToConstant:16].active = YES;
-        [iv.heightAnchor constraintEqualToConstant:16].active = YES;
+        iv.imageScaling = NSImageScaleProportionallyUpOrDown;
         cell.imageView = iv;
         NSTextField *tf = [NSTextField labelWithString:@""];
         tf.translatesAutoresizingMaskIntoConstraints = NO;
         tf.lineBreakMode = NSLineBreakByTruncatingMiddle;
-        tf.font = [NSFont systemFontOfSize:12];
+        tf.font = [NSFont systemFontOfSize:_panelFontSize];
         cell.textField = tf;
         [cell addSubview:iv];
         [cell addSubview:tf];
@@ -849,6 +852,7 @@ static _FTPanelButton *_panelBtn(NSString *iconName, NSString *subdir, NSString 
 
     cell.textField.stringValue = ft.url.lastPathComponent ?: @"";
     cell.textField.textColor   = [[NPPStyleStore sharedStore] globalFg];
+    cell.textField.font = [NSFont systemFontOfSize:_panelFontSize];
 
     NSImage *icon = nil;
     if (ft.isDirectory) {
@@ -861,20 +865,30 @@ static _FTPanelButton *_panelBtn(NSString *iconName, NSString *subdir, NSString 
         icon = [self _treeviewIcon:iconName];
         if (!icon) {
             icon = [[NSWorkspace sharedWorkspace] iconForFileType:NSFileTypeForHFSTypeCode(kGenericFolderIcon)];
-            icon.size = NSMakeSize(16, 16);
+            icon.size = NSMakeSize(_panelFontSize + 4, _panelFontSize + 4);
         }
     } else {
         NSString *ext = ft.url.pathExtension;
         icon = ext.length ? [[NSWorkspace sharedWorkspace] iconForFileType:ext]
                           : [[NSWorkspace sharedWorkspace] iconForFileType:@""];
-        icon.size = NSMakeSize(16, 16);
+        icon.size = NSMakeSize(_panelFontSize + 4, _panelFontSize + 4);
     }
     cell.imageView.image = icon;
+    // Update image view size constraints for zoom
+    for (NSLayoutConstraint *c in cell.imageView.constraints) {
+        if (c.firstAttribute == NSLayoutAttributeWidth || c.firstAttribute == NSLayoutAttributeHeight)
+            c.constant = _panelFontSize + 4;
+    }
+    // If no size constraints exist yet (first time after removing hardcoded ones), add them
+    if (cell.imageView.constraints.count == 0) {
+        [cell.imageView.widthAnchor constraintEqualToConstant:_panelFontSize + 4].active = YES;
+        [cell.imageView.heightAnchor constraintEqualToConstant:_panelFontSize + 4].active = YES;
+    }
     return cell;
 }
 
 - (CGFloat)outlineView:(NSOutlineView *)ov heightOfRowByItem:(id)item {
-    return 22;
+    return _panelFontSize + 10;
 }
 
 
@@ -884,22 +898,8 @@ static _FTPanelButton *_panelBtn(NSString *iconName, NSString *subdir, NSString 
 
 #pragma mark - Panel Zoom
 
-- (void)panelZoomIn {
-    NSFont *f = _outlineView.font ?: [NSFont systemFontOfSize:12];
-    _outlineView.font = [NSFont fontWithName:f.fontName size:f.pointSize + 1];
-    _outlineView.rowHeight = f.pointSize + 1 + 8;
-    [_outlineView reloadData];
-}
-- (void)panelZoomOut {
-    NSFont *f = _outlineView.font ?: [NSFont systemFontOfSize:12];
-    if (f.pointSize <= 6) return;
-    _outlineView.font = [NSFont fontWithName:f.fontName size:f.pointSize - 1];
-    _outlineView.rowHeight = f.pointSize - 1 + 8;
-    [_outlineView reloadData];
-}
-- (void)panelZoomReset {
-    _outlineView.font = [NSFont systemFontOfSize:12];
-    _outlineView.rowHeight = 22;
-    [_outlineView reloadData];
-}
+- (void)_saveZoom { [[NSUserDefaults standardUserDefaults] setFloat:_panelFontSize forKey:@"PanelZoom_FolderTree"]; }
+- (void)panelZoomIn    { _panelFontSize = MIN(_panelFontSize + 1, 28); [_outlineView reloadData]; [self _saveZoom]; }
+- (void)panelZoomOut   { _panelFontSize = MAX(_panelFontSize - 1, 8);  [_outlineView reloadData]; [self _saveZoom]; }
+- (void)panelZoomReset { _panelFontSize = 11; [_outlineView reloadData]; [self _saveZoom]; }
 @end
