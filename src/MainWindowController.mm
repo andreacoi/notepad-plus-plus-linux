@@ -7,7 +7,7 @@
 #import "SearchEngine.h"
 #import "MenuBuilder.h"
 #import "ColumnEditorPanel.h"
-#import "FindInFilesPanel.h"
+// FindInFilesPanel removed — all search goes through FindWindow
 #import "SidePanelHost.h"
 #import "DocumentListPanel.h"
 #import "ClipboardHistoryPanel.h"
@@ -4747,18 +4747,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     [[FindWindow sharedWindow] showTab:FindWindowTabFindInFiles];
 }
 
-- (void)findInFilesPanel:(FindInFilesPanel *)panel
-                openFile:(NSString *)path
-                  atLine:(NSInteger)line
-               matchText:(NSString *)matchText
-               matchCase:(BOOL)matchCase {
-    [self openFileAtPath:path];
-    EditorView *ed = [self currentEditor];
-    [ed goToLineNumber:line];
-    // Highlight the match on the target line (search forward without wrapping).
-    if (matchText.length)
-        [ed findNext:matchText matchCase:matchCase wholeWord:NO wrap:NO];
-}
+// FindInFilesPanel delegate removed — search results use SearchResultsPanel
 
 #pragma mark - FolderTreePanelDelegate
 
@@ -4772,10 +4761,10 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 }
 
 - (void)folderTreePanel:(FolderTreePanel *)panel findInFilesAtPath:(NSString *)path {
-    FindInFilesPanel *fif = [FindInFilesPanel sharedPanel];
-    fif.delegate        = self;
-    fif.searchDirectory = path;
-    [fif showWindow:nil];
+    [self _ensureFindWindow];
+    FindWindow *fw = [FindWindow sharedWindow];
+    [fw setDirectory:path];
+    [fw showTab:FindWindowTabFindInFiles];
 }
 
 #pragma mark - FindWindowDelegate
@@ -4854,10 +4843,10 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 }
 
 - (void)projectPanel:(ProjectPanel *)panel findInFilesAtPath:(NSString *)path {
-    FindInFilesPanel *fif = [FindInFilesPanel sharedPanel];
-    fif.delegate        = self;
-    fif.searchDirectory = path;
-    [fif showWindow:nil];
+    [self _ensureFindWindow];
+    FindWindow *fw = [FindWindow sharedWindow];
+    [fw selectProjectPanel:panel.activeTab];
+    [fw showTab:FindWindowTabFindInProjects];
 }
 
 #pragma mark - GitPanelDelegate
@@ -7583,7 +7572,7 @@ static int64_t _sysctlInt(const char *name) {
     [[FindWindow sharedWindow].window orderOut:nil];
     [[PluginsAdminWindowController sharedController].window orderOut:nil];
     [[StyleConfiguratorWindowController sharedController].window orderOut:nil];
-    [[FindInFilesPanel sharedPanel].window orderOut:nil];
+    // FindInFilesPanel removed
     [[UserDefineDialog sharedController].window orderOut:nil];
     [[PreferencesWindowController sharedController].window orderOut:nil];
 }

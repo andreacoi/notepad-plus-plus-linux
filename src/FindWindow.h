@@ -46,6 +46,12 @@ typedef NS_ENUM(NSInteger, FindWindowTab) {
 /// Pre-fill the search field with text (e.g., from editor selection).
 - (void)setSearchText:(NSString *)text;
 
+/// Pre-fill the directory field (for Find in Files tab).
+- (void)setDirectory:(NSString *)path;
+
+/// Check a specific Project Panel checkbox (0, 1, or 2) and uncheck the others.
+- (void)selectProjectPanel:(NSInteger)index;
+
 /// Get current search text for findNext/findPrev from menu.
 @property (nonatomic, readonly) NSString *searchText;
 

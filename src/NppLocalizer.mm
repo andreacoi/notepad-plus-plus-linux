@@ -585,7 +585,7 @@ static NSString *normalizeForLookup(NSString *s) {
         @"replace":                        @"dlg:Find:1608",
         @"match case":                     @"dlg:IncrementalFind:1685",
 
-        // FindInFilesPanel
+        // Find in Files / Find in Projects
         @"find in files":                  @"cmd:43013",
         @"directory:":                     @"dlg:Find:1655",   // "Directory:"
         @"filter:":                        @"dlg:Find:1654",   // "Filters:"

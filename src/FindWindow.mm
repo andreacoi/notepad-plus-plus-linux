@@ -120,6 +120,16 @@ static FindWindow *_sharedInstance = nil;
     if (text.length) _findCombo.stringValue = text;
 }
 
+- (void)setDirectory:(NSString *)path {
+    if (path.length) _directoryCombo.stringValue = path;
+}
+
+- (void)selectProjectPanel:(NSInteger)index {
+    _fipPanel1.state = (index == 0) ? NSControlStateValueOn : NSControlStateValueOff;
+    _fipPanel2.state = (index == 1) ? NSControlStateValueOn : NSControlStateValueOff;
+    _fipPanel3.state = (index == 2) ? NSControlStateValueOn : NSControlStateValueOff;
+}
+
 - (NPPFindOptions *)currentOptions {
     NPPFindOptions *o = [[NPPFindOptions alloc] init];
     o.searchText  = _findCombo.stringValue ?: @"";

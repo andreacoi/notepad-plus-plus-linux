@@ -84,7 +84,7 @@ set(APP_SRCS
     src/FindReplacePanel.mm
     src/ColumnEditorPanel.mm
     src/PreferencesWindowController.mm
-    src/FindInFilesPanel.mm
+    # src/FindInFilesPanel.mm — removed, search goes through FindWindow
     src/SidePanelHost.mm
     src/DocumentListPanel.mm
     src/ClipboardHistoryPanel.mm
@@ -120,7 +120,7 @@ set(APP_HEADERS
     src/FindReplacePanel.h
     src/ColumnEditorPanel.h
     src/PreferencesWindowController.h
-    src/FindInFilesPanel.h
+    # src/FindInFilesPanel.h — removed
     src/SidePanelHost.h
     src/DocumentListPanel.h
     src/ClipboardHistoryPanel.h
