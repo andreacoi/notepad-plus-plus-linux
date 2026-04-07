@@ -587,6 +587,14 @@ static sptr_t _srSciColor(NSColor *c) {
     _markingsStruct._markings = nullptr;
 }
 
+/// Select an entire line in the search results panel so it stays highlighted.
+- (void)_selectResultLine:(sptr_t)line {
+    sptr_t lineStart = [_sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)line];
+    sptr_t lineEnd   = [_sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)line];
+    [_sci message:SCI_SETSEL wParam:(uptr_t)lineStart lParam:lineEnd];
+    [_sci message:SCI_SCROLLCARET];
+}
+
 - (BOOL)navigateToNextResult {
     sptr_t currentLine = [_sci message:SCI_LINEFROMPOSITION
                                 wParam:(uptr_t)[_sci message:SCI_GETCURRENTPOS]];
@@ -594,7 +602,7 @@ static sptr_t _srSciColor(NSColor *c) {
 
     for (sptr_t line = currentLine + 1; line < lineCount; line++) {
         if ((size_t)line < _lineInfos.size() && _lineInfos[line].lineNumber > 0) {
-            [_sci message:SCI_GOTOLINE wParam:(uptr_t)line];
+            [self _selectResultLine:line];
             [self _navigateToResultLine:line];
             return YES;
         }
@@ -602,7 +610,7 @@ static sptr_t _srSciColor(NSColor *c) {
     // Wrap to beginning
     for (sptr_t line = 0; line <= currentLine && line < lineCount; line++) {
         if ((size_t)line < _lineInfos.size() && _lineInfos[line].lineNumber > 0) {
-            [_sci message:SCI_GOTOLINE wParam:(uptr_t)line];
+            [self _selectResultLine:line];
             [self _navigateToResultLine:line];
             return YES;
         }
@@ -617,7 +625,7 @@ static sptr_t _srSciColor(NSColor *c) {
 
     for (sptr_t line = currentLine - 1; line >= 0; line--) {
         if ((size_t)line < _lineInfos.size() && _lineInfos[line].lineNumber > 0) {
-            [_sci message:SCI_GOTOLINE wParam:(uptr_t)line];
+            [self _selectResultLine:line];
             [self _navigateToResultLine:line];
             return YES;
         }
@@ -625,7 +633,7 @@ static sptr_t _srSciColor(NSColor *c) {
     // Wrap to end
     for (sptr_t line = lineCount - 1; line > currentLine; line--) {
         if ((size_t)line < _lineInfos.size() && _lineInfos[line].lineNumber > 0) {
-            [_sci message:SCI_GOTOLINE wParam:(uptr_t)line];
+            [self _selectResultLine:line];
             [self _navigateToResultLine:line];
             return YES;
         }
