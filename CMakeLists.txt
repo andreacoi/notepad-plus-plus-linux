@@ -254,7 +254,7 @@ add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
     COMMENT "Ad-hoc code signing the app bundle")
 
 set_target_properties(NotepadPlusPlusMac PROPERTIES
-    OUTPUT_NAME "NotepadPlusPlus"
+    OUTPUT_NAME "Notepad++"
     MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/resources/Info.plist"
     MACOSX_BUNDLE_BUNDLE_NAME "Notepad++"
     MACOSX_BUNDLE_GUI_IDENTIFIER "org.notepadplusplus.mac"

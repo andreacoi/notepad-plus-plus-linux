@@ -18,7 +18,7 @@
     <key>CFBundleSignature</key>
     <string>????</string>
     <key>CFBundleExecutable</key>
-    <string>NotepadPlusPlus</string>
+    <string>Notepad++</string>
     <key>NSPrincipalClass</key>
     <string>NppApplication</string>
     <key>CFBundleIconFile</key>
