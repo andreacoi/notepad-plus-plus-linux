@@ -93,6 +93,14 @@ typedef NS_ENUM(NSInteger, NPPSearchDir) {
                                     cancelFlag:(BOOL *)cancelFlag
                             totalFilesScanned:(nullable NSInteger *)totalFilesScanned;
 
+/// Search within a specific list of file paths (for Find in Projects).
+/// Applies file filters from opts.filters. Returns array of NPPFileResults.
++ (NSArray<NPPFileResults *> *)findInFilePaths:(NSArray<NSString *> *)filePaths
+                                       options:(NPPFindOptions *)opts
+                                 progressBlock:(nullable void(^)(NSString *currentFile, NSInteger hits))progressBlock
+                                    cancelFlag:(BOOL *)cancelFlag
+                            totalFilesScanned:(nullable NSInteger *)totalFilesScanned;
+
 @end
 
 NS_ASSUME_NONNULL_END

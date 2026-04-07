@@ -4199,24 +4199,34 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
 // Find Volatile: same as Find Next/Prev but never wraps
 - (void)findVolatileNext:(id)sender {
-    FindWindow *fw = [FindWindow sharedWindow];
-    NSString *text = fw.searchText;
-    if (!text.length) return;
     EditorView *ed = [self currentEditor];
     if (!ed) return;
-    NPPFindOptions *opts = [fw currentOptions];
-    opts.wrapAround = NO;
+    NSString *text = [ed selectedText];
+    if (!text.length) return;
+
+    NPPFindOptions *opts = [[NPPFindOptions alloc] init];
+    opts.searchText = text;
+    opts.matchCase = NO;
+    opts.wholeWord = NO;
+    opts.wrapAround = YES;
+    opts.searchType = NPPSearchNormal;
+    opts.direction = NPPSearchDown;
     if (![SearchEngine findInView:ed.scintillaView options:opts forward:YES]) NSBeep();
 }
 
 - (void)findVolatilePrevious:(id)sender {
-    FindWindow *fw = [FindWindow sharedWindow];
-    NSString *text = fw.searchText;
-    if (!text.length) return;
     EditorView *ed = [self currentEditor];
     if (!ed) return;
-    NPPFindOptions *opts = [fw currentOptions];
-    opts.wrapAround = NO;
+    NSString *text = [ed selectedText];
+    if (!text.length) return;
+
+    NPPFindOptions *opts = [[NPPFindOptions alloc] init];
+    opts.searchText = text;
+    opts.matchCase = NO;
+    opts.wholeWord = NO;
+    opts.wrapAround = YES;
+    opts.searchType = NPPSearchNormal;
+    opts.direction = NPPSearchUp;
     if (![SearchEngine findInView:ed.scintillaView options:opts forward:NO]) NSBeep();
 }
 
@@ -4802,7 +4812,10 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
 - (SearchResultsPanel *)searchResultsPanel { return _searchResultsPanel; }
 
-- (ProjectPanel *)projectPanel { return _projectPanel; }
+- (ProjectPanel *)projectPanel {
+    if (_projectPanel && [_sidePanelHost hasPanel:_projectPanel]) return _projectPanel;
+    return nil;
+}
 
 #pragma mark - SearchResultsPanelDelegate
 

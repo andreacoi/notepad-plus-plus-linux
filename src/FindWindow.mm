@@ -927,11 +927,157 @@ static CGFloat _fromTop(NSView *container, CGFloat topOffset, CGFloat height) {
 #pragma mark - Actions: Find in Projects
 
 - (void)_findInProjects:(id)sender {
-    [self _showStatus:[[NppLocalizer shared] translate:@"Find in Projects: Not yet connected to Project Panel file list."] found:NO];
+    NPPFindOptions *opts = [self currentOptions];
+    NppLocalizer *loc = [NppLocalizer shared];
+    if (!opts.searchText.length) return;
+
+    // Validate: Project Panel must be open
+    ProjectPanel *pp = [_delegate projectPanel];
+    if (!pp) {
+        [self _showStatus:[loc translate:@"Open a Project Panel first."] found:NO];
+        return;
+    }
+
+    // Validate: at least one checkbox checked
+    if (!opts.projectPanel1 && !opts.projectPanel2 && !opts.projectPanel3) {
+        [self _showStatus:[loc translate:@"Select at least one Project Panel to search."] found:NO];
+        return;
+    }
+
+    // Collect file paths from checked workspaces that have content
+    NSMutableArray<NSString *> *allPaths = [NSMutableArray array];
+    NSMutableArray<NSString *> *emptyPanels = [NSMutableArray array];
+    if (opts.projectPanel1) {
+        if ([pp workspaceHasContent:0]) [allPaths addObjectsFromArray:[pp allFilePathsFromWorkspace:0]];
+        else [emptyPanels addObject:@"1"];
+    }
+    if (opts.projectPanel2) {
+        if ([pp workspaceHasContent:1]) [allPaths addObjectsFromArray:[pp allFilePathsFromWorkspace:1]];
+        else [emptyPanels addObject:@"2"];
+    }
+    if (opts.projectPanel3) {
+        if ([pp workspaceHasContent:2]) [allPaths addObjectsFromArray:[pp allFilePathsFromWorkspace:2]];
+        else [emptyPanels addObject:@"3"];
+    }
+
+    if (allPaths.count == 0) {
+        [self _showStatus:[NSString stringWithFormat:@"%@ %@",
+            [loc translate:@"No files to search."],
+            emptyPanels.count ? [NSString stringWithFormat:@"Panel %@ has no workspace loaded.",
+                [emptyPanels componentsJoinedByString:@", "]] : @""]
+                    found:NO];
+        return;
+    }
+
+    [self _addToHistory:_findCombo key:kHistoryFind];
+    [self _addToHistory:_filtersCombo key:kHistoryFilter];
+    _cancelSearch = NO;
+    [self _showStatus:[loc translate:@"Searching..."] found:YES];
+
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        NSInteger scannedCount = 0;
+        NSArray<NPPFileResults *> *results = [SearchEngine findInFilePaths:allPaths
+            options:opts
+            progressBlock:^(NSString *file, NSInteger hits) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self _showStatus:[NSString stringWithFormat:
+                        [[NppLocalizer shared] translate:@"Searching... %ld hit(s) — %@"],
+                        (long)hits, file.lastPathComponent] found:YES];
+                });
+            }
+            cancelFlag:&self->_cancelSearch
+            totalFilesScanned:&scannedCount];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (results.count) {
+                [self->_delegate findWindow:self showResults:results forSearchText:opts.searchText
+                              options:opts filesSearched:scannedCount];
+                [self->_delegate findWindowShowSearchResultsPanel:self];
+                NSInteger totalHits = 0;
+                for (NPPFileResults *fr in results) totalHits += (NSInteger)fr.results.count;
+                [self _showStatus:[NSString stringWithFormat:
+                    [[NppLocalizer shared] translate:@"Find in Projects: %ld hit(s) in %ld file(s)."],
+                    (long)totalHits, (long)results.count] found:YES];
+            } else {
+                [self _showStatus:[[NppLocalizer shared] translate:@"Find in Projects: 0 hits."] found:NO];
+            }
+        });
+    });
 }
 
 - (void)_replaceInProjects:(id)sender {
-    [self _showStatus:[[NppLocalizer shared] translate:@"Replace in Projects: Not yet connected."] found:NO];
+    NPPFindOptions *opts = [self currentOptions];
+    NppLocalizer *loc = [NppLocalizer shared];
+    if (!opts.searchText.length) return;
+
+    ProjectPanel *pp = [_delegate projectPanel];
+    if (!pp) {
+        [self _showStatus:[loc translate:@"Open a Project Panel first."] found:NO];
+        return;
+    }
+    if (!opts.projectPanel1 && !opts.projectPanel2 && !opts.projectPanel3) {
+        [self _showStatus:[loc translate:@"Select at least one Project Panel to search."] found:NO];
+        return;
+    }
+
+    NSMutableArray<NSString *> *allPaths = [NSMutableArray array];
+    if (opts.projectPanel1 && [pp workspaceHasContent:0]) [allPaths addObjectsFromArray:[pp allFilePathsFromWorkspace:0]];
+    if (opts.projectPanel2 && [pp workspaceHasContent:1]) [allPaths addObjectsFromArray:[pp allFilePathsFromWorkspace:1]];
+    if (opts.projectPanel3 && [pp workspaceHasContent:2]) [allPaths addObjectsFromArray:[pp allFilePathsFromWorkspace:2]];
+
+    if (allPaths.count == 0) {
+        [self _showStatus:[loc translate:@"No files to search."] found:NO];
+        return;
+    }
+
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText = [loc translate:@"Replace in Projects"];
+    alert.informativeText = [NSString stringWithFormat:
+        @"%@ \"%@\" %@ \"%@\" %@ %ld %@",
+        [loc translate:@"Replace all occurrences of"],
+        opts.searchText,
+        [loc translate:@"with"],
+        opts.replaceText,
+        [loc translate:@"in"],
+        (long)allPaths.count,
+        [loc translate:@"project file(s). This cannot be undone."]];
+    [alert addButtonWithTitle:[loc translate:@"Replace"]];
+    [alert addButtonWithTitle:[loc translate:@"Cancel"]];
+    if ([alert runModal] != NSAlertFirstButtonReturn) return;
+
+    [self _addToHistory:_findCombo key:kHistoryFind];
+    [self _addToHistory:_replaceCombo key:kHistoryReplace];
+    [self _addToHistory:_filtersCombo key:kHistoryFilter];
+    [self _showStatus:[loc translate:@"Replacing in files..."] found:YES];
+
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        NSArray<NPPFileResults *> *results = [SearchEngine findInFilePaths:allPaths
+            options:opts progressBlock:nil cancelFlag:NULL totalFilesScanned:NULL];
+        __block NSInteger totalReplacements = 0;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            for (NPPFileResults *fr in results) {
+                NSString *content = [NSString stringWithContentsOfFile:fr.filePath
+                                                             encoding:NSUTF8StringEncoding error:nil];
+                if (!content) continue;
+                NSString *search = opts.searchText;
+                NSString *repl = opts.replaceText ?: @"";
+                if (opts.searchType == NPPSearchExtended) {
+                    search = [SearchEngine expandExtendedString:search];
+                    repl = [SearchEngine expandExtendedString:repl];
+                }
+                NSStringCompareOptions cmp = opts.matchCase ? 0 : NSCaseInsensitiveSearch;
+                NSString *replaced = [content stringByReplacingOccurrencesOfString:search withString:repl
+                                                                          options:cmp range:NSMakeRange(0, content.length)];
+                if (![replaced isEqualToString:content]) {
+                    [replaced writeToFile:fr.filePath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+                    totalReplacements += (NSInteger)fr.results.count;
+                }
+            }
+            [self _showStatus:[NSString stringWithFormat:
+                [[NppLocalizer shared] translate:@"Replace in Projects: %ld replacement(s) in %ld file(s)."],
+                (long)totalReplacements, (long)results.count] found:(totalReplacements > 0)];
+        });
+    });
 }
 
 #pragma mark - Actions: Mark

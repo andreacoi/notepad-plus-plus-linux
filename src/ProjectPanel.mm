@@ -353,6 +353,17 @@ static NSString * const kPrefWSPath     = @"ProjectPanelWorkspace%ld";  // forma
 
 - (NSInteger)activeTab { return _activeTab; }
 
+- (NSArray<NSString *> *)allFilePathsFromWorkspace:(NSInteger)tabIndex {
+    if (tabIndex < 0 || tabIndex > 2) return @[];
+    return [_workspaces[tabIndex] allFilePaths];
+}
+
+- (BOOL)workspaceHasContent:(NSInteger)tabIndex {
+    if (tabIndex < 0 || tabIndex > 2) return NO;
+    return _workspaces[tabIndex].filePath.length > 0 &&
+           [_workspaces[tabIndex] allFilePaths].count > 0;
+}
+
 #pragma mark - UI Construction
 
 - (void)_buildUI {
