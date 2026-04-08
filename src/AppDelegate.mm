@@ -675,7 +675,13 @@ static NSString *const kUpdateMenuItemTag = @"checkForUpdatesMenuItem";
                 // Update available — badge the menu item
                 NSMenuItem *mi = [self _updateMenuItem];
                 if (mi) {
-                    mi.title = [NSString stringWithFormat:@"🟠 Update Available (v%@)", latestVersion];
+                        mi.title = [NSString stringWithFormat:@"Update Available (v%@)", latestVersion];
+                    NSString *imgPath = [[NSBundle mainBundle] pathForResource:@"icons/standard/status/status_yellow" ofType:@"png"];
+                    if (imgPath) {
+                        NSImage *img = [[NSImage alloc] initWithContentsOfFile:imgPath];
+                        [img setSize:NSMakeSize(12, 12)];
+                        mi.image = img;
+                    }
                 }
 
                 if (userInitiated) {
@@ -688,7 +694,13 @@ static NSString *const kUpdateMenuItemTag = @"checkForUpdatesMenuItem";
                 // Up to date — badge the menu item green
                 NSMenuItem *mi = [self _updateMenuItem];
                 if (mi) {
-                    mi.title = @"🟢 Check for Updates…";
+                    mi.title = @"Check for Updates…";
+                    NSString *imgPath = [[NSBundle mainBundle] pathForResource:@"icons/standard/status/status_green" ofType:@"png"];
+                    if (imgPath) {
+                        NSImage *img = [[NSImage alloc] initWithContentsOfFile:imgPath];
+                        [img setSize:NSMakeSize(12, 12)];
+                        mi.image = img;
+                    }
                 }
 
                 if (userInitiated) {
