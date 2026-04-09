@@ -2968,10 +2968,240 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
     [(NppApplication *)NSApp setPlayingBackMacro:NO];
 }
 
+#pragma mark - Auto-indent
+
+// Languages that use brace-based auto-indent (matching Windows NPP maintainIndentation)
+static NSSet<NSString *> *_cLikeLanguages() {
+    static NSSet *s;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        s = [NSSet setWithArray:@[
+            @"c", @"cpp", @"objc", @"cs", @"java",
+            @"javascript", @"javascript.js", @"typescript", @"swift", @"go", @"rust",
+            @"php", @"jsp", @"css", @"perl", @"powershell",
+            @"json", @"json5", @"d", @"actionscript", @"rc"
+        ]];
+    });
+    return s;
+}
+
+// Detect braceless control structures: if(...) / for(...) / while(...) / else
+// Uses Scintilla's regex search on the given line.
+- (BOOL)_isConditionExprLine:(sptr_t)line {
+    ScintillaView *sci = _scintillaView;
+    if (line < 0 || line >= [sci message:SCI_GETLINECOUNT])
+        return NO;
+
+    sptr_t startPos = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)line];
+    sptr_t endPos   = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)line];
+    if (startPos >= endPos) return NO;
+
+    [sci message:SCI_SETSEARCHFLAGS wParam:SCFIND_REGEXP | SCFIND_POSIX];
+    [sci message:SCI_SETTARGETRANGE wParam:(uptr_t)startPos lParam:endPos];
+
+    const char expr[] = "((else[ \t]+)?if|for|while)[ \t]*[(].*[)][ \t]*|else[ \t]*";
+    sptr_t found = [sci message:SCI_SEARCHINTARGET wParam:strlen(expr) lParam:(sptr_t)expr];
+    if (found >= 0) {
+        sptr_t end = [sci message:SCI_GETTARGETEND];
+        if (end == endPos)
+            return YES;
+    }
+    return NO;
+}
+
+// Find matching opening brace by scanning backward with balance counting.
+- (sptr_t)_findMatchedBraceFrom:(sptr_t)startPos to:(sptr_t)endPos
+                         target:(char)target matched:(char)matched {
+    if (startPos == endPos) return -1;
+    ScintillaView *sci = _scintillaView;
+    int balance = 0;
+    for (sptr_t i = startPos; i >= endPos; --i) {
+        char c = (char)[sci message:SCI_GETCHARAT wParam:(uptr_t)i];
+        if (c == target) {
+            if (balance == 0) return i;
+            --balance;
+        } else if (c == matched) {
+            ++balance;
+        }
+    }
+    return -1;
+}
+
+- (void)_maintainIndentation:(int)ch {
+    // Skip during macro recording/playback (matches Windows NPP behavior)
+    if (_isRecordingMacro || [(NppApplication *)NSApp playingBackMacro])
+        return;
+
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:kPrefAutoIndent])
+        return;
+
+    ScintillaView *sci = _scintillaView;
+    sptr_t eolMode = [sci message:SCI_GETEOLMODE];
+
+    sptr_t curPos  = [sci message:SCI_GETCURRENTPOS];
+    sptr_t curLine = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)curPos];
+    sptr_t tabWidth = [sci message:SCI_GETTABWIDTH];
+    NSString *lang = _currentLanguage.lowercaseString;
+
+    BOOL isNewline = ((eolMode == SC_EOL_CRLF || eolMode == SC_EOL_LF) && ch == '\n') ||
+                     (eolMode == SC_EOL_CR && ch == '\r');
+
+    // ── C-like: handle } typed on its own line ──
+    if (!isNewline && [_cLikeLanguages() containsObject:lang]) {
+        if (ch == '}') {
+            // Only re-align if } is the first non-whitespace on the line
+            sptr_t lineStart = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)curLine];
+            BOOL onlyWhitespaceBefore = YES;
+            for (sptr_t i = curPos - 2; i >= lineStart; --i) {
+                char c = (char)[sci message:SCI_GETCHARAT wParam:(uptr_t)i];
+                if (c != ' ' && c != '\t') { onlyWhitespaceBefore = NO; break; }
+            }
+            if (!onlyWhitespaceBefore) return;
+
+            // Find matching { by scanning backward
+            sptr_t searchStart = (curPos >= 2) ? curPos - 2 : 0;
+            sptr_t matchPos = [self _findMatchedBraceFrom:searchStart to:0
+                                                   target:'{' matched:'}'];
+            if (matchPos < 0) return;
+            sptr_t matchLine = [sci message:SCI_LINEFROMPOSITION wParam:(uptr_t)matchPos];
+            if (matchLine == curLine) return;
+            sptr_t matchIndent = [sci message:SCI_GETLINEINDENTATION wParam:(uptr_t)matchLine];
+            [sci message:SCI_SETLINEINDENTATION wParam:(uptr_t)curLine lParam:matchIndent];
+            sptr_t newPos = [sci message:SCI_GETLINEINDENTPOSITION wParam:(uptr_t)curLine];
+            // Place cursor after the }
+            [sci message:SCI_GOTOPOS wParam:(uptr_t)(newPos + 1)];
+        }
+        return;
+    }
+
+    if (!isNewline)
+        return;
+
+    sptr_t prevLine = curLine - 1;
+
+    // If we were at the beginning of an empty line and pressed Enter, don't indent
+    if (prevLine >= 0 && ([sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)prevLine] - [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)prevLine]) == 0)
+        return;
+
+    // Find previous non-empty line
+    while (prevLine >= 0 && ([sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)prevLine] - [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)prevLine]) == 0)
+        prevLine--;
+
+    sptr_t indentPrev = 0;
+    if (prevLine >= 0)
+        indentPrev = [sci message:SCI_GETLINEINDENTATION wParam:(uptr_t)prevLine];
+
+    // ── C-like languages: advanced indent ──
+    if ([_cLikeLanguages() containsObject:lang]) {
+        [self _maintainIndentCLike:ch curLine:curLine prevLine:prevLine
+                        indentPrev:indentPrev tabWidth:tabWidth eolMode:eolMode];
+        return;
+    }
+
+    // ── Python: colon detection ──
+    if ([lang isEqualToString:@"python"]) {
+        [self _maintainIndentPython:curLine prevLine:prevLine
+                         indentPrev:indentPrev tabWidth:tabWidth];
+        return;
+    }
+
+    // ── All other languages: basic indent (copy previous line) ──
+    if (indentPrev > 0) {
+        [sci message:SCI_SETLINEINDENTATION wParam:(uptr_t)curLine lParam:indentPrev];
+        sptr_t newPos = [sci message:SCI_GETLINEINDENTPOSITION wParam:(uptr_t)curLine];
+        [sci message:SCI_GOTOPOS wParam:(uptr_t)newPos];
+    }
+}
+
+- (void)_maintainIndentCLike:(int)ch curLine:(sptr_t)curLine prevLine:(sptr_t)prevLine
+                  indentPrev:(sptr_t)indentPrev tabWidth:(sptr_t)tabWidth
+                     eolMode:(sptr_t)eolMode {
+    ScintillaView *sci = _scintillaView;
+
+    // Determine prevChar (character before the newline) and nextChar (after cursor)
+    sptr_t curPos = [sci message:SCI_GETCURRENTPOS];
+    sptr_t prevPos = curPos - (eolMode == SC_EOL_CRLF ? 3 : 2);
+    char prevChar = (prevPos >= 0) ? (char)[sci message:SCI_GETCHARAT wParam:(uptr_t)prevPos] : 0;
+    char nextChar = (char)[sci message:SCI_GETCHARAT wParam:(uptr_t)curPos];
+
+    if (prevChar == '{') {
+        if (nextChar == '}') {
+            // Enter between { and } — insert extra line, indent middle, align closing brace
+            const char *eolStr = (eolMode == SC_EOL_CRLF) ? "\r\n" :
+                                 (eolMode == SC_EOL_LF)   ? "\n" : "\r";
+            [sci message:SCI_INSERTTEXT wParam:(uptr_t)curPos lParam:(sptr_t)eolStr];
+            [sci message:SCI_SETLINEINDENTATION wParam:(uptr_t)(curLine + 1) lParam:indentPrev];
+        }
+        // Indent current line by tabWidth more than parent
+        [sci message:SCI_SETLINEINDENTATION wParam:(uptr_t)curLine lParam:indentPrev + tabWidth];
+    } else if (nextChar == '{') {
+        // Next char is opening brace — align with previous indent
+        [sci message:SCI_SETLINEINDENTATION wParam:(uptr_t)curLine lParam:indentPrev];
+    } else if ([self _isConditionExprLine:prevLine]) {
+        // Previous line is braceless if/for/while/else — indent one extra level
+        [sci message:SCI_SETLINEINDENTATION wParam:(uptr_t)curLine lParam:indentPrev + tabWidth];
+    } else {
+        if (indentPrev > 0) {
+            // Check if two lines up was a braceless condition — de-indent back
+            if (prevLine > 0 && [self _isConditionExprLine:prevLine - 1])
+                [sci message:SCI_SETLINEINDENTATION wParam:(uptr_t)curLine
+                                                    lParam:MAX(0, indentPrev - tabWidth)];
+            else
+                [sci message:SCI_SETLINEINDENTATION wParam:(uptr_t)curLine lParam:indentPrev];
+        }
+    }
+
+    // Position cursor at end of indentation
+    sptr_t newPos = [sci message:SCI_GETLINEINDENTPOSITION wParam:(uptr_t)curLine];
+    [sci message:SCI_GOTOPOS wParam:(uptr_t)newPos];
+}
+
+- (void)_maintainIndentPython:(sptr_t)curLine prevLine:(sptr_t)prevLine
+                   indentPrev:(sptr_t)indentPrev tabWidth:(sptr_t)tabWidth {
+    ScintillaView *sci = _scintillaView;
+
+    if (prevLine >= 0) {
+        // Search for trailing colon pattern: : followed by optional whitespace/comment
+        sptr_t startPos = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)prevLine];
+        sptr_t endPos   = [sci message:SCI_GETLINEENDPOSITION wParam:(uptr_t)prevLine];
+
+        if (startPos < endPos) {
+            [sci message:SCI_SETSEARCHFLAGS wParam:SCFIND_REGEXP | SCFIND_POSIX];
+            [sci message:SCI_SETTARGETRANGE wParam:(uptr_t)startPos lParam:endPos];
+
+            const char colonExpr[] = ":[ \t]*(#|$)";
+            sptr_t found = [sci message:SCI_SEARCHINTARGET wParam:strlen(colonExpr)
+                                                            lParam:(sptr_t)colonExpr];
+            if (found >= 0) {
+                // Verify colon is an operator, not inside a string/comment
+                sptr_t style = [sci message:SCI_GETSTYLEAT wParam:(uptr_t)found];
+                // SCE_P_OPERATOR = 10 for the Python lexer
+                if (style == 10) {
+                    [sci message:SCI_SETLINEINDENTATION wParam:(uptr_t)curLine
+                                                        lParam:indentPrev + tabWidth];
+                    sptr_t newPos = [sci message:SCI_GETLINEINDENTPOSITION wParam:(uptr_t)curLine];
+                    [sci message:SCI_GOTOPOS wParam:(uptr_t)newPos];
+                    return;
+                }
+            }
+        }
+    }
+
+    // Default: copy previous line's indentation
+    if (indentPrev > 0) {
+        [sci message:SCI_SETLINEINDENTATION wParam:(uptr_t)curLine lParam:indentPrev];
+        sptr_t newPos = [sci message:SCI_GETLINEINDENTPOSITION wParam:(uptr_t)curLine];
+        [sci message:SCI_GOTOPOS wParam:(uptr_t)newPos];
+    }
+}
+
 #pragma mark - Auto-close & Word Completion
 
 - (void)handleCharAdded:(int)ch {
     ScintillaView *sci = _scintillaView;
+
+    // ── Auto-indent on newline ──
+    [self _maintainIndentation:ch];
 
     // Auto-close bracket pairs — only when enabled and no existing selection
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kPrefAutoCloseBrackets] &&
