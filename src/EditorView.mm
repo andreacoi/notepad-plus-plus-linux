@@ -1886,7 +1886,7 @@ static int vkToScintillaKey(int vk) {
     // Some languages share lexers — map to the canonical language for keyword lookup.
     // c, objc, swift all use the cpp lexer; javascript.js uses javascript.
     NSString *kwLang = lang;
-    if ([@[@"c", @"objc", @"swift"] containsObject:lang]) kwLang = @"cpp";
+    if ([@[@"c", @"objc"] containsObject:lang]) kwLang = @"cpp";
     if ([lang isEqualToString:@"javascript.js"]) kwLang = @"javascript";
 
     NppLangsManager *lm = [NppLangsManager shared];
@@ -2000,8 +2000,8 @@ static const int kGitGutterMargin   = 4;  // margin index for git gutter
     // Map EditorView language names to NPP style-store lexer IDs
     NSString *lid = lang.lowercaseString;
     if ([lid isEqualToString:@"c"] || [lid isEqualToString:@"objc"]) lid = @"cpp";
-    else if ([lid isEqualToString:@"javascript"] || [lid isEqualToString:@"typescript"] ||
-             [lid isEqualToString:@"swift"])                          lid = @"cpp";
+    else if ([lid isEqualToString:@"javascript"] || [lid isEqualToString:@"typescript"])
+                                                                      lid = @"cpp";
 
     NPPStyleStore *store = [NPPStyleStore sharedStore];
     NSArray<NPPStyleEntry *> *styles = [store stylesForLexer:lid];
