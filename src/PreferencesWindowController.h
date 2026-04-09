@@ -5,7 +5,9 @@ NS_ASSUME_NONNULL_BEGIN
 // NSUserDefaults keys (exported so EditorView can read them)
 extern NSString *const kPrefTabWidth;
 extern NSString *const kPrefUseTabs;
-extern NSString *const kPrefAutoIndent;
+extern NSString *const kPrefAutoIndent;          // NSInteger 0=None 1=Advanced 2=Basic
+extern NSString *const kPrefBackspaceUnindent;   // BOOL, default NO
+extern NSString *const kPrefTabOverrides;        // NSDictionary<langName, @{@"tabSize":@N, @"useTabs":@BOOL}>
 extern NSString *const kPrefShowLineNumbers;
 extern NSString *const kPrefHighlightCurrentLine;
 extern NSString *const kPrefEOLType;

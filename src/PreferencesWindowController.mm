@@ -1,12 +1,15 @@
 #import "PreferencesWindowController.h"
 #import "NppLocalizer.h"
+#import "NppLangsManager.h"
 #import "NppThemeManager.h"
 #import "StyleConfiguratorWindowController.h"
 
 // ── NSUserDefaults keys (mirrors NPP settings) ────────────────────────────────
 NSString *const kPrefTabWidth           = @"tabWidth";
 NSString *const kPrefUseTabs            = @"useTabs";
-NSString *const kPrefAutoIndent         = @"autoIndent";
+NSString *const kPrefAutoIndent         = @"autoIndent";  // 0=None 1=Advanced 2=Basic
+NSString *const kPrefBackspaceUnindent = @"backspaceUnindent";
+NSString *const kPrefTabOverrides      = @"tabOverrides"; // {langName: {tabSize:N, useTabs:BOOL}}
 NSString *const kPrefShowLineNumbers    = @"showLineNumbers";
 NSString *const kPrefHighlightCurrentLine = @"highlightCurrentLine";
 NSString *const kPrefEOLType            = @"eolType";       // 0=CRLF 1=LF 2=CR
@@ -92,13 +95,17 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     NSMutableArray       *_pageNames;     // sidebar row titles (NSString or @"-" for separator)
     NSMutableDictionary  *_pageViews;     // pageTitle → NSView (lazy cache)
     NSPopUpButton        *_languagePopup; // General page — language selector
+    NSArray<NSString *>  *_indentLangNames;    // Indentation page — "[Default]" + language display names
+    NSDictionary<NSString *, NSString *> *_indentDisplayToInternal; // "Python" → "python"
+    NSString             *_indentSelectedLang; // currently selected internal lang name (nil = [Default])
 }
 
 + (void)load {
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{
         kPrefTabWidth:           @4,
         kPrefUseTabs:            @YES,
-        kPrefAutoIndent:         @YES,
+        kPrefAutoIndent:         @1,   // 0=None 1=Advanced 2=Basic
+        kPrefBackspaceUnindent:  @NO,
         kPrefShowLineNumbers:    @YES,
         kPrefHighlightCurrentLine: @YES,
         kPrefEOLType:            @1,
@@ -213,6 +220,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     _pageNames = [NSMutableArray arrayWithArray:@[
         [loc translate:@"General"],
         [loc translate:@"Editor"],
+        [loc translate:@"Indentation"],
         [loc translate:@"Tab Bar"],
         [loc translate:@"Dark Mode"],
         [loc translate:@"Margins"],
@@ -235,7 +243,8 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{
         kPrefTabWidth:           @4,
         kPrefUseTabs:            @YES,
-        kPrefAutoIndent:         @YES,
+        kPrefAutoIndent:         @1,   // 0=None 1=Advanced 2=Basic
+        kPrefBackspaceUnindent:  @NO,
         kPrefShowLineNumbers:    @YES,
         kPrefHighlightCurrentLine: @YES,
         kPrefEOLType:            @1,
@@ -256,6 +265,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     _pageNames = [NSMutableArray arrayWithArray:@[
         [[NppLocalizer shared] translate:@"General"],
         [[NppLocalizer shared] translate:@"Editor"],
+        [[NppLocalizer shared] translate:@"Indentation"],
         [[NppLocalizer shared] translate:@"Tab Bar"],
         [[NppLocalizer shared] translate:@"Dark Mode"],
         [[NppLocalizer shared] translate:@"Margins"],
@@ -360,10 +370,29 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
 // ═══════════════════════════════════════════════════════════════════════════════
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tv {
+    if (tv.tag == 1400) return (NSInteger)_indentLangNames.count;
     return (NSInteger)_pageNames.count;
 }
 
 - (NSView *)tableView:(NSTableView *)tv viewForTableColumn:(NSTableColumn *)col row:(NSInteger)row {
+    // Indentation language list
+    if (tv.tag == 1400) {
+        NSTextField *tf = [tv makeViewWithIdentifier:@"langCell" owner:nil];
+        if (!tf) {
+            tf = [NSTextField labelWithString:@""];
+            tf.identifier = @"langCell";
+            tf.font = [NSFont systemFontOfSize:12];
+            tf.bordered = NO;
+            tf.editable = NO;
+            tf.drawsBackground = NO;
+        }
+        tf.stringValue = _indentLangNames[row];
+        if (row == 0) tf.font = [NSFont boldSystemFontOfSize:12]; // [Default] bold
+        else tf.font = [NSFont systemFontOfSize:12];
+        return tf;
+    }
+
+    // Sidebar
     NSString *name = _pageNames[row];
 
     if ([name isEqualToString:@"-"]) {
@@ -387,15 +416,22 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
 }
 
 - (CGFloat)tableView:(NSTableView *)tv heightOfRow:(NSInteger)row {
+    if (tv.tag == 1400) return 18;
     NSString *name = _pageNames[row];
     return [name isEqualToString:@"-"] ? 12 : 26;
 }
 
 - (BOOL)tableView:(NSTableView *)tv shouldSelectRow:(NSInteger)row {
+    if (tv.tag == 1400) return YES;
     return ![_pageNames[row] isEqualToString:@"-"]; // separators not selectable
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)n {
+    NSTableView *tv = n.object;
+    if (tv.tag == 1400) {
+        [self _indentLangSelectionChanged:tv];
+        return;
+    }
     NSInteger row = _sidebarTable.selectedRow;
     if (row >= 0) [self _showPageAtIndex:row];
 }
@@ -462,6 +498,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     NppLocalizer *loc = [NppLocalizer shared];
     if ([name isEqualToString:[loc translate:@"General"]])         return [self _buildGeneralPage];
     if ([name isEqualToString:[loc translate:@"Editor"]])          return [self _buildEditorPage];
+    if ([name isEqualToString:[loc translate:@"Indentation"]])    return [self _buildIndentationPage];
     if ([name isEqualToString:[loc translate:@"Tab Bar"]])         return [self _buildTabBarPage];
     if ([name isEqualToString:[loc translate:@"Dark Mode"]])       return [self _buildDarkModePage];
     if ([name isEqualToString:[loc translate:@"Margins"]])          return [self _buildMarginsPage];
@@ -553,22 +590,8 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     CGFloat y = 380;
 
-    NSTextField *tabLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Tab size:"]];
-    tabLabel.frame = NSMakeRect(20, y, 80, 20);
-    [v addSubview:tabLabel];
-
-    NSTextField *tabField = [[NSTextField alloc] initWithFrame:NSMakeRect(110, y-2, 50, 22)];
-    tabField.integerValue = [ud integerForKey:kPrefTabWidth];
-    tabField.tag = 100;
-    tabField.target = self;
-    tabField.action = @selector(prefChanged:);
-    [v addSubview:tabField];
-    y -= 30;
-
     NppLocalizer *loc = [NppLocalizer shared];
     NSArray *checks = @[
-        @[[loc translate:@"Use tabs (instead of spaces)"],    @101, kPrefUseTabs],
-        @[[loc translate:@"Auto-indent"],                     @102, kPrefAutoIndent],
         @[[loc translate:@"Show line numbers"],               @103, kPrefShowLineNumbers],
         @[[loc translate:@"Highlight current line"],          @105, kPrefHighlightCurrentLine],
         @[[loc translate:@"Auto-close brackets ( ) [ ] { }"], @700, kPrefAutoCloseBrackets],
@@ -623,6 +646,407 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     [v addSubview:fqPopup];
 
     return v;
+}
+
+#pragma mark - Indentation Page
+
+// Internal language name → display name for Indentation page
+static NSDictionary<NSString *, NSString *> *_langDisplayNames() {
+    static NSDictionary *m;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        m = @{
+            @"ada":@"Ada", @"asm":@"Assembly", @"asp":@"ASP",
+            @"bash":@"Bash", @"batch":@"Batch",
+            @"c":@"C", @"cs":@"C#", @"cpp":@"C++", @"cmake":@"CMake",
+            @"cobol":@"COBOL", @"css":@"CSS",
+            @"d":@"D", @"diff":@"Diff",
+            @"erlang":@"Erlang",
+            @"fortran":@"Fortran",
+            @"go":@"Go", @"groovy":@"Groovy",
+            @"haskell":@"Haskell", @"html":@"HTML",
+            @"ini":@"INI", @"inno":@"Inno Setup",
+            @"java":@"Java", @"javascript":@"JavaScript", @"json":@"JSON", @"json5":@"JSON5", @"jsp":@"JSP",
+            @"latex":@"LaTeX", @"lisp":@"Lisp", @"lua":@"Lua",
+            @"makefile":@"Makefile", @"matlab":@"MATLAB", @"mssql":@"MS SQL",
+            @"nim":@"Nim", @"nsis":@"NSIS",
+            @"objc":@"Objective-C",
+            @"pascal":@"Pascal", @"perl":@"Perl", @"php":@"PHP",
+            @"powershell":@"PowerShell", @"props":@"Properties", @"python":@"Python",
+            @"r":@"R", @"rc":@"Resource", @"ruby":@"Ruby", @"rust":@"Rust",
+            @"scheme":@"Scheme", @"smalltalk":@"Smalltalk", @"sql":@"SQL",
+            @"swift":@"Swift",
+            @"tcl":@"Tcl", @"tex":@"TeX", @"toml":@"TOML", @"typescript":@"TypeScript",
+            @"vb":@"Visual Basic", @"vhdl":@"VHDL",
+            @"xml":@"XML",
+            @"yaml":@"YAML",
+        };
+    });
+    return m;
+}
+
+- (NSView *)_buildIndentationPage {
+    NSView *v = [[NSView alloc] init];
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NppLocalizer *loc = [NppLocalizer shared];
+    CGFloat y = 380;
+
+    // ── Build language list: [Default] + sorted display names ──
+    NSDictionary *displayMap = _langDisplayNames();
+    NSArray<NSString *> *rawNames = [[NppLangsManager shared] allLanguageNames];
+    NSMutableArray<NSString *> *displayNames = [NSMutableArray arrayWithObject:@"[Default]"];
+    [displayNames addObject:@"Normal text"];
+    NSMutableDictionary *reverseMap = [NSMutableDictionary dictionary];
+    NSMutableArray *sorted = [NSMutableArray array];
+    for (NSString *raw in rawNames) {
+        NSString *display = displayMap[raw] ?: raw;
+        [sorted addObject:display];
+        reverseMap[display] = raw;
+    }
+    [sorted sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    [displayNames addObjectsFromArray:sorted];
+    _indentLangNames = [displayNames copy];
+    _indentDisplayToInternal = [reverseMap copy];
+    _indentSelectedLang = nil; // [Default] selected initially
+
+    // ── Indent Settings group ──
+    NSBox *indentBox = [[NSBox alloc] initWithFrame:NSMakeRect(16, y - 180, 175, 190)];
+    indentBox.title = [loc translate:@"Indent Settings"];
+    indentBox.titlePosition = NSAtTop;
+
+    NSScrollView *langScroll = [[NSScrollView alloc] initWithFrame:NSMakeRect(-1, -1, 159, 165)];
+    langScroll.hasVerticalScroller = YES;
+    langScroll.borderType = NSBezelBorder;
+    NSTableView *langTable = [[NSTableView alloc] initWithFrame:langScroll.bounds];
+    NSTableColumn *langCol = [[NSTableColumn alloc] initWithIdentifier:@"lang"];
+    langCol.title = @"";
+    langCol.width = 139;
+    [langTable addTableColumn:langCol];
+    langTable.headerView = nil;
+    langTable.rowHeight = 18;
+    langTable.tag = 1400;
+    langTable.dataSource = self;
+    langTable.delegate = self;
+    langScroll.documentView = langTable;
+    [indentBox addSubview:langScroll];
+    // Select [Default] row
+    [langTable selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
+    [v addSubview:indentBox];
+
+    // ── Indent options box (below Indent Settings) ──
+    CGFloat optBoxTop = y - 190;  // just below indentBox
+    NSBox *optBox = [[NSBox alloc] initWithFrame:NSMakeRect(19, optBoxTop - 193, 430, 193)];
+    optBox.titlePosition = NSNoTitle;
+
+    // "Use default value" checkbox at top
+    NSButton *defaultChk = [NSButton checkboxWithTitle:[loc translate:@"Use default value"]
+                                                target:self action:@selector(_useDefaultValueChanged:)];
+    defaultChk.frame = NSMakeRect(15, 153, 200, 20);
+    defaultChk.state = NSControlStateValueOn; // default is checked (use global settings)
+    defaultChk.tag = 1320;
+    [optBox addSubview:defaultChk];
+
+    CGFloat oy = 118;
+
+    NSFont *smallFont = [NSFont systemFontOfSize:[NSFont systemFontSize] - 1];
+
+    NSTextField *sizeLabel = [NSTextField labelWithString:[loc translate:@"Indent size:"]];
+    sizeLabel.frame = NSMakeRect(15, oy, 90, 20);
+    sizeLabel.font = smallFont;
+    sizeLabel.tag = 1330;
+    [optBox addSubview:sizeLabel];
+
+    NSTextField *sizeField = [[NSTextField alloc] initWithFrame:NSMakeRect(115, oy - 2, 50, 22)];
+    sizeField.integerValue = [ud integerForKey:kPrefTabWidth];
+    sizeField.tag = 100;
+    sizeField.target = self;
+    sizeField.action = @selector(prefChanged:);
+    sizeField.enabled = NO;
+    [optBox addSubview:sizeField];
+    oy -= 30;
+
+    NSTextField *usingLabel = [NSTextField labelWithString:[loc translate:@"Indent using:"]];
+    usingLabel.frame = NSMakeRect(15, oy, 100, 20);
+    usingLabel.font = smallFont;
+    usingLabel.tag = 1331;
+    [optBox addSubview:usingLabel];
+    oy -= 24;
+
+    BOOL useTabs = [ud boolForKey:kPrefUseTabs];
+    NSButton *tabRadio = [NSButton radioButtonWithTitle:[loc translate:@"Tab character"]
+                                                 target:self action:@selector(_indentUsingChanged:)];
+    tabRadio.frame = NSMakeRect(25, oy, 150, 20);
+    tabRadio.font = smallFont;
+    tabRadio.tag = 1301;
+    tabRadio.state = useTabs ? NSControlStateValueOn : NSControlStateValueOff;
+    tabRadio.enabled = NO;
+    [optBox addSubview:tabRadio];
+    oy -= 24;
+
+    NSButton *spaceRadio = [NSButton radioButtonWithTitle:[loc translate:@"Space character(s)"]
+                                                   target:self action:@selector(_indentUsingChanged:)];
+    spaceRadio.frame = NSMakeRect(25, oy, 150, 20);
+    spaceRadio.font = smallFont;
+    spaceRadio.tag = 1302;
+    spaceRadio.state = useTabs ? NSControlStateValueOff : NSControlStateValueOn;
+    spaceRadio.enabled = NO;
+    [optBox addSubview:spaceRadio];
+    oy -= 30;
+
+    NSButton *bsChk = [NSButton checkboxWithTitle:[loc translate:@"Backspace key unindents instead of removing single space"]
+                                           target:self action:@selector(prefChanged:)];
+    bsChk.frame = NSMakeRect(15, oy, 400, 20);
+    bsChk.font = smallFont;
+    bsChk.state = [ud boolForKey:kPrefBackspaceUnindent] ? NSControlStateValueOn : NSControlStateValueOff;
+    bsChk.tag = 1303;
+    bsChk.enabled = NO;
+    [optBox addSubview:bsChk];
+
+    [v addSubview:optBox];
+
+    // ── Auto-indent radio group (right of Indent Settings) ──
+    NSBox *autoBox = [[NSBox alloc] initWithFrame:NSMakeRect(215, y - 90, 160, 100)];
+    autoBox.title = [loc translate:@"Auto-indent"];
+    autoBox.titlePosition = NSAtTop;
+
+    NSInteger mode = [ud integerForKey:kPrefAutoIndent];
+    // Migrate legacy BOOL: YES(1) → Advanced(1), NO(0) → None(0) — already compatible
+
+    NSButton *noneRadio = [NSButton radioButtonWithTitle:[loc translate:@"None"]
+                                                  target:self action:@selector(_autoIndentChanged:)];
+    noneRadio.frame = NSMakeRect(15, 50, 120, 20);
+    noneRadio.tag = 1310;
+    noneRadio.state = (mode == 0) ? NSControlStateValueOn : NSControlStateValueOff;
+    [autoBox addSubview:noneRadio];
+
+    NSButton *basicRadio = [NSButton radioButtonWithTitle:[loc translate:@"Basic"]
+                                                   target:self action:@selector(_autoIndentChanged:)];
+    basicRadio.frame = NSMakeRect(15, 30, 120, 20);
+    basicRadio.tag = 1311;
+    basicRadio.state = (mode == 2) ? NSControlStateValueOn : NSControlStateValueOff;
+    [autoBox addSubview:basicRadio];
+
+    NSButton *advRadio = [NSButton radioButtonWithTitle:[loc translate:@"Advanced"]
+                                                 target:self action:@selector(_autoIndentChanged:)];
+    advRadio.frame = NSMakeRect(15, 10, 120, 20);
+    advRadio.tag = 1312;
+    advRadio.state = (mode == 1) ? NSControlStateValueOn : NSControlStateValueOff;
+    [autoBox addSubview:advRadio];
+
+    [v addSubview:autoBox];
+
+    return v;
+}
+
+// Resolve indent settings for the selected language.
+// Returns {tabSize, useTabs} from: user override → langs.xml tabSettings → global default.
+- (void)_getIndentForLang:(NSString *)lang tabSize:(NSInteger *)outSize useTabs:(BOOL *)outUseTabs hasOverride:(BOOL *)outHasOverride {
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSInteger globalSize = [ud integerForKey:kPrefTabWidth];
+    if (globalSize < 1) globalSize = 4;
+    BOOL globalUseTabs = [ud boolForKey:kPrefUseTabs];
+
+    if (!lang.length) {
+        // [Default] or Normal text — show global settings
+        *outSize = globalSize;
+        *outUseTabs = globalUseTabs;
+        *outHasOverride = NO;
+        return;
+    }
+
+    // Check user override first
+    NSDictionary *overrides = [ud dictionaryForKey:kPrefTabOverrides];
+    NSDictionary *langOverride = overrides[lang];
+    if (langOverride) {
+        *outSize = [langOverride[@"tabSize"] integerValue];
+        if (*outSize < 1) *outSize = 4;
+        *outUseTabs = [langOverride[@"useTabs"] boolValue];
+        *outHasOverride = YES;
+        return;
+    }
+
+    // Check langs.xml built-in tabSettings
+    NppLangDef *def = [[NppLangsManager shared] langDefForName:lang];
+    if (def && def.tabSettings >= 0) {
+        NSInteger ts = def.tabSettings;
+        NSInteger xmlSize = ts & 0x7F;
+        BOOL xmlUseSpaces = (ts & 0x80) != 0;
+        if (xmlSize > 0) {
+            *outSize = xmlSize;
+            *outUseTabs = !xmlUseSpaces;
+            *outHasOverride = NO; // built-in, not user override
+            return;
+        }
+    }
+
+    // Fall back to global
+    *outSize = globalSize;
+    *outUseTabs = globalUseTabs;
+    *outHasOverride = NO;
+}
+
+- (void)_indentLangSelectionChanged:(NSTableView *)tv {
+    NSInteger row = tv.selectedRow;
+    if (row < 0) return;
+
+    NSString *displayName = _indentLangNames[row];
+    // Map display name to internal name
+    if (row == 0) { // [Default]
+        _indentSelectedLang = nil;
+    } else if (row == 1) { // Normal text
+        _indentSelectedLang = @"";
+    } else {
+        _indentSelectedLang = _indentDisplayToInternal[displayName] ?: displayName.lowercaseString;
+    }
+
+    // Load settings for this language into the controls
+    NSInteger tabSize = 4;
+    BOOL useTabs = YES;
+    BOOL hasOverride = NO;
+    [self _getIndentForLang:_indentSelectedLang tabSize:&tabSize useTabs:&useTabs hasOverride:&hasOverride];
+
+    // Find controls in the optBox (tag-based lookup)
+    NSView *optBox = [tv.window.contentView viewWithTag:1320].superview;
+    if (!optBox) return;
+
+    for (NSView *sub in optBox.subviews) {
+        if (sub.tag == 100 && [sub isKindOfClass:[NSTextField class]])
+            [(NSTextField *)sub setIntegerValue:tabSize];
+        else if (sub.tag == 1301 && [sub isKindOfClass:[NSButton class]])
+            [(NSButton *)sub setState:useTabs ? NSControlStateValueOn : NSControlStateValueOff];
+        else if (sub.tag == 1302 && [sub isKindOfClass:[NSButton class]])
+            [(NSButton *)sub setState:useTabs ? NSControlStateValueOff : NSControlStateValueOn];
+        else if (sub.tag == 1320 && [sub isKindOfClass:[NSButton class]]) {
+            BOOL isDefault = (_indentSelectedLang == nil); // [Default] row
+            if (isDefault) {
+                // [Default] row: checkbox hidden, controls always enabled
+                [(NSButton *)sub setHidden:YES];
+            } else {
+                [(NSButton *)sub setHidden:NO];
+                [(NSButton *)sub setState:hasOverride ? NSControlStateValueOff : NSControlStateValueOn];
+            }
+        }
+    }
+
+    // Enable/disable controls based on state
+    BOOL isDefault = (_indentSelectedLang == nil);
+    BOOL controlsEnabled = isDefault || hasOverride;
+    for (NSView *sub in optBox.subviews) {
+        if (sub.tag == 1320) continue; // skip the checkbox itself
+        if ([sub isKindOfClass:[NSButton class]])
+            [(NSButton *)sub setEnabled:controlsEnabled];
+        else if ([sub isKindOfClass:[NSTextField class]] && [(NSTextField *)sub isEditable])
+            [(NSTextField *)sub setEnabled:controlsEnabled];
+    }
+}
+
+- (void)_useDefaultValueChanged:(NSButton *)sender {
+    BOOL useDefault = (sender.state == NSControlStateValueOn);
+
+    if (_indentSelectedLang != nil) {
+        if (!useDefault) {
+            // Create override immediately with current control values
+            [self _saveIndentOverrideFromBox:sender.superview];
+        } else if (useDefault) {
+            // Remove per-language override
+            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+            NSMutableDictionary *overrides = [[ud dictionaryForKey:kPrefTabOverrides] mutableCopy] ?: [NSMutableDictionary dictionary];
+            [overrides removeObjectForKey:_indentSelectedLang];
+            [ud setObject:overrides forKey:kPrefTabOverrides];
+
+            // Reload to show the effective settings (from langs.xml or global)
+            NSInteger tabSize = 4; BOOL useTabs = YES; BOOL hasOvr = NO;
+            [self _getIndentForLang:_indentSelectedLang tabSize:&tabSize useTabs:&useTabs hasOverride:&hasOvr];
+            NSView *box = sender.superview;
+            for (NSView *sub in box.subviews) {
+                if (sub.tag == 100 && [sub isKindOfClass:[NSTextField class]])
+                    [(NSTextField *)sub setIntegerValue:tabSize];
+                else if (sub.tag == 1301 && [sub isKindOfClass:[NSButton class]])
+                    [(NSButton *)sub setState:useTabs ? NSControlStateValueOn : NSControlStateValueOff];
+                else if (sub.tag == 1302 && [sub isKindOfClass:[NSButton class]])
+                    [(NSButton *)sub setState:useTabs ? NSControlStateValueOff : NSControlStateValueOn];
+            }
+        }
+    }
+
+    // Enable/disable controls
+    NSView *box = sender.superview;
+    for (NSView *sub in box.subviews) {
+        if (sub == sender) continue;
+        if ([sub isKindOfClass:[NSButton class]])
+            [(NSButton *)sub setEnabled:!useDefault];
+        else if ([sub isKindOfClass:[NSTextField class]] && [(NSTextField *)sub isEditable])
+            [(NSTextField *)sub setEnabled:!useDefault];
+    }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"NPPPreferencesChanged" object:nil];
+}
+
+- (void)_saveIndentOverrideFromBox:(NSView *)box {
+    // Read current values from the controls in the box
+    NSInteger tabSize = 4;
+    BOOL useTabs = YES;
+    for (NSView *sub in box.subviews) {
+        if (sub.tag == 100 && [sub isKindOfClass:[NSTextField class]])
+            tabSize = [(NSTextField *)sub integerValue];
+        else if (sub.tag == 1301 && [sub isKindOfClass:[NSButton class]])
+            useTabs = ([(NSButton *)sub state] == NSControlStateValueOn);
+    }
+    if (tabSize < 1) tabSize = 4;
+
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    if (_indentSelectedLang != nil && _indentSelectedLang.length > 0) {
+        // Per-language override
+        NSMutableDictionary *overrides = [[ud dictionaryForKey:kPrefTabOverrides] mutableCopy] ?: [NSMutableDictionary dictionary];
+        overrides[_indentSelectedLang] = @{@"tabSize": @(tabSize), @"useTabs": @(useTabs)};
+        [ud setObject:overrides forKey:kPrefTabOverrides];
+    } else {
+        // [Default] or Normal text → save to global
+        [ud setInteger:tabSize forKey:kPrefTabWidth];
+        [ud setBool:useTabs forKey:kPrefUseTabs];
+    }
+}
+
+- (void)_indentUsingChanged:(NSButton *)sender {
+    BOOL useTabs = (sender.tag == 1301);
+
+    // Update sibling radio in the same NSBox
+    NSView *box = sender.superview;
+    for (NSView *sub in box.subviews) {
+        if ([sub isKindOfClass:[NSButton class]] && sub != sender) {
+            NSButton *btn = (NSButton *)sub;
+            if (btn.tag == 1301 || btn.tag == 1302)
+                btn.state = (btn == sender) ? NSControlStateValueOn : NSControlStateValueOff;
+        }
+    }
+
+    // Save to appropriate target (global or per-language)
+    if (_indentSelectedLang == nil) {
+        // [Default] selected → save to global
+        [[NSUserDefaults standardUserDefaults] setBool:useTabs forKey:kPrefUseTabs];
+    } else {
+        [self _saveIndentOverrideFromBox:box];
+    }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"NPPPreferencesChanged" object:nil];
+}
+
+- (void)_autoIndentChanged:(NSButton *)sender {
+    // 1310=None(0), 1311=Basic(2), 1312=Advanced(1)
+    NSInteger mode = 0;
+    if (sender.tag == 1311) mode = 2;
+    else if (sender.tag == 1312) mode = 1;
+
+    [[NSUserDefaults standardUserDefaults] setInteger:mode forKey:kPrefAutoIndent];
+
+    // Update sibling radios in the NSBox
+    NSView *box = sender.superview;
+    for (NSView *sub in box.subviews) {
+        if ([sub isKindOfClass:[NSButton class]] && sub != sender) {
+            [(NSButton *)sub setState:NSControlStateValueOff];
+        }
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"NPPPreferencesChanged" object:nil];
 }
 
 #pragma mark - Tab Bar Page
@@ -1005,9 +1429,14 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
     NSInteger tag = [(NSControl *)sender tag];
 
     switch (tag) {
-        case 100: [ud setInteger:[(NSTextField *)sender integerValue] forKey:kPrefTabWidth]; break;
-        case 101: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefUseTabs]; break;
-        case 102: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefAutoIndent]; break;
+        case 100: {
+            if (_indentSelectedLang == nil) {
+                [ud setInteger:[(NSTextField *)sender integerValue] forKey:kPrefTabWidth];
+            } else {
+                [self _saveIndentOverrideFromBox:[(NSTextField *)sender superview]];
+            }
+            break;
+        }
         case 103: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefShowLineNumbers]; break;
         case 105: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefHighlightCurrentLine]; break;
         case 200: [ud setInteger:[(NSPopUpButton *)sender indexOfSelectedItem] forKey:kPrefEOLType]; break;
@@ -1075,6 +1504,8 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         case 1204: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefPanelKeepState]; break;
         case 1205: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefFuncListUseXML]; break;
         case 1206: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefPluginSplitViewRouting]; break;
+        // Indentation
+        case 1303: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefBackspaceUnindent]; break;
     }
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"NPPPreferencesChanged" object:nil];

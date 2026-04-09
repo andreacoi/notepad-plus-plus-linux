@@ -284,7 +284,7 @@ void writeConfigXML(void) {
     // Convenience: read prefs
     BOOL useTabs       = [ud boolForKey:kPrefUseTabs];
     NSInteger tabWidth = [ud integerForKey:kPrefTabWidth];
-    BOOL autoIndent    = [ud boolForKey:kPrefAutoIndent];
+    NSInteger autoIndent = [ud integerForKey:kPrefAutoIndent];
     BOOL showLineNum   = [ud boolForKey:kPrefShowLineNumbers];
     BOOL highlightLine = [ud boolForKey:kPrefHighlightCurrentLine];
     NSInteger eolType  = [ud integerForKey:kPrefEOLType];
@@ -359,13 +359,29 @@ void writeConfigXML(void) {
      @"pinButton=\"yes\" tabCompactLabelLen=\"%ld\" />\n",
      _yn(tabClose), _yn(dblClickClose), (long)tabMaxW];
 
-    // TabSetting
+    // TabSetting (global)
     [xml appendFormat:@"        <GUIConfig name=\"TabSetting\" replaceBySpace=\"%@\" size=\"%ld\" />\n",
      _yn(!useTabs), (long)tabWidth];
 
-    // MaintainIndent
-    [xml appendFormat:@"        <GUIConfig name=\"MaintainIndent\">%@</GUIConfig>\n",
-     autoIndent ? @"1" : @"0"];
+    // Per-language tab overrides
+    NSDictionary *tabOverrides = [ud dictionaryForKey:kPrefTabOverrides];
+    if (tabOverrides.count > 0) {
+        [xml appendString:@"        <GUIConfig name=\"TabCustom\">\n"];
+        for (NSString *lang in [tabOverrides.allKeys sortedArrayUsingSelector:@selector(compare:)]) {
+            NSDictionary *ov = tabOverrides[lang];
+            [xml appendFormat:@"            <Language name=\"%@\" tabSize=\"%ld\" useTabs=\"%@\" />\n",
+             lang, (long)[ov[@"tabSize"] integerValue], _yn([ov[@"useTabs"] boolValue])];
+        }
+        [xml appendString:@"        </GUIConfig>\n"];
+    }
+
+    // MaintainIndent: 0=None, 1=Advanced, 2=Basic (matches Windows NPP)
+    [xml appendFormat:@"        <GUIConfig name=\"MaintainIndent\">%ld</GUIConfig>\n",
+     (long)autoIndent];
+
+    // BackspaceUnindent
+    [xml appendFormat:@"        <GUIConfig name=\"BackspaceUnindent\">%@</GUIConfig>\n",
+     _yn([ud boolForKey:kPrefBackspaceUnindent])];
 
     // RememberLastSession
     [xml appendString:@"        <GUIConfig name=\"RememberLastSession\">yes</GUIConfig>\n"];
@@ -500,8 +516,27 @@ void readConfigXML(void) {
             if ((v = [el attributeForName:@"size"].stringValue))
                 [ud setInteger:v.integerValue forKey:kPrefTabWidth];
         }
+        else if ([name isEqualToString:@"TabCustom"]) {
+            NSMutableDictionary *overrides = [NSMutableDictionary dictionary];
+            for (NSXMLElement *langEl in [el elementsForName:@"Language"]) {
+                NSString *langName = [langEl attributeForName:@"name"].stringValue;
+                if (!langName.length) continue;
+                NSInteger tabSize = [langEl attributeForName:@"tabSize"].stringValue.integerValue;
+                BOOL lUseTabs = _ynBool([langEl attributeForName:@"useTabs"].stringValue);
+                if (tabSize < 1) tabSize = 4;
+                overrides[langName] = @{@"tabSize": @(tabSize), @"useTabs": @(lUseTabs)};
+            }
+            if (overrides.count > 0)
+                [ud setObject:overrides forKey:kPrefTabOverrides];
+        }
         else if ([name isEqualToString:@"MaintainIndent"]) {
-            [ud setBool:(text.integerValue != 0) forKey:kPrefAutoIndent];
+            // Backward compat: "yes"→1(Advanced), "no"→0(None), integer 0/1/2 direct
+            if ([text isEqualToString:@"yes"]) [ud setInteger:1 forKey:kPrefAutoIndent];
+            else if ([text isEqualToString:@"no"]) [ud setInteger:0 forKey:kPrefAutoIndent];
+            else [ud setInteger:text.integerValue forKey:kPrefAutoIndent];
+        }
+        else if ([name isEqualToString:@"BackspaceUnindent"]) {
+            [ud setBool:[text isEqualToString:@"yes"] forKey:kPrefBackspaceUnindent];
         }
         else if ([name isEqualToString:@"KeepSessionAbsentFileEntries"]) {
             [ud setBool:_ynBool(text) forKey:kPrefKeepAbsentSession];

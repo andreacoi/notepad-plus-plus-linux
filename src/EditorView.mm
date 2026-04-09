@@ -818,13 +818,17 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     if (!languageName.length) {
         // Plain text — null lexer, all text rendered in STYLE_DEFAULT
         [_scintillaView message:(unsigned int)Scintilla::Message::SetILexer wParam:0 lParam:0];
+        [self applyPreferencesFromDefaults];
         sptr_t docLen = [_scintillaView message:SCI_GETLENGTH];
         if (docLen > 0) [_scintillaView message:SCI_COLOURISE wParam:0 lParam:docLen];
         return;
     }
 
     NSString *lexerName = languageLexerNameMap()[languageName.lowercaseString];
-    if (!lexerName) return;
+    if (!lexerName) {
+        [self applyPreferencesFromDefaults];
+        return;
+    }
 
     Scintilla::ILexer5 *lexer = CreateLexer(lexerName.UTF8String);
     if (lexer) {
@@ -862,6 +866,9 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
 
     [self applyKeywords:languageName];
     [self applyLexerColors:languageName];
+
+    // Re-apply indent settings for the new language (per-language overrides)
+    [self applyPreferencesFromDefaults];
 
     // Force re-lex so fold markers appear immediately on already-loaded content
     sptr_t docLen = [sci message:SCI_GETLENGTH];
@@ -1742,12 +1749,42 @@ static int vkToScintillaKey(int vk) {
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     ScintillaView *sci = _scintillaView;
 
+    // ── Per-language indent settings ──
+    // Priority: user override → langs.xml tabSettings → global default
     NSInteger tabWidth = [ud integerForKey:kPrefTabWidth];
     if (tabWidth < 1) tabWidth = 4;
-    [sci message:SCI_SETTABWIDTH wParam:(uptr_t)tabWidth];
-
     BOOL useTabs = [ud boolForKey:kPrefUseTabs];
+
+    NSString *lang = _currentLanguage.lowercaseString;
+    if (lang.length) {
+        NSDictionary *overrides = [ud dictionaryForKey:kPrefTabOverrides];
+        NSDictionary *langOverride = overrides[lang];
+        if (langOverride) {
+            // User has explicit override for this language
+            tabWidth = [langOverride[@"tabSize"] integerValue];
+            if (tabWidth < 1) tabWidth = 4;
+            useTabs = [langOverride[@"useTabs"] boolValue];
+        } else {
+            // Check langs.xml built-in tabSettings (e.g. Python=132 → 4 spaces)
+            NppLangDef *def = [[NppLangsManager shared] langDefForName:lang];
+            if (def && def.tabSettings >= 0) {
+                NSInteger ts = def.tabSettings;
+                NSInteger xmlTabSize = ts & 0x7F;
+                BOOL xmlUseSpaces = (ts & 0x80) != 0;
+                if (xmlTabSize > 0) {
+                    tabWidth = xmlTabSize;
+                    useTabs = !xmlUseSpaces;
+                }
+            }
+        }
+    }
+
+    [sci message:SCI_SETTABWIDTH wParam:(uptr_t)tabWidth];
     [sci message:SCI_SETUSETABS wParam:useTabs ? 1 : 0];
+
+    BOOL bsUnindent = [ud boolForKey:kPrefBackspaceUnindent];
+    [sci message:SCI_SETBACKSPACEUNINDENTS wParam:bsUnindent ? 1 : 0];
+    [sci message:SCI_SETTABINDENTS wParam:bsUnindent ? 1 : 0];
 
     BOOL showLineNumbers = [ud boolForKey:kPrefShowLineNumbers];
     [sci message:SCI_SETMARGINWIDTHN wParam:0 lParam:showLineNumbers ? 44 : 0];
@@ -3032,7 +3069,9 @@ static NSSet<NSString *> *_cLikeLanguages() {
     if (_isRecordingMacro || [(NppApplication *)NSApp playingBackMacro])
         return;
 
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:kPrefAutoIndent])
+    // kPrefAutoIndent: 0=None, 1=Advanced, 2=Basic
+    NSInteger autoIndentMode = [[NSUserDefaults standardUserDefaults] integerForKey:kPrefAutoIndent];
+    if (autoIndentMode == 0)
         return;
 
     ScintillaView *sci = _scintillaView;
@@ -3046,8 +3085,8 @@ static NSSet<NSString *> *_cLikeLanguages() {
     BOOL isNewline = ((eolMode == SC_EOL_CRLF || eolMode == SC_EOL_LF) && ch == '\n') ||
                      (eolMode == SC_EOL_CR && ch == '\r');
 
-    // ── C-like: handle } typed on its own line ──
-    if (!isNewline && [_cLikeLanguages() containsObject:lang]) {
+    // ── C-like: handle } typed on its own line (advanced mode only) ──
+    if (!isNewline && autoIndentMode == 1 && [_cLikeLanguages() containsObject:lang]) {
         if (ch == '}') {
             // Only re-align if } is the first non-whitespace on the line
             sptr_t lineStart = [sci message:SCI_POSITIONFROMLINE wParam:(uptr_t)curLine];
@@ -3091,21 +3130,24 @@ static NSSet<NSString *> *_cLikeLanguages() {
     if (prevLine >= 0)
         indentPrev = [sci message:SCI_GETLINEINDENTATION wParam:(uptr_t)prevLine];
 
-    // ── C-like languages: advanced indent ──
-    if ([_cLikeLanguages() containsObject:lang]) {
-        [self _maintainIndentCLike:ch curLine:curLine prevLine:prevLine
-                        indentPrev:indentPrev tabWidth:tabWidth eolMode:eolMode];
-        return;
+    // ── Advanced mode: language-specific indent ──
+    if (autoIndentMode == 1) {
+        // C-like languages: brace/condition-aware indent
+        if ([_cLikeLanguages() containsObject:lang]) {
+            [self _maintainIndentCLike:ch curLine:curLine prevLine:prevLine
+                            indentPrev:indentPrev tabWidth:tabWidth eolMode:eolMode];
+            return;
+        }
+
+        // Python: colon detection
+        if ([lang isEqualToString:@"python"]) {
+            [self _maintainIndentPython:curLine prevLine:prevLine
+                             indentPrev:indentPrev tabWidth:tabWidth];
+            return;
+        }
     }
 
-    // ── Python: colon detection ──
-    if ([lang isEqualToString:@"python"]) {
-        [self _maintainIndentPython:curLine prevLine:prevLine
-                         indentPrev:indentPrev tabWidth:tabWidth];
-        return;
-    }
-
-    // ── All other languages: basic indent (copy previous line) ──
+    // ── Basic indent (copy previous line) — used by basic mode and as advanced fallback ──
     if (indentPrev > 0) {
         [sci message:SCI_SETLINEINDENTATION wParam:(uptr_t)curLine lParam:indentPrev];
         sptr_t newPos = [sci message:SCI_GETLINEINDENTPOSITION wParam:(uptr_t)curLine];
