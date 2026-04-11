@@ -96,6 +96,7 @@ static const uintptr_t kHandleScintillaSub   = 0x5343490B;  // "SCI\v"
     IDAllocator _indicatorAlloc;
 
     BOOL _shutdownFired;
+    BOOL _forwardingNotification;  // reentrancy guard for SCN_* forwarding
     int  _nextPluginCmdBase;  // base cmdID for next plugin's FuncItems
 }
 @end
@@ -308,6 +309,47 @@ static NSString *pluginBaseDir(void) {
                   pi->displayName.c_str(), code, e);
         }
     }
+}
+
+- (void)forwardScintillaNotification:(SCNotification *)scn {
+    if (_shutdownFired || _plugins.empty()) return;
+
+    // Reentrancy guard: if a plugin modifies the document inside a notification
+    // handler (e.g. SCI_SETLINEINDENTATION), Scintilla fires another SCN_MODIFIED.
+    // Without this guard we'd recurse infinitely.
+    if (_forwardingNotification) return;
+    _forwardingNotification = YES;
+
+    // Filter SCN_MODIFIED to only forward relevant modification types
+    // (matches Windows NPP behavior)
+    if (scn->nmhdr.code == SCN_MODIFIED) {
+        static const int kForwardedModFlags =
+            SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT |
+            SC_PERFORMED_UNDO | SC_PERFORMED_REDO |
+            SC_MOD_CHANGEFOLD | SC_MOD_CHANGEINDICATOR;
+        if (!(scn->modificationType & kForwardedModFlags)) {
+            _forwardingNotification = NO;
+            return;
+        }
+    }
+
+    // Make a copy so plugins can't corrupt the original.
+    // hwndFrom is set to kHandleScintillaMain — plugins that need to know
+    // which view sent the notification call NPPM_GETCURRENTSCINTILLA instead.
+    SCNotification copy = *scn;
+    copy.nmhdr.hwndFrom = (void *)(uintptr_t)kHandleScintillaMain;
+
+    for (auto &pi : _plugins) {
+        if (!pi->pBeNotified) continue;
+        @try {
+            pi->pBeNotified(&copy);
+        } @catch (NSException *e) {
+            NSLog(@"[Plugins] \"%s\" crashed in beNotified (SCN code=%u): %@",
+                  pi->displayName.c_str(), copy.nmhdr.code, e);
+        }
+    }
+
+    _forwardingNotification = NO;
 }
 
 // ── Menu ────────────────────────────────────────────────────────────────

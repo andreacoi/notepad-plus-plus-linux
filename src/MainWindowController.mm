@@ -25,6 +25,9 @@
 #import "CharacterPanel.h"
 #import "PluginsAdminWindowController.h"
 #import "NppPluginManager.h"
+#ifndef NPPN_BUFFERACTIVATED
+#define NPPN_BUFFERACTIVATED 1010
+#endif
 #import "ShortcutMapperWindowController.h"
 #import "UserDefineLangManager.h"
 #import "UserDefineDialog.h"
@@ -3750,6 +3753,15 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     // Collapse both secondary panes
     [_vSplitView setPosition:MAX(NSWidth(_vSplitView.frame),   9999) ofDividerAtIndex:0];
     [_hSplitView setPosition:MAX(NSHeight(_hSplitView.frame),  9999) ofDividerAtIndex:0];
+
+    // Turn off scroll sync — no split view to sync with
+    if (_syncVerticalScrolling || _syncHorizontalScrolling) {
+        _syncVerticalScrolling = NO;
+        _syncHorizontalScrolling = NO;
+        [self _updateScrollSyncTimer];
+        [self _refreshToolbarStates];
+    }
+
     [self updateTitle];
 }
 
@@ -3960,14 +3972,15 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     if (action == @selector(runSavedMacro:))        return ed && !recording;
     if (action == @selector(trimTrailingSpaceAndSave:)) return _tabManager.allEditors.count > 0;
 
-    // Scroll sync checkmarks
+    // Scroll sync — disabled when no split view is active
+    BOOL hasSplitView = (_subTabManagerV.allEditors.count > 0 || _subTabManagerH.allEditors.count > 0);
     if (action == @selector(toggleSyncVerticalScrolling:)) {
         [(NSMenuItem *)item setState:_syncVerticalScrolling ? NSControlStateValueOn : NSControlStateValueOff];
-        return YES;
+        return hasSplitView;
     }
     if (action == @selector(toggleSyncHorizontalScrolling:)) {
         [(NSMenuItem *)item setState:_syncHorizontalScrolling ? NSControlStateValueOn : NSControlStateValueOff];
-        return YES;
+        return hasSplitView;
     }
 
     // Split-view mutual exclusion: V and H secondary views can't both be active
@@ -5100,6 +5113,21 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     [self _refreshToolbarStates];
 }
 
+/// Explicit enable/disable for plugins that need deterministic state (not toggle).
+- (void)enableSyncScrolling:(id)sender {
+    _syncVerticalScrolling = YES;
+    _syncHorizontalScrolling = YES;
+    [self _updateScrollSyncTimer];
+    [self _refreshToolbarStates];
+}
+
+- (void)disableSyncScrolling:(id)sender {
+    _syncVerticalScrolling = NO;
+    _syncHorizontalScrolling = NO;
+    [self _updateScrollSyncTimer];
+    [self _refreshToolbarStates];
+}
+
 - (void)_updateScrollSyncTimer {
     BOOL needsTimer = _syncVerticalScrolling || _syncHorizontalScrolling;
 
@@ -5639,6 +5667,10 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     // Give the editor keyboard focus so the old pane's caret stops blinking
     // and SCN_FOCUSIN fires on the correct editor.
     [self.window makeFirstResponder:editor.scintillaView];
+
+    // Notify plugins that a different buffer is now active
+    [[NppPluginManager shared] notifyPluginsWithCode:NPPN_BUFFERACTIVATED
+                                            bufferID:(intptr_t)(__bridge void *)editor];
     [self _applyEditorContextMenu:editor];
     [self updateTitle];
     [self updateStatusBar];

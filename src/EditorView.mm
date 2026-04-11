@@ -1,7 +1,15 @@
 #import "EditorView.h"
 #import "NppApplication.h"
 #import "NppLangsManager.h"
+#import "NppPluginManager.h"
 #import "PreferencesWindowController.h"
+
+// NPPN_* constants (from NppPluginInterfaceMac.h — not included directly
+// to avoid SendMessage macro conflicts in host code)
+#ifndef NPPN_FILESAVED
+#define NPPN_FILESAVED      1008
+#define NPPN_LANGCHANGED    1011
+#endif
 #import "StyleConfiguratorWindowController.h"
 #import "GitHelper.h"
 #import "Scintilla.h"
@@ -626,6 +634,9 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     }
 
     [self updateGitDiffMarkers];
+
+    [[NppPluginManager shared] notifyPluginsWithCode:NPPN_FILESAVED
+                                            bufferID:(intptr_t)(__bridge void *)self];
     return YES;
 }
 
@@ -821,12 +832,16 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
         [self applyPreferencesFromDefaults];
         sptr_t docLen = [_scintillaView message:SCI_GETLENGTH];
         if (docLen > 0) [_scintillaView message:SCI_COLOURISE wParam:0 lParam:docLen];
+        [[NppPluginManager shared] notifyPluginsWithCode:NPPN_LANGCHANGED
+                                                bufferID:(intptr_t)(__bridge void *)self];
         return;
     }
 
     NSString *lexerName = languageLexerNameMap()[languageName.lowercaseString];
     if (!lexerName) {
         [self applyPreferencesFromDefaults];
+        [[NppPluginManager shared] notifyPluginsWithCode:NPPN_LANGCHANGED
+                                                bufferID:(intptr_t)(__bridge void *)self];
         return;
     }
 
@@ -873,6 +888,9 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
     // Force re-lex so fold markers appear immediately on already-loaded content
     sptr_t docLen = [sci message:SCI_GETLENGTH];
     if (docLen > 0) [sci message:SCI_COLOURISE wParam:0 lParam:docLen];
+
+    [[NppPluginManager shared] notifyPluginsWithCode:NPPN_LANGCHANGED
+                                            bufferID:(intptr_t)(__bridge void *)self];
 }
 
 - (BOOL)largeFileMode { return _largeFileMode; }
@@ -3287,6 +3305,19 @@ static NSSet<NSString *> *_cLikeLanguages() {
 #pragma mark - ScintillaNotificationProtocol
 
 - (void)notification:(SCNotification *)notification {
+    // Forward safe (editing-related) Scintilla notifications to plugins BEFORE
+    // host processing (matches Windows NPP where plugins see notifications first).
+    // Display-related notifications (SCN_UPDATEUI, SCN_PAINTED) are NOT forwarded
+    // to avoid CA transaction ping-pong on macOS — the host's timer-based scroll
+    // sync handles view synchronization instead.
+    {
+        unsigned int code = notification->nmhdr.code;
+        if (code == SCN_CHARADDED || code == SCN_MODIFIED ||
+            code == SCN_AUTOCSELECTION || code == SCN_AUTOCCANCELLED) {
+            [[NppPluginManager shared] forwardScintillaNotification:notification];
+        }
+    }
+
     switch (notification->nmhdr.code) {
         case SCN_MODIFIED:
             if (notification->modificationType & (SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT)) {
