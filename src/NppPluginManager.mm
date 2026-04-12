@@ -944,7 +944,8 @@ static NSString *pluginBaseDir(void) {
 - (nullable NSMenu *)findPluginsMenu {
     NSMenu *mainMenu = [NSApp mainMenu];
     for (NSMenuItem *item in mainMenu.itemArray) {
-        if ([item.title isEqualToString:@"Plugins"])
+        if ([item.title isEqualToString:@"Plugins"] ||
+            [item.submenu.title isEqualToString:@"Plugins"])
             return item.submenu;
     }
     return nil;
