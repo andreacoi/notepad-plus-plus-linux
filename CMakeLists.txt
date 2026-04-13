@@ -6,10 +6,10 @@ set(CMAKE_OBJCXX_STANDARD 17)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0")
 set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
 
-# Paths to the original notepad-plus-plus repo (sibling directory)
-set(NPP_ROOT "${CMAKE_SOURCE_DIR}/../notepad-plus-plus")
-set(SCI_ROOT "${NPP_ROOT}/scintilla")
-set(LEX_ROOT "${NPP_ROOT}/lexilla")
+# Vendored Scintilla + Lexilla (copied from notepad-plus-plus upstream).
+# RTL patches are applied in place; update by re-copying from upstream when needed.
+set(SCI_ROOT "${CMAKE_SOURCE_DIR}/scintilla")
+set(LEX_ROOT "${CMAKE_SOURCE_DIR}/lexilla")
 
 # -----------------------------------------------------------------------------
 # Scintilla core (platform-agnostic)
