@@ -1,6 +1,11 @@
+# Claude Code project data (memory, sessions, settings)
+.claude/
+
 # Build output
 build/
 build-release/
+build_bkp/
+build-release_bkp/
 
 # Release artifacts (DMGs go as GitHub Release assets, not in repo)
 downloads/*.dmg
