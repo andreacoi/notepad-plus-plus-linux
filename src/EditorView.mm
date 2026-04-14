@@ -3305,15 +3305,19 @@ static NSSet<NSString *> *_cLikeLanguages() {
 #pragma mark - ScintillaNotificationProtocol
 
 - (void)notification:(SCNotification *)notification {
-    // Forward safe (editing-related) Scintilla notifications to plugins BEFORE
-    // host processing (matches Windows NPP where plugins see notifications first).
-    // Display-related notifications (SCN_UPDATEUI, SCN_PAINTED) are NOT forwarded
-    // to avoid CA transaction ping-pong on macOS — the host's timer-based scroll
-    // sync handles view synchronization instead.
+    // Forward safe Scintilla notifications to plugins BEFORE host processing
+    // (matches Windows NPP where plugins see notifications first).
+    //
+    // SCN_UPDATEUI / SCN_PAINTED are forwarded — the host's scroll sync no
+    // longer reacts to notifications (it uses a 60Hz timer-based poll in
+    // MainWindowController._pollScrollSync:), so there's no view-to-view
+    // feedback loop. Plugin-driven recursion is caught by the reentrancy
+    // guard in NppPluginManager.forwardScintillaNotification:.
     {
         unsigned int code = notification->nmhdr.code;
         if (code == SCN_CHARADDED || code == SCN_MODIFIED ||
-            code == SCN_AUTOCSELECTION || code == SCN_AUTOCCANCELLED) {
+            code == SCN_AUTOCSELECTION || code == SCN_AUTOCCANCELLED ||
+            code == SCN_UPDATEUI || code == SCN_PAINTED) {
             [[NppPluginManager shared] forwardScintillaNotification:notification];
         }
     }

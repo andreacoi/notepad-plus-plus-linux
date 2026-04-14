@@ -61,6 +61,13 @@ struct PluginInfo {
     struct FuncItem     *funcItems      = nullptr;
     int                  nbFuncItems    = 0;
 
+    // Per-plugin subscriptions for UI-related Scintilla notifications.
+    // Default is "wants everything". A plugin may clear these via
+    // NPPM_SETPLUGINSUBSCRIPTIONS (see NppPluginInterfaceMac.h) to opt out
+    // of specific notification codes that conflict with host-level behavior.
+    BOOL                 wantsUpdateUI  = YES;   // SCN_UPDATEUI
+    BOOL                 wantsPainted   = YES;   // SCN_PAINTED
+
     ~PluginInfo() {
         if (handle)
             dlclose(handle);
@@ -339,8 +346,17 @@ static NSString *pluginBaseDir(void) {
     SCNotification copy = *scn;
     copy.nmhdr.hwndFrom = (void *)(uintptr_t)kHandleScintillaMain;
 
+    unsigned int code = copy.nmhdr.code;
+
     for (auto &pi : _plugins) {
         if (!pi->pBeNotified) continue;
+
+        // Per-plugin subscription filter for UI-related notifications.
+        // Default-on — only plugins that explicitly opted out via
+        // NPPM_SETPLUGINSUBSCRIPTIONS get filtered.
+        if (code == SCN_UPDATEUI && !pi->wantsUpdateUI) continue;
+        if (code == SCN_PAINTED  && !pi->wantsPainted)  continue;
+
         @try {
             pi->pBeNotified(&copy);
         } @catch (NSException *e) {
@@ -890,6 +906,32 @@ static NSString *pluginBaseDir(void) {
                                           wParam:[ed.scintillaView message:SCI_GETCURRENTPOS wParam:0 lParam:0]
                                           lParam:0];
             }
+            return 0;
+        }
+
+        // ── macOS-specific: per-plugin notification subscriptions ─────
+        case NPPM_SETPLUGINSUBSCRIPTIONS: {
+            // wParam: subscription bitmask (NPPPLUGIN_WANTS_* flags)
+            // lParam: const char* plugin module name (required)
+            // Returns 1 on success, 0 if the named plugin is not loaded.
+            const char *moduleName = (const char *)lParam;
+            if (!moduleName) return 0;
+
+            unsigned int mask = (unsigned int)wParam;
+            std::string wanted(moduleName);
+
+            for (auto &pi : _plugins) {
+                if (pi->moduleName == wanted) {
+                    pi->wantsUpdateUI = (mask & NPPPLUGIN_WANTS_UPDATEUI) != 0;
+                    pi->wantsPainted  = (mask & NPPPLUGIN_WANTS_PAINTED)  != 0;
+                    NSLog(@"[Plugins] \"%s\" subscriptions: updateUI=%d painted=%d",
+                          pi->displayName.c_str(),
+                          (int)pi->wantsUpdateUI, (int)pi->wantsPainted);
+                    return 1;
+                }
+            }
+            NSLog(@"[Plugins] NPPM_SETPLUGINSUBSCRIPTIONS: no plugin with moduleName \"%s\"",
+                  moduleName);
             return 0;
         }
 

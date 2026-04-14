@@ -223,6 +223,38 @@ typedef intptr_t           (*PMESSAGEPROC)(uint32_t, uintptr_t, intptr_t);
 #define NPPM_GETTOOLBARICONSETCHOICE     (NPPMSG + 118)
 #define NPPM_GETNPPSETTINGSDIRPATH       (NPPMSG + 119)
 
+/* ── macOS-specific extensions ──────────────────────────────────────────
+ *
+ * These messages exist only in the macOS port of Notepad++ and have no
+ * equivalent on Windows NPP. Slots NPPMSG+500 upward are reserved for
+ * macOS-only use so they can never collide with a future backport from
+ * the Windows tree (which currently uses +0..+119).
+ */
+
+/* Per-plugin opt-out of specific Scintilla UI notifications.
+ *
+ * By default, every plugin receives all forwarded Scintilla notifications
+ * (SCN_CHARADDED, SCN_MODIFIED, SCN_UPDATEUI, SCN_PAINTED, etc.). A plugin
+ * may call NPPM_SETPLUGINSUBSCRIPTIONS to opt out of UI-related codes if
+ * it conflicts with host-level handling of those events (e.g., a plugin
+ * doing its own scroll sync alongside the host's timer-based sync).
+ *
+ *   wParam — subscription bitmask (NPPPLUGIN_WANTS_* flags). Bits that are
+ *            SET mean "I want this notification." Bits that are CLEAR mean
+ *            "do NOT forward this notification to me."
+ *   lParam — const char * module name of the calling plugin (required).
+ *            The host uses this to find the plugin's internal record.
+ *
+ * Returns 1 on success, 0 if no plugin with the given module name is loaded.
+ *
+ * Call once (typically from NPPN_READY). The flags persist for the plugin's
+ * lifetime. Default is NPPPLUGIN_DEFAULT_SUBSCRIPTIONS (all bits set), so
+ * plugins that never call this message behave exactly as before. */
+#define NPPM_SETPLUGINSUBSCRIPTIONS      (NPPMSG + 500)
+#define NPPPLUGIN_WANTS_UPDATEUI         (1U << 0)
+#define NPPPLUGIN_WANTS_PAINTED          (1U << 1)
+#define NPPPLUGIN_DEFAULT_SUBSCRIPTIONS  (NPPPLUGIN_WANTS_UPDATEUI | NPPPLUGIN_WANTS_PAINTED)
+
 /* ── RUNCOMMAND_USER submessages ────────────────────────────────────────── */
 #define RUNCOMMAND_USER                  (WM_USER + 3000)
 #define NPPM_GETFULLCURRENTPATH          (RUNCOMMAND_USER + 1)

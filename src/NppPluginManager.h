@@ -45,10 +45,10 @@ extern NSNotificationName const NppPluginsDidLoadNotification;
 /// Broadcast an NPPN_* notification with a buffer identifier.
 - (void)notifyPluginsWithCode:(unsigned int)code bufferID:(intptr_t)bufferID;
 
-/// Forward a raw Scintilla notification (editing-related only) to all plugins.
-/// Only safe notifications are forwarded (SCN_CHARADDED, SCN_MODIFIED, etc.).
-/// Display-related notifications (SCN_UPDATEUI, SCN_PAINTED) are NOT forwarded
-/// to avoid CA transaction ping-pong on macOS.
+/// Forward a raw Scintilla notification to all plugins.
+/// Forwarded codes: SCN_CHARADDED, SCN_MODIFIED, SCN_AUTOCSELECTION,
+/// SCN_AUTOCCANCELLED, SCN_UPDATEUI, SCN_PAINTED.
+/// Reentrancy guarded — plugin-triggered nested notifications are dropped.
 - (void)forwardScintillaNotification:(SCNotification *)scn;
 
 /// Returns YES if at least one plugin was loaded successfully.
