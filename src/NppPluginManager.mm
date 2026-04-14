@@ -845,9 +845,24 @@ static NSString *pluginBaseDir(void) {
         // ── Menu ────────────────────────────────────────────────────
         case NPPM_SETMENUITEMCHECK: {
             // wParam = cmdID, lParam = checked (BOOL)
-            // Find the menu item by tag and set its state
+            // Find the plugin menu item by tag and set its state.
+            //
+            // Valid plugin cmdIDs start at 22000 (see _nextPluginCmdBase).
+            // A cmdID of 0 means the plugin passed a separator's _cmdID
+            // (the host only allocates IDs to items with _pFunc != null,
+            // so separators keep the default-zero value). Without this
+            // guard, findMenuItemWithTag:0 would walk the plugins menu
+            // and match the first NSMenuItem with the default-zero tag —
+            // typically a static submenu wrapper like "MIME Tools" — and
+            // erroneously toggle its checkmark.
             int cmdID = (int)wParam;
             BOOL checked = (BOOL)lParam;
+            if (cmdID == 0) {
+                NSLog(@"[Plugins] NPPM_SETMENUITEMCHECK called with cmdID=0 "
+                      @"— likely a plugin bug (calling on a separator or an "
+                      @"uninitialized funcItem slot). Ignoring.");
+                return 0;
+            }
             NSMenu *pluginsMenu = [self findPluginsMenu];
             if (pluginsMenu) {
                 NSMenuItem *item = [self findMenuItemWithTag:cmdID inMenu:pluginsMenu];
@@ -1227,6 +1242,12 @@ static NSString *pluginBaseDir(void) {
 }
 
 - (nullable NSMenuItem *)findMenuItemWithTag:(int)tag inMenu:(NSMenu *)menu {
+    // Sentinel: tag 0 is NSMenuItem's default "unset" value. Every static
+    // submenu wrapper (MIME Tools, Converter, etc.) built without an
+    // explicit tag would otherwise match here and cause false positives
+    // when a caller asks for tag 0. Plugin cmdIDs are always >= 22000.
+    if (tag == 0) return nil;
+
     for (NSMenuItem *item in menu.itemArray) {
         if (item.tag == tag)
             return item;
