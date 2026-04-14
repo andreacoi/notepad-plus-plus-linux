@@ -529,6 +529,239 @@ static NSString *pluginBaseDir(void) {
             return 0;
         }
 
+        // ── Language detection ─────────────────────────────────────────
+        // Windows NPP exposes an integer LangType enum (see
+        // notepad-plus-plus/PowerEditor/src/MISC/PluginsManager/Notepad_plus_msgs.h
+        // line 27). Plugins use NPPM_GETCURRENTLANGTYPE to detect which
+        // language the current buffer is classified as. The macOS host
+        // stores the language as an NSString on EditorView.currentLanguage;
+        // these two handlers translate between the NSString name and the
+        // canonical Windows integer value.
+        //
+        // Unknown / untyped buffers return L_TEXT = 0, matching Windows.
+        // UDL (L_USER = 15) is not implemented on macOS — the host has no
+        // user-defined language engine. External lexers (L_EXTERNAL = 95)
+        // are likewise not used.
+        case NPPM_GETCURRENTLANGTYPE: {
+            int *out = (int *)lParam;
+            if (!out) return 0;
+
+            MainWindowController *mwc = _mwc;
+            EditorView *ed = mwc ? [mwc currentEditor] : nil;
+            NSString *langName = ed.currentLanguage ?: @"";
+
+            static NSDictionary<NSString *, NSNumber *> *nameToLangType;
+            static dispatch_once_t onceLangType;
+            dispatch_once(&onceLangType, ^{
+                nameToLangType = @{
+                    // Canonical Windows NPP LangType values.
+                    // Reference: Notepad_plus_msgs.h line 27.
+                    @"c"            : @2,    // L_C
+                    @"cpp"          : @3,    // L_CPP
+                    @"cs"           : @4,    // L_CS
+                    @"objc"         : @5,    // L_OBJC
+                    @"java"         : @6,    // L_JAVA
+                    @"rc"           : @7,    // L_RC
+                    @"html"         : @8,    // L_HTML
+                    @"xml"          : @9,    // L_XML
+                    @"makefile"     : @10,   // L_MAKEFILE
+                    @"pascal"       : @11,   // L_PASCAL
+                    @"batch"        : @12,   // L_BATCH
+                    @"ini"          : @13,   // L_INI
+                    // 14 = L_ASCII/L_NFO, 15 = L_USER (UDL — not supported)
+                    @"asp"          : @16,   // L_ASP
+                    @"sql"          : @17,   // L_SQL
+                    @"vb"           : @18,   // L_VB
+                    // 19 = L_JS_EMBEDDED (deprecated)
+                    @"css"          : @20,   // L_CSS
+                    @"perl"         : @21,   // L_PERL
+                    @"python"       : @22,   // L_PYTHON
+                    @"lua"          : @23,   // L_LUA
+                    @"tex"          : @24,   // L_TEX
+                    @"fortran"      : @25,   // L_FORTRAN
+                    @"bash"         : @26,   // L_BASH
+                    @"actionscript" : @27,   // L_FLASH
+                    @"nsis"         : @28,   // L_NSIS
+                    @"tcl"          : @29,   // L_TCL
+                    @"lisp"         : @30,   // L_LISP
+                    @"scheme"       : @31,   // L_SCHEME
+                    @"asm"          : @32,   // L_ASM
+                    @"diff"         : @33,   // L_DIFF
+                    @"props"        : @34,   // L_PROPS
+                    @"postscript"   : @35,   // L_PS
+                    @"ruby"         : @36,   // L_RUBY
+                    @"smalltalk"    : @37,   // L_SMALLTALK
+                    @"vhdl"         : @38,   // L_VHDL
+                    @"kix"          : @39,   // L_KIX
+                    @"autoit"       : @40,   // L_AU3
+                    @"caml"         : @41,   // L_CAML
+                    @"ada"          : @42,   // L_ADA
+                    @"verilog"      : @43,   // L_VERILOG
+                    @"matlab"       : @44,   // L_MATLAB
+                    @"haskell"      : @45,   // L_HASKELL
+                    @"inno"         : @46,   // L_INNO
+                    // 47 = L_SEARCHRESULT (host-internal)
+                    @"cmake"        : @48,   // L_CMAKE
+                    @"yaml"         : @49,   // L_YAML
+                    @"cobol"        : @50,   // L_COBOL
+                    // 51 = L_GUI4CLI (not in host)
+                    @"d"            : @52,   // L_D
+                    @"powershell"   : @53,   // L_POWERSHELL
+                    @"r"            : @54,   // L_R
+                    // 55 = L_JSP (not in host)
+                    @"coffeescript" : @56,   // L_COFFEESCRIPT
+                    @"json"         : @57,   // L_JSON
+                    @"javascript"   : @58,   // L_JAVASCRIPT
+                    @"javascript.js": @58,   // alternate host alias
+                    @"fortran77"    : @59,   // L_FORTRAN_77
+                    @"baanc"        : @60,   // L_BAANC
+                    // 61-63 = L_SREC/L_IHEX/L_TEHEX (not in host)
+                    @"swift"        : @64,   // L_SWIFT
+                    // 65 = L_ASN1 (not in host)
+                    @"avs"          : @66,   // L_AVS
+                    @"blitzbasic"   : @67,   // L_BLITZBASIC
+                    @"purebasic"    : @68,   // L_PUREBASIC
+                    @"freebasic"    : @69,   // L_FREEBASIC
+                    @"csound"       : @70,   // L_CSOUND
+                    @"erlang"       : @71,   // L_ERLANG
+                    @"escript"      : @72,   // L_ESCRIPT
+                    @"forth"        : @73,   // L_FORTH
+                    @"latex"        : @74,   // L_LATEX
+                    // 75 = L_MMIXAL (not in host)
+                    @"nim"          : @76,   // L_NIM
+                    @"nncrontab"    : @77,   // L_NNCRONTAB
+                    @"oscript"      : @78,   // L_OSCRIPT
+                    // 79 = L_REBOL (not in host)
+                    @"registry"     : @80,   // L_REGISTRY
+                    @"rust"         : @81,   // L_RUST
+                    @"spice"        : @82,   // L_SPICE
+                    // 83 = L_TXT2TAGS (not in host)
+                    @"visualprolog" : @84,   // L_VISUALPROLOG
+                    @"typescript"   : @85,   // L_TYPESCRIPT
+                    // 86 = L_JSON5 (not in host)
+                    @"mssql"        : @87,   // L_MSSQL
+                    @"gdscript"     : @88,   // L_GDSCRIPT
+                    @"hollywood"    : @89,   // L_HOLLYWOOD
+                    @"go"           : @90,   // L_GOLANG
+                    @"raku"         : @91,   // L_RAKU
+                    @"toml"         : @92,   // L_TOML
+                    @"sas"          : @93,   // L_SAS
+                    // 94 = L_ERRORLIST (host-internal)
+                    // 95 = L_EXTERNAL (reserved)
+                };
+            });
+
+            NSNumber *val = nameToLangType[langName.lowercaseString];
+            *out = val ? val.intValue : 0;    // L_TEXT for unknown / plain text
+            return 0;
+        }
+
+        case NPPM_GETLANGUAGENAME: {
+            // wParam = int langType, lParam = char* out buffer (assumed ≥1024 bytes)
+            // Returns: number of bytes written (excluding the terminating NUL),
+            //          or 0 if the langType is unknown / out buffer is null.
+            int langType = (int)wParam;
+            char *out = (char *)lParam;
+            if (!out) return 0;
+
+            static NSDictionary<NSNumber *, NSString *> *langTypeToName;
+            static dispatch_once_t onceLangName;
+            dispatch_once(&onceLangName, ^{
+                langTypeToName = @{
+                    // Display names match Windows NPP's default langs.xml.
+                    // Used by plugins that want human-readable labels.
+                    @0  : @"Normal text",
+                    @1  : @"PHP",
+                    @2  : @"C",
+                    @3  : @"C++",
+                    @4  : @"C#",
+                    @5  : @"Objective-C",
+                    @6  : @"Java",
+                    @7  : @"RC",
+                    @8  : @"HTML",
+                    @9  : @"XML",
+                    @10 : @"Makefile",
+                    @11 : @"Pascal",
+                    @12 : @"Batch",
+                    @13 : @"ini",
+                    @16 : @"ASP",
+                    @17 : @"SQL",
+                    @18 : @"Visual Basic",
+                    @20 : @"CSS",
+                    @21 : @"Perl",
+                    @22 : @"Python",
+                    @23 : @"Lua",
+                    @24 : @"TeX",
+                    @25 : @"Fortran",
+                    @26 : @"Shell",
+                    @27 : @"Flash ActionScript",
+                    @28 : @"NSIS",
+                    @29 : @"TCL",
+                    @30 : @"Lisp",
+                    @31 : @"Scheme",
+                    @32 : @"Assembly",
+                    @33 : @"Diff",
+                    @34 : @"Properties",
+                    @35 : @"PostScript",
+                    @36 : @"Ruby",
+                    @37 : @"Smalltalk",
+                    @38 : @"VHDL",
+                    @39 : @"KiXtart",
+                    @40 : @"AutoIt",
+                    @41 : @"CAML",
+                    @42 : @"Ada",
+                    @43 : @"Verilog",
+                    @44 : @"MATLAB",
+                    @45 : @"Haskell",
+                    @46 : @"Inno Setup",
+                    @48 : @"CMake",
+                    @49 : @"YAML",
+                    @50 : @"COBOL",
+                    @52 : @"D",
+                    @53 : @"PowerShell",
+                    @54 : @"R",
+                    @56 : @"CoffeeScript",
+                    @57 : @"JSON",
+                    @58 : @"JavaScript",
+                    @59 : @"Fortran 77",
+                    @60 : @"BaanC",
+                    @64 : @"Swift",
+                    @66 : @"AviSynth",
+                    @67 : @"BlitzBasic",
+                    @68 : @"PureBasic",
+                    @69 : @"FreeBasic",
+                    @70 : @"Csound",
+                    @71 : @"Erlang",
+                    @72 : @"ESCRIPT",
+                    @73 : @"Forth",
+                    @74 : @"LaTeX",
+                    @76 : @"Nim",
+                    @77 : @"nnCron",
+                    @78 : @"OScript",
+                    @80 : @"Registry",
+                    @81 : @"Rust",
+                    @82 : @"Spice",
+                    @84 : @"Visual Prolog",
+                    @85 : @"TypeScript",
+                    @87 : @"MS-SQL",
+                    @88 : @"GDScript",
+                    @89 : @"Hollywood",
+                    @90 : @"Go",
+                    @91 : @"Raku",
+                    @92 : @"TOML",
+                    @93 : @"SAS",
+                };
+            });
+
+            NSString *name = langTypeToName[@(langType)];
+            if (!name) {
+                out[0] = '\0';
+                return 0;
+            }
+            strlcpy(out, name.UTF8String, 1024);
+            return (intptr_t)strlen(out);
+        }
+
         case NPPM_GETNBOPENFILES: {
             MainWindowController *mwc = _mwc;
             if (!mwc) return 0;
