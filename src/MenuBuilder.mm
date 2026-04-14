@@ -904,13 +904,6 @@ static NSMenu *buildLanguageMenu() {
     [convMenu addItem:item(@"Hex to ASCII", @selector(hexToAscii:), @"")];
     [pluginsMenu addItem:withSubmenu(@"Converter", convMenu)];
 
-    NSMenu *exportMenu = submenu(@"NppExport");
-    [exportMenu addItem:item(@"Copy RTF to Clipboard",  @selector(copyRTFToClipboard:),  @"")];
-    [exportMenu addItem:item(@"Copy HTML to Clipboard", @selector(copyHTMLToClipboard:), @"")];
-    [exportMenu addItem:item(@"Export to RTF",          @selector(exportToRTF:),         @"")];
-    [exportMenu addItem:item(@"Export to HTML",         @selector(exportToHTML:),        @"")];
-    [pluginsMenu addItem:withSubmenu(@"NppExport", exportMenu)];
-
     addSep(pluginsMenu);
     [pluginsMenu addItem:item(@"Plugins Admin…",       @selector(showPluginsAdmin:),  @"")];
     [pluginsMenu addItem:item(@"Open Plugins Folder…", @selector(openPluginsFolder:), @"")];

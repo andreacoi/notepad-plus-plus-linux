@@ -5161,56 +5161,6 @@ static const unsigned int kSCI_GetBidirectional = 2708;
     [self replaceSelectionWith:decoded];
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-#pragma mark - Export to HTML / RTF
-
-- (nullable NSString *)generateHTML {
-    ScintillaView *sci = _scintillaView;
-    sptr_t docLen = [sci message:SCI_GETLENGTH];
-    char *buf = (char *)calloc((size_t)docLen + 1, 1);
-    [sci message:SCI_GETTEXT wParam:(uptr_t)(docLen + 1) lParam:(sptr_t)buf];
-    NSString *raw = [NSString stringWithUTF8String:buf] ?: @"";
-    free(buf);
-
-    // Escape HTML entities
-    NSMutableString *escaped = [raw mutableCopy];
-    [escaped replaceOccurrencesOfString:@"&"  withString:@"&amp;"  options:0 range:NSMakeRange(0, escaped.length)];
-    [escaped replaceOccurrencesOfString:@"<"  withString:@"&lt;"   options:0 range:NSMakeRange(0, escaped.length)];
-    [escaped replaceOccurrencesOfString:@">"  withString:@"&gt;"   options:0 range:NSMakeRange(0, escaped.length)];
-
-    NSString *name = self.displayName;
-    return [NSString stringWithFormat:
-        @"<!DOCTYPE html>\n<html>\n<head><meta charset=\"utf-8\"><title>%@</title>\n"
-        @"<style>body{background:#fff;color:#000}pre{font-family:monospace;font-size:13px;white-space:pre-wrap}</style>\n"
-        @"</head>\n<body>\n<pre>%@</pre>\n</body>\n</html>", name, escaped];
-}
-
-- (nullable NSString *)generateRTF {
-    ScintillaView *sci = _scintillaView;
-    sptr_t docLen = [sci message:SCI_GETLENGTH];
-    char *buf = (char *)calloc((size_t)docLen + 1, 1);
-    [sci message:SCI_GETTEXT wParam:(uptr_t)(docLen + 1) lParam:(sptr_t)buf];
-    NSString *raw = [NSString stringWithUTF8String:buf] ?: @"";
-    free(buf);
-
-    // Build RTF: escape \, {, }, non-ASCII chars; map newlines to \par
-    NSMutableString *rtf = [NSMutableString stringWithString:
-        @"{\\rtf1\\ansi\\deff0{\\fonttbl{\\f0\\fmodern\\fcharset0 Courier New;}}"
-        @"{\\colortbl ;\\red0\\green0\\blue0;}\\f0\\fs20\\cf1 "];
-    for (NSUInteger i = 0; i < raw.length; i++) {
-        unichar ch = [raw characterAtIndex:i];
-        if      (ch == '\\') [rtf appendString:@"\\\\"];
-        else if (ch == '{')  [rtf appendString:@"\\{"];
-        else if (ch == '}')  [rtf appendString:@"\\}"];
-        else if (ch == '\n') [rtf appendString:@"\\par\n"];
-        else if (ch == '\r') {}  // skip CR
-        else if (ch > 127)   [rtf appendFormat:@"\\'%02X", (unsigned int)(ch & 0xFF)];
-        else                 [rtf appendFormat:@"%c", (char)ch];
-    }
-    [rtf appendString:@"}"];
-    return [rtf copy];
-}
-
 #pragma mark - Spell Check
 
 - (BOOL)spellCheckEnabled { return _spellCheckEnabled; }

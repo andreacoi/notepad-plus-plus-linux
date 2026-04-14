@@ -352,12 +352,6 @@ extern NSNotificationName const EditorViewDidGainFocusNotification;
 /// str is interpreted as Unicode (e.g. converted from Windows-1252).
 - (void)insertCharacterString:(NSString *)str;
 
-// ── Export ────────────────────────────────────────────────────────────────────
-/// Generate plain-text-in-HTML string (UTF-8, escaped) for current content.
-- (nullable NSString *)generateHTML;
-/// Generate plain RTF string for current content.
-- (nullable NSString *)generateRTF;
-
 // ── Column editor ─────────────────────────────────────────────────────────────
 /// Returns the number of lines the column editor will affect:
 /// selected lines if text is selected, or lines from cursor to end of doc otherwise.
