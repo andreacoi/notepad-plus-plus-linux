@@ -959,13 +959,25 @@ NSNotificationName const NPPShortcutsChangedNotification = @"NPPShortcutsChanged
         }
     };
 
-    // Wire live checking to all controls
+    // Wire live checking to all controls.
+    // Each NSBlockOperation must be held in a strong local so it survives
+    // the modal run loop. NSControl.target is a zeroing-weak property under
+    // ARC — without a strong owner the block operation is released
+    // immediately and the weak target zeroes to nil, which causes
+    // NSPopUpButton's menu auto-validation to disable (dim) its items and
+    // checkbox actions to silently no-op. This manifests only in Release
+    // builds (-O3) where ARC aggressively releases temporaries.
+    NSMutableArray *targetOps = [NSMutableArray array];
     for (NSButton *chk in @[chkCmd, chkCtrl, chkOpt, chkShift]) {
-        chk.target = [NSBlockOperation blockOperationWithBlock:checkConflict];
+        NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:checkConflict];
+        chk.target = op;
         chk.action = @selector(main);
+        [targetOps addObject:op];
     }
-    keyPopup.target = [NSBlockOperation blockOperationWithBlock:checkConflict];
+    NSBlockOperation *keyOp = [NSBlockOperation blockOperationWithBlock:checkConflict];
+    keyPopup.target = keyOp;
     keyPopup.action = @selector(main);
+    [targetOps addObject:keyOp];
 
     // Initial check
     checkConflict();

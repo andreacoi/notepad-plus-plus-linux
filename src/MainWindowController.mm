@@ -3261,12 +3261,20 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         }
     };
 
+    // Strong references keep the NSBlockOperations alive through the modal
+    // run loop (NSControl.target is zeroing-weak under ARC; see the
+    // detailed comment in ShortcutMapperWindowController._modifyShortcut:).
+    NSMutableArray *targetOps = [NSMutableArray array];
     for (NSButton *chk in @[chkCmd, chkCtrl, chkOpt, chkShift]) {
-        chk.target = [NSBlockOperation blockOperationWithBlock:checkConflict];
+        NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:checkConflict];
+        chk.target = op;
         chk.action = @selector(main);
+        [targetOps addObject:op];
     }
-    keyPopup.target = [NSBlockOperation blockOperationWithBlock:checkConflict];
+    NSBlockOperation *keyOp = [NSBlockOperation blockOperationWithBlock:checkConflict];
+    keyPopup.target = keyOp;
     keyPopup.action = @selector(main);
+    [targetOps addObject:keyOp];
 
     // OK / Cancel
     NSButton *btnOK = [[NSButton alloc] initWithFrame:NSMakeRect(195, 12, 90, 28)];
@@ -6603,12 +6611,20 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         }
     };
 
+    // Strong references keep the NSBlockOperations alive through the modal
+    // run loop (NSControl.target is zeroing-weak under ARC; see the
+    // detailed comment in ShortcutMapperWindowController._modifyShortcut:).
+    NSMutableArray *targetOps = [NSMutableArray array];
     for (NSButton *chk in @[chkCmd, chkCtrl, chkOpt, chkShift]) {
-        chk.target = [NSBlockOperation blockOperationWithBlock:checkConflict];
+        NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:checkConflict];
+        chk.target = op;
         chk.action = @selector(main);
+        [targetOps addObject:op];
     }
-    keyPopup.target = [NSBlockOperation blockOperationWithBlock:checkConflict];
+    NSBlockOperation *keyOp = [NSBlockOperation blockOperationWithBlock:checkConflict];
+    keyPopup.target = keyOp;
     keyPopup.action = @selector(main);
+    [targetOps addObject:keyOp];
 
     // OK / Cancel
     NSButton *btnOK = [[NSButton alloc] initWithFrame:NSMakeRect(195, 12, 90, 28)];
@@ -7365,7 +7381,9 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
     __weak NSPanel *wPanel = panel;
     __weak typeof(self) wSelf = self;
-    delBtn.target = [NSBlockOperation blockOperationWithBlock:^{
+    // Strong locals keep the NSBlockOperations alive through the modal run
+    // loop (NSControl.target is zeroing-weak under ARC).
+    NSBlockOperation *delOp = [NSBlockOperation blockOperationWithBlock:^{
         NSInteger row = tv.selectedRow;
         if (row < 0 || row >= (NSInteger)macroNames.count) return;
         NSString *nameToDelete = macroNames[row];
@@ -7375,10 +7393,12 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         [tv reloadData];
         [wSelf rebuildMacroMenu];
     }];
+    delBtn.target = delOp;
     delBtn.action = @selector(main);
-    doneBtn.target = [NSBlockOperation blockOperationWithBlock:^{
+    NSBlockOperation *doneOp = [NSBlockOperation blockOperationWithBlock:^{
         [NSApp stopModal]; [wPanel orderOut:nil];
     }];
+    doneBtn.target = doneOp;
     doneBtn.action = @selector(main);
 
     // Minimal tableview without subclassing — use raw datasource object
