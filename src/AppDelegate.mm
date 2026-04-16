@@ -165,6 +165,13 @@
         }
         [pm fireReady];
 
+        // Re-apply shortcut overrides now that plugin menu items exist.
+        // The first call at startup (line 38) ran before plugins loaded,
+        // so PluginCommands entries in shortcuts.xml found no matching
+        // menu items. This second pass picks them up. InternalCommands,
+        // Macro, and Run sections harmlessly re-apply the same shortcuts.
+        [self _loadShortcutOverrides];
+
         // Regenerate toolbar example XML with plugin entries
         regenerateToolbarExample();
     }
