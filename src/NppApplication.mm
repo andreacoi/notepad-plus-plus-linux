@@ -168,6 +168,16 @@
     EditorView *editor = shouldRecord ? [self _activeRecordingEditor] : nil;
     if (!editor) shouldRecord = NO;
 
+    // Mouse-selection capture: snapshot the selection state BEFORE the
+    // action executes. The action (e.g. convertToUppercase:) may collapse
+    // the selection as a side effect, so we can't query it afterwards.
+    BOOL hadSelection = NO;
+    if (shouldRecord) {
+        sptr_t selStart = [editor.scintillaView message:SCI_GETSELECTIONSTART];
+        sptr_t selEnd   = [editor.scintillaView message:SCI_GETSELECTIONEND];
+        hadSelection = (selStart != selEnd);
+    }
+
     if (shouldRecord) {
         // Suppress Scintilla's SCN_MACRORECORD while the menu command runs.
         // Without this, operations like "Convert to Uppercase" would record
@@ -181,6 +191,24 @@
     if (shouldRecord) {
         // Resume Scintilla recording and record the menu command
         [editor.scintillaView message:SCI_STARTRECORD];
+
+        // If the editor had a selection when the user clicked the menu but
+        // the macro doesn't already contain a selection action, the user
+        // selected text with the mouse (invisible to Scintilla's macro
+        // recording). Inject a synthetic "selectAll:" so the selection is
+        // present during playback. This covers the common "type → select
+        // all → menu command" pattern. Partial mouse selections are
+        // inherently unrecordable (absolute positions are meaningless on
+        // different documents); users should use Shift+arrows for those.
+        if (hadSelection) {
+            NSDictionary *lastAction = editor.macroActions.lastObject;
+            NSString *lastCmd = lastAction[@"menuCommand"];
+            BOOL alreadyHasSelection = [lastCmd isEqualToString:@"selectAll:"];
+            if (!alreadyHasSelection) {
+                [editor recordMenuCommand:@"selectAll:"];
+            }
+        }
+
         [editor recordMenuCommand:NSStringFromSelector(action)];
     }
 

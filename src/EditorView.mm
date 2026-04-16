@@ -2929,6 +2929,22 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
     if (!actions.count) { NSBeep(); return; }
     ScintillaView *sci = _scintillaView;
     [(NppApplication *)NSApp setPlayingBackMacro:YES];
+
+    // Deactivate the macOS text input context during macro playback.
+    // ScintillaView conforms to NSTextInputClient — every selection or
+    // text change notifies macOS's TextInputUI system, which hosts its
+    // cursor/selection overlay via an out-of-process ViewBridge.  Rapid
+    // batch changes (selectAll: + replaceSelection in a loop) can
+    // overwhelm the ViewBridge, causing it to disconnect and leave a
+    // stale view in the window hierarchy.  The next time AppKit walks
+    // the view tree (e.g. _handleDeactivateEvent:), it hits the freed
+    // view → use-after-free crash.  Deactivating the input context
+    // cleanly disconnects TextInputUI before the batch starts;
+    // reactivating after restores it.
+    NSTextInputContext *tic = [NSTextInputContext currentInputContext];
+    [tic discardMarkedText];
+    [tic deactivate];
+
     [sci message:SCI_BEGINUNDOACTION];
     for (NSDictionary *action in actions) {
         // ── Recorded format: menu command by selector name ──
@@ -2973,6 +2989,10 @@ static const int kIndicatorIncSearch = 28; // Scintilla indicator slot for incre
         }
     }
     [sci message:SCI_ENDUNDOACTION];
+
+    // Reactivate the text input context now that the batch is done.
+    [tic activate];
+
     [(NppApplication *)NSApp setPlayingBackMacro:NO];
 }
 
@@ -3313,12 +3333,42 @@ static NSSet<NSString *> *_cLikeLanguages() {
     // MainWindowController._pollScrollSync:), so there's no view-to-view
     // feedback loop. Plugin-driven recursion is caught by the reentrancy
     // guard in NppPluginManager.forwardScintillaNotification:.
+    //
+    // Macro guard: suppress plugin notification forwarding entirely during
+    // macro recording AND playback.
+    //
+    // During RECORDING: prevents plugin-initiated Scintilla messages
+    // (SCI_GOTOPOS, SCI_REPLACESEL, SCI_SETLINEINDENTATION from DoxyIt,
+    // indentbyfold, etc.) from leaking into the macro as phantom actions.
+    // The user's actual keystrokes are already recorded BEFORE the
+    // notification fires (Editor.cxx line 6271), so suppressing here
+    // loses nothing.
+    //
+    // During PLAYBACK: prevents plugins from reacting to each individual
+    // character in the batch. Plugins that create popup windows (e.g.
+    // nppQuickText calling SCI_AUTOCSHOW) or update the view hierarchy
+    // in response to SCN_MODIFIED/SCN_UPDATEUI can destabilize the macOS
+    // ViewBridge (TextInputUI's out-of-process cursor overlay), leaving
+    // stale views that crash AppKit when it next walks the view tree
+    // (e.g. _handleDeactivateEvent: → _willMeasureMinSizeForFullscreen).
+    // Suppressing forwarding during playback eliminates this entirely.
     {
         unsigned int code = notification->nmhdr.code;
+        BOOL isMacroActive = _isRecordingMacro ||
+                             [(NppApplication *)NSApp playingBackMacro];
         if (code == SCN_CHARADDED || code == SCN_MODIFIED ||
             code == SCN_AUTOCSELECTION || code == SCN_AUTOCCANCELLED ||
             code == SCN_UPDATEUI || code == SCN_PAINTED) {
-            [[NppPluginManager shared] forwardScintillaNotification:notification];
+            if (!isMacroActive) {
+                [[NppPluginManager shared] forwardScintillaNotification:notification];
+            } else if (_isRecordingMacro) {
+                // During recording only: still forward but with Scintilla's
+                // recordingMacro paused so plugin SCI calls don't get captured.
+                [_scintillaView message:SCI_STOPRECORD];
+                [[NppPluginManager shared] forwardScintillaNotification:notification];
+                [_scintillaView message:SCI_STARTRECORD];
+            }
+            // During playback: skip forwarding entirely.
         }
     }
 
