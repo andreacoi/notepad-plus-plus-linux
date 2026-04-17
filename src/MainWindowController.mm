@@ -1380,6 +1380,11 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
 
     // Editor right-click context menu (built from contextMenu.xml)
     NSMenu           *_editorContextMenu;
+
+    // Top-level Language menu. Cached so menuWillOpen: can find it
+    // without walking the menu bar every time. Set by
+    // _installLanguagesMenuDelegate.
+    NSMenu           *_languagesMenu;
 }
 
 - (instancetype)init {
@@ -1414,6 +1419,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
         // (scroll sync uses a timer, not notifications)
         [self rebuildRecentFilesMenu];
         [self rebuildUDLLanguageMenu];
+        [self _installLanguagesMenuDelegate];
         _autoSaveTimer = [NSTimer scheduledTimerWithTimeInterval:10.0
                                                           target:self
                                                         selector:@selector(autoSaveTick:)
@@ -4172,26 +4178,23 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         }
     }
 
-    // ── Language menu checkmark ──
+    // ── Language menu checkmark (leaves only) ──
+    // Leaf items (individual language entries) get their checkmark here
+    // reactively — if the active editor's language changes while the menu
+    // is still open, the next validation pass reflects it.
+    //
+    // Parent letter-submenu header state (the "J" / "P" etc. checkmark in
+    // the top-level Languages menu) is managed in one place by
+    // -_refreshLanguagesMenuParentHeaders, invoked from the Languages-menu
+    // delegate's -menuWillOpen:. Doing it there rather than piggybacked on
+    // per-item validation avoids the stale-state bugs the old per-item
+    // approach suffered from (tab switch, UDL apply, Save-As re-detect,
+    // and top-level XML/YAML/KIXtart items walking up to the menu bar).
     if (action == @selector(setLanguageFromMenu:)) {
         NSString *langCode = [(NSMenuItem *)item representedObject];
         NSString *current  = ed.currentLanguage ?: @"";
-        BOOL match = [current isEqualToString:langCode];
-        [(NSMenuItem *)item setState:match ? NSControlStateValueOn : NSControlStateValueOff];
-        // Propagate checkmark to parent letter submenu (A, B, C, etc.)
-        NSMenu *parentMenu = [(NSMenuItem *)item menu];
-        NSMenu *grandparent = parentMenu.supermenu;
-        if (grandparent) {
-            NSInteger idx = [grandparent indexOfItemWithSubmenu:parentMenu];
-            if (idx >= 0) {
-                // Check if ANY sibling in this letter submenu is checked
-                BOOL anyChecked = NO;
-                for (NSMenuItem *sibling in parentMenu.itemArray) {
-                    if (sibling.state == NSControlStateValueOn) { anyChecked = YES; break; }
-                }
-                [[grandparent itemAtIndex:idx] setState:anyChecked ? NSControlStateValueOn : NSControlStateValueOff];
-            }
-        }
+        [(NSMenuItem *)item setState:[current isEqualToString:langCode]
+            ? NSControlStateValueOn : NSControlStateValueOff];
         return YES;
     }
     if (action == @selector(setUDLLanguageFromMenu:)) {
@@ -5400,6 +5403,12 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     EditorView *ed = [self currentEditor];
     if (!ed) return;
     [[UserDefineLangManager shared] applyLanguage:udl toScintillaView:ed.scintillaView];
+    // Keep the editor's currentLanguage in sync with what's actually lexing
+    // the buffer. Without this, validateUserInterfaceItem: for UDL items
+    // compares against a stale language name and the UDL checkmark never
+    // appears, and the Languages-menu parent-header refresh can't see that
+    // a UDL is now active.
+    ed.currentLanguage = udlName;
     [self updateStatusBar];
 }
 
@@ -5649,6 +5658,76 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
         NSMenuItem *mi = [menu itemAtIndex:i];
         if (mi.isSeparatorItem) continue;
         if (mi.tag == 0) [menu removeItemAtIndex:i];
+    }
+}
+
+#pragma mark - Languages menu delegate
+
+/// Locate the top-level Languages menu built by MenuBuilder and make us
+/// its delegate, so menuWillOpen: can refresh parent letter-header
+/// checkmarks in one deterministic pass.
+///
+/// Detected by content, not title, because NppLocalizer may have already
+/// translated the submenu's title by the time this runs (startup order:
+/// buildMainMenu → autoLoad/applyToMainMenu → MainWindowController init).
+/// Any top-level menu whose submenu directly contains an item that acts
+/// on setLanguageFromMenu: or setUDLLanguageFromMenu: is the one.
+- (void)_installLanguagesMenuDelegate {
+    for (NSMenuItem *topItem in [NSApp mainMenu].itemArray) {
+        NSMenu *sub = topItem.submenu;
+        if (!sub) continue;
+        for (NSMenuItem *child in sub.itemArray) {
+            SEL a = child.action;
+            if (a == @selector(setLanguageFromMenu:) ||
+                a == @selector(setUDLLanguageFromMenu:)) {
+                _languagesMenu = sub;
+                _languagesMenu.delegate = self;
+                return;
+            }
+        }
+    }
+}
+
+/// Set letter-submenu header checkmarks (A, B, C, …) so the user can see
+/// at a glance which letter contains the active language. Runs once per
+/// open of the Languages menu. Leaf items still get their own checkmarks
+/// from validateUserInterfaceItem:.
+///
+/// Only items that wrap a submenu of setLanguageFromMenu: entries are
+/// treated as letter headers — the "User Defined Language" utility
+/// submenu is left alone.
+- (void)_refreshLanguagesMenuParentHeaders {
+    if (!_languagesMenu) return;
+
+    EditorView *ed = [self currentEditor];
+    NSString *current = ed.currentLanguage ?: @"";
+
+    for (NSMenuItem *topItem in _languagesMenu.itemArray) {
+        NSMenu *sub = topItem.submenu;
+        if (!sub) continue;
+
+        BOOL isLetterSubmenu = NO;
+        BOOL anyMatch = NO;
+        for (NSMenuItem *child in sub.itemArray) {
+            if (child.action == @selector(setLanguageFromMenu:)) {
+                isLetterSubmenu = YES;
+                NSString *code = (NSString *)child.representedObject ?: @"";
+                if (code.length && [current isEqualToString:code]) {
+                    anyMatch = YES;
+                    break;
+                }
+            }
+        }
+        if (isLetterSubmenu) {
+            topItem.state = anyMatch ? NSControlStateValueOn
+                                     : NSControlStateValueOff;
+        }
+    }
+}
+
+- (void)menuWillOpen:(NSMenu *)menu {
+    if (menu == _languagesMenu) {
+        [self _refreshLanguagesMenuParentHeaders];
     }
 }
 
