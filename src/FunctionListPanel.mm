@@ -72,27 +72,177 @@
 }
 @end
 
+// ── Title-bar close button ───────────────────────────────────────────────────
+// Mirrors _DMPCloseButton in DocumentMapPanel.mm: permanent 1px light-grey
+// square border at rest, toolbar-style blue on hover/press. In dark mode the
+// light-blue fill is skipped (looks wrong on a dark bar); only the border
+// color changes.
+@interface _FLPCloseButton : NSButton { BOOL _hovering; }
+@end
+
+@implementation _FLPCloseButton
+
+- (instancetype)initWithFrame:(NSRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.bordered = NO;
+        self.buttonType = NSButtonTypeMomentaryChange;
+        self.title = @"";
+        NSTrackingArea *ta = [[NSTrackingArea alloc]
+            initWithRect:NSZeroRect
+                 options:(NSTrackingMouseEnteredAndExited |
+                          NSTrackingActiveInActiveApp     |
+                          NSTrackingInVisibleRect)
+                   owner:self userInfo:nil];
+        [self addTrackingArea:ta];
+    }
+    return self;
+}
+
+- (void)mouseEntered:(NSEvent *)event { _hovering = YES; [self setNeedsDisplay:YES]; }
+- (void)mouseExited:(NSEvent *)event  { _hovering = NO;  [self setNeedsDisplay:YES]; }
+
+- (void)drawRect:(NSRect)dirtyRect {
+    BOOL pressed = self.isHighlighted;
+    BOOL active  = pressed || _hovering;
+    BOOL isDark  = [NppThemeManager shared].isDark;
+
+    if (active && !isDark) {
+        NSColor *bg = pressed
+            ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
+            : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+        [bg setFill];
+        NSRectFill(self.bounds);
+    }
+
+    NSColor *bdr = active
+        ? [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0]
+        : [NSColor colorWithWhite:0.75 alpha:1.0];
+    NSBezierPath *border = [NSBezierPath bezierPathWithRect:NSInsetRect(self.bounds, 0.5, 0.5)];
+    border.lineWidth = 1.0;
+    [bdr setStroke];
+    [border stroke];
+
+    NSString *glyph = @"✕";
+    NSDictionary *attrs = @{
+        NSFontAttributeName: self.font ?: [NSFont systemFontOfSize:11],
+        NSForegroundColorAttributeName: [NSColor labelColor],
+    };
+    NSSize sz = [glyph sizeWithAttributes:attrs];
+    NSPoint origin = NSMakePoint(NSMidX(self.bounds) - sz.width / 2.0,
+                                 NSMidY(self.bounds) - sz.height / 2.0);
+    [glyph drawAtPoint:origin withAttributes:attrs];
+}
+
+@end
+
+// ── Title-bar hover button (for sort / reload) ───────────────────────────────
+// Draws its image normally at rest — invisible chrome. On hover/press it
+// adds the toolbar-blue fill + border (fill skipped in dark mode so it
+// doesn't clash with the dark title strip).
+@interface _FLPHoverButton : NSButton { BOOL _hovering; }
+@end
+
+@implementation _FLPHoverButton
+
+- (instancetype)initWithFrame:(NSRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.bordered = NO;
+        self.buttonType = NSButtonTypeMomentaryChange;
+        self.imageScaling = NSImageScaleProportionallyDown;
+        NSTrackingArea *ta = [[NSTrackingArea alloc]
+            initWithRect:NSZeroRect
+                 options:(NSTrackingMouseEnteredAndExited |
+                          NSTrackingActiveInActiveApp     |
+                          NSTrackingInVisibleRect)
+                   owner:self userInfo:nil];
+        [self addTrackingArea:ta];
+    }
+    return self;
+}
+
+- (void)mouseEntered:(NSEvent *)event { _hovering = YES; [self setNeedsDisplay:YES]; }
+- (void)mouseExited:(NSEvent *)event  { _hovering = NO;  [self setNeedsDisplay:YES]; }
+
+- (void)drawRect:(NSRect)dirtyRect {
+    BOOL pressed = self.isHighlighted;
+    BOOL active  = pressed || _hovering;
+    BOOL isDark  = [NppThemeManager shared].isDark;
+
+    if (active) {
+        if (!isDark) {
+            NSColor *bg = pressed
+                ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
+                : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+            [bg setFill];
+            NSRectFill(self.bounds);
+        }
+        NSColor *bdr = [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0];
+        NSBezierPath *border = [NSBezierPath bezierPathWithRect:NSInsetRect(self.bounds, 0.5, 0.5)];
+        border.lineWidth = 1.0;
+        [bdr setStroke];
+        [border stroke];
+    }
+
+    if (self.image) {
+        // Draw the image centered at its own .size — NOT scaled to fit the
+        // button bounds. This is what makes kFLToolbarIconSize actually
+        // control the visible icon size; otherwise drawInRect would stretch
+        // every image to fill the 16×16 button.
+        NSSize isz = self.image.size;
+        NSRect ir = NSMakeRect(NSMidX(self.bounds) - isz.width / 2.0,
+                               NSMidY(self.bounds) - isz.height / 2.0,
+                               isz.width, isz.height);
+        [self.image drawInRect:ir
+                      fromRect:NSZeroRect
+                     operation:NSCompositingOperationSourceOver
+                      fraction:1.0
+                respectFlipped:YES
+                         hints:nil];
+    }
+}
+
+@end
+
 // ── Panel button helper (same pattern as FolderTreePanel / GitPanel) ─────────
 
-static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
-                              NSString *tip, CGFloat iconSize,
+// Sort / Reload button metrics.
+// Button frame matches the close button (16×16) so the hover border is the
+// same size across all three title-bar controls. The icon itself stays
+// small (6pt — the "40% smaller" visual per user), centered with whitespace.
+static const CGFloat kFLToolbarBtnSize  = 16;
+static const CGFloat kFLToolbarIconSize = 11;
+
+// Pick the toolbar icon subdirectory based on the current theme. The dark
+// variants are pre-rendered lighter so they stay readable on a dark bar.
+static NSString *_FLToolbarIconSubdir(void) {
+    return [NppThemeManager shared].isDark
+        ? @"icons/dark/panels/toolbar"
+        : @"icons/standard/panels/toolbar";
+}
+
+static NSImage *_FLLoadToolbarIcon(NSString *iconName, CGFloat size) {
+    NSURL *url = [[NSBundle mainBundle] URLForResource:iconName withExtension:@"png"
+                                          subdirectory:_FLToolbarIconSubdir()];
+    NSImage *img = url ? [[NSImage alloc] initWithContentsOfURL:url] : nil;
+    if (img) img.size = NSMakeSize(size, size);
+    return img;
+}
+
+static NSButton *_flPanelBtn(NSString *iconName, NSString *tip,
+                              CGFloat btnSize, CGFloat iconSize,
                               id target, SEL action) {
-    NSButton *btn = [[NSButton alloc] init];
+    _FLPHoverButton *btn = [[_FLPHoverButton alloc] initWithFrame:NSZeroRect];
     btn.translatesAutoresizingMaskIntoConstraints = NO;
-    btn.bezelStyle = NSBezelStyleSmallSquare;
-    btn.bordered   = NO;
     btn.toolTip    = tip;
     btn.target     = target;
     btn.action     = action;
-    [btn.widthAnchor  constraintEqualToConstant:22].active = YES;
-    [btn.heightAnchor constraintEqualToConstant:22].active = YES;
-    NSURL *url = [[NSBundle mainBundle] URLForResource:iconName withExtension:@"png"
-                                          subdirectory:subdir];
-    NSImage *img = url ? [[NSImage alloc] initWithContentsOfURL:url] : nil;
+    [btn.widthAnchor  constraintEqualToConstant:btnSize].active = YES;
+    [btn.heightAnchor constraintEqualToConstant:btnSize].active = YES;
+    NSImage *img = _FLLoadToolbarIcon(iconName, iconSize);
     if (img) {
-        img.size = NSMakeSize(iconSize, iconSize);
         btn.image = img;
-        btn.imageScaling = NSImageScaleProportionallyDown;
     } else {
         btn.title = @"?";
     }
@@ -195,38 +345,40 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
     _titleBar = [[NSView alloc] init];
     _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
     _titleBar.wantsLayer = YES;
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
     [self addSubview:_titleBar];
 
     _titleLabel = [NSTextField labelWithString:@"Function List"];
     _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    _titleLabel.font = [NSFont boldSystemFontOfSize:11];
+    _titleLabel.font = [NSFont systemFontOfSize:11];
     _titleLabel.textColor = [NSColor labelColor];
     _titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [_titleBar addSubview:_titleLabel];
 
-    _sortButton = _flPanelBtn(@"funclstSort", @"icons/standard/panels/toolbar",
-                               @"Sort functions (A to Z)", 10, self, @selector(_toggleSort:));
+    _sortButton = _flPanelBtn(@"funclstSort", @"Sort functions (A to Z)",
+                               kFLToolbarBtnSize, kFLToolbarIconSize,
+                               self, @selector(_toggleSort:));
     [_titleBar addSubview:_sortButton];
 
-    _reloadButton = _flPanelBtn(@"funclstReload", @"icons/standard/panels/toolbar",
-                                 @"Reload", 10, self, @selector(_reload:));
+    _reloadButton = _flPanelBtn(@"funclstReload", @"Reload",
+                                 kFLToolbarBtnSize, kFLToolbarIconSize,
+                                 self, @selector(_reload:));
     [_titleBar addSubview:_reloadButton];
 
-    _closeButton = [NSButton buttonWithTitle:@"✕" target:self action:@selector(_closePanel:)];
+    _closeButton = [[_FLPCloseButton alloc] initWithFrame:NSZeroRect];
     _closeButton.translatesAutoresizingMaskIntoConstraints = NO;
-    _closeButton.bezelStyle = NSBezelStyleInline;
-    _closeButton.bordered = NO;
+    _closeButton.target = self;
+    _closeButton.action = @selector(_closePanel:);
     _closeButton.font = [NSFont systemFontOfSize:11];
-    [_closeButton.widthAnchor constraintEqualToConstant:20].active = YES;
-    [_closeButton.heightAnchor constraintEqualToConstant:20].active = YES;
+    [_closeButton.widthAnchor constraintEqualToConstant:16].active = YES;
+    [_closeButton.heightAnchor constraintEqualToConstant:16].active = YES;
     [_titleBar addSubview:_closeButton];
 
     [NSLayoutConstraint activateConstraints:@[
         [_titleBar.topAnchor      constraintEqualToAnchor:self.topAnchor],
         [_titleBar.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
         [_titleBar.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [_titleBar.heightAnchor   constraintEqualToConstant:26],
+        [_titleBar.heightAnchor   constraintEqualToConstant:24],
 
         [_titleLabel.leadingAnchor  constraintEqualToAnchor:_titleBar.leadingAnchor constant:6],
         [_titleLabel.centerYAnchor  constraintEqualToAnchor:_titleBar.centerYAnchor],
@@ -313,9 +465,18 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *subdir,
 
 - (void)_themeChanged:(NSNotification *)n { [self _applyTheme]; }
 
+- (void)_refreshToolbarIcons {
+    _sortButton.image   = _FLLoadToolbarIcon(@"funclstSort",   kFLToolbarIconSize);
+    _reloadButton.image = _FLLoadToolbarIcon(@"funclstReload", kFLToolbarIconSize);
+    [_sortButton   setNeedsDisplay:YES];
+    [_reloadButton setNeedsDisplay:YES];
+}
+
 - (void)_applyTheme {
-    // Follow the same theme as other panels (controlBackgroundColor adapts to dark mode).
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+    // Title bar matches the tab bar strip (#F0F0F0 light, identical to
+    // panelBackground in dark — see NppThemeManager.tabBarBackground).
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
+    [self _refreshToolbarIcons];
     _titleLabel.textColor = [NSColor labelColor];
     _emptyLabel.textColor = [NSColor secondaryLabelColor];
     [_outlineView reloadData]; // colors may have changed
@@ -1337,7 +1498,8 @@ static NSString *_userFuncPatternForLanguage(NSString *lang, NSString * __autore
 
 
 - (void)_darkModeChanged:(NSNotification *)n {
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
+    [self _refreshToolbarIcons];
 }
 
 #pragma mark - Panel Zoom
