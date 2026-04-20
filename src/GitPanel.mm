@@ -14,6 +14,177 @@
 @implementation _GitStatusItem
 @end
 
+// ── Title-bar metrics + theme-aware icon loader ──────────────────────────────
+// Match FunctionListPanel / FolderTreePanel so the three panel title bars
+// share a consistent look.
+static const CGFloat kGPToolbarBtnSize  = 16;
+static const CGFloat kGPToolbarIconSize = 11;
+
+// Remap a light-theme icon subdirectory to its dark-theme counterpart.
+// Handles both "icons/standard/panels/toolbar" → "icons/dark/panels/toolbar"
+// and "icons/light/panels/treeview" → "icons/dark/panels/treeview".
+static NSString *_GPThemedSubdir(NSString *lightSubdir) {
+    if (![NppThemeManager shared].isDark) return lightSubdir;
+    NSString *s = [lightSubdir stringByReplacingOccurrencesOfString:@"/standard/"
+                                                          withString:@"/dark/"];
+    s = [s stringByReplacingOccurrencesOfString:@"/light/" withString:@"/dark/"];
+    return s;
+}
+
+static NSImage *_GPLoadIcon(NSString *iconName, NSString *lightSubdir, CGFloat size) {
+    NSURL *url = [[NSBundle mainBundle] URLForResource:iconName withExtension:@"png"
+                                          subdirectory:_GPThemedSubdir(lightSubdir)];
+    NSImage *img = url ? [[NSImage alloc] initWithContentsOfURL:url] : nil;
+    if (img) img.size = NSMakeSize(size, size);
+    return img;
+}
+
+// ── Panel button: toolbar-style hover, square (non-rounded) corners ─────────
+// Mirrors _FLPHoverButton / _FTPanelButton. Invisible chrome at rest;
+// toolbar-blue fill+border on hover/press with fill skipped in dark mode.
+// Image drawn centered at .size (not stretched).
+@interface _GPHoverButton : NSButton { BOOL _hovering; }
+@end
+
+@implementation _GPHoverButton
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        self.bordered = NO;
+        [self setButtonType:NSButtonTypeMomentaryChange];
+        [self.widthAnchor  constraintEqualToConstant:kGPToolbarBtnSize].active = YES;
+        [self.heightAnchor constraintEqualToConstant:kGPToolbarBtnSize].active = YES;
+        NSTrackingArea *ta = [[NSTrackingArea alloc]
+            initWithRect:NSZeroRect
+                 options:(NSTrackingMouseEnteredAndExited |
+                          NSTrackingActiveInActiveApp     |
+                          NSTrackingInVisibleRect)
+                   owner:self userInfo:nil];
+        [self addTrackingArea:ta];
+    }
+    return self;
+}
+
+- (void)mouseEntered:(NSEvent *)event { _hovering = YES; [self setNeedsDisplay:YES]; }
+- (void)mouseExited:(NSEvent *)event  { _hovering = NO;  [self setNeedsDisplay:YES]; }
+
+- (void)drawRect:(NSRect)dirtyRect {
+    BOOL pressed = self.isHighlighted;
+    BOOL active  = pressed || _hovering;
+    BOOL isDark  = [NppThemeManager shared].isDark;
+
+    if (active) {
+        if (!isDark) {
+            NSColor *bg = pressed
+                ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
+                : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+            [bg setFill];
+            NSRectFill(self.bounds);
+        }
+        NSColor *bdr = [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0];
+        NSBezierPath *border = [NSBezierPath bezierPathWithRect:NSInsetRect(self.bounds, 0.5, 0.5)];
+        border.lineWidth = 1.0;
+        [bdr setStroke];
+        [border stroke];
+    }
+
+    if (self.image) {
+        NSSize isz = self.image.size;
+        NSRect ir = NSMakeRect(NSMidX(self.bounds) - isz.width / 2.0,
+                               NSMidY(self.bounds) - isz.height / 2.0,
+                               isz.width, isz.height);
+        [self.image drawInRect:ir
+                      fromRect:NSZeroRect
+                     operation:NSCompositingOperationSourceOver
+                      fraction:1.0
+                respectFlipped:YES
+                         hints:nil];
+    }
+}
+
+@end
+
+// ── Close ✕ button: permanent 1px square grey border, toolbar-blue hover ────
+// Mirrors _FLPCloseButton / _FTCloseButton / _DMPCloseButton.
+@interface _GPCloseButton : NSButton { BOOL _hovering; }
+@end
+
+@implementation _GPCloseButton
+
+- (instancetype)initWithFrame:(NSRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.bordered = NO;
+        self.buttonType = NSButtonTypeMomentaryChange;
+        self.title = @"";
+        NSTrackingArea *ta = [[NSTrackingArea alloc]
+            initWithRect:NSZeroRect
+                 options:(NSTrackingMouseEnteredAndExited |
+                          NSTrackingActiveInActiveApp     |
+                          NSTrackingInVisibleRect)
+                   owner:self userInfo:nil];
+        [self addTrackingArea:ta];
+    }
+    return self;
+}
+
+- (void)mouseEntered:(NSEvent *)event { _hovering = YES; [self setNeedsDisplay:YES]; }
+- (void)mouseExited:(NSEvent *)event  { _hovering = NO;  [self setNeedsDisplay:YES]; }
+
+- (void)drawRect:(NSRect)dirtyRect {
+    BOOL pressed = self.isHighlighted;
+    BOOL active  = pressed || _hovering;
+    BOOL isDark  = [NppThemeManager shared].isDark;
+
+    if (active && !isDark) {
+        NSColor *bg = pressed
+            ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
+            : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+        [bg setFill];
+        NSRectFill(self.bounds);
+    }
+
+    NSColor *bdr = active
+        ? [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0]
+        : [NSColor colorWithWhite:0.75 alpha:1.0];
+    NSBezierPath *border = [NSBezierPath bezierPathWithRect:NSInsetRect(self.bounds, 0.5, 0.5)];
+    border.lineWidth = 1.0;
+    [bdr setStroke];
+    [border stroke];
+
+    NSString *glyph = @"✕";
+    NSDictionary *attrs = @{
+        NSFontAttributeName: self.font ?: [NSFont systemFontOfSize:11],
+        NSForegroundColorAttributeName: [NSColor labelColor],
+    };
+    NSSize sz = [glyph sizeWithAttributes:attrs];
+    NSPoint origin = NSMakePoint(NSMidX(self.bounds) - sz.width / 2.0,
+                                 NSMidY(self.bounds) - sz.height / 2.0);
+    [glyph drawAtPoint:origin withAttributes:attrs];
+}
+
+@end
+
+// ── Title-bar icon button helper ──────────────────────────────────────────────
+
+static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *tip,
+                               id target, SEL action)
+{
+    _GPHoverButton *btn = [[_GPHoverButton alloc] init];
+    btn.toolTip = tip;
+    btn.target  = target;
+    btn.action  = action;
+    NSImage *img = _GPLoadIcon(iconName, subdir, kGPToolbarIconSize);
+    if (img) {
+        btn.image = img;
+    } else {
+        btn.title = @"?";
+    }
+    return btn;
+}
+
 // ── GitPanel implementation ───────────────────────────────────────────────────
 
 @implementation GitPanel {
@@ -121,46 +292,29 @@ static NSString * const kLastRepoRootKey = @"GitPanelLastRepoRoot";
     _tableView.backgroundColor  = bg;
     _branchLabel.textColor      = fg;
     _noRepoLabel.textColor      = [NSColor secondaryLabelColor];
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
+    [self _refreshToolbarIcons];
     [_tableView reloadData];
+}
+
+- (void)_refreshToolbarIcons {
+    _refreshButton.image    = _GPLoadIcon(@"funclstReload",       @"icons/standard/panels/toolbar",
+                                          kGPToolbarIconSize);
+    _browseRepoButton.image = _GPLoadIcon(@"project_folder_open", @"icons/light/panels/treeview",
+                                          kGPToolbarIconSize);
+    [_refreshButton    setNeedsDisplay:YES];
+    [_browseRepoButton setNeedsDisplay:YES];
 }
 
 - (void)_themeChanged:(NSNotification *)note {
     [self _applyTheme];
 }
 
-// ── Title-bar icon button helper ──────────────────────────────────────────────
-
-static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *tip,
-                               id target, SEL action, CGFloat iconSize)
-{
-    NSButton *btn = [[NSButton alloc] init];
-    btn.translatesAutoresizingMaskIntoConstraints = NO;
-    btn.bezelStyle = NSBezelStyleSmallSquare;
-    btn.bordered   = NO;
-    btn.toolTip    = tip;
-    btn.target     = target;
-    btn.action     = action;
-    CGFloat btnSize = iconSize + 5;
-    [btn.widthAnchor  constraintEqualToConstant:btnSize].active = YES;
-    [btn.heightAnchor constraintEqualToConstant:btnSize].active = YES;
-    NSURL *url = [[NSBundle mainBundle] URLForResource:iconName withExtension:@"png"
-                                          subdirectory:subdir];
-    NSImage *img = url ? [[NSImage alloc] initWithContentsOfURL:url] : nil;
-    if (img) {
-        img.size = NSMakeSize(iconSize, iconSize);
-        btn.image = img;
-        btn.imageScaling = NSImageScaleProportionallyDown;
-    } else {
-        btn.title = @"?";
-    }
-    return btn;
-}
-
 // ── UI Construction ───────────────────────────────────────────────────────────
 
 - (void)_buildUI {
     NppLocalizer *loc = [NppLocalizer shared];
-    NSFont *titleFont = [NSFont boldSystemFontOfSize:11];
+    NSFont *titleFont = [NSFont systemFontOfSize:11];
     NSFont *smallFont = [NSFont systemFontOfSize:11];
     NSFont *monoFont  = [NSFont monospacedSystemFontOfSize:11 weight:NSFontWeightRegular];
 
@@ -168,7 +322,7 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
     _titleBar = [[NSView alloc] init];
     _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
     _titleBar.wantsLayer = YES;
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
 
     _titleLabel = [NSTextField labelWithString:[loc translate:@"Source Control"]];
     _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
@@ -177,28 +331,25 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
     _titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [_titleBar addSubview:_titleLabel];
 
-    _refreshButton = _gitPanelBtn(@"funclstReload",          @"icons/standard/panels/toolbar",
-                                   [loc translate:@"Refresh"],                self, @selector(_refresh:), 10);
-    _browseRepoButton = _gitPanelBtn(@"project_folder_open",  @"icons/light/panels/treeview",
-                                     [loc translate:@"Browse for repository…"], self, @selector(_browseForRepo:), 12);
+    _refreshButton    = _gitPanelBtn(@"funclstReload",       @"icons/standard/panels/toolbar",
+                                      [loc translate:@"Refresh"],                self, @selector(_refresh:));
+    _browseRepoButton = _gitPanelBtn(@"project_folder_open", @"icons/light/panels/treeview",
+                                      [loc translate:@"Browse for repository…"], self, @selector(_browseForRepo:));
 
-    _closeButton = [[NSButton alloc] init];
+    _closeButton = [[_GPCloseButton alloc] initWithFrame:NSZeroRect];
     _closeButton.translatesAutoresizingMaskIntoConstraints = NO;
-    _closeButton.bezelStyle = NSBezelStyleSmallSquare;
-    _closeButton.bordered   = NO;
-    _closeButton.title      = @"✕";
     _closeButton.font       = [NSFont systemFontOfSize:11];
     _closeButton.toolTip    = [loc translate:@"Close panel"];
     _closeButton.target     = self;
     _closeButton.action     = @selector(_closePanel:);
-    [_closeButton.widthAnchor  constraintEqualToConstant:20].active = YES;
-    [_closeButton.heightAnchor constraintEqualToConstant:20].active = YES;
+    [_closeButton.widthAnchor  constraintEqualToConstant:16].active = YES;
+    [_closeButton.heightAnchor constraintEqualToConstant:16].active = YES;
 
     for (NSView *v in @[_titleLabel, _browseRepoButton, _refreshButton, _closeButton])
         [_titleBar addSubview:v];
 
     [NSLayoutConstraint activateConstraints:@[
-        [_titleBar.heightAnchor constraintEqualToConstant:26],
+        [_titleBar.heightAnchor constraintEqualToConstant:24],
         [_titleLabel.leadingAnchor    constraintEqualToAnchor:_titleBar.leadingAnchor constant:6],
         [_titleLabel.centerYAnchor    constraintEqualToAnchor:_titleBar.centerYAnchor],
         [_titleLabel.trailingAnchor   constraintLessThanOrEqualToAnchor:_browseRepoButton.leadingAnchor constant:-4],
@@ -603,7 +754,8 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
 
 
 - (void)_darkModeChanged:(NSNotification *)n {
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
+    [self _refreshToolbarIcons];
 }
 
 #pragma mark - Panel Zoom
