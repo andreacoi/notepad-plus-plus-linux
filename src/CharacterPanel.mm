@@ -3,6 +3,71 @@
 #import "StyleConfiguratorWindowController.h"   // NPPStyleStore
 #import "NppThemeManager.h"
 
+// ── Close ✕ button: permanent 1px square grey border, toolbar-blue hover ─────
+// Mirrors _DMPCloseButton in DocumentMapPanel.mm / _FLPCloseButton in
+// FunctionListPanel.mm. Border always drawn (light grey at rest, toolbar
+// blue on hover/press). Light-blue fill on hover in light mode only; in
+// dark mode only the border color changes so the fill doesn't clash with
+// the dark title strip.
+@interface _CPCloseButton : NSButton { BOOL _hovering; }
+@end
+
+@implementation _CPCloseButton
+
+- (instancetype)initWithFrame:(NSRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.bordered = NO;
+        self.buttonType = NSButtonTypeMomentaryChange;
+        self.title = @"";
+        NSTrackingArea *ta = [[NSTrackingArea alloc]
+            initWithRect:NSZeroRect
+                 options:(NSTrackingMouseEnteredAndExited |
+                          NSTrackingActiveInActiveApp     |
+                          NSTrackingInVisibleRect)
+                   owner:self userInfo:nil];
+        [self addTrackingArea:ta];
+    }
+    return self;
+}
+
+- (void)mouseEntered:(NSEvent *)event { _hovering = YES; [self setNeedsDisplay:YES]; }
+- (void)mouseExited:(NSEvent *)event  { _hovering = NO;  [self setNeedsDisplay:YES]; }
+
+- (void)drawRect:(NSRect)dirtyRect {
+    BOOL pressed = self.isHighlighted;
+    BOOL active  = pressed || _hovering;
+    BOOL isDark  = [NppThemeManager shared].isDark;
+
+    if (active && !isDark) {
+        NSColor *bg = pressed
+            ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
+            : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+        [bg setFill];
+        NSRectFill(self.bounds);
+    }
+
+    NSColor *bdr = active
+        ? [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0]
+        : [NSColor colorWithWhite:0.75 alpha:1.0];
+    NSBezierPath *border = [NSBezierPath bezierPathWithRect:NSInsetRect(self.bounds, 0.5, 0.5)];
+    border.lineWidth = 1.0;
+    [bdr setStroke];
+    [border stroke];
+
+    NSString *glyph = @"✕";
+    NSDictionary *attrs = @{
+        NSFontAttributeName: self.font ?: [NSFont systemFontOfSize:11],
+        NSForegroundColorAttributeName: [NSColor labelColor],
+    };
+    NSSize sz = [glyph sizeWithAttributes:attrs];
+    NSPoint origin = NSMakePoint(NSMidX(self.bounds) - sz.width / 2.0,
+                                 NSMidY(self.bounds) - sz.height / 2.0);
+    [glyph drawAtPoint:origin withAttributes:attrs];
+}
+
+@end
+
 // ── HTML data helpers (ported from asciiListView.cpp) ─────────────────────────
 
 static NSString *_htmlName(int v)
@@ -239,21 +304,21 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
     NSView *titleBar = _titleBar;
     titleBar.translatesAutoresizingMaskIntoConstraints = NO;
     titleBar.wantsLayer = YES;
-    titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+    titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
     [self addSubview:titleBar];
 
     _titleLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Character Panel"]];
     NSTextField *titleLabel = _titleLabel;
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    titleLabel.font = [NSFont boldSystemFontOfSize:11];
+    titleLabel.font = [NSFont systemFontOfSize:11];
     titleLabel.textColor = [NSColor labelColor];
     titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [titleBar addSubview:titleLabel];
 
-    NSButton *closeBtn = [NSButton buttonWithTitle:@"✕" target:self action:@selector(_closePanel:)];
+    _CPCloseButton *closeBtn = [[_CPCloseButton alloc] initWithFrame:NSZeroRect];
     closeBtn.translatesAutoresizingMaskIntoConstraints = NO;
-    closeBtn.bezelStyle = NSBezelStyleInline;
-    closeBtn.bordered = NO;
+    closeBtn.target = self;
+    closeBtn.action = @selector(_closePanel:);
     closeBtn.font = [NSFont systemFontOfSize:11];
     [titleBar addSubview:closeBtn];
 
@@ -261,7 +326,7 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
         [titleBar.topAnchor      constraintEqualToAnchor:self.topAnchor],
         [titleBar.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
         [titleBar.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [titleBar.heightAnchor   constraintEqualToConstant:26],
+        [titleBar.heightAnchor   constraintEqualToConstant:24],
 
         [titleLabel.leadingAnchor  constraintEqualToAnchor:titleBar.leadingAnchor constant:6],
         [titleLabel.centerYAnchor  constraintEqualToAnchor:titleBar.centerYAnchor],
@@ -269,8 +334,8 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
 
         [closeBtn.trailingAnchor constraintEqualToAnchor:titleBar.trailingAnchor constant:-6],
         [closeBtn.centerYAnchor  constraintEqualToAnchor:titleBar.centerYAnchor],
-        [closeBtn.widthAnchor    constraintEqualToConstant:20],
-        [closeBtn.heightAnchor   constraintEqualToConstant:20],
+        [closeBtn.widthAnchor    constraintEqualToConstant:16],
+        [closeBtn.heightAnchor   constraintEqualToConstant:16],
     ]];
 
     // ── Separator ─────────────────────────────────────────────────────────────
@@ -360,9 +425,10 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
     _scrollView.backgroundColor = bg;
     _tableView.backgroundColor  = bg;
 
-    // Title bar stays system-colored so it's visually distinct
+    // Title bar matches the tab bar strip (#F0F0F0 light, identical to
+    // panelBackground in dark — see NppThemeManager.tabBarBackground).
     _titleBar.wantsLayer = YES;
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
 
     // Drive table appearance (incl. header) from theme brightness
     _tableView.appearance = [NSAppearance appearanceNamed:
@@ -448,7 +514,7 @@ static NSString *const kColXHex = @"xhex";  // 5  HTML Hexadecimal
 }
 
 - (void)_darkModeChanged:(NSNotification *)n {
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
 }
 
 #pragma mark - Panel Zoom
