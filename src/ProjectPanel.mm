@@ -289,6 +289,72 @@ typedef NS_ENUM(NSInteger, PPNodeType) {
 
 @end
 
+// ── Close ✕ button: permanent 1px square grey border, toolbar-blue hover ────
+// Mirrors _DMPCloseButton in DocumentMapPanel.mm / _FLPCloseButton in
+// FunctionListPanel.mm.  Permanent 1px light-grey square border at rest;
+// on hover/press the border switches to the toolbar blue and (light mode
+// only) the interior fills with the light-blue hover color. In dark mode
+// only the border color changes so the fill doesn't clash with the dark
+// title strip.
+@interface _PPCloseButton : NSButton { BOOL _hovering; }
+@end
+
+@implementation _PPCloseButton
+
+- (instancetype)initWithFrame:(NSRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.bordered = NO;
+        self.buttonType = NSButtonTypeMomentaryChange;
+        self.title = @"";
+        NSTrackingArea *ta = [[NSTrackingArea alloc]
+            initWithRect:NSZeroRect
+                 options:(NSTrackingMouseEnteredAndExited |
+                          NSTrackingActiveInActiveApp     |
+                          NSTrackingInVisibleRect)
+                   owner:self userInfo:nil];
+        [self addTrackingArea:ta];
+    }
+    return self;
+}
+
+- (void)mouseEntered:(NSEvent *)event { _hovering = YES; [self setNeedsDisplay:YES]; }
+- (void)mouseExited:(NSEvent *)event  { _hovering = NO;  [self setNeedsDisplay:YES]; }
+
+- (void)drawRect:(NSRect)dirtyRect {
+    BOOL pressed = self.isHighlighted;
+    BOOL active  = pressed || _hovering;
+    BOOL isDark  = [NppThemeManager shared].isDark;
+
+    if (active && !isDark) {
+        NSColor *bg = pressed
+            ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
+            : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+        [bg setFill];
+        NSRectFill(self.bounds);
+    }
+
+    NSColor *bdr = active
+        ? [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0]
+        : [NSColor colorWithWhite:0.75 alpha:1.0];
+    NSBezierPath *border = [NSBezierPath bezierPathWithRect:NSInsetRect(self.bounds, 0.5, 0.5)];
+    border.lineWidth = 1.0;
+    [bdr setStroke];
+    [border stroke];
+
+    NSString *glyph = @"\u2715";
+    NSDictionary *attrs = @{
+        NSFontAttributeName: self.font ?: [NSFont systemFontOfSize:11],
+        NSForegroundColorAttributeName: [NSColor labelColor],
+    };
+    NSSize sz = [glyph sizeWithAttributes:attrs];
+    NSPoint origin = NSMakePoint(NSMidX(self.bounds) - sz.width / 2.0,
+                                 NSMidY(self.bounds) - sz.height / 2.0);
+    [glyph drawAtPoint:origin withAttributes:attrs];
+}
+
+@end
+
 // ── Constants ────────────────────────────────────────────────────────────────
 
 static NSString * const kTreeviewSubdir = @"icons/standard/panels/treeview";
@@ -375,25 +441,22 @@ static NSString * const kPrefWSPath     = @"ProjectPanelWorkspace%ld";  // forma
 
     _titleLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Project Panel"]];
     _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    _titleLabel.font = [NSFont boldSystemFontOfSize:11];
+    _titleLabel.font = [NSFont systemFontOfSize:11];
 
-    _closeButton = [[NSButton alloc] init];
+    _closeButton = [[_PPCloseButton alloc] initWithFrame:NSZeroRect];
     _closeButton.translatesAutoresizingMaskIntoConstraints = NO;
-    _closeButton.bezelStyle = NSBezelStyleSmallSquare;
-    _closeButton.bordered   = NO;
-    _closeButton.title      = @"\u2715";
     _closeButton.font       = [NSFont systemFontOfSize:11];
     _closeButton.toolTip    = [[NppLocalizer shared] translate:@"Close panel"];
     _closeButton.target     = self;
     _closeButton.action     = @selector(_closePanel:);
-    [_closeButton.widthAnchor  constraintEqualToConstant:20].active = YES;
-    [_closeButton.heightAnchor constraintEqualToConstant:20].active = YES;
+    [_closeButton.widthAnchor  constraintEqualToConstant:16].active = YES;
+    [_closeButton.heightAnchor constraintEqualToConstant:16].active = YES;
 
     for (NSView *v in @[_titleLabel, _closeButton])
         [_titleBar addSubview:v];
 
     [NSLayoutConstraint activateConstraints:@[
-        [_titleBar.heightAnchor constraintEqualToConstant:26],
+        [_titleBar.heightAnchor constraintEqualToConstant:24],
         [_titleLabel.leadingAnchor  constraintEqualToAnchor:_titleBar.leadingAnchor constant:6],
         [_titleLabel.centerYAnchor  constraintEqualToAnchor:_titleBar.centerYAnchor],
         [_closeButton.trailingAnchor constraintEqualToAnchor:_titleBar.trailingAnchor constant:-4],
@@ -492,7 +555,7 @@ static NSString * const kPrefWSPath     = @"ProjectPanelWorkspace%ld";  // forma
     _scrollView.backgroundColor  = bg;
 
     _titleBar.wantsLayer = YES;
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
 
     _outlineView.appearance = [NSAppearance appearanceNamed:
         brightness < 0.5 ? NSAppearanceNameDarkAqua : NSAppearanceNameAqua];
@@ -502,7 +565,7 @@ static NSString * const kPrefWSPath     = @"ProjectPanelWorkspace%ld";  // forma
 
 - (void)_themeChanged:(NSNotification *)n { [self _applyTheme]; }
 - (void)_darkModeChanged:(NSNotification *)n {
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
 }
 
 #pragma mark - State Persistence
