@@ -37,8 +37,38 @@
 }
 @end
 
-// ── Panel button with toolbar-style hover/press highlighting ──────────────────
+// ── Constants ─────────────────────────────────────────────────────────────────
 
+static NSString * const kDefaultsRootsKey   = @"FolderTreePanelRoots";
+static NSString * const kTreeviewSubdir     = @"icons/standard/panels/treeview";
+
+// Toolbar button metrics — match FunctionListPanel so the three panels
+// share a consistent title-bar look.
+static const CGFloat kFTToolbarBtnSize  = 16;
+static const CGFloat kFTToolbarIconSize = 11;
+
+// Pick the toolbar icon subdirectory based on the current theme. Dark
+// variants are pre-rendered lighter so they stay readable on a dark bar.
+static NSString *_FTToolbarIconSubdir(void) {
+    return [NppThemeManager shared].isDark
+        ? @"icons/dark/panels/toolbar"
+        : @"icons/standard/panels/toolbar";
+}
+
+static NSImage *_FTLoadToolbarIcon(NSString *iconName, CGFloat size) {
+    NSURL *url = [[NSBundle mainBundle] URLForResource:iconName withExtension:@"png"
+                                          subdirectory:_FTToolbarIconSubdir()];
+    NSImage *img = url ? [[NSImage alloc] initWithContentsOfURL:url] : nil;
+    if (img) img.size = NSMakeSize(size, size);
+    return img;
+}
+
+// ── Panel button: toolbar-style hover, square (non-rounded) corners ───────────
+// Mirrors _FLPHoverButton in FunctionListPanel.mm: invisible chrome at rest,
+// toolbar-blue fill + border on hover/press. In dark mode the fill is
+// skipped (would clash with the dark title strip) — only the border
+// changes color. Image is drawn centered at its own .size so the visible
+// icon size is kFTToolbarIconSize, not stretched to the button frame.
 @interface _FTPanelButton : NSButton {
     BOOL _hovering;
 }
@@ -51,11 +81,9 @@
     if (self) {
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.bordered = NO;
-        self.bezelStyle = NSBezelStyleSmallSquare;
         [self setButtonType:NSButtonTypeMomentaryChange];
-        self.imageScaling = NSImageScaleProportionallyDown;
-        [self.widthAnchor  constraintEqualToConstant:22].active = YES;
-        [self.heightAnchor constraintEqualToConstant:22].active = YES;
+        [self.widthAnchor  constraintEqualToConstant:kFTToolbarBtnSize].active = YES;
+        [self.heightAnchor constraintEqualToConstant:kFTToolbarBtnSize].active = YES;
         NSTrackingArea *ta = [[NSTrackingArea alloc]
             initWithRect:NSZeroRect
                  options:(NSTrackingMouseEnteredAndExited |
@@ -72,19 +100,30 @@
 
 - (void)drawRect:(NSRect)dirtyRect {
     BOOL pressed = self.isHighlighted;
-    if (pressed || _hovering) {
-        NSColor *bg  = pressed
-            ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
-            : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+    BOOL active  = pressed || _hovering;
+    BOOL isDark  = [NppThemeManager shared].isDark;
+
+    if (active) {
+        if (!isDark) {
+            NSColor *bg = pressed
+                ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
+                : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+            [bg setFill];
+            NSRectFill(self.bounds);
+        }
         NSColor *bdr = [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0];
-        NSBezierPath *fill = [NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:2 yRadius:2];
-        [bg setFill]; [fill fill];
-        NSBezierPath *border = [NSBezierPath bezierPathWithRoundedRect:NSInsetRect(self.bounds, 0.5, 0.5)
-                                                               xRadius:2 yRadius:2];
-        border.lineWidth = 1.0; [bdr setStroke]; [border stroke];
+        NSBezierPath *border = [NSBezierPath bezierPathWithRect:NSInsetRect(self.bounds, 0.5, 0.5)];
+        border.lineWidth = 1.0;
+        [bdr setStroke];
+        [border stroke];
     }
+
     if (self.image) {
-        [self.image drawInRect:NSInsetRect(self.bounds, 3, 3)
+        NSSize isz = self.image.size;
+        NSRect ir = NSMakeRect(NSMidX(self.bounds) - isz.width / 2.0,
+                               NSMidY(self.bounds) - isz.height / 2.0,
+                               isz.width, isz.height);
+        [self.image drawInRect:ir
                       fromRect:NSZeroRect
                      operation:NSCompositingOperationSourceOver
                       fraction:1.0
@@ -95,11 +134,67 @@
 
 @end
 
-// ── Constants ─────────────────────────────────────────────────────────────────
+// ── Close ✕ button: permanent 1px square grey border, toolbar-blue hover ─────
+// Mirrors _FLPCloseButton in FunctionListPanel.mm / _DMPCloseButton in
+// DocumentMapPanel.mm.
+@interface _FTCloseButton : NSButton { BOOL _hovering; }
+@end
 
-static NSString * const kDefaultsRootsKey   = @"FolderTreePanelRoots";
-static NSString * const kToolbarSubdir      = @"icons/standard/panels/toolbar";
-static NSString * const kTreeviewSubdir     = @"icons/standard/panels/treeview";
+@implementation _FTCloseButton
+
+- (instancetype)initWithFrame:(NSRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.bordered = NO;
+        self.buttonType = NSButtonTypeMomentaryChange;
+        self.title = @"";
+        NSTrackingArea *ta = [[NSTrackingArea alloc]
+            initWithRect:NSZeroRect
+                 options:(NSTrackingMouseEnteredAndExited |
+                          NSTrackingActiveInActiveApp     |
+                          NSTrackingInVisibleRect)
+                   owner:self userInfo:nil];
+        [self addTrackingArea:ta];
+    }
+    return self;
+}
+
+- (void)mouseEntered:(NSEvent *)event { _hovering = YES; [self setNeedsDisplay:YES]; }
+- (void)mouseExited:(NSEvent *)event  { _hovering = NO;  [self setNeedsDisplay:YES]; }
+
+- (void)drawRect:(NSRect)dirtyRect {
+    BOOL pressed = self.isHighlighted;
+    BOOL active  = pressed || _hovering;
+    BOOL isDark  = [NppThemeManager shared].isDark;
+
+    if (active && !isDark) {
+        NSColor *bg = pressed
+            ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
+            : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+        [bg setFill];
+        NSRectFill(self.bounds);
+    }
+
+    NSColor *bdr = active
+        ? [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0]
+        : [NSColor colorWithWhite:0.75 alpha:1.0];
+    NSBezierPath *border = [NSBezierPath bezierPathWithRect:NSInsetRect(self.bounds, 0.5, 0.5)];
+    border.lineWidth = 1.0;
+    [bdr setStroke];
+    [border stroke];
+
+    NSString *glyph = @"✕";
+    NSDictionary *attrs = @{
+        NSFontAttributeName: self.font ?: [NSFont systemFontOfSize:11],
+        NSForegroundColorAttributeName: [NSColor labelColor],
+    };
+    NSSize sz = [glyph sizeWithAttributes:attrs];
+    NSPoint origin = NSMakePoint(NSMidX(self.bounds) - sz.width / 2.0,
+                                 NSMidY(self.bounds) - sz.height / 2.0);
+    [glyph drawAtPoint:origin withAttributes:attrs];
+}
+
+@end
 
 // ── FolderTreePanel ───────────────────────────────────────────────────────────
 
@@ -162,16 +257,13 @@ static NSString * const kTreeviewSubdir     = @"icons/standard/panels/treeview";
 
 // ── UI Construction ───────────────────────────────────────────────────────────
 
-static _FTPanelButton *_panelBtn(NSString *iconName, NSString *subdir, NSString *tip, id target, SEL action) {
+static _FTPanelButton *_panelBtn(NSString *iconName, NSString *tip, id target, SEL action) {
     _FTPanelButton *btn = [[_FTPanelButton alloc] init];
     btn.toolTip = tip;
     btn.target  = target;
     btn.action  = action;
-    NSURL *url = [[NSBundle mainBundle] URLForResource:iconName withExtension:@"png"
-                                          subdirectory:subdir];
-    NSImage *img = url ? [[NSImage alloc] initWithContentsOfURL:url] : nil;
+    NSImage *img = _FTLoadToolbarIcon(iconName, kFTToolbarIconSize);
     if (img) {
-        img.size = NSMakeSize(16, 16);
         btn.image = img;
     } else {
         btn.title = @"?";
@@ -190,34 +282,27 @@ static _FTPanelButton *_panelBtn(NSString *iconName, NSString *subdir, NSString 
     _titleLabel = [NSTextField labelWithString:@"Folder as Workspace"];
     NSTextField *titleLabel = _titleLabel;
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    titleLabel.font = [NSFont boldSystemFontOfSize:11];
+    titleLabel.font = [NSFont systemFontOfSize:11];
 
-    _refreshButton   = _panelBtn(@"funclstReload",            kToolbarSubdir, @"Refresh",             self, @selector(_refreshAll:));
-    // Make refresh button 15% smaller than the other panel buttons
-    for (NSLayoutConstraint *c in _refreshButton.constraints)
-        if (c.firstAttribute == NSLayoutAttributeWidth || c.firstAttribute == NSLayoutAttributeHeight)
-            c.constant = 19;
-    _unfoldAllButton = _panelBtn(@"fb_expand_all",          kToolbarSubdir, @"Expand All",         self, @selector(_unfoldAll:));
-    _foldAllButton   = _panelBtn(@"fb_fold_all",            kToolbarSubdir, @"Fold All",            self, @selector(_foldAll:));
-    _locateButton    = _panelBtn(@"fb_select_current_file", kToolbarSubdir, @"Locate Current File", self, @selector(_locateCurrent:));
+    _refreshButton   = _panelBtn(@"funclstReload",          @"Refresh",             self, @selector(_refreshAll:));
+    _unfoldAllButton = _panelBtn(@"fb_expand_all",          @"Expand All",          self, @selector(_unfoldAll:));
+    _foldAllButton   = _panelBtn(@"fb_fold_all",            @"Fold All",            self, @selector(_foldAll:));
+    _locateButton    = _panelBtn(@"fb_select_current_file", @"Locate Current File", self, @selector(_locateCurrent:));
 
-    _closeButton = [[NSButton alloc] init];
+    _closeButton = [[_FTCloseButton alloc] initWithFrame:NSZeroRect];
     _closeButton.translatesAutoresizingMaskIntoConstraints = NO;
-    _closeButton.bezelStyle = NSBezelStyleSmallSquare;
-    _closeButton.bordered   = NO;
-    _closeButton.title      = @"✕";
     _closeButton.font       = [NSFont systemFontOfSize:11];
     _closeButton.toolTip    = @"Close panel";
     _closeButton.target     = self;
     _closeButton.action     = @selector(_closePanel:);
-    [_closeButton.widthAnchor  constraintEqualToConstant:20].active = YES;
-    [_closeButton.heightAnchor constraintEqualToConstant:20].active = YES;
+    [_closeButton.widthAnchor  constraintEqualToConstant:16].active = YES;
+    [_closeButton.heightAnchor constraintEqualToConstant:16].active = YES;
 
     for (NSView *v in @[titleLabel, _refreshButton, _unfoldAllButton, _foldAllButton, _locateButton, _closeButton])
         [titleBar addSubview:v];
 
     [NSLayoutConstraint activateConstraints:@[
-        [titleBar.heightAnchor constraintEqualToConstant:26],
+        [titleBar.heightAnchor constraintEqualToConstant:24],
         [titleLabel.leadingAnchor    constraintEqualToAnchor:titleBar.leadingAnchor constant:6],
         [titleLabel.centerYAnchor   constraintEqualToAnchor:titleBar.centerYAnchor],
         [titleLabel.trailingAnchor  constraintLessThanOrEqualToAnchor:_refreshButton.leadingAnchor constant:-4],
@@ -303,9 +388,13 @@ static _FTPanelButton *_panelBtn(NSString *iconName, NSString *subdir, NSString 
     _outlineView.backgroundColor = bg;
     _scrollView.backgroundColor = bg;
 
-    // Title bar: opaque system color so it never inherits the editor theme.
+    // Title bar: tabBarBackground makes the panel title read as one
+    // continuous strip with the tab bar (#F0F0F0 light, identical to
+    // panelBackground in dark — see NppThemeManager.tabBarBackground).
     _titleBar.wantsLayer = YES;
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
+
+    [self _refreshToolbarIcons];
 
     // Match disclosure-triangle (arrow) color to background: dark bg → DarkAqua appearance
     // so arrows are drawn white; light bg → Aqua so arrows are drawn dark.
@@ -892,8 +981,20 @@ static _FTPanelButton *_panelBtn(NSString *iconName, NSString *subdir, NSString 
 }
 
 
+- (void)_refreshToolbarIcons {
+    _refreshButton.image   = _FTLoadToolbarIcon(@"funclstReload",          kFTToolbarIconSize);
+    _unfoldAllButton.image = _FTLoadToolbarIcon(@"fb_expand_all",          kFTToolbarIconSize);
+    _foldAllButton.image   = _FTLoadToolbarIcon(@"fb_fold_all",            kFTToolbarIconSize);
+    _locateButton.image    = _FTLoadToolbarIcon(@"fb_select_current_file", kFTToolbarIconSize);
+    [_refreshButton   setNeedsDisplay:YES];
+    [_unfoldAllButton setNeedsDisplay:YES];
+    [_foldAllButton   setNeedsDisplay:YES];
+    [_locateButton    setNeedsDisplay:YES];
+}
+
 - (void)_darkModeChanged:(NSNotification *)n {
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
+    [self _refreshToolbarIcons];
 }
 
 #pragma mark - Panel Zoom
