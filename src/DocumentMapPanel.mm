@@ -48,6 +48,75 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
 @end
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Panel close button: always shows a 1px light-grey square border, and on
+// hover/press paints the same light-blue fill + blue border that
+// NppToolbarButton (MainWindowController.mm) uses for toolbar icons.
+// Square (non-rounded) corners per panel design.
+@interface _DMPCloseButton : NSButton { BOOL _hovering; }
+@end
+
+@implementation _DMPCloseButton
+
+- (instancetype)initWithFrame:(NSRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.bordered = NO;
+        self.buttonType = NSButtonTypeMomentaryChange;
+        self.title = @"";
+        NSTrackingArea *ta = [[NSTrackingArea alloc]
+            initWithRect:NSZeroRect
+                 options:(NSTrackingMouseEnteredAndExited |
+                          NSTrackingActiveInActiveApp     |
+                          NSTrackingInVisibleRect)
+                   owner:self userInfo:nil];
+        [self addTrackingArea:ta];
+    }
+    return self;
+}
+
+- (void)mouseEntered:(NSEvent *)event { _hovering = YES; [self setNeedsDisplay:YES]; }
+- (void)mouseExited:(NSEvent *)event  { _hovering = NO;  [self setNeedsDisplay:YES]; }
+
+- (void)drawRect:(NSRect)dirtyRect {
+    BOOL pressed = self.isHighlighted;
+    BOOL active  = pressed || _hovering;
+    BOOL isDark  = [NppThemeManager shared].isDark;
+
+    // Background fill — only when hovered/pressed AND in light mode.
+    // In dark mode the light-blue fill would clash with the dark title
+    // bar, so we skip it and let only the border change color on hover.
+    if (active && !isDark) {
+        NSColor *bg = pressed
+            ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
+            : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+        [bg setFill];
+        NSRectFill(self.bounds);
+    }
+
+    // Border — always drawn. Grey at rest; toolbar-blue when hovered/pressed.
+    NSColor *bdr = active
+        ? [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0]
+        : [NSColor colorWithWhite:0.75 alpha:1.0];
+    NSBezierPath *border = [NSBezierPath bezierPathWithRect:NSInsetRect(self.bounds, 0.5, 0.5)];
+    border.lineWidth = 1.0;
+    [bdr setStroke];
+    [border stroke];
+
+    // Glyph (✕) centered. NSAttributedString gives us true vertical centering.
+    NSString *glyph = @"✕";
+    NSDictionary *attrs = @{
+        NSFontAttributeName: self.font ?: [NSFont systemFontOfSize:11],
+        NSForegroundColorAttributeName: [NSColor labelColor],
+    };
+    NSSize sz = [glyph sizeWithAttributes:attrs];
+    NSPoint origin = NSMakePoint(NSMidX(self.bounds) - sz.width / 2.0,
+                                 NSMidY(self.bounds) - sz.height / 2.0);
+    [glyph drawAtPoint:origin withAttributes:attrs];
+}
+
+@end
+
+// ─────────────────────────────────────────────────────────────────────────────
 @implementation DocumentMapPanel {
     NSView             *_titleBar;
     NSTextField        *_titleLabel;
@@ -95,23 +164,21 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
     _titleBar = [[NSView alloc] init];
     _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
     _titleBar.wantsLayer = YES;
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
     [self addSubview:_titleBar];
 
     _titleLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Document Map"]];
     NSTextField *lbl = _titleLabel;
     lbl.translatesAutoresizingMaskIntoConstraints = NO;
-    lbl.font = [NSFont boldSystemFontOfSize:11];
+    lbl.font = [NSFont systemFontOfSize:11];
     lbl.textColor = [NSColor labelColor];
     lbl.lineBreakMode = NSLineBreakByTruncatingTail;
     [_titleBar addSubview:lbl];
 
-    NSButton *closeBtn = [NSButton buttonWithTitle:@"✕"
-                                            target:self
-                                            action:@selector(_closePanel:)];
+    _DMPCloseButton *closeBtn = [[_DMPCloseButton alloc] initWithFrame:NSZeroRect];
     closeBtn.translatesAutoresizingMaskIntoConstraints = NO;
-    closeBtn.bezelStyle = NSBezelStyleInline;
-    closeBtn.bordered = NO;
+    closeBtn.target = self;
+    closeBtn.action = @selector(_closePanel:);
     closeBtn.font = [NSFont systemFontOfSize:11];
     [_titleBar addSubview:closeBtn];
 
@@ -119,7 +186,7 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
         [_titleBar.topAnchor      constraintEqualToAnchor:self.topAnchor],
         [_titleBar.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
         [_titleBar.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [_titleBar.heightAnchor   constraintEqualToConstant:28],
+        [_titleBar.heightAnchor   constraintEqualToConstant:24],
 
         [lbl.leadingAnchor  constraintEqualToAnchor:_titleBar.leadingAnchor constant:8],
         [lbl.centerYAnchor  constraintEqualToAnchor:_titleBar.centerYAnchor],
@@ -127,8 +194,8 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
 
         [closeBtn.trailingAnchor constraintEqualToAnchor:_titleBar.trailingAnchor constant:-6],
         [closeBtn.centerYAnchor  constraintEqualToAnchor:_titleBar.centerYAnchor],
-        [closeBtn.widthAnchor    constraintEqualToConstant:20],
-        [closeBtn.heightAnchor   constraintEqualToConstant:20],
+        [closeBtn.widthAnchor    constraintEqualToConstant:16],
+        [closeBtn.heightAnchor   constraintEqualToConstant:16],
     ]];
 
     NSBox *sep = [[NSBox alloc] init];
@@ -426,6 +493,6 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
 
 
 - (void)_darkModeChanged:(NSNotification *)n {
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].panelBackground.CGColor;
+    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
 }
 @end
