@@ -106,7 +106,12 @@ static NSMenu *buildLanguageMenu() {
 
     NSMenu *mJ = submenu(@"J");
     [mJ addItem:langItem(@"Java",       @"java")];
-    [mJ addItem:langItem(@"JavaScript", @"javascript")];
+    // representedObject must match the value stored in EditorView.currentLanguage.
+    // langs.xml's <Language> entry for .js/.jsx/.mjs/.jsm is named "javascript.js"
+    // (Windows NPP's canonical L_JAVASCRIPT name), so file auto-detect stores
+    // "javascript.js". Use the same spelling here so the menu-click path ends up
+    // with the same _currentLanguage value and the checkmark matches.
+    [mJ addItem:langItem(@"JavaScript", @"javascript.js")];
     [mJ addItem:langItem(@"JSON",       @"json")];
     [m addItem:withSubmenu(@"J", mJ)];
 
@@ -157,7 +162,12 @@ static NSMenu *buildLanguageMenu() {
     [m addItem:withSubmenu(@"T", mT)];
 
     NSMenu *mV = submenu(@"V");
-    [mV addItem:langItem(@"VBScript", @"vbscript")];
+    // Same reasoning as JavaScript above: langs.xml's <Language> entry for
+    // .vb/.vba/.vbs is named "vb" (Windows NPP's canonical L_VB name), so file
+    // auto-detect stores "vb". Using "vbscript" here would also break the
+    // lexer path: languageLexerNameMap has "vb"→"vb" but no "vbscript" key,
+    // so clicking VBScript never applied syntax highlighting.
+    [mV addItem:langItem(@"VBScript", @"vb")];
     [mV addItem:langItem(@"Verilog",  @"verilog")];
     [m addItem:withSubmenu(@"V", mV)];
 
