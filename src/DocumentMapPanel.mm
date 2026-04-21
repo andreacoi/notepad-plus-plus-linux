@@ -1,5 +1,4 @@
 #import "DocumentMapPanel.h"
-#import "NppLocalizer.h"
 #import "ScintillaView.h"
 #import "Scintilla.h"
 #import "ScintillaMessages.h"
@@ -48,78 +47,12 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
 @end
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Panel close button: always shows a 1px light-grey square border, and on
-// hover/press paints the same light-blue fill + blue border that
-// NppToolbarButton (MainWindowController.mm) uses for toolbar icons.
-// Square (non-rounded) corners per panel design.
-@interface _DMPCloseButton : NSButton { BOOL _hovering; }
-@end
-
-@implementation _DMPCloseButton
-
-- (instancetype)initWithFrame:(NSRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.bordered = NO;
-        self.buttonType = NSButtonTypeMomentaryChange;
-        self.title = @"";
-        NSTrackingArea *ta = [[NSTrackingArea alloc]
-            initWithRect:NSZeroRect
-                 options:(NSTrackingMouseEnteredAndExited |
-                          NSTrackingActiveInActiveApp     |
-                          NSTrackingInVisibleRect)
-                   owner:self userInfo:nil];
-        [self addTrackingArea:ta];
-    }
-    return self;
-}
-
-- (void)mouseEntered:(NSEvent *)event { _hovering = YES; [self setNeedsDisplay:YES]; }
-- (void)mouseExited:(NSEvent *)event  { _hovering = NO;  [self setNeedsDisplay:YES]; }
-
-- (void)drawRect:(NSRect)dirtyRect {
-    BOOL pressed = self.isHighlighted;
-    BOOL active  = pressed || _hovering;
-    BOOL isDark  = [NppThemeManager shared].isDark;
-
-    // Background fill — only when hovered/pressed AND in light mode.
-    // In dark mode the light-blue fill would clash with the dark title
-    // bar, so we skip it and let only the border change color on hover.
-    if (active && !isDark) {
-        NSColor *bg = pressed
-            ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
-            : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
-        [bg setFill];
-        NSRectFill(self.bounds);
-    }
-
-    // Border — always drawn. Grey at rest; toolbar-blue when hovered/pressed.
-    NSColor *bdr = active
-        ? [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0]
-        : [NSColor colorWithWhite:0.75 alpha:1.0];
-    NSBezierPath *border = [NSBezierPath bezierPathWithRect:NSInsetRect(self.bounds, 0.5, 0.5)];
-    border.lineWidth = 1.0;
-    [bdr setStroke];
-    [border stroke];
-
-    // Glyph (✕) centered. NSAttributedString gives us true vertical centering.
-    NSString *glyph = @"✕";
-    NSDictionary *attrs = @{
-        NSFontAttributeName: self.font ?: [NSFont systemFontOfSize:11],
-        NSForegroundColorAttributeName: [NSColor labelColor],
-    };
-    NSSize sz = [glyph sizeWithAttributes:attrs];
-    NSPoint origin = NSMakePoint(NSMidX(self.bounds) - sz.width / 2.0,
-                                 NSMidY(self.bounds) - sz.height / 2.0);
-    [glyph drawAtPoint:origin withAttributes:attrs];
-}
-
-@end
-
+// Phase 2 migration: title bar + close button + separator formerly owned
+// by this file now live in PanelFrame (shared chrome). The panel body is
+// just the map Scintilla + viewport overlay, mounted flush to edges.
 // ─────────────────────────────────────────────────────────────────────────────
+
 @implementation DocumentMapPanel {
-    NSView             *_titleBar;
-    NSTextField        *_titleLabel;
     ScintillaView      *_mapSci;
     _DMViewportOverlay *_overlay;
     __weak EditorView  *_trackedEditor;
@@ -139,19 +72,10 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
         [[NSNotificationCenter defaultCenter]
             addObserver:self selector:@selector(_prefsChanged:)
                    name:@"NPPPreferencesChanged" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_darkModeChanged:) name:NPPDarkModeChangedNotification object:nil];
-        [[NSNotificationCenter defaultCenter]
-            addObserver:self selector:@selector(_locChanged:)
-                   name:NPPLocalizationChanged object:nil];
-        [self retranslateUI];
     }
     return self;
 }
 
-- (void)_locChanged:(NSNotification *)n { [self retranslateUI]; }
-- (void)retranslateUI {
-    _titleLabel.stringValue = [[NppLocalizer shared] translate:@"Document Map"];
-}
 - (instancetype)init { return [self initWithFrame:NSZeroRect]; }
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -161,84 +85,26 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
 // ── Layout ────────────────────────────────────────────────────────────────────
 
 - (void)_buildLayout {
-    _titleBar = [[NSView alloc] init];
-    _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
-    _titleBar.wantsLayer = YES;
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
-    [self addSubview:_titleBar];
-
-    _titleLabel = [NSTextField labelWithString:[[NppLocalizer shared] translate:@"Document Map"]];
-    NSTextField *lbl = _titleLabel;
-    lbl.translatesAutoresizingMaskIntoConstraints = NO;
-    lbl.font = [NSFont systemFontOfSize:11];
-    lbl.textColor = [NSColor labelColor];
-    lbl.lineBreakMode = NSLineBreakByTruncatingTail;
-    [_titleBar addSubview:lbl];
-
-    _DMPCloseButton *closeBtn = [[_DMPCloseButton alloc] initWithFrame:NSZeroRect];
-    closeBtn.translatesAutoresizingMaskIntoConstraints = NO;
-    closeBtn.target = self;
-    closeBtn.action = @selector(_closePanel:);
-    closeBtn.font = [NSFont systemFontOfSize:11];
-    [_titleBar addSubview:closeBtn];
-
-    [NSLayoutConstraint activateConstraints:@[
-        [_titleBar.topAnchor      constraintEqualToAnchor:self.topAnchor],
-        [_titleBar.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
-        [_titleBar.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [_titleBar.heightAnchor   constraintEqualToConstant:24],
-
-        [lbl.leadingAnchor  constraintEqualToAnchor:_titleBar.leadingAnchor constant:8],
-        [lbl.centerYAnchor  constraintEqualToAnchor:_titleBar.centerYAnchor],
-        [lbl.trailingAnchor constraintLessThanOrEqualToAnchor:closeBtn.leadingAnchor constant:-4],
-
-        [closeBtn.trailingAnchor constraintEqualToAnchor:_titleBar.trailingAnchor constant:-6],
-        [closeBtn.centerYAnchor  constraintEqualToAnchor:_titleBar.centerYAnchor],
-        [closeBtn.widthAnchor    constraintEqualToConstant:16],
-        [closeBtn.heightAnchor   constraintEqualToConstant:16],
-    ]];
-
-    NSBox *sep = [[NSBox alloc] init];
-    sep.boxType = NSBoxSeparator;
-    sep.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:sep];
-    [NSLayoutConstraint activateConstraints:@[
-        [sep.topAnchor      constraintEqualToAnchor:_titleBar.bottomAnchor],
-        [sep.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
-        [sep.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [sep.heightAnchor   constraintEqualToConstant:1],
-    ]];
-
-    NSView *content = [[NSView alloc] init];
-    content.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:content];
-    [NSLayoutConstraint activateConstraints:@[
-        [content.topAnchor      constraintEqualToAnchor:sep.bottomAnchor],
-        [content.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
-        [content.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [content.bottomAnchor   constraintEqualToAnchor:self.bottomAnchor],
-    ]];
-
     _mapSci = [[ScintillaView alloc] initWithFrame:NSZeroRect];
     _mapSci.translatesAutoresizingMaskIntoConstraints = NO;
-    [content addSubview:_mapSci];
+    [self addSubview:_mapSci];
     [NSLayoutConstraint activateConstraints:@[
-        [_mapSci.topAnchor      constraintEqualToAnchor:content.topAnchor],
-        [_mapSci.leadingAnchor  constraintEqualToAnchor:content.leadingAnchor],
-        [_mapSci.trailingAnchor constraintEqualToAnchor:content.trailingAnchor],
-        [_mapSci.bottomAnchor   constraintEqualToAnchor:content.bottomAnchor],
+        [_mapSci.topAnchor      constraintEqualToAnchor:self.topAnchor],
+        [_mapSci.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
+        [_mapSci.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+        [_mapSci.bottomAnchor   constraintEqualToAnchor:self.bottomAnchor],
     ]];
     [self _configureMapSci];
 
     _overlay = [[_DMViewportOverlay alloc] initWithFrame:NSZeroRect];
     _overlay.translatesAutoresizingMaskIntoConstraints = NO;
     _overlay.panel = self;
-    [content addSubview:_overlay positioned:NSWindowAbove relativeTo:_mapSci];
+    [self addSubview:_overlay positioned:NSWindowAbove relativeTo:_mapSci];
     [NSLayoutConstraint activateConstraints:@[
-        [_overlay.topAnchor      constraintEqualToAnchor:content.topAnchor],
-        [_overlay.leadingAnchor  constraintEqualToAnchor:content.leadingAnchor],
-        [_overlay.trailingAnchor constraintEqualToAnchor:content.trailingAnchor],
-        [_overlay.bottomAnchor   constraintEqualToAnchor:content.bottomAnchor],
+        [_overlay.topAnchor      constraintEqualToAnchor:self.topAnchor],
+        [_overlay.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
+        [_overlay.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+        [_overlay.bottomAnchor   constraintEqualToAnchor:self.bottomAnchor],
     ]];
 }
 
@@ -253,10 +119,6 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
     [_mapSci message:SCI_SETWRAPMODE         wParam:SC_WRAP_NONE];
     [_mapSci message:SCI_STYLESETSIZEFRACTIONAL wParam:STYLE_DEFAULT lParam:400]; // 4pt
     [_mapSci message:SCI_STYLECLEARALL];
-}
-
-- (void)_closePanel:(id)sender {
-    [_delegate documentMapPanelDidRequestClose:self];
 }
 
 // ── Public API ────────────────────────────────────────────────────────────────
@@ -492,7 +354,4 @@ extern "C" Scintilla::ILexer5 *CreateLexer(const char *name);
 }
 
 
-- (void)_darkModeChanged:(NSNotification *)n {
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
-}
 @end

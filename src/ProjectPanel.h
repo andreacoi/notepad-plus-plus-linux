@@ -6,7 +6,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol ProjectPanelDelegate <NSObject>
 - (void)projectPanel:(ProjectPanel *)panel openFileAtPath:(NSString *)path;
-- (void)projectPanelDidRequestClose:(ProjectPanel *)panel;
 - (void)projectPanel:(ProjectPanel *)panel findInFilesAtPath:(NSString *)path;
 @end
 
@@ -28,6 +27,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Returns YES if the workspace at the given tab has a loaded XML with files.
 - (BOOL)workspaceHasContent:(NSInteger)tabIndex;
+
+/// Called by MainWindowController before this panel is removed from the
+/// SidePanelHost (either via the PanelFrame X button or via a tab toggle-off).
+/// Flushes dirty workspaces and persists the workspace path preferences.
+- (void)panelWillClose;
 
 @end
 

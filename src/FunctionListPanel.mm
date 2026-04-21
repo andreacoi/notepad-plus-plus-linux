@@ -77,64 +77,7 @@
 // square border at rest, toolbar-style blue on hover/press. In dark mode the
 // light-blue fill is skipped (looks wrong on a dark bar); only the border
 // color changes.
-@interface _FLPCloseButton : NSButton { BOOL _hovering; }
-@end
-
-@implementation _FLPCloseButton
-
-- (instancetype)initWithFrame:(NSRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.bordered = NO;
-        self.buttonType = NSButtonTypeMomentaryChange;
-        self.title = @"";
-        NSTrackingArea *ta = [[NSTrackingArea alloc]
-            initWithRect:NSZeroRect
-                 options:(NSTrackingMouseEnteredAndExited |
-                          NSTrackingActiveInActiveApp     |
-                          NSTrackingInVisibleRect)
-                   owner:self userInfo:nil];
-        [self addTrackingArea:ta];
-    }
-    return self;
-}
-
-- (void)mouseEntered:(NSEvent *)event { _hovering = YES; [self setNeedsDisplay:YES]; }
-- (void)mouseExited:(NSEvent *)event  { _hovering = NO;  [self setNeedsDisplay:YES]; }
-
-- (void)drawRect:(NSRect)dirtyRect {
-    BOOL pressed = self.isHighlighted;
-    BOOL active  = pressed || _hovering;
-    BOOL isDark  = [NppThemeManager shared].isDark;
-
-    if (active && !isDark) {
-        NSColor *bg = pressed
-            ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
-            : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
-        [bg setFill];
-        NSRectFill(self.bounds);
-    }
-
-    NSColor *bdr = active
-        ? [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0]
-        : [NSColor colorWithWhite:0.75 alpha:1.0];
-    NSBezierPath *border = [NSBezierPath bezierPathWithRect:NSInsetRect(self.bounds, 0.5, 0.5)];
-    border.lineWidth = 1.0;
-    [bdr setStroke];
-    [border stroke];
-
-    NSString *glyph = @"✕";
-    NSDictionary *attrs = @{
-        NSFontAttributeName: self.font ?: [NSFont systemFontOfSize:11],
-        NSForegroundColorAttributeName: [NSColor labelColor],
-    };
-    NSSize sz = [glyph sizeWithAttributes:attrs];
-    NSPoint origin = NSMakePoint(NSMidX(self.bounds) - sz.width / 2.0,
-                                 NSMidY(self.bounds) - sz.height / 2.0);
-    [glyph drawAtPoint:origin withAttributes:attrs];
-}
-
-@end
+// Phase 2: close button provided by PanelFrame.
 
 // ── Title-bar hover button (for sort / reload) ───────────────────────────────
 // Draws its image normally at rest — invisible chrome. On hover/press it
@@ -252,12 +195,9 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *tip,
 // ── FunctionListPanel ────────────────────────────────────────────────────────
 
 @implementation FunctionListPanel {
-    // Title bar
-    NSView       *_titleBar;
-    NSTextField  *_titleLabel;
+    // Search-row toolbar (PanelFrame supplies title bar + close).
     NSButton     *_sortButton;
     NSButton     *_reloadButton;
-    NSButton     *_closeButton;
 
     // Search field
     NSTextField  *_searchField;
@@ -310,7 +250,10 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *tip,
                                                      name:NPPLocalizationChanged object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_themeChanged:)
                                                      name:@"NPPPreferencesChanged" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_darkModeChanged:) name:NPPDarkModeChangedNotification object:nil];
+        // PanelFrame owns the title-bar repaint for dark mode; we still
+        // need our own icon refresh on that event.
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_refreshToolbarIcons)
+                                                     name:NPPDarkModeChangedNotification object:nil];
     }
     return self;
 }
@@ -341,62 +284,19 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *tip,
 - (void)_buildLayout {
     self.translatesAutoresizingMaskIntoConstraints = NO;
 
-    // ── Title bar ────────────────────────────────────────────────────────────
-    _titleBar = [[NSView alloc] init];
-    _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
-    _titleBar.wantsLayer = YES;
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
-    [self addSubview:_titleBar];
-
-    _titleLabel = [NSTextField labelWithString:@"Function List"];
-    _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    _titleLabel.font = [NSFont systemFontOfSize:11];
-    _titleLabel.textColor = [NSColor labelColor];
-    _titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    [_titleBar addSubview:_titleLabel];
+    // Phase 2: title bar + close button supplied by PanelFrame. The Sort
+    // and Reload buttons move out of the old title bar and into the
+    // search row, right-aligned (per Windows/macOS parity spec).
 
     _sortButton = _flPanelBtn(@"funclstSort", @"Sort functions (A to Z)",
                                kFLToolbarBtnSize, kFLToolbarIconSize,
                                self, @selector(_toggleSort:));
-    [_titleBar addSubview:_sortButton];
+    [self addSubview:_sortButton];
 
     _reloadButton = _flPanelBtn(@"funclstReload", @"Reload",
                                  kFLToolbarBtnSize, kFLToolbarIconSize,
                                  self, @selector(_reload:));
-    [_titleBar addSubview:_reloadButton];
-
-    _closeButton = [[_FLPCloseButton alloc] initWithFrame:NSZeroRect];
-    _closeButton.translatesAutoresizingMaskIntoConstraints = NO;
-    _closeButton.target = self;
-    _closeButton.action = @selector(_closePanel:);
-    _closeButton.font = [NSFont systemFontOfSize:11];
-    [_closeButton.widthAnchor constraintEqualToConstant:16].active = YES;
-    [_closeButton.heightAnchor constraintEqualToConstant:16].active = YES;
-    [_titleBar addSubview:_closeButton];
-
-    [NSLayoutConstraint activateConstraints:@[
-        [_titleBar.topAnchor      constraintEqualToAnchor:self.topAnchor],
-        [_titleBar.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
-        [_titleBar.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [_titleBar.heightAnchor   constraintEqualToConstant:24],
-
-        [_titleLabel.leadingAnchor  constraintEqualToAnchor:_titleBar.leadingAnchor constant:6],
-        [_titleLabel.centerYAnchor  constraintEqualToAnchor:_titleBar.centerYAnchor],
-        [_titleLabel.trailingAnchor constraintLessThanOrEqualToAnchor:_sortButton.leadingAnchor constant:-4],
-
-        [_sortButton.trailingAnchor   constraintEqualToAnchor:_reloadButton.leadingAnchor constant:-2],
-        [_sortButton.centerYAnchor    constraintEqualToAnchor:_titleBar.centerYAnchor],
-        [_reloadButton.trailingAnchor constraintEqualToAnchor:_closeButton.leadingAnchor constant:-4],
-        [_reloadButton.centerYAnchor  constraintEqualToAnchor:_titleBar.centerYAnchor],
-        [_closeButton.trailingAnchor  constraintEqualToAnchor:_titleBar.trailingAnchor constant:-4],
-        [_closeButton.centerYAnchor   constraintEqualToAnchor:_titleBar.centerYAnchor],
-    ]];
-
-    // ── Separator ────────────────────────────────────────────────────────────
-    NSBox *sep = [[NSBox alloc] init];
-    sep.boxType = NSBoxSeparator;
-    sep.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:sep];
+    [self addSubview:_reloadButton];
 
     // ── Search field ─────────────────────────────────────────────────────────
     _searchField = [[NSTextField alloc] init];
@@ -440,16 +340,18 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *tip,
     [self addSubview:_emptyLabel];
 
     // ── Constraints ──────────────────────────────────────────────────────────
+    // Search row: [search expandable] [sort 16×16] [reload 16×16]. Sort +
+    // Reload right-aligned. 6pt leading/trailing gutters match Windows.
     [NSLayoutConstraint activateConstraints:@[
-        [sep.topAnchor      constraintEqualToAnchor:_titleBar.bottomAnchor],
-        [sep.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
-        [sep.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [sep.heightAnchor   constraintEqualToConstant:1],
-
-        [_searchField.topAnchor      constraintEqualToAnchor:sep.bottomAnchor constant:4],
+        [_searchField.topAnchor      constraintEqualToAnchor:self.topAnchor constant:4],
         [_searchField.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor constant:6],
-        [_searchField.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-6],
+        [_searchField.trailingAnchor constraintEqualToAnchor:_sortButton.leadingAnchor constant:-6],
         [_searchField.heightAnchor   constraintEqualToConstant:22],
+
+        [_sortButton.trailingAnchor  constraintEqualToAnchor:_reloadButton.leadingAnchor constant:-2],
+        [_sortButton.centerYAnchor   constraintEqualToAnchor:_searchField.centerYAnchor],
+        [_reloadButton.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-6],
+        [_reloadButton.centerYAnchor  constraintEqualToAnchor:_searchField.centerYAnchor],
 
         [_scrollView.topAnchor      constraintEqualToAnchor:_searchField.bottomAnchor constant:4],
         [_scrollView.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
@@ -473,11 +375,7 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *tip,
 }
 
 - (void)_applyTheme {
-    // Title bar matches the tab bar strip (#F0F0F0 light, identical to
-    // panelBackground in dark — see NppThemeManager.tabBarBackground).
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
     [self _refreshToolbarIcons];
-    _titleLabel.textColor = [NSColor labelColor];
     _emptyLabel.textColor = [NSColor secondaryLabelColor];
     [_outlineView reloadData]; // colors may have changed
 }
@@ -485,13 +383,13 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *tip,
 #pragma mark - Localization
 
 - (void)_locChanged:(NSNotification *)n { [self retranslateUI]; }
+// PanelFrame owns the panel title; this retranslates only the panel's
+// own controls (empty placeholder + two toolbar button tooltips).
 - (void)retranslateUI {
     NppLocalizer *loc = [NppLocalizer shared];
-    _titleLabel.stringValue = [loc translate:@"Function List"];
     _emptyLabel.stringValue = [loc translate:@"No functions found"];
     _sortButton.toolTip     = [loc translate:@"Sort functions (A to Z)"];
     _reloadButton.toolTip   = [loc translate:@"Reload"];
-    _closeButton.toolTip    = [loc translate:@"Close"];
 }
 
 #pragma mark - Actions
@@ -505,11 +403,6 @@ static NSButton *_flPanelBtn(NSString *iconName, NSString *tip,
 
 - (void)_reload:(id)sender {
     [self reload];
-}
-
-- (void)_closePanel:(id)sender {
-    if ([_delegate respondsToSelector:@selector(functionListPanelDidRequestClose:)])
-        [_delegate functionListPanelDidRequestClose:self];
 }
 
 #pragma mark - Search field delegate
@@ -1496,11 +1389,6 @@ static NSString *_userFuncPatternForLanguage(NSString *lang, NSString * __autore
     });
 }
 
-
-- (void)_darkModeChanged:(NSNotification *)n {
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
-    [self _refreshToolbarIcons];
-}
 
 #pragma mark - Panel Zoom
 

@@ -1299,6 +1299,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
      FindWindowDelegate, SearchResultsPanelDelegate,
      ClipboardHistoryPanelDelegate, DocumentMapPanelDelegate,
      DocumentListPanelDelegate, CharacterPanelDelegate,
+     SidePanelHostDelegate,
      NSMenuDelegate>
 @end
 
@@ -1315,6 +1316,12 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     // Side panel host
     NSSplitView       *_editorSplitView;
     SidePanelHost     *_sidePanelHost;
+    // Maps content-view → original (English) title key passed to
+    // _setPanelVisible:title:show:YES. Lets NPPLocalizationChanged
+    // retranslate every open panel's title without each panel needing
+    // its own observer. Weak-to-strong so content views can deallocate
+    // without leaving stale keys.
+    NSMapTable<NSView *, NSString *> *_panelTitleKeys;
     DocumentListPanel *_docListPanel;
     ClipboardHistoryPanel *_clipboardPanel;
     FunctionListPanel     *_funcListPanel;
@@ -2263,10 +2270,17 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     [[NSNotificationCenter defaultCenter]
         addObserver:self selector:@selector(_prefsChanged:)
                name:@"NPPPreferencesChanged" object:nil];
+    // Phase 2: one observer refreshes every open PanelFrame title, so
+    // each individual panel no longer needs its own NPPLocalizationChanged
+    // subscriber for the title.
+    [[NSNotificationCenter defaultCenter]
+        addObserver:self selector:@selector(_refreshOpenPanelTitles)
+               name:NPPLocalizationChanged object:nil];
 
     // ── Horizontal (left/right) split: views | side panels ────────────────────
     _sidePanelHost = [[SidePanelHost alloc] init];
     _sidePanelHost.translatesAutoresizingMaskIntoConstraints = NO;
+    _sidePanelHost.delegate = self;  // receive PanelFrame close callbacks
 
     _editorSplitView = [[NSSplitView alloc] init];
     _editorSplitView.vertical = YES;
@@ -3509,19 +3523,54 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 #pragma mark - Side panel show/hide
 
 - (void)_setPanelVisible:(NSView *)panel title:(NSString *)title show:(BOOL)show {
+    if (!panel) return;
     if (show) {
-        [_sidePanelHost showPanel:panel withTitle:title];
+        // Remember the English key so NPPLocalizationChanged can refresh
+        // the PanelFrame's label without each panel implementing its own
+        // observer. `title` at call sites is the English string literal
+        // (e.g., @"Document Map"); we translate once here, then re-apply
+        // via -_refreshOpenPanelTitles on locale change.
+        if (!_panelTitleKeys)
+            _panelTitleKeys = [NSMapTable weakToStrongObjectsMapTable];
+        NSString *key = title ?: @"";
+        [_panelTitleKeys setObject:key forKey:panel];
+        NSString *localized = [[NppLocalizer shared] translate:key];
+        [_sidePanelHost showPanel:panel withTitle:localized];
         if ([_editorSplitView isSubviewCollapsed:_sidePanelHost]) {
             CGFloat w = NSWidth(_editorSplitView.frame);
             [_editorSplitView setPosition:MAX(200, w - 280) ofDividerAtIndex:0];
         }
     } else {
+        // Informal selector: any panel that needs to flush state (e.g.
+        // ProjectPanel saving dirty workspaces) implements -panelWillClose.
+        // Fires once per hide regardless of trigger (PanelFrame X, tab
+        // toggle-off, plugin NPPM_DMM_HIDEPANEL).
+        if ([panel respondsToSelector:@selector(panelWillClose)])
+            [(id)panel performSelector:@selector(panelWillClose)];
         [_sidePanelHost hidePanel:panel];
+        [_panelTitleKeys removeObjectForKey:panel];
         if (!_sidePanelHost.hasVisiblePanels)
             [_editorSplitView setPosition:NSWidth(_editorSplitView.frame)
                          ofDividerAtIndex:0];
     }
     [self _refreshToolbarStates];
+}
+
+// Re-apply localized titles to every currently-open panel. Called on
+// NPPLocalizationChanged; iterates _panelTitleKeys and re-invokes
+// SidePanelHost.showPanel:withTitle: so each PanelFrame's label refreshes.
+- (void)_refreshOpenPanelTitles {
+    if (!_panelTitleKeys) return;
+    // Snapshot keys — we're not mutating the map here, but this keeps
+    // the iteration stable if SidePanelHost's showPanel: synchronously
+    // triggered any observer that did.
+    NSArray<NSView *> *panels = [[_panelTitleKeys keyEnumerator] allObjects];
+    for (NSView *p in panels) {
+        NSString *key = [_panelTitleKeys objectForKey:p];
+        if (!key) continue;
+        NSString *localized = [[NppLocalizer shared] translate:key];
+        [_sidePanelHost showPanel:p withTitle:localized];
+    }
 }
 
 // ── Plugin-panel docking (public API) ─────────────────────────────────────
@@ -3545,6 +3594,18 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 - (BOOL)isPluginPanelShown:(NSView *)panel {
     if (!panel || !_sidePanelHost) return NO;
     return [_sidePanelHost hasPanel:panel];
+}
+
+// ── SidePanelHostDelegate ─────────────────────────────────────────────────
+//
+// Called when the user clicks the close X in any PanelFrame's title bar.
+// Single generic handler — no per-panel-class branching needed because
+// `_setPanelVisible:title:show:NO` does the right thing for built-in and
+// plugin panels alike.
+- (void)sidePanelHost:(SidePanelHost *)host
+    didRequestCloseForContentView:(NSView *)contentView {
+    if (!contentView) return;
+    [self _setPanelVisible:contentView title:@"" show:NO];
 }
 
 - (void)showDocumentList:(id)sender {
@@ -5000,10 +5061,6 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
 - (void)projectPanel:(ProjectPanel *)panel openFileAtPath:(NSString *)path {
     [self openFileAtPath:path];
-}
-
-- (void)projectPanelDidRequestClose:(ProjectPanel *)panel {
-    [self _setPanelVisible:_projectPanel title:@"Project Panel" show:NO];
 }
 
 - (void)projectPanel:(ProjectPanel *)panel findInFilesAtPath:(NSString *)path {

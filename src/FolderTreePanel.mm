@@ -18,7 +18,7 @@
 
 // ── Forward declaration so _FTOutlineView can call FolderTreePanel ────────────
 
-@interface FolderTreePanel ()
+@interface FolderTreePanel () <NSTextFieldDelegate>
 - (NSMenu *)_contextMenuForRow:(NSInteger)row;
 - (nullable _FTItem *)_expandPathComponents:(NSArray<NSString *> *)components fromRoot:(_FTItem *)root;
 @end
@@ -137,78 +137,24 @@ static NSImage *_FTLoadToolbarIcon(NSString *iconName, CGFloat size) {
 // ── Close ✕ button: permanent 1px square grey border, toolbar-blue hover ─────
 // Mirrors _FLPCloseButton in FunctionListPanel.mm / _DMPCloseButton in
 // DocumentMapPanel.mm.
-@interface _FTCloseButton : NSButton { BOOL _hovering; }
-@end
-
-@implementation _FTCloseButton
-
-- (instancetype)initWithFrame:(NSRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.bordered = NO;
-        self.buttonType = NSButtonTypeMomentaryChange;
-        self.title = @"";
-        NSTrackingArea *ta = [[NSTrackingArea alloc]
-            initWithRect:NSZeroRect
-                 options:(NSTrackingMouseEnteredAndExited |
-                          NSTrackingActiveInActiveApp     |
-                          NSTrackingInVisibleRect)
-                   owner:self userInfo:nil];
-        [self addTrackingArea:ta];
-    }
-    return self;
-}
-
-- (void)mouseEntered:(NSEvent *)event { _hovering = YES; [self setNeedsDisplay:YES]; }
-- (void)mouseExited:(NSEvent *)event  { _hovering = NO;  [self setNeedsDisplay:YES]; }
-
-- (void)drawRect:(NSRect)dirtyRect {
-    BOOL pressed = self.isHighlighted;
-    BOOL active  = pressed || _hovering;
-    BOOL isDark  = [NppThemeManager shared].isDark;
-
-    if (active && !isDark) {
-        NSColor *bg = pressed
-            ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
-            : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
-        [bg setFill];
-        NSRectFill(self.bounds);
-    }
-
-    NSColor *bdr = active
-        ? [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0]
-        : [NSColor colorWithWhite:0.75 alpha:1.0];
-    NSBezierPath *border = [NSBezierPath bezierPathWithRect:NSInsetRect(self.bounds, 0.5, 0.5)];
-    border.lineWidth = 1.0;
-    [bdr setStroke];
-    [border stroke];
-
-    NSString *glyph = @"✕";
-    NSDictionary *attrs = @{
-        NSFontAttributeName: self.font ?: [NSFont systemFontOfSize:11],
-        NSForegroundColorAttributeName: [NSColor labelColor],
-    };
-    NSSize sz = [glyph sizeWithAttributes:attrs];
-    NSPoint origin = NSMakePoint(NSMidX(self.bounds) - sz.width / 2.0,
-                                 NSMidY(self.bounds) - sz.height / 2.0);
-    [glyph drawAtPoint:origin withAttributes:attrs];
-}
-
-@end
+// Phase 2: close button is provided by PanelFrame.
 
 // ── FolderTreePanel ───────────────────────────────────────────────────────────
 
 @implementation FolderTreePanel {
     NSURL                     *_activeFileURL;
 
-    // Title bar
-    NSView                    *_titleBar;
-    NSTextField               *_titleLabel;
+    // Toolbar row — search field on the left, action buttons right-aligned.
+    NSTextField               *_searchField;
     NSButton                  *_refreshButton;
     NSButton                  *_unfoldAllButton;
     NSButton                  *_foldAllButton;
     NSButton                  *_locateButton;
-    NSButton                  *_closeButton;
+
+    // Filter — case-insensitive substring against lastPathComponent. nil/empty
+    // means no filter. When non-nil, children are eagerly loaded so the
+    // filter can match at any depth.
+    NSString                  *_filterText;
 
     // Tree
     NSScrollView              *_scrollView;
@@ -245,14 +191,15 @@ static NSImage *_FTLoadToolbarIcon(NSString *iconName, CGFloat size) {
 }
 
 - (void)_locChanged:(NSNotification *)n { [self retranslateUI]; }
+// PanelFrame owns the title; this panel retranslates only its own tool-
+// bar button tooltips.
 - (void)retranslateUI {
     NppLocalizer *loc = [NppLocalizer shared];
-    _titleLabel.stringValue      = [loc translate:@"Folder as Workspace"];
-    _refreshButton.toolTip       = [loc translate:@"Refresh"];
-    _unfoldAllButton.toolTip     = [loc translate:@"Expand All"];
-    _foldAllButton.toolTip       = [loc translate:@"Fold All"];
-    _locateButton.toolTip        = [loc translate:@"Locate Current File"];
-    _closeButton.toolTip         = [loc translate:@"Close"];
+    _refreshButton.toolTip          = [loc translate:@"Refresh"];
+    _unfoldAllButton.toolTip        = [loc translate:@"Expand All"];
+    _foldAllButton.toolTip          = [loc translate:@"Fold All"];
+    _locateButton.toolTip           = [loc translate:@"Locate Current File"];
+    _searchField.placeholderString  = [loc translate:@"Filter file/folder name..."];
 }
 
 // ── UI Construction ───────────────────────────────────────────────────────────
@@ -274,54 +221,27 @@ static _FTPanelButton *_panelBtn(NSString *iconName, NSString *tip, id target, S
 - (void)_buildUI {
     self.translatesAutoresizingMaskIntoConstraints = NO;
 
-    // ── Title bar ─────────────────────────────────────────────────────────
-    _titleBar = [[NSView alloc] init];
-    _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
-    NSView *titleBar = _titleBar;
-
-    _titleLabel = [NSTextField labelWithString:@"Folder as Workspace"];
-    NSTextField *titleLabel = _titleLabel;
-    titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    titleLabel.font = [NSFont systemFontOfSize:11];
+    // Phase 2: title bar + close button now live in PanelFrame. The
+    // refresh / expand-all / fold-all / locate buttons plus a file/folder
+    // name filter sit in a single row below the PanelFrame chrome —
+    // search field on the left, action buttons right-aligned, matching
+    // FunctionListPanel's layout exactly so the two panels share a look.
+    _searchField = [[NSTextField alloc] init];
+    _searchField.translatesAutoresizingMaskIntoConstraints = NO;
+    _searchField.placeholderString = @"Filter file/folder name...";
+    _searchField.font = [NSFont systemFontOfSize:11];
+    _searchField.delegate = self;
+    _searchField.bezelStyle = NSTextFieldRoundedBezel;
+    [[_searchField cell] setScrollable:YES];
+    [self addSubview:_searchField];
 
     _refreshButton   = _panelBtn(@"funclstReload",          @"Refresh",             self, @selector(_refreshAll:));
     _unfoldAllButton = _panelBtn(@"fb_expand_all",          @"Expand All",          self, @selector(_unfoldAll:));
     _foldAllButton   = _panelBtn(@"fb_fold_all",            @"Fold All",            self, @selector(_foldAll:));
     _locateButton    = _panelBtn(@"fb_select_current_file", @"Locate Current File", self, @selector(_locateCurrent:));
 
-    _closeButton = [[_FTCloseButton alloc] initWithFrame:NSZeroRect];
-    _closeButton.translatesAutoresizingMaskIntoConstraints = NO;
-    _closeButton.font       = [NSFont systemFontOfSize:11];
-    _closeButton.toolTip    = @"Close panel";
-    _closeButton.target     = self;
-    _closeButton.action     = @selector(_closePanel:);
-    [_closeButton.widthAnchor  constraintEqualToConstant:16].active = YES;
-    [_closeButton.heightAnchor constraintEqualToConstant:16].active = YES;
-
-    for (NSView *v in @[titleLabel, _refreshButton, _unfoldAllButton, _foldAllButton, _locateButton, _closeButton])
-        [titleBar addSubview:v];
-
-    [NSLayoutConstraint activateConstraints:@[
-        [titleBar.heightAnchor constraintEqualToConstant:24],
-        [titleLabel.leadingAnchor    constraintEqualToAnchor:titleBar.leadingAnchor constant:6],
-        [titleLabel.centerYAnchor   constraintEqualToAnchor:titleBar.centerYAnchor],
-        [titleLabel.trailingAnchor  constraintLessThanOrEqualToAnchor:_refreshButton.leadingAnchor constant:-4],
-        [_refreshButton.trailingAnchor   constraintEqualToAnchor:_unfoldAllButton.leadingAnchor constant:-2],
-        [_unfoldAllButton.trailingAnchor constraintEqualToAnchor:_foldAllButton.leadingAnchor  constant:-2],
-        [_foldAllButton.trailingAnchor   constraintEqualToAnchor:_locateButton.leadingAnchor   constant:-2],
-        [_locateButton.trailingAnchor    constraintEqualToAnchor:_closeButton.leadingAnchor    constant:-4],
-        [_closeButton.trailingAnchor     constraintEqualToAnchor:titleBar.trailingAnchor       constant:-4],
-        [_refreshButton.centerYAnchor    constraintEqualToAnchor:titleBar.centerYAnchor],
-        [_unfoldAllButton.centerYAnchor  constraintEqualToAnchor:titleBar.centerYAnchor],
-        [_foldAllButton.centerYAnchor    constraintEqualToAnchor:titleBar.centerYAnchor],
-        [_locateButton.centerYAnchor     constraintEqualToAnchor:titleBar.centerYAnchor],
-        [_closeButton.centerYAnchor      constraintEqualToAnchor:titleBar.centerYAnchor],
-    ]];
-
-    // ── Separator ─────────────────────────────────────────────────────────
-    NSBox *sep = [[NSBox alloc] init];
-    sep.boxType = NSBoxSeparator;
-    sep.translatesAutoresizingMaskIntoConstraints = NO;
+    for (NSView *v in @[_refreshButton, _unfoldAllButton, _foldAllButton, _locateButton])
+        [self addSubview:v];
 
     // ── OutlineView ───────────────────────────────────────────────────────
     _outlineView = [[_FTOutlineView alloc] init];
@@ -356,20 +276,33 @@ static _FTPanelButton *_panelBtn(NSString *iconName, NSString *tip, id target, S
                name:NSOutlineViewItemDidCollapseNotification object:_outlineView];
     [nc addObserver:self selector:@selector(_themeChanged:)
                name:@"NPPPreferencesChanged" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_darkModeChanged:) name:NPPDarkModeChangedNotification object:nil];
+    // Dark-mode toggle doesn't route through NPPPreferencesChanged, so
+    // we still need a separate observer to repaint our icons (panel body
+    // stuff only — PanelFrame handles its own title-bar color change).
+    [nc addObserver:self selector:@selector(_refreshToolbarIcons)
+               name:NPPDarkModeChangedNotification object:nil];
 
-    for (NSView *v in @[titleBar, sep, _scrollView])
-        [self addSubview:v];
+    [self addSubview:_scrollView];
 
+    // Search row: [search expandable] [refresh] [unfold] [fold] [locate].
+    // 6pt leading/trailing gutters + 2pt inter-button gap match FunctionList.
     [NSLayoutConstraint activateConstraints:@[
-        [titleBar.topAnchor    constraintEqualToAnchor:self.topAnchor],
-        [titleBar.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
-        [titleBar.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [sep.topAnchor     constraintEqualToAnchor:titleBar.bottomAnchor],
-        [sep.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
-        [sep.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [sep.heightAnchor constraintEqualToConstant:1],
-        [_scrollView.topAnchor     constraintEqualToAnchor:sep.bottomAnchor],
+        [_searchField.topAnchor      constraintEqualToAnchor:self.topAnchor constant:4],
+        [_searchField.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor constant:6],
+        [_searchField.trailingAnchor constraintEqualToAnchor:_refreshButton.leadingAnchor constant:-6],
+        [_searchField.heightAnchor   constraintEqualToConstant:22],
+
+        [_locateButton.trailingAnchor    constraintEqualToAnchor:self.trailingAnchor constant:-6],
+        [_foldAllButton.trailingAnchor   constraintEqualToAnchor:_locateButton.leadingAnchor  constant:-2],
+        [_unfoldAllButton.trailingAnchor constraintEqualToAnchor:_foldAllButton.leadingAnchor constant:-2],
+        [_refreshButton.trailingAnchor   constraintEqualToAnchor:_unfoldAllButton.leadingAnchor constant:-2],
+
+        [_refreshButton.centerYAnchor   constraintEqualToAnchor:_searchField.centerYAnchor],
+        [_unfoldAllButton.centerYAnchor constraintEqualToAnchor:_searchField.centerYAnchor],
+        [_foldAllButton.centerYAnchor   constraintEqualToAnchor:_searchField.centerYAnchor],
+        [_locateButton.centerYAnchor    constraintEqualToAnchor:_searchField.centerYAnchor],
+
+        [_scrollView.topAnchor      constraintEqualToAnchor:_searchField.bottomAnchor constant:4],
         [_scrollView.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
         [_scrollView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
         [_scrollView.bottomAnchor   constraintEqualToAnchor:self.bottomAnchor],
@@ -382,17 +315,12 @@ static _FTPanelButton *_panelBtn(NSString *iconName, NSString *tip, id target, S
     NSColor *bg = [[NPPStyleStore sharedStore] globalBg];
     CGFloat brightness = bg.brightnessComponent;
 
-    // Theme only the tree/scroll area.
-    self.wantsLayer = YES;
-    self.layer.backgroundColor = bg.CGColor;
+    // Theme only the tree/scroll area. The panel background itself (and
+    // therefore the toolbar row) is left at system default so it matches
+    // FunctionListPanel's look — subtle grey in light mode, default dark
+    // chrome in dark mode.
     _outlineView.backgroundColor = bg;
     _scrollView.backgroundColor = bg;
-
-    // Title bar: tabBarBackground makes the panel title read as one
-    // continuous strip with the tab bar (#F0F0F0 light, identical to
-    // panelBackground in dark — see NppThemeManager.tabBarBackground).
-    _titleBar.wantsLayer = YES;
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
 
     [self _refreshToolbarIcons];
 
@@ -584,10 +512,6 @@ static _FTPanelButton *_panelBtn(NSString *iconName, NSString *tip, id target, S
     for (_FTItem *child in current.children)
         if ([child.url.lastPathComponent isEqualToString:components.lastObject]) return child;
     return nil;
-}
-
-- (void)_closePanel:(id)sender {
-    [_delegate folderTreePanelDidRequestClose:self];
 }
 
 - (void)_doubleClicked:(id)sender {
@@ -891,23 +815,107 @@ static _FTPanelButton *_panelBtn(NSString *iconName, NSString *tip, id target, S
     [as executeAndReturnError:nil];
 }
 
+// ── Filter ────────────────────────────────────────────────────────────────────
+
+- (void)controlTextDidChange:(NSNotification *)note {
+    if (note.object != _searchField) return;
+    NSString *t = [_searchField.stringValue stringByTrimmingCharactersInSet:
+                     [NSCharacterSet whitespaceCharacterSet]];
+    BOOL wasActive = (_filterText != nil);
+    _filterText = t.length ? t : nil;
+
+    if (_filterText) {
+        // Eagerly load every subtree so the filter can match at any depth.
+        // This happens once on first activation; subsequent keystrokes just
+        // re-filter the already-loaded tree.
+        for (_FTItem *root in _roots)
+            [self _ensureChildrenLoadedDeep:root];
+    }
+
+    [_outlineView reloadData];
+
+    if (_filterText) {
+        // Expand everything so matches surface without manual unfolding.
+        [_outlineView expandItem:nil expandChildren:YES];
+    } else if (wasActive) {
+        // Filter was just cleared — collapse back to roots so the tree
+        // doesn't stay fully expanded from the last filter pass.
+        for (_FTItem *root in _roots)
+            [_outlineView collapseItem:root collapseChildren:YES];
+    }
+}
+
+- (void)_ensureChildrenLoadedDeep:(_FTItem *)item {
+    if (!item.isDirectory) return;
+    if (!item.children)
+        item.children = [[self _loadChildrenOfURL:item.url] mutableCopy];
+    for (_FTItem *c in item.children)
+        if (c.isDirectory) [self _ensureChildrenLoadedDeep:c];
+}
+
+// Name of the item matches the current filter string (case-insensitive
+// substring). Used directly for files, and as the base case for folders.
+- (BOOL)_itemNameMatchesFilter:(_FTItem *)item {
+    if (!_filterText) return YES;
+    NSString *name = item.url.lastPathComponent ?: @"";
+    return [name rangeOfString:_filterText options:NSCaseInsensitiveSearch].location != NSNotFound;
+}
+
+// Item is visible under the filter if its own name matches OR (for folders)
+// at least one descendant's name matches.
+- (BOOL)_itemVisibleUnderFilter:(_FTItem *)item {
+    if (!_filterText) return YES;
+    if ([self _itemNameMatchesFilter:item]) return YES;
+    if (item.isDirectory && item.children) {
+        for (_FTItem *c in item.children)
+            if ([self _itemVisibleUnderFilter:c]) return YES;
+    }
+    return NO;
+}
+
+// Children of `item` under the current filter. When filter is empty this
+// lazy-loads and returns the full list; otherwise it returns only children
+// that themselves pass -_itemVisibleUnderFilter:.
+- (NSArray<_FTItem *> *)_filteredChildrenOf:(_FTItem *)item {
+    if (!item.children)
+        item.children = [[self _loadChildrenOfURL:item.url] mutableCopy];
+    if (!_filterText) return item.children;
+    NSMutableArray *out = [NSMutableArray array];
+    for (_FTItem *c in item.children)
+        if ([self _itemVisibleUnderFilter:c]) [out addObject:c];
+    return out;
+}
+
+// Top-level roots that are visible under the current filter. Roots whose
+// entire subtree fails the filter are hidden — matches Windows Folder-as-
+// Workspace behavior.
+- (NSArray<_FTItem *> *)_filteredRoots {
+    if (!_filterText) return _roots;
+    NSMutableArray *out = [NSMutableArray array];
+    for (_FTItem *r in _roots)
+        if ([self _itemVisibleUnderFilter:r]) [out addObject:r];
+    return out;
+}
+
 // ── NSOutlineViewDataSource ───────────────────────────────────────────────────
 
 - (NSInteger)outlineView:(NSOutlineView *)ov numberOfChildrenOfItem:(nullable id)item {
-    if (!item) return (NSInteger)_roots.count;
+    if (!item) return (NSInteger)[self _filteredRoots].count;
     _FTItem *ft = (_FTItem *)item;
     if (!ft.isDirectory) return 0;
-    if (!ft.children) ft.children = [[self _loadChildrenOfURL:ft.url] mutableCopy];
-    return (NSInteger)ft.children.count;
+    return (NSInteger)[self _filteredChildrenOf:ft].count;
 }
 
 - (id)outlineView:(NSOutlineView *)ov child:(NSInteger)index ofItem:(nullable id)item {
-    if (!item) return _roots[(NSUInteger)index];
-    return ((_FTItem *)item).children[(NSUInteger)index];
+    if (!item) return [self _filteredRoots][(NSUInteger)index];
+    return [self _filteredChildrenOf:(_FTItem *)item][(NSUInteger)index];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)ov isItemExpandable:(id)item {
-    return ((_FTItem *)item).isDirectory;
+    _FTItem *ft = (_FTItem *)item;
+    if (!ft.isDirectory) return NO;
+    if (!_filterText) return YES;
+    return [self _filteredChildrenOf:ft].count > 0;
 }
 
 // ── NSOutlineViewDelegate ─────────────────────────────────────────────────────
@@ -992,10 +1000,6 @@ static _FTPanelButton *_panelBtn(NSString *iconName, NSString *tip, id target, S
     [_locateButton    setNeedsDisplay:YES];
 }
 
-- (void)_darkModeChanged:(NSNotification *)n {
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
-    [self _refreshToolbarIcons];
-}
 
 #pragma mark - Panel Zoom
 

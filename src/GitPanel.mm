@@ -108,66 +108,9 @@ static NSImage *_GPLoadIcon(NSString *iconName, NSString *lightSubdir, CGFloat s
 
 // ── Close ✕ button: permanent 1px square grey border, toolbar-blue hover ────
 // Mirrors _FLPCloseButton / _FTCloseButton / _DMPCloseButton.
-@interface _GPCloseButton : NSButton { BOOL _hovering; }
-@end
+// Phase 2: close button is provided by PanelFrame.
 
-@implementation _GPCloseButton
-
-- (instancetype)initWithFrame:(NSRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.bordered = NO;
-        self.buttonType = NSButtonTypeMomentaryChange;
-        self.title = @"";
-        NSTrackingArea *ta = [[NSTrackingArea alloc]
-            initWithRect:NSZeroRect
-                 options:(NSTrackingMouseEnteredAndExited |
-                          NSTrackingActiveInActiveApp     |
-                          NSTrackingInVisibleRect)
-                   owner:self userInfo:nil];
-        [self addTrackingArea:ta];
-    }
-    return self;
-}
-
-- (void)mouseEntered:(NSEvent *)event { _hovering = YES; [self setNeedsDisplay:YES]; }
-- (void)mouseExited:(NSEvent *)event  { _hovering = NO;  [self setNeedsDisplay:YES]; }
-
-- (void)drawRect:(NSRect)dirtyRect {
-    BOOL pressed = self.isHighlighted;
-    BOOL active  = pressed || _hovering;
-    BOOL isDark  = [NppThemeManager shared].isDark;
-
-    if (active && !isDark) {
-        NSColor *bg = pressed
-            ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
-            : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
-        [bg setFill];
-        NSRectFill(self.bounds);
-    }
-
-    NSColor *bdr = active
-        ? [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0]
-        : [NSColor colorWithWhite:0.75 alpha:1.0];
-    NSBezierPath *border = [NSBezierPath bezierPathWithRect:NSInsetRect(self.bounds, 0.5, 0.5)];
-    border.lineWidth = 1.0;
-    [bdr setStroke];
-    [border stroke];
-
-    NSString *glyph = @"✕";
-    NSDictionary *attrs = @{
-        NSFontAttributeName: self.font ?: [NSFont systemFontOfSize:11],
-        NSForegroundColorAttributeName: [NSColor labelColor],
-    };
-    NSSize sz = [glyph sizeWithAttributes:attrs];
-    NSPoint origin = NSMakePoint(NSMidX(self.bounds) - sz.width / 2.0,
-                                 NSMidY(self.bounds) - sz.height / 2.0);
-    [glyph drawAtPoint:origin withAttributes:attrs];
-}
-
-@end
-
-// ── Title-bar icon button helper ──────────────────────────────────────────────
+// ── Toolbar icon button helper (header row, not title bar) ───────────────────
 
 static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *tip,
                                id target, SEL action)
@@ -191,15 +134,11 @@ static NSButton *_gitPanelBtn(NSString *iconName, NSString *subdir, NSString *ti
     NSString             *_repoRoot;
     NSArray<_GitStatusItem *> *_items;
 
-    // Title bar
-    NSView               *_titleBar;
-    NSTextField          *_titleLabel;
+    // Header (branch info + toolbar buttons). PanelFrame supplies the
+    // title bar + close button above this row.
+    NSTextField          *_branchLabel;
     NSButton             *_browseRepoButton;
     NSButton             *_refreshButton;
-    NSButton             *_closeButton;
-
-    // Header (branch info)
-    NSTextField          *_branchLabel;
 
     // Table
     NSScrollView         *_scrollView;
@@ -235,7 +174,11 @@ static NSString * const kLastRepoRootKey = @"GitPanelLastRepoRoot";
         [[NSNotificationCenter defaultCenter]
             addObserver:self selector:@selector(_themeChanged:)
                    name:@"NPPPreferencesChanged" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_darkModeChanged:) name:NPPDarkModeChangedNotification object:nil];
+        // PanelFrame owns the title bar's dark-mode repaint. We still
+        // need dark-mode changes for our own icon refresh (panel body).
+        [[NSNotificationCenter defaultCenter]
+            addObserver:self selector:@selector(_refreshToolbarIcons)
+                   name:NPPDarkModeChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter]
             addObserver:self selector:@selector(_locChanged:)
                    name:NPPLocalizationChanged object:nil];
@@ -262,12 +205,12 @@ static NSString * const kLastRepoRootKey = @"GitPanelLastRepoRoot";
 }
 
 - (void)_locChanged:(NSNotification *)n { [self retranslateUI]; }
+// PanelFrame owns the title; this retranslates only the panel's
+// internal controls.
 - (void)retranslateUI {
     NppLocalizer *loc = [NppLocalizer shared];
-    _titleLabel.stringValue       = [loc translate:@"Source Control"];
     _refreshButton.toolTip        = [loc translate:@"Refresh"];
     _browseRepoButton.toolTip     = [loc translate:@"Browse for repository…"];
-    _closeButton.toolTip           = [loc translate:@"Close panel"];
     _stageAllButton.title          = [loc translate:@"Stage All"];
     _unstageAllButton.title        = [loc translate:@"Unstage All"];
     _commitButton.title            = [loc translate:@"Commit"];
@@ -292,7 +235,6 @@ static NSString * const kLastRepoRootKey = @"GitPanelLastRepoRoot";
     _tableView.backgroundColor  = bg;
     _branchLabel.textColor      = fg;
     _noRepoLabel.textColor      = [NSColor secondaryLabelColor];
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
     [self _refreshToolbarIcons];
     [_tableView reloadData];
 }
@@ -314,59 +256,19 @@ static NSString * const kLastRepoRootKey = @"GitPanelLastRepoRoot";
 
 - (void)_buildUI {
     NppLocalizer *loc = [NppLocalizer shared];
-    NSFont *titleFont = [NSFont systemFontOfSize:11];
     NSFont *smallFont = [NSFont systemFontOfSize:11];
     NSFont *monoFont  = [NSFont monospacedSystemFontOfSize:11 weight:NSFontWeightRegular];
 
-    // ── Title bar ─────────────────────────────────────────────────────────────
-    _titleBar = [[NSView alloc] init];
-    _titleBar.translatesAutoresizingMaskIntoConstraints = NO;
-    _titleBar.wantsLayer = YES;
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
-
-    _titleLabel = [NSTextField labelWithString:[loc translate:@"Source Control"]];
-    _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    _titleLabel.font = titleFont;
-    _titleLabel.textColor = [NSColor labelColor];
-    _titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    [_titleBar addSubview:_titleLabel];
-
+    // Phase 2: title bar + close button supplied by PanelFrame. The
+    // refresh / browse-for-repo buttons move from the old title bar into
+    // the branch-header row (which is the first thing inside the panel's
+    // content area), right-aligned.
     _refreshButton    = _gitPanelBtn(@"funclstReload",       @"icons/standard/panels/toolbar",
                                       [loc translate:@"Refresh"],                self, @selector(_refresh:));
     _browseRepoButton = _gitPanelBtn(@"project_folder_open", @"icons/light/panels/treeview",
                                       [loc translate:@"Browse for repository…"], self, @selector(_browseForRepo:));
 
-    _closeButton = [[_GPCloseButton alloc] initWithFrame:NSZeroRect];
-    _closeButton.translatesAutoresizingMaskIntoConstraints = NO;
-    _closeButton.font       = [NSFont systemFontOfSize:11];
-    _closeButton.toolTip    = [loc translate:@"Close panel"];
-    _closeButton.target     = self;
-    _closeButton.action     = @selector(_closePanel:);
-    [_closeButton.widthAnchor  constraintEqualToConstant:16].active = YES;
-    [_closeButton.heightAnchor constraintEqualToConstant:16].active = YES;
-
-    for (NSView *v in @[_titleLabel, _browseRepoButton, _refreshButton, _closeButton])
-        [_titleBar addSubview:v];
-
-    [NSLayoutConstraint activateConstraints:@[
-        [_titleBar.heightAnchor constraintEqualToConstant:24],
-        [_titleLabel.leadingAnchor    constraintEqualToAnchor:_titleBar.leadingAnchor constant:6],
-        [_titleLabel.centerYAnchor    constraintEqualToAnchor:_titleBar.centerYAnchor],
-        [_titleLabel.trailingAnchor   constraintLessThanOrEqualToAnchor:_browseRepoButton.leadingAnchor constant:-4],
-        [_browseRepoButton.trailingAnchor constraintEqualToAnchor:_refreshButton.leadingAnchor  constant:-2],
-        [_refreshButton.trailingAnchor    constraintEqualToAnchor:_closeButton.leadingAnchor    constant:-4],
-        [_closeButton.trailingAnchor      constraintEqualToAnchor:_titleBar.trailingAnchor       constant:-4],
-        [_browseRepoButton.centerYAnchor  constraintEqualToAnchor:_titleBar.centerYAnchor],
-        [_refreshButton.centerYAnchor     constraintEqualToAnchor:_titleBar.centerYAnchor],
-        [_closeButton.centerYAnchor       constraintEqualToAnchor:_titleBar.centerYAnchor],
-    ]];
-
-    // ── Separator under title ──────────────────────────────────────────────────
-    NSBox *sep0 = [[NSBox alloc] init];
-    sep0.boxType = NSBoxSeparator;
-    sep0.translatesAutoresizingMaskIntoConstraints = NO;
-
-    // ── Branch header ─────────────────────────────────────────────────────────
+    // ── Branch header (with right-aligned toolbar buttons) ────────────────────
     NSView *header = [[NSView alloc] init];
     header.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -376,11 +278,18 @@ static NSString * const kLastRepoRootKey = @"GitPanelLastRepoRoot";
     _branchLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 
     [header addSubview:_branchLabel];
+    [header addSubview:_browseRepoButton];
+    [header addSubview:_refreshButton];
     [NSLayoutConstraint activateConstraints:@[
         [header.heightAnchor constraintEqualToConstant:28],
         [_branchLabel.leadingAnchor  constraintEqualToAnchor:header.leadingAnchor constant:6],
         [_branchLabel.centerYAnchor  constraintEqualToAnchor:header.centerYAnchor],
-        [_branchLabel.trailingAnchor constraintEqualToAnchor:header.trailingAnchor constant:-6],
+        [_branchLabel.trailingAnchor constraintLessThanOrEqualToAnchor:_browseRepoButton.leadingAnchor constant:-4],
+
+        [_refreshButton.trailingAnchor   constraintEqualToAnchor:header.trailingAnchor   constant:-4],
+        [_browseRepoButton.trailingAnchor constraintEqualToAnchor:_refreshButton.leadingAnchor constant:-2],
+        [_refreshButton.centerYAnchor    constraintEqualToAnchor:header.centerYAnchor],
+        [_browseRepoButton.centerYAnchor constraintEqualToAnchor:header.centerYAnchor],
     ]];
 
     // ── Separator ─────────────────────────────────────────────────────────────
@@ -487,22 +396,14 @@ static NSString * const kLastRepoRootKey = @"GitPanelLastRepoRoot";
     _noRepoLabel.maximumNumberOfLines = 2;
 
     // ── Assemble layout ───────────────────────────────────────────────────────
-    for (NSView *v in @[_titleBar, sep0, header, sep1, _scrollView, buttonRow, sep2,
+    for (NSView *v in @[header, sep1, _scrollView, buttonRow, sep2,
                         _commitField, _commitButton, _noRepoLabel])
         [self addSubview:v];
 
     [NSLayoutConstraint activateConstraints:@[
-        // Title bar
-        [_titleBar.topAnchor      constraintEqualToAnchor:self.topAnchor],
-        [_titleBar.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
-        [_titleBar.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        // Sep0
-        [sep0.topAnchor      constraintEqualToAnchor:_titleBar.bottomAnchor],
-        [sep0.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
-        [sep0.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [sep0.heightAnchor   constraintEqualToConstant:1],
-        // Branch header
-        [header.topAnchor      constraintEqualToAnchor:sep0.bottomAnchor],
+        // Branch header (formerly under the panel's own title bar; now
+        // directly under PanelFrame's title bar)
+        [header.topAnchor      constraintEqualToAnchor:self.topAnchor],
         [header.leadingAnchor  constraintEqualToAnchor:self.leadingAnchor],
         [header.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
         // Sep1
@@ -641,12 +542,6 @@ static NSString * const kLastRepoRootKey = @"GitPanelLastRepoRoot";
     if (_delegate) [_delegate gitPanel:self diffFileAtPath:fullPath];
 }
 
-// ── Close button ──────────────────────────────────────────────────────────────
-
-- (void)_closePanel:(id)sender {
-    [_delegate gitPanelDidRequestClose:self];
-}
-
 // ── Context menu / button actions ─────────────────────────────────────────────
 
 - (nullable _GitStatusItem *)_itemAtClickedRow {
@@ -752,11 +647,6 @@ static NSString * const kLastRepoRootKey = @"GitPanelLastRepoRoot";
     }
 }
 
-
-- (void)_darkModeChanged:(NSNotification *)n {
-    _titleBar.layer.backgroundColor = [NppThemeManager shared].tabBarBackground.CGColor;
-    [self _refreshToolbarIcons];
-}
 
 #pragma mark - Panel Zoom
 
