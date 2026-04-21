@@ -3524,6 +3524,29 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     [self _refreshToolbarStates];
 }
 
+// ── Plugin-panel docking (public API) ─────────────────────────────────────
+//
+// These three methods are the public surface for the NPPM_DMM_* plugin
+// messages. They forward to `_setPanelVisible:title:show:` so plugin panels
+// share exactly the same split-view divider handling, toolbar refresh, and
+// SidePanelHost bookkeeping as built-in panels. NppPluginManager owns the
+// strong retain on plugin views; this class only manages hierarchy.
+
+- (void)showPluginPanel:(NSView *)panel withTitle:(NSString *)title {
+    if (!panel) return;
+    [self _setPanelVisible:panel title:(title ?: @"") show:YES];
+}
+
+- (void)hidePluginPanel:(NSView *)panel {
+    if (!panel) return;
+    [self _setPanelVisible:panel title:@"" show:NO];
+}
+
+- (BOOL)isPluginPanelShown:(NSView *)panel {
+    if (!panel || !_sidePanelHost) return NO;
+    return [_sidePanelHost hasPanel:panel];
+}
+
 - (void)showDocumentList:(id)sender {
     if (!_docListPanel) {
         _docListPanel = [[DocumentListPanel alloc] initWithTabManager:_tabManager];

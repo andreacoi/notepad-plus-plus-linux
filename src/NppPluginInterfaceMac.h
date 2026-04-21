@@ -255,6 +255,76 @@ typedef intptr_t           (*PMESSAGEPROC)(uint32_t, uintptr_t, intptr_t);
 #define NPPPLUGIN_WANTS_PAINTED          (1U << 1)
 #define NPPPLUGIN_DEFAULT_SUBSCRIPTIONS  (NPPPLUGIN_WANTS_UPDATEUI | NPPPLUGIN_WANTS_PAINTED)
 
+/* Plugin panel docking API (macOS-only, since v1.0.3).
+ *
+ * Allows a plugin to register an NSView as a docked side panel sharing the
+ * same SidePanelHost as the host's built-in panels (Document List, Function
+ * List, Document Map, etc.). The host strong-retains the NSView for the
+ * lifetime of its registration so the plugin doesn't have to worry about
+ * keeping a strong reference itself.
+ *
+ * Lifecycle:
+ *   1. At NPPN_READY (or any time after), call NPPM_DMM_REGISTERPANEL once
+ *      with your content view. Store the returned handle.
+ *   2. Call NPPM_DMM_SHOWPANEL / NPPM_DMM_HIDEPANEL to toggle visibility.
+ *      These are idempotent — calling SHOW on an already-shown panel, or
+ *      HIDE on an already-hidden panel, is a successful no-op.
+ *   3. On plugin shutdown, call NPPM_DMM_UNREGISTERPANEL so the host can
+ *      release its strong retain on your view. Omitting this is not
+ *      usually fatal (the host cleans up at shutdown) but it's good form.
+ *
+ * Thread safety:
+ *   All four messages are safe to call from any thread. The host marshals
+ *   to the main queue when necessary. Messages that return a value block
+ *   until the main-thread work completes.
+ *
+ * Graceful degradation:
+ *   On older hosts (pre-1.0.3) the messages fall through to the default
+ *   handler and return 0. A plugin can detect that and fall back to a
+ *   floating NSPanel without breaking under older builds. */
+
+/* Register an NSView as a docked side panel. Host strong-retains the view.
+ *
+ *   wParam — NSView * (cast through (uintptr_t)). Must be non-nil.
+ *   lParam — const char * UTF-8 title (copied by the host). May be NULL.
+ *
+ * Returns a nonzero handle on success, 0 on failure (nil view, no main
+ * window yet, host doesn't support the message, etc.).
+ *
+ * The panel is HIDDEN on registration — you must call NPPM_DMM_SHOWPANEL
+ * to make it visible. A subsequent REGISTERPANEL call with the same NSView
+ * returns the existing handle rather than allocating a new one. */
+#define NPPM_DMM_REGISTERPANEL           (NPPMSG + 501)
+
+/* Show a previously-registered panel.
+ *
+ *   wParam — handle returned from NPPM_DMM_REGISTERPANEL.
+ *   lParam — unused.
+ *
+ * Returns 1 on success (including when the panel was already shown), 0 if
+ * the handle is invalid. */
+#define NPPM_DMM_SHOWPANEL               (NPPMSG + 502)
+
+/* Hide a panel without unregistering it. Call NPPM_DMM_SHOWPANEL to make
+ * it reappear later. The host keeps its strong retain on the view.
+ *
+ *   wParam — handle returned from NPPM_DMM_REGISTERPANEL.
+ *   lParam — unused.
+ *
+ * Returns 1 on success (including when the panel was already hidden), 0 if
+ * the handle is invalid. */
+#define NPPM_DMM_HIDEPANEL               (NPPMSG + 503)
+
+/* Unregister a panel entirely, releasing the host's strong retain on it.
+ * Also hides the panel first if currently visible. After this call the
+ * handle is invalid and further calls with it return 0.
+ *
+ *   wParam — handle returned from NPPM_DMM_REGISTERPANEL.
+ *   lParam — unused.
+ *
+ * Returns 1 on success, 0 if the handle is invalid. */
+#define NPPM_DMM_UNREGISTERPANEL         (NPPMSG + 504)
+
 /* ── RUNCOMMAND_USER submessages ────────────────────────────────────────── */
 #define RUNCOMMAND_USER                  (WM_USER + 3000)
 #define NPPM_GETFULLCURRENTPATH          (RUNCOMMAND_USER + 1)

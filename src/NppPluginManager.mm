@@ -93,6 +93,32 @@ static const uintptr_t kHandleScintillaSub   = 0x5343490B;  // "SCI\v"
 // Private interface
 // ═══════════════════════════════════════════════════════════════════════════
 
+// ═══════════════════════════════════════════════════════════════════════════
+// Plugin-panel registration record
+//
+// Wraps an NSView that a plugin has registered as a side panel via
+// NPPM_DMM_REGISTERPANEL. Host strong-retains the view via this record so
+// plugins that pass `self.contentView` and then release their own reference
+// don't leave the host with a dangling pointer (the critical R3 mitigation
+// from the Phase 1 design analysis).
+// ═══════════════════════════════════════════════════════════════════════════
+
+@interface _NppPluginPanelRecord : NSObject
+@property(nonatomic, strong)   NSView   *view;    // strong retain — keeps plugin view alive
+@property(nonatomic, copy)     NSString *title;   // copied from lParam at registration
+@property(nonatomic, assign)   BOOL      visible; // currently in SidePanelHost stack?
+@property(nonatomic, readonly) uint64_t  handle;
+- (instancetype)initWithHandle:(uint64_t)h view:(NSView *)v title:(NSString *)t;
+@end
+
+@implementation _NppPluginPanelRecord
+- (instancetype)initWithHandle:(uint64_t)h view:(NSView *)v title:(NSString *)t {
+    self = [super init];
+    if (self) { _handle = h; _view = v; _title = [t copy]; _visible = NO; }
+    return self;
+}
+@end
+
 @interface NppPluginManager () {
     __weak MainWindowController *_mwc;
 
@@ -105,6 +131,14 @@ static const uintptr_t kHandleScintillaSub   = 0x5343490B;  // "SCI\v"
     BOOL _shutdownFired;
     BOOL _forwardingNotification;  // reentrancy guard for SCN_* forwarding
     int  _nextPluginCmdBase;  // base cmdID for next plugin's FuncItems
+
+    // Plugin-panel registry. Handle → record. Declared AFTER _plugins so
+    // ARC releases it FIRST during dealloc: that way the plugin NSViews
+    // (whose classes live in dlopen'd dylibs) are deallocated while the
+    // dylibs are still mapped, avoiding a message-to-freed-code crash
+    // when the panel views' -dealloc runs.
+    NSMutableDictionary<NSNumber *, _NppPluginPanelRecord *> *_panelRegistry;
+    uint64_t _nextPanelHandle;
 }
 @end
 
@@ -132,6 +166,9 @@ static const uintptr_t kHandleScintillaSub   = 0x5343490B;  // "SCI\v"
         _indicatorAlloc = IDAllocator(9, 20);
         _nextPluginCmdBase = 22000;  // ID_PLUGINS_CMD
         _shutdownFired = NO;
+
+        _panelRegistry   = [NSMutableDictionary dictionary];
+        _nextPanelHandle = 1;   // 0 is reserved for "invalid handle"
     }
     return self;
 }
@@ -469,6 +506,113 @@ static NSString *pluginBaseDir(void) {
             }
         }
     }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Plugin panel docking — implementation
+//
+// The four NPPM_DMM_* messages go through these helpers. All four marshal
+// to the main thread before touching AppKit — plugins that call from a
+// background queue (rare but possible) don't crash. All registry lookups
+// take O(n) over a dictionary so they're effectively O(1) for practical
+// plugin counts.
+//
+// Design notes:
+//  - Registration is idempotent by NSView identity. Calling REGISTER with
+//    the same view twice returns the same handle.
+//  - SHOW/HIDE are idempotent — no-op on already-shown/hidden panels.
+//  - UNREGISTER hides first (safe on a hidden panel), then drops the
+//    strong retain so the view can deallocate if the plugin released its
+//    own reference.
+//  - Per-window: we dock to `_mwc` only (the primary window). A secondary
+//    window created via Window > New Window won't show plugin panels in
+//    v1.0.3. This is documented and deferred.
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Run `block` synchronously on the main queue if we're not already there.
+// Returns the block's result. Avoids the deadlock that `dispatch_sync` to
+// main from main would otherwise cause.
+static intptr_t _npp_run_on_main(intptr_t (^block)(void)) {
+    if ([NSThread isMainThread]) return block();
+    __block intptr_t result = 0;
+    dispatch_sync(dispatch_get_main_queue(), ^{ result = block(); });
+    return result;
+}
+
+- (uint64_t)registerPluginPanel:(NSView *)view title:(const char *)titleC {
+    if (!view) return 0;
+    NSString *title = titleC ? [NSString stringWithUTF8String:titleC] : @"";
+    if (!title) title = @"";   // defensive: invalid UTF-8 → empty
+
+    return (uint64_t)_npp_run_on_main(^intptr_t{
+        // Idempotency: same view → same handle.
+        for (NSNumber *key in self->_panelRegistry) {
+            _NppPluginPanelRecord *r = self->_panelRegistry[key];
+            if (r.view == view) return (intptr_t)r.handle;
+        }
+
+        uint64_t handle = self->_nextPanelHandle++;
+        _NppPluginPanelRecord *rec =
+            [[_NppPluginPanelRecord alloc] initWithHandle:handle
+                                                     view:view
+                                                    title:title];
+        self->_panelRegistry[@(handle)] = rec;
+        return (intptr_t)handle;
+    });
+}
+
+- (intptr_t)showPluginPanelWithHandle:(uint64_t)handle {
+    if (handle == 0) return 0;
+    return _npp_run_on_main(^intptr_t{
+        _NppPluginPanelRecord *rec = self->_panelRegistry[@(handle)];
+        if (!rec) return 0;
+
+        MainWindowController *mwc = self->_mwc;
+        if (!mwc) return 0;          // host not ready yet
+
+        // SidePanelHost.showPanel:withTitle: is idempotent by design — if
+        // the view is already in the stack, it no-ops. So we don't rely
+        // on our own cached `visible` flag (which can drift if the main
+        // window is torn down while we're still tracking the record).
+        [mwc showPluginPanel:rec.view withTitle:rec.title];
+        rec.visible = YES;
+        return 1;
+    });
+}
+
+- (intptr_t)hidePluginPanelWithHandle:(uint64_t)handle {
+    if (handle == 0) return 0;
+    return _npp_run_on_main(^intptr_t{
+        _NppPluginPanelRecord *rec = self->_panelRegistry[@(handle)];
+        if (!rec) return 0;
+
+        // hidePanel: on SidePanelHost no-ops on a non-member view, so
+        // calling it when we're already hidden (or never shown) is safe.
+        MainWindowController *mwc = self->_mwc;
+        if (mwc) [mwc hidePluginPanel:rec.view];
+        rec.visible = NO;
+        return 1;
+    });
+}
+
+- (intptr_t)unregisterPluginPanelWithHandle:(uint64_t)handle {
+    if (handle == 0) return 0;
+    return _npp_run_on_main(^intptr_t{
+        _NppPluginPanelRecord *rec = self->_panelRegistry[@(handle)];
+        if (!rec) return 0;
+
+        if (rec.visible) {
+            MainWindowController *mwc = self->_mwc;
+            if (mwc) [mwc hidePluginPanel:rec.view];
+            rec.visible = NO;
+        }
+        // Dropping the record releases the host's strong retain on rec.view.
+        // If the plugin still holds its own reference the view lives on;
+        // otherwise ARC deallocates it now (safe — we're on the main thread
+        // and the view is out of any view hierarchy).
+        [self->_panelRegistry removeObjectForKey:@(handle)];
+        return 1;
+    });
 }
 
 // ── NPPM_* message dispatch ─────────────────────────────────────────────
@@ -1182,6 +1326,17 @@ static NSString *pluginBaseDir(void) {
                   moduleName);
             return 0;
         }
+
+        // ── macOS-specific: plugin panel docking ──────────────────────
+        case NPPM_DMM_REGISTERPANEL:
+            return (intptr_t)[self registerPluginPanel:(__bridge NSView *)(void *)wParam
+                                                 title:(const char *)lParam];
+        case NPPM_DMM_SHOWPANEL:
+            return [self showPluginPanelWithHandle:(uint64_t)wParam];
+        case NPPM_DMM_HIDEPANEL:
+            return [self hidePluginPanelWithHandle:(uint64_t)wParam];
+        case NPPM_DMM_UNREGISTERPANEL:
+            return [self unregisterPluginPanelWithHandle:(uint64_t)wParam];
 
         default:
             // Log unimplemented messages (but not too verbosely)
