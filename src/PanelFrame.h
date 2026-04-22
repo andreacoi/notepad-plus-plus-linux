@@ -10,6 +10,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// toggle. PanelFrame itself never mutates the view hierarchy.
 @protocol PanelFrameDelegate <NSObject>
 - (void)panelFrameRequestedClose:(PanelFrame *)frame;
+/// User clicked the pop-out / dock-back button. The implementer is
+/// responsible for the actual state transition (usually via
+/// -[SidePanelHost popOutPanel:] / -[SidePanelHost dockBackPanel:]).
+/// PanelFrame does NOT mutate its own view hierarchy here — it just
+/// reports the click. The implementer calls -setPopped: when the
+/// transition has completed so the button can swap its glyph.
+- (void)panelFrameRequestedTogglePop:(PanelFrame *)frame;
 @end
 
 /// Uniform chrome wrapper for all side panels — built-in and plugin-registered.
@@ -42,6 +49,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Receives -panelFrameRequestedClose: when the close X is clicked.
 @property (nonatomic, weak, nullable) id<PanelFrameDelegate> delegate;
 
+/// Visual state of the pop-out button. Owner (SidePanelHost) flips this
+/// once it has completed the actual dock/pop transition — PanelFrame only
+/// uses it to pick the right SF Symbol for the toggle button.
+@property (nonatomic, getter=isPopped) BOOL popped;
+
 /// Designated initializer. `content` must not be nil; `title` may be any
 /// pre-localized string the caller wants displayed.
 - (instancetype)initWithContentView:(NSView *)content
@@ -49,6 +61,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithFrame:(NSRect)frameRect NS_UNAVAILABLE;
 - (instancetype)initWithCoder:(NSCoder *)coder  NS_UNAVAILABLE;
+
+/// Programmatic close — used by FloatingPanelWindow to route a red-X
+/// close through the same delegate chain as the in-title X click.
+- (void)simulateCloseClick;
 
 @end
 

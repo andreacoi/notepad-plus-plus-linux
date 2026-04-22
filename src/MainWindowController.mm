@@ -1436,11 +1436,6 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     return self;
 }
 
-- (void)_restorePanelStates {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"FolderTreePanelVisible"])
-        [self showFolderTreePanel:nil];
-}
-
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -1544,6 +1539,21 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     item.toolTip = pti[@"tooltip"];
     item.minSize = NSMakeSize(kBtnSize, kBtnSize);
     item.maxSize = NSMakeSize(kBtnSize, kBtnSize);
+
+    // Overflow-menu mirror. When the window is too narrow to fit every
+    // toolbar item AppKit pushes extras into a ">>" chevron popup and
+    // auto-generates a menu item for each. Without menuFormRepresentation
+    // the auto-generated item has NO target/action — clicks do nothing.
+    // Wiring an explicit NSMenuItem with the same target+action+tag as
+    // the button restores the click behavior so pluginToolbarAction:
+    // fires correctly (it reads [sender tag] which NSMenuItem supports).
+    NSString *menuTitle = pti[@"tooltip"] ?: (pti[@"id"] ?: @"");
+    NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:menuTitle
+                                                 action:@selector(pluginToolbarAction:)
+                                          keyEquivalent:@""];
+    mi.target = self;
+    mi.tag    = [pti[@"cmdID"] intValue];
+    item.menuFormRepresentation = mi;
 
     return item;
 }
@@ -2345,8 +2355,6 @@ static BOOL groupHasTrailingSep(NSString *ident) {
         [self->_editorSplitView setPosition:MAX(NSWidth(self->_editorSplitView.frame), 9999) ofDividerAtIndex:0];
         // Collapse search results panel initially
         [self->_searchSplitView setPosition:NSHeight(self->_searchSplitView.frame) ofDividerAtIndex:0];
-        // Restore after collapsing so the restore wins
-        [self _restorePanelStates];
         [self _refreshToolbarStates];
     });
 
@@ -3606,6 +3614,21 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     didRequestCloseForContentView:(NSView *)contentView {
     if (!contentView) return;
     [self _setPanelVisible:contentView title:@"" show:NO];
+}
+
+// Fired after a pop-out / dock-back finishes. The side-pane divider must
+// track the number of DOCKED panels: collapse when the stack empties
+// (everything is popped), re-expand when a dock-back brings a panel into
+// an otherwise-empty pane.
+- (void)sidePanelHostDidChangePanelLayout:(SidePanelHost *)host {
+    if (!host.hasVisiblePanels) {
+        [_editorSplitView setPosition:NSWidth(_editorSplitView.frame)
+                     ofDividerAtIndex:0];
+    } else if ([_editorSplitView isSubviewCollapsed:_sidePanelHost]) {
+        CGFloat w = NSWidth(_editorSplitView.frame);
+        [_editorSplitView setPosition:MAX(200, w - 280) ofDividerAtIndex:0];
+    }
+    [self _refreshToolbarStates];
 }
 
 - (void)showDocumentList:(id)sender {

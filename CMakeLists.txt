@@ -87,6 +87,7 @@ set(APP_SRCS
     # src/FindInFilesPanel.mm — removed, search goes through FindWindow
     src/SidePanelHost.mm
     src/PanelFrame.mm
+    src/FloatingPanelWindow.mm
     src/DocumentListPanel.mm
     src/ClipboardHistoryPanel.mm
     src/FunctionListPanel.mm
@@ -124,6 +125,7 @@ set(APP_HEADERS
     # src/FindInFilesPanel.h — removed
     src/SidePanelHost.h
     src/PanelFrame.h
+    src/FloatingPanelWindow.h
     src/DocumentListPanel.h
     src/ClipboardHistoryPanel.h
     src/FunctionListPanel.h
@@ -269,8 +271,8 @@ set_target_properties(NotepadPlusPlusMac PROPERTIES
     MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/resources/Info.plist"
     MACOSX_BUNDLE_BUNDLE_NAME "Notepad++"
     MACOSX_BUNDLE_GUI_IDENTIFIER "org.notepadplusplus.mac"
-    MACOSX_BUNDLE_BUNDLE_VERSION "1.0.3"
-    MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0.3"
+    MACOSX_BUNDLE_BUNDLE_VERSION "1.0.4"
+    MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0.4"
 )
 
 target_include_directories(NotepadPlusPlusMac PRIVATE
