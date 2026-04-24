@@ -23,6 +23,16 @@
 @property (nonatomic, copy) NSString *macVersion;         // macOS version
 @property (nonatomic, copy) NSString *macRepository;      // macOS download URL
 @property (nonatomic, copy) NSString *macPluginID;        // macOS SHA-256 of zip
+
+// Updates-tab fields (optional — nil/empty when the catalog entry
+// doesn't carry them yet). See pl.macos-arm64.json for semantics.
+@property (nonatomic, copy) NSString *macDylibID;         // sha256 of the .dylib itself
+@property (nonatomic, copy) NSString *macDylibBuilt;      // YYYY-MM-DD (release date)
+@property (nonatomic, copy) NSString *macNppMinVersion;   // minimum host version
+
+// Runtime-only state populated by the Updates-tab scanner.
+@property (nonatomic, copy) NSString *installedDylibSHA;  // sha256(~/.notepad++/plugins/<folder>/<folder>.dylib)
+@property (nonatomic, copy) NSString *installedDylibDate; // YYYY-MM-DD of that file's mtime
 @end
 
 @implementation NppPluginEntry
@@ -353,90 +363,141 @@ static NSString *const kPluginListVersion = @"0.1.0";
 }
 
 - (void)mergePluginListsWin:(NSData *)winData mac:(NSData *)macData {
+    // macOS plugin list is the source of truth for what the "Available" tab
+    // offers — our macOS binaries are independently built, signed, and hosted
+    // under the notepad-plus-plus-mac org, so a plugin must be present in
+    // pl.macos-arm64.json to be installable. The Windows list is consulted
+    // twice:
+    //   1. as a metadata fallback for mac entries that also exist upstream
+    //      (supplies Win version for the info pane, and any missing
+    //      description/author/homepage);
+    //   2. as the sole source for the "Incompatible" tab, which lists
+    //      Windows-only plugins that haven't been ported yet.
+    //
+    // A mac entry is linked to its Windows counterpart via a three-tier
+    // match on folder-name → display-name → homepage. The homepage tier
+    // catches renamed ports (e.g. the macOS "NppLLM" fork of Windows
+    // "NppOpenAI" — both share github.com/Krazal/nppopenai).
     [_allAvailable removeAllObjects];
 
-    // ── Parse macOS list into a lookup by folder-name ──
-    NSMutableDictionary<NSString *, NSDictionary *> *macByFolder = [NSMutableDictionary dictionary];
-    NSMutableDictionary<NSString *, NSDictionary *> *macByName   = [NSMutableDictionary dictionary];
+    // ── Parse Windows list into lookup dicts ───────────────────────────
+    NSMutableDictionary<NSString *, NSDictionary *> *winByFolder   = [NSMutableDictionary dictionary];
+    NSMutableDictionary<NSString *, NSDictionary *> *winByName     = [NSMutableDictionary dictionary];
+    NSMutableDictionary<NSString *, NSDictionary *> *winByHomepage = [NSMutableDictionary dictionary];
+    NSArray *winPlugins = nil;
+    if (winData) {
+        NSError *err = nil;
+        NSDictionary *winRoot = [NSJSONSerialization JSONObjectWithData:winData options:0 error:&err];
+        if (!err && [winRoot isKindOfClass:[NSDictionary class]]) {
+            id wp = winRoot[@"npp-plugins"];
+            if ([wp isKindOfClass:[NSArray class]]) {
+                winPlugins = (NSArray *)wp;
+                for (NSDictionary *e in winPlugins) {
+                    if (![e isKindOfClass:[NSDictionary class]]) continue;
+                    NSString *folder = e[@"folder-name"] ?: @"";
+                    NSString *name   = e[@"display-name"] ?: @"";
+                    NSString *home   = e[@"homepage"] ?: @"";
+                    if (folder.length > 0) winByFolder[folder] = e;
+                    if (name.length > 0)   winByName[name] = e;
+                    if (home.length > 0)   winByHomepage[home.lowercaseString] = e;
+                }
+            }
+        }
+        if (!winPlugins)
+            NSLog(@"[PluginsAdmin] Windows plugin list unparseable — Incompatible tab will be empty");
+    } else {
+        NSLog(@"[PluginsAdmin] Windows plugin list not fetched — Incompatible tab will be empty");
+    }
+
+    // ── Parse macOS list ───────────────────────────────────────────────
+    NSArray *macPlugins = nil;
     if (macData) {
         NSError *err = nil;
         NSDictionary *macRoot = [NSJSONSerialization JSONObjectWithData:macData options:0 error:&err];
         if (!err && [macRoot isKindOfClass:[NSDictionary class]]) {
-            NSArray *macPlugins = macRoot[@"npp-plugins"];
-            if ([macPlugins isKindOfClass:[NSArray class]]) {
-                for (NSDictionary *mp in macPlugins) {
-                    if (![mp isKindOfClass:[NSDictionary class]]) continue;
-                    NSString *folder = mp[@"folder-name"] ?: @"";
-                    NSString *name   = mp[@"display-name"] ?: @"";
-                    if (folder.length > 0) macByFolder[folder] = mp;
-                    if (name.length > 0)   macByName[name] = mp;
-                }
-                NSLog(@"[PluginsAdmin] Loaded %lu macOS plugins", (unsigned long)macByFolder.count);
-            }
+            id mp = macRoot[@"npp-plugins"];
+            if ([mp isKindOfClass:[NSArray class]]) macPlugins = (NSArray *)mp;
         }
     }
-
-    // ── Parse Windows list and join with macOS data ──
-    if (!winData) {
-        NSLog(@"[PluginsAdmin] No Windows plugin list data — catalog empty");
-        return;
+    if (!macPlugins) {
+        NSLog(@"[PluginsAdmin] macOS plugin list missing/invalid — Available tab will be empty");
+        macPlugins = @[];
     }
-
-    NSError *err = nil;
-    NSDictionary *winRoot = [NSJSONSerialization JSONObjectWithData:winData options:0 error:&err];
-    if (err || ![winRoot isKindOfClass:[NSDictionary class]]) {
-        NSLog(@"[PluginsAdmin] Windows JSON parse error: %@", err);
-        return;
-    }
-
-    NSArray *winPlugins = winRoot[@"npp-plugins"];
-    if (![winPlugins isKindOfClass:[NSArray class]]) return;
 
     NSSet *installedNames = [self installedFolderNames];
+    NSMutableSet<NSString *> *matchedWinFolders = [NSMutableSet set];
 
-    for (NSDictionary *entry in winPlugins) {
-        if (![entry isKindOfClass:[NSDictionary class]]) continue;
+    // ── Primary pass: iterate macOS entries ────────────────────────────
+    for (NSDictionary *macEntry in macPlugins) {
+        if (![macEntry isKindOfClass:[NSDictionary class]]) continue;
 
         NppPluginEntry *pe = [[NppPluginEntry alloc] init];
-        pe.folderName        = entry[@"folder-name"] ?: @"";
-        pe.displayName       = entry[@"display-name"] ?: pe.folderName;
-        pe.version           = entry[@"version"] ?: @"";
-        pe.pluginDescription = entry[@"description"] ?: @"";
-        pe.author            = entry[@"author"] ?: @"";
-        pe.homepage          = entry[@"homepage"] ?: @"";
-        pe.repository        = entry[@"repository"] ?: @"";
-        pe.pluginID          = entry[@"id"] ?: @"";
+        pe.folderName        = macEntry[@"folder-name"] ?: @"";
+        pe.displayName       = macEntry[@"display-name"] ?: pe.folderName;
+        pe.pluginDescription = macEntry[@"description"] ?: @"";
+        pe.author            = macEntry[@"author"] ?: @"";
+        pe.homepage          = macEntry[@"homepage"] ?: @"";
+        pe.macVersion        = macEntry[@"version"] ?: @"";
+        pe.macRepository     = macEntry[@"repository"] ?: @"";
+        pe.macPluginID       = macEntry[@"id"] ?: @"";
+        pe.macDylibID        = macEntry[@"dylib-id"] ?: @"";
+        pe.macDylibBuilt     = macEntry[@"dylib-built"] ?: @"";
+        pe.macNppMinVersion  = macEntry[@"npp-min-version"] ?: @"";
+        pe.isMacAvailable    = YES;
 
-        // Inner join: match by folder-name first, then by display-name
-        NSDictionary *macEntry = macByFolder[pe.folderName];
-        if (!macEntry) macEntry = macByName[pe.displayName];
+        // Three-tier lookup for the Windows counterpart (if any).
+        NSDictionary *winMatch = nil;
+        if (pe.folderName.length > 0)
+            winMatch = winByFolder[pe.folderName];
+        if (!winMatch && pe.displayName.length > 0)
+            winMatch = winByName[pe.displayName];
+        if (!winMatch && pe.homepage.length > 0)
+            winMatch = winByHomepage[pe.homepage.lowercaseString];
 
-        if (macEntry) {
-            pe.isMacAvailable    = YES;
-            pe.macVersion        = macEntry[@"version"] ?: pe.version;
-            pe.macRepository     = macEntry[@"repository"] ?: @"";
-            pe.macPluginID       = macEntry[@"id"] ?: @"";
-            // Override description/author/homepage with macOS values if present
-            NSString *macDesc = macEntry[@"description"];
-            if (macDesc.length > 0) pe.pluginDescription = macDesc;
-            NSString *macAuthor = macEntry[@"author"];
-            if (macAuthor.length > 0) pe.author = macAuthor;
-            NSString *macHome = macEntry[@"homepage"];
-            if (macHome.length > 0) pe.homepage = macHome;
-            // Use macOS folder name for install path if it differs
-            NSString *macFolder = macEntry[@"folder-name"];
-            if (macFolder.length > 0 && ![macFolder isEqualToString:pe.folderName]) {
-                pe.folderName = macFolder;
-            }
+        if (winMatch) {
+            NSString *winFolder = winMatch[@"folder-name"] ?: @"";
+            if (winFolder.length > 0) [matchedWinFolders addObject:winFolder];
+
+            pe.version    = winMatch[@"version"] ?: @"";
+            pe.repository = winMatch[@"repository"] ?: @"";
+            pe.pluginID   = winMatch[@"id"] ?: @"";
+
+            if (pe.pluginDescription.length == 0)
+                pe.pluginDescription = winMatch[@"description"] ?: @"";
+            if (pe.author.length == 0)
+                pe.author = winMatch[@"author"] ?: @"";
+            if (pe.homepage.length == 0)
+                pe.homepage = winMatch[@"homepage"] ?: @"";
         }
 
-        // Check installed state AFTER the macOS folder-name override
         pe.isInstalled = [installedNames containsObject:pe.folderName];
-
         [_allAvailable addObject:pe];
     }
 
-    // Sort: macOS-available first, then alphabetical
+    // ── Secondary pass: Windows-only orphans for the Incompatible tab ──
+    if (winPlugins) {
+        for (NSDictionary *winEntry in winPlugins) {
+            if (![winEntry isKindOfClass:[NSDictionary class]]) continue;
+            NSString *winFolder = winEntry[@"folder-name"] ?: @"";
+            if (winFolder.length == 0) continue;
+            if ([matchedWinFolders containsObject:winFolder]) continue;
+
+            NppPluginEntry *pe = [[NppPluginEntry alloc] init];
+            pe.folderName        = winFolder;
+            pe.displayName       = winEntry[@"display-name"] ?: winFolder;
+            pe.version           = winEntry[@"version"] ?: @"";
+            pe.pluginDescription = winEntry[@"description"] ?: @"";
+            pe.author            = winEntry[@"author"] ?: @"";
+            pe.homepage          = winEntry[@"homepage"] ?: @"";
+            pe.repository        = winEntry[@"repository"] ?: @"";
+            pe.pluginID          = winEntry[@"id"] ?: @"";
+            pe.isMacAvailable    = NO;
+            pe.isInstalled       = [installedNames containsObject:pe.folderName];
+            [_allAvailable addObject:pe];
+        }
+    }
+
+    // Sort: macOS-available first, then alphabetical within each group.
     [_allAvailable sortUsingComparator:^NSComparisonResult(NppPluginEntry *a, NppPluginEntry *b) {
         if (a.isMacAvailable != b.isMacAvailable)
             return a.isMacAvailable ? NSOrderedAscending : NSOrderedDescending;
@@ -447,8 +508,9 @@ static NSString *const kPluginListVersion = @"0.1.0";
     for (NppPluginEntry *pe in _allAvailable)
         if (pe.isMacAvailable) macCount++;
 
-    NSLog(@"[PluginsAdmin] Catalog: %lu total, %ld macOS-available",
-          (unsigned long)_allAvailable.count, (long)macCount);
+    NSLog(@"[PluginsAdmin] Catalog: %lu total (%ld macOS-available, %ld Windows-only)",
+          (unsigned long)_allAvailable.count, (long)macCount,
+          (long)((NSInteger)_allAvailable.count - macCount));
 }
 
 - (void)scanInstalledPlugins {
@@ -486,6 +548,144 @@ static NSString *const kPluginListVersion = @"0.1.0";
     return names;
 }
 
+// ── Updates-tab scan helpers ────────────────────────────────────────────
+
+// Compute sha256 of a file on disk. Returns lowercase hex, or nil on
+// error (missing/unreadable). Uses a 64KB streaming buffer so large
+// plugin dylibs (ComparePlus is ~700KB; the theoretical upper bound
+// matters if plugins grow) don't spike memory.
+static NSString *sha256OfFile(NSString *path) {
+    NSFileHandle *fh = [NSFileHandle fileHandleForReadingAtPath:path];
+    if (!fh) return nil;
+
+    CC_SHA256_CTX ctx;
+    CC_SHA256_Init(&ctx);
+    const NSUInteger chunk = 64 * 1024;
+    @try {
+        while (1) {
+            NSData *d = [fh readDataOfLength:chunk];
+            if (d.length == 0) break;
+            CC_SHA256_Update(&ctx, d.bytes, (CC_LONG)d.length);
+        }
+    } @catch (NSException *e) {
+        [fh closeFile];
+        return nil;
+    }
+    [fh closeFile];
+
+    unsigned char digest[CC_SHA256_DIGEST_LENGTH];
+    CC_SHA256_Final(digest, &ctx);
+    NSMutableString *hex = [NSMutableString stringWithCapacity:64];
+    for (int i = 0; i < CC_SHA256_DIGEST_LENGTH; i++)
+        [hex appendFormat:@"%02x", digest[i]];
+    return hex;
+}
+
+// mtime of a file formatted as YYYY-MM-DD in the local calendar. That
+// matches the catalog's `dylib-built` resolution exactly (day-level, no
+// time-of-day component), so string compare sorts correctly.
+static NSString *mtimeDateOfFile(NSString *path) {
+    NSError *err = nil;
+    NSDictionary *attrs = [[NSFileManager defaultManager]
+        attributesOfItemAtPath:path error:&err];
+    NSDate *mtime = attrs[NSFileModificationDate];
+    if (!mtime) return nil;
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    df.dateFormat = @"yyyy-MM-dd";
+    df.timeZone  = [NSTimeZone localTimeZone];
+    return [df stringFromDate:mtime];
+}
+
+// Very small semver compare — splits on "." and numeric-compares each
+// component left-to-right. Missing components are treated as 0 so
+// "1.0" == "1.0.0" == "1.0.0.0". Returns -1 / 0 / +1.
+static NSInteger compareSemver(NSString *a, NSString *b) {
+    NSArray<NSString *> *aa = [a componentsSeparatedByString:@"."];
+    NSArray<NSString *> *bb = [b componentsSeparatedByString:@"."];
+    NSUInteger n = MAX(aa.count, bb.count);
+    for (NSUInteger i = 0; i < n; i++) {
+        NSInteger av = (i < aa.count) ? [aa[i] integerValue] : 0;
+        NSInteger bv = (i < bb.count) ? [bb[i] integerValue] : 0;
+        if (av < bv) return -1;
+        if (av > bv) return +1;
+    }
+    return 0;
+}
+
+// Scan every installed plugin's dylib and populate pe.installedDylibSHA
+// + pe.installedDylibDate on the matching _allAvailable entry. Cheap —
+// one hash and one stat per installed dylib. Called when the user opens
+// the Updates tab; re-run on each open so we pick up any manual edits.
+- (void)refreshInstalledDylibFingerprints {
+    NSString *pluginsDir = [NSHomeDirectory()
+        stringByAppendingPathComponent:@".notepad++/plugins"];
+    NSFileManager *fm = [NSFileManager defaultManager];
+
+    // Build a folder-name → full-dylib-path map from _installed (which
+    // scanInstalledPlugins already populated with every valid plugin dir).
+    NSMutableDictionary<NSString *, NSString *> *pathByFolder =
+        [NSMutableDictionary dictionary];
+    for (NppPluginEntry *ip in _installed) {
+        NSString *dylib = [[pluginsDir
+            stringByAppendingPathComponent:ip.folderName]
+            stringByAppendingPathComponent:
+                [ip.folderName stringByAppendingPathExtension:@"dylib"]];
+        if ([fm fileExistsAtPath:dylib])
+            pathByFolder[ip.folderName] = dylib;
+    }
+
+    // Stamp _allAvailable entries (the objects the Updates tab iterates).
+    for (NppPluginEntry *pe in _allAvailable) {
+        NSString *path = pathByFolder[pe.folderName];
+        if (!path) {
+            pe.installedDylibSHA  = nil;
+            pe.installedDylibDate = nil;
+            continue;
+        }
+        pe.installedDylibSHA  = sha256OfFile(path);
+        pe.installedDylibDate = mtimeDateOfFile(path);
+    }
+}
+
+// Three-gate filter that picks entries for the Updates tab:
+//   1. Plugin must be installed and present in the catalog with all
+//      three Updates-tab fields.
+//   2. Installed dylib sha256 must differ from catalog dylib-id.
+//   3. Catalog dylib-built must be strictly newer (by date) than the
+//      installed file's mtime date, AND host NPP version must be >=
+//      catalog npp-min-version.
+//
+// Any entry that fails a gate is silently skipped — the tab is meant
+// to show only what the user can act on right now.
+- (NSArray<NppPluginEntry *> *)updateCandidates {
+    NSString *hostVer = [[NSBundle mainBundle].infoDictionary
+        objectForKey:@"CFBundleShortVersionString"] ?: @"0.0.0";
+
+    NSMutableArray<NppPluginEntry *> *out = [NSMutableArray array];
+    for (NppPluginEntry *pe in _allAvailable) {
+        if (!pe.isMacAvailable || !pe.isInstalled) continue;
+        if (pe.macDylibID.length != 64)         continue;  // no backfill
+        if (pe.macDylibBuilt.length == 0)       continue;
+        if (pe.macNppMinVersion.length == 0)    continue;
+        if (pe.installedDylibSHA.length != 64)  continue;  // scan failed
+
+        if ([pe.installedDylibSHA.lowercaseString
+                isEqualToString:pe.macDylibID.lowercaseString])
+            continue;  // gate 1: up to date
+
+        if (pe.installedDylibDate.length == 0)  continue;
+        // YYYY-MM-DD strings sort lexicographically == chronologically.
+        if ([pe.macDylibBuilt compare:pe.installedDylibDate] != NSOrderedDescending)
+            continue;  // gate 2: catalog not newer than installed
+
+        if (compareSemver(hostVer, pe.macNppMinVersion) < 0)
+            continue;  // gate 3: host too old for this release
+
+        [out addObject:pe];
+    }
+    return out;
+}
+
 // ── Tab & filter logic ──────────────────────────────────────────────────
 
 - (void)refreshForCurrentTab {
@@ -500,11 +700,15 @@ static NSString *const kPluginListVersion = @"0.1.0";
             [_filteredList addObjectsFromArray:_allAvailable];
             break;
 
-        case PluginAdminTabUpdates:
+        case PluginAdminTabUpdates: {
             _actionButton.title = [loc translate:@"Update"];
             _actionButton.hidden = NO;
-            // No updates mechanism yet — empty
+            // Re-scan on every Updates-tab open — cheap, and keeps us
+            // honest against manual edits to ~/.notepad++/plugins/.
+            [self refreshInstalledDylibFingerprints];
+            [_filteredList addObjectsFromArray:[self updateCandidates]];
             break;
+        }
 
         case PluginAdminTabInstalled:
             _actionButton.title = [loc translate:@"Remove"];
@@ -681,6 +885,8 @@ static NSString *const kPluginListVersion = @"0.1.0";
             [self removeCheckedPlugins];
             break;
         case PluginAdminTabUpdates:
+            [self updateCheckedPlugins];
+            break;
         case PluginAdminTabIncompatible:
             break;
     }
@@ -715,6 +921,123 @@ static NSString *const kPluginListVersion = @"0.1.0";
         if (resp != NSAlertFirstButtonReturn) return;
         [self downloadAndInstallPlugins:toInstall index:0];
     }];
+}
+
+// ── Update flow (Updates tab) ──────────────────────────────────────────
+
+- (void)updateCheckedPlugins {
+    // Intersect _checkedPlugins with the Updates-tab candidate set so we
+    // never act on stale checks left behind after a tab switch.
+    NSMutableArray<NppPluginEntry *> *toUpdate = [NSMutableArray array];
+    for (NppPluginEntry *pe in [self updateCandidates]) {
+        if ([_checkedPlugins containsObject:pe.folderName])
+            [toUpdate addObject:pe];
+    }
+    if (toUpdate.count == 0) return;
+
+    NSMutableArray *names = [NSMutableArray array];
+    for (NppPluginEntry *pe in toUpdate)
+        [names addObject:[NSString stringWithFormat:@"%@ → v%@",
+                          pe.displayName, pe.macVersion]];
+
+    NppLocalizer *loc = [NppLocalizer shared];
+    NSAlert *confirm = [[NSAlert alloc] init];
+    confirm.messageText = [loc translate:@"Update Plugins"];
+    confirm.informativeText = [NSString stringWithFormat:
+        @"%@\n\n%@\n\n%@\n\n%@",
+        [loc translate:@"Update the following plugins?"],
+        [names componentsJoinedByString:@"\n"],
+        [loc translate:@"Current versions are backed up to ~/.notepad++/plugin-backups/ before being replaced."],
+        [loc translate:@"Restart the application for changes to take effect."]];
+    [confirm addButtonWithTitle:[loc translate:@"Update"]];
+    [confirm addButtonWithTitle:[loc translate:@"Cancel"]];
+
+    [confirm beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse resp) {
+        if (resp != NSAlertFirstButtonReturn) return;
+
+        // Phase 1: synchronous backup+delete per plugin. Only plugins
+        // whose backup+delete succeeded move on to phase 2 — a plugin
+        // whose backup failed stays intact on disk (nothing gets deleted
+        // if we can't prove we have a recovery copy).
+        NSMutableArray<NppPluginEntry *> *ready = [NSMutableArray array];
+        for (NppPluginEntry *pe in toUpdate) {
+            if ([self backupAndDeletePluginFolder:pe])
+                [ready addObject:pe];
+        }
+        if (ready.count == 0) return;
+
+        // Phase 2: reuse the existing install chain. It downloads each
+        // zip, verifies its sha against catalog `id`, and extracts into
+        // the plugins dir. Because phase 1 deleted the old folder, the
+        // extraction lands on a clean slate (no stale files surviving
+        // from the previous version).
+        [self downloadAndInstallPlugins:ready index:0];
+    }];
+}
+
+// Zip the plugin folder to ~/.notepad++/plugin-backups/<folder>_<ts>.zip
+// via ditto -c -k --keepParent, then remove the folder. Returns YES iff
+// both steps succeeded so the caller knows it's safe to let the
+// extraction step overwrite.
+- (BOOL)backupAndDeletePluginFolder:(NppPluginEntry *)pe {
+    NSString *home       = NSHomeDirectory();
+    NSString *pluginDir  = [[home stringByAppendingPathComponent:@".notepad++/plugins"]
+        stringByAppendingPathComponent:pe.folderName];
+    NSString *backupDir  = [home stringByAppendingPathComponent:@".notepad++/plugin-backups"];
+    NSFileManager *fm    = [NSFileManager defaultManager];
+
+    // If there's nothing on disk, there's nothing to back up or remove —
+    // treat as success so a fresh install can proceed.
+    if (![fm fileExistsAtPath:pluginDir]) return YES;
+
+    NSError *err = nil;
+    if (![fm createDirectoryAtPath:backupDir withIntermediateDirectories:YES
+                        attributes:nil error:&err]) {
+        NSLog(@"[PluginsAdmin] Backup dir create failed: %@", err);
+        [self showInstallError:pe.displayName
+                       detail:@"Could not create ~/.notepad++/plugin-backups/. Update skipped — existing plugin folder is untouched."];
+        return NO;
+    }
+
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    df.dateFormat = @"yyyy-MM-dd_HHmmss";
+    df.timeZone   = [NSTimeZone localTimeZone];
+    NSString *ts  = [df stringFromDate:[NSDate date]];
+    NSString *backupZip = [backupDir stringByAppendingPathComponent:
+        [NSString stringWithFormat:@"%@_%@.zip", pe.folderName, ts]];
+
+    // `ditto -c -k --keepParent` produces a PKZip archive whose top
+    // level is the plugin folder itself — so the backup mirrors the
+    // shape of an install zip and unzips back into <folder>/… cleanly.
+    NSTask *zipTask = [[NSTask alloc] init];
+    zipTask.launchPath = @"/usr/bin/ditto";
+    zipTask.arguments  = @[@"-c", @"-k", @"--keepParent", pluginDir, backupZip];
+    zipTask.standardOutput = [NSPipe pipe];
+    zipTask.standardError  = [NSPipe pipe];
+    BOOL zipOK = NO;
+    @try {
+        [zipTask launch];
+        [zipTask waitUntilExit];
+        zipOK = (zipTask.terminationStatus == 0);
+    } @catch (NSException *e) {
+        NSLog(@"[PluginsAdmin] ditto backup threw for %@: %@", pe.displayName, e);
+    }
+    if (!zipOK) {
+        [self showInstallError:pe.displayName
+                       detail:@"Backup step failed — existing plugin folder is untouched, update skipped."];
+        return NO;
+    }
+    NSLog(@"[PluginsAdmin] Backup %@ → %@", pe.displayName, backupZip);
+
+    if (![fm removeItemAtPath:pluginDir error:&err]) {
+        NSLog(@"[PluginsAdmin] Remove failed for %@: %@", pluginDir, err);
+        [self showInstallError:pe.displayName
+                       detail:[NSString stringWithFormat:
+            @"Backup saved at plugin-backups/, but could not remove existing folder: %@. Update skipped.",
+            err.localizedDescription ?: @"unknown"]];
+        return NO;
+    }
+    return YES;
 }
 
 - (void)downloadAndInstallPlugins:(NSArray<NppPluginEntry *> *)plugins index:(NSUInteger)idx {
