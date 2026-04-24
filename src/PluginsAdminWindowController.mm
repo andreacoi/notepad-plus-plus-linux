@@ -57,7 +57,7 @@ static NSString *const kMacPluginListURL =
     @"https://raw.githubusercontent.com/notepad-plus-plus-mac/nppPluginList/main/pl.macos-arm64.json";
 static NSString *const kPluginListRepoURL =
     @"https://github.com/notepad-plus-plus-mac/nppPluginList";
-static NSString *const kPluginListVersion = @"0.1.0";
+static NSString *const kPluginListVersion = @"0.2.0";
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Private interface
@@ -72,6 +72,7 @@ static NSString *const kPluginListVersion = @"0.1.0";
 @property (nonatomic, strong) NSButton *actionButton;
 @property (nonatomic, strong) NSButton *closeButton;
 @property (nonatomic, strong) NSTextField *versionLabel;
+@property (nonatomic, strong) NSTextField *statsLabel;   // "Plugins: N total · M macOS-available"
 @property (nonatomic, strong) NSButton *repoLink;
 @property (nonatomic, strong) NSProgressIndicator *spinner;
 
@@ -228,6 +229,25 @@ static NSString *const kPluginListVersion = @"0.1.0";
     verCol.minWidth = 60;
     [_tableView addTableColumn:verCol];
 
+    // Built date — populated from `dylib-built` in pl.macos-arm64.json
+    // for mac-available plugins. Empty for Windows-only entries because
+    // Don HO's pl.x64.json has no equivalent field.
+    NSTableColumn *builtCol = [[NSTableColumn alloc] initWithIdentifier:@"built"];
+    builtCol.title = [loc translate:@"Built Date"];
+    builtCol.width = 100;
+    builtCol.minWidth = 90;
+    [_tableView addTableColumn:builtCol];
+
+    // Operating System — string derived from isMacAvailable so we don't
+    // need a dedicated field in either catalog. Fixed values: "macOS 11+"
+    // for our ported plugins (matching CMakeLists deployment target) and
+    // "Windows only" for upstream entries that haven't been ported.
+    NSTableColumn *osCol = [[NSTableColumn alloc] initWithIdentifier:@"os"];
+    osCol.title = [loc translate:@"Operating System"];
+    osCol.width = 130;
+    osCol.minWidth = 110;
+    [_tableView addTableColumn:osCol];
+
     scrollView.documentView = _tableView;
     [cv addSubview:scrollView];
 
@@ -245,13 +265,22 @@ static NSString *const kPluginListVersion = @"0.1.0";
     descScroll.documentView = _descriptionView;
     [cv addSubview:descScroll];
 
-    // ── Footer row: version label + repo link ───────────────────────
+    // ── Footer row: version label + stats line + repo link ──────────
     _versionLabel = [NSTextField labelWithString:
         [NSString stringWithFormat:@"Plugin list version:  %@", kPluginListVersion]];
     _versionLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _versionLabel.font = [NSFont systemFontOfSize:11];
     _versionLabel.textColor = NSColor.secondaryLabelColor;
     [cv addSubview:_versionLabel];
+
+    // Stats line directly below version. Populated by updateStatsLabel
+    // after mergePluginListsWin:mac: finishes. Same font/colour as the
+    // version label so they read as a single footer block.
+    _statsLabel = [NSTextField labelWithString:@""];
+    _statsLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    _statsLabel.font = [NSFont systemFontOfSize:11];
+    _statsLabel.textColor = NSColor.secondaryLabelColor;
+    [cv addSubview:_statsLabel];
 
     _repoLink = [NSButton buttonWithTitle:[loc translate:@"Plugin list repository"]
                                    target:self action:@selector(openRepoLink:)];
@@ -313,15 +342,18 @@ static NSString *const kPluginListVersion = @"0.1.0";
         [descScroll.heightAnchor constraintGreaterThanOrEqualToConstant:80],
         [descScroll.heightAnchor constraintLessThanOrEqualToConstant:160],
 
-        // Footer row: version label left, repo link right
+        // Footer row: version label (top) + stats label (below), repo link right
         [_versionLabel.topAnchor constraintEqualToAnchor:descScroll.bottomAnchor constant:10],
         [_versionLabel.leadingAnchor constraintEqualToAnchor:cv.leadingAnchor constant:20],
+
+        [_statsLabel.topAnchor constraintEqualToAnchor:_versionLabel.bottomAnchor constant:2],
+        [_statsLabel.leadingAnchor constraintEqualToAnchor:cv.leadingAnchor constant:20],
 
         [_repoLink.centerYAnchor constraintEqualToAnchor:_versionLabel.centerYAnchor],
         [_repoLink.trailingAnchor constraintEqualToAnchor:cv.trailingAnchor constant:-20],
 
         // Close button centered, pinned to bottom with adequate room
-        [_closeButton.topAnchor constraintEqualToAnchor:_versionLabel.bottomAnchor constant:10],
+        [_closeButton.topAnchor constraintEqualToAnchor:_statsLabel.bottomAnchor constant:10],
         [_closeButton.centerXAnchor constraintEqualToAnchor:cv.centerXAnchor],
         [_closeButton.widthAnchor constraintEqualToConstant:100],
         [_closeButton.bottomAnchor constraintEqualToAnchor:cv.bottomAnchor constant:-14],
@@ -511,6 +543,68 @@ static NSString *const kPluginListVersion = @"0.1.0";
     NSLog(@"[PluginsAdmin] Catalog: %lu total (%ld macOS-available, %ld Windows-only)",
           (unsigned long)_allAvailable.count, (long)macCount,
           (long)((NSInteger)_allAvailable.count - macCount));
+
+    // Footer stats line — same font/colour as the version label above it.
+    // %lu = total rows in the Available list (macOS ports + unported
+    // Windows entries, each counted exactly once), %ld = how many of
+    // those are actually installable on macOS today.
+    _statsLabel.stringValue = [NSString stringWithFormat:
+        @"Plugins in catalog:  %lu  ·  Installable on macOS:  %ld",
+        (unsigned long)_allAvailable.count, (long)macCount];
+
+    // Enrich _installed with catalog fields so the Installed tab can
+    // render version / built date / OS columns. Without this the
+    // entries are bare (just folder-name) and the table shows blanks.
+    [self enrichInstalledFromCatalog];
+}
+
+// Pull display metadata from the catalog into the bare entries produced
+// by scanInstalledPlugins. Two cases:
+//   - Installed folder matches a catalog entry → copy displayName,
+//     macVersion, macDylibBuilt, author/description/homepage, and mark
+//     isMacAvailable=YES so the OS column renders "macOS 11+".
+//   - Installed folder not in catalog (e.g. a locally-built plugin like
+//     NppBeads that we don't publish) → still mark isMacAvailable=YES
+//     because it's literally running on macOS, and use the dylib's
+//     file mtime as a best-effort "built date" substitute.
+- (void)enrichInstalledFromCatalog {
+    NSMutableDictionary<NSString *, NppPluginEntry *> *catalogByFolder =
+        [NSMutableDictionary dictionary];
+    for (NppPluginEntry *pe in _allAvailable) {
+        if (pe.folderName.length > 0)
+            catalogByFolder[pe.folderName] = pe;
+    }
+
+    NSString *pluginsDir = [NSHomeDirectory()
+        stringByAppendingPathComponent:@".notepad++/plugins"];
+
+    for (NppPluginEntry *ip in _installed) {
+        NppPluginEntry *c = catalogByFolder[ip.folderName];
+        if (c && c.isMacAvailable) {
+            ip.displayName       = c.displayName;
+            ip.pluginDescription = c.pluginDescription;
+            ip.author            = c.author;
+            ip.homepage          = c.homepage;
+            ip.macVersion        = c.macVersion;
+            ip.macRepository     = c.macRepository;
+            ip.macPluginID       = c.macPluginID;
+            ip.macDylibID        = c.macDylibID;
+            ip.macDylibBuilt     = c.macDylibBuilt;
+            ip.macNppMinVersion  = c.macNppMinVersion;
+            ip.isMacAvailable    = YES;
+        } else {
+            // Unknown plugin — at minimum tag it as macOS (it IS installed
+            // in the mac plugin folder as a mac dylib) and fall back to
+            // file mtime for the built date.
+            ip.isMacAvailable = YES;
+            NSString *dylibPath = [[pluginsDir
+                stringByAppendingPathComponent:ip.folderName]
+                stringByAppendingPathComponent:
+                    [ip.folderName stringByAppendingPathExtension:@"dylib"]];
+            NSString *mtimeDate = mtimeDateOfFile(dylibPath);
+            if (mtimeDate) ip.macDylibBuilt = mtimeDate;
+        }
+    }
 }
 
 - (void)scanInstalledPlugins {
@@ -766,7 +860,11 @@ static NSInteger compareSemver(NSString *a, NSString *b) {
             cb.identifier = @"check";
         }
 
-        if (_currentTab == PluginAdminTabAvailable) {
+        if (_currentTab == PluginAdminTabIncompatible) {
+            // Incompatible is read-only — there's no action you can take
+            // from this tab, so a checkbox would be misleading.
+            cb.hidden = YES;
+        } else if (_currentTab == PluginAdminTabAvailable) {
             cb.hidden = !pe.isMacAvailable;
             if (pe.isInstalled) {
                 // Already installed: show checked but disabled
@@ -803,6 +901,15 @@ static NSInteger compareSemver(NSString *a, NSString *b) {
             tf.stringValue = pe.macVersion;
         else
             tf.stringValue = pe.version ?: @"";
+    } else if ([ident isEqualToString:@"built"]) {
+        // Catalog-supplied build date from `dylib-built`. Populated only
+        // on mac-available entries; Windows-only plugins have no
+        // equivalent field in pl.x64.json and display as a blank cell.
+        tf.stringValue = (pe.isMacAvailable && pe.macDylibBuilt.length > 0)
+            ? pe.macDylibBuilt
+            : @"";
+    } else if ([ident isEqualToString:@"os"]) {
+        tf.stringValue = pe.isMacAvailable ? @"macOS 11+" : @"Windows only";
     }
 
     // Dim text for installed or Windows-only plugins (Available tab)
@@ -1050,6 +1157,7 @@ static NSInteger compareSemver(NSString *a, NSString *b) {
             NSSet *inst = [self installedFolderNames];
             for (NppPluginEntry *pe in self->_allAvailable)
                 pe.isInstalled = [inst containsObject:pe.folderName];
+            [self enrichInstalledFromCatalog];
             [self refreshForCurrentTab];
 
             NppLocalizer *loc = [NppLocalizer shared];
@@ -1204,6 +1312,10 @@ static NSInteger compareSemver(NSString *a, NSString *b) {
         }
 
         [self scanInstalledPlugins];
+        NSSet *inst = [self installedFolderNames];
+        for (NppPluginEntry *pe in self->_allAvailable)
+            pe.isInstalled = [inst containsObject:pe.folderName];
+        [self enrichInstalledFromCatalog];
         [self refreshForCurrentTab];
     }];
 }
