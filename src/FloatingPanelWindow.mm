@@ -8,10 +8,35 @@ static const CGFloat kDefaultWidth  = 320.0;
 static const CGFloat kDefaultHeight = 480.0;
 static const CGFloat kFPWIconSize   = 11;
 
+// Default subdir pair — Dock-back / pop-in lives under panels/toolbar/.
 static NSImage *_FPWLoadIcon(NSString *name) {
     NSString *subdir = [NppThemeManager shared].isDark
         ? @"icons/dark/panels/toolbar"
         : @"icons/standard/panels/toolbar";
+    NSURL *url = [[NSBundle mainBundle] URLForResource:name withExtension:@"png"
+                                          subdirectory:subdir];
+    NSImage *img = url ? [[NSImage alloc] initWithContentsOfURL:url] : nil;
+    if (img) img.size = NSMakeSize(kFPWIconSize, kFPWIconSize);
+    return img;
+}
+
+// Load the pin icons from the tabbar/ subtree where they already live.
+// `pinned=YES` picks pinTabButton_pinned.png (green tack) regardless of
+// theme — the user explicitly specified a single pinned asset. For the
+// unpinned state we honor the current theme (standard vs dark).
+static NSImage *_FPWLoadPinIcon(BOOL pinned) {
+    NSString *name;
+    NSString *subdir;
+    if (pinned) {
+        // Single pinned asset; green tack is visible in both themes.
+        name   = @"pinTabButton_pinned";
+        subdir = @"icons/standard/tabbar";
+    } else {
+        name   = @"pinTabButton";
+        subdir = [NppThemeManager shared].isDark
+            ? @"icons/dark/tabbar"
+            : @"icons/standard/tabbar";
+    }
     NSURL *url = [[NSBundle mainBundle] URLForResource:name withExtension:@"png"
                                           subdirectory:subdir];
     NSImage *img = url ? [[NSImage alloc] initWithContentsOfURL:url] : nil;
@@ -94,8 +119,106 @@ static NSImage *_FPWLoadIcon(NSString *name) {
 
 @end
 
+// ─────────────────────────────────────────────────────────────────────────────
+// _FPWPinButton — toggle button that flips the enclosing window between
+// NSFloatingWindowLevel (pinned, always on top) and NSNormalWindowLevel
+// (unpinned, can be covered by other apps).
+//
+// Draws with the same hover+pressed chrome as _FPWDockBackButton — blue
+// border + light-blue fill on hover, no border at rest. Icon switches
+// between pinTabButton.png (unpinned, theme-aware) and
+// pinTabButton_pinned.png (pinned, single green-tack asset that reads
+// well in both themes).
+// ─────────────────────────────────────────────────────────────────────────────
+
+@interface _FPWPinButton : NSButton {
+    BOOL _hovering;
+    BOOL _pinned;
+}
+- (void)setPinned:(BOOL)pinned;
+- (BOOL)pinned;
+@end
+
+@implementation _FPWPinButton
+
+- (instancetype)initWithFrame:(NSRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.bordered   = NO;
+        self.buttonType = NSButtonTypeMomentaryChange;
+        self.title      = @"";
+        self.toolTip    = @"Pin window on top";
+        NSTrackingArea *ta = [[NSTrackingArea alloc]
+            initWithRect:NSZeroRect
+                 options:(NSTrackingMouseEnteredAndExited |
+                          NSTrackingActiveInActiveApp     |
+                          NSTrackingInVisibleRect)
+                   owner:self userInfo:nil];
+        [self addTrackingArea:ta];
+    }
+    return self;
+}
+
+- (void)mouseEntered:(NSEvent *)e { _hovering = YES; [self setNeedsDisplay:YES]; }
+- (void)mouseExited:(NSEvent *)e  { _hovering = NO;  [self setNeedsDisplay:YES]; }
+
+- (BOOL)pinned { return _pinned; }
+
+- (void)setPinned:(BOOL)pinned {
+    if (_pinned == pinned) return;
+    _pinned = pinned;
+    self.toolTip = pinned
+        ? @"Window is pinned on top — click to unpin"
+        : @"Pin window on top";
+    [self setNeedsDisplay:YES];
+}
+
+- (void)drawRect:(NSRect)dirtyRect {
+    // Same hover/pressed chrome as _FPWDockBackButton so both buttons
+    // read as a pair. Border color matches exactly.
+    BOOL pressed = self.isHighlighted;
+    BOOL active  = pressed || _hovering;
+    BOOL isDark  = [NppThemeManager shared].isDark;
+
+    if (active) {
+        if (!isDark) {
+            NSColor *bg = pressed
+                ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
+                : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+            [bg setFill];
+            NSRectFill(self.bounds);
+        }
+        NSColor *bdr = [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0];
+        NSBezierPath *border = [NSBezierPath bezierPathWithRect:NSInsetRect(self.bounds, 0.5, 0.5)];
+        border.lineWidth = 1.0;
+        [bdr setStroke];
+        [border stroke];
+    }
+
+    NSImage *icon = _FPWLoadPinIcon(_pinned);
+    if (!icon) return;
+
+    NSSize isz = icon.size;
+    NSRect target = NSMakeRect(NSMidX(self.bounds) - isz.width / 2.0,
+                               NSMidY(self.bounds) - isz.height / 2.0,
+                               isz.width, isz.height);
+    [icon drawInRect:target
+            fromRect:NSZeroRect
+           operation:NSCompositingOperationSourceOver
+            fraction:1.0
+      respectFlipped:YES
+               hints:nil];
+}
+
+@end
+
 @interface FloatingPanelWindow () <NSWindowDelegate>
 @property (nonatomic, weak) PanelFrame *panelFrame;
+// The live pin button so the window can query its state when toggling,
+// and drive its appearance when theme changes. Strong because the
+// titlebar accessory view is the real retainer; a weak pointer here is
+// safe too, but keeping strong avoids the weak-ref unload dance.
+@property (nonatomic, strong) _FPWPinButton *pinButton;
 @end
 
 @implementation FloatingPanelWindow
@@ -117,7 +240,11 @@ static NSImage *_FPWLoadIcon(NSString *name) {
 
     _panelFrame           = frame;
     self.title            = frame.title ?: @"";
-    self.floatingPanel    = YES;
+    // Pin state defaults to unpinned (NSNormalWindowLevel). Prior
+    // releases forced every popped panel to always-on-top; now the user
+    // opts in via the pin button. The level is set inside
+    // -_applyPinnedState: which is called after the window+button are
+    // set up and the persisted state has been loaded (see below).
     // Only become key when the user actually interacts with a control
     // inside the panel — keeps typing in the editor snappy.
     self.becomesKeyOnlyIfNeeded = YES;
@@ -132,23 +259,40 @@ static NSImage *_FPWLoadIcon(NSString *name) {
     // -viewWillMoveToWindow: / -viewDidMoveToWindow: to every descendant.
     self.contentView = frame;
 
-    // Dock-back button in the native title bar, trailing edge. The
-    // PanelFrame's own chrome is collapsed when popped (see
-    // -[PanelFrame setPopped:]), so this accessory is the only visible
-    // dock-back affordance while the panel is floating.
-    _FPWDockBackButton *btn = [[_FPWDockBackButton alloc]
-        initWithFrame:NSMakeRect(0, 0, 22, 22)];
-    btn.target = self;
-    btn.action = @selector(_dockBackClicked:);
+    // Titlebar accessory — pin button to the left of dock-back. Both
+    // buttons are 17×17 (sizes the blue hover chrome), with a 1pt gap
+    // between them so they read as a near-touching pair.
+    _FPWDockBackButton *dockBtn = [[_FPWDockBackButton alloc]
+        initWithFrame:NSMakeRect(0, 0, 17, 17)];
+    dockBtn.target = self;
+    dockBtn.action = @selector(_dockBackClicked:);
+    dockBtn.translatesAutoresizingMaskIntoConstraints = NO;
 
-    NSView *holder = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 28, 22)];
-    btn.translatesAutoresizingMaskIntoConstraints = NO;
-    [holder addSubview:btn];
+    _FPWPinButton *pinBtn = [[_FPWPinButton alloc]
+        initWithFrame:NSMakeRect(0, 0, 17, 17)];
+    pinBtn.target = self;
+    pinBtn.action = @selector(_pinClicked:);
+    pinBtn.translatesAutoresizingMaskIntoConstraints = NO;
+    _pinButton = pinBtn;
+
+    // Holder width: 17 + 1 (gap) + 17 + 4 (trailing pad) + 2 (leading
+    // slack) = 41.
+    NSView *holder = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 41, 17)];
+    [holder addSubview:pinBtn];
+    [holder addSubview:dockBtn];
     [NSLayoutConstraint activateConstraints:@[
-        [btn.trailingAnchor constraintEqualToAnchor:holder.trailingAnchor constant:-4],
-        [btn.centerYAnchor  constraintEqualToAnchor:holder.centerYAnchor],
-        [btn.widthAnchor    constraintEqualToConstant:22],
-        [btn.heightAnchor   constraintEqualToConstant:22],
+        // Dock-back pinned to the trailing edge.
+        [dockBtn.trailingAnchor constraintEqualToAnchor:holder.trailingAnchor constant:-4],
+        [dockBtn.centerYAnchor  constraintEqualToAnchor:holder.centerYAnchor],
+        [dockBtn.widthAnchor    constraintEqualToConstant:17],
+        [dockBtn.heightAnchor   constraintEqualToConstant:17],
+
+        // Pin button sits 1pt to the left of dock-back (was 2pt —
+        // ~30% closer per design request).
+        [pinBtn.trailingAnchor  constraintEqualToAnchor:dockBtn.leadingAnchor constant:-1],
+        [pinBtn.centerYAnchor   constraintEqualToAnchor:holder.centerYAnchor],
+        [pinBtn.widthAnchor     constraintEqualToConstant:17],
+        [pinBtn.heightAnchor    constraintEqualToConstant:17],
     ]];
 
     NSTitlebarAccessoryViewController *acc = [[NSTitlebarAccessoryViewController alloc] init];
@@ -177,7 +321,52 @@ static NSImage *_FPWLoadIcon(NSString *name) {
         }
     }
 
+    // Restore per-panel pin state from NSUserDefaults. Default is
+    // unpinned (NSNormalWindowLevel) — a brand-new pop-out will NOT
+    // float on top, but if the user explicitly pinned this panel on a
+    // previous run, we honour that.
+    [self _applyPinnedState:[self _loadPinnedStateDefault:NO]];
+
     return self;
+}
+
+// ── Pin-state persistence ────────────────────────────────────────────────
+
+// Per-panel NSUserDefaults key. Shares the autosave name with the frame
+// autosave so each panel class remembers its pin state independently.
+- (NSString *)_pinDefaultsKey {
+    NSString *autosave = self.frameAutosaveName;
+    if (autosave.length == 0) return @"";
+    return [@"NppFloatingPanelPinned_" stringByAppendingString:autosave];
+}
+
+- (BOOL)_loadPinnedStateDefault:(BOOL)fallback {
+    NSString *key = [self _pinDefaultsKey];
+    if (key.length == 0) return fallback;
+    NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
+    if ([d objectForKey:key] == nil) return fallback;
+    return [d boolForKey:key];
+}
+
+- (void)_persistPinnedState:(BOOL)pinned {
+    NSString *key = [self _pinDefaultsKey];
+    if (key.length == 0) return;
+    [[NSUserDefaults standardUserDefaults] setBool:pinned forKey:key];
+}
+
+// Apply pin state to the window + button. Centralises so the init
+// path and the toggle-click path go through the same code.
+- (void)_applyPinnedState:(BOOL)pinned {
+    self.level         = pinned ? NSFloatingWindowLevel : NSNormalWindowLevel;
+    self.floatingPanel = pinned;  // keep NSPanel's property in sync
+    [self.pinButton setPinned:pinned];
+}
+
+// Toggle action — button click.
+- (void)_pinClicked:(id)sender {
+    BOOL next = !self.pinButton.pinned;
+    [self _applyPinnedState:next];
+    [self _persistPinnedState:next];
 }
 
 // ── Dock-back action ──────────────────────────────────────────────────────
