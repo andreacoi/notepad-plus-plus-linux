@@ -949,10 +949,20 @@ static NSImage *_customToolbarIcon(NSString *buttonId, NSDictionary *toolbarConf
 - (void)drawRect:(NSRect)dirtyRect {
     BOOL pressed = self.isHighlighted;
     if (pressed || _hovering) {
-        NSColor *bg  = pressed
-            ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
-            : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
-        NSColor *bdr = [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0];
+        BOOL isDark = [NppThemeManager shared].isDark;
+        NSColor *bg, *bdr;
+        if (isDark) {
+            // Flat solid grey — border matches fill so it reads as a clean block.
+            bg = pressed
+                ? [NSColor colorWithRed:0x21/255.0 green:0x21/255.0 blue:0x21/255.0 alpha:1.0]
+                : [NSColor colorWithRed:0x2e/255.0 green:0x2e/255.0 blue:0x2e/255.0 alpha:1.0];
+            bdr = bg;
+        } else {
+            bg = pressed
+                ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
+                : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+            bdr = [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0];
+        }
         NSBezierPath *fill = [NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:2.0 yRadius:2.0];
         [bg setFill]; [fill fill];
         NSBezierPath *border = [NSBezierPath bezierPathWithRoundedRect:NSInsetRect(self.bounds, 0.5, 0.5)
@@ -981,21 +991,37 @@ static NSImage *_customToolbarIcon(NSString *buttonId, NSDictionary *toolbarConf
 
 - (void)drawRect:(NSRect)dirtyRect {
     BOOL pressed = self.isHighlighted;
+    BOOL isDark  = [NppThemeManager shared].isDark;
 
-    // Active-toggle: persistent blueish background (panel style)
+    // Active-toggle: persistent background (panel style)
     if (self.toggledOn && self.useBlueHighlight) {
-        NSColor *bg  = [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:0.65];
-        NSColor *bdr = [NSColor colorWithRed:0x80/255.0 green:0xC0/255.0 blue:0xFF/255.0 alpha:0.80];
+        NSColor *bg, *bdr;
+        if (isDark) {
+            // Black for active-toggle — distinct from the grey hover state.
+            bg  = [NSColor colorWithRed:0x00/255.0 green:0x00/255.0 blue:0x00/255.0 alpha:1.0];
+            bdr = bg;
+        } else {
+            bg  = [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:0.65];
+            bdr = [NSColor colorWithRed:0x80/255.0 green:0xC0/255.0 blue:0xFF/255.0 alpha:0.80];
+        }
         NSBezierPath *fill = [NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:2 yRadius:2];
         [bg setFill]; [fill fill];
         NSBezierPath *border = [NSBezierPath bezierPathWithRoundedRect:NSInsetRect(self.bounds, 0.5, 0.5)
                                                                xRadius:2 yRadius:2];
         border.lineWidth = 1.0; [bdr setStroke]; [border stroke];
     } else if (pressed || _hovering) {
-        NSColor *bg  = pressed
-            ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
-            : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
-        NSColor *bdr = [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0];
+        NSColor *bg, *bdr;
+        if (isDark) {
+            bg = pressed
+                ? [NSColor colorWithRed:0x21/255.0 green:0x21/255.0 blue:0x21/255.0 alpha:1.0]
+                : [NSColor colorWithRed:0x2e/255.0 green:0x2e/255.0 blue:0x2e/255.0 alpha:1.0];
+            bdr = bg;
+        } else {
+            bg = pressed
+                ? [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0]
+                : [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+            bdr = [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0];
+        }
         NSBezierPath *fill = [NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:2 yRadius:2];
         [bg setFill]; [fill fill];
         NSBezierPath *border = [NSBezierPath bezierPathWithRoundedRect:NSInsetRect(self.bounds, 0.5, 0.5)
@@ -1026,7 +1052,9 @@ static NSImage *_customToolbarIcon(NSString *buttonId, NSDictionary *toolbarConf
 @implementation _FlatImgButton
 - (void)drawRect:(NSRect)dirtyRect {
     if (self.isHighlighted) {
-        NSColor *bg = [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0];
+        NSColor *bg = [NppThemeManager shared].isDark
+            ? [NSColor colorWithRed:0x21/255.0 green:0x21/255.0 blue:0x21/255.0 alpha:1.0]
+            : [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0];
         NSBezierPath *p = [NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:2.0 yRadius:2.0];
         [bg setFill]; [p fill];
     }
@@ -1045,7 +1073,9 @@ static NSImage *_customToolbarIcon(NSString *buttonId, NSDictionary *toolbarConf
 @implementation _DropArrowButton
 - (void)drawRect:(NSRect)dirtyRect {
     if (self.isHighlighted) {
-        NSColor *bg = [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0];
+        NSColor *bg = [NppThemeManager shared].isDark
+            ? [NSColor colorWithRed:0x21/255.0 green:0x21/255.0 blue:0x21/255.0 alpha:1.0]
+            : [NSColor colorWithRed:0xCC/255.0 green:0xE8/255.0 blue:0xFF/255.0 alpha:1.0];
         NSBezierPath *p = [NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:2.0 yRadius:2.0];
         [bg setFill]; [p fill];
     }
@@ -1061,9 +1091,12 @@ static NSImage *_customToolbarIcon(NSString *buttonId, NSDictionary *toolbarConf
 }
 @end
 
-// Container view: shows unified blue highlight (#e5f3ff / #d0eaff border)
-// when the cursor is anywhere over the button+arrow group.
+// Container view: shows unified highlight when the cursor is anywhere over
+// the button+arrow group, and (in dark mode) paints a persistent #000000
+// background while All-Chars is toggled ON. Toggle-on takes precedence
+// over hover (matching NppToggleToolbarButton's pattern).
 @interface _AllCharsHoverGroup : NSView { BOOL _hovering; }
+@property (nonatomic) BOOL toggledOn;
 @end
 @implementation _AllCharsHoverGroup
 - (instancetype)initWithFrame:(NSRect)frame {
@@ -1079,12 +1112,35 @@ static NSImage *_customToolbarIcon(NSString *buttonId, NSDictionary *toolbarConf
     }
     return self;
 }
+- (void)setToggledOn:(BOOL)toggledOn {
+    if (_toggledOn == toggledOn) return;
+    _toggledOn = toggledOn;
+    [self setNeedsDisplay:YES];
+}
 - (void)mouseEntered:(NSEvent *)e { _hovering = YES;  [self setNeedsDisplay:YES]; }
 - (void)mouseExited:(NSEvent *)e  { _hovering = NO;   [self setNeedsDisplay:YES]; }
 - (void)drawRect:(NSRect)dirty {
-    if (_hovering) {
-        NSColor *bg  = [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
-        NSColor *bdr = [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0];
+    BOOL isDark = [NppThemeManager shared].isDark;
+
+    // Toggle-on (dark only): persistent black background, takes precedence
+    // over hover. Light mode keeps its existing behavior (no persistent bg)
+    // so on/off feedback stays signalled via the icon glyph as today.
+    if (_toggledOn && isDark) {
+        NSColor *bg = [NSColor colorWithRed:0x00/255.0 green:0x00/255.0 blue:0x00/255.0 alpha:1.0];
+        NSBezierPath *p = [NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:2 yRadius:2];
+        [bg setFill]; [p fill];
+        NSBezierPath *q = [NSBezierPath bezierPathWithRoundedRect:NSInsetRect(self.bounds, 0.5, 0.5)
+                                                          xRadius:2 yRadius:2];
+        q.lineWidth = 1.0; [bg setStroke]; [q stroke];
+    } else if (_hovering) {
+        NSColor *bg, *bdr;
+        if (isDark) {
+            bg  = [NSColor colorWithRed:0x2e/255.0 green:0x2e/255.0 blue:0x2e/255.0 alpha:1.0];
+            bdr = bg;
+        } else {
+            bg  = [NSColor colorWithRed:0xE5/255.0 green:0xF3/255.0 blue:0xFF/255.0 alpha:1.0];
+            bdr = [NSColor colorWithRed:0xD0/255.0 green:0xEA/255.0 blue:0xFF/255.0 alpha:1.0];
+        }
         NSBezierPath *p = [NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:2 yRadius:2];
         [bg setFill];
         [p fill];
@@ -1370,6 +1426,7 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     NppToggleToolbarButton *_tbUDL, *_tbDocMap, *_tbDocList, *_tbFuncList, *_tbFileBrowser;
     NppToggleToolbarButton *_tbMonitor;
     NppToolbarButton *_tbStartRecord, *_tbStopRecord, *_tbPlayRecord, *_tbPlayRecordM, *_tbSaveRecord;
+    _AllCharsHoverGroup *_tbAllCharsHoverGroup;  // dark-mode toggle-on bg painter
 
     // Plugin toolbar icons: array of @{@"id": identifier, @"icon": NSImage, @"tooltip": NSString, @"cmdID": @(int)}
     NSMutableArray<NSDictionary *> *_pluginToolbarItems;
@@ -1949,6 +2006,7 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     [hoverGroup addSubview:dropBtn];
 
     [outer addSubview:hoverGroup];
+    _tbAllCharsHoverGroup = hoverGroup;
     x += hoverW + kGap;
 
     // Indent Guide — toggle with desaturation
@@ -2036,6 +2094,15 @@ static BOOL groupHasTrailingSep(NSString *ident) {
     [_tbFuncList setNeedsDisplay:YES];
     [_tbFileBrowser setNeedsDisplay:YES];
     // UDL doesn't toggle a panel — leave as-is
+
+    // All-Characters group (dark-mode persistent black bg when on). State
+    // derives from Scintilla so it stays correct on tab switch.
+    if (_tbAllCharsHoverGroup) {
+        ScintillaView *acSci = [self currentEditor].scintillaView;
+        BOOL acWs  = acSci ? ([acSci message:SCI_GETVIEWWS]  == SCWS_VISIBLEALWAYS) : NO;
+        BOOL acEol = acSci ? ([acSci message:SCI_GETVIEWEOL] != 0)                  : NO;
+        _tbAllCharsHoverGroup.toggledOn = acWs && acEol;
+    }
 
     // Monitoring toggle
     EditorView *ed = [self currentEditor];
@@ -4715,8 +4782,14 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
 
 #pragma mark - View: Whitespace / EOL symbols
 
-- (void)showWhiteSpaceAndTab:(id)sender    { [[self currentEditor] showWhiteSpaceAndTab:sender]; }
-- (void)showEndOfLine:(id)sender           { [[self currentEditor] showEndOfLine:sender]; }
+- (void)showWhiteSpaceAndTab:(id)sender    {
+    [[self currentEditor] showWhiteSpaceAndTab:sender];
+    [self _refreshToolbarStates];  // AllChars hover-group toggle-on tracks SCI_GETVIEWWS+EOL
+}
+- (void)showEndOfLine:(id)sender           {
+    [[self currentEditor] showEndOfLine:sender];
+    [self _refreshToolbarStates];
+}
 
 #pragma mark - View: Fold levels
 
@@ -5169,6 +5242,7 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
     [sci message:SCI_SETVIEWWS  wParam:(allOn ? SCWS_INVISIBLE : SCWS_VISIBLEALWAYS)];
     [sci message:SCI_SETVIEWEOL wParam:(allOn ? 0 : 1)];
     _showAllChars = !allOn;
+    [self _refreshToolbarStates];
 }
 
 // Shows the dropdown menu for the All-Characters toolbar button (▾ arrow).
