@@ -1540,11 +1540,22 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     }
 }
 
-- (void)addPluginToolbarIcon:(NSImage *)icon tooltip:(NSString *)tooltip cmdID:(int)cmdID {
+- (void)addPluginToolbarIconForPluginDir:(NSString *)pluginDir
+                                iconHint:(nullable NSString *)iconHint
+                                 tooltip:(NSString *)tooltip
+                                   cmdID:(int)cmdID
+{
     // Check if user's toolbar config hides this plugin button
     if ([_toolbarConfig[@"hideAllPlugins"] boolValue]) return;
     NSSet *hiddenCmds = _toolbarConfig[@"hiddenPluginCmdIDs"];
     if ([hiddenCmds containsObject:@(cmdID)]) return;
+
+    NSImage *icon = [self _resolvePluginToolbarIconForDir:pluginDir hint:iconHint];
+    if (!icon) {
+        NSLog(@"[Plugins] addPluginToolbarIcon: no icon found for cmdID %d in %@",
+              cmdID, pluginDir ?: @"(nil)");
+        return;
+    }
 
     if (!_pluginToolbarItems)
         _pluginToolbarItems = [NSMutableArray array];
@@ -1556,12 +1567,18 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
         if ([pti[@"id"] isEqualToString:ident]) return;
     }
 
-    [_pluginToolbarItems addObject:@{
-        @"id":      ident,
-        @"icon":    icon,
-        @"tooltip": tooltip,
-        @"cmdID":   @(cmdID),
+    // Mutable so _refreshPluginToolbarIcons can update the cached icon in place
+    // when the system appearance flips. pluginDir + iconHint are stored so the
+    // re-resolution can run without revisiting the plugin manager.
+    NSMutableDictionary *pti = [NSMutableDictionary dictionaryWithDictionary:@{
+        @"id":         ident,
+        @"icon":       icon,
+        @"tooltip":    tooltip ?: @"",
+        @"cmdID":      @(cmdID),
+        @"pluginDir":  pluginDir ?: @"",
+        @"iconHint":   iconHint ?: @"",
     }];
+    [_pluginToolbarItems addObject:pti];
 
     // Insert before the flexible space (which is the second-to-last item)
     NSToolbar *tb = self.window.toolbar;
@@ -1575,17 +1592,104 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     [tb insertItemWithItemIdentifier:ident atIndex:insertIdx];
 }
 
+// Resolve a plugin's toolbar icon based on the current dark-mode state.
+//
+// Lookup order (first hit wins):
+//   1. Dark mode + iconHint   →  <pluginDir>/<base>_dark.<ext>
+//                                e.g. iconHint="myicon.png" → "myicon_dark.png"
+//   2.                        →  <pluginDir>/<iconHint>
+//   3. Dark mode (no hint)    →  <pluginDir>/toolbar_dark.png
+//   4.                        →  <pluginDir>/toolbar.png
+//
+// Plugins that ship a single icon (just toolbar.png) keep working unchanged.
+// Plugins that drop a second `toolbar_dark.png` next to it automatically get
+// dark-mode-aware icons. No plugin source changes required.
+- (nullable NSImage *)_resolvePluginToolbarIconForDir:(NSString *)pluginDir
+                                                 hint:(nullable NSString *)iconHint
+{
+    if (pluginDir.length == 0) return nil;
+    BOOL isDark = [NppThemeManager shared].isDark;
+    NSImage *icon = nil;
+
+    if (iconHint.length > 0) {
+        if (isDark) {
+            NSString *base = iconHint.stringByDeletingPathExtension;
+            NSString *ext  = iconHint.pathExtension;
+            NSString *darkName = ext.length
+                ? [NSString stringWithFormat:@"%@_dark.%@", base, ext]
+                : [NSString stringWithFormat:@"%@_dark", base];
+            NSString *darkPath = [pluginDir stringByAppendingPathComponent:darkName];
+            icon = [[NSImage alloc] initWithContentsOfFile:darkPath];
+        }
+        if (!icon) {
+            NSString *path = [pluginDir stringByAppendingPathComponent:iconHint];
+            icon = [[NSImage alloc] initWithContentsOfFile:path];
+        }
+    }
+
+    if (!icon) {
+        if (isDark) {
+            NSString *darkPath = [pluginDir stringByAppendingPathComponent:@"toolbar_dark.png"];
+            icon = [[NSImage alloc] initWithContentsOfFile:darkPath];
+        }
+        if (!icon) {
+            NSString *path = [pluginDir stringByAppendingPathComponent:@"toolbar.png"];
+            icon = [[NSImage alloc] initWithContentsOfFile:path];
+        }
+    }
+
+    if (icon) icon.size = NSMakeSize(16, 16);
+    return icon;
+}
+
+// Re-resolve every plugin toolbar icon for the current appearance and update
+// the live NSButton.image so a dark/light flip is reflected without restart.
+// Entries that lack a stored pluginDir (legacy paths that pre-date Path A,
+// if any survive) are skipped — they keep whatever icon they were given.
+- (void)_refreshPluginToolbarIcons {
+    if (!_pluginToolbarItems.count) return;
+
+    NSToolbar *toolbar = self.window.toolbar;
+    for (NSMutableDictionary *pti in _pluginToolbarItems) {
+        NSString *pluginDir = pti[@"pluginDir"];
+        if (pluginDir.length == 0) continue;
+
+        NSString *iconHint = pti[@"iconHint"];
+        NSImage *newIcon = [self _resolvePluginToolbarIconForDir:pluginDir hint:iconHint];
+        if (!newIcon) continue;
+
+        pti[@"icon"] = newIcon;
+
+        // Update the live button if currently in the toolbar (item may have
+        // been removed if the user collapsed it into the overflow chevron —
+        // in that case the cached icon updates and the next layout pass
+        // picks it up via makePluginToolbarItem:).
+        for (NSToolbarItem *item in toolbar.items) {
+            if (![item.itemIdentifier isEqualToString:pti[@"id"]]) continue;
+            NSView *v = item.view;
+            if (![v isKindOfClass:[NSButton class]]) continue;
+            NSButton *btn = (NSButton *)v;
+            // Match the size that makePluginToolbarItem: applies (kBtnSize=17).
+            newIcon.size = NSMakeSize(17, 17);
+            btn.image = newIcon;
+            break;
+        }
+    }
+}
+
 - (NSToolbarItem *)makePluginToolbarItem:(NSDictionary *)pti {
     static const CGFloat kBtnSize = 17.0;
 
     NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:pti[@"id"]];
 
-    NSButton *btn = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, kBtnSize, kBtnSize)];
-    btn.bordered = NO;
-    btn.bezelStyle = NSBezelStyleSmallSquare;
+    // NppToolbarButton (not plain NSButton) so plugin buttons get the same
+    // hover/pressed rounded-rect feedback as built-in toolbar items. The
+    // base class wires up its own NSTrackingArea + theme-aware drawRect:
+    // in -initWithFrame:, so target/action/image/tag/toolTip below stay
+    // identical — only the visual feedback changes.
+    NppToolbarButton *btn = [[NppToolbarButton alloc] initWithFrame:NSMakeRect(0, 0, kBtnSize, kBtnSize)];
     btn.image = pti[@"icon"];
     btn.image.size = NSMakeSize(kBtnSize, kBtnSize);
-    btn.imageScaling = NSImageScaleProportionallyDown;
     btn.toolTip = pti[@"tooltip"];
     btn.tag = [pti[@"cmdID"] intValue];
     btn.target = self;
@@ -7554,6 +7658,10 @@ static NSArray<NSDictionary *> *convertRecordedToXmlFormat(NSArray<NSDictionary 
             }
         }
     }
+
+    // Plugin-supplied toolbar icons (Path A: `toolbar_dark.png` convention
+    // alongside `toolbar.png`, or `<hint>_dark.<ext>` next to `<hint>`).
+    [self _refreshPluginToolbarIcons];
 }
 
 // checkForUpdates: moved to AppDelegate

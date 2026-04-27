@@ -24,7 +24,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Add a plugin-provided toolbar icon.  Called by NppPluginManager when a
 /// plugin sends NPPM_ADDTOOLBARICON_FORDARKMODE.
-- (void)addPluginToolbarIcon:(NSImage *)icon tooltip:(NSString *)tooltip cmdID:(int)cmdID;
+///
+/// The icon is resolved from disk at the current appearance and re-resolved
+/// automatically on theme change. Lookup order:
+///   1. Dark mode + iconHint   →  <pluginDir>/<base>_dark.<ext>
+///   2.                        →  <pluginDir>/<iconHint>
+///   3. Dark mode (no hint)    →  <pluginDir>/toolbar_dark.png
+///   4.                        →  <pluginDir>/toolbar.png
+///
+/// `pluginDir` must be the absolute path of the plugin's resources directory.
+/// `iconHint` may be nil/empty — in that case only steps 3+4 apply (the
+/// "convention" path). `tooltip` becomes both the toolTip string and the
+/// overflow-menu label.
+- (void)addPluginToolbarIconForPluginDir:(NSString *)pluginDir
+                                iconHint:(nullable NSString *)iconHint
+                                 tooltip:(NSString *)tooltip
+                                   cmdID:(int)cmdID;
 
 /// Rebuild the Macro menu from shortcuts.xml (called after macro save/delete).
 - (void)rebuildMacroMenu;

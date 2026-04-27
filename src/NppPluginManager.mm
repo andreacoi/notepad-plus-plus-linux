@@ -1091,19 +1091,23 @@ static intptr_t _npp_run_on_main(intptr_t (^block)(void)) {
         case NPPM_ADDTOOLBARICON_FORDARKMODE: {
             // wParam = cmdID assigned to a FuncItem
             // lParam = (const char *) icon filename hint (optional, macOS extension)
-            //          if NULL, falls back to toolbar.png
+            //          if NULL, the host falls back to toolbar.png. In dark mode
+            //          the host additionally probes <hint>_dark.<ext> /
+            //          toolbar_dark.png — see Path A in MWC's
+            //          _resolvePluginToolbarIconForDir:hint:.
+            //
+            // The host (MainWindowController) is the single source of truth
+            // for icon lookup and re-loads icons on theme change. This handler
+            // just hands it the strings.
             int cmdID = (int)wParam;
 
-            // Find which plugin owns this cmdID and load the icon
             std::string pluginDirName;
-            std::string pluginDisplayName;
             std::string funcItemName;
             for (auto &pi : _plugins) {
                 for (int i = 0; i < pi->nbFuncItems; i++) {
                     if (pi->funcItems[i]._cmdID == cmdID) {
                         pluginDirName = pi->moduleName;
-                        pluginDisplayName = pi->displayName;
-                        funcItemName = pi->funcItems[i]._itemName;
+                        funcItemName  = pi->funcItems[i]._itemName;
                         break;
                     }
                 }
@@ -1117,44 +1121,22 @@ static intptr_t _npp_run_on_main(intptr_t (^block)(void)) {
 
             NSString *pluginDir = [NSString stringWithFormat:@"%@/%s",
                                    pluginBaseDir(), pluginDirName.c_str()];
-
-            // Try icon name from lParam hint first
-            NSImage *icon = nil;
-            if (lParam) {
-                NSString *hintPath = [pluginDir stringByAppendingPathComponent:
-                    [NSString stringWithUTF8String:(const char *)lParam]];
-                icon = [[NSImage alloc] initWithContentsOfFile:hintPath];
-            }
-
-            // Fallback: toolbar.png (single-icon plugins)
-            if (!icon) {
-                NSString *iconPath = [pluginDir stringByAppendingPathComponent:@"toolbar.png"];
-                icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
-            }
-
-            if (!icon) {
-                NSLog(@"[Plugins] ADDTOOLBARICON: no icon found for cmdID %d in %@", cmdID, pluginDir);
-                return 0;
-            }
-            icon.size = NSMakeSize(16, 16);
+            NSString *iconHint  = lParam
+                ? [NSString stringWithUTF8String:(const char *)lParam]
+                : nil;
+            NSString *tooltip   = funcItemName.empty()
+                ? @""
+                : [NSString stringWithUTF8String:funcItemName.c_str()];
 
             MainWindowController *mwc = _mwc;
-            if (mwc) {
-                NSString *tooltip = [NSString stringWithUTF8String:pluginDisplayName.c_str()];
-                // Find the FuncItem name for a more specific tooltip
-                for (auto &pi : _plugins) {
-                    for (int i = 0; i < pi->nbFuncItems; i++) {
-                        if (pi->funcItems[i]._cmdID == cmdID) {
-                            tooltip = [NSString stringWithFormat:@"%s",
-                                       pi->funcItems[i]._itemName];
-                            break;
-                        }
-                    }
-                }
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [mwc addPluginToolbarIcon:icon tooltip:tooltip cmdID:cmdID];
-                });
-            }
+            if (!mwc) return 0;
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [mwc addPluginToolbarIconForPluginDir:pluginDir
+                                             iconHint:iconHint
+                                              tooltip:tooltip
+                                                cmdID:cmdID];
+            });
             return 1;
         }
 
