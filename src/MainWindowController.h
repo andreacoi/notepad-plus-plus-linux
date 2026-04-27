@@ -26,13 +26,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// plugin sends NPPM_ADDTOOLBARICON_FORDARKMODE.
 ///
 /// The icon is resolved from disk at the current appearance and re-resolved
-/// automatically on theme change. Lookup order:
-///   1. Dark mode + iconHint   →  <pluginDir>/<base>_dark.<ext>
-///   2.                        →  <pluginDir>/<iconHint>
-///   3. Dark mode (no hint)    →  <pluginDir>/toolbar_dark.png
-///   4.                        →  <pluginDir>/toolbar.png
+/// automatically on theme change. Each candidate filename is probed first
+/// in `<pluginDir>/` and then in `<pluginDir>/resources/` — plugin root
+/// takes precedence so existing layouts keep working untouched. Lookup
+/// order (first hit wins):
+///   1. Dark mode + iconHint   →  <base>_dark.<ext>
+///   2.                        →  <iconHint>
+///   3. Dark mode (no hint)    →  toolbar_dark.png
+///   4.                        →  toolbar.png
 ///
-/// `pluginDir` must be the absolute path of the plugin's resources directory.
+/// `pluginDir` must be the absolute path of the plugin's installed directory.
 /// `iconHint` may be nil/empty — in that case only steps 3+4 apply (the
 /// "convention" path). `tooltip` becomes both the toolTip string and the
 /// overflow-menu label.

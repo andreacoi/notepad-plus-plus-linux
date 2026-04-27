@@ -1592,14 +1592,35 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
     [tb insertItemWithItemIdentifier:ident atIndex:insertIdx];
 }
 
+// Try `filename` against each directory in `dirs` in order. Returns the
+// first NSImage that loads, or nil if none of the candidate paths resolve
+// to a readable image. Used by the plugin-icon resolver below to probe
+// the plugin's root folder first and its resources/ subfolder second.
+static NSImage *_loadPluginIconFromDirs(NSArray<NSString *> *dirs, NSString *filename) {
+    if (filename.length == 0) return nil;
+    for (NSString *dir in dirs) {
+        if (dir.length == 0) continue;
+        NSString *path = [dir stringByAppendingPathComponent:filename];
+        NSImage *img = [[NSImage alloc] initWithContentsOfFile:path];
+        if (img) return img;
+    }
+    return nil;
+}
+
 // Resolve a plugin's toolbar icon based on the current dark-mode state.
 //
+// Each candidate filename is probed first in `<pluginDir>/` and then in
+// `<pluginDir>/resources/`. Plugin root takes precedence — every plugin
+// shipped today with icons in root keeps working byte-for-byte. Plugins
+// that organise their assets under `resources/` (e.g. NppBeads,
+// NppJsonViewer) work without needing a duplicate copy at root.
+//
 // Lookup order (first hit wins):
-//   1. Dark mode + iconHint   →  <pluginDir>/<base>_dark.<ext>
+//   1. Dark mode + iconHint   →  <base>_dark.<ext>
 //                                e.g. iconHint="myicon.png" → "myicon_dark.png"
-//   2.                        →  <pluginDir>/<iconHint>
-//   3. Dark mode (no hint)    →  <pluginDir>/toolbar_dark.png
-//   4.                        →  <pluginDir>/toolbar.png
+//   2.                        →  <iconHint>
+//   3. Dark mode (no hint)    →  toolbar_dark.png
+//   4.                        →  toolbar.png
 //
 // Plugins that ship a single icon (just toolbar.png) keep working unchanged.
 // Plugins that drop a second `toolbar_dark.png` next to it automatically get
@@ -1609,6 +1630,16 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
 {
     if (pluginDir.length == 0) return nil;
     BOOL isDark = [NppThemeManager shared].isDark;
+
+    // Search dirs ordered by precedence. Plugin root first preserves the
+    // existing behaviour for every plugin shipped today (their icons live
+    // at root); resources/ second is purely additive — a new fallback
+    // location, no path removed.
+    NSArray<NSString *> *dirs = @[
+        pluginDir,
+        [pluginDir stringByAppendingPathComponent:@"resources"],
+    ];
+
     NSImage *icon = nil;
 
     if (iconHint.length > 0) {
@@ -1618,24 +1649,14 @@ static NSDictionary<NSString *, NSArray *> *toolbarGroupMap(void) {
             NSString *darkName = ext.length
                 ? [NSString stringWithFormat:@"%@_dark.%@", base, ext]
                 : [NSString stringWithFormat:@"%@_dark", base];
-            NSString *darkPath = [pluginDir stringByAppendingPathComponent:darkName];
-            icon = [[NSImage alloc] initWithContentsOfFile:darkPath];
+            icon = _loadPluginIconFromDirs(dirs, darkName);
         }
-        if (!icon) {
-            NSString *path = [pluginDir stringByAppendingPathComponent:iconHint];
-            icon = [[NSImage alloc] initWithContentsOfFile:path];
-        }
+        if (!icon) icon = _loadPluginIconFromDirs(dirs, iconHint);
     }
 
     if (!icon) {
-        if (isDark) {
-            NSString *darkPath = [pluginDir stringByAppendingPathComponent:@"toolbar_dark.png"];
-            icon = [[NSImage alloc] initWithContentsOfFile:darkPath];
-        }
-        if (!icon) {
-            NSString *path = [pluginDir stringByAppendingPathComponent:@"toolbar.png"];
-            icon = [[NSImage alloc] initWithContentsOfFile:path];
-        }
+        if (isDark) icon = _loadPluginIconFromDirs(dirs, @"toolbar_dark.png");
+        if (!icon)  icon = _loadPluginIconFromDirs(dirs, @"toolbar.png");
     }
 
     if (icon) icon.size = NSMakeSize(16, 16);
