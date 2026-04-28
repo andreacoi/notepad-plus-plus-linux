@@ -1132,6 +1132,18 @@ static NSColor *nppColorFromHex(NSString *hex) {
     [sci setColorProperty:SCI_STYLESETFORE parameter:STYLE_DEFAULT value:fg];
     [sci setColorProperty:SCI_STYLESETBACK parameter:STYLE_DEFAULT value:bg];
 
+    // Apply Global "Default Style" bold/italic/underline to STYLE_DEFAULT
+    // BEFORE the STYLECLEARALL below, so the propagation carries these
+    // attributes to every other style in one pass. Without this, the
+    // Style Configurator's bold/italic/underline toggles for the Global
+    // Default Style had no effect on the editor at all (the per-style
+    // applyLexerColors: pass below only iterates language-specific
+    // styles, never STYLE_DEFAULT).
+    NPPStyleEntry *gsDefault = [store globalStyleNamed:@"Default Style"];
+    [sci message:SCI_STYLESETBOLD      wParam:STYLE_DEFAULT lParam:(gsDefault.bold      ? 1 : 0)];
+    [sci message:SCI_STYLESETITALIC    wParam:STYLE_DEFAULT lParam:(gsDefault.italic    ? 1 : 0)];
+    [sci message:SCI_STYLESETUNDERLINE wParam:STYLE_DEFAULT lParam:(gsDefault.underline ? 1 : 0)];
+
     // Propagate defaults to all styles, then re-apply language-specific colors
     [sci message:SCI_STYLECLEARALL];
 
@@ -1249,6 +1261,13 @@ static NSColor *nppColorFromHex(NSString *hex) {
     NSColor *bg = storeD.globalBg;
     [sci setColorProperty:SCI_STYLESETFORE parameter:STYLE_DEFAULT value:fg];
     [sci setColorProperty:SCI_STYLESETBACK parameter:STYLE_DEFAULT value:bg];
+    // bold / italic / underline from the Global "Default Style" entry — must
+    // be set BEFORE STYLECLEARALL so propagation carries them to every other
+    // style. Mirrors the same fix in -applyThemeColors.
+    NPPStyleEntry *gsDefault = [storeD globalStyleNamed:@"Default Style"];
+    [sci message:SCI_STYLESETBOLD      wParam:STYLE_DEFAULT lParam:(gsDefault.bold      ? 1 : 0)];
+    [sci message:SCI_STYLESETITALIC    wParam:STYLE_DEFAULT lParam:(gsDefault.italic    ? 1 : 0)];
+    [sci message:SCI_STYLESETUNDERLINE wParam:STYLE_DEFAULT lParam:(gsDefault.underline ? 1 : 0)];
 
     // 2. Propagate STYLE_DEFAULT to ALL lexer styles (must come AFTER colors are set)
     [sci message:SCI_STYLECLEARALL];

@@ -968,12 +968,17 @@ static NSString *_userThemesDir(void) {
     e.bgColor = swatch.swatchColor;
     [[NPPStyleStore sharedStore] previewLexers:_workingLexers];
 }
+// Font-related callbacks parallel the color callbacks above: write the new
+// value into the working entry, then push the lexer set through previewLexers
+// so the live editor reflects the change immediately. Without the preview
+// call, font/style toggles only became visible after Save && Close.
 - (void)_fontNameChanged:(id)sender {
     if (_suppressActions) return;
     NPPStyleEntry *e = [self _currentEntry];
     if (!e) return;
     NSInteger idx = _fontNamePopup.indexOfSelectedItem;
     e.fontName = (idx == 0) ? @"" : [_fontNamePopup titleOfSelectedItem];
+    [[NPPStyleStore sharedStore] previewLexers:_workingLexers];
 }
 - (void)_fontSizeChanged:(id)sender {
     if (_suppressActions) return;
@@ -981,21 +986,31 @@ static NSString *_userThemesDir(void) {
     if (!e) return;
     NSInteger szIdx = _fontSizePopup.indexOfSelectedItem;
     e.fontSize = (szIdx == 0) ? 0 : [_fontSizePopup titleOfSelectedItem].intValue;
+    [[NPPStyleStore sharedStore] previewLexers:_workingLexers];
 }
 - (void)_boldChanged:(id)sender {
     if (_suppressActions) return;
     NPPStyleEntry *e = [self _currentEntry];
-    if (e) { e.bold = (_boldCheck.state == NSControlStateValueOn); e.fontStyleExplicit = YES; }
+    if (!e) return;
+    e.bold = (_boldCheck.state == NSControlStateValueOn);
+    e.fontStyleExplicit = YES;
+    [[NPPStyleStore sharedStore] previewLexers:_workingLexers];
 }
 - (void)_italicChanged:(id)sender {
     if (_suppressActions) return;
     NPPStyleEntry *e = [self _currentEntry];
-    if (e) { e.italic = (_italicCheck.state == NSControlStateValueOn); e.fontStyleExplicit = YES; }
+    if (!e) return;
+    e.italic = (_italicCheck.state == NSControlStateValueOn);
+    e.fontStyleExplicit = YES;
+    [[NPPStyleStore sharedStore] previewLexers:_workingLexers];
 }
 - (void)_underlineChanged:(id)sender {
     if (_suppressActions) return;
     NPPStyleEntry *e = [self _currentEntry];
-    if (e) { e.underline = (_underlineCheck.state == NSControlStateValueOn); e.fontStyleExplicit = YES; }
+    if (!e) return;
+    e.underline = (_underlineCheck.state == NSControlStateValueOn);
+    e.fontStyleExplicit = YES;
+    [[NPPStyleStore sharedStore] previewLexers:_workingLexers];
 }
 
 - (void)_saveAndClose:(id)sender {
