@@ -3130,16 +3130,26 @@ static void removeMacroFromShortcutsXML(NSString *name) {
     [op runOperation];
 }
 
-#pragma mark - Edit / clipboard actions forwarded to first responder
+#pragma mark - Edit / clipboard actions
 
-// Cut/Copy/Paste/Undo/Redo/SelectAll are handled by the responder chain (ScintillaView).
-// We just need to make sure the toolbar buttons reach the first responder.
-
-- (void)cut:(id)sender   { [[NSApp keyWindow].firstResponder tryToPerform:@selector(cut:)   with:sender]; }
-- (void)copy:(id)sender  { [[NSApp keyWindow].firstResponder tryToPerform:@selector(copy:)  with:sender]; }
-- (void)paste:(id)sender { [[NSApp keyWindow].firstResponder tryToPerform:@selector(paste:) with:sender]; }
-- (void)undo:(id)sender  { [[NSApp keyWindow].firstResponder tryToPerform:@selector(undo:)  with:sender]; }
-- (void)redo:(id)sender  { [[NSApp keyWindow].firstResponder tryToPerform:@selector(redo:)  with:sender]; }
+// Edit menu / toolbar / Cmd-key forwarders. We send the Scintilla message
+// directly to the current editor instead of bouncing through the responder
+// chain. The earlier `[firstResponder tryToPerform:]` recursed back into
+// these methods (NSWindow.tryToPerform: walks its chain back to the window
+// controller, which IS self), and with no editor focus the loop ran out
+// the thread-0 stack — manifest as a crash inside objc_loadWeakRetained.
+//
+// When `currentEditor` is nil (no tab open, fresh launch, all tabs closed),
+// `[nil scintillaView]` returns nil and the message is a silent no-op,
+// matching the expected "do nothing" behaviour. When focus is on a text
+// field (Find dialog, side-panel filter, etc.), AppKit's responder routing
+// delivers Cmd+V to the field directly and these methods are never invoked,
+// so those paths are unaffected.
+- (void)cut:(id)sender   { [[[self currentEditor] scintillaView] message:SCI_CUT];   }
+- (void)copy:(id)sender  { [[[self currentEditor] scintillaView] message:SCI_COPY];  }
+- (void)paste:(id)sender { [[[self currentEditor] scintillaView] message:SCI_PASTE]; }
+- (void)undo:(id)sender  { [[[self currentEditor] scintillaView] message:SCI_UNDO];  }
+- (void)redo:(id)sender  { [[[self currentEditor] scintillaView] message:SCI_REDO];  }
 
 - (void)indentSelection:(id)sender {
     [[[self currentEditor] scintillaView] message:SCI_TAB];
