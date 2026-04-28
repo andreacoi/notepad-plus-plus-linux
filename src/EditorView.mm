@@ -867,9 +867,21 @@ static const NSUInteger kLargeFileThreshold = 50 * 1024 * 1024; // 50 MB
         [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.comment"      lParam:(sptr_t)"1"];
         [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.preprocessor" lParam:(sptr_t)"1"];
     } else if ([lang isEqualToString:@"html"] || [lang isEqualToString:@"xml"] ||
-               [lang isEqualToString:@"asp"]) {
-        [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.html"               lParam:(sptr_t)"1"];
-        [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.html.preprocessor"  lParam:(sptr_t)"1"];
+               [lang isEqualToString:@"asp"]  || [lang isEqualToString:@"php"]) {
+        // LexHTML.cxx gates ALL of its fold-level emission on `fold.html` AND
+        // the generic `fold` flag — see `const bool fold = foldHTML &&
+        // options.fold;` at LexHTML:1262. Without `fold.html=1` the lexer
+        // never calls SetLevel, even for { } braces inside <?php ... ?> or
+        // <% ... %> preprocessor regions. PHP files were missing this
+        // branch before, so folding was silently dead in any file mapped to
+        // the `phpscript` (or `hypertext`-with-PHP) lexer.
+        [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.html"                lParam:(sptr_t)"1"];
+        [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.html.preprocessor"   lParam:(sptr_t)"1"];
+        // Additional fold surfaces LexHTML supports (default off): block
+        // comments and heredoc/nowdoc strings. Both are common in PHP/HTML
+        // and obviously foldable; turning them on costs one property each.
+        [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.hypertext.comment"   lParam:(sptr_t)"1"];
+        [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.hypertext.heredoc"   lParam:(sptr_t)"1"];
     } else if ([lang isEqualToString:@"python"]) {
         [sci message:SCI_SETPROPERTY wParam:(uptr_t)"fold.quotes.python" lParam:(sptr_t)"1"];
     } else if ([lang isEqualToString:@"lua"]) {
