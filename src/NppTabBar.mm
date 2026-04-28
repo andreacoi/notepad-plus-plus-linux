@@ -316,11 +316,72 @@ static const CGFloat kPinSize = 11.0; // pin icon drawn at ~80% of original ~14p
 @end
 
 // ─────────────────────────────────────────────────────────────────────────────
+#pragma mark - _NppTabBarContainer
+//
+// Document view that backs the tab bar's scroll view and holds the
+// _NppTabItem subviews. Its sole responsibility beyond being a plain NSView
+// is to detect a double-click on the empty space to the right of the last
+// tab (or below the last row in wrap mode) and ask its owning NppTabBar
+// to fire `tabBarDidRequestNewTab:` on the delegate.
+//
+// AppKit's hit-test guarantees that mouseDown only reaches us when the click
+// did NOT land on any _NppTabItem subview — so we don't need any
+// point-in-rect math to know "the click was on empty space."
+//
+// Same-view double-click guard:
+//   NSEvent.clickCount is window-scoped, not view-scoped. A user click
+//   sequence like `tab → empty area within 400 ms` would deliver a
+//   clickCount=2 event to us even though click #1 landed on a different
+//   view (the tab). Without this guard, that sequence would spuriously
+//   open a new tab. We track the timestamp of every mouseDown WE receive
+//   and only fire on clickCount=2 if the previous click was also ours
+//   within [NSEvent doubleClickInterval]. Click sequences that don't
+//   originate inside this view never trigger the gesture.
+
+// Private NppTabBar API used by _NppTabBarContainer below. Declared in a
+// class extension so the container's mouseDown can call it under ARC
+// without falling back to performSelector.
+@interface NppTabBar (_NppTabBarPrivate)
+- (void)_emptyAreaDoubleClicked;
+@end
+
+@interface _NppTabBarContainer : NSView
+@property (nonatomic, weak, nullable) NppTabBar *tabBar;
+@end
+
+@implementation _NppTabBarContainer {
+    NSTimeInterval _lastClickHere;  // timestamp of last mouseDown delivered to us
+}
+
+- (void)mouseDown:(NSEvent *)event {
+    NSTimeInterval now = event.timestamp;
+
+    if (event.clickCount == 2 &&
+        _lastClickHere > 0 &&
+        (now - _lastClickHere) <= [NSEvent doubleClickInterval])
+    {
+        // Both clicks of the pair landed on us → genuine empty-area
+        // double-click. Reset the timestamp so a subsequent quick click
+        // doesn't pair with this completed gesture.
+        _lastClickHere = 0;
+        if (self.tabBar) [self.tabBar _emptyAreaDoubleClicked];
+        return;
+    }
+
+    // Single-click on empty area, or first click of a future pair.
+    // Stash the timestamp so the same-view guard above can recognise the
+    // pair if a second click follows in time.
+    _lastClickHere = now;
+}
+
+@end
+
+// ─────────────────────────────────────────────────────────────────────────────
 #pragma mark - NppTabBar
 
 @implementation NppTabBar {
     NSScrollView                  *_scrollView;
-    NSView                        *_containerView;
+    _NppTabBarContainer           *_containerView;
     NSMutableArray<_NppTabItem *> *_items;
     NSInteger                      _selectedIndex;
     BOOL                           _wrapMode;
@@ -351,7 +412,8 @@ static const CGFloat kPinSize = 11.0; // pin icon drawn at ~80% of original ~14p
 }
 
 - (void)_buildUI {
-    _containerView = [[NSView alloc] initWithFrame:NSZeroRect];
+    _containerView = [[_NppTabBarContainer alloc] initWithFrame:NSZeroRect];
+    _containerView.tabBar = self;
 
     _scrollView                       = [[NSScrollView alloc] initWithFrame:self.bounds];
     _scrollView.autoresizingMask      = NSViewNotSizable;   // managed in relayout
@@ -585,6 +647,17 @@ static const CGFloat kPinSize = 11.0; // pin icon drawn at ~80% of original ~14p
         [cv scrollToPoint:NSMakePoint(MAX(0, nx), 0)];
         [_scrollView reflectScrolledClipView:cv];
     }
+}
+
+#pragma mark - Empty-area gesture
+
+// Called from _NppTabBarContainer when the user double-clicks empty space
+// to the right of the last tab (or below the last row in wrap mode). The
+// container has already validated that both clicks of the pair landed on
+// itself — no further geometry checks needed here.
+- (void)_emptyAreaDoubleClicked {
+    if ([self.delegate respondsToSelector:@selector(tabBarDidRequestNewTab:)])
+        [self.delegate tabBarDidRequestNewTab:self];
 }
 
 #pragma mark - Scroll actions

@@ -7,6 +7,12 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol NppTabBarDelegate <NSObject>
 - (void)tabBar:(NppTabBar *)bar didSelectTabAtIndex:(NSInteger)index;
 - (void)tabBar:(NppTabBar *)bar didCloseTabAtIndex:(NSInteger)index;
+@optional
+/// Fires when the user double-clicks empty space to the right of the last
+/// tab (or below the last row in wrap mode). Implementer typically opens
+/// a new untitled tab in the tab manager that owns `bar`. Optional — bars
+/// with no implementer simply don't react to the gesture.
+- (void)tabBarDidRequestNewTab:(NppTabBar *)bar;
 @end
 
 /// Left-aligned, scrollable tab bar styled after Notepad++.

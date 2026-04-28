@@ -189,6 +189,14 @@
     [self closeEditor:_editors[index]];
 }
 
+- (void)tabBarDidRequestNewTab:(NppTabBar *)bar {
+    // User double-clicked the empty area to the right of the last tab. Open
+    // a new untitled tab in THIS tab manager — the routing is implicit
+    // because each NppTabBar's delegate is the TabManager that owns it, so
+    // we can never receive this for a bar that belongs to a different pane.
+    [self addNewTab];
+}
+
 #pragma mark - Accessors
 
 - (NppTabBar *)tabBar    { return _tabBar; }
