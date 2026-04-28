@@ -59,6 +59,7 @@ extern NSString *const kPrefFoldStyle;           // NSInteger, 0=box 1=circle 2=
 extern NSString *const kPrefLineNumDynWidth;     // BOOL, default YES
 extern NSString *const kPrefInSelThreshold;      // NSInteger, default 1024
 extern NSString *const kPrefFuncListUseXML;      // BOOL, default YES — use XML parsers vs hardcoded regex
+extern NSString *const kPrefToolbarIconScale;    // double, 0.50/0.75/0.90/1.00/1.25/1.50, default 1.0 — restart required
 
 // Theme / Style Configurator keys (hex color strings "#RRGGBB")
 extern NSString *const kPrefThemePreset;    // preset name or "Custom"

@@ -59,6 +59,7 @@ NSString *const kPrefFoldStyle           = @"foldStyle";
 NSString *const kPrefLineNumDynWidth     = @"lineNumDynWidth";
 NSString *const kPrefInSelThreshold      = @"inSelThreshold";
 NSString *const kPrefFuncListUseXML      = @"funcListUseXML";
+NSString *const kPrefToolbarIconScale    = @"toolbarIconScale";
 
 // Theme / Style Configurator keys
 NSString *const kPrefThemePreset        = @"themePreset";
@@ -166,6 +167,7 @@ NSString *const kPrefStyleFontSize      = @"styleFontSize";
         kPrefLineNumDynWidth:      @YES,
         kPrefInSelThreshold:       @1024,
         kPrefFuncListUseXML:       @YES,
+        kPrefToolbarIconScale:     @1.0,  // 0.50/0.75/0.90/1.00/1.25/1.50 — restart required
         kPrefDarkMode:             @0,   // 0=Auto, 1=Light, 2=Dark
     }];
     // Force-upgrade any stale @NO value stored by earlier builds.
@@ -1394,6 +1396,38 @@ static NSDictionary<NSString *, NSString *> *_langDisplayNames() {
         y -= 28;
     }
 
+    // ── Toolbar icon size dropdown ─────────────────────────────────────────────
+    // Restart-required (per design — toolbar metrics are cached on first use
+    // via dispatch_once in MainWindowController). On change, we persist the
+    // value and surface a one-time "takes effect after restart" alert so the
+    // user isn't left wondering why the toolbar didn't change immediately.
+    y -= 8;  // small extra gap before non-checkbox control
+    NSTextField *scaleLabel = [NSTextField labelWithString:[loc translate:@"Toolbar icon size"]];
+    scaleLabel.frame = NSMakeRect(20, y, 200, 20);
+    [v addSubview:scaleLabel];
+
+    NSPopUpButton *scalePopup = [[NSPopUpButton alloc]
+        initWithFrame:NSMakeRect(220, y - 3, 130, 26) pullsDown:NO];
+    [scalePopup addItemsWithTitles:@[@"50%", @"75%", @"90%",
+                                     [loc translate:@"100% (Default)"],
+                                     @"125%", @"150%"]];
+    scalePopup.target = self;
+    scalePopup.action = @selector(prefChanged:);
+    scalePopup.tag    = 1207;
+    // Map the persisted scale → selected index. Round-tripping `pickScales`
+    // here (instead of reading a separate stored index) keeps the dropdown
+    // state authoritatively derived from the same scale value the toolbar
+    // builder reads at startup.
+    static const double pickScales[] = {0.50, 0.75, 0.90, 1.00, 1.25, 1.50};
+    double currentScale = [ud doubleForKey:kPrefToolbarIconScale];
+    NSInteger pickIdx = 3;  // default: 100 %
+    for (NSInteger i = 0; i < 6; i++) {
+        if (fabs(currentScale - pickScales[i]) < 1e-6) { pickIdx = i; break; }
+    }
+    [scalePopup selectItemAtIndex:pickIdx];
+    [v addSubview:scalePopup];
+    y -= 28;
+
     return v;
 }
 
@@ -1504,6 +1538,25 @@ static NSDictionary<NSString *, NSString *> *_langDisplayNames() {
         case 1204: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefPanelKeepState]; break;
         case 1205: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefFuncListUseXML]; break;
         case 1206: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefPluginSplitViewRouting]; break;
+        case 1207: {
+            // Toolbar icon scale — restart required.
+            static const double scales[6] = {0.50, 0.75, 0.90, 1.00, 1.25, 1.50};
+            NSInteger idx = [(NSPopUpButton *)sender indexOfSelectedItem];
+            if (idx < 0 || idx >= 6) break;
+            double newScale = scales[idx];
+            double oldScale = [ud doubleForKey:kPrefToolbarIconScale];
+            // Only persist + alert if the value actually changed; selecting
+            // the already-active item should be silent.
+            if (fabs(newScale - oldScale) < 1e-6) break;
+            [ud setDouble:newScale forKey:kPrefToolbarIconScale];
+            NSAlert *alert = [[NSAlert alloc] init];
+            alert.messageText = [[NppLocalizer shared] translate:@"Toolbar icon size changed"];
+            alert.informativeText = [[NppLocalizer shared] translate:
+                @"The new toolbar icon size will take effect the next time Notepad++ launches."];
+            [alert addButtonWithTitle:[[NppLocalizer shared] translate:@"OK"]];
+            [alert runModal];
+            break;
+        }
         // Indentation
         case 1303: [ud setBool:[(NSButton *)sender state] == NSControlStateValueOn forKey:kPrefBackspaceUnindent]; break;
     }
