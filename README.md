@@ -3,7 +3,7 @@
 **The first native port of Notepad++ to macOS.** A full port of the original [Notepad++](https://notepad-plus-plus.org) codebase — not a rewrite, not an alternative, not Wine.
 
 <p align="center">
-  <a href="https://notepad-plus-plus-mac.org"><img src="https://notepad-plus-plus-mac.org/assets/images/logo-icon.png" alt="Notepad++ for macOS app icon" width="128" height="128"></a>
+  <a href="https://notepad-plus-plus-mac.org"><img src="https://notepad-plus-plus-mac.org/assets/images/icon-128x128.png" alt="Notepad++ for macOS app icon" width="128" height="128"></a>
 </p>
 
 <p align="center">
