@@ -44,8 +44,9 @@ static NSDictionary<NSString *, NSString *> *toolbarIconMapping(void) {
             @"playRecord":    @"playrecord_off",
             @"playRecord_m":  @"playrecord_m_off",
             @"saveRecord":    @"saverecord_off",
-            // Red save icon (unsaved tab indicator) — no dark variant, use same
-            @"saveFileRed":   @"save_off",
+            // Red save icon (unsaved tab indicator) — paired Fluent variant
+            // shipped at icons/{light,dark}/toolbar/regular/save_off_red.png.
+            @"saveFileRed":   @"save_off_red",
         };
     });
     return map;
