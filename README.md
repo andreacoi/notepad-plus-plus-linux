@@ -1,142 +1,59 @@
-# Notepad++ for macOS
+# Notepad++ Linux
 
-**The first native port of Notepad++ to macOS.** A full port of the original [Notepad++](https://notepad-plus-plus.org) codebase — not a rewrite, not an alternative, not Wine.
+A native Linux port of [Notepad++ for macOS](https://github.com/notepadplusplus/notepad-plus-plus-mac), built with C and GTK3.
 
-<p align="center">
-  <a href="https://notepad-plus-plus-mac.org"><img src="https://notepad-plus-plus-mac.org/assets/images/icon-128x128.png" alt="Notepad++ for macOS app icon" width="128" height="128"></a>
-</p>
+## Why this is possible
 
-<p align="center">
-  <a href="https://notepad-plus-plus-mac.org"><strong>Website</strong></a> ·
-  <a href="https://notepad-plus-plus-mac.org/download/"><strong>Download</strong></a> ·
-  <a href="https://notepad-plus-plus-mac.org/plugins/"><strong>Plugins</strong></a> ·
-  <a href="https://notepad-plus-plus-mac.org/online-help/"><strong>Help</strong></a> ·
-  <a href="https://github.com/notepad-plus-plus-mac/notepad-plus-plus-macos/releases"><strong>Releases</strong></a>
-</p>
+The macOS port and this Linux port share a common foundation: both macOS and Linux are UNIX-based systems. This means the underlying OS primitives — file I/O, process model, character encoding, shared library loading — are compatible. The two vendored libraries at the heart of the editor, **Scintilla** (editing engine) and **Lexilla** (syntax highlighting), already ship GTK3 and platform-agnostic backends alongside their Cocoa ones. The Linux port replaces only the UI layer, swapping Cocoa/Objective-C++ for GTK3/C, while leaving the editor core untouched.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/macOS-11%2B-blue" alt="macOS 11+">
-  <img src="https://img.shields.io/badge/arch-Apple%20Silicon%20%7C%20Intel-green" alt="Apple Silicon and Intel">
-  <img src="https://img.shields.io/badge/license-GPL--3.0-orange" alt="GPL-3.0 License">
-  <img src="https://img.shields.io/github/v/release/notepad-plus-plus-mac/notepad-plus-plus-macos" alt="Latest release">
-</p>
+## Status
 
----
+Early development. Phase 1 is working:
 
-## What this is
+- Multi-tab editing
+- File operations: New, Open, Save, Save As, Close
+- Undo / Redo, Cut / Copy / Paste, Select All
+- Go To Line
+- Status bar (line/column, EOL mode, encoding)
+- Modified-document tracking with ask-to-save on close/quit
+- Command-line file arguments
 
-Notepad++ for macOS brings the beloved Windows code editor to Apple's desktop platform as a **fully native Mac application**. This is the actual Notepad++ codebase ported to run natively on macOS — built from source in Objective-C++, using platform-native APIs, with no compatibility layer in between.
+## Build
 
-- ✅ **Native macOS app** — no Wine, Porting Kit, CrossOver, or emulation
-- ✅ **Universal Binary** — runs natively on Apple Silicon (M1–M5) and Intel
-- ✅ **Apple-notarized** — ships signed and approved for macOS Gatekeeper
-- ✅ **Free and open source** — GPL-3.0, no ads, no subscriptions, no telemetry
-- ✅ **Full feature parity** — syntax highlighting, plugins, macros, find-in-files, regex, split view, document map, and more
+Requires CMake 3.20+, GCC, and GTK3 development headers.
 
-The goal is not just to make Notepad++ "run" on Mac — it's to make it feel like it *belongs* there, with native menus, shortcuts, file dialogs, dark mode, and system integration.
+```sh
+sudo apt-get install libgtk-3-dev
+cmake -B linux/build -S linux
+cmake --build linux/build -j$(nproc)
+```
 
-## Screenshots
+Output: `linux/build/notepad++`
 
-<p align="center">
-  <img src="https://notepad-plus-plus-mac.org/assets/images/screenshot1.png" alt="Notepad++ for macOS in light mode with syntax-highlighted code, tabs, and document map" width="800">
-  <br><em>Light mode with syntax highlighting and document map</em>
-</p>
+## Run
 
-<p align="center">
-  <img src="https://notepad-plus-plus-mac.org/assets/images/screenshot3.png" alt="Notepad++ for macOS in dark mode with native macOS title bar" width="800">
-  <br><em>Dark mode, native macOS title bar</em>
-</p>
+```sh
+./linux/build/notepad++
+./linux/build/notepad++ file1.c file2.h
+```
 
-## Download
+## Architecture
 
-Get the latest build from **[notepad-plus-plus-mac.org/download](https://notepad-plus-plus-mac.org/download/)** or directly from [GitHub Releases](https://github.com/notepad-plus-plus-mac/notepad-plus-plus-macos/releases).
+```
+linux/src/main.c         — GtkApplication, window, menu bar, keyboard shortcuts
+linux/src/editor.c/h    — tab/document management, file I/O, Scintilla wrappers
+linux/src/statusbar.c/h — bottom status bar
+linux/src/sci_c.h        — C-safe Scintilla interface (bypasses C++-only headers)
 
-The download is a signed, notarized `.dmg`:
+scintilla/               — vendored editing engine (GTK3 backend used as-is)
+lexilla/                 — vendored syntax highlighting (~80 language lexers)
+```
 
-1. Open the downloaded `.dmg`
-2. Drag **Notepad++** to your **Applications** folder
-3. Launch from Applications or Spotlight
+The application layer is pure C. Scintilla and Lexilla are compiled as C++ static libraries and accessed exclusively through their C message API (`scintilla_send_message`).
 
-## System Requirements
+## Original projects
 
-| | |
-|---|---|
-| **Operating System** | macOS 11 (Big Sur) or later |
-| **Processor** | Apple Silicon (M1/M2/M3/M4/M5) or Intel |
-| **Disk Space** | ~50 MB |
-| **Memory** | 4 GB RAM minimum |
-
-## Features
-
-- **Syntax highlighting** for 80+ programming languages, with customizable color themes and user-defined languages
-- **Plugin system** with a native Plugin Admin — [~50 plugins already ported](https://notepad-plus-plus-mac.org/plugins/), with all ~140 expected by end of April 2026
-- **Scintilla-based editing component** with code folding
-- **Multi-document tabbed editing**
-- **Split view** — view and edit two documents side by side or two parts of the same document
-- **Powerful search**: regular expressions, find-in-files, bookmark lines, incremental search
-- **Macro recording** to automate repetitive editing tasks
-- **Native macOS UI**: menus, dialogs, keyboard shortcuts, dark mode following system preferences
-- **137-language UI** out of the box
-- **Document map, character panel, clipboard history, column editor, command palette**
-- **Scintilla as the editing engine** — battle-tested, high-performance, the same component powering the Windows version
-
-## FAQ
-
-### Is this the "real" Notepad++ for Mac?
-
-Yes. This is the actual Notepad++ codebase ported to run natively on macOS. It is not an alternative, a knockoff, a Wine wrapper, or a new editor that imitates Notepad++. It's Notepad++.
-
-### Do I need Wine, Porting Kit, or CrossOver?
-
-No. None of those. Notepad++ for macOS is a full native port of the original Windows codebase. It runs as a first-class native macOS application using platform APIs directly.
-
-### Does it work on Apple Silicon?
-
-Yes. Notepad++ for macOS is built as a Universal Binary with native ARM64 support. It runs at full speed on all Apple Silicon Macs without Rosetta translation.
-
-### Is it free?
-
-Yes. Completely free and open source under the GPL-3.0 license. No ads, no subscriptions, no in-app purchases, no telemetry.
-
-### Does it support plugins from the Windows version?
-
-Plugins are being incrementally ported from Windows. About 50 plugins are already ported and working on macOS, with the full set (~140) expected by the end of April 2026. See the [plugin compatibility page](https://notepad-plus-plus-mac.org/plugins/) for current status.
-
-## Building from Source
-
-This project is written in C++ and Objective-C++ and uses CMake as its build system. Source code lives in `src/`, and platform-native UI code uses `.mm` files (Objective-C++).
-
-Build instructions will be published as the macOS build pipeline matures. For now, the easiest way to use Notepad++ on macOS is to download the signed `.dmg` release.
-
-## Contributing
-
-Bug reports, feedback, and contributions are welcome. For:
-- **Bug reports and feature requests** — please open an [issue](https://github.com/notepad-plus-plus-mac/notepad-plus-plus-macos/issues)
-- **Code contributions** — submit a pull request against `main`
-- **Plugin porting** — see the [plugin registry](https://github.com/notepad-plus-plus-mac/nppPluginList)
-
-## License
-
-Notepad++ for macOS is distributed under the [GNU General Public License v3.0](LICENSE), matching the license of the original Notepad++ project.
-
-## Credits
-
-- **Don Ho** — original author and principal developer of [Notepad++](https://notepad-plus-plus.org). For over two decades, Don has maintained Notepad++ as a free, open-source project loved by millions of developers. This macOS port is built directly upon his extraordinary work and the Notepad++ codebase, and would not exist without him.
-- **Andrey Letov** — developer of the macOS port ([aletik.me](https://aletik.me), [GitHub](https://github.com/aletik)).
-- **[Scintilla](https://www.scintilla.org/)** — the editing component that powers both Windows and macOS versions.
-
-## Links
-
-- 🌐 **Website:** https://notepad-plus-plus-mac.org
-- 📥 **Download:** https://notepad-plus-plus-mac.org/download/
-- 🔌 **Plugins:** https://notepad-plus-plus-mac.org/plugins/
-- 📖 **Documentation:** https://notepad-plus-plus-mac.org/online-help/
-- 🐛 **Issues:** https://github.com/notepad-plus-plus-mac/notepad-plus-plus-macos/issues
-- 💬 **Original Notepad++ Community:** https://community.notepad-plus-plus.org/
-- 💖 **Donate:** https://notepad-plus-plus-mac.org/donate/
-
----
-
-<p align="center">
-  <em>Made with care for Mac users who have waited 20 years for this.</em>
-</p>
+- [Notepad++ for macOS](https://github.com/notepadplusplus/notepad-plus-plus-mac)
+- [Scintilla](https://www.scintilla.org)
+- [Lexilla](https://www.scintilla.org/Lexilla.html)
+- [Notepad++ (Windows)](https://notepad-plus-plus.org)
