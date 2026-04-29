@@ -1,0 +1,45 @@
+#ifndef EDITOR_H
+#define EDITOR_H
+
+#include <gtk/gtk.h>
+#include "sci_c.h"
+
+typedef struct {
+    GtkWidget *sci;
+    char      *filepath;    /* NULL = unsaved */
+    gboolean   modified;
+    int        new_index;   /* "new N" label when filepath==NULL */
+} NppDoc;
+
+/* Initialise — call once, returns the GtkNotebook to embed in the window */
+GtkWidget *editor_init(GtkWidget *window);
+
+/* Document access */
+NppDoc    *editor_current_doc(void);
+NppDoc    *editor_doc_at(int page);
+int        editor_page_count(void);
+int        editor_current_page(void);
+GtkWidget *editor_get_notebook(void);
+
+/* File operations (dialogs shown when path is NULL / as appropriate) */
+void       editor_new_doc(void);
+gboolean   editor_open_dialog(void);               /* shows GTK open dialog */
+gboolean   editor_open_path(const char *path);     /* open a specific file   */
+gboolean   editor_save(void);                      /* save current doc       */
+gboolean   editor_save_as_dialog(void);            /* shows GTK save dialog  */
+gboolean   editor_close_page(int page);            /* -1 = current           */
+void       editor_close_all_quit(GApplication *app);
+
+/* Edit operations on current document */
+void editor_undo(void);
+void editor_redo(void);
+void editor_cut(void);
+void editor_copy(void);
+void editor_paste(void);
+void editor_select_all(void);
+void editor_goto_line_dialog(void);
+
+/* Convenience send to current doc */
+sptr_t editor_send(unsigned int msg, uptr_t wp, sptr_t lp);
+
+#endif /* EDITOR_H */
