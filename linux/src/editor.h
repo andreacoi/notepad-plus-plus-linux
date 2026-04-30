@@ -26,6 +26,7 @@ void       editor_new_doc(void);
 gboolean   editor_open_dialog(void);               /* shows GTK open dialog */
 gboolean   editor_open_path(const char *path);     /* open a specific file   */
 gboolean   editor_save(void);                      /* save current doc       */
+gboolean   editor_save_at(int page);               /* save specific page     */
 gboolean   editor_save_as_dialog(void);            /* shows GTK save dialog  */
 gboolean   editor_close_page(int page);            /* -1 = current           */
 void       editor_close_all_quit(GApplication *app);

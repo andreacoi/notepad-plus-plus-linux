@@ -67,6 +67,7 @@ add_executable(notepad++
     src/editor.c
     src/statusbar.c
     src/findreplace.c
+    src/toolbar.c
     src/lexer.cpp
     "${CMAKE_SOURCE_DIR}/../src/LexUserStub.cxx"
 )
@@ -79,7 +80,10 @@ target_include_directories(notepad++ PRIVATE
     ${GTK3_INCLUDE_DIRS}
 )
 
-target_compile_definitions(notepad++ PRIVATE GTK)
+target_compile_definitions(notepad++ PRIVATE
+    GTK
+    RESOURCES_DIR="${CMAKE_SOURCE_DIR}/../resources"
+)
 target_compile_options(notepad++ PRIVATE ${GTK3_CFLAGS_OTHER})
 # lexer.cpp needs cstdint for the same reason as lexilla
 set_source_files_properties(src/lexer.cpp PROPERTIES

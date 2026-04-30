@@ -2,6 +2,7 @@
 #include "statusbar.h"
 #include "lexer.h"
 #include "findreplace.h"
+#include "toolbar.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -172,6 +173,7 @@ static void on_switch_page(GtkNotebook *nb, GtkWidget *page,
         (const char *)g_object_get_data(G_OBJECT(page), "npp-lang")));
     update_window_title();
     findreplace_set_sci(page);
+    toolbar_sync_toggles(page);
 }
 
 /* ------------------------------------------------------------------ */
@@ -383,6 +385,18 @@ gboolean editor_save(void)
     NppDoc *doc = editor_current_doc();
     if (!doc) return FALSE;
     if (!doc->filepath) return editor_save_as_dialog();
+    return save_doc_to_path(doc, doc->filepath);
+}
+
+gboolean editor_save_at(int page)
+{
+    NppDoc *doc = editor_doc_at(page);
+    if (!doc) return FALSE;
+    if (!doc->filepath) {
+        /* Switch to that page, show save-as dialog */
+        gtk_notebook_set_current_page(GTK_NOTEBOOK(editor_get_notebook()), page);
+        return editor_save_as_dialog();
+    }
     return save_doc_to_path(doc, doc->filepath);
 }
 

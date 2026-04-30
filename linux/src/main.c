@@ -3,6 +3,7 @@
 #include "editor.h"
 #include "statusbar.h"
 #include "findreplace.h"
+#include "toolbar.h"
 
 /* ------------------------------------------------------------------ */
 /* Menu callbacks                                                      */
@@ -157,6 +158,10 @@ static void on_activate(GtkApplication *app, gpointer data)
     /* Menu bar */
     GtkWidget *menubar = build_menubar(GTK_WINDOW(window), G_APPLICATION(app));
     gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
+
+    /* Toolbar */
+    GtkWidget *toolbar = toolbar_init(window);
+    gtk_box_pack_start(GTK_BOX(vbox), toolbar, FALSE, FALSE, 0);
 
     /* Editor (notebook) */
     GtkWidget *notebook = editor_init(window);
