@@ -60,22 +60,30 @@ target_include_directories(lexilla PUBLIC
 target_compile_options(lexilla PRIVATE "-include" "cstdint")
 
 # -----------------------------------------------------------------------------
-# Application — GTK3 + Scintilla (pure C)
+# Application — GTK3 + Scintilla (C + C++ wrapper for Lexilla)
 # -----------------------------------------------------------------------------
 add_executable(notepad++
     src/main.c
     src/editor.c
     src/statusbar.c
+    src/findreplace.c
+    src/lexer.cpp
+    "${CMAKE_SOURCE_DIR}/../src/LexUserStub.cxx"
 )
 
 target_include_directories(notepad++ PRIVATE
     "${SCI_ROOT}/include"
+    "${SCI_ROOT}/src"
     "${SCI_ROOT}/gtk"
+    "${LEX_ROOT}/include"
     ${GTK3_INCLUDE_DIRS}
 )
 
 target_compile_definitions(notepad++ PRIVATE GTK)
 target_compile_options(notepad++ PRIVATE ${GTK3_CFLAGS_OTHER})
+# lexer.cpp needs cstdint for the same reason as lexilla
+set_source_files_properties(src/lexer.cpp PROPERTIES
+    COMPILE_OPTIONS "-include;cstdint")
 
 target_link_libraries(notepad++ PRIVATE
     scintilla

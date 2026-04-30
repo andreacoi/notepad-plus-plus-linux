@@ -1,5 +1,7 @@
 #include "editor.h"
 #include "statusbar.h"
+#include "lexer.h"
+#include "findreplace.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -164,10 +166,12 @@ static void on_sci_notify(GtkWidget *sci, gint unused,
 static void on_switch_page(GtkNotebook *nb, GtkWidget *page,
                            guint page_num, gpointer data)
 {
-    (void)nb; (void)data;
+    (void)nb; (void)data; (void)page_num;
     statusbar_update_from_sci(page);
+    statusbar_set_language(lexer_display_name(
+        (const char *)g_object_get_data(G_OBJECT(page), "npp-lang")));
     update_window_title();
-    /* language label stays "Normal Text" until Phase 2 adds lexer support */
+    findreplace_set_sci(page);
 }
 
 /* ------------------------------------------------------------------ */
@@ -317,10 +321,15 @@ gboolean editor_open_path(const char *path)
     sci_msg(sci, SCI_GOTOPOS, 0, 0);
     g_free(contents);
 
+    lexer_apply_from_path(sci, path);
+    statusbar_set_language(lexer_display_name(
+        (const char *)g_object_get_data(G_OBJECT(sci), "npp-lang")));
+
     refresh_tab_label(page);
     gtk_notebook_set_current_page(GTK_NOTEBOOK(s_notebook), page);
     update_window_title();
     statusbar_update_from_sci(sci);
+    findreplace_set_sci(sci);
     return TRUE;
 }
 

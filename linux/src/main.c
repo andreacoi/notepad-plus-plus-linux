@@ -2,6 +2,7 @@
 #include "sci_c.h"
 #include "editor.h"
 #include "statusbar.h"
+#include "findreplace.h"
 
 /* ------------------------------------------------------------------ */
 /* Menu callbacks                                                      */
@@ -29,6 +30,22 @@ static void cb_paste(GtkMenuItem *i, gpointer d)   { (void)i;(void)d; editor_pas
 static void cb_selall(GtkMenuItem *i, gpointer d)  { (void)i;(void)d; editor_select_all(); }
 
 /* Search */
+static GtkWidget *s_main_window = NULL;
+
+static void cb_find(GtkMenuItem *i, gpointer d)
+{
+    (void)i;(void)d;
+    findreplace_set_sci(editor_current_doc()->sci);
+    findreplace_show(s_main_window, NULL, FALSE);
+}
+
+static void cb_replace(GtkMenuItem *i, gpointer d)
+{
+    (void)i;(void)d;
+    findreplace_set_sci(editor_current_doc()->sci);
+    findreplace_show(s_main_window, NULL, TRUE);
+}
+
 static void cb_goto(GtkMenuItem *i, gpointer d)   { (void)i;(void)d; editor_goto_line_dialog(); }
 
 /* ------------------------------------------------------------------ */
@@ -95,7 +112,10 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
 
     /* ---- Search ---- */
     GtkWidget *search = submenu(bar, "_Search");
-    APPEND(search, menu_item("_Go To Line…", G_CALLBACK(cb_goto), NULL, accel, GDK_KEY_g, GDK_CONTROL_MASK));
+    APPEND(search, menu_item("_Find…",       G_CALLBACK(cb_find),    NULL, accel, GDK_KEY_f, GDK_CONTROL_MASK));
+    APPEND(search, menu_item("_Replace…",    G_CALLBACK(cb_replace), NULL, accel, GDK_KEY_h, GDK_CONTROL_MASK));
+    APPEND(search, sep_item());
+    APPEND(search, menu_item("_Go To Line…", G_CALLBACK(cb_goto),    NULL, accel, GDK_KEY_g, GDK_CONTROL_MASK));
 
     /* ---- View (placeholder) ---- */
     submenu(bar, "_View");
@@ -126,6 +146,7 @@ static void on_activate(GtkApplication *app, gpointer data)
     (void)data;
 
     GtkWidget *window = gtk_application_window_new(app);
+    s_main_window = window;
     gtk_window_set_title(GTK_WINDOW(window), "Notepad++ Linux");
     gtk_window_set_default_size(GTK_WINDOW(window), 1024, 700);
     g_signal_connect(window, "delete-event", G_CALLBACK(on_delete_event), app);

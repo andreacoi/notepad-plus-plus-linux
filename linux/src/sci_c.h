@@ -80,6 +80,10 @@ typedef struct SCNotification {
 #define SCI_SETEOLMODE          2031
 #define SCI_GETEOLMODE          2030
 #define SCI_SETLEXERLANGUAGE    4006
+#define SCI_SETILEXER           4033
+#define SCI_SETPROPERTY         4004
+#define SCI_SETKEYWORDS         4005
+#define SCI_COLOURISE           4003
 
 /* ------------------------------------------------------------------ */
 /* SCN_ notification codes                                            */
