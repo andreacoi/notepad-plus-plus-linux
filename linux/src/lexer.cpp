@@ -89,6 +89,36 @@ static const ExtLang kExtLang[] = {
     {"au3", "autoit"},
     {"ps",  "postscript"}, {"eps","postscript"},
     {"mat", "matlab"},
+    /* Smalltalk */
+    {"st",  "smalltalk"},
+    /* Forth */
+    {"forth","forth"},
+    /* OScript */
+    {"osx", "oscript"},
+    /* AVS */
+    {"avs", "avs"},   {"avsi","avs"},
+    /* Hollywood */
+    {"hws", "hollywood"},
+    /* PureBasic */
+    {"pb",  "purebasic"},
+    /* FreeBasic */
+    {"bi",  "freebasic"},
+    /* BlitzBasic */
+    {"bb",  "blitzbasic"},
+    /* KiX */
+    {"kix", "kix"},
+    /* VisualProlog */
+    {"pro", "visualprolog"},
+    /* BaanC */
+    {"bc",  "baanc"},  {"cln","baanc"},
+    /* NNCronTab */
+    {"tab", "nncrontab"}, {"spf","nncrontab"},
+    /* CSound */
+    {"orc", "csound"}, {"sco","csound"}, {"csd","csound"},
+    /* EScript */
+    {"src", "escript"}, {"em", "escript"},
+    /* Spice */
+    {"scp", "spice"},
     {NULL, NULL}
 };
 
@@ -168,6 +198,21 @@ static const LangLexer kLangLexer[] = {
     {"autoit",      "au3"},
     {"postscript",  "ps"},
     {"matlab",      "matlab"},
+    {"smalltalk",   "smalltalk"},
+    {"forth",       "forth"},
+    {"oscript",     "oscript"},
+    {"avs",         "avs"},
+    {"hollywood",   "hollywood"},
+    {"purebasic",   "purebasic"},
+    {"freebasic",   "freebasic"},
+    {"blitzbasic",  "blitzbasic"},
+    {"kix",         "kix"},
+    {"visualprolog","visualprolog"},
+    {"baanc",       "baan"},
+    {"nncrontab",   "nncrontab"},
+    {"csound",      "csound"},
+    {"escript",     "escript"},
+    {"spice",       "spice"},
     {NULL, NULL}
 };
 
@@ -282,6 +327,42 @@ static void apply_keywords(GtkWidget *sci, const char *lang)
         sci_msg(sci, SCI_SETKEYWORDS, 0, (sptr_t)
             "and break do else elseif end false for function goto if in local nil not or "
             "repeat return then true until while");
+    } else if (strcmp(kw_lang, "php") == 0) {
+        sci_msg(sci, SCI_SETKEYWORDS, 0, (sptr_t)
+            "abstract and array as break callable case catch class clone const continue "
+            "declare default do echo else elseif empty enddeclare endfor endforeach endif "
+            "endswitch endwhile enum extends false final finally fn for foreach function "
+            "global goto if implements include include_once instanceof insteadof interface "
+            "isset list match namespace new null or print private protected public readonly "
+            "require require_once return static switch throw trait true try unset use var "
+            "while xor yield");
+    } else if (strcmp(kw_lang, "ruby") == 0) {
+        sci_msg(sci, SCI_SETKEYWORDS, 0, (sptr_t)
+            "__FILE__ __LINE__ __ENCODING__ begin defined? do end false in module nil "
+            "not or raise rescue retry return self super then true undef unless until when "
+            "while yield alias and break case class def else elsif ensure for if");
+    } else if (strcmp(kw_lang, "perl") == 0) {
+        sci_msg(sci, SCI_SETKEYWORDS, 0, (sptr_t)
+            "abs accept alarm and atan2 bind binmode bless caller chdir chmod chomp chop "
+            "chown chr chroot close closedir connect continue cos crypt dbmclose dbmopen "
+            "defined delete die do dump each else elsif endgrent endhostent endnetent "
+            "endprotoent endpwent endservent eof eval exec exists exit exp fcntl fileno "
+            "flock for foreach fork format getc getgrent getgrgid getgrnam gethostbyaddr "
+            "gethostbyname gethostent getlogin getnetbyaddr getnetbyname getnetent "
+            "getpeername getpgrp getppid getpriority getprotobyname getprotobynumber "
+            "getprotoent getpwent getpwnam getpwuid getservbyname getservbyport getservent "
+            "getsockname getsockopt glob gmtime goto grep hex if import index int ioctl "
+            "join keys kill last lc lcfirst length link listen local localtime log lstat "
+            "map mkdir msgctl msgget msgrcv msgsnd my next no not oct open opendir or ord "
+            "our pack package pipe pop pos print printf prototype push quotemeta rand read "
+            "readdir readline readlink readpipe recv redo ref rename require reset return "
+            "reverse rewinddir rindex rmdir say scalar seek seekdir select semctl semget "
+            "semop send setgrent sethostent setnetent setpgrp setpriority setprotoent "
+            "setpwent setservent setsockopt shift shmctl shmget shmread shmwrite shutdown "
+            "sin sleep socket socketpair sort splice split sprintf sqrt srand stat study "
+            "sub substr symlink syscall sysopen sysread sysseek system syswrite tell telldir "
+            "tie tied time times truncate uc ucfirst umask undef unless unlink unpack unshift "
+            "untie use utime values vec wait waitpid wantarray warn while write");
     }
 }
 
@@ -360,7 +441,8 @@ extern "C" void lexer_apply(GtkWidget *sci, const char *lang_name)
 
     apply_fold_props(sci, lang_name);
     apply_keywords(sci, lang_name);
-    stylestore_apply_lexer(sci, lexer_name);
+    /* Use lang_name (matches XML LexerType name attr), not lexer_name */
+    stylestore_apply_lexer(sci, lang_name);
 
     sptr_t docLen = sci_msg(sci, SCI_GETLENGTH, 0, 0);
     if (docLen > 0)
