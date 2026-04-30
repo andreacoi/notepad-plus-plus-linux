@@ -76,6 +76,7 @@ typedef struct SCNotification {
 #define SCI_STYLESETBOLD        2053
 #define SCI_STYLESETITALIC      2054
 #define SCI_STYLESETFONT        2056
+#define SCI_STYLESETSIZE        2055
 #define SCI_STYLESETUNDERLINE   2059
 #define SCI_STYLECLEARALL       2050
 #define SCI_SETSELBACK          2068
