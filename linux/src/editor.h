@@ -40,6 +40,9 @@ void editor_paste(void);
 void editor_select_all(void);
 void editor_goto_line_dialog(void);
 
+/* Re-apply current theme styles to all open editors. */
+void editor_reapply_styles(void);
+
 /* Convenience send to current doc */
 sptr_t editor_send(unsigned int msg, uptr_t wp, sptr_t lp);
 

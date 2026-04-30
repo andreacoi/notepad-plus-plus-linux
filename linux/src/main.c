@@ -4,6 +4,7 @@
 #include "statusbar.h"
 #include "findreplace.h"
 #include "toolbar.h"
+#include "styleeditor.h"
 
 /* ------------------------------------------------------------------ */
 /* Menu callbacks                                                      */
@@ -48,6 +49,14 @@ static void cb_replace(GtkMenuItem *i, gpointer d)
 }
 
 static void cb_goto(GtkMenuItem *i, gpointer d)   { (void)i;(void)d; editor_goto_line_dialog(); }
+
+/* Settings */
+static void cb_style_editor(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    if (styleeditor_show(s_main_window))
+        editor_reapply_styles();
+}
 
 /* ------------------------------------------------------------------ */
 /* Menu builder helpers                                               */
@@ -121,8 +130,10 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     /* ---- View (placeholder) ---- */
     submenu(bar, "_View");
 
-    /* ---- Settings (placeholder) ---- */
-    submenu(bar, "Se_ttings");
+    /* ---- Settings ---- */
+    GtkWidget *settings = submenu(bar, "Se_ttings");
+    APPEND(settings, menu_item("_Style Configurator…",
+                               G_CALLBACK(cb_style_editor), NULL, accel, 0, 0));
 
     return bar;
 }

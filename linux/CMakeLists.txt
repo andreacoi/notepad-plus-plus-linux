@@ -69,6 +69,7 @@ add_executable(notepad++
     src/findreplace.c
     src/toolbar.c
     src/stylestore.c
+    src/styleeditor.c
     src/lexer.cpp
     "${CMAKE_SOURCE_DIR}/../src/LexUserStub.cxx"
 )

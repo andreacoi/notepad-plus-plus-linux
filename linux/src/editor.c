@@ -481,6 +481,21 @@ void editor_copy(void)       { editor_send(SCI_COPY,       0, 0); }
 void editor_paste(void)      { editor_send(SCI_PASTE,      0, 0); }
 void editor_select_all(void) { editor_send(SCI_SELECTALL,  0, 0); }
 
+void editor_reapply_styles(void)
+{
+    int n = gtk_notebook_get_n_pages(GTK_NOTEBOOK(s_notebook));
+    for (int i = 0; i < n; i++) {
+        GtkWidget *sci = sci_of_page(i);
+        if (!sci) continue;
+        const char *lang = (const char *)g_object_get_data(G_OBJECT(sci), "npp-lang");
+        stylestore_apply_default(sci);
+        sci_msg(sci, SCI_STYLECLEARALL, 0, 0);
+        stylestore_apply_global(sci);
+        if (lang && *lang)
+            stylestore_apply_lexer(sci, lang);
+    }
+}
+
 void editor_goto_line_dialog(void)
 {
     GtkWidget *dlg = gtk_dialog_new_with_buttons(
