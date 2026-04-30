@@ -59,6 +59,12 @@ Output: `linux/build/notepad++`
 ./linux/build/notepad++ file1.c file2.h
 ```
 
+## Upcoming features
+
+- **Convert lexer to C** — isolate the single `CreateLexer()` C++ call into a minimal bridge file; make the entire application layer pure C11
+- **Language menu** — top-level Language menu to manually override the detected language for the current tab, grouped by category with radio checkmarks
+- **i18n / localisation** — system locale detection and translation loading from the 137 bundled Notepad++ XML language files (`resources/localization/`)
+
 ## User configuration
 
 All user data lives in `~/.config/npp/`:
