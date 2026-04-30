@@ -3,6 +3,7 @@
  */
 #include "lexer.h"
 #include "sci_c.h"
+#include "stylestore.h"
 
 #include <string.h>
 #include <ctype.h>
@@ -333,11 +334,13 @@ extern "C" void lexer_apply(GtkWidget *sci, const char *lang_name)
                            lang_name ? g_strdup(lang_name) : g_strdup(""),
                            g_free);
 
-    /* Clear all styles to STYLE_DEFAULT first (matches Windows NPP behaviour) */
+    /* macOS sequence: set STYLE_DEFAULT first, then STYLECLEARALL propagates
+     * it to all 256 slots, then re-apply global overrides */
+    stylestore_apply_default(sci);
     sci_msg(sci, SCI_STYLECLEARALL, 0, 0);
+    stylestore_apply_global(sci);
 
     if (!lang_name || !*lang_name) {
-        /* Plain text — null lexer */
         sci_msg(sci, SCI_SETILEXER, 0, 0);
         sptr_t docLen = sci_msg(sci, SCI_GETLENGTH, 0, 0);
         if (docLen > 0)
@@ -357,6 +360,7 @@ extern "C" void lexer_apply(GtkWidget *sci, const char *lang_name)
 
     apply_fold_props(sci, lang_name);
     apply_keywords(sci, lang_name);
+    stylestore_apply_lexer(sci, lexer_name);
 
     sptr_t docLen = sci_msg(sci, SCI_GETLENGTH, 0, 0);
     if (docLen > 0)

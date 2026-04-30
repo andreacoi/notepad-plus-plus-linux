@@ -3,6 +3,7 @@
 #include "lexer.h"
 #include "findreplace.h"
 #include "toolbar.h"
+#include "stylestore.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -34,16 +35,15 @@ static GtkWidget *sci_of_page(int page)
 
 static void setup_sci(GtkWidget *sci)
 {
-    sci_msg(sci, SCI_SETCODEPAGE,      SC_CP_UTF8, 0);
-    sci_msg(sci, SCI_SETMARGINWIDTHN,  0, 44);   /* line numbers */
-    sci_msg(sci, SCI_SETMARGINWIDTHN,  1, 0);    /* hide symbol margin */
-    sci_msg(sci, SCI_SETTABWIDTH,      4, 0);
-    sci_msg(sci, SCI_SETUSETABS,       0, 0);
-    /* default dark-ish style so something is visible on first launch */
-    sci_msg(sci, SCI_STYLESETBACK, STYLE_DEFAULT, 0xFFFFFF);
-    sci_msg(sci, SCI_STYLESETFORE, STYLE_DEFAULT, 0x000000);
+    sci_msg(sci, SCI_SETCODEPAGE,     SC_CP_UTF8, 0);
+    sci_msg(sci, SCI_SETMARGINWIDTHN, 0, 44);
+    sci_msg(sci, SCI_SETMARGINWIDTHN, 1, 0);
+    sci_msg(sci, SCI_SETTABWIDTH,     4, 0);
+    sci_msg(sci, SCI_SETUSETABS,      0, 0);
+    /* Apply theme: STYLE_DEFAULT must be set before STYLECLEARALL */
+    stylestore_apply_default(sci);
     sci_msg(sci, SCI_STYLECLEARALL, 0, 0);
-    sci_msg(sci, SCI_SETCARETFORE, 0x000000, 0);
+    stylestore_apply_global(sci);
 }
 
 /* ------------------------------------------------------------------ */
@@ -214,6 +214,7 @@ static gboolean ask_save(NppDoc *doc)
 
 GtkWidget *editor_init(GtkWidget *window)
 {
+    stylestore_init(NULL);
     s_window   = window;
     s_notebook = gtk_notebook_new();
     gtk_notebook_set_scrollable(GTK_NOTEBOOK(s_notebook), TRUE);

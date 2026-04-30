@@ -71,10 +71,23 @@ typedef struct SCNotification {
 #define SCI_SETMARGINWIDTHN     2243
 #define SCI_SETTABWIDTH         2036
 #define SCI_SETUSETABS          2124
-#define SCI_STYLESETBACK        2040
 #define SCI_STYLESETFORE        2051
+#define SCI_STYLESETBACK        2052  /* was wrong (2040=SCI_MARKERDEFINE) */
+#define SCI_STYLESETBOLD        2053
+#define SCI_STYLESETITALIC      2054
+#define SCI_STYLESETFONT        2056
+#define SCI_STYLESETUNDERLINE   2059
 #define SCI_STYLECLEARALL       2050
+#define SCI_SETSELBACK          2068
 #define SCI_SETCARETFORE        2069
+#define SCI_SETWHITESPACEFORE   2084
+#define SCI_SETCARETLINEVISIBLE 2096
+#define SCI_SETCARETLINEBACK    2098
+#define SCI_MARKERSETFORE       2041
+#define SCI_MARKERSETBACK       2042
+#define SCI_SETFOLDMARGINCOLOUR  2290
+#define SCI_SETFOLDMARGINHICOLOUR 2291
+#define SCI_MARKERENABLEHIGHLIGHT 2293
 #define SCI_GOTOPOS             2025
 #define SCI_GOTOLINE            2024
 #define SCI_SETEOLMODE          2031
@@ -105,5 +118,12 @@ typedef struct SCNotification {
 
 /* Style indices */
 #define STYLE_DEFAULT           32
+#define STYLE_LINENUMBER        33
+#define STYLE_BRACELIGHT        34
+#define STYLE_BRACEBAD          35
+
+/* Fold marker numbers */
+#define SC_MARKNUM_FOLDER       30
+#define SC_MARKNUM_FOLDEROPEN   31
 
 #endif /* SCI_C_H */
