@@ -28,6 +28,7 @@ cmake -B build && cmake --build build
 | `findreplace.c/h` | Find/Replace dialog |
 | `lexer.c/h` | Lexilla integration: extension→language→lexer maps, keyword lists, fold props |
 | `lexilla_bridge.cpp` | Minimal C++ bridge: `lexilla_create_lexer()` wraps `CreateLexer()` for use from C |
+| `i18n.c/h` | Locale detection, NPP XML parser, `T()`/`TM()` macros for translated strings |
 | `stylestore.c/h` | Parses `stylers.model.xml` / user `~/.config/npp/stylers.xml`; applies Scintilla styles |
 | `styleeditor.c/h` | Style Configurator dialog (theme picker, per-language style editing) |
 | `sci_c.h` | C-safe Scintilla constants and `SCNotification` layout |
@@ -126,13 +127,3 @@ Add a **Language** top-level menu to `main.c` that lets the user manually overri
 - The active language should be checkmarked (radio-style); switching clears the old check
 - "Normal Text" entry at the top sets language to NULL (plain text, no lexer)
 - Callback: `lexer_apply(editor_current_doc()->sci, lang)` then `statusbar_set_language(lang)`
-
-### 2. i18n / localisation
-Port `NppLocalizer` from the macOS version. The `resources/localization/` directory already contains 137 XML files in the Windows Notepad++ format.
-
-- Create `linux/src/i18n.c/h`
-- `i18n_init(locale)` — detect system locale, load matching XML from `resources/localization/`, fall back to `english.xml`
-- `i18n_str(key)` — look up a translation string by the `name` attribute of `<Item>` elements
-- Wire into menu labels, dialog button text, statusbar, and dialog titles
-- Locale detection: `g_get_language_names()` → try each prefix (e.g. `"it_IT"` → `"it"`) against filenames
-- XML format: `<NotepadPlus><Native-Langue ...><Menu>...<Item menuId="..." name="..."/>` — parse with GMarkupParser (same approach as `stylestore.c`)
