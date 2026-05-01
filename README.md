@@ -61,7 +61,6 @@ Output: `linux/build/notepad++`
 
 ## Upcoming features
 
-- **Convert lexer to C** — isolate the single `CreateLexer()` C++ call into a minimal bridge file; make the entire application layer pure C11
 - **Language menu** — top-level Language menu to manually override the detected language for the current tab, grouped by category with radio checkmarks
 - **i18n / localisation** — system locale detection and translation loading from the 137 bundled Notepad++ XML language files (`resources/localization/`)
 
@@ -82,7 +81,8 @@ linux/src/editor.c/h       — tab/document management, file I/O, Scintilla wrap
 linux/src/statusbar.c/h    — bottom status bar
 linux/src/toolbar.c/h      — GTK3 toolbar
 linux/src/findreplace.c/h  — Find/Replace dialog
-linux/src/lexer.cpp/h      — language detection, Lexilla integration, keyword tables
+linux/src/lexer.c/h        — language detection, Lexilla integration, keyword tables
+linux/src/lexilla_bridge.cpp — C++ bridge: exposes CreateLexer() to C code
 linux/src/stylestore.c/h   — theme/style parser and Scintilla style applicator
 linux/src/styleeditor.c/h  — Style Configurator dialog
 linux/src/sci_c.h           — C-safe Scintilla interface
@@ -92,7 +92,7 @@ lexilla/                    — vendored syntax highlighting (~80 language lexer
 resources/                  — shared with macOS port: themes, stylers.model.xml, langs.model.xml
 ```
 
-The application layer is pure C (C11). Only `lexer.cpp` uses C++ to call the Lexilla `CreateLexer()` API. Scintilla and Lexilla are compiled as C++ static libraries and accessed exclusively through their C message API (`scintilla_send_message`).
+The application layer is pure C (C11). Only `lexilla_bridge.cpp` uses C++ to call the Lexilla `CreateLexer()` API via a single `extern "C"` function. Scintilla and Lexilla are compiled as C++ static libraries and accessed exclusively through their C message API (`scintilla_send_message`).
 
 ## Original projects
 
