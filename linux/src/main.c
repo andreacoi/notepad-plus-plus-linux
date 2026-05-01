@@ -5,6 +5,7 @@
 #include "findreplace.h"
 #include "toolbar.h"
 #include "styleeditor.h"
+#include "i18n.h"
 
 /* ------------------------------------------------------------------ */
 /* Menu callbacks                                                      */
@@ -98,41 +99,41 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     GtkWidget *bar = gtk_menu_bar_new();
 
     /* ---- File ---- */
-    GtkWidget *file = submenu(bar, "_File");
-    APPEND(file, menu_item("_New",        G_CALLBACK(cb_new),    NULL, accel, GDK_KEY_n, GDK_CONTROL_MASK));
-    APPEND(file, menu_item("_Open…",      G_CALLBACK(cb_open),   NULL, accel, GDK_KEY_o, GDK_CONTROL_MASK));
+    GtkWidget *file = submenu(bar, TM("menu.file", "_File"));
+    APPEND(file, menu_item(TM("cmd.41001", "_New"),        G_CALLBACK(cb_new),    NULL, accel, GDK_KEY_n, GDK_CONTROL_MASK));
+    APPEND(file, menu_item(TM("cmd.41002", "_Open…"),      G_CALLBACK(cb_open),   NULL, accel, GDK_KEY_o, GDK_CONTROL_MASK));
     APPEND(file, sep_item());
-    APPEND(file, menu_item("_Save",       G_CALLBACK(cb_save),   NULL, accel, GDK_KEY_s, GDK_CONTROL_MASK));
-    APPEND(file, menu_item("Save _As…",   G_CALLBACK(cb_save_as),NULL, accel, GDK_KEY_s, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
+    APPEND(file, menu_item(TM("cmd.41006", "_Save"),       G_CALLBACK(cb_save),   NULL, accel, GDK_KEY_s, GDK_CONTROL_MASK));
+    APPEND(file, menu_item(TM("cmd.41008", "Save _As…"),   G_CALLBACK(cb_save_as),NULL, accel, GDK_KEY_s, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
     APPEND(file, sep_item());
-    APPEND(file, menu_item("_Close",      G_CALLBACK(cb_close),  NULL, accel, GDK_KEY_w, GDK_CONTROL_MASK));
+    APPEND(file, menu_item(TM("cmd.41003", "_Close"),      G_CALLBACK(cb_close),  NULL, accel, GDK_KEY_w, GDK_CONTROL_MASK));
     APPEND(file, sep_item());
-    APPEND(file, menu_item("_Quit",       G_CALLBACK(cb_quit),   app,  accel, GDK_KEY_q, GDK_CONTROL_MASK));
+    APPEND(file, menu_item(TM("cmd.41011", "_Quit"),       G_CALLBACK(cb_quit),   app,  accel, GDK_KEY_q, GDK_CONTROL_MASK));
 
     /* ---- Edit ---- */
-    GtkWidget *edit = submenu(bar, "_Edit");
-    APPEND(edit, menu_item("_Undo",       G_CALLBACK(cb_undo),   NULL, accel, GDK_KEY_z, GDK_CONTROL_MASK));
-    APPEND(edit, menu_item("_Redo",       G_CALLBACK(cb_redo),   NULL, accel, GDK_KEY_z, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
+    GtkWidget *edit = submenu(bar, TM("menu.edit", "_Edit"));
+    APPEND(edit, menu_item(TM("cmd.42003", "_Undo"),       G_CALLBACK(cb_undo),   NULL, accel, GDK_KEY_z, GDK_CONTROL_MASK));
+    APPEND(edit, menu_item(TM("cmd.42004", "_Redo"),       G_CALLBACK(cb_redo),   NULL, accel, GDK_KEY_z, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
     APPEND(edit, sep_item());
-    APPEND(edit, menu_item("Cu_t",        G_CALLBACK(cb_cut),    NULL, accel, GDK_KEY_x, GDK_CONTROL_MASK));
-    APPEND(edit, menu_item("_Copy",       G_CALLBACK(cb_copy),   NULL, accel, GDK_KEY_c, GDK_CONTROL_MASK));
-    APPEND(edit, menu_item("_Paste",      G_CALLBACK(cb_paste),  NULL, accel, GDK_KEY_v, GDK_CONTROL_MASK));
+    APPEND(edit, menu_item(TM("cmd.42001", "Cu_t"),        G_CALLBACK(cb_cut),    NULL, accel, GDK_KEY_x, GDK_CONTROL_MASK));
+    APPEND(edit, menu_item(TM("cmd.42002", "_Copy"),       G_CALLBACK(cb_copy),   NULL, accel, GDK_KEY_c, GDK_CONTROL_MASK));
+    APPEND(edit, menu_item(TM("cmd.42005", "_Paste"),      G_CALLBACK(cb_paste),  NULL, accel, GDK_KEY_v, GDK_CONTROL_MASK));
     APPEND(edit, sep_item());
-    APPEND(edit, menu_item("Select _All", G_CALLBACK(cb_selall), NULL, accel, GDK_KEY_a, GDK_CONTROL_MASK));
+    APPEND(edit, menu_item(TM("cmd.42007", "Select _All"), G_CALLBACK(cb_selall), NULL, accel, GDK_KEY_a, GDK_CONTROL_MASK));
 
     /* ---- Search ---- */
-    GtkWidget *search = submenu(bar, "_Search");
-    APPEND(search, menu_item("_Find…",       G_CALLBACK(cb_find),    NULL, accel, GDK_KEY_f, GDK_CONTROL_MASK));
-    APPEND(search, menu_item("_Replace…",    G_CALLBACK(cb_replace), NULL, accel, GDK_KEY_h, GDK_CONTROL_MASK));
+    GtkWidget *search = submenu(bar, TM("menu.search", "_Search"));
+    APPEND(search, menu_item(TM("cmd.43001", "_Find…"),       G_CALLBACK(cb_find),    NULL, accel, GDK_KEY_f, GDK_CONTROL_MASK));
+    APPEND(search, menu_item(TM("cmd.43003", "_Replace…"),    G_CALLBACK(cb_replace), NULL, accel, GDK_KEY_h, GDK_CONTROL_MASK));
     APPEND(search, sep_item());
-    APPEND(search, menu_item("_Go To Line…", G_CALLBACK(cb_goto),    NULL, accel, GDK_KEY_g, GDK_CONTROL_MASK));
+    APPEND(search, menu_item(TM("cmd.43004", "_Go To Line…"), G_CALLBACK(cb_goto),    NULL, accel, GDK_KEY_g, GDK_CONTROL_MASK));
 
     /* ---- View (placeholder) ---- */
-    submenu(bar, "_View");
+    submenu(bar, TM("menu.view", "_View"));
 
     /* ---- Settings ---- */
-    GtkWidget *settings = submenu(bar, "Se_ttings");
-    APPEND(settings, menu_item("_Style Configurator…",
+    GtkWidget *settings = submenu(bar, TM("menu.settings", "Se_ttings"));
+    APPEND(settings, menu_item(TM("cmd.46001", "_Style Configurator…"),
                                G_CALLBACK(cb_style_editor), NULL, accel, 0, 0));
 
     return bar;
@@ -156,6 +157,8 @@ static gboolean on_delete_event(GtkWidget *w, GdkEvent *e, gpointer app)
 static void on_activate(GtkApplication *app, gpointer data)
 {
     (void)data;
+
+    i18n_init();
 
     GtkWidget *window = gtk_application_window_new(app);
     s_main_window = window;

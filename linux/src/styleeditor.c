@@ -18,6 +18,7 @@
  */
 #include "styleeditor.h"
 #include "stylestore.h"
+#include "i18n.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -452,12 +453,12 @@ gboolean styleeditor_show(GtkWidget *parent)
 
     /* Create dialog */
     s->dialog = gtk_dialog_new_with_buttons(
-        "Style Configurator",
+        T("dlg.StyleConfig.title", "Style Configurator"),
         parent ? GTK_WINDOW(parent) : NULL,
         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-        "_Apply to Editors", 1,
-        "_Save",             2,
-        "_Close",            GTK_RESPONSE_CLOSE,
+        TM("dlg.StyleConfig.2301", "_Apply to Editors"), 1,
+        TM("cmd.41006",            "_Save"),             2,
+        TM("dlg.Find.2",           "_Close"),            GTK_RESPONSE_CLOSE,
         NULL);
     gtk_window_set_default_size(GTK_WINDOW(s->dialog), 820, 560);
 
@@ -468,7 +469,7 @@ gboolean styleeditor_show(GtkWidget *parent)
     GtkWidget *theme_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start(GTK_BOX(content), theme_hbox, FALSE, FALSE, 4);
     gtk_box_pack_start(GTK_BOX(theme_hbox),
-                       gtk_label_new("Theme:"), FALSE, FALSE, 0);
+                       gtk_label_new(T("dlg.StyleConfig.2306", "Theme:")), FALSE, FALSE, 0);
     s->theme_combo = gtk_combo_box_text_new();
     gtk_widget_set_hexpand(s->theme_combo, TRUE);
     gtk_box_pack_start(GTK_BOX(theme_hbox), s->theme_combo, TRUE, TRUE, 0);
@@ -517,7 +518,7 @@ gboolean styleeditor_show(GtkWidget *parent)
     int row = 0;
 
     /* Font */
-    gtk_grid_attach(GTK_GRID(attr_grid), gtk_label_new("Font:"), 0, row, 1, 1);
+    gtk_grid_attach(GTK_GRID(attr_grid), gtk_label_new(T("dlg.StyleConfig.2208", "Font:")), 0, row, 1, 1);
     s->font_btn = gtk_font_button_new();
     g_object_set(s->font_btn, "use-font", TRUE, "use-size", TRUE, NULL);
     gtk_widget_set_hexpand(s->font_btn, TRUE);
@@ -525,8 +526,8 @@ gboolean styleeditor_show(GtkWidget *parent)
     row++;
 
     /* Foreground */
-    gtk_grid_attach(GTK_GRID(attr_grid), gtk_label_new("Foreground:"), 0, row, 1, 1);
-    s->fg_check = gtk_check_button_new_with_label("Enable");
+    gtk_grid_attach(GTK_GRID(attr_grid), gtk_label_new(T("dlg.StyleConfig.2206", "Foreground:")), 0, row, 1, 1);
+    s->fg_check = gtk_check_button_new_with_label(T("dlg.StyleConfig.2212", "Enable"));
     gtk_grid_attach(GTK_GRID(attr_grid), s->fg_check, 1, row, 1, 1);
     s->fg_btn = gtk_color_button_new();
     gtk_color_chooser_set_use_alpha(GTK_COLOR_CHOOSER(s->fg_btn), FALSE);
@@ -535,8 +536,8 @@ gboolean styleeditor_show(GtkWidget *parent)
     row++;
 
     /* Background */
-    gtk_grid_attach(GTK_GRID(attr_grid), gtk_label_new("Background:"), 0, row, 1, 1);
-    s->bg_check = gtk_check_button_new_with_label("Enable");
+    gtk_grid_attach(GTK_GRID(attr_grid), gtk_label_new(T("dlg.StyleConfig.2207", "Background:")), 0, row, 1, 1);
+    s->bg_check = gtk_check_button_new_with_label(T("dlg.StyleConfig.2212", "Enable"));
     gtk_grid_attach(GTK_GRID(attr_grid), s->bg_check, 1, row, 1, 1);
     s->bg_btn = gtk_color_button_new();
     gtk_color_chooser_set_use_alpha(GTK_COLOR_CHOOSER(s->bg_btn), FALSE);
@@ -545,9 +546,9 @@ gboolean styleeditor_show(GtkWidget *parent)
     row++;
 
     /* Bold / Italic / Underline */
-    s->bold_check      = gtk_check_button_new_with_label("Bold");
-    s->italic_check    = gtk_check_button_new_with_label("Italic");
-    s->underline_check = gtk_check_button_new_with_label("Underline");
+    s->bold_check      = gtk_check_button_new_with_label(T("dlg.StyleConfig.2204", "Bold"));
+    s->italic_check    = gtk_check_button_new_with_label(T("dlg.StyleConfig.2205", "Italic"));
+    s->underline_check = gtk_check_button_new_with_label(T("dlg.StyleConfig.2218", "Underline"));
     GtkWidget *style_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 12);
     gtk_box_pack_start(GTK_BOX(style_hbox), s->bold_check,      FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(style_hbox), s->italic_check,    FALSE, FALSE, 0);
@@ -556,7 +557,7 @@ gboolean styleeditor_show(GtkWidget *parent)
     row++;
 
     /* Preview */
-    gtk_grid_attach(GTK_GRID(attr_grid), gtk_label_new("Preview:"), 0, row, 1, 1);
+    gtk_grid_attach(GTK_GRID(attr_grid), gtk_label_new(T("dlg.StyleConfig.2213", "Preview:")), 0, row, 1, 1);
     s->preview_label = gtk_label_new("  AaBbCcDd 123  ");
     gtk_label_set_use_markup(GTK_LABEL(s->preview_label), TRUE);
     gtk_widget_set_halign(s->preview_label, GTK_ALIGN_START);

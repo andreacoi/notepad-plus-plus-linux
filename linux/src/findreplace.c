@@ -3,6 +3,7 @@
  */
 #include "findreplace.h"
 #include "sci_c.h"
+#include "i18n.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -285,7 +286,7 @@ static void on_entry_activate(GtkEntry *e, gpointer d) { (void)e;(void)d; find_i
 static void build_dialog(GtkWidget *parent_window)
 {
     s_dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(s_dialog), "Find / Replace");
+    gtk_window_set_title(GTK_WINDOW(s_dialog), T("dlg.Find.titleFind", "Find / Replace"));
     gtk_window_set_default_size(GTK_WINDOW(s_dialog), 480, 0);
     gtk_window_set_resizable(GTK_WINDOW(s_dialog), FALSE);
     if (parent_window)
@@ -303,7 +304,7 @@ static void build_dialog(GtkWidget *parent_window)
     /* ---- Find what ---- */
     GtkWidget *find_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start(GTK_BOX(vbox), find_box, FALSE, FALSE, 0);
-    GtkWidget *find_lbl = gtk_label_new("Find what:");
+    GtkWidget *find_lbl = gtk_label_new(T("dlg.Find.1620", "Find what:"));
     gtk_widget_set_size_request(find_lbl, 100, -1);
     gtk_label_set_xalign(GTK_LABEL(find_lbl), 1.0);
     s_find_entry = gtk_entry_new();
@@ -315,7 +316,7 @@ static void build_dialog(GtkWidget *parent_window)
     /* ---- Replace with ---- */
     s_repl_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start(GTK_BOX(vbox), s_repl_box, FALSE, FALSE, 0);
-    s_repl_label = gtk_label_new("Replace with:");
+    s_repl_label = gtk_label_new(T("dlg.Find.1611", "Replace with:"));
     gtk_widget_set_size_request(s_repl_label, 100, -1);
     gtk_label_set_xalign(GTK_LABEL(s_repl_label), 1.0);
     s_repl_entry = gtk_entry_new();
@@ -326,9 +327,9 @@ static void build_dialog(GtkWidget *parent_window)
     /* ---- Options ---- */
     GtkWidget *opts_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 16);
     gtk_box_pack_start(GTK_BOX(vbox), opts_box, FALSE, FALSE, 0);
-    s_chk_case = gtk_check_button_new_with_label("Match case");
-    s_chk_word = gtk_check_button_new_with_label("Whole word");
-    s_chk_wrap = gtk_check_button_new_with_label("Wrap around");
+    s_chk_case = gtk_check_button_new_with_label(T("dlg.Find.1604", "Match case"));
+    s_chk_word = gtk_check_button_new_with_label(T("dlg.Find.1603", "Whole word"));
+    s_chk_wrap = gtk_check_button_new_with_label(T("dlg.Find.1606", "Wrap around"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(s_chk_wrap), TRUE);
     gtk_box_pack_start(GTK_BOX(opts_box), s_chk_case, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(opts_box), s_chk_word, FALSE, FALSE, 0);
@@ -348,11 +349,11 @@ static void build_dialog(GtkWidget *parent_window)
     GtkWidget *btn_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start(GTK_BOX(vbox), btn_box, FALSE, FALSE, 0);
 
-    GtkWidget *btn_next  = gtk_button_new_with_label("Find Next");
-    GtkWidget *btn_prev  = gtk_button_new_with_label("Find Prev");
-    s_btn_replace  = gtk_button_new_with_label("Replace");
-    s_btn_repl_all = gtk_button_new_with_label("Replace All");
-    GtkWidget *btn_close = gtk_button_new_with_label("Close");
+    GtkWidget *btn_next  = gtk_button_new_with_label(T("dlg.Find.1",    "Find Next"));
+    GtkWidget *btn_prev  = gtk_button_new_with_label(T("dlg.Find.1722", "Find Prev"));
+    s_btn_replace  = gtk_button_new_with_label(T("dlg.Find.1608", "Replace"));
+    s_btn_repl_all = gtk_button_new_with_label(T("dlg.Find.1609", "Replace All"));
+    GtkWidget *btn_close = gtk_button_new_with_label(T("dlg.Find.2",    "Close"));
 
     g_signal_connect(btn_next,       "clicked", G_CALLBACK(on_find_next),    NULL);
     g_signal_connect(btn_prev,       "clicked", G_CALLBACK(on_find_prev),    NULL);

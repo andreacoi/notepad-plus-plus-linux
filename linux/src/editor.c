@@ -4,6 +4,7 @@
 #include "findreplace.h"
 #include "toolbar.h"
 #include "stylestore.h"
+#include "i18n.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -193,11 +194,11 @@ static gboolean ask_save(NppDoc *doc)
         GTK_WINDOW(s_window),
         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
         GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
-        "Save changes to \"%s\"?", name);
+        T("msg.Reload.message", "Save changes to \"%s\"?"), name);
 
-    gtk_dialog_add_button(GTK_DIALOG(dlg), "Close _Without Saving", GTK_RESPONSE_NO);
-    gtk_dialog_add_button(GTK_DIALOG(dlg), "_Cancel",               GTK_RESPONSE_CANCEL);
-    gtk_dialog_add_button(GTK_DIALOG(dlg), "_Save",                 GTK_RESPONSE_YES);
+    gtk_dialog_add_button(GTK_DIALOG(dlg), TM("cmd.41004", "Close _Without Saving"), GTK_RESPONSE_NO);
+    gtk_dialog_add_button(GTK_DIALOG(dlg), TM("dlg.Find.2",  "_Cancel"),             GTK_RESPONSE_CANCEL);
+    gtk_dialog_add_button(GTK_DIALOG(dlg), TM("cmd.41006",   "_Save"),               GTK_RESPONSE_YES);
     gtk_dialog_set_default_response(GTK_DIALOG(dlg), GTK_RESPONSE_YES);
 
     int resp = gtk_dialog_run(GTK_DIALOG(dlg));
@@ -283,7 +284,7 @@ gboolean editor_open_path(const char *path)
     if (!g_file_get_contents(path, &contents, &len, &err)) {
         GtkWidget *dlg = gtk_message_dialog_new(GTK_WINDOW(s_window),
             GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-            "Cannot open file:\n%s", err->message);
+            T("msg.OpenFileError.message", "Cannot open file:\n%s"), err->message);
         gtk_dialog_run(GTK_DIALOG(dlg));
         gtk_widget_destroy(dlg);
         g_error_free(err);
@@ -339,10 +340,10 @@ gboolean editor_open_path(const char *path)
 gboolean editor_open_dialog(void)
 {
     GtkWidget *dlg = gtk_file_chooser_dialog_new(
-        "Open File", GTK_WINDOW(s_window),
+        T("cmd.41002", "Open File"), GTK_WINDOW(s_window),
         GTK_FILE_CHOOSER_ACTION_OPEN,
-        "_Cancel", GTK_RESPONSE_CANCEL,
-        "_Open",   GTK_RESPONSE_ACCEPT,
+        TM("dlg.Find.2",  "_Cancel"), GTK_RESPONSE_CANCEL,
+        TM("cmd.41002",   "_Open"),   GTK_RESPONSE_ACCEPT,
         NULL);
     gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dlg), TRUE);
 
@@ -370,7 +371,7 @@ static gboolean save_doc_to_path(NppDoc *doc, const char *path)
         g_free(buf);
         GtkWidget *dlg = gtk_message_dialog_new(GTK_WINDOW(s_window),
             GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-            "Cannot save file:\n%s", err->message);
+            T("msg.SaveFileError.message", "Cannot save file:\n%s"), err->message);
         gtk_dialog_run(GTK_DIALOG(dlg));
         gtk_widget_destroy(dlg);
         g_error_free(err);
@@ -407,10 +408,10 @@ gboolean editor_save_as_dialog(void)
     if (!doc) return FALSE;
 
     GtkWidget *dlg = gtk_file_chooser_dialog_new(
-        "Save File As", GTK_WINDOW(s_window),
+        T("cmd.41008", "Save File As"), GTK_WINDOW(s_window),
         GTK_FILE_CHOOSER_ACTION_SAVE,
-        "_Cancel", GTK_RESPONSE_CANCEL,
-        "_Save",   GTK_RESPONSE_ACCEPT,
+        TM("dlg.Find.2",  "_Cancel"), GTK_RESPONSE_CANCEL,
+        TM("cmd.41006",   "_Save"),   GTK_RESPONSE_ACCEPT,
         NULL);
     gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dlg), TRUE);
     if (doc->filepath)
@@ -499,10 +500,10 @@ void editor_reapply_styles(void)
 void editor_goto_line_dialog(void)
 {
     GtkWidget *dlg = gtk_dialog_new_with_buttons(
-        "Go To Line", GTK_WINDOW(s_window),
+        T("dlg.GoToLine.title", "Go To Line"), GTK_WINDOW(s_window),
         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-        "_Cancel", GTK_RESPONSE_CANCEL,
-        "_Go",     GTK_RESPONSE_ACCEPT,
+        TM("dlg.Find.2",       "_Cancel"), GTK_RESPONSE_CANCEL,
+        TM("dlg.GoToLine.1",   "_Go"),     GTK_RESPONSE_ACCEPT,
         NULL);
     gtk_dialog_set_default_response(GTK_DIALOG(dlg), GTK_RESPONSE_ACCEPT);
 
@@ -514,7 +515,7 @@ void editor_goto_line_dialog(void)
     gtk_widget_set_margin_bottom(hbox, 8);
     gtk_box_pack_start(GTK_BOX(content), hbox, TRUE, TRUE, 0);
 
-    gtk_box_pack_start(GTK_BOX(hbox), gtk_label_new("Line number:"), FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), gtk_label_new(T("dlg.GoToLine.2007", "Line number:")), FALSE, FALSE, 0);
 
     /* upper bound = current line count */
     sptr_t lines = editor_send(SCI_LINEFROMPOSITION,
