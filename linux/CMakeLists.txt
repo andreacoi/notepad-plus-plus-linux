@@ -70,7 +70,8 @@ add_executable(notepad++
     src/toolbar.c
     src/stylestore.c
     src/styleeditor.c
-    src/lexer.cpp
+    src/lexer.c
+    src/lexilla_bridge.cpp
     "${CMAKE_SOURCE_DIR}/../src/LexUserStub.cxx"
 )
 
@@ -87,8 +88,8 @@ target_compile_definitions(notepad++ PRIVATE
     RESOURCES_DIR="${CMAKE_SOURCE_DIR}/../resources"
 )
 target_compile_options(notepad++ PRIVATE ${GTK3_CFLAGS_OTHER})
-# lexer.cpp needs cstdint for the same reason as lexilla
-set_source_files_properties(src/lexer.cpp PROPERTIES
+# lexilla_bridge.cpp needs cstdint for the same reason as lexilla
+set_source_files_properties(src/lexilla_bridge.cpp PROPERTIES
     COMPILE_OPTIONS "-include;cstdint")
 
 target_link_libraries(notepad++ PRIVATE

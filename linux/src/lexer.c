@@ -1,4 +1,4 @@
-/* lexer.cpp — Lexilla integration for the Linux GTK3 port.
+/* lexer.c — Lexilla integration for the Linux GTK3 port.
  * Ports setLanguage: / applyKeywords: / extensionLanguageMap from EditorView.mm.
  */
 #include "lexer.h"
@@ -8,15 +8,14 @@
 #include <string.h>
 #include <ctype.h>
 
-/* Lexilla / Scintilla C++ headers */
-#include "ILexer.h"   /* Scintilla::ILexer5 */
-#include "Lexilla.h"  /* CreateLexer()       */
+/* Bridge to the C++ CreateLexer() API */
+extern void *lexilla_create_lexer(const char *name);
 
 /* ------------------------------------------------------------------ */
 /* Tables (ported directly from EditorView.mm)                        */
 /* ------------------------------------------------------------------ */
 
-struct ExtLang { const char *ext; const char *lang; };
+typedef struct { const char *ext; const char *lang; } ExtLang;
 static const ExtLang kExtLang[] = {
     /* C-family */
     {"c",   "c"},     {"h",   "c"},
@@ -122,7 +121,7 @@ static const ExtLang kExtLang[] = {
     {NULL, NULL}
 };
 
-struct LangLexer { const char *lang; const char *lexer; };
+typedef struct { const char *lang; const char *lexer; } LangLexer;
 static const LangLexer kLangLexer[] = {
     /* C-family */
     {"c",           "cpp"},
@@ -228,7 +227,6 @@ static sptr_t sci_msg(GtkWidget *sci, unsigned int m, uptr_t w, sptr_t l)
 static const char *ext_to_lang(const char *ext)
 {
     if (!ext || !*ext) return NULL;
-    /* lowercase copy */
     char low[32];
     int i;
     for (i = 0; ext[i] && i < 31; i++)
@@ -264,7 +262,6 @@ static void apply_keywords(GtkWidget *sci, const char *lang)
 {
     if (!lang) return;
 
-    /* Normalise to the canonical lang for shared lexers */
     const char *kw_lang = lang;
     if (strcmp(lang, "c") == 0 || strcmp(lang, "objc") == 0) kw_lang = "cpp";
     if (strcmp(lang, "typescript") == 0) kw_lang = "javascript";
@@ -405,18 +402,15 @@ static void apply_fold_props(GtkWidget *sci, const char *lang)
 }
 
 /* ------------------------------------------------------------------ */
-/* Public API (extern "C" so C translation units can link against us) */
+/* Public API                                                          */
 /* ------------------------------------------------------------------ */
 
-extern "C" void lexer_apply(GtkWidget *sci, const char *lang_name)
+void lexer_apply(GtkWidget *sci, const char *lang_name)
 {
-    /* Store language name on widget for retrieval by editor/statusbar */
     g_object_set_data_full(G_OBJECT(sci), "npp-lang",
                            lang_name ? g_strdup(lang_name) : g_strdup(""),
                            g_free);
 
-    /* macOS sequence: set STYLE_DEFAULT first, then STYLECLEARALL propagates
-     * it to all 256 slots, then re-apply global overrides */
     stylestore_apply_default(sci);
     sci_msg(sci, SCI_STYLECLEARALL, 0, 0);
     stylestore_apply_global(sci);
@@ -435,13 +429,12 @@ extern "C" void lexer_apply(GtkWidget *sci, const char *lang_name)
         return;
     }
 
-    Scintilla::ILexer5 *lexer = CreateLexer(lexer_name);
+    void *lexer = lexilla_create_lexer(lexer_name);
     if (lexer)
         sci_msg(sci, SCI_SETILEXER, 0, (sptr_t)lexer);
 
     apply_fold_props(sci, lang_name);
     apply_keywords(sci, lang_name);
-    /* Use lang_name (matches XML LexerType name attr), not lexer_name */
     stylestore_apply_lexer(sci, lang_name);
 
     sptr_t docLen = sci_msg(sci, SCI_GETLENGTH, 0, 0);
@@ -449,13 +442,12 @@ extern "C" void lexer_apply(GtkWidget *sci, const char *lang_name)
         sci_msg(sci, SCI_COLOURISE, 0, docLen);
 }
 
-extern "C" void lexer_apply_from_path(GtkWidget *sci, const char *path)
+void lexer_apply_from_path(GtkWidget *sci, const char *path)
 {
     if (!path || !*path) {
         lexer_apply(sci, NULL);
         return;
     }
-    /* Find the last '.' after the last '/' */
     const char *slash = strrchr(path, '/');
     const char *base  = slash ? slash + 1 : path;
     const char *dot   = strrchr(base, '.');
@@ -465,9 +457,8 @@ extern "C" void lexer_apply_from_path(GtkWidget *sci, const char *path)
     lexer_apply(sci, lang);
 }
 
-extern "C" const char *lexer_display_name(const char *lang_name)
+const char *lexer_display_name(const char *lang_name)
 {
     if (!lang_name || !*lang_name) return "Normal Text";
-    /* Capitalise first letter as a simple display heuristic */
     return lang_name;
 }
