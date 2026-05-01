@@ -71,6 +71,7 @@ add_executable(notepad++
     src/stylestore.c
     src/styleeditor.c
     src/lexer.c
+    src/i18n.c
     src/lexilla_bridge.cpp
     "${CMAKE_SOURCE_DIR}/../src/LexUserStub.cxx"
 )
