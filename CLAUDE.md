@@ -118,12 +118,57 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ---
 
-## Linux port — next steps (priority order)
+## Linux port — next steps (priority / effort order)
 
-### 1. Language selection menu
-Add a **Language** top-level menu to `main.c` that lets the user manually override the detected language for the current tab. Each entry calls `lexer_apply(sci, lang_name)`.
+### Low effort
 
-- Group entries by category (C-family, Web, Scripting, …) matching the `kExtLang` / `kLangLexer` tables in `lexer.c`
-- The active language should be checkmarked (radio-style); switching clears the old check
-- "Normal Text" entry at the top sets language to NULL (plain text, no lexer)
-- Callback: `lexer_apply(editor_current_doc()->sci, lang)` then `statusbar_set_language(lang)`
+1. **Language selection menu** — top-level Language menu in `main.c`. Groups by category matching `kLangLexer` in `lexer.c`. Radio checkmarks; "Normal Text" at top. Callback: `lexer_apply(sci, lang)` + `statusbar_set_language(lang)`. Update checkmark on tab switch via `on_switch_page`.
+2. **Overwrite (INS) mode** — `SCI_SETOVERTYPE` toggle; add OVR indicator to statusbar.
+3. **EOL type selection** — menu items calling `SCI_SETEOLMODE`; update statusbar EOL cell.
+4. **Show/hide symbols** — menu toggles for `SCI_SETVIEWWS`, `SCI_SETVIEWEOL`, `SCI_SETMARGINWIDTHN` (line numbers, fold, bookmarks).
+5. **Edge column** — `SCI_SETEDGEMODE` / `SCI_SETEDGECOLUMN` wired to a preference value.
+6. **Insert date/time** — `g_date_time_format()` → `SCI_REPLACESEL`.
+7. **Duplicate / Delete / Move line** — `SCI_LINEDUPLICATE`, `SCI_LINEDELETE`, `SCI_MOVESELECTEDLINESUP/DOWN`.
+8. **Join / Split lines** — iterate selection lines via `SCI_GETTEXTRANGE`, reassemble.
+9. **Insert blank line above/below** — `SCI_HOME` + `SCI_NEWLINE` sequence.
+10. **Trim whitespace** — regex replace or line-by-line strip via Scintilla API.
+11. **Hash tools** — link `libssl` or use GLib's `g_checksum_new()`; operate on selection or whole doc.
+12. **Base64 / Hex tools** — `g_base64_encode/decode()` and a nibble-loop for hex; replace selection.
+
+### Medium effort
+
+13. **Case conversion** — `SCI_UPPERCASE`/`SCI_LOWERCASE` for basic; custom loops for Proper/Sentence/Random.
+14. **Comment / Uncomment** — per-language delimiter table (reuse `kLangLexer`); detect and toggle via `SCI_GETLINE`/`SCI_REPLACELINE`.
+15. **Whitespace / EOL conversions** — `SCI_SETTARGETWHOLEDOCUMENT` + `SCI_REPLACETARGET` loops.
+16. **Remove duplicate/blank lines** — collect lines into array, filter, replace whole doc.
+17. **Sort lines** — same collect/sort/replace pattern; multiple comparators.
+18. **Word wrap toggle** — `SCI_SETWRAPMODE(SC_WRAP_WORD/SC_WRAP_NONE)`; persist per-tab.
+19. **Bookmarks** — `SCI_MARKERADD`/`SCI_MARKERNEXT`/`SCI_MARKERPREV` with marker number 1; menu items + margin click.
+20. **Mark styles** — 5 indicator slots (`SCI_INDICSETSTYLE`, `SCI_INDICATORFILLRANGE`); menu to apply/clear/jump.
+21. **Go to matching brace** — `SCI_BRACEMATCH`; move caret or flash highlight.
+22. **Recent files list** — maintain a `GList` of last N paths in config; rebuild submenu on open/close.
+23. **Encoding selection** — per-tab encoding stored in `NppDoc`; recode buffer on switch via `g_convert()`; update statusbar.
+24. **Keyboard shortcut mapper** — dialog listing `GtkAccelGroup` entries; serialize to `shortcuts.xml`.
+25. **Preferences dialog** — GtkDialog with sections (editor, appearance, file, …); persist to `~/.config/npp/config.xml`.
+26. **Auto-indent** — `SCN_CHARADDED` handler: copy leading whitespace of previous line; advanced: detect `{` / `:`.
+27. **Code folding controls** — menu items calling `SCI_FOLDALL`, `SCI_FOLDDISPLAYTEXT`, `SCI_SETFOLDLEVEL` per level.
+
+### High effort
+
+28. **Find in Files** — extra tab in the Find/Replace dialog; `GThreadPool` recursive file walk; results in a collapsible `GtkTreeView`.
+29. **Column / block selection** — `SCI_SETSELECTIONMODE(SC_SEL_RECTANGLE)`; column editor dialog for insert/fill.
+30. **Multi-select** — `SCI_ADDSELECTION`, `SCI_MULTIPLESELECTADDNEXT`, `SCI_MULTIPLESELECTADDEACH`.
+31. **Auto-completion** — `SCI_AUTOCSHOW` from word list built per language; `SCI_CALLTIPSHOW` for param hints.
+32. **User-defined languages (UDL)** — parse `~/.config/npp/userDefineLangs/*.xml`; build a runtime `ILexer5` equivalent or use Lexilla's `LexerModule` API.
+33. **Change history / git gutter** — run `git diff` in background; parse unified diff; set `SCI_MARKERDEFINE` symbols in margin.
+34. **Session save / restore** — serialize open file paths + scroll/caret positions to `~/.config/npp/session.xml`; restore on launch.
+35. **Auto-backup** — `g_timeout_add_seconds()` writes current doc to `~/.config/npp/backup/<name>~`; clean on clean save.
+36. **File change detection** — `GFileMonitor` on each open path; prompt reload on `G_FILE_MONITOR_EVENT_CHANGED`.
+37. **Macro recording / playback** — hook `SCN_MACRORECORD`; store `(msg, wParam, lParam)` triples; replay with `SCI_SENDMESSAGE`.
+38. **Document List panel** — dockable `GtkListBox` synced to notebook pages; click to switch tab.
+39. **Folder as Workspace panel** — dockable `GtkTreeView` backed by `GFileEnumerator`; double-click opens file.
+40. **Function List panel** — dockable `GtkTreeView`; parse current file with a per-language regex or ctags; update on `SCN_MODIFIED`.
+41. **Document Map** — secondary `ScintillaWidget` in read-only mode tracking the main one; scale via `SCI_SETZOOM`.
+42. **Search Results panel** — dockable `GtkTreeView` accumulating Find-in-Files hits; click to navigate.
+43. **Spell checker** — integrate `enchant-2` library; walk words with `SCI_WORDSTARTPOSITION`/`SCI_WORDENDPOSITION`; mark with indicator.
+44. **Plugin system** — `dlopen`/`dlsym` loader for `.so` plugins exporting the five NPP symbols; `NPPM_*` message routing; auto-generated plugin menu.

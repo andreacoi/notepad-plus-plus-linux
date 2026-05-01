@@ -66,7 +66,57 @@ Output: `linux/build/notepad++`
 
 ## Upcoming features
 
-- **Language menu** — top-level Language menu to manually override the detected language for the current tab, grouped by category with radio checkmarks
+Ordered by implementation effort (low → high).
+
+### Low effort
+- **Language menu** — top-level Language menu to manually override the detected language, grouped by category with radio checkmarks
+- **Overwrite (INS) mode** — toggle insert/overwrite with status bar indicator
+- **EOL type selection** — per-tab LF / CR / CRLF selector in the Edit or Format menu
+- **Show/hide symbols** — toggle whitespace, EOL markers, line numbers, fold margin, bookmarks margin
+- **Edge column** — configurable vertical guide line
+- **Insert date/time** — short and long format insertion
+- **Duplicate / Delete / Move line** — single-line operations under Edit menu
+- **Join / Split lines** — line joining and splitting
+- **Insert blank line above/below** — keyboard-accessible line insertion
+- **Trim whitespace** — strip leading and trailing spaces on save or on demand
+- **Hash tools** — MD5, SHA-1, SHA-256, SHA-512 generation from selection or file
+- **Base64 encode/decode** — ASCII ↔ Base64 and ASCII ↔ Hex conversions
+
+### Medium effort
+- **Case conversion** — UPPER, lower, Proper, Sentence, Inverted, Random case
+- **Comment / Uncomment** — single-line and block comment, language-aware delimiters
+- **EOL and whitespace conversions** — EOL↔space, spaces↔tabs, tabs↔spaces
+- **Remove duplicate / blank lines** — various line-cleanup operations
+- **Sort lines** — lexicographic, case-insensitive, by length, numeric, random, reverse
+- **Word wrap toggle** — per-tab word wrap
+- **Bookmarks** — toggle, next/prev, clear all, cut/copy/remove bookmarked lines
+- **Mark styles** — highlight text with 5 color styles, jump next/prev, clear
+- **Go to matching brace** — brace/bracket/parenthesis matching navigation
+- **Recent files list** — reopen recently closed files
+- **Encoding selection** — manual per-tab encoding, reload with specified encoding
+- **Keyboard shortcut mapper** — customise and save key bindings
+- **Preferences dialog** — persistent settings (config.xml equivalent)
+- **Auto-indent** — None / Basic / Advanced modes
+- **Code folding controls** — fold/unfold all and by individual levels (1–8)
+
+### High effort
+- **Find in Files** — recursive directory search with collapsible results tree
+- **Column / block selection** — Alt-drag rectangular selection and column editor
+- **Multi-select** — select all occurrences, next occurrence, match-case/whole-word variants
+- **Auto-completion** — word, function, and path completion with parameter hints
+- **User-defined languages (UDL)** — custom syntax highlighting via XML definitions
+- **Change history / git gutter** — diff markers in margin, next/prev change navigation
+- **Session save / restore** — persist and reopen tab sets
+- **Auto-backup** — timed backup copies to `~/.config/npp/backup/`
+- **File change detection** — detect external modifications and prompt to reload
+- **Macro recording / playback** — record and replay keystroke sequences
+- **Document List panel** — dockable panel listing all open tabs
+- **Folder as Workspace panel** — multi-root file tree browser
+- **Function List panel** — tree view of functions/classes in the current file
+- **Document Map** — minimap preview of the full document
+- **Search Results panel** — accumulated find results with navigation
+- **Spell checker** — inline spell checking with highlight and correction
+- **Plugin system** — dlopen-based plugin loading, menu integration, NPPM message routing
 
 ## User configuration
 
