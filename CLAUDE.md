@@ -26,7 +26,8 @@ cmake -B build && cmake --build build
 | `statusbar.c/h` | Bottom status bar (line, col, encoding, EOL, language) |
 | `toolbar.c/h` | GTK3 toolbar with Fluent icon set |
 | `findreplace.c/h` | Find/Replace dialog |
-| `lexer.cpp/h` | Lexilla integration: extension→language→lexer maps, keyword lists, fold props |
+| `lexer.c/h` | Lexilla integration: extension→language→lexer maps, keyword lists, fold props |
+| `lexilla_bridge.cpp` | Minimal C++ bridge: `lexilla_create_lexer()` wraps `CreateLexer()` for use from C |
 | `stylestore.c/h` | Parses `stylers.model.xml` / user `~/.config/npp/stylers.xml`; applies Scintilla styles |
 | `styleeditor.c/h` | Style Configurator dialog (theme picker, per-language style editing) |
 | `sci_c.h` | C-safe Scintilla constants and `SCNotification` layout |
@@ -36,7 +37,7 @@ cmake -B build && cmake --build build
 - `themes/` — user theme XML files (scanned alongside bundled `resources/themes/`)
 
 **Key design rules for the Linux port:**
-- All UI code is C11; only `lexer.cpp` and `LexUserStub.cxx` are C++
+- All UI code is C11; only `lexilla_bridge.cpp` and `LexUserStub.cxx` are C++
 - Scintilla color format is BGR: `r | (g<<8) | (b<<16)`
 - Styling call order: `stylestore_apply_default()` → `SCI_STYLECLEARALL` → `stylestore_apply_global()` → install lexer → `stylestore_apply_lexer(sci, lang_name)` (pass `lang_name`, NOT the Lexilla lexer name)
 - `stylestore_apply_lexer` must receive the XML `LexerType name` (e.g. `"php"`), not the Lexilla internal name (e.g. `"phpscript"`)
@@ -118,26 +119,10 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ## Linux port — next steps (priority order)
 
-### 1. Convert `lexer.cpp` to C
-`lexer.cpp` is the only application-level file written in C++ (needed solely for the `CreateLexer()` call from Lexilla's C++ API). Convert it to `lexer.c` by isolating the C++ call in a minimal one-function wrapper:
-
-- Create `linux/src/lexer_create.cpp` (or keep a renamed `lexilla_bridge.cpp`) with a single `extern "C"` function:
-  ```c
-  /* lexilla_bridge.cpp */
-  #include "ILexer.h"
-  #include "Lexilla.h"
-  extern "C" void *lexer_create(const char *name) {
-      return (void *)CreateLexer(name);
-  }
-  ```
-- Rename `lexer.cpp` → `lexer.c`, replace the `CreateLexer()` call with the bridge function, and cast the `void *` result to `sptr_t` for `SCI_SETILEXER`
-- Update `CMakeLists.txt`: add `lexilla_bridge.cpp`, change `lexer.cpp` → `lexer.c`
-- Remove the `set_source_files_properties` workaround for `lexer.cpp` (it was only needed because of C++ headers); `lexilla_bridge.cpp` still needs `-include cstdint`
-
-### 2. Language selection menu
+### 1. Language selection menu
 Add a **Language** top-level menu to `main.c` that lets the user manually override the detected language for the current tab. Each entry calls `lexer_apply(sci, lang_name)`.
 
-- Group entries by category (C-family, Web, Scripting, …) matching the `kExtLang` / `kLangLexer` tables in `lexer.cpp`
+- Group entries by category (C-family, Web, Scripting, …) matching the `kExtLang` / `kLangLexer` tables in `lexer.c`
 - The active language should be checkmarked (radio-style); switching clears the old check
 - "Normal Text" entry at the top sets language to NULL (plain text, no lexer)
 - Callback: `lexer_apply(editor_current_doc()->sci, lang)` then `statusbar_set_language(lang)`
