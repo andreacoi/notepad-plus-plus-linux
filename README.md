@@ -40,6 +40,11 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - Status bar showing line/column, EOL mode (CRLF/CR/LF), encoding, and active language
 - Keyboard shortcuts matching Notepad++ conventions (Ctrl+N/O/S/W/Z/Y/X/C/V/A/F/H/G)
 
+### Localisation
+- Automatic system locale detection via GLib (`g_get_language_names()`)
+- 137 bundled translations from the official Notepad++ XML localization files
+- All menus, dialogs, and buttons translated; falls back to English when no match
+
 ## Build
 
 Requires CMake 3.20+, GCC or Clang, and GTK3 development headers.
@@ -62,7 +67,6 @@ Output: `linux/build/notepad++`
 ## Upcoming features
 
 - **Language menu** — top-level Language menu to manually override the detected language for the current tab, grouped by category with radio checkmarks
-- **i18n / localisation** — system locale detection and translation loading from the 137 bundled Notepad++ XML language files (`resources/localization/`)
 
 ## User configuration
 
