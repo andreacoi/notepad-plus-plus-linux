@@ -37,7 +37,7 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 
 ### Interface
 - GTK3 toolbar with Fluent icon set
-- Status bar showing line/column, EOL mode (CRLF/CR/LF), encoding, and active language
+- Status bar showing line/column, EOL mode (CRLF/CR/LF), encoding, active language, and INS/OVR mode indicator
 - Keyboard shortcuts matching Notepad++ conventions (Ctrl+N/O/S/W/Z/Y/X/C/V/A/F/H/G)
 - **Language menu** — top-level Language menu to manually override the detected language, grouped into 9 categories (C/C++, Web, Scripting, Systems, Markup/Config, Database, Scientific, Hardware, Other) with radio checkmarks; "Normal Text" at top; checkmark syncs automatically on tab switch
 
@@ -70,7 +70,7 @@ Output: `linux/build/notepad++`
 Ordered by implementation effort (low → high).
 
 ### Low effort
-- **Overwrite (INS) mode** — toggle insert/overwrite with status bar indicator
+- **EOL type selection** — per-tab LF / CR / CRLF selector in the Edit or Format menu
 - **EOL type selection** — per-tab LF / CR / CRLF selector in the Edit or Format menu
 - **Show/hide symbols** — toggle whitespace, EOL markers, line numbers, fold margin, bookmarks margin
 - **Edge column** — configurable vertical guide line

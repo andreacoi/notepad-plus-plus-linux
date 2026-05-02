@@ -129,12 +129,11 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ### Low effort
 
-1. **Overwrite (INS) mode** — `SCI_SETOVERTYPE` toggle; add OVR indicator to statusbar.
-3. **EOL type selection** — menu items calling `SCI_SETEOLMODE`; update statusbar EOL cell.
-4. **Show/hide symbols** — menu toggles for `SCI_SETVIEWWS`, `SCI_SETVIEWEOL`, `SCI_SETMARGINWIDTHN` (line numbers, fold, bookmarks).
-5. **Edge column** — `SCI_SETEDGEMODE` / `SCI_SETEDGECOLUMN` wired to a preference value.
-6. **Insert date/time** — `g_date_time_format()` → `SCI_REPLACESEL`.
-7. **Duplicate / Delete / Move line** — `SCI_LINEDUPLICATE`, `SCI_LINEDELETE`, `SCI_MOVESELECTEDLINESUP/DOWN`.
+1. **EOL type selection** — menu items calling `SCI_SETEOLMODE`; update statusbar EOL cell.
+2. **Show/hide symbols** — menu toggles for `SCI_SETVIEWWS`, `SCI_SETVIEWEOL`, `SCI_SETMARGINWIDTHN` (line numbers, fold, bookmarks).
+3. **Edge column** — `SCI_SETEDGEMODE` / `SCI_SETEDGECOLUMN` wired to a preference value.
+4. **Insert date/time** — `g_date_time_format()` → `SCI_REPLACESEL`.
+5. **Duplicate / Delete / Move line** — `SCI_LINEDUPLICATE`, `SCI_LINEDELETE`, `SCI_MOVESELECTEDLINESUP/DOWN`.
 8. **Join / Split lines** — iterate selection lines via `SCI_GETTEXTRANGE`, reassemble.
 9. **Insert blank line above/below** — `SCI_HOME` + `SCI_NEWLINE` sequence.
 10. **Trim whitespace** — regex replace or line-by-line strip via Scintilla API.
