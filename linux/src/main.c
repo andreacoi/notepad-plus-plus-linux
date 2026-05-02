@@ -55,8 +55,7 @@ static void cb_goto(GtkMenuItem *i, gpointer d)   { (void)i;(void)d; editor_goto
 static void cb_style_editor(GtkMenuItem *i, gpointer d)
 {
     (void)i; (void)d;
-    if (styleeditor_show(s_main_window))
-        editor_reapply_styles();
+    styleeditor_show(s_main_window, editor_reapply_styles);
 }
 
 /* ------------------------------------------------------------------ */

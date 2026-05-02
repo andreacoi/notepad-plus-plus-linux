@@ -96,6 +96,7 @@ typedef struct {
     gboolean changed;   /* any edits since last save */
 
     GPtrArray *theme_paths;  /* absolute paths for combo box entries */
+    SEApplyFn  on_apply;     /* caller callback: re-apply styles to editors */
 } SEState;
 
 /* ------------------------------------------------------------------ */
@@ -441,23 +442,75 @@ static void on_toggle_changed(GtkToggleButton *tb, gpointer data)
 }
 
 /* ------------------------------------------------------------------ */
+/* Response signal handler                                            */
+/* ------------------------------------------------------------------ */
+
+static void on_response(GtkDialog *dialog, gint resp, gpointer data)
+{
+    SEState *s = (SEState *)data;
+
+    if (resp == 1) {   /* Save — keep dialog open */
+        stylestore_save_user();
+        s->changed = FALSE;
+        if (s->on_apply) s->on_apply();
+        return;
+    }
+
+    if (resp == GTK_RESPONSE_ACCEPT) {   /* Save and Close */
+        stylestore_save_user();
+        s->changed = FALSE;
+        if (s->on_apply) s->on_apply();
+        gtk_widget_hide(GTK_WIDGET(dialog));
+        return;
+    }
+
+    /* Close button or window-delete */
+    if (s->changed) {
+        GtkWidget *ask = gtk_message_dialog_new(
+            GTK_WINDOW(dialog),
+            GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+            GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO,
+            "Save style changes?");
+        gint ans = gtk_dialog_run(GTK_DIALOG(ask));
+        gtk_widget_destroy(ask);
+        if (ans == GTK_RESPONSE_YES) {
+            stylestore_save_user();
+            if (s->on_apply) s->on_apply();
+        }
+    }
+    s->changed = FALSE;
+    gtk_widget_hide(GTK_WIDGET(dialog));
+}
+
+/* ------------------------------------------------------------------ */
 /* Build dialog                                                       */
 /* ------------------------------------------------------------------ */
 
-gboolean styleeditor_show(GtkWidget *parent)
+void styleeditor_show(GtkWidget *parent, SEApplyFn on_apply)
 {
+    static SEState *s_instance = NULL;
+
+    if (s_instance) {
+        s_instance->on_apply = on_apply;
+        s_instance->changed  = FALSE;
+        gtk_window_present(GTK_WINDOW(s_instance->dialog));
+        return;
+    }
+
     SEState *s = g_new0(SEState, 1);
+    s_instance = s;
     s->sel_block = -1;
     s->sel_entry = -1;
     s->theme_paths = g_ptr_array_new_with_free_func(g_free);
+    s->on_apply = on_apply;
 
     /* Create dialog */
     s->dialog = gtk_dialog_new_with_buttons(
         T("dlg.StyleConfig.title", "Style Configurator"),
         parent ? GTK_WINDOW(parent) : NULL,
         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-        TM("dlg.StyleConfig.2301", "_Apply to Editors"), 1,
-        TM("cmd.41006",            "_Save"),             2,
+        TM("cmd.41006",            "_Save"),             1,
+        TM("dlg.StyleConfig.2301", "_Save and Close"),   GTK_RESPONSE_ACCEPT,
         TM("dlg.Find.2",           "_Close"),            GTK_RESPONSE_CLOSE,
         NULL);
     gtk_window_set_default_size(GTK_WINDOW(s->dialog), 820, 560);
@@ -566,6 +619,8 @@ gboolean styleeditor_show(GtkWidget *parent)
     gtk_grid_attach(GTK_GRID(attr_grid), preview_frame, 1, row, 3, 1);
 
     /* ---- Connect signals ---- */
+    g_signal_connect(s->dialog, "response",     G_CALLBACK(on_response),              s);
+    g_signal_connect(s->dialog, "delete-event", G_CALLBACK(gtk_widget_hide_on_delete), NULL);
     g_signal_connect(s->theme_combo, "changed",
                      G_CALLBACK(on_theme_changed), s);
     g_signal_connect(s->lang_list, "row-selected",
@@ -588,38 +643,6 @@ gboolean styleeditor_show(GtkWidget *parent)
 
     /* ---- Populate initial data ---- */
     populate_theme_combo(s);  /* triggers on_theme_changed → populate_lang_list */
+    s->changed = FALSE;       /* reset: on_theme_changed fired during init, not a real edit */
     gtk_widget_show_all(s->dialog);
-
-    /* ---- Run dialog loop ---- */
-    gboolean applied = FALSE;
-    gint resp;
-    while ((resp = gtk_dialog_run(GTK_DIALOG(s->dialog))) != GTK_RESPONSE_CLOSE &&
-            resp != GTK_RESPONSE_DELETE_EVENT) {
-        if (resp == 1) {   /* Apply to Editors */
-            applied = TRUE;
-        } else if (resp == 2) {  /* Save */
-            stylestore_save_user();
-            s->changed = FALSE;
-        }
-    }
-
-    /* If user made changes but didn't explicitly save, ask */
-    if (s->changed) {
-        GtkWidget *ask = gtk_message_dialog_new(
-            GTK_WINDOW(s->dialog),
-            GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-            GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO,
-            "Save style changes?");
-        if (gtk_dialog_run(GTK_DIALOG(ask)) == GTK_RESPONSE_YES) {
-            stylestore_save_user();
-            applied = TRUE;
-        }
-        gtk_widget_destroy(ask);
-    }
-
-    gtk_widget_destroy(s->dialog);
-    g_ptr_array_unref(s->theme_paths);
-    g_free(s);
-
-    return applied;
 }

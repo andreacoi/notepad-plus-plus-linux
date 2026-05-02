@@ -7,10 +7,14 @@
 extern "C" {
 #endif
 
-/* Show the Style Configurator dialog (modal).
- * parent may be NULL.  On close the caller should call
- * editor_reapply_styles() if the return value is TRUE. */
-gboolean styleeditor_show(GtkWidget *parent);
+/* Callback invoked when the user applies or saves styles. */
+typedef void (*SEApplyFn)(void);
+
+/* Show the Style Configurator dialog.
+ * on_apply is called (if non-NULL) when styles should be re-applied to
+ * open editors (on Save or Apply to Editors).  The dialog is modal but
+ * non-blocking: this function returns immediately after showing it. */
+void styleeditor_show(GtkWidget *parent, SEApplyFn on_apply);
 
 #ifdef __cplusplus
 }
