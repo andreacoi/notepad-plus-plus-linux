@@ -47,6 +47,9 @@ cmake -B build && cmake --build build
 - **XML parsing**: NPP theme/styler XML files may contain unescaped `&` in attribute values (e.g. `name="BUILTIN FUNC & TYPE"`). Always pre-process with `fix_bare_ampersands()` before passing to `GMarkupParser` (implemented in `stylestore.c`).
 - **i18n response IDs**: when assigning `gtk_dialog_new_with_buttons` response IDs, verify the translated label matches the intended action — NPP localisation keys like `dlg.StyleConfig.2301` map to "Salva e chiudi" (Save and Close) in Italian, not "Apply to Editors".
 
+**Extra features (beyond original Notepad++ scope — implement only after all upcoming features are complete):**
+- **Vim mode** — modal editing (Normal / Insert / Visual) with core Vim motions and commands; toggled via Settings → Vim Mode; implemented via `SCN_CHARADDED` / `key-press-event` interception.
+
 **Known bugs fixed:**
 - `stylestore`: `GMarkupParser` rejected `~/.config/npp/stylers.xml` at lines containing `&` in attribute values (e.g. CaML `BUILTIN FUNC & TYPE`). Fixed in `stylestore.c:fix_bare_ampersands()` by escaping bare `&` before parsing.
 - `styleeditor`: Style Configurator Save/Close buttons had no effect. Three root causes: (1) `gtk_dialog_run()` in a while-loop does not re-acquire the input grab on subsequent iterations under Wayland; (2) `gtk_widget_destroy()` called from within the `response` signal handler does not reliably close the window; (3) response IDs for "Salva" and "Salva e chiudi" were swapped. Fixed by converting to a persistent singleton dialog (hidden/shown like Find/Replace), using `gtk_widget_hide()` to close, and correcting the response-ID-to-action mapping.
@@ -129,16 +132,15 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ### Low effort
 
-1. **EOL type selection** — menu items calling `SCI_SETEOLMODE`; update statusbar EOL cell.
-2. **Show/hide symbols** — menu toggles for `SCI_SETVIEWWS`, `SCI_SETVIEWEOL`, `SCI_SETMARGINWIDTHN` (line numbers, fold, bookmarks).
-3. **Edge column** — `SCI_SETEDGEMODE` / `SCI_SETEDGECOLUMN` wired to a preference value.
-4. **Insert date/time** — `g_date_time_format()` → `SCI_REPLACESEL`.
-5. **Duplicate / Delete / Move line** — `SCI_LINEDUPLICATE`, `SCI_LINEDELETE`, `SCI_MOVESELECTEDLINESUP/DOWN`.
-8. **Join / Split lines** — iterate selection lines via `SCI_GETTEXTRANGE`, reassemble.
-9. **Insert blank line above/below** — `SCI_HOME` + `SCI_NEWLINE` sequence.
-10. **Trim whitespace** — regex replace or line-by-line strip via Scintilla API.
-11. **Hash tools** — link `libssl` or use GLib's `g_checksum_new()`; operate on selection or whole doc.
-12. **Base64 / Hex tools** — `g_base64_encode/decode()` and a nibble-loop for hex; replace selection.
+1. **Show/hide symbols** — menu toggles for `SCI_SETVIEWWS`, `SCI_SETVIEWEOL`, `SCI_SETMARGINWIDTHN` (line numbers, fold, bookmarks).
+2. **Edge column** — `SCI_SETEDGEMODE` / `SCI_SETEDGECOLUMN` wired to a preference value.
+3. **Insert date/time** — `g_date_time_format()` → `SCI_REPLACESEL`.
+4. **Duplicate / Delete / Move line** — `SCI_LINEDUPLICATE`, `SCI_LINEDELETE`, `SCI_MOVESELECTEDLINESUP/DOWN`.
+5. **Join / Split lines** — iterate selection lines via `SCI_GETTEXTRANGE`, reassemble.
+6. **Insert blank line above/below** — `SCI_HOME` + `SCI_NEWLINE` sequence.
+7. **Trim whitespace** — regex replace or line-by-line strip via Scintilla API.
+8. **Hash tools** — link `libssl` or use GLib's `g_checksum_new()`; operate on selection or whole doc.
+9. **Base64 / Hex tools** — `g_base64_encode/decode()` and a nibble-loop for hex; replace selection.
 
 ### Medium effort
 

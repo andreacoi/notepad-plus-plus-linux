@@ -40,6 +40,7 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - Status bar showing line/column, EOL mode (CRLF/CR/LF), encoding, active language, and INS/OVR mode indicator
 - Keyboard shortcuts matching Notepad++ conventions (Ctrl+N/O/S/W/Z/Y/X/C/V/A/F/H/G)
 - **Language menu** — top-level Language menu to manually override the detected language, grouped into 9 categories (C/C++, Web, Scripting, Systems, Markup/Config, Database, Scientific, Hardware, Other) with radio checkmarks; "Normal Text" at top; checkmark syncs automatically on tab switch
+- **EOL Conversion** — Edit → EOL Conversion submenu with radio items: Windows (CR+LF), Unix (LF), Old Mac (CR); converts all existing line endings when switched; status bar EOL cell syncs on tab switch
 
 ### Localisation
 - Automatic system locale detection via GLib (`g_get_language_names()`)
@@ -70,8 +71,6 @@ Output: `linux/build/notepad++`
 Ordered by implementation effort (low → high).
 
 ### Low effort
-- **EOL type selection** — per-tab LF / CR / CRLF selector in the Edit or Format menu
-- **EOL type selection** — per-tab LF / CR / CRLF selector in the Edit or Format menu
 - **Show/hide symbols** — toggle whitespace, EOL markers, line numbers, fold margin, bookmarks margin
 - **Edge column** — configurable vertical guide line
 - **Insert date/time** — short and long format insertion
@@ -117,6 +116,12 @@ Ordered by implementation effort (low → high).
 - **Search Results panel** — accumulated find results with navigation
 - **Spell checker** — inline spell checking with highlight and correction
 - **Plugin system** — dlopen-based plugin loading, menu integration, NPPM message routing
+
+## Extra features
+
+Features beyond the original Notepad++ scope, specific to this Linux port. These will be tackled only after all upcoming features are complete.
+
+- **Vim mode** — modal editing (Normal / Insert / Visual) with core Vim motions and commands, toggled via Settings → Vim Mode
 
 ## Bug fixes
 
