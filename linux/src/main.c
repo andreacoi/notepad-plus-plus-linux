@@ -373,6 +373,23 @@ static void on_switch_page(GtkNotebook *nb, GtkWidget *page,
 }
 
 /* ------------------------------------------------------------------ */
+/* Insert key — toggle overtype mode                                  */
+/* ------------------------------------------------------------------ */
+
+static gboolean on_key_press(GtkWidget *w, GdkEventKey *ev, gpointer d)
+{
+    (void)w; (void)d;
+    if (ev->keyval != GDK_KEY_Insert) return FALSE;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return FALSE;
+    gboolean ovr = (gboolean)scintilla_send_message(
+        SCINTILLA(doc->sci), SCI_GETOVERTYPE, 0, 0);
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETOVERTYPE, !ovr, 0);
+    statusbar_set_overtype(!ovr);
+    return TRUE;  /* consumed — prevents Scintilla from double-toggling */
+}
+
+/* ------------------------------------------------------------------ */
 /* Delete-event (window X button)                                     */
 /* ------------------------------------------------------------------ */
 
@@ -397,7 +414,8 @@ static void on_activate(GtkApplication *app, gpointer data)
     s_main_window = window;
     gtk_window_set_title(GTK_WINDOW(window), "Notepad++ Linux");
     gtk_window_set_default_size(GTK_WINDOW(window), 1024, 700);
-    g_signal_connect(window, "delete-event", G_CALLBACK(on_delete_event), app);
+    g_signal_connect(window, "delete-event",   G_CALLBACK(on_delete_event), app);
+    g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press),   NULL);
 
     GtkWidget *vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_add(GTK_CONTAINER(window), vbox);

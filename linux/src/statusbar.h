@@ -7,5 +7,6 @@ GtkWidget *statusbar_init(void);
 void       statusbar_update_from_sci(GtkWidget *sci);
 void       statusbar_set_language(const char *lang);
 void       statusbar_set_encoding(const char *enc);
+void       statusbar_set_overtype(gboolean ovr);
 
 #endif /* STATUSBAR_H */

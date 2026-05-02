@@ -6,6 +6,7 @@ static GtkWidget *s_lbl_pos;
 static GtkWidget *s_lbl_enc;
 static GtkWidget *s_lbl_eol;
 static GtkWidget *s_lbl_lang;
+static GtkWidget *s_lbl_ovr;
 
 static GtkWidget *vsep(void)
 {
@@ -37,6 +38,8 @@ GtkWidget *statusbar_init(void)
     gtk_box_pack_end(GTK_BOX(box), vsep(),                                FALSE, FALSE, 0);
     gtk_box_pack_end(GTK_BOX(box), (s_lbl_eol = rlabel("LF")),           FALSE, FALSE, 0);
     gtk_box_pack_end(GTK_BOX(box), vsep(),                                FALSE, FALSE, 0);
+    gtk_box_pack_end(GTK_BOX(box), (s_lbl_ovr = rlabel("INS")),          FALSE, FALSE, 0);
+    gtk_box_pack_end(GTK_BOX(box), vsep(),                                FALSE, FALSE, 0);
     gtk_box_pack_end(GTK_BOX(box), (s_lbl_enc = rlabel("UTF-8")),        FALSE, FALSE, 0);
     gtk_box_pack_end(GTK_BOX(box), vsep(),                                FALSE, FALSE, 0);
 
@@ -60,6 +63,9 @@ void statusbar_update_from_sci(GtkWidget *sci)
     int eol = (int)scintilla_send_message(SCINTILLA(sci), SCI_GETEOLMODE, 0, 0);
     gtk_label_set_text(GTK_LABEL(s_lbl_eol),
         eol == SC_EOL_CRLF ? "CRLF" : eol == SC_EOL_CR ? "CR" : "LF");
+
+    int ovr = (int)scintilla_send_message(SCINTILLA(sci), SCI_GETOVERTYPE, 0, 0);
+    gtk_label_set_text(GTK_LABEL(s_lbl_ovr), ovr ? "OVR" : "INS");
 }
 
 void statusbar_set_language(const char *lang)
@@ -70,4 +76,9 @@ void statusbar_set_language(const char *lang)
 void statusbar_set_encoding(const char *enc)
 {
     if (s_lbl_enc) gtk_label_set_text(GTK_LABEL(s_lbl_enc), enc ? enc : "UTF-8");
+}
+
+void statusbar_set_overtype(gboolean ovr)
+{
+    if (s_lbl_ovr) gtk_label_set_text(GTK_LABEL(s_lbl_ovr), ovr ? "OVR" : "INS");
 }

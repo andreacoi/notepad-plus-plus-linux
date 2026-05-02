@@ -91,6 +91,8 @@ typedef struct SCNotification {
 #define SCI_MARKERENABLEHIGHLIGHT 2293
 #define SCI_GOTOPOS             2025
 #define SCI_GOTOLINE            2024
+#define SCI_SETOVERTYPE         2186
+#define SCI_GETOVERTYPE         2187
 #define SCI_SETEOLMODE          2031
 #define SCI_GETEOLMODE          2030
 #define SCI_SETLEXERLANGUAGE    4006
