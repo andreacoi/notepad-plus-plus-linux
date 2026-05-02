@@ -118,6 +118,14 @@ Ordered by implementation effort (low → high).
 - **Spell checker** — inline spell checking with highlight and correction
 - **Plugin system** — dlopen-based plugin loading, menu integration, NPPM message routing
 
+## Bug fixes
+
+| # | Component | Description | Resolution |
+|---|-----------|-------------|------------|
+| 1 | Style Configurator | Save and Close buttons had no effect on GTK3/Wayland | Replaced `gtk_dialog_run()` loop with `response` signal handler; dialog is now a persistent singleton closed via `gtk_widget_hide()` |
+| 2 | Style Configurator | "Salva" and "Salva e chiudi" actions were swapped — Save closed the dialog, Save and Close kept it open | Corrected response-ID assignment to match translated button labels |
+| 3 | Style store | `~/.config/npp/stylers.xml` triggered a parse warning for entries whose `name` attribute contains `&` (e.g. CaML `BUILTIN FUNC & TYPE`) | XML is pre-processed to escape bare `&` before passing to `GMarkupParser` |
+
 ## User configuration
 
 All user data lives in `~/.config/npp/`:
