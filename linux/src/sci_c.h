@@ -69,6 +69,12 @@ typedef struct SCNotification {
 #define SCI_SETTEXT             2181
 #define SCI_GETTEXT             2182
 #define SCI_SETMARGINWIDTHN     2243
+#define SCI_SETMARGINTYPE       2240
+#define SCI_SETMARGINSENSITIVE  2246
+#define SCI_SETVIEWWS           2020
+#define SCI_GETVIEWWS           2021
+#define SCI_SETVIEWEOL          2034
+#define SCI_GETVIEWEOL          2033
 #define SCI_SETTABWIDTH         2036
 #define SCI_SETUSETABS          2124
 #define SCI_STYLESETFORE        2051
@@ -113,6 +119,14 @@ typedef struct SCNotification {
 /* SC_UPDATE_ flags (used in SCNotification.updated for SCN_UPDATEUI) */
 #define SC_UPDATE_CONTENT       0x1
 #define SC_UPDATE_SELECTION     0x2
+
+/* Margin types */
+#define SC_MARGIN_SYMBOL        0
+#define SC_MARGIN_NUMBER        1
+
+/* Whitespace visibility */
+#define SC_WS_INVISIBLE         0
+#define SC_WS_VISIBLEALWAYS     1
 
 /* Encoding / EOL */
 #define SC_CP_UTF8              65001

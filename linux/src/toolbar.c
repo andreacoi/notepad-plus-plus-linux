@@ -16,15 +16,13 @@
 #define SCI_ZOOMOUT             2334
 #define SCI_SETWRAPMODE         2268
 #define SCI_GETWRAPMODE         2269
-#define SCI_SETVIEWWS           2021
-#define SCI_GETVIEWWS           2020
+/* SCI_SETVIEWWS / SCI_GETVIEWWS defined in sci_c.h */
 #define SCI_SETINDENTATIONGUIDES 2132
 #define SCI_GETINDENTATIONGUIDES 2133
 
 #define SC_WRAP_NONE            0
 #define SC_WRAP_WORD            1
-#define SCWS_INVISIBLE          0
-#define SCWS_VISIBLEALWAYS      1
+/* SC_WS_INVISIBLE / SC_WS_VISIBLEALWAYS defined in sci_c.h */
 #define SC_IV_NONE              0
 #define SC_IV_LOOKBOTH          3
 
@@ -208,7 +206,7 @@ static void on_allchars(GtkToolItem *item, gpointer d)
 {
     (void)d;
     gboolean on = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(item));
-    editor_send(SCI_SETVIEWWS, on ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE, 0);
+    editor_send(SCI_SETVIEWWS, on ? SC_WS_VISIBLEALWAYS : SC_WS_INVISIBLE, 0);
 }
 
 static void on_indent(GtkToolItem *item, gpointer d)
@@ -300,7 +298,7 @@ void toolbar_sync_toggles(GtkWidget *sci)
     if (s_tgl_allchars) {
         g_signal_handlers_block_matched(s_tgl_allchars, G_SIGNAL_MATCH_FUNC,
                                         0, 0, NULL, G_CALLBACK(on_allchars), NULL);
-        gboolean ws = (scintilla_send_message(SCINTILLA(sci), SCI_GETVIEWWS, 0, 0) != SCWS_INVISIBLE);
+        gboolean ws = (scintilla_send_message(SCINTILLA(sci), SCI_GETVIEWWS, 0, 0) != SC_WS_INVISIBLE);
         gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(s_tgl_allchars), ws);
         g_signal_handlers_unblock_matched(s_tgl_allchars, G_SIGNAL_MATCH_FUNC,
                                           0, 0, NULL, G_CALLBACK(on_allchars), NULL);

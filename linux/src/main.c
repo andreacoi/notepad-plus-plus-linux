@@ -60,6 +60,77 @@ static void cb_style_editor(GtkMenuItem *i, gpointer d)
 }
 
 /* ------------------------------------------------------------------ */
+/* Show/hide symbols                                                  */
+/* ------------------------------------------------------------------ */
+
+static gboolean s_show_whitespace = FALSE;
+static gboolean s_show_eol_marks  = FALSE;
+static gboolean s_show_linenums   = TRUE;
+static gboolean s_show_fold       = TRUE;
+static gboolean s_show_bookmarks  = FALSE;
+
+/* Apply current symbol visibility state to a single Scintilla widget. */
+static void apply_view_symbols(GtkWidget *sci)
+{
+    if (!sci) return;
+    scintilla_send_message(SCINTILLA(sci), SCI_SETVIEWWS,
+        s_show_whitespace ? SC_WS_VISIBLEALWAYS : SC_WS_INVISIBLE, 0);
+    scintilla_send_message(SCINTILLA(sci), SCI_SETVIEWEOL,
+        s_show_eol_marks, 0);
+    scintilla_send_message(SCINTILLA(sci), SCI_SETMARGINWIDTHN,
+        0, s_show_linenums ? 44 : 0);
+    scintilla_send_message(SCINTILLA(sci), SCI_SETMARGINWIDTHN,
+        2, s_show_fold ? 14 : 0);
+    scintilla_send_message(SCINTILLA(sci), SCI_SETMARGINWIDTHN,
+        1, s_show_bookmarks ? 16 : 0);
+}
+
+/* Apply to every open tab. */
+static void apply_view_symbols_all(void)
+{
+    int n = editor_page_count();
+    for (int i = 0; i < n; i++) {
+        NppDoc *doc = editor_doc_at(i);
+        if (doc) apply_view_symbols(doc->sci);
+    }
+}
+
+static void cb_toggle_whitespace(GtkCheckMenuItem *item, gpointer d)
+{
+    (void)d;
+    s_show_whitespace = gtk_check_menu_item_get_active(item);
+    apply_view_symbols_all();
+}
+
+static void cb_toggle_eol_marks(GtkCheckMenuItem *item, gpointer d)
+{
+    (void)d;
+    s_show_eol_marks = gtk_check_menu_item_get_active(item);
+    apply_view_symbols_all();
+}
+
+static void cb_toggle_linenums(GtkCheckMenuItem *item, gpointer d)
+{
+    (void)d;
+    s_show_linenums = gtk_check_menu_item_get_active(item);
+    apply_view_symbols_all();
+}
+
+static void cb_toggle_fold(GtkCheckMenuItem *item, gpointer d)
+{
+    (void)d;
+    s_show_fold = gtk_check_menu_item_get_active(item);
+    apply_view_symbols_all();
+}
+
+static void cb_toggle_bookmarks(GtkCheckMenuItem *item, gpointer d)
+{
+    (void)d;
+    s_show_bookmarks = gtk_check_menu_item_get_active(item);
+    apply_view_symbols_all();
+}
+
+/* ------------------------------------------------------------------ */
 /* EOL menu                                                           */
 /* ------------------------------------------------------------------ */
 
@@ -403,8 +474,42 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     APPEND(search, sep_item());
     APPEND(search, menu_item(TM("cmd.43004", "_Go To Line…"), G_CALLBACK(cb_goto),    NULL, accel, GDK_KEY_g, GDK_CONTROL_MASK));
 
-    /* ---- View (placeholder) ---- */
-    submenu(bar, TM("menu.view", "_View"));
+    /* ---- View ---- */
+    {
+        GtkWidget *view = submenu(bar, TM("menu.view", "_View"));
+
+        GtkWidget *ws = gtk_check_menu_item_new_with_mnemonic(
+            TM("menu.view.whitespace", "Show _Whitespace"));
+        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(ws), s_show_whitespace);
+        g_signal_connect(ws, "toggled", G_CALLBACK(cb_toggle_whitespace), NULL);
+        APPEND(view, ws);
+
+        GtkWidget *eolm = gtk_check_menu_item_new_with_mnemonic(
+            TM("menu.view.eol", "Show _EOL Markers"));
+        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(eolm), s_show_eol_marks);
+        g_signal_connect(eolm, "toggled", G_CALLBACK(cb_toggle_eol_marks), NULL);
+        APPEND(view, eolm);
+
+        APPEND(view, sep_item());
+
+        GtkWidget *ln = gtk_check_menu_item_new_with_mnemonic(
+            TM("menu.view.linenums", "Show _Line Numbers"));
+        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(ln), s_show_linenums);
+        g_signal_connect(ln, "toggled", G_CALLBACK(cb_toggle_linenums), NULL);
+        APPEND(view, ln);
+
+        GtkWidget *fm = gtk_check_menu_item_new_with_mnemonic(
+            TM("menu.view.fold", "Show _Fold Margin"));
+        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(fm), s_show_fold);
+        g_signal_connect(fm, "toggled", G_CALLBACK(cb_toggle_fold), NULL);
+        APPEND(view, fm);
+
+        GtkWidget *bm = gtk_check_menu_item_new_with_mnemonic(
+            TM("menu.view.bookmarks", "Show _Bookmarks Margin"));
+        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(bm), s_show_bookmarks);
+        g_signal_connect(bm, "toggled", G_CALLBACK(cb_toggle_bookmarks), NULL);
+        APPEND(view, bm);
+    }
 
     /* ---- Language ---- */
     build_language_menu(bar);
@@ -432,6 +537,7 @@ static void on_switch_page(GtkNotebook *nb, GtkWidget *page,
     lang_menu_sync(lang);
     int eol = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_GETEOLMODE, 0, 0);
     eol_menu_sync(eol);
+    apply_view_symbols(doc->sci);
 }
 
 /* ------------------------------------------------------------------ */
@@ -509,6 +615,7 @@ static void on_activate(GtkApplication *app, gpointer data)
     statusbar_update_from_sci(initial->sci);
     lang_menu_sync((const char *)g_object_get_data(G_OBJECT(initial->sci), "npp-lang"));
     eol_menu_sync((int)scintilla_send_message(SCINTILLA(initial->sci), SCI_GETEOLMODE, 0, 0));
+    apply_view_symbols(initial->sci);
 }
 
 /* ------------------------------------------------------------------ */

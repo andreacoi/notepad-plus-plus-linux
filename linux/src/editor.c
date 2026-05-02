@@ -37,8 +37,16 @@ static GtkWidget *sci_of_page(int page)
 static void setup_sci(GtkWidget *sci)
 {
     sci_msg(sci, SCI_SETCODEPAGE,     SC_CP_UTF8, 0);
-    sci_msg(sci, SCI_SETMARGINWIDTHN, 0, 44);
-    sci_msg(sci, SCI_SETMARGINWIDTHN, 1, 0);
+    /* Margin 0: line numbers */
+    sci_msg(sci, SCI_SETMARGINTYPE,      0, SC_MARGIN_NUMBER);
+    sci_msg(sci, SCI_SETMARGINWIDTHN,    0, 44);
+    /* Margin 1: bookmarks (hidden until bookmarks feature is implemented) */
+    sci_msg(sci, SCI_SETMARGINTYPE,      1, SC_MARGIN_SYMBOL);
+    sci_msg(sci, SCI_SETMARGINWIDTHN,    1, 0);
+    /* Margin 2: fold */
+    sci_msg(sci, SCI_SETMARGINTYPE,      2, SC_MARGIN_SYMBOL);
+    sci_msg(sci, SCI_SETMARGINSENSITIVE, 2, 1);
+    sci_msg(sci, SCI_SETMARGINWIDTHN,    2, 14);
     sci_msg(sci, SCI_SETTABWIDTH,     4, 0);
     sci_msg(sci, SCI_SETUSETABS,      0, 0);
     /* Apply theme: STYLE_DEFAULT must be set before STYLECLEARALL */
