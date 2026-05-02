@@ -5,6 +5,7 @@
 #include "findreplace.h"
 #include "toolbar.h"
 #include "styleeditor.h"
+#include "lexer.h"
 #include "i18n.h"
 
 /* ------------------------------------------------------------------ */
@@ -56,6 +57,221 @@ static void cb_style_editor(GtkMenuItem *i, gpointer d)
 {
     (void)i; (void)d;
     styleeditor_show(s_main_window, editor_reapply_styles);
+}
+
+/* ------------------------------------------------------------------ */
+/* Language menu                                                       */
+/* ------------------------------------------------------------------ */
+
+/* Maps lang key → GtkRadioMenuItem* for checkmark syncing. */
+static GHashTable *s_lang_item_map = NULL;
+
+/* Display names for menu labels (lang key → human label). */
+typedef struct { const char *lang; const char *label; } LangLabel;
+static const LangLabel kLangLabels[] = {
+    /* C-family */
+    {"c",           "C"},
+    {"cpp",         "C++"},
+    {"objc",        "Objective-C"},
+    {"cs",          "C#"},
+    {"java",        "Java"},
+    {"javascript",  "JavaScript"},
+    {"typescript",  "TypeScript"},
+    {"swift",       "Swift"},
+    {"rc",          "Resource file"},
+    {"actionscript","ActionScript"},
+    {"go",          "Go"},
+    /* Web */
+    {"html",        "HTML"},
+    {"asp",         "ASP"},
+    {"xml",         "XML"},
+    {"css",         "CSS"},
+    {"json",        "JSON"},
+    {"php",         "PHP"},
+    /* Scripting */
+    {"python",      "Python"},
+    {"ruby",        "Ruby"},
+    {"perl",        "Perl"},
+    {"lua",         "Lua"},
+    {"bash",        "Shell"},
+    {"powershell",  "PowerShell"},
+    {"batch",       "Batch"},
+    {"tcl",         "TCL"},
+    {"r",           "R"},
+    {"raku",        "Raku"},
+    {"coffeescript","CoffeeScript"},
+    /* Systems */
+    {"rust",        "Rust"},
+    {"d",           "D"},
+    /* Markup / Config */
+    {"markdown",    "Markdown"},
+    {"latex",       "LaTeX"},
+    {"tex",         "TeX"},
+    {"yaml",        "YAML"},
+    {"toml",        "TOML"},
+    {"ini",         "INI"},
+    {"props",       "Properties"},
+    {"makefile",    "Makefile"},
+    {"cmake",       "CMake"},
+    {"diff",        "Diff"},
+    {"registry",    "Registry"},
+    {"nsis",        "NSIS"},
+    {"inno",        "Inno Setup"},
+    /* Database */
+    {"sql",         "SQL"},
+    {"mssql",       "MS-SQL"},
+    /* Scientific */
+    {"fortran",     "Fortran (free)"},
+    {"fortran77",   "Fortran (fixed)"},
+    {"pascal",      "Pascal"},
+    {"haskell",     "Haskell"},
+    {"caml",        "CAML"},
+    {"lisp",        "Lisp"},
+    {"scheme",      "Scheme"},
+    {"erlang",      "Erlang"},
+    {"nim",         "Nim"},
+    {"gdscript",    "GDScript"},
+    {"sas",         "SAS"},
+    /* Hardware */
+    {"vhdl",        "VHDL"},
+    {"verilog",     "Verilog"},
+    {"asm",         "Assembly"},
+    /* Other */
+    {"ada",         "Ada"},
+    {"cobol",       "COBOL"},
+    {"vb",          "Visual Basic"},
+    {"autoit",      "AutoIt"},
+    {"postscript",  "PostScript"},
+    {"matlab",      "MATLAB"},
+    {"smalltalk",   "Smalltalk"},
+    {"forth",       "Forth"},
+    {"oscript",     "OScript"},
+    {"avs",         "AVS"},
+    {"hollywood",   "Hollywood"},
+    {"purebasic",   "PureBasic"},
+    {"freebasic",   "FreeBasic"},
+    {"blitzbasic",  "BlitzBasic"},
+    {"kix",         "KiXtart"},
+    {"visualprolog","Visual Prolog"},
+    {"baanc",       "BaanC"},
+    {"nncrontab",   "NNCronTab"},
+    {"csound",      "CSound"},
+    {"escript",     "EScript"},
+    {"spice",       "Spice"},
+    {NULL, NULL}
+};
+
+static const char *lang_label(const char *lang)
+{
+    for (const LangLabel *l = kLangLabels; l->lang; l++)
+        if (strcmp(l->lang, lang) == 0) return l->label;
+    return lang;
+}
+
+static void cb_lang_toggled(GtkCheckMenuItem *item, gpointer data)
+{
+    if (!gtk_check_menu_item_get_active(item)) return;
+    const char *lang = (const char *)data;   /* "" = Normal Text */
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    lexer_apply(doc->sci, lang[0] ? lang : NULL);
+    statusbar_set_language(lang[0] ? lang : NULL);
+}
+
+/* Update the checked radio item to match the current tab's language. */
+static void lang_menu_sync(const char *lang)
+{
+    if (!s_lang_item_map) return;
+    const char *key = (lang && lang[0]) ? lang : "";
+    GtkCheckMenuItem *item = GTK_CHECK_MENU_ITEM(
+        g_hash_table_lookup(s_lang_item_map, key));
+    if (!item)   /* unknown language: fall back to Normal Text */
+        item = GTK_CHECK_MENU_ITEM(g_hash_table_lookup(s_lang_item_map, ""));
+    if (!item) return;
+    g_signal_handlers_block_by_func(item, G_CALLBACK(cb_lang_toggled), (gpointer)key);
+    gtk_check_menu_item_set_active(item, TRUE);
+    g_signal_handlers_unblock_by_func(item, G_CALLBACK(cb_lang_toggled), (gpointer)key);
+}
+
+/* Add one radio item to a menu, register it in the map, advance the group. */
+static void add_lang_item(GtkWidget *menu, GSList **group,
+                          const char *lang_key, const char *label)
+{
+    GtkWidget *item = gtk_radio_menu_item_new_with_label(*group, label);
+    *group = gtk_radio_menu_item_get_group(GTK_RADIO_MENU_ITEM(item));
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+    g_signal_connect(item, "toggled", G_CALLBACK(cb_lang_toggled), (gpointer)lang_key);
+    g_hash_table_insert(s_lang_item_map, (gpointer)lang_key, item);
+}
+
+/* Add a labelled submenu of language items to the Language menu. */
+static void add_lang_group(GtkWidget *lang_menu, GSList **group,
+                           const char *group_label,
+                           const char * const *langs, int n)
+{
+    GtkWidget *sub_item = gtk_menu_item_new_with_label(group_label);
+    GtkWidget *sub_menu = gtk_menu_new();
+    gtk_menu_item_set_submenu(GTK_MENU_ITEM(sub_item), sub_menu);
+    gtk_menu_shell_append(GTK_MENU_SHELL(lang_menu), sub_item);
+    for (int i = 0; i < n; i++)
+        add_lang_item(sub_menu, group, langs[i], lang_label(langs[i]));
+}
+
+static GtkWidget *build_language_menu(GtkWidget *bar)
+{
+    s_lang_item_map = g_hash_table_new(g_str_hash, g_str_equal);
+    GSList *group = NULL;
+
+    GtkWidget *top_item = gtk_menu_item_new_with_mnemonic(T("menu.language", "_Language"));
+    GtkWidget *menu = gtk_menu_new();
+    gtk_menu_item_set_submenu(GTK_MENU_ITEM(top_item), menu);
+    gtk_menu_shell_append(GTK_MENU_SHELL(bar), top_item);
+
+    /* Normal Text at the top */
+    add_lang_item(menu, &group, "", "Normal Text");
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
+
+    /* Language groups */
+    static const char * const c_family[] = {
+        "c","cpp","objc","cs","java","javascript","typescript",
+        "swift","rc","actionscript","go"
+    };
+    static const char * const web[] = { "html","asp","xml","css","json","php" };
+    static const char * const scripting[] = {
+        "python","ruby","perl","lua","bash","powershell",
+        "batch","tcl","r","raku","coffeescript"
+    };
+    static const char * const systems[] = { "rust","d" };
+    static const char * const markup[] = {
+        "markdown","latex","tex","yaml","toml","ini","props",
+        "makefile","cmake","diff","registry","nsis","inno"
+    };
+    static const char * const database[] = { "sql","mssql" };
+    static const char * const scientific[] = {
+        "fortran","fortran77","pascal","haskell","caml","lisp",
+        "scheme","erlang","nim","gdscript","sas"
+    };
+    static const char * const hardware[] = { "vhdl","verilog","asm" };
+    static const char * const other[] = {
+        "ada","cobol","vb","autoit","postscript","matlab","smalltalk",
+        "forth","oscript","avs","hollywood","purebasic","freebasic",
+        "blitzbasic","kix","visualprolog","baanc","nncrontab",
+        "csound","escript","spice"
+    };
+
+#define NELEM(a) (int)(sizeof(a)/sizeof(a[0]))
+    add_lang_group(menu, &group, "C, C++, C#, Java",  c_family,  NELEM(c_family));
+    add_lang_group(menu, &group, "Web",                web,       NELEM(web));
+    add_lang_group(menu, &group, "Scripting",          scripting, NELEM(scripting));
+    add_lang_group(menu, &group, "Systems",            systems,   NELEM(systems));
+    add_lang_group(menu, &group, "Markup / Config",    markup,    NELEM(markup));
+    add_lang_group(menu, &group, "Database",           database,  NELEM(database));
+    add_lang_group(menu, &group, "Scientific",         scientific,NELEM(scientific));
+    add_lang_group(menu, &group, "Hardware",           hardware,  NELEM(hardware));
+    add_lang_group(menu, &group, "Other",              other,     NELEM(other));
+#undef NELEM
+
+    return menu;
 }
 
 /* ------------------------------------------------------------------ */
@@ -130,12 +346,30 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     /* ---- View (placeholder) ---- */
     submenu(bar, TM("menu.view", "_View"));
 
+    /* ---- Language ---- */
+    build_language_menu(bar);
+
     /* ---- Settings ---- */
     GtkWidget *settings = submenu(bar, TM("menu.settings", "Se_ttings"));
     APPEND(settings, menu_item(TM("cmd.46001", "_Style Configurator…"),
                                G_CALLBACK(cb_style_editor), NULL, accel, 0, 0));
 
     return bar;
+}
+
+/* ------------------------------------------------------------------ */
+/* Tab switch                                                         */
+/* ------------------------------------------------------------------ */
+
+static void on_switch_page(GtkNotebook *nb, GtkWidget *page,
+                           guint n, gpointer d)
+{
+    (void)nb; (void)page; (void)n; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    statusbar_update_from_sci(doc->sci);
+    const char *lang = (const char *)g_object_get_data(G_OBJECT(doc->sci), "npp-lang");
+    lang_menu_sync(lang);
 }
 
 /* ------------------------------------------------------------------ */
@@ -178,6 +412,7 @@ static void on_activate(GtkApplication *app, gpointer data)
 
     /* Editor (notebook) */
     GtkWidget *notebook = editor_init(window);
+    g_signal_connect(notebook, "switch-page", G_CALLBACK(on_switch_page), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 0);
 
     /* Status bar */
@@ -190,7 +425,9 @@ static void on_activate(GtkApplication *app, gpointer data)
     (void)args; /* CLI args handled below in main() via editor_open_path */
 
     gtk_widget_show_all(window);
-    statusbar_update_from_sci(editor_current_doc()->sci);
+    NppDoc *initial = editor_current_doc();
+    statusbar_update_from_sci(initial->sci);
+    lang_menu_sync((const char *)g_object_get_data(G_OBJECT(initial->sci), "npp-lang"));
 }
 
 /* ------------------------------------------------------------------ */
