@@ -247,6 +247,31 @@ static void on_end(GMarkupParseContext *ctx,
     if (strcmp(el, "GlobalStyles") == 0) pc->in_global = FALSE;
 }
 
+/* Escape bare & characters that are not part of a valid XML entity.
+   NPP theme files sometimes contain unescaped & in attribute values. */
+static gchar *fix_bare_ampersands(const gchar *src, gsize len)
+{
+    GString *out = g_string_sized_new(len + 64);
+    for (gsize i = 0; i < len; i++) {
+        if (src[i] != '&') { g_string_append_c(out, src[i]); continue; }
+        /* Look ahead: valid entity = &#…; or &name; */
+        gboolean valid = FALSE;
+        if (i + 1 < len) {
+            if (src[i+1] == '#') {
+                valid = TRUE;
+            } else {
+                gsize j = i + 1;
+                while (j < len && j < i + 20 && (g_ascii_isalnum(src[j]) || src[j] == '_'))
+                    j++;
+                if (j < len && src[j] == ';' && j > i + 1)
+                    valid = TRUE;
+            }
+        }
+        g_string_append(out, valid ? "&" : "&amp;");
+    }
+    return g_string_free(out, FALSE);
+}
+
 /* Parse a single XML file, merging into s_blocks. */
 static void parse_file(const char *path)
 {
@@ -259,18 +284,22 @@ static void parse_file(const char *path)
         return;
     }
 
+    gchar *fixed = fix_bare_ampersands(contents, len);
+    g_free(contents);
+    gsize fixed_len = strlen(fixed);
+
     GMarkupParser parser = { on_start, on_end, NULL, NULL, NULL };
     PCtx pc = { FALSE, "" };
     GMarkupParseContext *ctx =
         g_markup_parse_context_new(&parser, G_MARKUP_DEFAULT_FLAGS, &pc, NULL);
 
     err = NULL;
-    if (!g_markup_parse_context_parse(ctx, contents, (gssize)len, &err))
+    if (!g_markup_parse_context_parse(ctx, fixed, (gssize)fixed_len, &err))
         g_warning("stylestore: parse error in %s: %s", path,
                   err ? err->message : "?");
     if (err) g_error_free(err);
     g_markup_parse_context_free(ctx);
-    g_free(contents);
+    g_free(fixed);
 }
 
 /* ------------------------------------------------------------------ */
