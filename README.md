@@ -117,6 +117,19 @@ Ordered by implementation effort (low → high).
 - **Spell checker** — inline spell checking with highlight and correction
 - **Plugin system** — dlopen-based plugin loading, menu integration, NPPM message routing
 
+## Release packaging
+
+Once the project is feature-complete, pre-compiled packages will be produced for all major Linux distributions:
+
+| Format | Target distros |
+|--------|---------------|
+| `.deb` | Debian, Ubuntu, Linux Mint, Pop!_OS |
+| `.rpm` | Fedora, RHEL, CentOS Stream, openSUSE |
+| `.pkg.tar.zst` | Arch Linux, Manjaro |
+| `.apk` | Alpine Linux |
+
+> **Note:** No AppImage, Flatpak, or Snap packages will ever be produced. These distribution formats are philosophically opposed to how native software should be shipped on Linux — they sidestep the distro package manager, bloat the install, and erode the integration that makes a native app feel native. Packages will be built for distro toolchains only.
+
 ## Extra features
 
 Features beyond the original Notepad++ scope, specific to this Linux port. These will be tackled only after all upcoming features are complete.
