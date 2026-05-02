@@ -135,8 +135,7 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ### Low effort
 
-1. **Show/hide symbols** — menu toggles for `SCI_SETVIEWWS`, `SCI_SETVIEWEOL`, `SCI_SETMARGINWIDTHN` (line numbers, fold, bookmarks).
-2. **Edge column** — `SCI_SETEDGEMODE` / `SCI_SETEDGECOLUMN` wired to a preference value.
+1. **Edge column** — `SCI_SETEDGEMODE` / `SCI_SETEDGECOLUMN` wired to a preference value.
 3. **Insert date/time** — `g_date_time_format()` → `SCI_REPLACESEL`.
 4. **Duplicate / Delete / Move line** — `SCI_LINEDUPLICATE`, `SCI_LINEDELETE`, `SCI_MOVESELECTEDLINESUP/DOWN`.
 5. **Join / Split lines** — iterate selection lines via `SCI_GETTEXTRANGE`, reassemble.
