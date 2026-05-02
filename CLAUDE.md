@@ -129,8 +129,7 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ### Low effort
 
-1. **Language selection menu** — top-level Language menu in `main.c`. Groups by category matching `kLangLexer` in `lexer.c`. Radio checkmarks; "Normal Text" at top. Callback: `lexer_apply(sci, lang)` + `statusbar_set_language(lang)`. Update checkmark on tab switch via `on_switch_page`.
-2. **Overwrite (INS) mode** — `SCI_SETOVERTYPE` toggle; add OVR indicator to statusbar.
+1. **Overwrite (INS) mode** — `SCI_SETOVERTYPE` toggle; add OVR indicator to statusbar.
 3. **EOL type selection** — menu items calling `SCI_SETEOLMODE`; update statusbar EOL cell.
 4. **Show/hide symbols** — menu toggles for `SCI_SETVIEWWS`, `SCI_SETVIEWEOL`, `SCI_SETMARGINWIDTHN` (line numbers, fold, bookmarks).
 5. **Edge column** — `SCI_SETEDGEMODE` / `SCI_SETEDGECOLUMN` wired to a preference value.
