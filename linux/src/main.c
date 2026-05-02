@@ -60,6 +60,36 @@ static void cb_style_editor(GtkMenuItem *i, gpointer d)
 }
 
 /* ------------------------------------------------------------------ */
+/* EOL menu                                                           */
+/* ------------------------------------------------------------------ */
+
+/* Indexed by SC_EOL_CRLF=0, SC_EOL_CR=1, SC_EOL_LF=2 */
+static GtkWidget *s_eol_items[3];
+
+static void cb_eol_toggled(GtkCheckMenuItem *item, gpointer data)
+{
+    if (!gtk_check_menu_item_get_active(item)) return;
+    int mode = GPOINTER_TO_INT(data);
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETEOLMODE, (uptr_t)mode, 0);
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_CONVERTEOLS, (uptr_t)mode, 0);
+    statusbar_update_from_sci(doc->sci);
+}
+
+static void eol_menu_sync(int mode)
+{
+    if (mode < 0 || mode > 2) mode = SC_EOL_LF;
+    GtkCheckMenuItem *item = GTK_CHECK_MENU_ITEM(s_eol_items[mode]);
+    if (!item) return;
+    g_signal_handlers_block_by_func(item, G_CALLBACK(cb_eol_toggled),
+                                    GINT_TO_POINTER(mode));
+    gtk_check_menu_item_set_active(item, TRUE);
+    g_signal_handlers_unblock_by_func(item, G_CALLBACK(cb_eol_toggled),
+                                      GINT_TO_POINTER(mode));
+}
+
+/* ------------------------------------------------------------------ */
 /* Language menu                                                       */
 /* ------------------------------------------------------------------ */
 
@@ -335,6 +365,36 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     APPEND(edit, menu_item(TM("cmd.42005", "_Paste"),      G_CALLBACK(cb_paste),  NULL, accel, GDK_KEY_v, GDK_CONTROL_MASK));
     APPEND(edit, sep_item());
     APPEND(edit, menu_item(TM("cmd.42007", "Select _All"), G_CALLBACK(cb_selall), NULL, accel, GDK_KEY_a, GDK_CONTROL_MASK));
+    APPEND(edit, sep_item());
+
+    /* EOL Conversion submenu */
+    {
+        GtkWidget *eol_sub_item = gtk_menu_item_new_with_mnemonic(TM("menu.eolformat", "EOL Con_version"));
+        GtkWidget *eol_menu = gtk_menu_new();
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(eol_sub_item), eol_menu);
+
+        GSList *eol_group = NULL;
+        s_eol_items[SC_EOL_CRLF] = gtk_radio_menu_item_new_with_mnemonic(eol_group,
+            TM("menu.windows", "_Windows (CR+LF)"));
+        eol_group = gtk_radio_menu_item_get_group(GTK_RADIO_MENU_ITEM(s_eol_items[SC_EOL_CRLF]));
+        s_eol_items[SC_EOL_LF] = gtk_radio_menu_item_new_with_mnemonic(eol_group,
+            TM("menu.unix", "_Unix (LF)"));
+        eol_group = gtk_radio_menu_item_get_group(GTK_RADIO_MENU_ITEM(s_eol_items[SC_EOL_LF]));
+        s_eol_items[SC_EOL_CR] = gtk_radio_menu_item_new_with_mnemonic(eol_group,
+            TM("menu.oldmac", "Old _Mac (CR)"));
+
+        g_signal_connect(s_eol_items[SC_EOL_CRLF], "toggled",
+                         G_CALLBACK(cb_eol_toggled), GINT_TO_POINTER(SC_EOL_CRLF));
+        g_signal_connect(s_eol_items[SC_EOL_LF], "toggled",
+                         G_CALLBACK(cb_eol_toggled), GINT_TO_POINTER(SC_EOL_LF));
+        g_signal_connect(s_eol_items[SC_EOL_CR], "toggled",
+                         G_CALLBACK(cb_eol_toggled), GINT_TO_POINTER(SC_EOL_CR));
+
+        APPEND(eol_menu, s_eol_items[SC_EOL_CRLF]);
+        APPEND(eol_menu, s_eol_items[SC_EOL_LF]);
+        APPEND(eol_menu, s_eol_items[SC_EOL_CR]);
+        APPEND(edit, eol_sub_item);
+    }
 
     /* ---- Search ---- */
     GtkWidget *search = submenu(bar, TM("menu.search", "_Search"));
@@ -370,6 +430,8 @@ static void on_switch_page(GtkNotebook *nb, GtkWidget *page,
     statusbar_update_from_sci(doc->sci);
     const char *lang = (const char *)g_object_get_data(G_OBJECT(doc->sci), "npp-lang");
     lang_menu_sync(lang);
+    int eol = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_GETEOLMODE, 0, 0);
+    eol_menu_sync(eol);
 }
 
 /* ------------------------------------------------------------------ */
@@ -446,6 +508,7 @@ static void on_activate(GtkApplication *app, gpointer data)
     NppDoc *initial = editor_current_doc();
     statusbar_update_from_sci(initial->sci);
     lang_menu_sync((const char *)g_object_get_data(G_OBJECT(initial->sci), "npp-lang"));
+    eol_menu_sync((int)scintilla_send_message(SCINTILLA(initial->sci), SCI_GETEOLMODE, 0, 0));
 }
 
 /* ------------------------------------------------------------------ */
