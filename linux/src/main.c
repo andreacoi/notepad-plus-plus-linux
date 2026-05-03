@@ -387,6 +387,83 @@ static void cb_insert_date_long(GtkMenuItem *i, gpointer d)
 }
 
 /* ------------------------------------------------------------------ */
+/* Hash tools                                                         */
+/* ------------------------------------------------------------------ */
+
+static void cb_hash_generator(GtkMenuItem *item, gpointer d)
+{
+    (void)item; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+
+    sptr_t sel_start = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONSTART, 0, 0);
+    sptr_t sel_end   = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONEND,   0, 0);
+    gboolean has_sel = sel_start != sel_end;
+
+    sptr_t rstart = has_sel ? sel_start : 0;
+    sptr_t rend   = has_sel ? sel_end
+                            : scintilla_send_message(SCINTILLA(doc->sci), SCI_GETLENGTH, 0, 0);
+    sptr_t len = rend - rstart;
+    if (len <= 0) return;
+
+    char *buf = g_malloc(len + 1);
+    Sci_TextRangeFull tr = { { rstart, rend }, buf };
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_GETTEXTRANGEFULL, 0, (sptr_t)&tr);
+
+    static const struct { GChecksumType type; const char *name; } algos[] = {
+        { G_CHECKSUM_MD5,    "MD5"     },
+        { G_CHECKSUM_SHA1,   "SHA-1"   },
+        { G_CHECKSUM_SHA256, "SHA-256" },
+        { G_CHECKSUM_SHA512, "SHA-512" },
+    };
+
+    GtkWidget *dlg = gtk_dialog_new_with_buttons(
+        TM("dlg.hash.title", "Hash Generator"),
+        GTK_WINDOW(s_main_window),
+        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+        TM("dlg.Find.2", "_Close"), GTK_RESPONSE_CLOSE,
+        NULL);
+
+    GtkWidget *grid = gtk_grid_new();
+    gtk_grid_set_row_spacing(GTK_GRID(grid), 6);
+    gtk_grid_set_column_spacing(GTK_GRID(grid), 8);
+    gtk_widget_set_margin_start(grid, 12);
+    gtk_widget_set_margin_end(grid, 12);
+    gtk_widget_set_margin_top(grid, 8);
+    gtk_widget_set_margin_bottom(grid, 8);
+
+    /* Source info label */
+    char info[64];
+    snprintf(info, sizeof(info),
+             has_sel ? "Selection (%ld bytes)" : "Document (%ld bytes)", (long)len);
+    GtkWidget *info_lbl = gtk_label_new(info);
+    gtk_widget_set_halign(info_lbl, GTK_ALIGN_START);
+    gtk_grid_attach(GTK_GRID(grid), info_lbl, 0, 0, 2, 1);
+
+    for (int i = 0; i < 4; i++) {
+        gchar *hash = g_compute_checksum_for_data(algos[i].type,
+                                                  (const guchar *)buf, (gsize)len);
+        GtkWidget *lbl = gtk_label_new(algos[i].name);
+        gtk_widget_set_halign(lbl, GTK_ALIGN_START);
+
+        GtkWidget *entry = gtk_entry_new();
+        gtk_entry_set_text(GTK_ENTRY(entry), hash);
+        gtk_editable_set_editable(GTK_EDITABLE(entry), FALSE);
+        gtk_entry_set_width_chars(GTK_ENTRY(entry), 64);
+
+        gtk_grid_attach(GTK_GRID(grid), lbl,   0, i + 1, 1, 1);
+        gtk_grid_attach(GTK_GRID(grid), entry, 1, i + 1, 1, 1);
+        g_free(hash);
+    }
+    g_free(buf);
+
+    GtkWidget *ca = gtk_dialog_get_content_area(GTK_DIALOG(dlg));
+    gtk_box_pack_start(GTK_BOX(ca), grid, FALSE, FALSE, 0);
+    gtk_widget_show_all(dlg);
+    gtk_dialog_run(GTK_DIALOG(dlg));
+    gtk_widget_destroy(dlg);
+}
+
 /* Edge column                                                        */
 /* ------------------------------------------------------------------ */
 
@@ -907,6 +984,11 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     GtkWidget *settings = submenu(bar, TM("menu.settings", "Se_ttings"));
     APPEND(settings, menu_item(TM("cmd.46001", "_Style Configurator…"),
                                G_CALLBACK(cb_style_editor), NULL, accel, 0, 0));
+
+    /* ---- Tools ---- */
+    GtkWidget *tools = submenu(bar, TM("menu.tools", "_Tools"));
+    APPEND(tools, menu_item(TM("menu.tools.hash", "_Hash Generator…"),
+                            G_CALLBACK(cb_hash_generator), NULL, accel, 0, 0));
 
     return bar;
 }
