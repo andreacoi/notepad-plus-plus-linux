@@ -50,7 +50,7 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - **Show/hide symbols** — View menu check items: Show Whitespace, Show EOL Markers, Show Line Numbers, Show Fold Margin, Show Bookmarks Margin; state is global and applied to all tabs
 - **Edge column** — View menu toggle (Show Edge Column) draws a vertical guide line; "Set Edge Column…" opens a dialog to choose the column (default 80, range 1–512)
 - **Insert date/time** — Edit → Insert Date/Time submenu: Short format (`HH:MM:SS MM/DD/YYYY`) and Long format (`Weekday, Month DD, YYYY HH:MM:SS`); inserts at cursor, replacing any selection
-- **Line operations** — Edit → Line Operations submenu: Duplicate Line (Ctrl+D), Delete Line (Ctrl+Shift+L), Move Line Up/Down (Ctrl+Shift+↑/↓), Join Lines, Split Lines (at edge column, default 80), Insert Blank Line Above (Ctrl+Alt+Enter), Insert Blank Line Below (Ctrl+Shift+Enter)
+- **Line operations** — Edit → Line Operations submenu: Duplicate Line (Ctrl+D), Delete Line (Ctrl+Shift+L), Move Line Up/Down (Ctrl+Shift+↑/↓), Join Lines, Split Lines (at edge column, default 80), Insert Blank Line Above (Ctrl+Alt+Enter), Insert Blank Line Below (Ctrl+Shift+Enter), Remove Duplicate Lines, Remove Blank Lines; Sort Lines submenu: Lexicographic, Lexicographic (case-insensitive), By Length, By Number, Random Shuffle, Reverse Order
 - **Trim whitespace** — Edit → Blank Operations submenu: Trim Trailing Whitespace, Trim Leading Whitespace, Trim Both; operates on selection or whole document if nothing selected; preserves original EOL characters
 - **Hash Generator** — Tools → Hash Generator dialog showing MD5, SHA-1, SHA-256 and SHA-512 of the current selection (or whole document if nothing selected); uses GLib's built-in checksum API, no extra dependencies
 - **Base64 / Hex** — Tools menu: Base64 Encode/Decode replaces selection with encoded/decoded text; ASCII→Hex encodes each byte as two hex digits; Hex→ASCII decodes hex pairs back to bytes (whitespace in input is ignored; invalid hex leaves selection unchanged)
@@ -87,9 +87,7 @@ Output: `linux/build/notepad++`
 Ordered by implementation effort (low → high).
 
 ### Medium effort
-- **Remove duplicate / blank lines** — various line-cleanup operations
-- **Remove duplicate / blank lines** — various line-cleanup operations
-- **Sort lines** — lexicographic, case-insensitive, by length, numeric, random, reverse
+- **Word wrap toggle** — per-tab word wrap
 - **Word wrap toggle** — per-tab word wrap
 - **Bookmarks** — toggle, next/prev, clear all, cut/copy/remove bookmarked lines
 - **Mark styles** — highlight text with 5 color styles, jump next/prev, clear
