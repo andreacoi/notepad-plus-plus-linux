@@ -89,6 +89,8 @@ Output: `linux/build/notepad++`
 
 Ordered by implementation effort (low → high).
 
+> **Note:** All the features with low effort required are marked as completed. No intermediate release are planned. This software will be released when all the points in this list will be successfully completed.
+
 ## Medium effort
 - **Go to matching brace** — brace/bracket/parenthesis matching navigation
 - **Recent files list** — reopen recently closed files
