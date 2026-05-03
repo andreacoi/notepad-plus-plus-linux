@@ -131,6 +131,34 @@ static void cb_toggle_bookmarks(GtkCheckMenuItem *item, gpointer d)
 }
 
 /* ------------------------------------------------------------------ */
+/* Line operations                                                    */
+/* ------------------------------------------------------------------ */
+
+static void cb_line_duplicate(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    editor_send(SCI_LINEDUPLICATE, 0, 0);
+}
+
+static void cb_line_delete(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    editor_send(SCI_LINEDELETE, 0, 0);
+}
+
+static void cb_line_move_up(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    editor_send(SCI_MOVESELECTEDLINESUP, 0, 0);
+}
+
+static void cb_line_move_down(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    editor_send(SCI_MOVESELECTEDLINESDOWN, 0, 0);
+}
+
+/* ------------------------------------------------------------------ */
 /* Insert date/time                                                   */
 /* ------------------------------------------------------------------ */
 
@@ -572,6 +600,27 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
         APPEND(dt_menu, menu_item(TM("menu.datetime.long",  "_Long (Weekday, Month DD, YYYY HH:MM:SS)"),
                                   G_CALLBACK(cb_insert_date_long),  NULL, NULL, 0, 0));
         APPEND(edit, dt_item);
+    }
+
+    /* Line operations submenu */
+    {
+        GtkWidget *line_item = gtk_menu_item_new_with_mnemonic(TM("menu.line", "_Line Operations"));
+        GtkWidget *line_menu = gtk_menu_new();
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(line_item), line_menu);
+        APPEND(line_menu, menu_item(TM("menu.line.duplicate", "_Duplicate Line"),
+                                    G_CALLBACK(cb_line_duplicate), NULL, accel,
+                                    GDK_KEY_d, GDK_CONTROL_MASK));
+        APPEND(line_menu, menu_item(TM("menu.line.delete", "D_elete Line"),
+                                    G_CALLBACK(cb_line_delete), NULL, accel,
+                                    GDK_KEY_l, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
+        APPEND(line_menu, sep_item());
+        APPEND(line_menu, menu_item(TM("menu.line.moveup", "Move Line _Up"),
+                                    G_CALLBACK(cb_line_move_up), NULL, accel,
+                                    GDK_KEY_Up, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
+        APPEND(line_menu, menu_item(TM("menu.line.movedown", "Move Line _Down"),
+                                    G_CALLBACK(cb_line_move_down), NULL, accel,
+                                    GDK_KEY_Down, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
+        APPEND(edit, line_item);
     }
 
     /* ---- Search ---- */
