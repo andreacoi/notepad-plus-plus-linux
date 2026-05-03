@@ -34,11 +34,14 @@ cmake -B build && cmake --build build
 | `sci_c.h` | C-safe Scintilla constants and `SCNotification` layout |
 | `encoding.c/h` | Encoding table (17 encodings), BOM detection, `g_convert` wrappers for open/save |
 | `shortcutmap.c/h` | Shortcut table (27 entries), XML load/save, Shortcut Mapper dialog with key-capture |
+| `prefs.c/h` | Preferences struct (`NppPrefs`), XML load/save, 4-page Preferences dialog |
 
 **User config location (Linux port):** `~/.config/npp/`
 - `stylers.xml` — user style overrides (saved by Style Configurator)
 - `themes/` — user theme XML files (scanned alongside bundled `resources/themes/`)
 - `recentfiles.txt` — recently opened/saved files (one path per line, max 10)
+- `shortcuts.xml` — user keyboard shortcut overrides
+- `config.xml` — preferences (tab width, indent, caret, EOL, encoding, display options)
 
 **Key design rules for the Linux port:**
 - All UI code is C11; only `lexilla_bridge.cpp` and `LexUserStub.cxx` are C++
@@ -138,9 +141,8 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ### Medium effort
 
-25. **Preferences dialog** — GtkDialog with sections (editor, appearance, file, …); persist to `~/.config/npp/config.xml`.
-26. **Auto-indent** — `SCN_CHARADDED` handler: copy leading whitespace of previous line; advanced: detect `{` / `:`.
-27. **Code folding controls** — menu items calling `SCI_FOLDALL`, `SCI_FOLDDISPLAYTEXT`, `SCI_SETFOLDLEVEL` per level.
+25. **Auto-indent** — `SCN_CHARADDED` handler: copy leading whitespace of previous line; advanced: detect `{` / `:`.
+26. **Code folding controls** — menu items calling `SCI_FOLDALL`, `SCI_FOLDDISPLAYTEXT`, `SCI_SETFOLDLEVEL` per level.
 
 ### High effort
 

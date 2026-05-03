@@ -64,6 +64,7 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - **Whitespace conversions** — Edit → Blank Operations submenu: Convert Spaces to Tabs (replaces leading spaces with tabs respecting the current tab width) and Convert Tabs to Spaces (expands leading tabs to spaces using the current tab width)
 - **Encoding selection** — Encoding top-level menu with 17 encodings across 4 regional groups (Western European, Central European, Cyrillic, East Asian); per-tab encoding stored in `NppDoc.encoding`; auto-detected from BOM (UTF-8/16 LE/BE) or UTF-8 validation on open; file bytes converted to UTF-8 for display and back to the chosen encoding on save; statusbar and radio item sync on tab switch
 - **Keyboard shortcut mapper** — Settings → Shortcut Mapper: dialog listing all 27 configurable commands (File/Edit/Search); double-click to capture a new key combination; Reset Selected / Reset All; persisted to `~/.config/npp/shortcuts.xml`; overrides applied at startup before menus are built
+- **Preferences dialog** — Settings → Preferences: 4-page dialog (Editor / Display / New Document / General) covering tab width/indentation, auto-indent, brace highlighting, caret style, word wrap, EOL mode, default encoding, title format, and copy-line behaviour; persisted to `~/.config/npp/config.xml`; settings applied live without restarting
 
 ### Localisation
 - Automatic system locale detection via GLib (`g_get_language_names()`)
@@ -96,7 +97,6 @@ Ordered by implementation effort (low → high).
 > **Note:** All the features with low effort required are marked as completed. No intermediate release are planned. This software will be released when all the points in this list will be successfully completed.
 
 ## Medium effort
-- **Preferences dialog** — persistent settings (config.xml equivalent)
 - **Auto-indent** — None / Basic / Advanced modes
 - **Code folding controls** — fold/unfold all and by individual levels (1–8)
 
@@ -156,6 +156,7 @@ All user data lives in `~/.config/npp/`:
 | `~/.config/npp/themes/` | User-supplied theme XML files (Notepad++ format) |
 | `~/.config/npp/recentfiles.txt` | Recently opened/saved files (one path per line, max 10) |
 | `~/.config/npp/shortcuts.xml` | User-defined keyboard shortcut overrides (Notepad++ format) |
+| `~/.config/npp/config.xml` | Preferences (tab width, indent, caret, EOL, encoding, display options) |
 
 ## Architecture
 
@@ -169,6 +170,9 @@ linux/src/lexer.c/h        — language detection, Lexilla integration, keyword 
 linux/src/lexilla_bridge.cpp — C++ bridge: exposes CreateLexer() to C code
 linux/src/stylestore.c/h   — theme/style parser and Scintilla style applicator
 linux/src/styleeditor.c/h  — Style Configurator dialog
+linux/src/encoding.c/h     — encoding table, BOM detection, UTF-8 conversion helpers
+linux/src/shortcutmap.c/h  — shortcut table, key-capture dialog, Shortcut Mapper
+linux/src/prefs.c/h        — preferences struct, load/save, Preferences dialog
 linux/src/sci_c.h           — C-safe Scintilla interface
 
 scintilla/                  — vendored editing engine (GTK3 backend used as-is)
