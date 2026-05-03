@@ -66,6 +66,7 @@ add_executable(notepad++
     src/main.c
     src/editor.c
     src/encoding.c
+    src/prefs.c
     src/shortcutmap.c
     src/statusbar.c
     src/findreplace.c
