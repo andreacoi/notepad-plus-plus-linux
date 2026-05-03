@@ -1265,6 +1265,130 @@ static void wrap_menu_sync(gboolean on)
 }
 
 /* ------------------------------------------------------------------ */
+/* Bookmarks                                                          */
+/* ------------------------------------------------------------------ */
+
+#define BOOKMARK_MASK  (1 << SC_MARKNUM_BOOKMARK)
+
+void main_toggle_bookmark_at_line(GtkWidget *sci, int line)
+{
+    int markers = (int)scintilla_send_message(SCINTILLA(sci),
+                                              SCI_MARKERGET, (uptr_t)line, 0);
+    if (markers & BOOKMARK_MASK)
+        scintilla_send_message(SCINTILLA(sci), SCI_MARKERDELETE,
+                               (uptr_t)line, SC_MARKNUM_BOOKMARK);
+    else
+        scintilla_send_message(SCINTILLA(sci), SCI_MARKERADD,
+                               (uptr_t)line, SC_MARKNUM_BOOKMARK);
+}
+
+static void cb_bookmark_toggle(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    sptr_t pos  = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETCURRENTPOS, 0, 0);
+    int line = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_LINEFROMPOSITION, (uptr_t)pos, 0);
+    main_toggle_bookmark_at_line(doc->sci, line);
+}
+
+static void cb_bookmark_next(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    sptr_t pos  = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETCURRENTPOS, 0, 0);
+    int line = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_LINEFROMPOSITION, (uptr_t)pos, 0);
+    /* search from next line; wrap around if not found */
+    int found = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_MARKERNEXT,
+                                            (uptr_t)(line + 1), BOOKMARK_MASK);
+    if (found < 0)
+        found = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_MARKERNEXT,
+                                            0, BOOKMARK_MASK);
+    if (found >= 0)
+        scintilla_send_message(SCINTILLA(doc->sci), SCI_GOTOLINE, (uptr_t)found, 0);
+}
+
+static void cb_bookmark_prev(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    sptr_t pos  = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETCURRENTPOS, 0, 0);
+    int line = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_LINEFROMPOSITION, (uptr_t)pos, 0);
+    int found = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_MARKERPREV,
+                                            (uptr_t)(line - 1), BOOKMARK_MASK);
+    if (found < 0) {
+        int nlines = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_GETLINECOUNT, 0, 0);
+        found = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_MARKERPREV,
+                                            (uptr_t)(nlines - 1), BOOKMARK_MASK);
+    }
+    if (found >= 0)
+        scintilla_send_message(SCINTILLA(doc->sci), SCI_GOTOLINE, (uptr_t)found, 0);
+}
+
+static void cb_bookmark_clear_all(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_MARKERDELETEALL,
+                           SC_MARKNUM_BOOKMARK, 0);
+}
+
+/* Collect all bookmarked lines then perform an action on them */
+typedef enum { BM_CUT, BM_COPY, BM_DELETE } BmAction;
+
+static void bookmarked_lines_action(BmAction action)
+{
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    ScintillaObject *sci = SCINTILLA(doc->sci);
+
+    int eol_mode;
+    GPtrArray *all = collect_lines(sci, &eol_mode);
+    const char *eol_str = (eol_mode == SC_EOL_CRLF) ? "\r\n"
+                        : (eol_mode == SC_EOL_CR)   ? "\r" : "\n";
+
+    GPtrArray *bookmarked = g_ptr_array_new();
+    GPtrArray *remaining  = g_ptr_array_new();
+
+    for (guint ln = 0; ln < all->len; ln++) {
+        int markers = (int)scintilla_send_message(sci, SCI_MARKERGET, ln, 0);
+        if (markers & BOOKMARK_MASK)
+            g_ptr_array_add(bookmarked, all->pdata[ln]);
+        else
+            g_ptr_array_add(remaining, all->pdata[ln]);
+    }
+
+    if (action == BM_COPY || action == BM_CUT) {
+        /* Copy bookmarked lines to clipboard */
+        GString *clip = g_string_new(NULL);
+        for (guint i = 0; i < bookmarked->len; i++) {
+            if (i > 0) g_string_append(clip, eol_str);
+            g_string_append(clip, (char *)bookmarked->pdata[i]);
+        }
+        GtkClipboard *cb = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
+        gtk_clipboard_set_text(cb, clip->str, (gint)clip->len);
+        g_string_free(clip, TRUE);
+    }
+
+    if (action == BM_CUT || action == BM_DELETE) {
+        replace_doc_with_lines(sci, remaining, eol_mode);
+        /* Clear any leftover bookmark markers (they were on deleted lines) */
+        scintilla_send_message(sci, SCI_MARKERDELETEALL, SC_MARKNUM_BOOKMARK, 0);
+    }
+
+    g_ptr_array_free(bookmarked, FALSE);
+    g_ptr_array_free(remaining,  FALSE);
+    g_ptr_array_free(all, TRUE);
+}
+
+static void cb_bookmark_cut   (GtkMenuItem *i, gpointer d) { (void)i;(void)d; bookmarked_lines_action(BM_CUT);    }
+static void cb_bookmark_copy  (GtkMenuItem *i, gpointer d) { (void)i;(void)d; bookmarked_lines_action(BM_COPY);   }
+static void cb_bookmark_delete(GtkMenuItem *i, gpointer d) { (void)i;(void)d; bookmarked_lines_action(BM_DELETE); }
+
+/* ------------------------------------------------------------------ */
 /* EOL menu                                                           */
 /* ------------------------------------------------------------------ */
 
@@ -1719,6 +1843,25 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     APPEND(search, menu_item(TM("cmd.43003", "_Replace…"),    G_CALLBACK(cb_replace), NULL, accel, GDK_KEY_h, GDK_CONTROL_MASK));
     APPEND(search, sep_item());
     APPEND(search, menu_item(TM("cmd.43004", "_Go To Line…"), G_CALLBACK(cb_goto),    NULL, accel, GDK_KEY_g, GDK_CONTROL_MASK));
+    APPEND(search, sep_item());
+    APPEND(search, menu_item(TM("menu.bm.toggle", "_Toggle Bookmark"),
+                             G_CALLBACK(cb_bookmark_toggle), NULL, accel,
+                             GDK_KEY_F2, GDK_CONTROL_MASK));
+    APPEND(search, menu_item(TM("menu.bm.next", "_Next Bookmark"),
+                             G_CALLBACK(cb_bookmark_next), NULL, accel,
+                             GDK_KEY_F2, 0));
+    APPEND(search, menu_item(TM("menu.bm.prev", "_Previous Bookmark"),
+                             G_CALLBACK(cb_bookmark_prev), NULL, accel,
+                             GDK_KEY_F2, GDK_SHIFT_MASK));
+    APPEND(search, menu_item(TM("menu.bm.clearall", "_Clear All Bookmarks"),
+                             G_CALLBACK(cb_bookmark_clear_all), NULL, NULL, 0, 0));
+    APPEND(search, sep_item());
+    APPEND(search, menu_item(TM("menu.bm.cut",    "C_ut Bookmarked Lines"),
+                             G_CALLBACK(cb_bookmark_cut),    NULL, NULL, 0, 0));
+    APPEND(search, menu_item(TM("menu.bm.copy",   "Cop_y Bookmarked Lines"),
+                             G_CALLBACK(cb_bookmark_copy),   NULL, NULL, 0, 0));
+    APPEND(search, menu_item(TM("menu.bm.delete", "_Delete Bookmarked Lines"),
+                             G_CALLBACK(cb_bookmark_delete), NULL, NULL, 0, 0));
 
     /* ---- View ---- */
     {

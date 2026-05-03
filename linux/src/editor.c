@@ -40,9 +40,13 @@ static void setup_sci(GtkWidget *sci)
     /* Margin 0: line numbers */
     sci_msg(sci, SCI_SETMARGINTYPE,      0, SC_MARGIN_NUMBER);
     sci_msg(sci, SCI_SETMARGINWIDTHN,    0, 44);
-    /* Margin 1: bookmarks (hidden until bookmarks feature is implemented) */
+    /* Margin 1: bookmarks */
     sci_msg(sci, SCI_SETMARGINTYPE,      1, SC_MARGIN_SYMBOL);
-    sci_msg(sci, SCI_SETMARGINWIDTHN,    1, 0);
+    sci_msg(sci, SCI_SETMARGINSENSITIVE, 1, 1);
+    sci_msg(sci, SCI_SETMARGINWIDTHN,    1, 0);       /* hidden until toggled via View menu */
+    sci_msg(sci, SCI_MARKERDEFINE, SC_MARKNUM_BOOKMARK, SC_MARK_BOOKMARK);
+    sci_msg(sci, SCI_MARKERSETFORE, SC_MARKNUM_BOOKMARK, 0x0000FF); /* blue */
+    sci_msg(sci, SCI_MARKERSETBACK, SC_MARKNUM_BOOKMARK, 0x0080FF);
     /* Margin 2: fold */
     sci_msg(sci, SCI_SETMARGINTYPE,      2, SC_MARGIN_SYMBOL);
     sci_msg(sci, SCI_SETMARGINSENSITIVE, 2, 1);
@@ -166,6 +170,9 @@ static void on_sci_notify(GtkWidget *sci, gint unused,
         int cur = gtk_notebook_get_current_page(GTK_NOTEBOOK(s_notebook));
         if (gtk_notebook_get_nth_page(GTK_NOTEBOOK(s_notebook), cur) == sci)
             statusbar_update_from_sci(sci);
+    } else if (code == SCN_MARGINCLICK) {
+        if (n->margin == 1)
+            main_toggle_bookmark_at_line(sci, (int)n->line);
     }
 }
 

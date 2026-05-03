@@ -181,4 +181,21 @@ typedef struct SCNotification {
 #define SC_MARKNUM_FOLDER       30
 #define SC_MARKNUM_FOLDEROPEN   31
 
+/* Bookmark marker */
+#define SC_MARKNUM_BOOKMARK     1
+#define SC_MARK_BOOKMARK        27
+#define SC_MARK_ROUNDRECT       1
+
+/* Marker messages */
+#define SCI_MARKERDEFINE        2040
+#define SCI_MARKERADD           2043
+#define SCI_MARKERDELETE        2044
+#define SCI_MARKERDELETEALL     2045
+#define SCI_MARKERGET           2046
+#define SCI_MARKERNEXT          2047
+#define SCI_MARKERPREV          2048
+
+/* SCN_MARGINCLICK notification */
+#define SCN_MARGINCLICK         2006
+
 #endif /* SCI_C_H */
