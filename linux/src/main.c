@@ -387,6 +387,111 @@ static void cb_insert_date_long(GtkMenuItem *i, gpointer d)
 }
 
 /* ------------------------------------------------------------------ */
+/* Base64 / Hex tools                                                 */
+/* ------------------------------------------------------------------ */
+
+/* Returns a g_malloc'd buffer with the current selection text and its byte
+   length via *out_len. Returns NULL (silently) when nothing is selected. */
+static char *get_selection(NppDoc *doc, gsize *out_len)
+{
+    sptr_t s = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONSTART, 0, 0);
+    sptr_t e = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONEND,   0, 0);
+    if (s == e) return NULL;
+    gsize len = (gsize)(e - s);
+    char *buf = g_malloc(len + 1);
+    Sci_TextRangeFull tr = { { s, e }, buf };
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_GETTEXTRANGEFULL, 0, (sptr_t)&tr);
+    *out_len = len;
+    return buf;
+}
+
+static void replace_selection(NppDoc *doc, const char *text)
+{
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_REPLACESEL, 0, (sptr_t)text);
+}
+
+static void cb_base64_encode(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    gsize len;
+    char *buf = get_selection(doc, &len);
+    if (!buf) return;
+    gchar *enc = g_base64_encode((const guchar *)buf, len);
+    g_free(buf);
+    replace_selection(doc, enc);
+    g_free(enc);
+}
+
+static void cb_base64_decode(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    gsize len;
+    char *buf = get_selection(doc, &len);
+    if (!buf) return;
+    gsize out_len = 0;
+    guchar *dec = g_base64_decode(buf, &out_len);
+    g_free(buf);
+    if (!dec) return;
+    /* dec may contain null bytes — write as raw bytes via SCI_REPLACESEL
+       which treats lParam as null-terminated; for binary safety use target */
+    sptr_t s = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONSTART, 0, 0);
+    sptr_t e = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONEND,   0, 0);
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETRANGE, (uptr_t)s, (sptr_t)e);
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_REPLACETARGET, (uptr_t)out_len, (sptr_t)dec);
+    g_free(dec);
+}
+
+static void cb_ascii_to_hex(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    gsize len;
+    char *buf = get_selection(doc, &len);
+    if (!buf) return;
+    GString *hex = g_string_sized_new(len * 2);
+    for (gsize k = 0; k < len; k++)
+        g_string_append_printf(hex, "%02x", (unsigned char)buf[k]);
+    g_free(buf);
+    replace_selection(doc, hex->str);
+    g_string_free(hex, TRUE);
+}
+
+static void cb_hex_to_ascii(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    gsize len;
+    char *buf = get_selection(doc, &len);
+    if (!buf) return;
+    GString *out = g_string_sized_new(len / 2 + 1);
+    gboolean ok = TRUE;
+    for (gsize k = 0; k < len; ) {
+        while (k < len && (buf[k] == ' ' || buf[k] == '\t' || buf[k] == '\n' || buf[k] == '\r')) k++;
+        if (k >= len) break;
+        if (k + 1 >= len || !g_ascii_isxdigit(buf[k]) || !g_ascii_isxdigit(buf[k + 1])) {
+            ok = FALSE; break;
+        }
+        char byte = (char)((g_ascii_xdigit_value(buf[k]) << 4) | g_ascii_xdigit_value(buf[k + 1]));
+        g_string_append_c(out, byte);
+        k += 2;
+    }
+    g_free(buf);
+    if (ok) {
+        sptr_t s = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONSTART, 0, 0);
+        sptr_t e = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONEND,   0, 0);
+        scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETRANGE, (uptr_t)s, (sptr_t)e);
+        scintilla_send_message(SCINTILLA(doc->sci), SCI_REPLACETARGET, (uptr_t)out->len, (sptr_t)out->str);
+    }
+    g_string_free(out, TRUE);
+}
+
+/* ------------------------------------------------------------------ */
 /* Hash tools                                                         */
 /* ------------------------------------------------------------------ */
 
@@ -989,6 +1094,16 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     GtkWidget *tools = submenu(bar, TM("menu.tools", "_Tools"));
     APPEND(tools, menu_item(TM("menu.tools.hash", "_Hash Generator…"),
                             G_CALLBACK(cb_hash_generator), NULL, accel, 0, 0));
+    APPEND(tools, sep_item());
+    APPEND(tools, menu_item(TM("menu.tools.b64enc", "Base64 _Encode"),
+                            G_CALLBACK(cb_base64_encode), NULL, accel, 0, 0));
+    APPEND(tools, menu_item(TM("menu.tools.b64dec", "Base64 _Decode"),
+                            G_CALLBACK(cb_base64_decode), NULL, accel, 0, 0));
+    APPEND(tools, sep_item());
+    APPEND(tools, menu_item(TM("menu.tools.asctohex", "ASCII → _Hex"),
+                            G_CALLBACK(cb_ascii_to_hex), NULL, accel, 0, 0));
+    APPEND(tools, menu_item(TM("menu.tools.hextoasc", "_Hex → ASCII"),
+                            G_CALLBACK(cb_hex_to_ascii), NULL, accel, 0, 0));
 
     return bar;
 }
