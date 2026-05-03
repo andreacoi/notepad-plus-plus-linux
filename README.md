@@ -88,7 +88,6 @@ Ordered by implementation effort (low → high).
 
 ### Medium effort
 - **Word wrap toggle** — per-tab word wrap
-- **Word wrap toggle** — per-tab word wrap
 - **Bookmarks** — toggle, next/prev, clear all, cut/copy/remove bookmarked lines
 - **Mark styles** — highlight text with 5 color styles, jump next/prev, clear
 - **Go to matching brace** — brace/bracket/parenthesis matching navigation
