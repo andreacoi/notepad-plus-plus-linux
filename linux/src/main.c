@@ -629,6 +629,173 @@ static void cb_line_insert_below(GtkMenuItem *i, gpointer d)
 }
 
 /* ------------------------------------------------------------------ */
+/* Remove duplicate / blank lines                                     */
+/* ------------------------------------------------------------------ */
+
+/* Fetch every line of the document as a NUL-terminated string (no EOL). */
+static GPtrArray *collect_lines(ScintillaObject *sci, int *out_eol_mode)
+{
+    int nlines  = (int)scintilla_send_message(sci, SCI_GETLINECOUNT, 0, 0);
+    int eol     = (int)scintilla_send_message(sci, SCI_GETEOLMODE,   0, 0);
+    if (out_eol_mode) *out_eol_mode = eol;
+
+    GPtrArray *arr = g_ptr_array_new_with_free_func(g_free);
+    for (int ln = 0; ln < nlines; ln++) {
+        Sci_Position ls  = scintilla_send_message(sci, SCI_POSITIONFROMLINE,   (uptr_t)ln, 0);
+        Sci_Position le  = scintilla_send_message(sci, SCI_GETLINEENDPOSITION, (uptr_t)ln, 0);
+        int content_len  = (int)(le - ls);
+        char *buf = g_malloc(content_len + 1);
+        if (content_len > 0) {
+            Sci_TextRangeFull tr = { { ls, le }, buf };
+            scintilla_send_message(sci, SCI_GETTEXTRANGEFULL, 0, (sptr_t)&tr);
+        }
+        buf[content_len] = '\0';
+        g_ptr_array_add(arr, buf);
+    }
+    return arr;
+}
+
+static void replace_doc_with_lines(ScintillaObject *sci, GPtrArray *lines, int eol_mode)
+{
+    const char *eol_str = (eol_mode == SC_EOL_CRLF) ? "\r\n"
+                        : (eol_mode == SC_EOL_CR)   ? "\r"
+                        :                             "\n";
+    GString *out = g_string_new(NULL);
+    for (guint i = 0; i < lines->len; i++) {
+        if (i > 0) g_string_append(out, eol_str);
+        g_string_append(out, (char *)lines->pdata[i]);
+    }
+    Sci_Position doc_end = scintilla_send_message(sci, SCI_GETLENGTH, 0, 0);
+    scintilla_send_message(sci, SCI_SETTARGETRANGE, 0, (sptr_t)doc_end);
+    scintilla_send_message(sci, SCI_REPLACETARGET, (uptr_t)out->len, (sptr_t)out->str);
+    g_string_free(out, TRUE);
+}
+
+static void cb_remove_duplicate_lines(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+
+    ScintillaObject *sci = SCINTILLA(doc->sci);
+    int eol_mode;
+    GPtrArray *src = collect_lines(sci, &eol_mode);
+
+    GPtrArray *out  = g_ptr_array_new();
+    GHashTable *seen = g_hash_table_new(g_str_hash, g_str_equal);
+    for (guint n = 0; n < src->len; n++) {
+        const char *line = src->pdata[n];
+        if (!g_hash_table_contains(seen, line)) {
+            g_hash_table_add(seen, (gpointer)line);
+            g_ptr_array_add(out, (gpointer)line);
+        }
+    }
+    replace_doc_with_lines(sci, out, eol_mode);
+    g_hash_table_destroy(seen);
+    g_ptr_array_free(out, FALSE);
+    g_ptr_array_free(src, TRUE);
+}
+
+static void cb_remove_blank_lines(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+
+    ScintillaObject *sci = SCINTILLA(doc->sci);
+    int eol_mode;
+    GPtrArray *src = collect_lines(sci, &eol_mode);
+
+    GPtrArray *out = g_ptr_array_new();
+    for (guint n = 0; n < src->len; n++) {
+        const char *line = src->pdata[n];
+        /* keep line if it has at least one non-whitespace character */
+        const char *p = line;
+        while (*p == ' ' || *p == '\t') p++;
+        if (*p != '\0')
+            g_ptr_array_add(out, (gpointer)line);
+    }
+    replace_doc_with_lines(sci, out, eol_mode);
+    g_ptr_array_free(out, FALSE);
+    g_ptr_array_free(src, TRUE);
+}
+
+/* ------------------------------------------------------------------ */
+/* Sort lines                                                         */
+/* ------------------------------------------------------------------ */
+
+typedef enum {
+    SORT_LEXIC,
+    SORT_LEXIC_CI,
+    SORT_LENGTH,
+    SORT_NUMERIC,
+    SORT_RANDOM,
+    SORT_REVERSE
+} SortMode;
+
+static int cmp_lexic   (gconstpointer a, gconstpointer b) {
+    return g_strcmp0(*(const char **)a, *(const char **)b);
+}
+static int cmp_lexic_ci(gconstpointer a, gconstpointer b) {
+    return g_ascii_strcasecmp(*(const char **)a, *(const char **)b);
+}
+static int cmp_length  (gconstpointer a, gconstpointer b) {
+    int la = (int)strlen(*(const char **)a);
+    int lb = (int)strlen(*(const char **)b);
+    return (la > lb) - (la < lb);
+}
+static int cmp_numeric (gconstpointer a, gconstpointer b) {
+    double da = g_ascii_strtod(*(const char **)a, NULL);
+    double db = g_ascii_strtod(*(const char **)b, NULL);
+    return (da > db) - (da < db);
+}
+static int cmp_random  (gconstpointer a, gconstpointer b) {
+    (void)a; (void)b;
+    return (g_random_boolean() ? 1 : -1);
+}
+
+static void do_sort(SortMode mode)
+{
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+
+    ScintillaObject *sci = SCINTILLA(doc->sci);
+    int eol_mode;
+    GPtrArray *lines = collect_lines(sci, &eol_mode);
+
+    if (mode == SORT_REVERSE) {
+        /* reverse in place */
+        guint lo = 0, hi = lines->len - 1;
+        while (lo < hi) {
+            gpointer tmp   = lines->pdata[lo];
+            lines->pdata[lo] = lines->pdata[hi];
+            lines->pdata[hi] = tmp;
+            lo++; hi--;
+        }
+    } else {
+        GCompareFunc fn;
+        switch (mode) {
+            case SORT_LEXIC_CI: fn = cmp_lexic_ci; break;
+            case SORT_LENGTH:   fn = cmp_length;   break;
+            case SORT_NUMERIC:  fn = cmp_numeric;  break;
+            case SORT_RANDOM:   fn = cmp_random;   break;
+            default:            fn = cmp_lexic;    break;
+        }
+        g_ptr_array_sort(lines, fn);
+    }
+
+    replace_doc_with_lines(sci, lines, eol_mode);
+    g_ptr_array_free(lines, TRUE);
+}
+
+static void cb_sort_lexic   (GtkMenuItem *i, gpointer d) { (void)i;(void)d; do_sort(SORT_LEXIC);    }
+static void cb_sort_lexic_ci(GtkMenuItem *i, gpointer d) { (void)i;(void)d; do_sort(SORT_LEXIC_CI); }
+static void cb_sort_length  (GtkMenuItem *i, gpointer d) { (void)i;(void)d; do_sort(SORT_LENGTH);   }
+static void cb_sort_numeric (GtkMenuItem *i, gpointer d) { (void)i;(void)d; do_sort(SORT_NUMERIC);  }
+static void cb_sort_random  (GtkMenuItem *i, gpointer d) { (void)i;(void)d; do_sort(SORT_RANDOM);   }
+static void cb_sort_reverse (GtkMenuItem *i, gpointer d) { (void)i;(void)d; do_sort(SORT_REVERSE);  }
+
+/* ------------------------------------------------------------------ */
 /* Trim whitespace                                                    */
 /* ------------------------------------------------------------------ */
 
@@ -1449,6 +1616,26 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
         APPEND(line_menu, menu_item(TM("menu.line.insbelow", "Insert Blank Line Belo_w"),
                                     G_CALLBACK(cb_line_insert_below), NULL, accel,
                                     GDK_KEY_Return, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
+        APPEND(line_menu, sep_item());
+        APPEND(line_menu, menu_item(TM("menu.line.rmdup",   "Remove _Duplicate Lines"),
+                                    G_CALLBACK(cb_remove_duplicate_lines), NULL, NULL, 0, 0));
+        APPEND(line_menu, menu_item(TM("menu.line.rmblank", "Remove _Blank Lines"),
+                                    G_CALLBACK(cb_remove_blank_lines),     NULL, NULL, 0, 0));
+        APPEND(line_menu, sep_item());
+        /* Sort Lines submenu */
+        {
+            GtkWidget *sort_item = gtk_menu_item_new_with_mnemonic(TM("menu.line.sort", "_Sort Lines"));
+            GtkWidget *sort_menu = gtk_menu_new();
+            gtk_menu_item_set_submenu(GTK_MENU_ITEM(sort_item), sort_menu);
+            APPEND(sort_menu, menu_item(TM("menu.line.sort.lexic",    "_Lexicographic"),        G_CALLBACK(cb_sort_lexic),    NULL, NULL, 0, 0));
+            APPEND(sort_menu, menu_item(TM("menu.line.sort.lexic_ci", "Lexicographic (_case-insensitive)"), G_CALLBACK(cb_sort_lexic_ci), NULL, NULL, 0, 0));
+            APPEND(sort_menu, menu_item(TM("menu.line.sort.length",   "By _Length"),            G_CALLBACK(cb_sort_length),   NULL, NULL, 0, 0));
+            APPEND(sort_menu, menu_item(TM("menu.line.sort.numeric",  "By _Number"),            G_CALLBACK(cb_sort_numeric),  NULL, NULL, 0, 0));
+            APPEND(sort_menu, menu_item(TM("menu.line.sort.random",   "R_andom Shuffle"),       G_CALLBACK(cb_sort_random),   NULL, NULL, 0, 0));
+            APPEND(sort_menu, sep_item());
+            APPEND(sort_menu, menu_item(TM("menu.line.sort.reverse",  "Re_verse Order"),        G_CALLBACK(cb_sort_reverse),  NULL, NULL, 0, 0));
+            APPEND(line_menu, sort_item);
+        }
         APPEND(edit, line_item);
     }
 
