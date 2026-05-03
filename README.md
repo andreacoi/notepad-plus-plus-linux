@@ -54,6 +54,7 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - **Trim whitespace** — Edit → Blank Operations submenu: Trim Trailing Whitespace, Trim Leading Whitespace, Trim Both; operates on selection or whole document if nothing selected; preserves original EOL characters
 - **Hash Generator** — Tools → Hash Generator dialog showing MD5, SHA-1, SHA-256 and SHA-512 of the current selection (or whole document if nothing selected); uses GLib's built-in checksum API, no extra dependencies
 - **Base64 / Hex** — Tools menu: Base64 Encode/Decode replaces selection with encoded/decoded text; ASCII→Hex encodes each byte as two hex digits; Hex→ASCII decodes hex pairs back to bytes (whitespace in input is ignored; invalid hex leaves selection unchanged)
+- **Case conversion** — Edit → Convert Case To submenu: UPPER CASE, lower case (both via Scintilla native), Proper Case, Sentence case, iNVERT cASE, rAnDoM cAsE; all operate on the current selection
 
 ### Localisation
 - Automatic system locale detection via GLib (`g_get_language_names()`)
@@ -84,7 +85,6 @@ Output: `linux/build/notepad++`
 Ordered by implementation effort (low → high).
 
 ### Medium effort
-- **Case conversion** — UPPER, lower, Proper, Sentence, Inverted, Random case
 - **Comment / Uncomment** — single-line and block comment, language-aware delimiters
 - **EOL and whitespace conversions** — EOL↔space, spaces↔tabs, tabs↔spaces
 - **Remove duplicate / blank lines** — various line-cleanup operations

@@ -135,8 +135,7 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ### Medium effort
 
-13. **Case conversion** — `SCI_UPPERCASE`/`SCI_LOWERCASE` for basic; custom loops for Proper/Sentence/Random.
-14. **Comment / Uncomment** — per-language delimiter table (reuse `kLangLexer`); detect and toggle via `SCI_GETLINE`/`SCI_REPLACELINE`.
+1. **Comment / Uncomment** — per-language delimiter table (reuse `kLangLexer`); detect and toggle via `SCI_GETLINE`/`SCI_REPLACELINE`.
 15. **Whitespace / EOL conversions** — `SCI_SETTARGETWHOLEDOCUMENT` + `SCI_REPLACETARGET` loops.
 16. **Remove duplicate/blank lines** — collect lines into array, filter, replace whole doc.
 17. **Sort lines** — same collect/sort/replace pattern; multiple comparators.
