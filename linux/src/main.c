@@ -135,6 +135,249 @@ static void cb_toggle_bookmarks(GtkCheckMenuItem *item, gpointer d)
 }
 
 /* ------------------------------------------------------------------ */
+/* Comment / Uncomment                                                */
+/* ------------------------------------------------------------------ */
+
+typedef struct {
+    const char *lang;
+    const char *line_start;
+    const char *block_start;
+    const char *block_end;
+} CommentStyle;
+
+static const CommentStyle kCommentStyles[] = {
+    /* C-family / curly-brace */
+    {"c",           "//",   "/*",   "*/"},
+    {"cpp",         "//",   "/*",   "*/"},
+    {"objc",        "//",   "/*",   "*/"},
+    {"cs",          "//",   "/*",   "*/"},
+    {"java",        "//",   "/*",   "*/"},
+    {"javascript",  "//",   "/*",   "*/"},
+    {"typescript",  "//",   "/*",   "*/"},
+    {"swift",       "//",   "/*",   "*/"},
+    {"rc",          "//",   "/*",   "*/"},
+    {"actionscript","//",   "/*",   "*/"},
+    {"go",          "//",   "/*",   "*/"},
+    {"rust",        "//",   "/*",   "*/"},
+    {"d",           "//",   "/*",   "*/"},
+    {"verilog",     "//",   "/*",   "*/"},
+    {"oscript",     "//",   "/*",   "*/"},
+    {"baanc",       "//",   "/*",   "*/"},
+    {"escript",     "//",   "/*",   "*/"},
+    /* Web */
+    {"html",        NULL,   "<!--", "-->"},
+    {"asp",         NULL,   "<!--", "-->"},
+    {"xml",         NULL,   "<!--", "-->"},
+    {"css",         NULL,   "/*",   "*/"},
+    {"php",         "//",   "/*",   "*/"},
+    /* SQL / dash */
+    {"sql",         "--",   "/*",   "*/"},
+    {"mssql",       "--",   "/*",   "*/"},
+    {"lua",         "--",   "--[[", "]]"},
+    {"haskell",     "--",   "{-",   "-}"},
+    {"ada",         "--",   NULL,   NULL},
+    {"vhdl",        "--",   NULL,   NULL},
+    /* Hash */
+    {"python",      "#",    NULL,   NULL},
+    {"ruby",        "#",    NULL,   NULL},
+    {"perl",        "#",    NULL,   NULL},
+    {"bash",        "#",    NULL,   NULL},
+    {"makefile",    "#",    NULL,   NULL},
+    {"tcl",         "#",    NULL,   NULL},
+    {"r",           "#",    NULL,   NULL},
+    {"raku",        "#",    NULL,   NULL},
+    {"coffeescript","#",    "###",  "###"},
+    {"yaml",        "#",    NULL,   NULL},
+    {"toml",        "#",    NULL,   NULL},
+    {"cmake",       "#",    NULL,   NULL},
+    {"nim",         "#",    NULL,   NULL},
+    {"gdscript",    "#",    NULL,   NULL},
+    {"avs",         "#",    NULL,   NULL},
+    /* Percent */
+    {"latex",       "%",    NULL,   NULL},
+    {"tex",         "%",    NULL,   NULL},
+    {"erlang",      "%",    NULL,   NULL},
+    {"postscript",  "%",    NULL,   NULL},
+    {"matlab",      "%",    "%{",   "%}"},
+    {"visualprolog","%",    "/*",   "*/"},
+    /* Powershell */
+    {"powershell",  "#",    "<#",   "#>"},
+    /* Semicolon */
+    {"ini",         ";",    NULL,   NULL},
+    {"props",       ";",    NULL,   NULL},
+    {"registry",    ";",    NULL,   NULL},
+    {"asm",         ";",    NULL,   NULL},
+    {"lisp",        ";",    "#|",   "|#"},
+    {"scheme",      ";",    "#|",   "|#"},
+    {"nsis",        ";",    "/*",   "*/"},
+    {"inno",        ";",    NULL,   NULL},
+    {"autoit",      ";",    "#cs",  "#ce"},
+    {"kix",         ";",    NULL,   NULL},
+    {"nncrontab",   ";",    NULL,   NULL},
+    {"csound",      ";",    "/*",   "*/"},
+    {"hollywood",   ";",    "/*",   "*/"},
+    {"purebasic",   ";",    NULL,   NULL},
+    /* VB / BASIC apostrophe */
+    {"vb",          "'",    NULL,   NULL},
+    {"freebasic",   "'",    NULL,   NULL},
+    {"blitzbasic",  "'",    NULL,   NULL},
+    /* Batch */
+    {"batch",       "REM ", NULL,   NULL},
+    /* Fortran */
+    {"fortran",     "!",    NULL,   NULL},
+    {"fortran77",   "C ",   NULL,   NULL},
+    /* Pascal / ML */
+    {"pascal",      NULL,   "{",    "}"},
+    {"caml",        NULL,   "(*",   "*)"},
+    /* Other */
+    {"sas",         "*",    "/*",   "*/"},
+    {"cobol",       "*",    NULL,   NULL},
+    {"spice",       "*",    NULL,   NULL},
+    {"forth",       "\\ ",  NULL,   NULL},
+    {NULL, NULL, NULL, NULL}
+};
+
+static const CommentStyle *comment_style_for_doc(NppDoc *doc)
+{
+    const char *lang = (const char *)g_object_get_data(G_OBJECT(doc->sci), "npp-lang");
+    if (!lang || !*lang) return NULL;
+    for (const CommentStyle *cs = kCommentStyles; cs->lang; cs++)
+        if (strcmp(cs->lang, lang) == 0) return cs;
+    return NULL;
+}
+
+/* Toggle single-line comment on all lines covered by the selection.
+   If all non-empty lines are already commented → remove prefix;
+   otherwise → add prefix. */
+static void toggle_line_comment(NppDoc *doc, const CommentStyle *cs)
+{
+    if (!cs || !cs->line_start) return;
+    const char *pfx    = cs->line_start;
+    gsize        pfxlen = strlen(pfx);
+
+    sptr_t sel_start = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONSTART, 0, 0);
+    sptr_t sel_end   = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONEND,   0, 0);
+
+    int line_first = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_LINEFROMPOSITION, sel_start, 0);
+    int line_last  = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_LINEFROMPOSITION, sel_end,   0);
+    /* Don't include a line whose first position is sel_end (cursor at col 0) */
+    if (sel_start != sel_end && line_last > line_first) {
+        sptr_t ll_start = scintilla_send_message(SCINTILLA(doc->sci), SCI_POSITIONFROMLINE, line_last, 0);
+        if (sel_end <= ll_start) line_last--;
+    }
+
+    sptr_t rstart = scintilla_send_message(SCINTILLA(doc->sci), SCI_POSITIONFROMLINE, line_first, 0);
+    sptr_t rend   = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETLINEENDPOSITION, line_last,  0);
+    sptr_t len    = rend - rstart;
+    if (len <= 0) return;
+
+    char *buf = g_malloc(len + 2);
+    Sci_TextRangeFull tr = { { rstart, rend }, buf };
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_GETTEXTRANGEFULL, 0, (sptr_t)&tr);
+
+    /* Determine whether to add or remove */
+    gboolean all_commented = TRUE;
+    for (char *p = buf; *p; ) {
+        char *nl = strpbrk(p, "\r\n");
+        size_t llen = nl ? (size_t)(nl - p) : strlen(p);
+        /* skip empty lines for the "all commented" check */
+        gboolean empty = TRUE;
+        for (size_t k = 0; k < llen; k++) if (p[k] != ' ' && p[k] != '\t') { empty = FALSE; break; }
+        if (!empty && (llen < pfxlen || strncmp(p, pfx, pfxlen) != 0)) {
+            all_commented = FALSE;
+            break;
+        }
+        if (nl) { if (*nl == '\r' && *(nl+1) == '\n') nl++; p = nl + 1; } else break;
+    }
+
+    GString *out = g_string_sized_new(len + 64);
+    for (char *p = buf; *p; ) {
+        char *nl   = strpbrk(p, "\r\n");
+        size_t llen = nl ? (size_t)(nl - p) : strlen(p);
+
+        if (all_commented) {
+            /* Remove prefix if present */
+            if (llen >= pfxlen && strncmp(p, pfx, pfxlen) == 0) {
+                p    += pfxlen;
+                llen -= pfxlen;
+                /* strip one optional space after prefix */
+                if (llen > 0 && p[0] == ' ' && pfx[pfxlen-1] != ' ') { p++; llen--; }
+            }
+            g_string_append_len(out, p, llen);
+        } else {
+            g_string_append(out, pfx);
+            g_string_append_len(out, p, llen);
+        }
+
+        if (nl) {
+            if (*nl == '\r' && *(nl+1) == '\n') { g_string_append_len(out, "\r\n", 2); p = nl + 2; }
+            else                                 { g_string_append_c(out, *nl);         p = nl + 1; }
+        } else { break; }
+    }
+    g_free(buf);
+
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETRANGE, (uptr_t)rstart, (sptr_t)rend);
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_REPLACETARGET, (uptr_t)out->len, (sptr_t)out->str);
+    g_string_free(out, TRUE);
+}
+
+/* Toggle block comment around the exact selection.
+   If the selection already starts/ends with the delimiters → remove them;
+   otherwise → wrap. */
+static void toggle_block_comment(NppDoc *doc, const CommentStyle *cs)
+{
+    if (!cs || !cs->block_start || !cs->block_end) return;
+    const char *bs  = cs->block_start;
+    const char *be  = cs->block_end;
+    gsize        bsl = strlen(bs);
+    gsize        bel = strlen(be);
+
+    sptr_t sel_start = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONSTART, 0, 0);
+    sptr_t sel_end   = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONEND,   0, 0);
+    /* Require an actual selection */
+    if (sel_start == sel_end) return;
+
+    sptr_t len = sel_end - sel_start;
+    char *buf  = g_malloc(len + 2);
+    Sci_TextRangeFull tr = { { sel_start, sel_end }, buf };
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_GETTEXTRANGEFULL, 0, (sptr_t)&tr);
+
+    gboolean already = ((gsize)len >= bsl + bel
+                        && strncmp(buf, bs, bsl) == 0
+                        && strncmp(buf + len - bel, be, bel) == 0);
+
+    GString *out = g_string_sized_new(len + bsl + bel + 4);
+    if (already) {
+        g_string_append_len(out, buf + bsl, len - bsl - bel);
+    } else {
+        g_string_append(out, bs);
+        g_string_append_len(out, buf, len);
+        g_string_append(out, be);
+    }
+    g_free(buf);
+
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETRANGE, (uptr_t)sel_start, (sptr_t)sel_end);
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_REPLACETARGET, (uptr_t)out->len, (sptr_t)out->str);
+    g_string_free(out, TRUE);
+}
+
+static void cb_toggle_line_comment(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    toggle_line_comment(doc, comment_style_for_doc(doc));
+}
+
+static void cb_toggle_block_comment(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    toggle_block_comment(doc, comment_style_for_doc(doc));
+}
+
+/* ------------------------------------------------------------------ */
 /* Selection helpers (used by case, trim, base64, hex, hash)         */
 /* ------------------------------------------------------------------ */
 
@@ -448,6 +691,130 @@ static void do_trim(TrimMode mode)
 static void cb_trim_trailing(GtkMenuItem *i, gpointer d) { (void)i; (void)d; do_trim(TRIM_TRAILING); }
 static void cb_trim_leading (GtkMenuItem *i, gpointer d) { (void)i; (void)d; do_trim(TRIM_LEADING);  }
 static void cb_trim_both    (GtkMenuItem *i, gpointer d) { (void)i; (void)d; do_trim(TRIM_BOTH);     }
+
+/* ------------------------------------------------------------------ */
+/* Whitespace conversions — spaces↔tabs                               */
+/* ------------------------------------------------------------------ */
+
+/* Replace leading spaces on every line with tabs (or vice versa).
+   tab_width: number of spaces that equal one tab (read from Scintilla). */
+static void do_spaces_to_tabs(NppDoc *doc)
+{
+    ScintillaObject *sci = SCINTILLA(doc->sci);
+    int tab_w = (int)scintilla_send_message(sci, SCI_GETTABWIDTH, 0, 0);
+    if (tab_w < 1) tab_w = 4;
+
+    int nlines = (int)scintilla_send_message(sci, SCI_GETLINECOUNT, 0, 0);
+    GString *out = g_string_new(NULL);
+
+    for (int ln = 0; ln < nlines; ln++) {
+        Sci_Position ls = scintilla_send_message(sci, SCI_POSITIONFROMLINE, (uptr_t)ln, 0);
+        Sci_Position le = scintilla_send_message(sci, SCI_GETLINEENDPOSITION, (uptr_t)ln, 0);
+        if (le <= ls) {
+            /* empty line — preserve existing EOL by appending nothing */
+            if (ln < nlines - 1) {
+                /* get the line including EOL */
+                int raw_len = (int)(scintilla_send_message(sci, SCI_LINELENGTH, (uptr_t)ln, 0));
+                char *raw = g_malloc(raw_len + 1);
+                Sci_TextRangeFull tr = { { ls, ls + raw_len }, raw };
+                scintilla_send_message(sci, SCI_GETTEXTRANGEFULL, 0, (sptr_t)&tr);
+                raw[raw_len] = '\0';
+                /* keep only the EOL part (after le) */
+                int eol_len = (int)(ls + raw_len - le);
+                g_string_append_len(out, raw + (le - ls), eol_len);
+                g_free(raw);
+            }
+            continue;
+        }
+
+        /* fetch full line (including EOL) */
+        int raw_len = (int)scintilla_send_message(sci, SCI_LINELENGTH, (uptr_t)ln, 0);
+        char *raw = g_malloc(raw_len + 1);
+        Sci_TextRangeFull tr = { { ls, ls + raw_len }, raw };
+        scintilla_send_message(sci, SCI_GETTEXTRANGEFULL, 0, (sptr_t)&tr);
+        raw[raw_len] = '\0';
+
+        /* count leading spaces */
+        int content_len = (int)(le - ls);
+        int sp = 0;
+        while (sp < content_len && raw[sp] == ' ') sp++;
+
+        int tabs   = sp / tab_w;
+        int remain = sp % tab_w;
+
+        for (int t = 0; t < tabs;   t++) g_string_append_c(out, '\t');
+        for (int s = 0; s < remain; s++) g_string_append_c(out, ' ');
+        /* rest of line content + EOL */
+        g_string_append_len(out, raw + sp, raw_len - sp);
+        g_free(raw);
+    }
+
+    Sci_Position doc_end = scintilla_send_message(sci, SCI_GETLENGTH, 0, 0);
+    scintilla_send_message(sci, SCI_SETTARGETRANGE, 0, (sptr_t)doc_end);
+    scintilla_send_message(sci, SCI_REPLACETARGET, (uptr_t)out->len, (sptr_t)out->str);
+    g_string_free(out, TRUE);
+}
+
+static void do_tabs_to_spaces(NppDoc *doc)
+{
+    ScintillaObject *sci = SCINTILLA(doc->sci);
+    int tab_w = (int)scintilla_send_message(sci, SCI_GETTABWIDTH, 0, 0);
+    if (tab_w < 1) tab_w = 4;
+
+    int nlines = (int)scintilla_send_message(sci, SCI_GETLINECOUNT, 0, 0);
+    GString *out = g_string_new(NULL);
+
+    for (int ln = 0; ln < nlines; ln++) {
+        Sci_Position ls = scintilla_send_message(sci, SCI_POSITIONFROMLINE, (uptr_t)ln, 0);
+        int raw_len = (int)scintilla_send_message(sci, SCI_LINELENGTH, (uptr_t)ln, 0);
+        if (raw_len <= 0) continue;
+
+        char *raw = g_malloc(raw_len + 1);
+        Sci_TextRangeFull tr = { { ls, ls + raw_len }, raw };
+        scintilla_send_message(sci, SCI_GETTEXTRANGEFULL, 0, (sptr_t)&tr);
+        raw[raw_len] = '\0';
+
+        Sci_Position le = scintilla_send_message(sci, SCI_GETLINEENDPOSITION, (uptr_t)ln, 0);
+        int content_len = (int)(le - ls);
+
+        /* expand leading tabs only */
+        int col = 0;
+        int i   = 0;
+        while (i < content_len && (raw[i] == '\t' || raw[i] == ' ')) {
+            if (raw[i] == '\t') {
+                int spaces = tab_w - (col % tab_w);
+                for (int s = 0; s < spaces; s++) g_string_append_c(out, ' ');
+                col += spaces;
+            } else {
+                g_string_append_c(out, ' ');
+                col++;
+            }
+            i++;
+        }
+        /* rest of line + EOL */
+        g_string_append_len(out, raw + i, raw_len - i);
+        g_free(raw);
+    }
+
+    Sci_Position doc_end = scintilla_send_message(sci, SCI_GETLENGTH, 0, 0);
+    scintilla_send_message(sci, SCI_SETTARGETRANGE, 0, (sptr_t)doc_end);
+    scintilla_send_message(sci, SCI_REPLACETARGET, (uptr_t)out->len, (sptr_t)out->str);
+    g_string_free(out, TRUE);
+}
+
+static void cb_spaces_to_tabs(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (doc) do_spaces_to_tabs(doc);
+}
+
+static void cb_tabs_to_spaces(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (doc) do_tabs_to_spaces(doc);
+}
 
 /* ------------------------------------------------------------------ */
 /* Insert date/time                                                   */
@@ -1096,6 +1463,11 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
                                      G_CALLBACK(cb_trim_leading),  NULL, NULL, 0, 0));
         APPEND(blank_menu, menu_item(TM("menu.blank.trimboth",  "Trim _Both"),
                                      G_CALLBACK(cb_trim_both),     NULL, NULL, 0, 0));
+        APPEND(blank_menu, sep_item());
+        APPEND(blank_menu, menu_item(TM("menu.blank.spacestotabs", "Convert _Spaces to Tabs"),
+                                     G_CALLBACK(cb_spaces_to_tabs), NULL, NULL, 0, 0));
+        APPEND(blank_menu, menu_item(TM("menu.blank.tabstospaces", "Convert _Tabs to Spaces"),
+                                     G_CALLBACK(cb_tabs_to_spaces), NULL, NULL, 0, 0));
         APPEND(edit, blank_item);
     }
 
@@ -1111,6 +1483,20 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
         APPEND(case_menu, menu_item(TM("menu.case.invert",   "_iNVERT cASE"),   G_CALLBACK(cb_case_invert),   NULL, NULL, 0, 0));
         APPEND(case_menu, menu_item(TM("menu.case.random",   "_rAnDoM cAsE"),   G_CALLBACK(cb_case_random),   NULL, NULL, 0, 0));
         APPEND(edit, case_item);
+    }
+
+    /* Comment / Uncomment submenu */
+    {
+        GtkWidget *cmt_item = gtk_menu_item_new_with_mnemonic(TM("menu.comment", "C_omment/Uncomment"));
+        GtkWidget *cmt_menu = gtk_menu_new();
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(cmt_item), cmt_menu);
+        APPEND(cmt_menu, menu_item(TM("menu.comment.line",  "Toggle _Single Line Comment"),
+                                    G_CALLBACK(cb_toggle_line_comment),  NULL, accel,
+                                    GDK_KEY_k, GDK_CONTROL_MASK));
+        APPEND(cmt_menu, menu_item(TM("menu.comment.block", "Toggle _Block Comment"),
+                                    G_CALLBACK(cb_toggle_block_comment), NULL, accel,
+                                    GDK_KEY_k, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
+        APPEND(edit, cmt_item);
     }
 
     /* ---- Search ---- */
