@@ -66,6 +66,7 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - **Keyboard shortcut mapper** — Settings → Shortcut Mapper: dialog listing all 27 configurable commands (File/Edit/Search); double-click to capture a new key combination; Reset Selected / Reset All; persisted to `~/.config/npp/shortcuts.xml`; overrides applied at startup before menus are built
 - **Preferences dialog** — Settings → Preferences: 4-page dialog (Editor / Display / New Document / General) covering tab width/indentation, auto-indent, brace highlighting, caret style, word wrap, EOL mode, default encoding, title format, and copy-line behaviour; persisted to `~/.config/npp/config.xml`; settings applied live without restarting
 - **Auto-indent** — three modes selectable in Preferences → Editor: None (disabled), Basic (copies leading whitespace of the previous line on Enter), Advanced (Basic + adds one indent level after lines ending with `{` or `:`, and auto-dedents when a `}` is typed at the start of the new line)
+- **Code folding controls** — View → Folding submenu: Fold All (Ctrl+Alt+F9), Unfold All (Ctrl+Alt+Shift+F9), and Fold / Unfold Level 1–8 (collapses or expands all fold headers at the chosen nesting level)
 
 ### Localisation
 - Automatic system locale detection via GLib (`g_get_language_names()`)
@@ -96,9 +97,6 @@ Output: `linux/build/notepad++`
 Ordered by implementation effort (low → high).
 
 > **Note:** All the features with low effort required are marked as completed. No intermediate release are planned. This software will be released when all the points in this list will be successfully completed.
-
-## Medium effort
-- **Code folding controls** — fold/unfold all and by individual levels (1–8)
 
 ### High effort
 - **Find in Files** — recursive directory search with collapsible results tree

@@ -139,10 +139,6 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ## Linux port — next steps (priority / effort order)
 
-### Medium effort
-
-25. **Code folding controls** — menu items calling `SCI_FOLDALL`, `SCI_FOLDDISPLAYTEXT`, `SCI_SETFOLDLEVEL` per level.
-
 ### High effort
 
 28. **Find in Files** — extra tab in the Find/Replace dialog; `GThreadPool` recursive file walk; results in a collapsible `GtkTreeView`.
