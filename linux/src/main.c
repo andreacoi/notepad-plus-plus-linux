@@ -1265,6 +1265,127 @@ static void wrap_menu_sync(gboolean on)
 }
 
 /* ------------------------------------------------------------------ */
+/* Mark styles (5 color highlight indicators)                         */
+/* ------------------------------------------------------------------ */
+
+#define MARK_STYLE_COUNT 5
+
+/* Colors shown in menu labels — kept in sync with editor.c setup_sci */
+static const char *kMarkStyleNames[MARK_STYLE_COUNT] = {
+    "Mark Style 1 (Yellow)",
+    "Mark Style 2 (Cyan)",
+    "Mark Style 3 (Blue)",
+    "Mark Style 4 (Orange)",
+    "Mark Style 5 (Magenta)",
+};
+
+static void mark_apply(int style)
+{
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    ScintillaObject *sci = SCINTILLA(doc->sci);
+
+    Sci_Position sel_start = scintilla_send_message(sci, SCI_GETSELECTIONSTART, 0, 0);
+    Sci_Position sel_end   = scintilla_send_message(sci, SCI_GETSELECTIONEND,   0, 0);
+    if (sel_start == sel_end) return;   /* nothing selected */
+
+    scintilla_send_message(sci, SCI_SETINDICATORCURRENT, (uptr_t)style, 0);
+    scintilla_send_message(sci, SCI_INDICATORFILLRANGE,
+                           (uptr_t)sel_start, (sptr_t)(sel_end - sel_start));
+}
+
+static void mark_clear(int style)
+{
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    ScintillaObject *sci = SCINTILLA(doc->sci);
+
+    Sci_Position doc_len = scintilla_send_message(sci, SCI_GETLENGTH, 0, 0);
+    scintilla_send_message(sci, SCI_SETINDICATORCURRENT, (uptr_t)style, 0);
+    scintilla_send_message(sci, SCI_INDICATORCLEARRANGE, 0, (sptr_t)doc_len);
+}
+
+static void mark_clear_all_styles(void)
+{
+    for (int s = 0; s < MARK_STYLE_COUNT; s++)
+        mark_clear(s);
+}
+
+static void mark_jump(int style, gboolean forward)
+{
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    ScintillaObject *sci = SCINTILLA(doc->sci);
+
+    Sci_Position pos     = scintilla_send_message(sci, SCI_GETCURRENTPOS, 0, 0);
+    Sci_Position doc_len = scintilla_send_message(sci, SCI_GETLENGTH,     0, 0);
+
+    scintilla_send_message(sci, SCI_SETINDICATORCURRENT, (uptr_t)style, 0);
+
+    Sci_Position found = -1;
+    if (forward) {
+        /* search from pos+1 to end, then wrap */
+        Sci_Position start = scintilla_send_message(sci, SCI_INDICATOREND,
+                                                    (uptr_t)style, (sptr_t)pos);
+        if (start < doc_len)
+            found = start;
+        else {
+            start = scintilla_send_message(sci, SCI_INDICATOREND,
+                                           (uptr_t)style, 0);
+            if (start < doc_len && start > 0)
+                found = 0; /* there is an indicator somewhere from the start */
+        }
+        /* re-search from the beginning if wrapped */
+        if (found == 0) {
+            Sci_Position s2 = scintilla_send_message(sci, SCI_INDICATOREND,
+                                                     (uptr_t)style, 0);
+            found = (s2 > 0) ? 0 : -1;
+        }
+    } else {
+        Sci_Position end = scintilla_send_message(sci, SCI_INDICATORSTART,
+                                                  (uptr_t)style, (sptr_t)pos);
+        if (end > 0)
+            found = scintilla_send_message(sci, SCI_INDICATORSTART,
+                                           (uptr_t)style, (sptr_t)(end - 1));
+        if (found < 0) {
+            /* wrap: search from end of doc backwards */
+            Sci_Position s2 = scintilla_send_message(sci, SCI_INDICATORSTART,
+                                                     (uptr_t)style, (sptr_t)(doc_len - 1));
+            if (s2 >= 0) found = s2;
+        }
+    }
+    if (found >= 0)
+        scintilla_send_message(sci, SCI_GOTOPOS, (uptr_t)found, 0);
+}
+
+/* --- Callbacks: one per style × action --- */
+static void cb_mark1(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_apply(0);}
+static void cb_mark2(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_apply(1);}
+static void cb_mark3(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_apply(2);}
+static void cb_mark4(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_apply(3);}
+static void cb_mark5(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_apply(4);}
+
+static void cb_mark_clear1(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_clear(0);}
+static void cb_mark_clear2(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_clear(1);}
+static void cb_mark_clear3(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_clear(2);}
+static void cb_mark_clear4(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_clear(3);}
+static void cb_mark_clear5(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_clear(4);}
+
+static void cb_mark_clear_all(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_clear_all_styles();}
+
+static void cb_mark_next1(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_jump(0,TRUE);}
+static void cb_mark_next2(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_jump(1,TRUE);}
+static void cb_mark_next3(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_jump(2,TRUE);}
+static void cb_mark_next4(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_jump(3,TRUE);}
+static void cb_mark_next5(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_jump(4,TRUE);}
+
+static void cb_mark_prev1(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_jump(0,FALSE);}
+static void cb_mark_prev2(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_jump(1,FALSE);}
+static void cb_mark_prev3(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_jump(2,FALSE);}
+static void cb_mark_prev4(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_jump(3,FALSE);}
+static void cb_mark_prev5(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_jump(4,FALSE);}
+
+/* ------------------------------------------------------------------ */
 /* Bookmarks                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -1862,6 +1983,47 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
                              G_CALLBACK(cb_bookmark_copy),   NULL, NULL, 0, 0));
     APPEND(search, menu_item(TM("menu.bm.delete", "_Delete Bookmarked Lines"),
                              G_CALLBACK(cb_bookmark_delete), NULL, NULL, 0, 0));
+    APPEND(search, sep_item());
+
+    /* Mark styles submenu */
+    {
+        static GCallback apply_cbs[5]      = { G_CALLBACK(cb_mark1), G_CALLBACK(cb_mark2), G_CALLBACK(cb_mark3), G_CALLBACK(cb_mark4), G_CALLBACK(cb_mark5) };
+        static GCallback clear_cbs[5]      = { G_CALLBACK(cb_mark_clear1), G_CALLBACK(cb_mark_clear2), G_CALLBACK(cb_mark_clear3), G_CALLBACK(cb_mark_clear4), G_CALLBACK(cb_mark_clear5) };
+        static GCallback next_cbs[5]       = { G_CALLBACK(cb_mark_next1), G_CALLBACK(cb_mark_next2), G_CALLBACK(cb_mark_next3), G_CALLBACK(cb_mark_next4), G_CALLBACK(cb_mark_next5) };
+        static GCallback prev_cbs[5]       = { G_CALLBACK(cb_mark_prev1), G_CALLBACK(cb_mark_prev2), G_CALLBACK(cb_mark_prev3), G_CALLBACK(cb_mark_prev4), G_CALLBACK(cb_mark_prev5) };
+
+        GtkWidget *mark_item = gtk_menu_item_new_with_mnemonic(TM("menu.mark", "_Mark Styles"));
+        GtkWidget *mark_menu = gtk_menu_new();
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(mark_item), mark_menu);
+
+        for (int s = 0; s < MARK_STYLE_COUNT; s++) {
+            char label[64];
+            /* Apply */
+            snprintf(label, sizeof(label), "_Mark Style %d", s + 1);
+            APPEND(mark_menu, menu_item(label, apply_cbs[s], NULL, NULL, 0, 0));
+        }
+        APPEND(mark_menu, sep_item());
+        for (int s = 0; s < MARK_STYLE_COUNT; s++) {
+            char label[64];
+            snprintf(label, sizeof(label), "Clear Style _%d", s + 1);
+            APPEND(mark_menu, menu_item(label, clear_cbs[s], NULL, NULL, 0, 0));
+        }
+        APPEND(mark_menu, menu_item(TM("menu.mark.clearall", "Clear _All Marks"),
+                                    G_CALLBACK(cb_mark_clear_all), NULL, NULL, 0, 0));
+        APPEND(mark_menu, sep_item());
+        for (int s = 0; s < MARK_STYLE_COUNT; s++) {
+            char label[64];
+            snprintf(label, sizeof(label), "Next Style %d", s + 1);
+            APPEND(mark_menu, menu_item(label, next_cbs[s], NULL, NULL, 0, 0));
+        }
+        APPEND(mark_menu, sep_item());
+        for (int s = 0; s < MARK_STYLE_COUNT; s++) {
+            char label[64];
+            snprintf(label, sizeof(label), "Previous Style %d", s + 1);
+            APPEND(mark_menu, menu_item(label, prev_cbs[s], NULL, NULL, 0, 0));
+        }
+        APPEND(search, mark_item);
+    }
 
     /* ---- View ---- */
     {

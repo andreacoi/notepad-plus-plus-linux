@@ -51,6 +51,19 @@ static void setup_sci(GtkWidget *sci)
     sci_msg(sci, SCI_SETMARGINTYPE,      2, SC_MARGIN_SYMBOL);
     sci_msg(sci, SCI_SETMARGINSENSITIVE, 2, 1);
     sci_msg(sci, SCI_SETMARGINWIDTHN,    2, 14);
+    /* Mark-style indicators 0–4: ROUNDBOX with semi-transparent fill */
+    static const int mark_colors[5] = {
+        0x00FFFF, /* yellow  (BGR) */
+        0x00FF00, /* cyan    (BGR) */
+        0xFF8000, /* blue    (BGR) */
+        0x0080FF, /* orange  (BGR) */
+        0x8000FF, /* magenta (BGR) */
+    };
+    for (int k = 0; k < 5; k++) {
+        sci_msg(sci, SCI_INDICSETSTYLE, (uptr_t)k, INDIC_ROUNDBOX);
+        sci_msg(sci, SCI_INDICSETFORE,  (uptr_t)k, mark_colors[k]);
+        sci_msg(sci, SCI_INDICSETALPHA, (uptr_t)k, 100);
+    }
     sci_msg(sci, SCI_SETTABWIDTH,     4, 0);
     sci_msg(sci, SCI_SETUSETABS,      0, 0);
     /* Apply theme: STYLE_DEFAULT must be set before STYLECLEARALL */

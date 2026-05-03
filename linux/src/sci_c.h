@@ -181,6 +181,19 @@ typedef struct SCNotification {
 #define SC_MARKNUM_FOLDER       30
 #define SC_MARKNUM_FOLDEROPEN   31
 
+/* Indicators (mark styles) */
+#define SCI_INDICSETSTYLE       2080
+#define SCI_INDICSETFORE        2082
+#define SCI_INDICSETALPHA       2523
+#define SCI_SETINDICATORCURRENT 2500
+#define SCI_INDICATORFILLRANGE  2504
+#define SCI_INDICATORCLEARRANGE 2505
+#define SCI_INDICATORSTART      2508
+#define SCI_INDICATOREND        2509
+#define INDIC_ROUNDBOX          7
+#define INDIC_STRAIGHTBOX       8
+#define INDIC_FULLBOX           16
+
 /* Bookmark marker */
 #define SC_MARKNUM_BOOKMARK     1
 #define SC_MARK_BOOKMARK        27
