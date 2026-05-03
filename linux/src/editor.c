@@ -384,6 +384,7 @@ gboolean editor_open_path(const char *path)
     update_window_title();
     statusbar_update_from_sci(sci);
     findreplace_set_sci(sci);
+    main_recent_file_add(path);
     return TRUE;
 }
 
@@ -476,6 +477,7 @@ gboolean editor_save_as_dialog(void)
             doc->new_index = 0;
             refresh_tab_label(editor_current_page());
             update_window_title();
+            main_recent_file_add(path);
             saved = TRUE;
         } else {
             g_free(path);

@@ -12,6 +12,117 @@
 /* Menu callbacks                                                      */
 /* ------------------------------------------------------------------ */
 
+/* ------------------------------------------------------------------ */
+/* Recent files                                                        */
+/* ------------------------------------------------------------------ */
+
+#define MAX_RECENT 10
+
+static GPtrArray  *s_recent_files = NULL;   /* GPtrArray of g_strdup'd paths */
+static GtkWidget  *s_recent_menu  = NULL;   /* the GtkMenu inside the submenu */
+static GtkWidget  *s_recent_item  = NULL;   /* the top-level "Recent Files" item */
+
+static char *recent_file_path(void)
+{
+    return g_build_filename(g_get_home_dir(), ".config", "npp", "recentfiles.txt", NULL);
+}
+
+static void recent_save(void)
+{
+    GString *buf = g_string_new(NULL);
+    for (guint i = 0; i < s_recent_files->len; i++)
+        g_string_append_printf(buf, "%s\n", (char *)s_recent_files->pdata[i]);
+    gchar *path = recent_file_path();
+    g_file_set_contents(path, buf->str, (gssize)buf->len, NULL);
+    g_free(path);
+    g_string_free(buf, TRUE);
+}
+
+static void recent_load(void)
+{
+    gchar *path = recent_file_path();
+    gchar *contents = NULL;
+    if (g_file_get_contents(path, &contents, NULL, NULL)) {
+        gchar **lines = g_strsplit(contents, "\n", -1);
+        for (int i = 0; lines[i] && s_recent_files->len < MAX_RECENT; i++) {
+            if (lines[i][0] != '\0')
+                g_ptr_array_add(s_recent_files, g_strdup(lines[i]));
+        }
+        g_strfreev(lines);
+        g_free(contents);
+    }
+    g_free(path);
+}
+
+static void cb_open_recent(GtkMenuItem *item, gpointer data)
+{
+    (void)item;
+    editor_open_path((const char *)data);
+}
+
+static void cb_clear_recent(GtkMenuItem *i, gpointer d);
+
+static void recent_rebuild_menu(void)
+{
+    /* Remove all children */
+    GList *children = gtk_container_get_children(GTK_CONTAINER(s_recent_menu));
+    for (GList *l = children; l; l = l->next)
+        gtk_widget_destroy(GTK_WIDGET(l->data));
+    g_list_free(children);
+
+    if (s_recent_files->len == 0) {
+        GtkWidget *empty = gtk_menu_item_new_with_label(T("menu.recent.empty", "(empty)"));
+        gtk_widget_set_sensitive(empty, FALSE);
+        gtk_menu_shell_append(GTK_MENU_SHELL(s_recent_menu), empty);
+    } else {
+        for (guint i = 0; i < s_recent_files->len; i++) {
+            const char *fpath = (const char *)s_recent_files->pdata[i];
+            gchar *label = g_path_get_basename(fpath);
+            GtkWidget *mi = gtk_menu_item_new_with_label(label);
+            g_free(label);
+            g_signal_connect_data(mi, "activate", G_CALLBACK(cb_open_recent),
+                                  g_strdup(fpath), (GClosureNotify)g_free, 0);
+            gtk_menu_shell_append(GTK_MENU_SHELL(s_recent_menu), mi);
+        }
+        gtk_menu_shell_append(GTK_MENU_SHELL(s_recent_menu), gtk_separator_menu_item_new());
+        GtkWidget *clr = gtk_menu_item_new_with_mnemonic(T("menu.recent.clear", "_Clear Recent Files"));
+        g_signal_connect(clr, "activate", G_CALLBACK(cb_clear_recent), NULL);
+        gtk_menu_shell_append(GTK_MENU_SHELL(s_recent_menu), clr);
+    }
+    gtk_widget_show_all(s_recent_menu);
+}
+
+void main_recent_file_add(const char *path)
+{
+    /* Remove existing entry for this path */
+    for (guint i = 0; i < s_recent_files->len; i++) {
+        if (strcmp((char *)s_recent_files->pdata[i], path) == 0) {
+            g_free(s_recent_files->pdata[i]);
+            g_ptr_array_remove_index(s_recent_files, i);
+            break;
+        }
+    }
+    /* Prepend */
+    g_ptr_array_insert(s_recent_files, 0, g_strdup(path));
+    /* Trim */
+    while (s_recent_files->len > MAX_RECENT) {
+        g_free(s_recent_files->pdata[s_recent_files->len - 1]);
+        g_ptr_array_remove_index(s_recent_files, s_recent_files->len - 1);
+    }
+    recent_save();
+    recent_rebuild_menu();
+}
+
+static void cb_clear_recent(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    for (guint j = 0; j < s_recent_files->len; j++)
+        g_free(s_recent_files->pdata[j]);
+    g_ptr_array_set_size(s_recent_files, 0);
+    recent_save();
+    recent_rebuild_menu();
+}
+
 /* File */
 static void cb_new(GtkMenuItem *i, gpointer d)    { (void)i;(void)d; editor_new_doc(); }
 static void cb_open(GtkMenuItem *i, gpointer d)   { (void)i;(void)d; editor_open_dialog(); }
@@ -1827,6 +1938,14 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     GtkWidget *file = submenu(bar, TM("menu.file", "_File"));
     APPEND(file, menu_item(TM("cmd.41001", "_New"),        G_CALLBACK(cb_new),    NULL, accel, GDK_KEY_n, GDK_CONTROL_MASK));
     APPEND(file, menu_item(TM("cmd.41002", "_Open…"),      G_CALLBACK(cb_open),   NULL, accel, GDK_KEY_o, GDK_CONTROL_MASK));
+    /* Recent Files submenu */
+    {
+        s_recent_item = gtk_menu_item_new_with_mnemonic(T("menu.recent", "Open _Recent"));
+        s_recent_menu = gtk_menu_new();
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(s_recent_item), s_recent_menu);
+        APPEND(file, s_recent_item);
+        recent_rebuild_menu();
+    }
     APPEND(file, sep_item());
     APPEND(file, menu_item(TM("cmd.41006", "_Save"),       G_CALLBACK(cb_save),   NULL, accel, GDK_KEY_s, GDK_CONTROL_MASK));
     APPEND(file, menu_item(TM("cmd.41008", "Save _As…"),   G_CALLBACK(cb_save_as),NULL, accel, GDK_KEY_s, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
@@ -2198,6 +2317,9 @@ static void on_activate(GtkApplication *app, gpointer data)
     (void)data;
 
     i18n_init();
+
+    s_recent_files = g_ptr_array_new();
+    recent_load();
 
     GtkWidget *window = gtk_application_window_new(app);
     s_main_window = window;

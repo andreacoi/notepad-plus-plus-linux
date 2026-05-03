@@ -44,8 +44,9 @@ void editor_goto_line_dialog(void);
 /* Re-apply current theme styles to all open editors. */
 void editor_reapply_styles(void);
 
-/* Bookmark toggle — implemented in main.c, called from editor.c on margin click */
+/* Implemented in main.c, called from editor.c */
 void main_toggle_bookmark_at_line(GtkWidget *sci, int line);
+void main_recent_file_add(const char *path);
 
 /* Convenience send to current doc */
 sptr_t editor_send(unsigned int msg, uptr_t wp, sptr_t lp);
