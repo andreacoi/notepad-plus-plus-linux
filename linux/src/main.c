@@ -63,6 +63,9 @@ static void cb_style_editor(GtkMenuItem *i, gpointer d)
 static gboolean s_edge_enabled = FALSE;
 static int      s_edge_column  = 80;
 
+/* Word wrap menu item — kept as a pointer so on_switch_page can sync it */
+static GtkWidget *s_mi_wrap = NULL;
+
 /* ------------------------------------------------------------------ */
 /* Show/hide symbols                                                  */
 /* ------------------------------------------------------------------ */
@@ -1238,6 +1241,30 @@ static void cb_set_edge_column(GtkMenuItem *item, gpointer d)
 }
 
 /* ------------------------------------------------------------------ */
+/* Word wrap (per-tab)                                                */
+/* ------------------------------------------------------------------ */
+
+static void cb_toggle_word_wrap(GtkCheckMenuItem *item, gpointer d)
+{
+    (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    gboolean on = gtk_check_menu_item_get_active(item);
+    doc->word_wrap = on;
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETWRAPMODE,
+                           on ? SC_WRAP_WORD : SC_WRAP_NONE, 0);
+    toolbar_sync_toggles(doc->sci);
+}
+
+static void wrap_menu_sync(gboolean on)
+{
+    if (!s_mi_wrap) return;
+    g_signal_handlers_block_by_func(s_mi_wrap, G_CALLBACK(cb_toggle_word_wrap), NULL);
+    gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_mi_wrap), on);
+    g_signal_handlers_unblock_by_func(s_mi_wrap, G_CALLBACK(cb_toggle_word_wrap), NULL);
+}
+
+/* ------------------------------------------------------------------ */
 /* EOL menu                                                           */
 /* ------------------------------------------------------------------ */
 
@@ -1697,6 +1724,16 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     {
         GtkWidget *view = submenu(bar, TM("menu.view", "_View"));
 
+        s_mi_wrap = gtk_check_menu_item_new_with_mnemonic(
+            TM("menu.view.wordwrap", "_Word Wrap"));
+        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_mi_wrap), FALSE);
+        g_signal_connect(s_mi_wrap, "toggled", G_CALLBACK(cb_toggle_word_wrap), NULL);
+        gtk_accel_group_connect(accel, GDK_KEY_z, GDK_MOD1_MASK, GTK_ACCEL_VISIBLE,
+            g_cclosure_new(G_CALLBACK(cb_toggle_word_wrap), NULL, NULL));
+        APPEND(view, s_mi_wrap);
+
+        APPEND(view, sep_item());
+
         GtkWidget *ws = gtk_check_menu_item_new_with_mnemonic(
             TM("menu.view.whitespace", "Show _Whitespace"));
         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(ws), s_show_whitespace);
@@ -1784,6 +1821,8 @@ static void on_switch_page(GtkNotebook *nb, GtkWidget *page,
     eol_menu_sync(eol);
     apply_view_symbols(doc->sci);
     apply_edge(doc->sci);
+    wrap_menu_sync(doc->word_wrap);
+    toolbar_sync_toggles(doc->sci);
 }
 
 /* ------------------------------------------------------------------ */

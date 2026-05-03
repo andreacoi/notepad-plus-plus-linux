@@ -14,14 +14,10 @@
 /* ------------------------------------------------------------------ */
 #define SCI_ZOOMIN              2333
 #define SCI_ZOOMOUT             2334
-#define SCI_SETWRAPMODE         2268
-#define SCI_GETWRAPMODE         2269
+/* SCI_SETWRAPMODE / SCI_GETWRAPMODE / SC_WRAP_* defined in sci_c.h */
 /* SCI_SETVIEWWS / SCI_GETVIEWWS defined in sci_c.h */
 #define SCI_SETINDENTATIONGUIDES 2132
 #define SCI_GETINDENTATIONGUIDES 2133
-
-#define SC_WRAP_NONE            0
-#define SC_WRAP_WORD            1
 /* SC_WS_INVISIBLE / SC_WS_VISIBLEALWAYS defined in sci_c.h */
 #define SC_IV_NONE              0
 #define SC_IV_LOOKBOTH          3

@@ -155,6 +155,12 @@ typedef struct SCNotification {
 #define SC_MARGIN_SYMBOL        0
 #define SC_MARGIN_NUMBER        1
 
+/* Word wrap */
+#define SCI_SETWRAPMODE         2268
+#define SCI_GETWRAPMODE         2269
+#define SC_WRAP_NONE            0
+#define SC_WRAP_WORD            1
+
 /* Whitespace visibility */
 #define SC_WS_INVISIBLE         0
 #define SC_WS_VISIBLEALWAYS     1

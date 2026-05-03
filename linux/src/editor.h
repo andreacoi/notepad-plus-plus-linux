@@ -9,6 +9,7 @@ typedef struct {
     char      *filepath;    /* NULL = unsaved */
     gboolean   modified;
     int        new_index;   /* "new N" label when filepath==NULL */
+    gboolean   word_wrap;   /* per-tab word wrap state */
 } NppDoc;
 
 /* Initialise — call once, returns the GtkNotebook to embed in the window */
