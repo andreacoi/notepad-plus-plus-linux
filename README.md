@@ -51,6 +51,7 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - **Edge column** — View menu toggle (Show Edge Column) draws a vertical guide line; "Set Edge Column…" opens a dialog to choose the column (default 80, range 1–512)
 - **Insert date/time** — Edit → Insert Date/Time submenu: Short format (`HH:MM:SS MM/DD/YYYY`) and Long format (`Weekday, Month DD, YYYY HH:MM:SS`); inserts at cursor, replacing any selection
 - **Line operations** — Edit → Line Operations submenu: Duplicate Line (Ctrl+D), Delete Line (Ctrl+Shift+L), Move Line Up/Down (Ctrl+Shift+↑/↓), Join Lines, Split Lines (at edge column, default 80), Insert Blank Line Above (Ctrl+Alt+Enter), Insert Blank Line Below (Ctrl+Shift+Enter)
+- **Trim whitespace** — Edit → Blank Operations submenu: Trim Trailing Whitespace, Trim Leading Whitespace, Trim Both; operates on selection or whole document if nothing selected; preserves original EOL characters
 
 ### Localisation
 - Automatic system locale detection via GLib (`g_get_language_names()`)
@@ -81,7 +82,6 @@ Output: `linux/build/notepad++`
 Ordered by implementation effort (low → high).
 
 ### Low effort
-- **Trim whitespace** — strip leading and trailing spaces on save or on demand
 - **Hash tools** — MD5, SHA-1, SHA-256, SHA-512 generation from selection or file
 - **Base64 encode/decode** — ASCII ↔ Base64 and ASCII ↔ Hex conversions
 
