@@ -55,6 +55,8 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - **Hash Generator** — Tools → Hash Generator dialog showing MD5, SHA-1, SHA-256 and SHA-512 of the current selection (or whole document if nothing selected); uses GLib's built-in checksum API, no extra dependencies
 - **Base64 / Hex** — Tools menu: Base64 Encode/Decode replaces selection with encoded/decoded text; ASCII→Hex encodes each byte as two hex digits; Hex→ASCII decodes hex pairs back to bytes (whitespace in input is ignored; invalid hex leaves selection unchanged)
 - **Case conversion** — Edit → Convert Case To submenu: UPPER CASE, lower case (both via Scintilla native), Proper Case, Sentence case, iNVERT cASE, rAnDoM cAsE; all operate on the current selection
+- **Comment / Uncomment** — Edit → Comment/Uncomment submenu: Toggle Single Line Comment (Ctrl+K) and Toggle Block Comment (Ctrl+Shift+K); language-aware delimiters for 80+ languages; toggles (adds/removes) based on whether all covered lines are already commented
+- **Whitespace conversions** — Edit → Blank Operations submenu: Convert Spaces to Tabs (replaces leading spaces with tabs respecting the current tab width) and Convert Tabs to Spaces (expands leading tabs to spaces using the current tab width)
 
 ### Localisation
 - Automatic system locale detection via GLib (`g_get_language_names()`)
@@ -85,8 +87,7 @@ Output: `linux/build/notepad++`
 Ordered by implementation effort (low → high).
 
 ### Medium effort
-- **Comment / Uncomment** — single-line and block comment, language-aware delimiters
-- **EOL and whitespace conversions** — EOL↔space, spaces↔tabs, tabs↔spaces
+- **Remove duplicate / blank lines** — various line-cleanup operations
 - **Remove duplicate / blank lines** — various line-cleanup operations
 - **Sort lines** — lexicographic, case-insensitive, by length, numeric, random, reverse
 - **Word wrap toggle** — per-tab word wrap
