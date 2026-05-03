@@ -96,7 +96,7 @@ Output: `linux/build/notepad++`
 
 Ordered by implementation effort (low → high).
 
-> **Note:** All the features with low effort required are marked as completed. No intermediate release are planned. This software will be released when all the points in this list will be successfully completed.
+> **Note:** All the features with low and medium effort required are marked as completed. No intermediate release are planned. This software will be released when all the points in this list will be successfully completed.
 
 ### High effort
 - **Find in Files** — recursive directory search with collapsible results tree
