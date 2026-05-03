@@ -134,7 +134,7 @@ Once the project is feature-complete, pre-compiled packages will be produced for
 | `.pkg.tar.zst` | Arch Linux, Manjaro |
 | `.apk` | Alpine Linux |
 
-> **Note:** No AppImage, Flatpak, or Snap packages will ever be produced. These distribution formats are philosophically opposed to how native software should be shipped on Linux — they sidestep the distro package manager, bloat the install, and erode the integration that makes a native app feel native. Packages will be built for distro toolchains only.
+> **Note:** No AppImage, Flatpak, or Snap packages will ever be produced. These distribution formats are philosophically opposed (imho) to how native software should be shipped on Linux — they sidestep the distro package manager, bloat the install, and erode the integration that makes a native app feel native. Packages will be built for distro toolchains only.
 
 ## Extra features
 
