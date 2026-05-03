@@ -189,8 +189,8 @@ static void cb_join_lines(GtkMenuItem *i, gpointer d)
     if (len <= 0) return;
 
     char *buf = g_malloc(len + 2);
-    Sci_TextRange tr = { { rstart, rend }, buf };
-    scintilla_send_message(SCINTILLA(doc->sci), SCI_GETTEXTRANGE, 0, (sptr_t)&tr);
+    Sci_TextRangeFull tr = { { rstart, rend }, buf };
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_GETTEXTRANGEFULL, 0, (sptr_t)&tr);
 
     GString *out = g_string_sized_new(len);
     for (char *p = buf; *p; ) {
@@ -207,8 +207,8 @@ static void cb_join_lines(GtkMenuItem *i, gpointer d)
     }
     g_free(buf);
 
-    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETSTART, rstart, 0);
-    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETEND,   rend,   0);
+    Sci_TextRangeFull tgt = { { rstart, rend }, NULL };
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETRANGE, 0, (sptr_t)&tgt);
     scintilla_send_message(SCINTILLA(doc->sci), SCI_REPLACETARGET, (uptr_t)out->len, (sptr_t)out->str);
     g_string_free(out, TRUE);
 }
@@ -242,8 +242,8 @@ static void cb_split_lines(GtkMenuItem *i, gpointer d)
     if (len <= 0) return;
 
     char *buf = g_malloc(len + 2);
-    Sci_TextRange tr = { { rstart, rend }, buf };
-    scintilla_send_message(SCINTILLA(doc->sci), SCI_GETTEXTRANGE, 0, (sptr_t)&tr);
+    Sci_TextRangeFull tr = { { rstart, rend }, buf };
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_GETTEXTRANGEFULL, 0, (sptr_t)&tr);
 
     size_t eol_len = strlen(eol);
     GString *out = g_string_sized_new(len + 16);
@@ -274,8 +274,8 @@ static void cb_split_lines(GtkMenuItem *i, gpointer d)
     }
     g_free(buf);
 
-    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETSTART, rstart, 0);
-    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETEND,   rend,   0);
+    Sci_TextRangeFull tgt = { { rstart, rend }, NULL };
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETRANGE, 0, (sptr_t)&tgt);
     scintilla_send_message(SCINTILLA(doc->sci), SCI_REPLACETARGET, (uptr_t)out->len, (sptr_t)out->str);
     g_string_free(out, TRUE);
 }
