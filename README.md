@@ -51,6 +51,7 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - **Bookmarks** — Search menu: Toggle Bookmark (Ctrl+F2), Next Bookmark (F2), Previous Bookmark (Shift+F2), Clear All Bookmarks; Cut/Copy/Delete Bookmarked Lines; click the bookmarks margin to toggle; blue roundrect marker in margin 1; next/prev wraps around
 - **Mark styles** — Search → Mark Styles submenu: 5 color highlight styles (yellow, cyan, blue, orange, magenta) using Scintilla `INDIC_ROUNDBOX` indicators; apply to current selection, clear per-style or all at once, jump to next/previous occurrence of each style
 - **Go to matching brace** — Search → Go to Matching Brace (Ctrl+]): moves caret to the matching `()[]{}` or `<>` brace; live `STYLE_BRACELIGHT` / `STYLE_BRACEBAD` highlight on every cursor move via `SCN_UPDATEUI`
+- **Recent files list** — File → Open Recent submenu: last 10 opened/saved files, persisted to `~/.config/npp/recentfiles.txt`; opens on click; Clear Recent Files at bottom of list
 - **Show/hide symbols** — View menu check items: Show Whitespace, Show EOL Markers, Show Line Numbers, Show Fold Margin, Show Bookmarks Margin; state is global and applied to all tabs
 - **Edge column** — View menu toggle (Show Edge Column) draws a vertical guide line; "Set Edge Column…" opens a dialog to choose the column (default 80, range 1–512)
 - **Insert date/time** — Edit → Insert Date/Time submenu: Short format (`HH:MM:SS MM/DD/YYYY`) and Long format (`Weekday, Month DD, YYYY HH:MM:SS`); inserts at cursor, replacing any selection
@@ -154,6 +155,7 @@ All user data lives in `~/.config/npp/`:
 |------|---------|
 | `~/.config/npp/stylers.xml` | Saved style/color overrides from the Style Configurator |
 | `~/.config/npp/themes/` | User-supplied theme XML files (Notepad++ format) |
+| `~/.config/npp/recentfiles.txt` | Recently opened/saved files (one path per line, max 10) |
 
 ## Architecture
 

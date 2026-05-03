@@ -135,7 +135,6 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ### Medium effort
 
-22. **Recent files list** — maintain a `GList` of last N paths in config; rebuild submenu on open/close.
 23. **Encoding selection** — per-tab encoding stored in `NppDoc`; recode buffer on switch via `g_convert()`; update statusbar.
 24. **Keyboard shortcut mapper** — dialog listing `GtkAccelGroup` entries; serialize to `shortcuts.xml`.
 25. **Preferences dialog** — GtkDialog with sections (editor, appearance, file, …); persist to `~/.config/npp/config.xml`.
