@@ -1,6 +1,7 @@
 #include <gtk/gtk.h>
 #include "sci_c.h"
 #include "editor.h"
+#include "encoding.h"
 #include "statusbar.h"
 #include "findreplace.h"
 #include "toolbar.h"
@@ -121,6 +122,40 @@ static void cb_clear_recent(GtkMenuItem *i, gpointer d)
     g_ptr_array_set_size(s_recent_files, 0);
     recent_save();
     recent_rebuild_menu();
+}
+
+/* ------------------------------------------------------------------ */
+/* Encoding menu                                                       */
+/* ------------------------------------------------------------------ */
+
+static GtkWidget  *s_enc_items[32]; /* radio items, one per npp_encodings[] entry */
+static gboolean    s_enc_updating = FALSE;
+
+void main_sync_encoding_menu(const char *enc)
+{
+    if (!enc) enc = "UTF-8";
+    s_enc_updating = TRUE;
+    for (int i = 0; i < npp_encoding_count && i < 32; i++) {
+        if (strcmp(npp_encodings[i].display, enc) == 0) {
+            gtk_check_menu_item_set_active(
+                GTK_CHECK_MENU_ITEM(s_enc_items[i]), TRUE);
+            break;
+        }
+    }
+    s_enc_updating = FALSE;
+    statusbar_set_encoding(enc);
+}
+
+static void cb_set_encoding(GtkMenuItem *item, gpointer data)
+{
+    if (s_enc_updating) return;
+    if (!gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(item))) return;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    const char *enc = (const char *)data;
+    g_free(doc->encoding);
+    doc->encoding = g_strdup(enc);
+    statusbar_set_encoding(enc);
 }
 
 /* File */
@@ -2236,6 +2271,77 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     /* ---- Language ---- */
     build_language_menu(bar);
 
+    /* ---- Encoding ---- */
+    {
+        GtkWidget *enc_menu = submenu(bar, T("menu.encoding", "_Encoding"));
+        GSList *enc_group = NULL;
+
+        /* UTF group */
+        for (int i = 0; i < 6 && i < npp_encoding_count; i++) {
+            GtkWidget *mi = gtk_radio_menu_item_new_with_label(enc_group,
+                                                               npp_encodings[i].display);
+            enc_group = gtk_radio_menu_item_get_group(GTK_RADIO_MENU_ITEM(mi));
+            s_enc_items[i] = mi;
+            g_signal_connect(mi, "activate", G_CALLBACK(cb_set_encoding),
+                             (gpointer)npp_encodings[i].display);
+            APPEND(enc_menu, mi);
+            if (i == 1) APPEND(enc_menu, sep_item()); /* after UTF-8 BOM */
+            if (i == 5) APPEND(enc_menu, sep_item()); /* after UTF-16 BE BOM */
+        }
+
+        /* Western European */
+        GtkWidget *we_item = gtk_menu_item_new_with_label("Western European");
+        GtkWidget *we_menu = gtk_menu_new();
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(we_item), we_menu);
+        APPEND(enc_menu, we_item);
+
+        /* Central European */
+        GtkWidget *ce_item = gtk_menu_item_new_with_label("Central European");
+        GtkWidget *ce_menu = gtk_menu_new();
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(ce_item), ce_menu);
+        APPEND(enc_menu, ce_item);
+
+        /* Cyrillic */
+        GtkWidget *cy_item = gtk_menu_item_new_with_label("Cyrillic");
+        GtkWidget *cy_menu = gtk_menu_new();
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(cy_item), cy_menu);
+        APPEND(enc_menu, cy_item);
+
+        /* East Asian */
+        GtkWidget *ea_item = gtk_menu_item_new_with_label("East Asian");
+        GtkWidget *ea_menu = gtk_menu_new();
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(ea_item), ea_menu);
+        APPEND(enc_menu, ea_item);
+
+        /* Fill regional submenus — indices 6-16 in npp_encodings[] */
+        static const int we_idx[] = { 6, 7, 8 };       /* Win-1252, 8859-1, 8859-15 */
+        static const int ce_idx[] = { 9, 10 };          /* Win-1250, 8859-2 */
+        static const int cy_idx[] = { 11, 12 };         /* Win-1251, KOI8-R */
+        static const int ea_idx[] = { 13, 14, 15, 16 }; /* Shift-JIS, GB18030, Big5, EUC-KR */
+        struct { GtkWidget *menu; const int *idx; int cnt; } groups[] = {
+            { we_menu, we_idx, 3 },
+            { ce_menu, ce_idx, 2 },
+            { cy_menu, cy_idx, 2 },
+            { ea_menu, ea_idx, 4 },
+        };
+        for (int g = 0; g < 4; g++) {
+            for (int j = 0; j < groups[g].cnt; j++) {
+                int i = groups[g].idx[j];
+                if (i >= npp_encoding_count) break;
+                GtkWidget *mi = gtk_radio_menu_item_new_with_label(enc_group,
+                                                                   npp_encodings[i].display);
+                enc_group = gtk_radio_menu_item_get_group(GTK_RADIO_MENU_ITEM(mi));
+                s_enc_items[i] = mi;
+                g_signal_connect(mi, "activate", G_CALLBACK(cb_set_encoding),
+                                 (gpointer)npp_encodings[i].display);
+                APPEND(groups[g].menu, mi);
+            }
+        }
+
+        /* Default: UTF-8 active */
+        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_enc_items[0]), TRUE);
+    }
+
     /* ---- Settings ---- */
     GtkWidget *settings = submenu(bar, TM("menu.settings", "Se_ttings"));
     APPEND(settings, menu_item(TM("cmd.46001", "_Style Configurator…"),
@@ -2278,6 +2384,7 @@ static void on_switch_page(GtkNotebook *nb, GtkWidget *page,
     apply_edge(doc->sci);
     wrap_menu_sync(doc->word_wrap);
     toolbar_sync_toggles(doc->sci);
+    main_sync_encoding_menu(doc->encoding ? doc->encoding : "UTF-8");
 }
 
 /* ------------------------------------------------------------------ */

@@ -1,4 +1,5 @@
 #include "editor.h"
+#include "encoding.h"
 #include "statusbar.h"
 #include "lexer.h"
 #include "findreplace.h"
@@ -369,11 +370,18 @@ gboolean editor_open_path(const char *path)
         cur = doc;
     }
 
-    sci_msg(sci, SCI_SETTEXT, 0, (sptr_t)contents);
+    const char *enc_name = encoding_detect((const guchar *)contents, len);
+    gsize utf8_len = 0;
+    char *utf8 = encoding_to_utf8(enc_name, (const guchar *)contents, len, &utf8_len);
+    g_free(contents);
+    g_free(cur->encoding);
+    cur->encoding = g_strdup(enc_name);
+
+    sci_msg(sci, SCI_SETTEXT, 0, (sptr_t)utf8);
     sci_msg(sci, SCI_SETSAVEPOINT, 0, 0);
     sci_msg(sci, SCI_EMPTYUNDOBUFFER, 0, 0);
     sci_msg(sci, SCI_GOTOPOS, 0, 0);
-    g_free(contents);
+    g_free(utf8);
 
     lexer_apply_from_path(sci, path);
     statusbar_set_language(lexer_display_name(
@@ -413,12 +421,17 @@ gboolean editor_open_dialog(void)
 
 static gboolean save_doc_to_path(NppDoc *doc, const char *path)
 {
-    sptr_t  len  = sci_msg(doc->sci, SCI_GETLENGTH, 0, 0);
-    gchar  *buf  = g_new(gchar, len + 1);
-    sci_msg(doc->sci, SCI_GETTEXT, (uptr_t)(len + 1), (sptr_t)buf);
+    sptr_t  utf8_len = sci_msg(doc->sci, SCI_GETLENGTH, 0, 0);
+    gchar  *utf8     = g_new(gchar, utf8_len + 1);
+    sci_msg(doc->sci, SCI_GETTEXT, (uptr_t)(utf8_len + 1), (sptr_t)utf8);
+
+    const char *enc = doc->encoding ? doc->encoding : "UTF-8";
+    gsize  out_len = 0;
+    guchar *buf    = encoding_from_utf8(enc, utf8, (gsize)utf8_len, &out_len);
+    g_free(utf8);
 
     GError *err = NULL;
-    if (!g_file_set_contents(path, buf, len, &err)) {
+    if (!g_file_set_contents(path, (const gchar *)buf, (gssize)out_len, &err)) {
         g_free(buf);
         GtkWidget *dlg = gtk_message_dialog_new(GTK_WINDOW(s_window),
             GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
@@ -498,6 +511,7 @@ gboolean editor_close_page(int page)
 
     gtk_notebook_remove_page(GTK_NOTEBOOK(s_notebook), page);
     g_free(doc->filepath);
+    g_free(doc->encoding);
     g_free(doc);
 
     /* keep at least one tab open */
@@ -517,6 +531,7 @@ void editor_close_all_quit(GApplication *app)
         GtkWidget *sci = sci_of_page(0);
         gtk_notebook_remove_page(GTK_NOTEBOOK(s_notebook), 0);
         g_free(doc->filepath);
+        g_free(doc->encoding);
         g_free(doc);
         (void)sci;
     }

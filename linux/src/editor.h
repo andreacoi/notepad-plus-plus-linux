@@ -7,6 +7,7 @@
 typedef struct {
     GtkWidget *sci;
     char      *filepath;    /* NULL = unsaved */
+    char      *encoding;    /* e.g. "UTF-8", "ISO-8859-1" — see npp_encodings[] */
     gboolean   modified;
     int        new_index;   /* "new N" label when filepath==NULL */
     gboolean   word_wrap;   /* per-tab word wrap state */
@@ -47,6 +48,7 @@ void editor_reapply_styles(void);
 /* Implemented in main.c, called from editor.c */
 void main_toggle_bookmark_at_line(GtkWidget *sci, int line);
 void main_recent_file_add(const char *path);
+void main_sync_encoding_menu(const char *enc);
 
 /* Convenience send to current doc */
 sptr_t editor_send(unsigned int msg, uptr_t wp, sptr_t lp);
