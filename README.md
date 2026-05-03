@@ -63,6 +63,7 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - **Comment / Uncomment** — Edit → Comment/Uncomment submenu: Toggle Single Line Comment (Ctrl+K) and Toggle Block Comment (Ctrl+Shift+K); language-aware delimiters for 80+ languages; toggles (adds/removes) based on whether all covered lines are already commented
 - **Whitespace conversions** — Edit → Blank Operations submenu: Convert Spaces to Tabs (replaces leading spaces with tabs respecting the current tab width) and Convert Tabs to Spaces (expands leading tabs to spaces using the current tab width)
 - **Encoding selection** — Encoding top-level menu with 17 encodings across 4 regional groups (Western European, Central European, Cyrillic, East Asian); per-tab encoding stored in `NppDoc.encoding`; auto-detected from BOM (UTF-8/16 LE/BE) or UTF-8 validation on open; file bytes converted to UTF-8 for display and back to the chosen encoding on save; statusbar and radio item sync on tab switch
+- **Keyboard shortcut mapper** — Settings → Shortcut Mapper: dialog listing all 27 configurable commands (File/Edit/Search); double-click to capture a new key combination; Reset Selected / Reset All; persisted to `~/.config/npp/shortcuts.xml`; overrides applied at startup before menus are built
 
 ### Localisation
 - Automatic system locale detection via GLib (`g_get_language_names()`)
@@ -157,6 +158,7 @@ All user data lives in `~/.config/npp/`:
 | `~/.config/npp/stylers.xml` | Saved style/color overrides from the Style Configurator |
 | `~/.config/npp/themes/` | User-supplied theme XML files (Notepad++ format) |
 | `~/.config/npp/recentfiles.txt` | Recently opened/saved files (one path per line, max 10) |
+| `~/.config/npp/shortcuts.xml` | User-defined keyboard shortcut overrides (Notepad++ format) |
 
 ## Architecture
 

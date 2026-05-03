@@ -33,6 +33,7 @@ cmake -B build && cmake --build build
 | `styleeditor.c/h` | Style Configurator dialog (theme picker, per-language style editing) |
 | `sci_c.h` | C-safe Scintilla constants and `SCNotification` layout |
 | `encoding.c/h` | Encoding table (17 encodings), BOM detection, `g_convert` wrappers for open/save |
+| `shortcutmap.c/h` | Shortcut table (27 entries), XML load/save, Shortcut Mapper dialog with key-capture |
 
 **User config location (Linux port):** `~/.config/npp/`
 - `stylers.xml` — user style overrides (saved by Style Configurator)
@@ -137,7 +138,6 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ### Medium effort
 
-24. **Keyboard shortcut mapper** — dialog listing `GtkAccelGroup` entries; serialize to `shortcuts.xml`.
 25. **Preferences dialog** — GtkDialog with sections (editor, appearance, file, …); persist to `~/.config/npp/config.xml`.
 26. **Auto-indent** — `SCN_CHARADDED` handler: copy leading whitespace of previous line; advanced: detect `{` / `:`.
 27. **Code folding controls** — menu items calling `SCI_FOLDALL`, `SCI_FOLDDISPLAYTEXT`, `SCI_SETFOLDLEVEL` per level.
