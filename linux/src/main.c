@@ -207,8 +207,7 @@ static void cb_join_lines(GtkMenuItem *i, gpointer d)
     }
     g_free(buf);
 
-    Sci_TextRangeFull tgt = { { rstart, rend }, NULL };
-    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETRANGE, 0, (sptr_t)&tgt);
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETRANGE, (uptr_t)rstart, (sptr_t)rend);
     scintilla_send_message(SCINTILLA(doc->sci), SCI_REPLACETARGET, (uptr_t)out->len, (sptr_t)out->str);
     g_string_free(out, TRUE);
 }
@@ -274,8 +273,7 @@ static void cb_split_lines(GtkMenuItem *i, gpointer d)
     }
     g_free(buf);
 
-    Sci_TextRangeFull tgt = { { rstart, rend }, NULL };
-    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETRANGE, 0, (sptr_t)&tgt);
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETRANGE, (uptr_t)rstart, (sptr_t)rend);
     scintilla_send_message(SCINTILLA(doc->sci), SCI_REPLACETARGET, (uptr_t)out->len, (sptr_t)out->str);
     g_string_free(out, TRUE);
 }
@@ -294,6 +292,70 @@ static void cb_line_insert_below(GtkMenuItem *i, gpointer d)
     editor_send(SCI_LINEEND, 0, 0);
     editor_send(SCI_NEWLINE, 0, 0);
 }
+
+/* ------------------------------------------------------------------ */
+/* Trim whitespace                                                    */
+/* ------------------------------------------------------------------ */
+
+typedef enum { TRIM_TRAILING, TRIM_LEADING, TRIM_BOTH } TrimMode;
+
+static void do_trim(TrimMode mode)
+{
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+
+    sptr_t sel_start = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONSTART, 0, 0);
+    sptr_t sel_end   = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONEND,   0, 0);
+
+    sptr_t rstart, rend;
+    if (sel_start == sel_end) {
+        rstart = 0;
+        rend   = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETLENGTH, 0, 0);
+    } else {
+        int ls = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_LINEFROMPOSITION, sel_start, 0);
+        int le = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_LINEFROMPOSITION, sel_end,   0);
+        rstart = scintilla_send_message(SCINTILLA(doc->sci), SCI_POSITIONFROMLINE, ls, 0);
+        rend   = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETLINEENDPOSITION, le, 0);
+    }
+
+    sptr_t len = rend - rstart;
+    if (len <= 0) return;
+
+    char *buf = g_malloc(len + 2);
+    Sci_TextRangeFull tr = { { rstart, rend }, buf };
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_GETTEXTRANGEFULL, 0, (sptr_t)&tr);
+
+    GString *out = g_string_sized_new(len);
+    char *p = buf;
+    while (*p) {
+        char *nl = strpbrk(p, "\r\n");
+        size_t line_len = nl ? (size_t)(nl - p) : strlen(p);
+
+        size_t ts = 0, te = line_len;
+        if (mode == TRIM_LEADING || mode == TRIM_BOTH)
+            while (ts < te && (p[ts] == ' ' || p[ts] == '\t')) ts++;
+        if (mode == TRIM_TRAILING || mode == TRIM_BOTH)
+            while (te > ts && (p[te - 1] == ' ' || p[te - 1] == '\t')) te--;
+
+        g_string_append_len(out, p + ts, te - ts);
+
+        if (nl) {
+            if (*nl == '\r' && *(nl + 1) == '\n') { g_string_append_len(out, "\r\n", 2); p = nl + 2; }
+            else                                   { g_string_append_c(out, *nl);         p = nl + 1; }
+        } else {
+            break;
+        }
+    }
+    g_free(buf);
+
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETRANGE, (uptr_t)rstart, (sptr_t)rend);
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_REPLACETARGET, (uptr_t)out->len, (sptr_t)out->str);
+    g_string_free(out, TRUE);
+}
+
+static void cb_trim_trailing(GtkMenuItem *i, gpointer d) { (void)i; (void)d; do_trim(TRIM_TRAILING); }
+static void cb_trim_leading (GtkMenuItem *i, gpointer d) { (void)i; (void)d; do_trim(TRIM_LEADING);  }
+static void cb_trim_both    (GtkMenuItem *i, gpointer d) { (void)i; (void)d; do_trim(TRIM_BOTH);     }
 
 /* ------------------------------------------------------------------ */
 /* Insert date/time                                                   */
@@ -755,7 +817,6 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
                                     G_CALLBACK(cb_line_move_down), NULL, accel,
                                     GDK_KEY_Down, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
         APPEND(line_menu, sep_item());
-        APPEND(line_menu, sep_item());
         APPEND(line_menu, menu_item(TM("menu.line.join",  "_Join Lines"),
                                     G_CALLBACK(cb_join_lines),  NULL, NULL, 0, 0));
         APPEND(line_menu, menu_item(TM("menu.line.split", "S_plit Lines"),
@@ -768,6 +829,20 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
                                     G_CALLBACK(cb_line_insert_below), NULL, accel,
                                     GDK_KEY_Return, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
         APPEND(edit, line_item);
+    }
+
+    /* Blank Operations submenu */
+    {
+        GtkWidget *blank_item = gtk_menu_item_new_with_mnemonic(TM("menu.blank", "_Blank Operations"));
+        GtkWidget *blank_menu = gtk_menu_new();
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(blank_item), blank_menu);
+        APPEND(blank_menu, menu_item(TM("menu.blank.trimtrail", "Trim _Trailing Whitespace"),
+                                     G_CALLBACK(cb_trim_trailing), NULL, NULL, 0, 0));
+        APPEND(blank_menu, menu_item(TM("menu.blank.trimlead",  "Trim _Leading Whitespace"),
+                                     G_CALLBACK(cb_trim_leading),  NULL, NULL, 0, 0));
+        APPEND(blank_menu, menu_item(TM("menu.blank.trimboth",  "Trim _Both"),
+                                     G_CALLBACK(cb_trim_both),     NULL, NULL, 0, 0));
+        APPEND(edit, blank_item);
     }
 
     /* ---- Search ---- */
