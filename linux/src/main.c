@@ -158,6 +158,21 @@ static void cb_line_move_down(GtkMenuItem *i, gpointer d)
     editor_send(SCI_MOVESELECTEDLINESDOWN, 0, 0);
 }
 
+static void cb_line_insert_above(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    editor_send(SCI_HOME,    0, 0);
+    editor_send(SCI_NEWLINE, 0, 0);
+    editor_send(SCI_LINEUP,  0, 0);
+}
+
+static void cb_line_insert_below(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    editor_send(SCI_LINEEND, 0, 0);
+    editor_send(SCI_NEWLINE, 0, 0);
+}
+
 /* ------------------------------------------------------------------ */
 /* Insert date/time                                                   */
 /* ------------------------------------------------------------------ */
@@ -620,6 +635,13 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
         APPEND(line_menu, menu_item(TM("menu.line.movedown", "Move Line _Down"),
                                     G_CALLBACK(cb_line_move_down), NULL, accel,
                                     GDK_KEY_Down, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
+        APPEND(line_menu, sep_item());
+        APPEND(line_menu, menu_item(TM("menu.line.insabove", "Insert Blank Line A_bove"),
+                                    G_CALLBACK(cb_line_insert_above), NULL, accel,
+                                    GDK_KEY_Return, GDK_CONTROL_MASK | GDK_MOD1_MASK));
+        APPEND(line_menu, menu_item(TM("menu.line.insbelow", "Insert Blank Line Belo_w"),
+                                    G_CALLBACK(cb_line_insert_below), NULL, accel,
+                                    GDK_KEY_Return, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
         APPEND(edit, line_item);
     }
 

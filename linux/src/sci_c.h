@@ -101,6 +101,10 @@ typedef struct SCNotification {
 #define SCI_SETFOLDMARGINCOLOUR  2290
 #define SCI_SETFOLDMARGINHICOLOUR 2291
 #define SCI_MARKERENABLEHIGHLIGHT 2293
+#define SCI_LINEUP              2302
+#define SCI_LINEEND             2314
+#define SCI_HOME                2312
+#define SCI_NEWLINE             2329
 #define SCI_LINEDELETE          2338
 #define SCI_LINEDUPLICATE       2404
 #define SCI_MOVESELECTEDLINESUP   2652
