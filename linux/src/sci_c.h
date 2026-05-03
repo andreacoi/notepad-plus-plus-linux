@@ -139,9 +139,18 @@ typedef struct SCNotification {
 #define SCI_SETKEYWORDS         4005
 #define SCI_COLOURISE           4003
 
+/* Line / indentation */
+#define SCI_GETLINE             2153
+#define SCI_SETLINEINDENTATION  2126
+#define SCI_GETLINEINDENTATION  2127
+#define SCI_GETLINEINDENTPOSITION 2128
+#define SCI_SETCURRENTPOS       2141
+#define SCI_SETSEL              2160
+
 /* ------------------------------------------------------------------ */
 /* SCN_ notification codes                                            */
 /* ------------------------------------------------------------------ */
+#define SCN_CHARADDED           2001
 #define SCN_SAVEPOINTREACHED    2002
 #define SCN_SAVEPOINTLEFT       2003
 #define SCN_UPDATEUI            2007

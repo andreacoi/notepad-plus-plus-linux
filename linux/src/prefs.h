@@ -6,8 +6,9 @@
 /* ------------------------------------------------------------------ */
 /* Auto-indent modes                                                   */
 /* ------------------------------------------------------------------ */
-#define AUTO_INDENT_NONE  0
-#define AUTO_INDENT_BASIC 1
+#define AUTO_INDENT_NONE     0
+#define AUTO_INDENT_BASIC    1
+#define AUTO_INDENT_ADVANCED 2
 
 /* ------------------------------------------------------------------ */
 /* Persistent preferences                                              */

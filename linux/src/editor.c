@@ -214,6 +214,45 @@ static void on_sci_notify(GtkWidget *sci, gint unused,
     } else if (code == SCN_MARGINCLICK) {
         if (n->margin == 1)
             main_toggle_bookmark_at_line(sci, (int)n->line);
+    } else if (code == SCN_CHARADDED && g_prefs.auto_indent != AUTO_INDENT_NONE) {
+        if (n->ch == '\n' || n->ch == '\r') {
+            Sci_Position cur_line = (Sci_Position)sci_msg(sci, SCI_LINEFROMPOSITION,
+                (uptr_t)sci_msg(sci, SCI_GETCURRENTPOS, 0, 0), 0);
+            Sci_Position prev_line = cur_line - 1;
+            if (prev_line < 0) return;
+
+            int indent = (int)sci_msg(sci, SCI_GETLINEINDENTATION, (uptr_t)prev_line, 0);
+            int tab_w  = (int)sci_msg(sci, SCI_GETTABWIDTH, 0, 0);
+            if (tab_w < 1) tab_w = 4;
+
+            if (g_prefs.auto_indent >= AUTO_INDENT_BASIC + 1) {
+                /* Advanced: look at the last non-whitespace char of prev line */
+                Sci_Position line_start = (Sci_Position)sci_msg(sci,
+                    SCI_POSITIONFROMLINE, (uptr_t)prev_line, 0);
+                Sci_Position line_end   = (Sci_Position)sci_msg(sci,
+                    SCI_GETLINEENDPOSITION, (uptr_t)prev_line, 0);
+                char last_ch = 0;
+                for (Sci_Position p = line_end - 1; p >= line_start; p--) {
+                    char c = (char)sci_msg(sci, SCI_GETCHARAT, (uptr_t)p, 0);
+                    if (c != ' ' && c != '\t') { last_ch = c; break; }
+                }
+                if (last_ch == '{' || last_ch == ':')
+                    indent += tab_w;
+
+                /* If the new line (being typed) starts with '}', dedent it */
+                Sci_Position cur_start = (Sci_Position)sci_msg(sci,
+                    SCI_POSITIONFROMLINE, (uptr_t)cur_line, 0);
+                char first_ch = (char)sci_msg(sci, SCI_GETCHARAT, (uptr_t)cur_start, 0);
+                if (first_ch == '}' && indent >= tab_w)
+                    indent -= tab_w;
+            }
+
+            sci_msg(sci, SCI_SETLINEINDENTATION, (uptr_t)cur_line, (sptr_t)indent);
+            /* Move caret to end of new indentation */
+            Sci_Position new_pos = (Sci_Position)sci_msg(sci,
+                SCI_GETLINEINDENTPOSITION, (uptr_t)cur_line, 0);
+            sci_msg(sci, SCI_SETSEL, (uptr_t)new_pos, (sptr_t)new_pos);
+        }
     }
 }
 

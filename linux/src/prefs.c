@@ -167,8 +167,9 @@ static GtkWidget *make_grid(void)
 static void on_tab_width(GtkSpinButton *s, gpointer d)      { (void)d; g_prefs.tab_width = (int)gtk_spin_button_get_value(s); editor_apply_prefs(); prefs_save(); }
 static void on_use_tabs(GtkToggleButton *b, gpointer d)     { (void)d; g_prefs.use_tabs = gtk_toggle_button_get_active(b); editor_apply_prefs(); prefs_save(); }
 static void on_use_spaces(GtkToggleButton *b, gpointer d)   { (void)d; if (gtk_toggle_button_get_active(b)) { g_prefs.use_tabs = FALSE; editor_apply_prefs(); prefs_save(); } }
-static void on_ai_none(GtkToggleButton *b, gpointer d)      { (void)d; if (gtk_toggle_button_get_active(b)) { g_prefs.auto_indent = AUTO_INDENT_NONE;  prefs_save(); } }
-static void on_ai_basic(GtkToggleButton *b, gpointer d)     { (void)d; if (gtk_toggle_button_get_active(b)) { g_prefs.auto_indent = AUTO_INDENT_BASIC; prefs_save(); } }
+static void on_ai_none(GtkToggleButton *b, gpointer d)      { (void)d; if (gtk_toggle_button_get_active(b)) { g_prefs.auto_indent = AUTO_INDENT_NONE;     prefs_save(); } }
+static void on_ai_basic(GtkToggleButton *b, gpointer d)     { (void)d; if (gtk_toggle_button_get_active(b)) { g_prefs.auto_indent = AUTO_INDENT_BASIC;    prefs_save(); } }
+static void on_ai_adv(GtkToggleButton *b, gpointer d)       { (void)d; if (gtk_toggle_button_get_active(b)) { g_prefs.auto_indent = AUTO_INDENT_ADVANCED; prefs_save(); } }
 static void on_bs_unindent(GtkToggleButton *b, gpointer d)  { (void)d; g_prefs.backspace_unindent = gtk_toggle_button_get_active(b); prefs_save(); }
 
 static void on_hl_line(GtkToggleButton *b, gpointer d)      { (void)d; g_prefs.highlight_current_line = gtk_toggle_button_get_active(b); editor_apply_prefs(); prefs_save(); }
@@ -223,16 +224,21 @@ static GtkWidget *page_editor(void)
     /* Auto-indent */
     GtkWidget *ai_none  = gtk_radio_button_new_with_label(NULL, "None");
     GtkWidget *ai_basic = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(ai_none), "Basic");
+    GtkWidget *ai_adv   = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(ai_none), "Advanced (detect { :)");
     if (g_prefs.auto_indent == AUTO_INDENT_NONE)
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ai_none),  TRUE);
+    else if (g_prefs.auto_indent == AUTO_INDENT_ADVANCED)
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ai_adv),   TRUE);
     else
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ai_basic), TRUE);
     GtkWidget *ai_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 8);
     gtk_container_add(GTK_CONTAINER(ai_box), ai_none);
     gtk_container_add(GTK_CONTAINER(ai_box), ai_basic);
+    gtk_container_add(GTK_CONTAINER(ai_box), ai_adv);
     row(g, 2, "Auto-indent:", ai_box);
     g_signal_connect(ai_none,  "toggled", G_CALLBACK(on_ai_none),  NULL);
     g_signal_connect(ai_basic, "toggled", G_CALLBACK(on_ai_basic), NULL);
+    g_signal_connect(ai_adv,   "toggled", G_CALLBACK(on_ai_adv),   NULL);
 
     /* Backspace unindent */
     GtkWidget *chk_bs = gtk_check_button_new_with_label("Backspace key unindents instead of removing single space");
