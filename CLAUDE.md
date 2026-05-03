@@ -135,8 +135,7 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ### Low effort
 
-1. **Hash tools** — link `libssl` or use GLib's `g_checksum_new()`; operate on selection or whole doc.
-9. **Base64 / Hex tools** — `g_base64_encode/decode()` and a nibble-loop for hex; replace selection.
+1. **Base64 / Hex tools** — `g_base64_encode/decode()` and a nibble-loop for hex; replace selection.
 
 ### Medium effort
 

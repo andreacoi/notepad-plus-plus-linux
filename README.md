@@ -52,6 +52,7 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - **Insert date/time** — Edit → Insert Date/Time submenu: Short format (`HH:MM:SS MM/DD/YYYY`) and Long format (`Weekday, Month DD, YYYY HH:MM:SS`); inserts at cursor, replacing any selection
 - **Line operations** — Edit → Line Operations submenu: Duplicate Line (Ctrl+D), Delete Line (Ctrl+Shift+L), Move Line Up/Down (Ctrl+Shift+↑/↓), Join Lines, Split Lines (at edge column, default 80), Insert Blank Line Above (Ctrl+Alt+Enter), Insert Blank Line Below (Ctrl+Shift+Enter)
 - **Trim whitespace** — Edit → Blank Operations submenu: Trim Trailing Whitespace, Trim Leading Whitespace, Trim Both; operates on selection or whole document if nothing selected; preserves original EOL characters
+- **Hash Generator** — Tools → Hash Generator dialog showing MD5, SHA-1, SHA-256 and SHA-512 of the current selection (or whole document if nothing selected); uses GLib's built-in checksum API, no extra dependencies
 
 ### Localisation
 - Automatic system locale detection via GLib (`g_get_language_names()`)
@@ -82,7 +83,6 @@ Output: `linux/build/notepad++`
 Ordered by implementation effort (low → high).
 
 ### Low effort
-- **Hash tools** — MD5, SHA-1, SHA-256, SHA-512 generation from selection or file
 - **Base64 encode/decode** — ASCII ↔ Base64 and ASCII ↔ Hex conversions
 
 ### Medium effort
