@@ -7,6 +7,7 @@ static GtkWidget *s_lbl_enc;
 static GtkWidget *s_lbl_eol;
 static GtkWidget *s_lbl_lang;
 static GtkWidget *s_lbl_ovr;
+static GtkWidget *s_lbl_indent;
 
 static GtkWidget *vsep(void)
 {
@@ -40,8 +41,10 @@ GtkWidget *statusbar_init(void)
     gtk_box_pack_end(GTK_BOX(box), vsep(),                                FALSE, FALSE, 0);
     gtk_box_pack_end(GTK_BOX(box), (s_lbl_ovr = rlabel("INS")),          FALSE, FALSE, 0);
     gtk_box_pack_end(GTK_BOX(box), vsep(),                                FALSE, FALSE, 0);
-    gtk_box_pack_end(GTK_BOX(box), (s_lbl_enc = rlabel("UTF-8")),        FALSE, FALSE, 0);
-    gtk_box_pack_end(GTK_BOX(box), vsep(),                                FALSE, FALSE, 0);
+    gtk_box_pack_end(GTK_BOX(box), (s_lbl_enc = rlabel("UTF-8")),           FALSE, FALSE, 0);
+    gtk_box_pack_end(GTK_BOX(box), vsep(),                                   FALSE, FALSE, 0);
+    gtk_box_pack_end(GTK_BOX(box), (s_lbl_indent = rlabel("Spaces: 4")),    FALSE, FALSE, 0);
+    gtk_box_pack_end(GTK_BOX(box), vsep(),                                   FALSE, FALSE, 0);
 
     /* top border */
     GtkWidget *frame = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
@@ -66,6 +69,12 @@ void statusbar_update_from_sci(GtkWidget *sci)
 
     int ovr = (int)scintilla_send_message(SCINTILLA(sci), SCI_GETOVERTYPE, 0, 0);
     gtk_label_set_text(GTK_LABEL(s_lbl_ovr), ovr ? "OVR" : "INS");
+
+    int use_tabs = (int)scintilla_send_message(SCINTILLA(sci), SCI_GETUSETABS, 0, 0);
+    int tab_w    = (int)scintilla_send_message(SCINTILLA(sci), SCI_GETTABWIDTH, 0, 0);
+    if (tab_w < 1) tab_w = 4;
+    snprintf(buf, sizeof(buf), use_tabs ? "Tabs: %d" : "Spaces: %d", tab_w);
+    gtk_label_set_text(GTK_LABEL(s_lbl_indent), buf);
 }
 
 void statusbar_set_language(const char *lang)

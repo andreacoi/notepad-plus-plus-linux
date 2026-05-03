@@ -73,6 +73,7 @@ typedef struct SCNotification {
 #define SCI_GETSELECTIONSTART   2143
 #define SCI_GETSELECTIONEND     2145
 #define SCI_GETLINECOUNT        2154
+#define SCI_LINELENGTH          2350
 #define SCI_GETTEXTRANGEFULL    2039
 #define SCI_SETTARGETRANGE      2686
 #define SCI_POSITIONFROMLINE    2167
@@ -94,7 +95,9 @@ typedef struct SCNotification {
 #define SCI_SETVIEWEOL          2034
 #define SCI_GETVIEWEOL          2033
 #define SCI_SETTABWIDTH         2036
+#define SCI_GETTABWIDTH         2121
 #define SCI_SETUSETABS          2124
+#define SCI_GETUSETABS          2125
 #define SCI_STYLESETFORE        2051
 #define SCI_STYLESETBACK        2052  /* was wrong (2040=SCI_MARKERDEFINE) */
 #define SCI_STYLESETBOLD        2053
