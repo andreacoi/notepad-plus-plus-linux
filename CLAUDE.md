@@ -133,10 +133,6 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ## Linux port — next steps (priority / effort order)
 
-### Low effort
-
-1. **Base64 / Hex tools** — `g_base64_encode/decode()` and a nibble-loop for hex; replace selection.
-
 ### Medium effort
 
 13. **Case conversion** — `SCI_UPPERCASE`/`SCI_LOWERCASE` for basic; custom loops for Proper/Sentence/Random.

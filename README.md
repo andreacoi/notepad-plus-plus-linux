@@ -53,6 +53,7 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - **Line operations** — Edit → Line Operations submenu: Duplicate Line (Ctrl+D), Delete Line (Ctrl+Shift+L), Move Line Up/Down (Ctrl+Shift+↑/↓), Join Lines, Split Lines (at edge column, default 80), Insert Blank Line Above (Ctrl+Alt+Enter), Insert Blank Line Below (Ctrl+Shift+Enter)
 - **Trim whitespace** — Edit → Blank Operations submenu: Trim Trailing Whitespace, Trim Leading Whitespace, Trim Both; operates on selection or whole document if nothing selected; preserves original EOL characters
 - **Hash Generator** — Tools → Hash Generator dialog showing MD5, SHA-1, SHA-256 and SHA-512 of the current selection (or whole document if nothing selected); uses GLib's built-in checksum API, no extra dependencies
+- **Base64 / Hex** — Tools menu: Base64 Encode/Decode replaces selection with encoded/decoded text; ASCII→Hex encodes each byte as two hex digits; Hex→ASCII decodes hex pairs back to bytes (whitespace in input is ignored; invalid hex leaves selection unchanged)
 
 ### Localisation
 - Automatic system locale detection via GLib (`g_get_language_names()`)
@@ -81,9 +82,6 @@ Output: `linux/build/notepad++`
 ## Upcoming features
 
 Ordered by implementation effort (low → high).
-
-### Low effort
-- **Base64 encode/decode** — ASCII ↔ Base64 and ASCII ↔ Hex conversions
 
 ### Medium effort
 - **Case conversion** — UPPER, lower, Proper, Sentence, Inverted, Random case
