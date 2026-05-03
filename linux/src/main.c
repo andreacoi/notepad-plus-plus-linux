@@ -135,6 +135,98 @@ static void cb_toggle_bookmarks(GtkCheckMenuItem *item, gpointer d)
 }
 
 /* ------------------------------------------------------------------ */
+/* Selection helpers (used by case, trim, base64, hex, hash)         */
+/* ------------------------------------------------------------------ */
+
+/* Returns a g_malloc'd buffer with the current selection text and its byte
+   length via *out_len. Returns NULL (silently) when nothing is selected. */
+static char *get_selection(NppDoc *doc, gsize *out_len)
+{
+    sptr_t s = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONSTART, 0, 0);
+    sptr_t e = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONEND,   0, 0);
+    if (s == e) return NULL;
+    gsize len = (gsize)(e - s);
+    char *buf = g_malloc(len + 1);
+    Sci_TextRangeFull tr = { { s, e }, buf };
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_GETTEXTRANGEFULL, 0, (sptr_t)&tr);
+    *out_len = len;
+    return buf;
+}
+
+static void replace_selection(NppDoc *doc, const char *text)
+{
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_REPLACESEL, 0, (sptr_t)text);
+}
+
+/* ------------------------------------------------------------------ */
+/* Case conversion                                                    */
+/* ------------------------------------------------------------------ */
+
+static void cb_case_upper   (GtkMenuItem *i, gpointer d) { (void)i;(void)d; editor_send(SCI_UPPERCASE, 0, 0); }
+static void cb_case_lower   (GtkMenuItem *i, gpointer d) { (void)i;(void)d; editor_send(SCI_LOWERCASE, 0, 0); }
+
+static void case_transform(gboolean(*fn)(char *, gsize))
+{
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    gsize len;
+    char *buf = get_selection(doc, &len);
+    if (!buf) return;
+    if (fn(buf, len)) replace_selection(doc, buf);
+    g_free(buf);
+}
+
+static gboolean do_proper(char *buf, gsize len)
+{
+    gboolean cap = TRUE;
+    for (gsize k = 0; k < len; k++) {
+        if (g_ascii_isalpha(buf[k])) {
+            buf[k] = cap ? g_ascii_toupper(buf[k]) : g_ascii_tolower(buf[k]);
+            cap = FALSE;
+        } else if (buf[k] == ' ' || buf[k] == '\t' || buf[k] == '\n' || buf[k] == '\r') {
+            cap = TRUE;
+        }
+    }
+    return TRUE;
+}
+
+static gboolean do_sentence(char *buf, gsize len)
+{
+    gboolean cap = TRUE;
+    for (gsize k = 0; k < len; k++) {
+        if (g_ascii_isalpha(buf[k])) {
+            buf[k] = cap ? g_ascii_toupper(buf[k]) : g_ascii_tolower(buf[k]);
+            cap = FALSE;
+        } else if (buf[k] == '.' || buf[k] == '!' || buf[k] == '?') {
+            cap = TRUE;
+        }
+    }
+    return TRUE;
+}
+
+static gboolean do_invert(char *buf, gsize len)
+{
+    for (gsize k = 0; k < len; k++) {
+        if      (g_ascii_isupper(buf[k])) buf[k] = g_ascii_tolower(buf[k]);
+        else if (g_ascii_islower(buf[k])) buf[k] = g_ascii_toupper(buf[k]);
+    }
+    return TRUE;
+}
+
+static gboolean do_random(char *buf, gsize len)
+{
+    for (gsize k = 0; k < len; k++)
+        if (g_ascii_isalpha(buf[k]))
+            buf[k] = g_random_boolean() ? g_ascii_toupper(buf[k]) : g_ascii_tolower(buf[k]);
+    return TRUE;
+}
+
+static void cb_case_proper  (GtkMenuItem *i, gpointer d) { (void)i;(void)d; case_transform(do_proper);   }
+static void cb_case_sentence(GtkMenuItem *i, gpointer d) { (void)i;(void)d; case_transform(do_sentence); }
+static void cb_case_invert  (GtkMenuItem *i, gpointer d) { (void)i;(void)d; case_transform(do_invert);   }
+static void cb_case_random  (GtkMenuItem *i, gpointer d) { (void)i;(void)d; case_transform(do_random);   }
+
+/* ------------------------------------------------------------------ */
 /* Line operations                                                    */
 /* ------------------------------------------------------------------ */
 
@@ -389,26 +481,6 @@ static void cb_insert_date_long(GtkMenuItem *i, gpointer d)
 /* ------------------------------------------------------------------ */
 /* Base64 / Hex tools                                                 */
 /* ------------------------------------------------------------------ */
-
-/* Returns a g_malloc'd buffer with the current selection text and its byte
-   length via *out_len. Returns NULL (silently) when nothing is selected. */
-static char *get_selection(NppDoc *doc, gsize *out_len)
-{
-    sptr_t s = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONSTART, 0, 0);
-    sptr_t e = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONEND,   0, 0);
-    if (s == e) return NULL;
-    gsize len = (gsize)(e - s);
-    char *buf = g_malloc(len + 1);
-    Sci_TextRangeFull tr = { { s, e }, buf };
-    scintilla_send_message(SCINTILLA(doc->sci), SCI_GETTEXTRANGEFULL, 0, (sptr_t)&tr);
-    *out_len = len;
-    return buf;
-}
-
-static void replace_selection(NppDoc *doc, const char *text)
-{
-    scintilla_send_message(SCINTILLA(doc->sci), SCI_REPLACESEL, 0, (sptr_t)text);
-}
 
 static void cb_base64_encode(GtkMenuItem *i, gpointer d)
 {
@@ -1025,6 +1097,20 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
         APPEND(blank_menu, menu_item(TM("menu.blank.trimboth",  "Trim _Both"),
                                      G_CALLBACK(cb_trim_both),     NULL, NULL, 0, 0));
         APPEND(edit, blank_item);
+    }
+
+    /* Convert Case To submenu */
+    {
+        GtkWidget *case_item = gtk_menu_item_new_with_mnemonic(TM("menu.case", "Co_nvert Case To"));
+        GtkWidget *case_menu = gtk_menu_new();
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(case_item), case_menu);
+        APPEND(case_menu, menu_item(TM("menu.case.upper",    "_UPPER CASE"),    G_CALLBACK(cb_case_upper),    NULL, NULL, 0, 0));
+        APPEND(case_menu, menu_item(TM("menu.case.lower",    "_lower case"),    G_CALLBACK(cb_case_lower),    NULL, NULL, 0, 0));
+        APPEND(case_menu, menu_item(TM("menu.case.proper",   "_Proper Case"),   G_CALLBACK(cb_case_proper),   NULL, NULL, 0, 0));
+        APPEND(case_menu, menu_item(TM("menu.case.sentence", "_Sentence case"), G_CALLBACK(cb_case_sentence), NULL, NULL, 0, 0));
+        APPEND(case_menu, menu_item(TM("menu.case.invert",   "_iNVERT cASE"),   G_CALLBACK(cb_case_invert),   NULL, NULL, 0, 0));
+        APPEND(case_menu, menu_item(TM("menu.case.random",   "_rAnDoM cAsE"),   G_CALLBACK(cb_case_random),   NULL, NULL, 0, 0));
+        APPEND(edit, case_item);
     }
 
     /* ---- Search ---- */

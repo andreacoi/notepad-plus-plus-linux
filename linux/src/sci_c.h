@@ -117,6 +117,8 @@ typedef struct SCNotification {
 #define SCI_LINEEND             2314
 #define SCI_HOME                2312
 #define SCI_NEWLINE             2329
+#define SCI_LOWERCASE           2340
+#define SCI_UPPERCASE           2341
 #define SCI_LINEDELETE          2338
 #define SCI_LINEDUPLICATE       2404
 #define SCI_MOVESELECTEDLINESUP   2652
