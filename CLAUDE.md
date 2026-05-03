@@ -135,8 +135,7 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ### Low effort
 
-1. **Duplicate / Delete / Move line** — `SCI_LINEDUPLICATE`, `SCI_LINEDELETE`, `SCI_MOVESELECTEDLINESUP/DOWN`.
-5. **Join / Split lines** — iterate selection lines via `SCI_GETTEXTRANGE`, reassemble.
+1. **Join / Split lines** — iterate selection lines via `SCI_GETTEXTRANGE`, reassemble.
 6. **Insert blank line above/below** — `SCI_HOME` + `SCI_NEWLINE` sequence.
 7. **Trim whitespace** — regex replace or line-by-line strip via Scintilla API.
 8. **Hash tools** — link `libssl` or use GLib's `g_checksum_new()`; operate on selection or whole doc.
