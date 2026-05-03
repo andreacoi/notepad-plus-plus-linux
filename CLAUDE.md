@@ -32,10 +32,12 @@ cmake -B build && cmake --build build
 | `stylestore.c/h` | Parses `stylers.model.xml` / user `~/.config/npp/stylers.xml`; applies Scintilla styles |
 | `styleeditor.c/h` | Style Configurator dialog (theme picker, per-language style editing) |
 | `sci_c.h` | C-safe Scintilla constants and `SCNotification` layout |
+| `encoding.c/h` | Encoding table (17 encodings), BOM detection, `g_convert` wrappers for open/save |
 
 **User config location (Linux port):** `~/.config/npp/`
 - `stylers.xml` — user style overrides (saved by Style Configurator)
 - `themes/` — user theme XML files (scanned alongside bundled `resources/themes/`)
+- `recentfiles.txt` — recently opened/saved files (one path per line, max 10)
 
 **Key design rules for the Linux port:**
 - All UI code is C11; only `lexilla_bridge.cpp` and `LexUserStub.cxx` are C++
@@ -135,7 +137,6 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ### Medium effort
 
-23. **Encoding selection** — per-tab encoding stored in `NppDoc`; recode buffer on switch via `g_convert()`; update statusbar.
 24. **Keyboard shortcut mapper** — dialog listing `GtkAccelGroup` entries; serialize to `shortcuts.xml`.
 25. **Preferences dialog** — GtkDialog with sections (editor, appearance, file, …); persist to `~/.config/npp/config.xml`.
 26. **Auto-indent** — `SCN_CHARADDED` handler: copy leading whitespace of previous line; advanced: detect `{` / `:`.

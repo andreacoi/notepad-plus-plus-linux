@@ -62,6 +62,7 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - **Case conversion** — Edit → Convert Case To submenu: UPPER CASE, lower case (both via Scintilla native), Proper Case, Sentence case, iNVERT cASE, rAnDoM cAsE; all operate on the current selection
 - **Comment / Uncomment** — Edit → Comment/Uncomment submenu: Toggle Single Line Comment (Ctrl+K) and Toggle Block Comment (Ctrl+Shift+K); language-aware delimiters for 80+ languages; toggles (adds/removes) based on whether all covered lines are already commented
 - **Whitespace conversions** — Edit → Blank Operations submenu: Convert Spaces to Tabs (replaces leading spaces with tabs respecting the current tab width) and Convert Tabs to Spaces (expands leading tabs to spaces using the current tab width)
+- **Encoding selection** — Encoding top-level menu with 17 encodings across 4 regional groups (Western European, Central European, Cyrillic, East Asian); per-tab encoding stored in `NppDoc.encoding`; auto-detected from BOM (UTF-8/16 LE/BE) or UTF-8 validation on open; file bytes converted to UTF-8 for display and back to the chosen encoding on save; statusbar and radio item sync on tab switch
 
 ### Localisation
 - Automatic system locale detection via GLib (`g_get_language_names()`)
