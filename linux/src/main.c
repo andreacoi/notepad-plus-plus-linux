@@ -59,6 +59,10 @@ static void cb_style_editor(GtkMenuItem *i, gpointer d)
     styleeditor_show(s_main_window, editor_reapply_styles);
 }
 
+/* Edge column state — declared early so line-op callbacks can read it */
+static gboolean s_edge_enabled = FALSE;
+static int      s_edge_column  = 80;
+
 /* ------------------------------------------------------------------ */
 /* Show/hide symbols                                                  */
 /* ------------------------------------------------------------------ */
@@ -158,6 +162,124 @@ static void cb_line_move_down(GtkMenuItem *i, gpointer d)
     editor_send(SCI_MOVESELECTEDLINESDOWN, 0, 0);
 }
 
+static void cb_join_lines(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+
+    sptr_t sel_start = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONSTART, 0, 0);
+    sptr_t sel_end   = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONEND,   0, 0);
+
+    sptr_t rstart, rend;
+    if (sel_start == sel_end) {
+        int line  = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_LINEFROMPOSITION, sel_start, 0);
+        int total = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_GETLINECOUNT, 0, 0);
+        if (line + 1 >= total) return;
+        rstart = scintilla_send_message(SCINTILLA(doc->sci), SCI_POSITIONFROMLINE, line, 0);
+        rend   = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETLINEENDPOSITION, line + 1, 0);
+    } else {
+        int ls = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_LINEFROMPOSITION, sel_start, 0);
+        int le = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_LINEFROMPOSITION, sel_end,   0);
+        rstart = scintilla_send_message(SCINTILLA(doc->sci), SCI_POSITIONFROMLINE, ls, 0);
+        rend   = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETLINEENDPOSITION, le, 0);
+    }
+
+    sptr_t len = rend - rstart;
+    if (len <= 0) return;
+
+    char *buf = g_malloc(len + 2);
+    Sci_TextRange tr = { { rstart, rend }, buf };
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_GETTEXTRANGE, 0, (sptr_t)&tr);
+
+    GString *out = g_string_sized_new(len);
+    for (char *p = buf; *p; ) {
+        if (*p == '\r' || *p == '\n') {
+            while (out->len && out->str[out->len - 1] == ' ')
+                g_string_truncate(out, out->len - 1);
+            if (*p == '\r' && *(p + 1) == '\n') p++;
+            p++;
+            while (*p == ' ' || *p == '\t') p++;
+            if (*p) g_string_append_c(out, ' ');
+        } else {
+            g_string_append_c(out, *p++);
+        }
+    }
+    g_free(buf);
+
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETSTART, rstart, 0);
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETEND,   rend,   0);
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_REPLACETARGET, (uptr_t)out->len, (sptr_t)out->str);
+    g_string_free(out, TRUE);
+}
+
+static void cb_split_lines(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+
+    int col = s_edge_column > 0 ? s_edge_column : 80;
+    int eol_mode = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_GETEOLMODE, 0, 0);
+    const char *eol = eol_mode == SC_EOL_CRLF ? "\r\n" : eol_mode == SC_EOL_CR ? "\r" : "\n";
+
+    sptr_t sel_start = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONSTART, 0, 0);
+    sptr_t sel_end   = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETSELECTIONEND,   0, 0);
+
+    sptr_t rstart, rend;
+    if (sel_start == sel_end) {
+        int line = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_LINEFROMPOSITION, sel_start, 0);
+        rstart = scintilla_send_message(SCINTILLA(doc->sci), SCI_POSITIONFROMLINE, line, 0);
+        rend   = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETLINEENDPOSITION, line, 0);
+    } else {
+        int ls = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_LINEFROMPOSITION, sel_start, 0);
+        int le = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_LINEFROMPOSITION, sel_end,   0);
+        rstart = scintilla_send_message(SCINTILLA(doc->sci), SCI_POSITIONFROMLINE, ls, 0);
+        rend   = scintilla_send_message(SCINTILLA(doc->sci), SCI_GETLINEENDPOSITION, le, 0);
+    }
+
+    sptr_t len = rend - rstart;
+    if (len <= 0) return;
+
+    char *buf = g_malloc(len + 2);
+    Sci_TextRange tr = { { rstart, rend }, buf };
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_GETTEXTRANGE, 0, (sptr_t)&tr);
+
+    size_t eol_len = strlen(eol);
+    GString *out = g_string_sized_new(len + 16);
+    char *p = buf;
+    while (*p) {
+        char *nl = strpbrk(p, "\r\n");
+        size_t line_len = nl ? (size_t)(nl - p) : strlen(p);
+        size_t pos = 0;
+        while (pos + (size_t)col < line_len) {
+            int brk = -1;
+            for (int j = col; j >= 0; j--) {
+                if (p[pos + j] == ' ') { brk = j; break; }
+            }
+            if (brk < 0) brk = col;
+            g_string_append_len(out, p + pos, brk);
+            g_string_append_len(out, eol, eol_len);
+            pos += brk;
+            if (p[pos] == ' ') pos++;
+        }
+        g_string_append_len(out, p + pos, line_len - pos);
+        if (nl) {
+            if (*nl == '\r' && *(nl + 1) == '\n') nl++;
+            p = nl + 1;
+            g_string_append_len(out, eol, eol_len);
+        } else {
+            break;
+        }
+    }
+    g_free(buf);
+
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETSTART, rstart, 0);
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_SETTARGETEND,   rend,   0);
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_REPLACETARGET, (uptr_t)out->len, (sptr_t)out->str);
+    g_string_free(out, TRUE);
+}
+
 static void cb_line_insert_above(GtkMenuItem *i, gpointer d)
 {
     (void)i; (void)d;
@@ -205,9 +327,6 @@ static void cb_insert_date_long(GtkMenuItem *i, gpointer d)
 /* ------------------------------------------------------------------ */
 /* Edge column                                                        */
 /* ------------------------------------------------------------------ */
-
-static gboolean s_edge_enabled = FALSE;
-static int      s_edge_column  = 80;
 
 static void apply_edge(GtkWidget *sci)
 {
@@ -635,6 +754,12 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
         APPEND(line_menu, menu_item(TM("menu.line.movedown", "Move Line _Down"),
                                     G_CALLBACK(cb_line_move_down), NULL, accel,
                                     GDK_KEY_Down, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
+        APPEND(line_menu, sep_item());
+        APPEND(line_menu, sep_item());
+        APPEND(line_menu, menu_item(TM("menu.line.join",  "_Join Lines"),
+                                    G_CALLBACK(cb_join_lines),  NULL, NULL, 0, 0));
+        APPEND(line_menu, menu_item(TM("menu.line.split", "S_plit Lines"),
+                                    G_CALLBACK(cb_split_lines), NULL, NULL, 0, 0));
         APPEND(line_menu, sep_item());
         APPEND(line_menu, menu_item(TM("menu.line.insabove", "Insert Blank Line A_bove"),
                                     G_CALLBACK(cb_line_insert_above), NULL, accel,

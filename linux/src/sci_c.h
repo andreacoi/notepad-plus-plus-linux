@@ -14,6 +14,10 @@ typedef uintptr_t uptr_t;
 typedef intptr_t  sptr_t;
 typedef intptr_t  Sci_Position;
 
+/* Text range — used by SCI_GETTEXTRANGE */
+typedef struct { Sci_Position cpMin; Sci_Position cpMax; } Sci_CharacterRange;
+typedef struct { Sci_CharacterRange chrg; char *lpstrText; } Sci_TextRange;
+
 /* SCNotification layout — must match Scintilla's internal struct exactly */
 typedef struct {
     void        *hwndFrom;
@@ -66,7 +70,16 @@ typedef struct SCNotification {
 #define SCI_CUT                 2177
 #define SCI_COPY                2178
 #define SCI_PASTE               2179
+#define SCI_GETSELECTIONSTART   2143
+#define SCI_GETSELECTIONEND     2145
+#define SCI_GETLINECOUNT        2154
+#define SCI_GETTEXTRANGE        2162
+#define SCI_POSITIONFROMLINE    2167
 #define SCI_REPLACESEL          2170
+#define SCI_GETLINEENDPOSITION  2136
+#define SCI_SETTARGETSTART      2192
+#define SCI_SETTARGETEND        2193
+#define SCI_REPLACETARGET       2194
 #define SCI_SETTEXT             2181
 #define SCI_GETTEXT             2182
 #define SCI_SETMARGINWIDTHN     2243
