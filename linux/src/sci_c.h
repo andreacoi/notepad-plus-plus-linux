@@ -190,6 +190,17 @@ typedef struct SCNotification {
 #define SC_MARKNUM_FOLDER       30
 #define SC_MARKNUM_FOLDEROPEN   31
 
+/* Fold messages and constants */
+#define SCI_GETFOLDLEVEL        2223
+#define SCI_FOLDLINE            2237
+#define SCI_FOLDCHILDREN        2238
+#define SCI_FOLDALL             2662
+#define SC_FOLDACTION_CONTRACT  0
+#define SC_FOLDACTION_EXPAND    1
+#define SC_FOLDLEVELBASE        0x400
+#define SC_FOLDLEVELHEADERFLAG  0x2000
+#define SC_FOLDLEVELNUMBERMASK  0x0FFF
+
 /* Indicators (mark styles) */
 #define SCI_INDICSETSTYLE       2080
 #define SCI_INDICSETFORE        2082

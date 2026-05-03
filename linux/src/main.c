@@ -332,6 +332,48 @@ static void cb_toggle_bookmarks(GtkCheckMenuItem *item, gpointer d)
 }
 
 /* ------------------------------------------------------------------ */
+/* Fold controls                                                       */
+/* ------------------------------------------------------------------ */
+
+static void cb_fold_all(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    editor_send(SCI_FOLDALL, SC_FOLDACTION_CONTRACT, 0);
+}
+
+static void cb_unfold_all(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    editor_send(SCI_FOLDALL, SC_FOLDACTION_EXPAND, 0);
+}
+
+static void cb_fold_level(GtkMenuItem *i, gpointer d)
+{
+    (void)i;
+    int level = GPOINTER_TO_INT(d);
+    int n = (int)editor_send(SCI_GETLINECOUNT, 0, 0);
+    for (int ln = 0; ln < n; ln++) {
+        int lvl = (int)editor_send(SCI_GETFOLDLEVEL, (uptr_t)ln, 0);
+        if ((lvl & SC_FOLDLEVELHEADERFLAG) &&
+            (lvl & SC_FOLDLEVELNUMBERMASK) == SC_FOLDLEVELBASE + (level - 1))
+            editor_send(SCI_FOLDLINE, (uptr_t)ln, SC_FOLDACTION_CONTRACT);
+    }
+}
+
+static void cb_unfold_level(GtkMenuItem *i, gpointer d)
+{
+    (void)i;
+    int level = GPOINTER_TO_INT(d);
+    int n = (int)editor_send(SCI_GETLINECOUNT, 0, 0);
+    for (int ln = 0; ln < n; ln++) {
+        int lvl = (int)editor_send(SCI_GETFOLDLEVEL, (uptr_t)ln, 0);
+        if ((lvl & SC_FOLDLEVELHEADERFLAG) &&
+            (lvl & SC_FOLDLEVELNUMBERMASK) == SC_FOLDLEVELBASE + (level - 1))
+            editor_send(SCI_FOLDLINE, (uptr_t)ln, SC_FOLDACTION_EXPAND);
+    }
+}
+
+/* ------------------------------------------------------------------ */
 /* Comment / Uncomment                                                */
 /* ------------------------------------------------------------------ */
 
@@ -2328,6 +2370,38 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
 
         APPEND(view, menu_item(TM("menu.view.setedge", "Set Edge Column…"),
                                G_CALLBACK(cb_set_edge_column), NULL, NULL, 0, 0));
+
+        APPEND(view, sep_item());
+
+        /* Folding submenu */
+        GtkWidget *fold_sub  = gtk_menu_new();
+        GtkWidget *fold_item = gtk_menu_item_new_with_mnemonic(
+            TM("menu.view.folding", "_Folding"));
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(fold_item), fold_sub);
+        APPEND(view, fold_item);
+
+        APPEND(fold_sub, menu_item(TM("menu.view.foldall",   "Fold _All"),
+                                   G_CALLBACK(cb_fold_all),   NULL, accel,
+                                   GDK_KEY_F9, GDK_MOD1_MASK | GDK_CONTROL_MASK));
+        APPEND(fold_sub, menu_item(TM("menu.view.unfoldall", "_Unfold All"),
+                                   G_CALLBACK(cb_unfold_all), NULL, accel,
+                                   GDK_KEY_F9, GDK_MOD1_MASK | GDK_CONTROL_MASK | GDK_SHIFT_MASK));
+
+        APPEND(fold_sub, sep_item());
+
+        /* Fold / Unfold Level 1–8 */
+        for (int lv = 1; lv <= 8; lv++) {
+            char lbl_fold[32], lbl_unfold[32];
+            snprintf(lbl_fold,   sizeof(lbl_fold),   "Fold Level _%d", lv);
+            snprintf(lbl_unfold, sizeof(lbl_unfold), "Unfold Level %d", lv);
+            APPEND(fold_sub, menu_item(lbl_fold,
+                                       G_CALLBACK(cb_fold_level),
+                                       GINT_TO_POINTER(lv), NULL, 0, 0));
+            APPEND(fold_sub, menu_item(lbl_unfold,
+                                       G_CALLBACK(cb_unfold_level),
+                                       GINT_TO_POINTER(lv), NULL, 0, 0));
+            if (lv < 8) APPEND(fold_sub, sep_item());
+        }
     }
 
     /* ---- Language ---- */
