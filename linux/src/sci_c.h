@@ -199,6 +199,13 @@ typedef struct SCNotification {
 #define SC_MARK_BOOKMARK        27
 #define SC_MARK_ROUNDRECT       1
 
+/* Caret / scroll preferences */
+#define SCI_SETCARETPERIOD      2076
+#define SCI_SETCARETWIDTH       2188
+#define SCI_SETENDATLASTLINE    2277
+#define SCI_LINECUT             2337
+#define SCI_LINECOPY            2455
+
 /* Brace matching / highlighting */
 #define SCI_GETCHARAT           2007
 #define SCI_BRACEMATCH          2353

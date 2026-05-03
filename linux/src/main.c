@@ -3,6 +3,7 @@
 #include "editor.h"
 #include "encoding.h"
 #include "shortcutmap.h"
+#include "prefs.h"
 #include "statusbar.h"
 #include "findreplace.h"
 #include "toolbar.h"
@@ -175,8 +176,24 @@ static void cb_quit(GtkMenuItem *i, gpointer app)
 /* Edit */
 static void cb_undo(GtkMenuItem *i, gpointer d)    { (void)i;(void)d; editor_undo(); }
 static void cb_redo(GtkMenuItem *i, gpointer d)    { (void)i;(void)d; editor_redo(); }
-static void cb_cut(GtkMenuItem *i, gpointer d)     { (void)i;(void)d; editor_cut(); }
-static void cb_copy(GtkMenuItem *i, gpointer d)    { (void)i;(void)d; editor_copy(); }
+static void cb_cut(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    if (g_prefs.copy_line_no_selection &&
+        editor_send(SCI_GETSELECTIONSTART, 0, 0) == editor_send(SCI_GETSELECTIONEND, 0, 0))
+        editor_send(SCI_LINECUT, 0, 0);
+    else
+        editor_cut();
+}
+static void cb_copy(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    if (g_prefs.copy_line_no_selection &&
+        editor_send(SCI_GETSELECTIONSTART, 0, 0) == editor_send(SCI_GETSELECTIONEND, 0, 0))
+        editor_send(SCI_LINECOPY, 0, 0);
+    else
+        editor_copy();
+}
 static void cb_paste(GtkMenuItem *i, gpointer d)   { (void)i;(void)d; editor_paste(); }
 static void cb_selall(GtkMenuItem *i, gpointer d)  { (void)i;(void)d; editor_select_all(); }
 
@@ -210,6 +227,30 @@ static void cb_shortcut_mapper(GtkMenuItem *i, gpointer d)
 {
     (void)i; (void)d;
     shortcut_mapper_show(s_main_window);
+}
+
+static void cb_preferences(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    prefs_dialog_show(s_main_window);
+}
+
+/* Called from prefs.c when show_full_path_in_title changes */
+void main_refresh_title(void)
+{
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    const char *mod = doc->modified ? "*" : "";
+    char buf[512];
+    if (doc->filepath) {
+        const char *name = g_prefs.show_full_path_in_title
+                           ? doc->filepath
+                           : g_path_get_basename(doc->filepath);
+        snprintf(buf, sizeof(buf), "%s%s — Notepad++ Linux", mod, name);
+    } else {
+        snprintf(buf, sizeof(buf), "%snew %d — Notepad++ Linux", mod, doc->new_index);
+    }
+    gtk_window_set_title(GTK_WINDOW(s_main_window), buf);
 }
 
 /* Edge column state — declared early so line-op callbacks can read it */
@@ -2369,6 +2410,9 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
                                G_CALLBACK(cb_style_editor), NULL, accel, 0, 0));
     APPEND(settings, menu_item(T("cmd.shortcutmap", "_Shortcut Mapper…"),
                                G_CALLBACK(cb_shortcut_mapper), NULL, accel, 0, 0));
+    APPEND(settings, sep_item());
+    APPEND(settings, menu_item(TM("cmd.prefs", "_Preferences…"),
+                               G_CALLBACK(cb_preferences), NULL, accel, 0, 0));
 
     /* ---- Tools ---- */
     GtkWidget *tools = submenu(bar, TM("menu.tools", "_Tools"));
@@ -2450,6 +2494,7 @@ static void on_activate(GtkApplication *app, gpointer data)
 
     s_recent_files = g_ptr_array_new();
     recent_load();
+    prefs_load();
     shortcut_load();
 
     GtkWidget *window = gtk_application_window_new(app);

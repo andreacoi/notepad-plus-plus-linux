@@ -45,6 +45,9 @@ void editor_goto_line_dialog(void);
 /* Re-apply current theme styles to all open editors. */
 void editor_reapply_styles(void);
 
+/* Re-apply g_prefs to all open editors (call after changing preferences). */
+void editor_apply_prefs(void);
+
 /* Implemented in main.c, called from editor.c */
 void main_toggle_bookmark_at_line(GtkWidget *sci, int line);
 void main_recent_file_add(const char *path);

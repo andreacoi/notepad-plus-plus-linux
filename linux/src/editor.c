@@ -1,5 +1,6 @@
 #include "editor.h"
 #include "encoding.h"
+#include "prefs.h"
 #include "statusbar.h"
 #include "lexer.h"
 #include "findreplace.h"
@@ -65,8 +66,12 @@ static void setup_sci(GtkWidget *sci)
         sci_msg(sci, SCI_INDICSETFORE,  (uptr_t)k, mark_colors[k]);
         sci_msg(sci, SCI_INDICSETALPHA, (uptr_t)k, 100);
     }
-    sci_msg(sci, SCI_SETTABWIDTH,     4, 0);
-    sci_msg(sci, SCI_SETUSETABS,      0, 0);
+    sci_msg(sci, SCI_SETTABWIDTH,        (uptr_t)g_prefs.tab_width,  0);
+    sci_msg(sci, SCI_SETUSETABS,         (uptr_t)g_prefs.use_tabs,   0);
+    sci_msg(sci, SCI_SETCARETLINEVISIBLE,(uptr_t)g_prefs.highlight_current_line, 0);
+    sci_msg(sci, SCI_SETCARETWIDTH,      (uptr_t)g_prefs.caret_width, 0);
+    sci_msg(sci, SCI_SETCARETPERIOD,     (uptr_t)g_prefs.caret_blink_rate, 0);
+    sci_msg(sci, SCI_SETENDATLASTLINE,   g_prefs.scroll_beyond_last_line ? 0 : 1, 0);
     /* Apply theme: STYLE_DEFAULT must be set before STYLECLEARALL */
     stylestore_apply_default(sci);
     sci_msg(sci, SCI_STYLECLEARALL, 0, 0);
@@ -142,16 +147,16 @@ static void update_window_title(void)
     NppDoc *doc = editor_current_doc();
     if (!doc) return;
 
-    const char *base = doc->filepath
-        ? g_path_get_basename(doc->filepath)
-        : NULL;
-    char buf[256];
-    if (base)
-        snprintf(buf, sizeof(buf), "%s%s — Notepad++ Linux",
-                 doc->modified ? "*" : "", base);
-    else
-        snprintf(buf, sizeof(buf), "%snew %d — Notepad++ Linux",
-                 doc->modified ? "*" : "", doc->new_index);
+    const char *mod = doc->modified ? "*" : "";
+    char buf[512];
+    if (doc->filepath) {
+        const char *name = g_prefs.show_full_path_in_title
+                           ? doc->filepath
+                           : g_path_get_basename(doc->filepath);
+        snprintf(buf, sizeof(buf), "%s%s — Notepad++ Linux", mod, name);
+    } else {
+        snprintf(buf, sizeof(buf), "%snew %d — Notepad++ Linux", mod, doc->new_index);
+    }
 
     gtk_window_set_title(GTK_WINDOW(s_window), buf);
 }
@@ -301,12 +306,14 @@ void editor_new_doc(void)
 {
     s_new_count++;
     NppDoc *doc = g_new0(NppDoc, 1);
-    doc->new_index = s_new_count;
+    doc->new_index  = s_new_count;
+    doc->encoding   = g_strdup(g_prefs.default_encoding);
 
     GtkWidget *sci = scintilla_new();
     doc->sci = sci;
     g_object_set_data(G_OBJECT(sci), "npp-doc", doc);
     setup_sci(sci);
+    sci_msg(sci, SCI_SETEOLMODE, (uptr_t)g_prefs.default_eol, 0);
     g_signal_connect(sci, "sci-notify", G_CALLBACK(on_sci_notify), NULL);
 
     GtkWidget *label = make_tab_label(doc, sci);
@@ -537,6 +544,31 @@ void editor_close_all_quit(GApplication *app)
     }
     g_application_quit(app);
 }
+
+/* ------------------------------------------------------------------ */
+/* Apply preferences to all open editors                              */
+/* ------------------------------------------------------------------ */
+
+void editor_apply_prefs(void)
+{
+    int n = gtk_notebook_get_n_pages(GTK_NOTEBOOK(s_notebook));
+    for (int i = 0; i < n; i++) {
+        GtkWidget *sci = gtk_notebook_get_nth_page(GTK_NOTEBOOK(s_notebook), i);
+        if (!sci) continue;
+        sci_msg(sci, SCI_SETTABWIDTH,        (uptr_t)g_prefs.tab_width,  0);
+        sci_msg(sci, SCI_SETUSETABS,         (uptr_t)g_prefs.use_tabs,   0);
+        sci_msg(sci, SCI_SETCARETLINEVISIBLE,(uptr_t)g_prefs.highlight_current_line, 0);
+        sci_msg(sci, SCI_SETCARETWIDTH,      (uptr_t)g_prefs.caret_width, 0);
+        sci_msg(sci, SCI_SETCARETPERIOD,     (uptr_t)g_prefs.caret_blink_rate, 0);
+        sci_msg(sci, SCI_SETENDATLASTLINE,   g_prefs.scroll_beyond_last_line ? 0 : 1, 0);
+    }
+    statusbar_update_from_sci(
+        gtk_notebook_get_nth_page(GTK_NOTEBOOK(s_notebook),
+            gtk_notebook_get_current_page(GTK_NOTEBOOK(s_notebook))));
+}
+
+/* Called from prefs.c to refresh all window titles */
+void main_refresh_title(void);
 
 /* ------------------------------------------------------------------ */
 /* Edit operations                                                     */
