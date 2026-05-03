@@ -96,9 +96,6 @@ Ordered by implementation effort (low → high).
 > **Note:** All the features with low effort required are marked as completed. No intermediate release are planned. This software will be released when all the points in this list will be successfully completed.
 
 ## Medium effort
-- **Recent files list** — reopen recently closed files
-- **Encoding selection** — manual per-tab encoding, reload with specified encoding
-- **Keyboard shortcut mapper** — customise and save key bindings
 - **Preferences dialog** — persistent settings (config.xml equivalent)
 - **Auto-indent** — None / Basic / Advanced modes
 - **Code folding controls** — fold/unfold all and by individual levels (1–8)
