@@ -141,8 +141,7 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ### Medium effort
 
-25. **Auto-indent** — `SCN_CHARADDED` handler: copy leading whitespace of previous line; advanced: detect `{` / `:`.
-26. **Code folding controls** — menu items calling `SCI_FOLDALL`, `SCI_FOLDDISPLAYTEXT`, `SCI_SETFOLDLEVEL` per level.
+25. **Code folding controls** — menu items calling `SCI_FOLDALL`, `SCI_FOLDDISPLAYTEXT`, `SCI_SETFOLDLEVEL` per level.
 
 ### High effort
 
