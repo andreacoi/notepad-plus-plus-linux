@@ -199,6 +199,12 @@ typedef struct SCNotification {
 #define SC_MARK_BOOKMARK        27
 #define SC_MARK_ROUNDRECT       1
 
+/* Brace matching / highlighting */
+#define SCI_GETCHARAT           2007
+#define SCI_BRACEMATCH          2353
+#define SCI_BRACEHIGHLIGHT      2351
+#define SCI_BRACEBADLIGHT       2352
+
 /* Marker messages */
 #define SCI_MARKERDEFINE        2040
 #define SCI_MARKERADD           2043

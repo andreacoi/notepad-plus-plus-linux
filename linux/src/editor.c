@@ -183,6 +183,28 @@ static void on_sci_notify(GtkWidget *sci, gint unused,
         int cur = gtk_notebook_get_current_page(GTK_NOTEBOOK(s_notebook));
         if (gtk_notebook_get_nth_page(GTK_NOTEBOOK(s_notebook), cur) == sci)
             statusbar_update_from_sci(sci);
+
+        /* Brace highlighting */
+        Sci_Position pos = (Sci_Position)sci_msg(sci, SCI_GETCURRENTPOS, 0, 0);
+        static const char braces[] = "()[]{}<>";
+        Sci_Position brace_pos = -1;
+        char ch = (char)sci_msg(sci, SCI_GETCHARAT, (uptr_t)pos, 0);
+        if (strchr(braces, ch))
+            brace_pos = pos;
+        else {
+            ch = (char)sci_msg(sci, SCI_GETCHARAT, (uptr_t)(pos - 1), 0);
+            if (pos > 0 && strchr(braces, ch))
+                brace_pos = pos - 1;
+        }
+        if (brace_pos >= 0) {
+            Sci_Position match = (Sci_Position)sci_msg(sci, SCI_BRACEMATCH, (uptr_t)brace_pos, 0);
+            if (match >= 0)
+                sci_msg(sci, SCI_BRACEHIGHLIGHT, (uptr_t)brace_pos, (sptr_t)match);
+            else
+                sci_msg(sci, SCI_BRACEBADLIGHT, (uptr_t)brace_pos, 0);
+        } else {
+            sci_msg(sci, SCI_BRACEHIGHLIGHT, (uptr_t)-1, (sptr_t)-1);
+        }
     } else if (code == SCN_MARGINCLICK) {
         if (n->margin == 1)
             main_toggle_bookmark_at_line(sci, (int)n->line);

@@ -1386,6 +1386,36 @@ static void cb_mark_prev4(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_jump(
 static void cb_mark_prev5(GtkMenuItem *i,gpointer d){(void)i;(void)d; mark_jump(4,FALSE);}
 
 /* ------------------------------------------------------------------ */
+/* Go to matching brace                                               */
+/* ------------------------------------------------------------------ */
+
+static void cb_goto_matching_brace(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    GtkWidget *sci = doc->sci;
+
+    Sci_Position pos = (Sci_Position)editor_send(SCI_GETCURRENTPOS, 0, 0);
+    static const char braces[] = "()[]{}<>";
+    Sci_Position brace_pos = -1;
+    char ch = (char)scintilla_send_message(SCINTILLA(sci), SCI_GETCHARAT, (uptr_t)pos, 0);
+    if (strchr(braces, ch))
+        brace_pos = pos;
+    else if (pos > 0) {
+        ch = (char)scintilla_send_message(SCINTILLA(sci), SCI_GETCHARAT, (uptr_t)(pos - 1), 0);
+        if (strchr(braces, ch))
+            brace_pos = pos - 1;
+    }
+    if (brace_pos < 0) return;
+
+    Sci_Position match = (Sci_Position)scintilla_send_message(
+        SCINTILLA(sci), SCI_BRACEMATCH, (uptr_t)brace_pos, 0);
+    if (match >= 0)
+        scintilla_send_message(SCINTILLA(sci), SCI_GOTOPOS, (uptr_t)match, 0);
+}
+
+/* ------------------------------------------------------------------ */
 /* Bookmarks                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -1964,6 +1994,7 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     APPEND(search, menu_item(TM("cmd.43003", "_Replace…"),    G_CALLBACK(cb_replace), NULL, accel, GDK_KEY_h, GDK_CONTROL_MASK));
     APPEND(search, sep_item());
     APPEND(search, menu_item(TM("cmd.43004", "_Go To Line…"), G_CALLBACK(cb_goto),    NULL, accel, GDK_KEY_g, GDK_CONTROL_MASK));
+    APPEND(search, menu_item(TM("cmd.brace", "Go to _Matching Brace"), G_CALLBACK(cb_goto_matching_brace), NULL, accel, GDK_KEY_bracketright, GDK_CONTROL_MASK));
     APPEND(search, sep_item());
     APPEND(search, menu_item(TM("menu.bm.toggle", "_Toggle Bookmark"),
                              G_CALLBACK(cb_bookmark_toggle), NULL, accel,
