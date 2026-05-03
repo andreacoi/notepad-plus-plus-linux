@@ -131,6 +131,101 @@ static void cb_toggle_bookmarks(GtkCheckMenuItem *item, gpointer d)
 }
 
 /* ------------------------------------------------------------------ */
+/* Insert date/time                                                   */
+/* ------------------------------------------------------------------ */
+
+static void insert_datetime(const char *fmt)
+{
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    GDateTime *dt = g_date_time_new_now_local();
+    gchar *str = g_date_time_format(dt, fmt);
+    g_date_time_unref(dt);
+    if (str) {
+        scintilla_send_message(SCINTILLA(doc->sci), SCI_REPLACESEL, 0, (sptr_t)str);
+        g_free(str);
+    }
+}
+
+static void cb_insert_date_short(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    insert_datetime("%H:%M:%S %m/%d/%Y");
+}
+
+static void cb_insert_date_long(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    insert_datetime("%A, %B %d, %Y %H:%M:%S");
+}
+
+/* ------------------------------------------------------------------ */
+/* Edge column                                                        */
+/* ------------------------------------------------------------------ */
+
+static gboolean s_edge_enabled = FALSE;
+static int      s_edge_column  = 80;
+
+static void apply_edge(GtkWidget *sci)
+{
+    if (!sci) return;
+    scintilla_send_message(SCINTILLA(sci), SCI_SETEDGEMODE,
+        s_edge_enabled ? SC_EDGE_LINE : SC_EDGE_NONE, 0);
+    scintilla_send_message(SCINTILLA(sci), SCI_SETEDGECOLUMN,
+        (uptr_t)s_edge_column, 0);
+}
+
+static void apply_edge_all(void)
+{
+    int n = editor_page_count();
+    for (int i = 0; i < n; i++) {
+        NppDoc *doc = editor_doc_at(i);
+        if (doc) apply_edge(doc->sci);
+    }
+}
+
+static void cb_toggle_edge(GtkCheckMenuItem *item, gpointer d)
+{
+    (void)d;
+    s_edge_enabled = gtk_check_menu_item_get_active(item);
+    apply_edge_all();
+}
+
+static void cb_set_edge_column(GtkMenuItem *item, gpointer d)
+{
+    (void)item; (void)d;
+    GtkWidget *dlg = gtk_dialog_new_with_buttons(
+        TM("dlg.edgecol.title", "Set Edge Column"),
+        GTK_WINDOW(s_main_window),
+        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+        TM("dlg.Find.2", "_Close"),  GTK_RESPONSE_CANCEL,
+        TM("cmd.41006",  "_OK"),     GTK_RESPONSE_ACCEPT,
+        NULL);
+
+    GtkWidget *spin = gtk_spin_button_new_with_range(1, 512, 1);
+    gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin), s_edge_column);
+
+    GtkWidget *lbl = gtk_label_new(TM("dlg.edgecol.label", "Column:"));
+    GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 8);
+    gtk_widget_set_margin_start(hbox, 12);
+    gtk_widget_set_margin_end(hbox, 12);
+    gtk_widget_set_margin_top(hbox, 8);
+    gtk_widget_set_margin_bottom(hbox, 8);
+    gtk_box_pack_start(GTK_BOX(hbox), lbl,  FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), spin, FALSE, FALSE, 0);
+
+    GtkWidget *ca = gtk_dialog_get_content_area(GTK_DIALOG(dlg));
+    gtk_box_pack_start(GTK_BOX(ca), hbox, FALSE, FALSE, 0);
+    gtk_widget_show_all(dlg);
+
+    if (gtk_dialog_run(GTK_DIALOG(dlg)) == GTK_RESPONSE_ACCEPT) {
+        s_edge_column = (int)gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin));
+        if (s_edge_enabled) apply_edge_all();
+    }
+    gtk_widget_destroy(dlg);
+}
+
+/* ------------------------------------------------------------------ */
 /* EOL menu                                                           */
 /* ------------------------------------------------------------------ */
 
@@ -467,6 +562,18 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
         APPEND(edit, eol_sub_item);
     }
 
+    /* Insert Date/Time submenu */
+    {
+        GtkWidget *dt_item = gtk_menu_item_new_with_mnemonic(TM("menu.datetime", "Insert _Date/Time"));
+        GtkWidget *dt_menu = gtk_menu_new();
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(dt_item), dt_menu);
+        APPEND(dt_menu, menu_item(TM("menu.datetime.short", "_Short (HH:MM:SS MM/DD/YYYY)"),
+                                  G_CALLBACK(cb_insert_date_short), NULL, NULL, 0, 0));
+        APPEND(dt_menu, menu_item(TM("menu.datetime.long",  "_Long (Weekday, Month DD, YYYY HH:MM:SS)"),
+                                  G_CALLBACK(cb_insert_date_long),  NULL, NULL, 0, 0));
+        APPEND(edit, dt_item);
+    }
+
     /* ---- Search ---- */
     GtkWidget *search = submenu(bar, TM("menu.search", "_Search"));
     APPEND(search, menu_item(TM("cmd.43001", "_Find…"),       G_CALLBACK(cb_find),    NULL, accel, GDK_KEY_f, GDK_CONTROL_MASK));
@@ -509,6 +616,17 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(bm), s_show_bookmarks);
         g_signal_connect(bm, "toggled", G_CALLBACK(cb_toggle_bookmarks), NULL);
         APPEND(view, bm);
+
+        APPEND(view, sep_item());
+
+        GtkWidget *edge = gtk_check_menu_item_new_with_mnemonic(
+            TM("menu.view.edge", "Show _Edge Column"));
+        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(edge), s_edge_enabled);
+        g_signal_connect(edge, "toggled", G_CALLBACK(cb_toggle_edge), NULL);
+        APPEND(view, edge);
+
+        APPEND(view, menu_item(TM("menu.view.setedge", "Set Edge Column…"),
+                               G_CALLBACK(cb_set_edge_column), NULL, NULL, 0, 0));
     }
 
     /* ---- Language ---- */
@@ -538,6 +656,7 @@ static void on_switch_page(GtkNotebook *nb, GtkWidget *page,
     int eol = (int)scintilla_send_message(SCINTILLA(doc->sci), SCI_GETEOLMODE, 0, 0);
     eol_menu_sync(eol);
     apply_view_symbols(doc->sci);
+    apply_edge(doc->sci);
 }
 
 /* ------------------------------------------------------------------ */
@@ -616,6 +735,7 @@ static void on_activate(GtkApplication *app, gpointer data)
     lang_menu_sync((const char *)g_object_get_data(G_OBJECT(initial->sci), "npp-lang"));
     eol_menu_sync((int)scintilla_send_message(SCINTILLA(initial->sci), SCI_GETEOLMODE, 0, 0));
     apply_view_symbols(initial->sci);
+    apply_edge(initial->sci);
 }
 
 /* ------------------------------------------------------------------ */

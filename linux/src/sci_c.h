@@ -66,9 +66,15 @@ typedef struct SCNotification {
 #define SCI_CUT                 2177
 #define SCI_COPY                2178
 #define SCI_PASTE               2179
+#define SCI_REPLACESEL          2170
 #define SCI_SETTEXT             2181
 #define SCI_GETTEXT             2182
 #define SCI_SETMARGINWIDTHN     2243
+#define SCI_SETEDGEMODE         2094
+#define SCI_SETEDGECOLUMN       2080
+#define SCI_SETEDGECOLOUR       2098
+#define SC_EDGE_NONE            0
+#define SC_EDGE_LINE            1
 #define SCI_SETMARGINTYPE       2240
 #define SCI_SETMARGINSENSITIVE  2246
 #define SCI_SETVIEWWS           2020
