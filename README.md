@@ -47,6 +47,7 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - Keyboard shortcuts matching Notepad++ conventions (Ctrl+N/O/S/W/Z/Y/X/C/V/A/F/H/G)
 - **Language menu** — top-level Language menu to manually override the detected language, grouped into 9 categories (C/C++, Web, Scripting, Systems, Markup/Config, Database, Scientific, Hardware, Other) with radio checkmarks; "Normal Text" at top; checkmark syncs automatically on tab switch
 - **EOL Conversion** — Edit → EOL Conversion submenu with radio items: Windows (CR+LF), Unix (LF), Old Mac (CR); converts all existing line endings when switched; status bar EOL cell syncs on tab switch
+- **Word wrap** — View → Word Wrap (Alt+Z) toggles word wrap per tab; state is stored per document and restored on tab switch; toolbar wrap button stays in sync
 - **Show/hide symbols** — View menu check items: Show Whitespace, Show EOL Markers, Show Line Numbers, Show Fold Margin, Show Bookmarks Margin; state is global and applied to all tabs
 - **Edge column** — View menu toggle (Show Edge Column) draws a vertical guide line; "Set Edge Column…" opens a dialog to choose the column (default 80, range 1–512)
 - **Insert date/time** — Edit → Insert Date/Time submenu: Short format (`HH:MM:SS MM/DD/YYYY`) and Long format (`Weekday, Month DD, YYYY HH:MM:SS`); inserts at cursor, replacing any selection
@@ -87,7 +88,6 @@ Output: `linux/build/notepad++`
 Ordered by implementation effort (low → high).
 
 ### Medium effort
-- **Word wrap toggle** — per-tab word wrap
 - **Bookmarks** — toggle, next/prev, clear all, cut/copy/remove bookmarked lines
 - **Mark styles** — highlight text with 5 color styles, jump next/prev, clear
 - **Go to matching brace** — brace/bracket/parenthesis matching navigation
