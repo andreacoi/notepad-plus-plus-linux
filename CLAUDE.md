@@ -136,8 +136,7 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 ### Low effort
 
 1. **Join / Split lines** — iterate selection lines via `SCI_GETTEXTRANGE`, reassemble.
-6. **Insert blank line above/below** — `SCI_HOME` + `SCI_NEWLINE` sequence.
-7. **Trim whitespace** — regex replace or line-by-line strip via Scintilla API.
+2. **Trim whitespace** — regex replace or line-by-line strip via Scintilla API.
 8. **Hash tools** — link `libssl` or use GLib's `g_checksum_new()`; operate on selection or whole doc.
 9. **Base64 / Hex tools** — `g_base64_encode/decode()` and a nibble-loop for hex; replace selection.
 
