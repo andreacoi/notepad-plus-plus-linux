@@ -135,7 +135,6 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ### Medium effort
 
-20. **Mark styles** — 5 indicator slots (`SCI_INDICSETSTYLE`, `SCI_INDICATORFILLRANGE`); menu to apply/clear/jump.
 21. **Go to matching brace** — `SCI_BRACEMATCH`; move caret or flash highlight.
 22. **Recent files list** — maintain a `GList` of last N paths in config; rebuild submenu on open/close.
 23. **Encoding selection** — per-tab encoding stored in `NppDoc`; recode buffer on switch via `g_convert()`; update statusbar.

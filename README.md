@@ -49,6 +49,7 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - **EOL Conversion** — Edit → EOL Conversion submenu with radio items: Windows (CR+LF), Unix (LF), Old Mac (CR); converts all existing line endings when switched; status bar EOL cell syncs on tab switch
 - **Word wrap** — View → Word Wrap (Alt+Z) toggles word wrap per tab; state is stored per document and restored on tab switch; toolbar wrap button stays in sync
 - **Bookmarks** — Search menu: Toggle Bookmark (Ctrl+F2), Next Bookmark (F2), Previous Bookmark (Shift+F2), Clear All Bookmarks; Cut/Copy/Delete Bookmarked Lines; click the bookmarks margin to toggle; blue roundrect marker in margin 1; next/prev wraps around
+- **Mark styles** — Search → Mark Styles submenu: 5 color highlight styles (yellow, cyan, blue, orange, magenta) using Scintilla `INDIC_ROUNDBOX` indicators; apply to current selection, clear per-style or all at once, jump to next/previous occurrence of each style
 - **Show/hide symbols** — View menu check items: Show Whitespace, Show EOL Markers, Show Line Numbers, Show Fold Margin, Show Bookmarks Margin; state is global and applied to all tabs
 - **Edge column** — View menu toggle (Show Edge Column) draws a vertical guide line; "Set Edge Column…" opens a dialog to choose the column (default 80, range 1–512)
 - **Insert date/time** — Edit → Insert Date/Time submenu: Short format (`HH:MM:SS MM/DD/YYYY`) and Long format (`Weekday, Month DD, YYYY HH:MM:SS`); inserts at cursor, replacing any selection
@@ -88,8 +89,7 @@ Output: `linux/build/notepad++`
 
 Ordered by implementation effort (low → high).
 
-### Medium effort
-- **Mark styles** — highlight text with 5 color styles, jump next/prev, clear
+## Medium effort
 - **Go to matching brace** — brace/bracket/parenthesis matching navigation
 - **Recent files list** — reopen recently closed files
 - **Encoding selection** — manual per-tab encoding, reload with specified encoding
