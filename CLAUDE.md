@@ -135,7 +135,6 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ### Medium effort
 
-19. **Bookmarks** — `SCI_MARKERADD`/`SCI_MARKERNEXT`/`SCI_MARKERPREV` with marker number 1; menu items + margin click.
 20. **Mark styles** — 5 indicator slots (`SCI_INDICSETSTYLE`, `SCI_INDICATORFILLRANGE`); menu to apply/clear/jump.
 21. **Go to matching brace** — `SCI_BRACEMATCH`; move caret or flash highlight.
 22. **Recent files list** — maintain a `GList` of last N paths in config; rebuild submenu on open/close.
