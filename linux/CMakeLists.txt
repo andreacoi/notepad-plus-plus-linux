@@ -43,7 +43,7 @@ file(GLOB LEX_SRCS
     "${LEX_ROOT}/lexers/*.cxx"
     "${LEX_ROOT}/lexlib/*.cxx"
 )
-list(FILTER LEX_SRCS EXCLUDE REGEX "LexUser\\.cxx$")
+# LexUser.cxx is now included (patched for Linux — windows.h removed, _itoa→sprintf)
 
 add_library(lexilla STATIC ${LEX_SRCS})
 
@@ -79,7 +79,6 @@ add_executable(notepad++
     src/lexer.c
     src/i18n.c
     src/lexilla_bridge.cpp
-    "${CMAKE_SOURCE_DIR}/../src/LexUserStub.cxx"
 )
 
 target_include_directories(notepad++ PRIVATE
