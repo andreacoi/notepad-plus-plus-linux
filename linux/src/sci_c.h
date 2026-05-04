@@ -128,6 +128,7 @@ typedef struct SCNotification {
 #define SCI_MOVESELECTEDLINESDOWN 2653
 #define SCI_GOTOPOS             2025
 #define SCI_GOTOLINE            2024
+#define SCI_SCROLLCARET         2169
 #define SCI_SETOVERTYPE         2186
 #define SCI_GETOVERTYPE         2187
 #define SCI_CONVERTEOLS         2029

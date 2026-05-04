@@ -70,6 +70,7 @@ add_executable(notepad++
     src/shortcutmap.c
     src/statusbar.c
     src/findreplace.c
+    src/findinfiles.c
     src/toolbar.c
     src/stylestore.c
     src/styleeditor.c

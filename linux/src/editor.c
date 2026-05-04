@@ -670,3 +670,14 @@ void editor_goto_line_dialog(void)
     }
     gtk_widget_destroy(dlg);
 }
+
+void editor_open_and_goto(const char *path, int line)
+{
+    editor_open_path(path);
+    NppDoc *doc = editor_current_doc();
+    if (doc && line > 0) {
+        sci_msg(doc->sci, SCI_GOTOLINE,    (uptr_t)(line - 1), 0);
+        sci_msg(doc->sci, SCI_SCROLLCARET, 0, 0);
+        gtk_widget_grab_focus(doc->sci);
+    }
+}

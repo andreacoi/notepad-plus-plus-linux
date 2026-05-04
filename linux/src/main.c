@@ -6,6 +6,7 @@
 #include "prefs.h"
 #include "statusbar.h"
 #include "findreplace.h"
+#include "findinfiles.h"
 #include "toolbar.h"
 #include "styleeditor.h"
 #include "lexer.h"
@@ -212,6 +213,28 @@ static void cb_replace(GtkMenuItem *i, gpointer d)
     (void)i;(void)d;
     findreplace_set_sci(editor_current_doc()->sci);
     findreplace_show(s_main_window, NULL, TRUE);
+}
+
+static void cb_find_in_files(GtkMenuItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    const char *sel = NULL;
+    /* Pre-fill with selection if short enough */
+    if (doc) {
+        sptr_t ss = editor_send(SCI_GETSELECTIONSTART, 0, 0);
+        sptr_t se = editor_send(SCI_GETSELECTIONEND,   0, 0);
+        if (se > ss && se - ss < 256) {
+            static char selbuf[256];
+            Sci_TextRangeFull tr;
+            tr.chrg.cpMin  = (Sci_Position)ss;
+            tr.chrg.cpMax  = (Sci_Position)se;
+            tr.lpstrText   = selbuf;
+            editor_send(SCI_GETTEXTRANGEFULL, 0, (sptr_t)&tr);
+            sel = selbuf;
+        }
+    }
+    findinfiles_show(s_main_window, sel);
 }
 
 static void cb_goto(GtkMenuItem *i, gpointer d)   { (void)i;(void)d; editor_goto_line_dialog(); }
@@ -2248,8 +2271,9 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
 
     /* ---- Search ---- */
     GtkWidget *search = submenu(bar, TM("menu.search", "_Search"));
-    APPEND(search, smi("cmd.find",    TM("cmd.43001", "_Find…"),       G_CALLBACK(cb_find),    NULL, accel, GDK_KEY_f, GDK_CONTROL_MASK));
-    APPEND(search, smi("cmd.replace", TM("cmd.43003", "_Replace…"),    G_CALLBACK(cb_replace), NULL, accel, GDK_KEY_h, GDK_CONTROL_MASK));
+    APPEND(search, smi("cmd.find",       TM("cmd.43001", "_Find…"),          G_CALLBACK(cb_find),         NULL, accel, GDK_KEY_f, GDK_CONTROL_MASK));
+    APPEND(search, smi("cmd.replace",    TM("cmd.43003", "_Replace…"),       G_CALLBACK(cb_replace),      NULL, accel, GDK_KEY_h, GDK_CONTROL_MASK));
+    APPEND(search, smi("cmd.findinfiles",TM("cmd.findinfiles","Find in _Files…"), G_CALLBACK(cb_find_in_files), NULL, accel, GDK_KEY_f, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
     APPEND(search, sep_item());
     APPEND(search, smi("cmd.goto",   TM("cmd.43004", "_Go To Line…"), G_CALLBACK(cb_goto),    NULL, accel, GDK_KEY_g, GDK_CONTROL_MASK));
     APPEND(search, smi("cmd.brace",  TM("cmd.brace", "Go to _Matching Brace"), G_CALLBACK(cb_goto_matching_brace), NULL, accel, GDK_KEY_bracketright, GDK_CONTROL_MASK));
