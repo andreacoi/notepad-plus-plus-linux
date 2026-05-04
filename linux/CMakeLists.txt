@@ -71,6 +71,7 @@ add_executable(notepad++
     src/statusbar.c
     src/findreplace.c
     src/findinfiles.c
+    src/columneditor.c
     src/toolbar.c
     src/stylestore.c
     src/styleeditor.c
