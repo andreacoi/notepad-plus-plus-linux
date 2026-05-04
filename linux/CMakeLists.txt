@@ -72,6 +72,7 @@ add_executable(notepad++
     src/findreplace.c
     src/findinfiles.c
     src/columneditor.c
+    src/autocomplete.c
     src/toolbar.c
     src/stylestore.c
     src/styleeditor.c
