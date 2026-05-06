@@ -143,6 +143,7 @@ Features beyond the original Notepad++ scope, specific to this Linux port. These
 | 1 | Style Configurator | Save and Close buttons had no effect on GTK3/Wayland | Replaced `gtk_dialog_run()` loop with `response` signal handler; dialog is now a persistent singleton closed via `gtk_widget_hide()` |
 | 2 | Style Configurator | "Salva" and "Salva e chiudi" actions were swapped — Save closed the dialog, Save and Close kept it open | Corrected response-ID assignment to match translated button labels |
 | 3 | Style store | `~/.config/npp/stylers.xml` triggered a parse warning for entries whose `name` attribute contains `&` (e.g. CaML `BUILTIN FUNC & TYPE`) | XML is pre-processed to escape bare `&` before passing to `GMarkupParser` |
+| 4 | Margins | Line numbers and fold +/− indicators never appeared | `SCI_SETMARGINWIDTHN` in `sci_c.h` was defined as **2243** (`SCI_GETMARGINWIDTHN`) instead of **2242**; every margin-width call silently returned a value without setting anything, leaving all margins at default width 0 |
 
 ## User configuration
 
