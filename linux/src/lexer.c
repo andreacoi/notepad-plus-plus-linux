@@ -4,8 +4,10 @@
 #include "lexer.h"
 #include "sci_c.h"
 #include "stylestore.h"
+#include "udl.h"
 
 #include <string.h>
+#include <stdio.h>
 #include <ctype.h>
 
 /* Bridge to the C++ CreateLexer() API */
@@ -420,6 +422,14 @@ void lexer_apply(GtkWidget *sci, const char *lang_name)
                            lang_name ? g_strdup(lang_name) : g_strdup(""),
                            g_free);
 
+    /* UDL: delegate entirely to udl_apply (handles full style pipeline) */
+    if (lang_name && strncmp(lang_name, "udl:", 4) == 0) {
+        udl_load_all();
+        int idx = udl_find_by_name(lang_name + 4);
+        if (idx >= 0) { udl_apply(sci, idx); return; }
+        lang_name = NULL;   /* UDL name not found → fall through to plain text */
+    }
+
     stylestore_apply_default(sci);
     sci_msg(sci, SCI_STYLECLEARALL, 0, 0);
     stylestore_apply_global(sci);
@@ -463,11 +473,20 @@ void lexer_apply_from_path(GtkWidget *sci, const char *path)
     const char *ext   = (dot && dot > base) ? dot + 1 : "";
 
     const char *lang = ext_to_lang(ext);
+    if (!lang) {
+        udl_load_all();
+        int udl_idx = udl_find_by_ext(ext);
+        if (udl_idx >= 0) {
+            lexer_apply(sci, udl_key(udl_idx));
+            return;
+        }
+    }
     lexer_apply(sci, lang);
 }
 
 const char *lexer_display_name(const char *lang_name)
 {
     if (!lang_name || !*lang_name) return "Normal Text";
+    if (strncmp(lang_name, "udl:", 4) == 0) return lang_name + 4;
     return lang_name;
 }

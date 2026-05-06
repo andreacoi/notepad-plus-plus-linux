@@ -11,6 +11,7 @@
 #include "toolbar.h"
 #include "styleeditor.h"
 #include "lexer.h"
+#include "udl.h"
 #include "i18n.h"
 
 /* ------------------------------------------------------------------ */
@@ -2002,7 +2003,7 @@ static void cb_lang_toggled(GtkCheckMenuItem *item, gpointer data)
     NppDoc *doc = editor_current_doc();
     if (!doc) return;
     lexer_apply(doc->sci, lang[0] ? lang : NULL);
-    statusbar_set_language(lang[0] ? lang : NULL);
+    statusbar_set_language(lang[0] ? lexer_display_name(lang) : NULL);
 }
 
 /* Update the checked radio item to match the current tab's language. */
@@ -2010,14 +2011,17 @@ static void lang_menu_sync(const char *lang)
 {
     if (!s_lang_item_map) return;
     const char *key = (lang && lang[0]) ? lang : "";
-    GtkCheckMenuItem *item = GTK_CHECK_MENU_ITEM(
-        g_hash_table_lookup(s_lang_item_map, key));
-    if (!item)   /* unknown language: fall back to Normal Text */
-        item = GTK_CHECK_MENU_ITEM(g_hash_table_lookup(s_lang_item_map, ""));
-    if (!item) return;
-    g_signal_handlers_block_by_func(item, G_CALLBACK(cb_lang_toggled), (gpointer)key);
+    GtkWidget *widget = g_hash_table_lookup(s_lang_item_map, key);
+    if (!widget)   /* unknown language: fall back to Normal Text */
+        widget = g_hash_table_lookup(s_lang_item_map, "");
+    if (!widget) return;
+    GtkCheckMenuItem *item = GTK_CHECK_MENU_ITEM(widget);
+    /* Retrieve exact data pointer used when the signal was connected */
+    const char *stored_key = g_object_get_data(G_OBJECT(item), "npp-lang-key");
+    if (!stored_key) stored_key = key;
+    g_signal_handlers_block_by_func(item, G_CALLBACK(cb_lang_toggled), (gpointer)stored_key);
     gtk_check_menu_item_set_active(item, TRUE);
-    g_signal_handlers_unblock_by_func(item, G_CALLBACK(cb_lang_toggled), (gpointer)key);
+    g_signal_handlers_unblock_by_func(item, G_CALLBACK(cb_lang_toggled), (gpointer)stored_key);
 }
 
 /* Add one radio item to a menu, register it in the map, advance the group. */
@@ -2029,6 +2033,8 @@ static void add_lang_item(GtkWidget *menu, GSList **group,
     gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
     g_signal_connect(item, "toggled", G_CALLBACK(cb_lang_toggled), (gpointer)lang_key);
     g_hash_table_insert(s_lang_item_map, (gpointer)lang_key, item);
+    /* Store the exact pointer used as signal data for block/unblock in lang_menu_sync */
+    g_object_set_data(G_OBJECT(item), "npp-lang-key", (gpointer)lang_key);
 }
 
 /* Add a labelled submenu of language items to the Language menu. */
@@ -2046,6 +2052,7 @@ static void add_lang_group(GtkWidget *lang_menu, GSList **group,
 
 static GtkWidget *build_language_menu(GtkWidget *bar)
 {
+    udl_load_all();
     s_lang_item_map = g_hash_table_new(g_str_hash, g_str_equal);
     GSList *group = NULL;
 
@@ -2097,6 +2104,18 @@ static GtkWidget *build_language_menu(GtkWidget *bar)
     add_lang_group(menu, &group, "Hardware",           hardware,  NELEM(hardware));
     add_lang_group(menu, &group, "Other",              other,     NELEM(other));
 #undef NELEM
+
+    /* User Defined Languages */
+    int udl_n = udl_count();
+    if (udl_n > 0) {
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
+        GtkWidget *udl_item = gtk_menu_item_new_with_label("User Defined Languages");
+        GtkWidget *udl_menu = gtk_menu_new();
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(udl_item), udl_menu);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), udl_item);
+        for (int i = 0; i < udl_n; i++)
+            add_lang_item(udl_menu, &group, udl_key(i), udl_name(i));
+    }
 
     return menu;
 }
