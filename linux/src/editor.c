@@ -1,4 +1,5 @@
 #include "editor.h"
+#include "backup.h"
 #include "encoding.h"
 #include "prefs.h"
 #include "statusbar.h"
@@ -198,6 +199,7 @@ static void on_sci_notify(GtkWidget *sci, gint unused,
 
     if (code == SCN_SAVEPOINTREACHED) {
         doc->modified = FALSE;
+        backup_clean(doc);
         int page = gtk_notebook_page_num(GTK_NOTEBOOK(s_notebook), sci);
         refresh_tab_label(page);
         update_window_title();
@@ -591,6 +593,7 @@ gboolean editor_close_page(int page)
 
     if (!ask_save(doc)) return FALSE;
 
+    backup_clean(doc);
     gtk_notebook_remove_page(GTK_NOTEBOOK(s_notebook), page);
     g_free(doc->filepath);
     g_free(doc->encoding);
@@ -610,6 +613,7 @@ void editor_close_all_quit(GApplication *app)
         NppDoc *doc = editor_doc_at(0);
         if (!doc) break;
         if (!ask_save(doc)) return; /* user cancelled */
+        backup_clean(doc);
         GtkWidget *sci = sci_of_page(0);
         gtk_notebook_remove_page(GTK_NOTEBOOK(s_notebook), 0);
         g_free(doc->filepath);

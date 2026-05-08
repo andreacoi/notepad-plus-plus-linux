@@ -37,6 +37,10 @@ typedef struct {
     /* Auto-completion */
     gboolean autocomplete_enabled;    /* default TRUE */
     int      autocomplete_min_chars;  /* trigger after N chars, default 1 */
+
+    /* Auto-backup */
+    gboolean backup_enabled;          /* default TRUE */
+    int      backup_interval_secs;    /* seconds between backup writes, default 60 */
 } NppPrefs;
 
 extern NppPrefs g_prefs;

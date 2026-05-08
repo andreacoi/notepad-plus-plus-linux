@@ -14,6 +14,7 @@
 #include "udl.h"
 #include "i18n.h"
 #include "session.h"
+#include "backup.h"
 
 /* Set to TRUE in main() when no file arguments are given; read in on_activate. */
 static gboolean s_restore_session = FALSE;
@@ -2711,6 +2712,7 @@ static void on_activate(GtkApplication *app, gpointer data)
     GtkWidget *notebook = editor_init(window);
     g_signal_connect(notebook, "switch-page", G_CALLBACK(on_switch_page), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 0);
+    backup_init();
 
     /* Status bar */
     GtkWidget *statusbar = statusbar_init();

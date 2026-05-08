@@ -1,4 +1,5 @@
 #include "prefs.h"
+#include "backup.h"
 #include "encoding.h"
 #include <string.h>
 #include <stdlib.h>
@@ -23,6 +24,8 @@ NppPrefs g_prefs = {
     .copy_line_no_selection  = TRUE,
     .autocomplete_enabled    = TRUE,
     .autocomplete_min_chars  = 1,
+    .backup_enabled          = TRUE,
+    .backup_interval_secs    = 60,
 };
 
 /* ------------------------------------------------------------------ */
@@ -57,6 +60,8 @@ static void xml_start(GMarkupParseContext *ctx, const gchar *el,
     else if (strcmp(name, "copyLineNoSelection")   == 0) g_prefs.copy_line_no_selection  = atoi(value) != 0;
     else if (strcmp(name, "autocompleteEnabled")   == 0) g_prefs.autocomplete_enabled    = atoi(value) != 0;
     else if (strcmp(name, "autocompleteMinChars")  == 0) g_prefs.autocomplete_min_chars  = atoi(value);
+    else if (strcmp(name, "backupEnabled")         == 0) g_prefs.backup_enabled          = atoi(value) != 0;
+    else if (strcmp(name, "backupIntervalSecs")    == 0) g_prefs.backup_interval_secs    = atoi(value);
 }
 
 static GMarkupParser s_parser = { xml_start, NULL, NULL, NULL, NULL };
@@ -81,8 +86,10 @@ void prefs_load(void)
     if (g_prefs.caret_blink_rate < 0)    g_prefs.caret_blink_rate = 0;
     if (g_prefs.caret_blink_rate > 2000) g_prefs.caret_blink_rate = 2000;
     if (g_prefs.default_eol < 0 || g_prefs.default_eol > 2) g_prefs.default_eol = 2;
-    if (g_prefs.autocomplete_min_chars < 1)  g_prefs.autocomplete_min_chars = 1;
-    if (g_prefs.autocomplete_min_chars > 10) g_prefs.autocomplete_min_chars = 10;
+    if (g_prefs.autocomplete_min_chars < 1)   g_prefs.autocomplete_min_chars = 1;
+    if (g_prefs.autocomplete_min_chars > 10)  g_prefs.autocomplete_min_chars = 10;
+    if (g_prefs.backup_interval_secs   < 10)  g_prefs.backup_interval_secs   = 10;
+    if (g_prefs.backup_interval_secs   > 3600) g_prefs.backup_interval_secs  = 3600;
     if (g_prefs.default_encoding[0] == '\0')
         strncpy(g_prefs.default_encoding, "UTF-8", sizeof(g_prefs.default_encoding) - 1);
 }
@@ -121,6 +128,8 @@ void prefs_save(void)
     WPREF_I("copyLineNoSelection",   g_prefs.copy_line_no_selection);
     WPREF_I("autocompleteEnabled",   g_prefs.autocomplete_enabled);
     WPREF_I("autocompleteMinChars",  g_prefs.autocomplete_min_chars);
+    WPREF_I("backupEnabled",         g_prefs.backup_enabled);
+    WPREF_I("backupIntervalSecs",    g_prefs.backup_interval_secs);
 
 #undef WPREF_I
 #undef WPREF_S
@@ -204,6 +213,26 @@ static void on_enc_combo(GtkComboBox *c, gpointer d)
 
 static void on_full_path(GtkToggleButton *b, gpointer d)    { (void)d; g_prefs.show_full_path_in_title = gtk_toggle_button_get_active(b); main_refresh_title(); prefs_save(); }
 static void on_copy_line(GtkToggleButton *b, gpointer d)    { (void)d; g_prefs.copy_line_no_selection = gtk_toggle_button_get_active(b); prefs_save(); }
+
+static GtkWidget *s_backup_interval_spin = NULL;
+
+static void on_backup_enabled(GtkToggleButton *b, gpointer d)
+{
+    (void)d;
+    g_prefs.backup_enabled = gtk_toggle_button_get_active(b);
+    if (s_backup_interval_spin)
+        gtk_widget_set_sensitive(s_backup_interval_spin, g_prefs.backup_enabled);
+    backup_restart_timer();
+    prefs_save();
+}
+
+static void on_backup_interval(GtkSpinButton *s, gpointer d)
+{
+    (void)d;
+    g_prefs.backup_interval_secs = (int)gtk_spin_button_get_value(s);
+    backup_restart_timer();
+    prefs_save();
+}
 
 /* ------------------------------------------------------------------ */
 /* Page builders                                                       */
@@ -359,6 +388,33 @@ static GtkWidget *page_general(void)
     return g;
 }
 
+static GtkWidget *page_backup(void)
+{
+    GtkWidget *g = make_grid();
+
+    GtkWidget *chk = gtk_check_button_new_with_label("Enable auto-backup for unsaved changes");
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(chk), g_prefs.backup_enabled);
+    gtk_grid_attach(GTK_GRID(g), chk, 0, 0, 2, 1);
+    g_signal_connect(chk, "toggled", G_CALLBACK(on_backup_enabled), NULL);
+
+    s_backup_interval_spin = gtk_spin_button_new_with_range(10, 3600, 10);
+    gtk_spin_button_set_value(GTK_SPIN_BUTTON(s_backup_interval_spin),
+                              g_prefs.backup_interval_secs);
+    gtk_widget_set_sensitive(s_backup_interval_spin, g_prefs.backup_enabled);
+    row(g, 1, "Backup interval (seconds):", s_backup_interval_spin);
+    g_signal_connect(s_backup_interval_spin, "value-changed",
+                     G_CALLBACK(on_backup_interval), NULL);
+
+    GtkWidget *info = gtk_label_new("Backup files are written to ~/.config/npp/backup/\n"
+                                    "and removed when the file is saved or closed.");
+    gtk_widget_set_halign(info, GTK_ALIGN_START);
+    gtk_widget_set_margin_top(info, 8);
+    gtk_label_set_line_wrap(GTK_LABEL(info), TRUE);
+    gtk_grid_attach(GTK_GRID(g), info, 0, 2, 2, 1);
+
+    return g;
+}
+
 /* ------------------------------------------------------------------ */
 /* Dialog                                                              */
 /* ------------------------------------------------------------------ */
@@ -392,6 +448,7 @@ void prefs_dialog_show(GtkWidget *parent)
     gtk_notebook_append_page(GTK_NOTEBOOK(nb), page_display(),      gtk_label_new("Display"));
     gtk_notebook_append_page(GTK_NOTEBOOK(nb), page_new_document(), gtk_label_new("New Document"));
     gtk_notebook_append_page(GTK_NOTEBOOK(nb), page_general(),      gtk_label_new("General"));
+    gtk_notebook_append_page(GTK_NOTEBOOK(nb), page_backup(),       gtk_label_new("Backup"));
 
     GtkWidget *ca = gtk_dialog_get_content_area(GTK_DIALOG(s_prefs_dlg));
     gtk_container_set_border_width(GTK_CONTAINER(ca), 8);
