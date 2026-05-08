@@ -5,12 +5,14 @@
 #include "sci_c.h"
 
 typedef struct {
-    GtkWidget *sci;
-    char      *filepath;    /* NULL = unsaved */
-    char      *encoding;    /* e.g. "UTF-8", "ISO-8859-1" — see npp_encodings[] */
-    gboolean   modified;
-    int        new_index;   /* "new N" label when filepath==NULL */
-    gboolean   word_wrap;   /* per-tab word wrap state */
+    GtkWidget    *sci;
+    char         *filepath;           /* NULL = unsaved */
+    char         *encoding;           /* e.g. "UTF-8", "ISO-8859-1" */
+    gboolean      modified;
+    int           new_index;          /* "new N" label when filepath==NULL */
+    gboolean      word_wrap;          /* per-tab word wrap state */
+    GFileMonitor *file_monitor;       /* watches filepath for external changes */
+    gboolean      ignore_next_change; /* suppress the event caused by our own save */
 } NppDoc;
 
 /* Initialise — call once, returns the GtkNotebook to embed in the window */

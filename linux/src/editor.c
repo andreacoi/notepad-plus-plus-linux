@@ -39,6 +39,97 @@ static GtkWidget *sci_of_page(int page)
     return gtk_notebook_get_nth_page(GTK_NOTEBOOK(s_notebook), page);
 }
 
+static void refresh_tab_label(int page);
+static void update_window_title(void);
+
+/* ------------------------------------------------------------------ */
+/* File change detection                                               */
+/* ------------------------------------------------------------------ */
+
+static void reload_doc_from_disk(NppDoc *doc)
+{
+    gchar  *contents = NULL;
+    gsize   len      = 0;
+    GError *err      = NULL;
+    if (!g_file_get_contents(doc->filepath, &contents, &len, &err)) {
+        g_error_free(err);
+        return;
+    }
+    const char *enc_name = encoding_detect((const guchar *)contents, len);
+    gsize utf8_len = 0;
+    char *utf8 = encoding_to_utf8(enc_name, (const guchar *)contents, len, &utf8_len);
+    g_free(contents);
+    g_free(doc->encoding);
+    doc->encoding = g_strdup(enc_name);
+
+    Sci_Position saved_pos = (Sci_Position)sci_msg(doc->sci, SCI_GETCURRENTPOS, 0, 0);
+    sci_msg(doc->sci, SCI_SETTEXT, 0, (sptr_t)utf8);
+    sci_msg(doc->sci, SCI_SETSAVEPOINT, 0, 0);
+    sci_msg(doc->sci, SCI_EMPTYUNDOBUFFER, 0, 0);
+    sci_msg(doc->sci, SCI_GOTOPOS, (uptr_t)saved_pos, 0);
+    g_free(utf8);
+
+    lexer_apply_from_path(doc->sci, doc->filepath);
+    gitgutter_update(doc->sci, doc->filepath);
+
+    int page = gtk_notebook_page_num(GTK_NOTEBOOK(s_notebook), doc->sci);
+    refresh_tab_label(page);
+    statusbar_update_from_sci(doc->sci);
+}
+
+static void on_file_changed(GFileMonitor *mon, GFile *file, GFile *other,
+                             GFileMonitorEvent event, gpointer user_data)
+{
+    (void)mon; (void)file; (void)other;
+    NppDoc *doc = user_data;
+
+    if (event != G_FILE_MONITOR_EVENT_CHANGED &&
+        event != G_FILE_MONITOR_EVENT_CREATED)
+        return;
+
+    if (doc->ignore_next_change) {
+        doc->ignore_next_change = FALSE;
+        return;
+    }
+
+    /* Only prompt when the window is focused or the tab is visible */
+    const char *basename = g_path_get_basename(doc->filepath);
+    GtkWidget *dlg = gtk_message_dialog_new(GTK_WINDOW(s_window),
+        GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
+        "The file \"%s\" has been changed externally.\nReload it?", basename);
+    gtk_dialog_add_button(GTK_DIALOG(dlg), "_Reload", GTK_RESPONSE_YES);
+    gtk_dialog_add_button(GTK_DIALOG(dlg), "_Keep current", GTK_RESPONSE_NO);
+    gtk_dialog_set_default_response(GTK_DIALOG(dlg), GTK_RESPONSE_YES);
+
+    if (gtk_dialog_run(GTK_DIALOG(dlg)) == GTK_RESPONSE_YES)
+        reload_doc_from_disk(doc);
+    gtk_widget_destroy(dlg);
+}
+
+static void filewatch_start(NppDoc *doc)
+{
+    if (!doc->filepath) return;
+    if (doc->file_monitor) {
+        g_file_monitor_cancel(doc->file_monitor);
+        g_object_unref(doc->file_monitor);
+    }
+    GFile *gf = g_file_new_for_path(doc->filepath);
+    GError *err = NULL;
+    doc->file_monitor = g_file_monitor_file(gf, G_FILE_MONITOR_NONE, NULL, &err);
+    g_object_unref(gf);
+    if (err) { g_error_free(err); doc->file_monitor = NULL; return; }
+    g_signal_connect(doc->file_monitor, "changed", G_CALLBACK(on_file_changed), doc);
+}
+
+static void filewatch_stop(NppDoc *doc)
+{
+    if (doc->file_monitor) {
+        g_file_monitor_cancel(doc->file_monitor);
+        g_object_unref(doc->file_monitor);
+        doc->file_monitor = NULL;
+    }
+}
+
 static void setup_sci(GtkWidget *sci)
 {
     sci_msg(sci, SCI_SETCODEPAGE,     SC_CP_UTF8, 0);
@@ -476,6 +567,7 @@ gboolean editor_open_path(const char *path)
     findreplace_set_sci(sci);
     main_recent_file_add(path);
     gitgutter_update(sci, path);
+    filewatch_start(cur);
     return TRUE;
 }
 
@@ -513,8 +605,10 @@ static gboolean save_doc_to_path(NppDoc *doc, const char *path)
     guchar *buf    = encoding_from_utf8(enc, utf8, (gsize)utf8_len, &out_len);
     g_free(utf8);
 
+    doc->ignore_next_change = TRUE;
     GError *err = NULL;
     if (!g_file_set_contents(path, (const gchar *)buf, (gssize)out_len, &err)) {
+        doc->ignore_next_change = FALSE;
         g_free(buf);
         GtkWidget *dlg = gtk_message_dialog_new(GTK_WINDOW(s_window),
             GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
@@ -572,6 +666,7 @@ gboolean editor_save_as_dialog(void)
             g_free(doc->filepath);
             doc->filepath  = path;
             doc->new_index = 0;
+            filewatch_start(doc);
             refresh_tab_label(editor_current_page());
             update_window_title();
             main_recent_file_add(path);
@@ -593,6 +688,7 @@ gboolean editor_close_page(int page)
 
     if (!ask_save(doc)) return FALSE;
 
+    filewatch_stop(doc);
     backup_clean(doc);
     gtk_notebook_remove_page(GTK_NOTEBOOK(s_notebook), page);
     g_free(doc->filepath);
@@ -613,6 +709,7 @@ void editor_close_all_quit(GApplication *app)
         NppDoc *doc = editor_doc_at(0);
         if (!doc) break;
         if (!ask_save(doc)) return; /* user cancelled */
+        filewatch_stop(doc);
         backup_clean(doc);
         GtkWidget *sci = sci_of_page(0);
         gtk_notebook_remove_page(GTK_NOTEBOOK(s_notebook), 0);
