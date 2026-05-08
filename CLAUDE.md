@@ -151,7 +151,6 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ### High effort
 
-36. **File change detection** — `GFileMonitor` on each open path; prompt reload on `G_FILE_MONITOR_EVENT_CHANGED`.
 37. **Macro recording / playback** — hook `SCN_MACRORECORD`; store `(msg, wParam, lParam)` triples; replay with `SCI_SENDMESSAGE`.
 38. **Document List panel** — dockable `GtkListBox` synced to notebook pages; click to switch tab.
 39. **Folder as Workspace panel** — dockable `GtkTreeView` backed by `GFileEnumerator`; double-click opens file.
