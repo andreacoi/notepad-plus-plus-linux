@@ -13,6 +13,10 @@
 #include "lexer.h"
 #include "udl.h"
 #include "i18n.h"
+#include "session.h"
+
+/* Set to TRUE in main() when no file arguments are given; read in on_activate. */
+static gboolean s_restore_session = FALSE;
 
 /* ------------------------------------------------------------------ */
 /* Menu callbacks                                                      */
@@ -173,6 +177,7 @@ static void cb_close(GtkMenuItem *i, gpointer d)  { (void)i;(void)d; editor_clos
 static void cb_quit(GtkMenuItem *i, gpointer app)
 {
     (void)i;
+    session_save();
     editor_close_all_quit(G_APPLICATION(app));
 }
 
@@ -2664,6 +2669,7 @@ static gboolean on_key_press(GtkWidget *w, GdkEventKey *ev, gpointer d)
 static gboolean on_delete_event(GtkWidget *w, GdkEvent *e, gpointer app)
 {
     (void)w; (void)e;
+    session_save();
     editor_close_all_quit(G_APPLICATION(app));
     return TRUE; /* prevent default destroy; quit handles it */
 }
@@ -2716,6 +2722,11 @@ static void on_activate(GtkApplication *app, gpointer data)
     (void)args; /* CLI args handled below in main() via editor_open_path */
 
     gtk_widget_show_all(window);
+
+    /* Restore previous session (only when no files given on CLI) */
+    if (s_restore_session)
+        session_restore();
+
     NppDoc *initial = editor_current_doc();
     statusbar_update_from_sci(initial->sci);
     lang_menu_sync((const char *)g_object_get_data(G_OBJECT(initial->sci), "npp-lang"));
@@ -2730,14 +2741,17 @@ static void on_activate(GtkApplication *app, gpointer data)
 
 int main(int argc, char **argv)
 {
+    /* Restore last session only when launched with no file arguments */
+    s_restore_session = (argc == 1);
+
     GtkApplication *app = gtk_application_new("org.notepadplusplus.linux",
                                               G_APPLICATION_DEFAULT_FLAGS);
     g_signal_connect(app, "activate", G_CALLBACK(on_activate), NULL);
 
-    /* Register app, open window */
+    /* Pass only argv[0] so GTK doesn't try to handle our file args */
     int status = g_application_run(G_APPLICATION(app), 1, argv);
 
-    /* Open any files passed as arguments after the window is up */
+    /* Open files given on the command line after the window is up */
     if (status == 0 && argc > 1) {
         for (int i = 1; i < argc; i++)
             editor_open_path(argv[i]);
