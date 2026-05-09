@@ -491,6 +491,7 @@ void editor_new_doc(void)
     gtk_notebook_set_tab_reorderable(GTK_NOTEBOOK(s_notebook), sci, TRUE);
     gtk_widget_show_all(s_notebook);
     gtk_notebook_set_current_page(GTK_NOTEBOOK(s_notebook), page);
+    main_doclist_refresh();
 }
 
 gboolean editor_open_path(const char *path)
@@ -569,6 +570,7 @@ gboolean editor_open_path(const char *path)
     statusbar_update_from_sci(sci);
     findreplace_set_sci(sci);
     main_recent_file_add(path);
+    main_doclist_refresh();
     gitgutter_update(sci, path);
     filewatch_start(cur);
     return TRUE;
@@ -673,6 +675,7 @@ gboolean editor_save_as_dialog(void)
             refresh_tab_label(editor_current_page());
             update_window_title();
             main_recent_file_add(path);
+            main_doclist_refresh();
             saved = TRUE;
         } else {
             g_free(path);
@@ -703,6 +706,7 @@ gboolean editor_close_page(int page)
         editor_new_doc();
 
     update_window_title();
+    main_doclist_refresh();
     return TRUE;
 }
 

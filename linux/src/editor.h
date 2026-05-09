@@ -58,6 +58,7 @@ void main_toggle_bookmark_at_line(GtkWidget *sci, int line);
 void main_recent_file_add(const char *path);
 void main_sync_encoding_menu(const char *enc);
 void main_apply_view_symbols(GtkWidget *sci); /* apply margin widths to one sci */
+void main_doclist_refresh(void);              /* rebuild Document List panel */
 
 /* Open a file (or switch to it if already open) then jump to a 1-based line. */
 void   editor_open_and_goto(const char *path, int line);

@@ -16,6 +16,7 @@
 #include "session.h"
 #include "backup.h"
 #include "macro.h"
+#include "doclist.h"
 
 /* Set to TRUE in main() when no file arguments are given; read in on_activate. */
 static gboolean s_restore_session = FALSE;
@@ -436,6 +437,13 @@ static void cb_macro_play_n(GtkMenuItem *i, gpointer d)
     macro_playback_n(doc->sci, GTK_WINDOW(s_main_window));
 }
 
+/* View — panels */
+static void cb_toggle_doclist(GtkCheckMenuItem *item, gpointer d)
+{
+    (void)d;
+    doclist_set_visible(gtk_check_menu_item_get_active(item));
+}
+
 /* Settings */
 static void cb_style_editor(GtkMenuItem *i, gpointer d)
 {
@@ -453,6 +461,11 @@ static void cb_preferences(GtkMenuItem *i, gpointer d)
 {
     (void)i; (void)d;
     prefs_dialog_show(s_main_window);
+}
+
+void main_doclist_refresh(void)
+{
+    doclist_refresh();
 }
 
 /* Called from prefs.c when show_full_path_in_title changes */
@@ -2810,7 +2823,12 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
             GtkWidget *pan_item = gtk_menu_item_new_with_label("Panels");
             GtkWidget *pan_menu = gtk_menu_new();
             gtk_menu_item_set_submenu(GTK_MENU_ITEM(pan_item), pan_menu);
-            APPEND(pan_menu, nyi_item("Document List"));
+            {
+                GtkWidget *mi_doclist = gtk_check_menu_item_new_with_label("Document List");
+                gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(mi_doclist), FALSE);
+                g_signal_connect(mi_doclist, "toggled", G_CALLBACK(cb_toggle_doclist), NULL);
+                APPEND(pan_menu, mi_doclist);
+            }
             APPEND(pan_menu, nyi_item("Document Map"));
             APPEND(pan_menu, nyi_item("Function List"));
             APPEND(pan_menu, nyi_item("Folder as Workspace"));
@@ -3014,7 +3032,7 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
 static void on_switch_page(GtkNotebook *nb, GtkWidget *page,
                            guint n, gpointer d)
 {
-    (void)nb; (void)page; (void)n; (void)d;
+    (void)nb; (void)page; (void)d;
     NppDoc *doc = editor_current_doc();
     if (!doc) return;
     statusbar_update_from_sci(doc->sci);
@@ -3027,6 +3045,7 @@ static void on_switch_page(GtkNotebook *nb, GtkWidget *page,
     wrap_menu_sync(doc->word_wrap);
     toolbar_sync_toggles(doc->sci);
     main_sync_encoding_menu(doc->encoding ? doc->encoding : "UTF-8");
+    doclist_sync_selection((int)n);
 }
 
 /* ------------------------------------------------------------------ */
@@ -3091,10 +3110,14 @@ static void on_activate(GtkApplication *app, gpointer data)
     GtkWidget *toolbar = toolbar_init(window);
     gtk_box_pack_start(GTK_BOX(vbox), toolbar, FALSE, FALSE, 0);
 
-    /* Editor (notebook) */
+    /* Editor area: GtkPaned with Document List panel on left, notebook on right */
+    GtkWidget *hpaned  = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
+    GtkWidget *doclist = doclist_init();
     GtkWidget *notebook = editor_init(window);
     g_signal_connect(notebook, "switch-page", G_CALLBACK(on_switch_page), NULL);
-    gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 0);
+    gtk_paned_pack1(GTK_PANED(hpaned), doclist, FALSE, FALSE);
+    gtk_paned_pack2(GTK_PANED(hpaned), notebook, TRUE,  TRUE);
+    gtk_box_pack_start(GTK_BOX(vbox), hpaned, TRUE, TRUE, 0);
     backup_init();
 
     /* Status bar */
