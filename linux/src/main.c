@@ -3130,6 +3130,7 @@ static void on_activate(GtkApplication *app, gpointer data)
     (void)args; /* CLI args handled below in main() via editor_open_path */
 
     gtk_widget_show_all(window);
+    doclist_set_visible(FALSE); /* show_all would un-hide it; keep it off by default */
 
     /* Restore previous session (only when no files given on CLI) */
     if (s_restore_session)
