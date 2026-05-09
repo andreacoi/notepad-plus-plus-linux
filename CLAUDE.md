@@ -40,6 +40,7 @@ cmake -B build && cmake --build build
 | `autocomplete.c/h` | Word+keyword auto-completion: `SCI_AUTOCSHOW` driven by `SCN_CHARADDED`; sources keywords from `lexer_get_keywords()` and scans the document (first 100 KB) |
 | `udl.c/h` | User Defined Language manager: scan and parse NPP UDL XML files; `udl_apply()` routes 28 kwlist slots to `SCI_SETPROPERTY` (comments, numbers, operators1, folders-in-code1, delimiters) or `SCI_SETKEYWORDS` (operators2, folders-in-code2/comment, keywords1-8); applies per-style colors/fonts; multi-word tokens preprocessed (`"a b"` → `a\vb`, `'a b'` → `a\bb`) |
 | `gitgutter.c/h` | Git change-history gutter: `gitgutter_setup()` defines margin 3 + markers 2/3/4; `gitgutter_update()` debounces 800 ms then runs `git diff HEAD -- <file>` via `GSubprocess`; unified diff parser classifies lines as added/modified/deleted; `gitgutter_clear()` removes all markers |
+| `macro.c/h` | Macro recording/playback: `macro_start_recording()`/`macro_stop_recording()` wraps `SCI_STARTRECORD`/`SCI_STOPRECORD`; `macro_on_record()` stores steps from `SCN_MACRORECORD` (string lParams heap-copied); `macro_playback()` replays once; `macro_playback_n()` prompts for count; each playback in one undo group |
 | `session.c/h` | Session save/restore: `session_save()` serialises open file paths + `firstVisibleLine` + `xOffset` + `caretPosition` + `encoding` to `~/.config/npp/session.xml` on quit; `session_restore()` reads it back with `GMarkupParser`, skips missing files, restores scroll/caret via `SCI_SETFIRSTVISIBLELINE` / `SCI_SETXOFFSET` / `SCI_GOTOPOS`; restore is skipped when CLI file arguments are present |
 | `backup.c/h` | Auto-backup: `backup_init()` creates `~/.config/npp/backup/` and starts a `g_timeout_add_seconds()` timer; `backup_tick()` iterates all open docs and writes modified ones to `~/.config/npp/backup/<basename>`; `backup_clean(doc)` removes the backup on clean save (`SCN_SAVEPOINTREACHED`) and on tab close; interval and enable/disable controlled by `g_prefs.backup_interval_secs` / `g_prefs.backup_enabled`; `backup_restart_timer()` called when prefs change |
 
@@ -151,7 +152,8 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ### High effort
 
-37. **Macro recording / playback** — hook `SCN_MACRORECORD`; store `(msg, wParam, lParam)` triples; replay with `SCI_SENDMESSAGE`.
+**Menu bar** — complete set of menus now present: File, Edit, Search, View, Language, Encoding, Settings, Tools, Macro, Run, Plugins, Help. Unimplemented items are `nyi_item()` placeholders (insensitive). Order matches original NPP. Menu items wired so far: File (new/open/reload/save/save-as/save-all/close/close-all/close-all-but/load-session/save-session/quit), Edit (undo/redo/cut/copy/paste/delete/select-all/copy-filepath/copy-filename/copy-dirpath/indent/unindent/column-editor/EOL/datetime/line-ops/blank-ops/case/comment), Search (find/replace/find-in-files/find-next/find-prev/goto/brace/bookmarks/marks/multi-select), View (word-wrap/whitespace/eol/line-nums/fold-margin/bookmarks/edge/folding/fold-current/tab-nav/zoom/always-on-top), Macro (start/stop/play/play-n).
+
 38. **Document List panel** — dockable `GtkListBox` synced to notebook pages; click to switch tab.
 39. **Folder as Workspace panel** — dockable `GtkTreeView` backed by `GFileEnumerator`; double-click opens file.
 40. **Function List panel** — dockable `GtkTreeView`; parse current file with a per-language regex or ctags; update on `SCN_MODIFIED`.
