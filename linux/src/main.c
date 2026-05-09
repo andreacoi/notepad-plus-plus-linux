@@ -21,6 +21,7 @@
 #include "funclist.h"
 #include "docmap.h"
 #include "searchresults.h"
+#include "spell.h"
 
 /* Set to TRUE in main() when no file arguments are given; read in on_activate. */
 static gboolean s_restore_session = FALSE;
@@ -475,6 +476,27 @@ static void cb_toggle_searchresults(GtkCheckMenuItem *item, gpointer d)
 {
     (void)d;
     searchresults_set_visible(gtk_check_menu_item_get_active(item));
+}
+
+static void cb_toggle_spellcheck(GtkCheckMenuItem *item, gpointer d)
+{
+    (void)d;
+    gboolean active = gtk_check_menu_item_get_active(item);
+    spell_set_enabled(active);
+    NppDoc *doc = editor_current_doc();
+    if (doc) {
+        if (active)
+            spell_check_document(doc->sci);
+        else {
+            /* Clear all indicators when disabling */
+            scintilla_send_message(SCINTILLA(doc->sci),
+                                   SCI_SETINDICATORCURRENT, SPELL_INDICATOR, 0);
+            Sci_Position len = (Sci_Position)scintilla_send_message(
+                SCINTILLA(doc->sci), SCI_GETLENGTH, 0, 0);
+            scintilla_send_message(SCINTILLA(doc->sci),
+                                   SCI_INDICATORCLEARRANGE, 0, len);
+        }
+    }
 }
 
 static void cb_open_folder_workspace(GtkMenuItem *i, gpointer d)
@@ -3031,6 +3053,13 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     }
     APPEND(settings, sep_item());
     APPEND(settings, nyi_item("Edit Context Menu…"));
+    APPEND(settings, sep_item());
+    {
+        GtkWidget *mi_sc = gtk_check_menu_item_new_with_label("Spell Check");
+        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(mi_sc), FALSE);
+        g_signal_connect(mi_sc, "toggled", G_CALLBACK(cb_toggle_spellcheck), NULL);
+        APPEND(settings, mi_sc);
+    }
 
     /* ---- Tools ---- */
     GtkWidget *tools = submenu(bar, TM("menu.tools", "_Tools"));
@@ -3122,6 +3151,7 @@ static void on_switch_page(GtkNotebook *nb, GtkWidget *page,
     doclist_sync_selection((int)n);
     funclist_update(doc->sci);
     docmap_update(doc->sci);
+    spell_check_document(doc->sci);
 }
 
 /* ------------------------------------------------------------------ */
@@ -3219,6 +3249,7 @@ static void on_activate(GtkApplication *app, gpointer data)
 
     gtk_box_pack_start(GTK_BOX(vbox), content_vpaned, TRUE, TRUE, 0);
     backup_init();
+    spell_init(window);
 
     /* Status bar */
     GtkWidget *statusbar = statusbar_init();

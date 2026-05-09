@@ -330,6 +330,12 @@ typedef struct SCNotification {
 /* SCN_MARGINCLICK notification */
 #define SCN_MARGINCLICK         2010
 
+/* Indicator value query */
+#define SCI_INDICATORVALUEAT    2507
+#define SCI_POSITIONFROMPOINTCLOSE 2023
+#define INDIC_SQUIGGLE          1
+#define INDIC_SQUIGGLELOW       11
+
 /* Auto-completion */
 #define SCI_AUTOCSHOW                   2100
 #define SCI_AUTOCCANCEL                 2101

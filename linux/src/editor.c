@@ -13,6 +13,7 @@
 #include "macro.h"
 #include "funclist.h"
 #include "docmap.h"
+#include "spell.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -133,6 +134,21 @@ static void filewatch_stop(NppDoc *doc)
     }
 }
 
+static gboolean on_sci_button_press(GtkWidget *w, GdkEventButton *ev, gpointer d)
+{
+    (void)d;
+    if (ev->type == GDK_BUTTON_PRESS && ev->button == 3) {
+        GtkWidget *menu = gtk_menu_new();
+        spell_populate_context_menu(w, menu, (int)ev->x, (int)ev->y);
+        if (gtk_container_get_children(GTK_CONTAINER(menu))) {
+            gtk_menu_popup_at_pointer(GTK_MENU(menu), (GdkEvent *)ev);
+            return TRUE;  /* consumed — suppress Scintilla's own right-click */
+        }
+        gtk_widget_destroy(menu);
+    }
+    return FALSE;
+}
+
 static void setup_sci(GtkWidget *sci)
 {
     sci_msg(sci, SCI_SETCODEPAGE,     SC_CP_UTF8, 0);
@@ -193,6 +209,10 @@ static void setup_sci(GtkWidget *sci)
     main_apply_view_symbols(sci);
     autocomplete_setup(sci);
     gitgutter_setup(sci);
+    spell_on_sci_created(sci);
+    gtk_widget_add_events(sci, GDK_BUTTON_PRESS_MASK);
+    g_signal_connect(sci, "button-press-event",
+                     G_CALLBACK(on_sci_button_press), NULL);
 }
 
 /* ------------------------------------------------------------------ */
@@ -386,6 +406,7 @@ static void on_sci_notify(GtkWidget *sci, gint unused,
         if (doc->filepath)
             gitgutter_update(sci, doc->filepath);
         funclist_schedule_update(sci);
+        spell_schedule_check(sci);
     } else if (code == SCN_MACRORECORD) {
         macro_on_record((unsigned int)n->message, n->wParam, n->lParam);
     }
