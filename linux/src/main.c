@@ -20,6 +20,7 @@
 #include "workspace.h"
 #include "funclist.h"
 #include "docmap.h"
+#include "searchresults.h"
 
 /* Set to TRUE in main() when no file arguments are given; read in on_activate. */
 static gboolean s_restore_session = FALSE;
@@ -468,6 +469,12 @@ static void cb_toggle_docmap(GtkCheckMenuItem *item, gpointer d)
         NppDoc *doc = editor_current_doc();
         if (doc) docmap_update(doc->sci);
     }
+}
+
+static void cb_toggle_searchresults(GtkCheckMenuItem *item, gpointer d)
+{
+    (void)d;
+    searchresults_set_visible(gtk_check_menu_item_get_active(item));
 }
 
 static void cb_open_folder_workspace(GtkMenuItem *i, gpointer d)
@@ -2892,6 +2899,13 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
                 g_signal_connect(mi_ws, "toggled", G_CALLBACK(cb_toggle_workspace), NULL);
                 APPEND(pan_menu, mi_ws);
             }
+            {
+                GtkWidget *mi_sr = gtk_check_menu_item_new_with_label("Search Results");
+                gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(mi_sr), FALSE);
+                g_signal_connect(mi_sr, "toggled",
+                                 G_CALLBACK(cb_toggle_searchresults), NULL);
+                APPEND(pan_menu, mi_sr);
+            }
             APPEND(pan_menu, nyi_item("Project Manager"));
             APPEND(pan_menu, nyi_item("Monitoring (tail -f)"));
             APPEND(view, pan_item);
@@ -3198,7 +3212,12 @@ static void on_activate(GtkApplication *app, gpointer data)
     gtk_paned_pack1(GTK_PANED(outer_paned), workspace_init(window), FALSE, FALSE);
     gtk_paned_pack2(GTK_PANED(outer_paned), inner_paned,            TRUE,  TRUE);
 
-    gtk_box_pack_start(GTK_BOX(vbox), outer_paned, TRUE, TRUE, 0);
+    /* Vertical pane: all horizontal panels on top, Search Results at bottom */
+    GtkWidget *content_vpaned = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
+    gtk_paned_pack1(GTK_PANED(content_vpaned), outer_paned,          TRUE,  FALSE);
+    gtk_paned_pack2(GTK_PANED(content_vpaned), searchresults_init(), FALSE, FALSE);
+
+    gtk_box_pack_start(GTK_BOX(vbox), content_vpaned, TRUE, TRUE, 0);
     backup_init();
 
     /* Status bar */
@@ -3216,6 +3235,7 @@ static void on_activate(GtkApplication *app, gpointer data)
     workspace_set_visible(FALSE);
     funclist_set_visible(FALSE);
     docmap_set_visible(FALSE);
+    searchresults_set_visible(FALSE);
 
     /* Restore previous session (only when no files given on CLI) */
     if (s_restore_session)

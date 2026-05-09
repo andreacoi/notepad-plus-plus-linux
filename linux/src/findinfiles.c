@@ -1,5 +1,6 @@
 /* findinfiles.c — Find in Files dialog for the GTK3 Linux port. */
 #include "findinfiles.h"
+#include "searchresults.h"
 #include "editor.h"
 #include "i18n.h"
 #include <string.h>
@@ -34,6 +35,7 @@ typedef struct { char *filepath; int line; char *text; } FifHit;
 typedef struct {
     GPtrArray *hits;
     int        file_count;
+    char      *needle;
 } FifResult;
 
 static void fif_hit_free(gpointer p)
@@ -155,6 +157,7 @@ static gpointer search_thread(gpointer data)
     FifResult *res  = g_new(FifResult, 1);
     res->hits       = job->hits;
     res->file_count = job->file_count;
+    res->needle     = g_strdup(job->needle); /* copy before freeing job */
 
     g_free(job->needle);
     g_free(job->directory);
@@ -183,6 +186,7 @@ static gboolean post_results(gpointer data)
     if (res->hits->len == 0) {
         gtk_label_set_text(GTK_LABEL(s_status_lbl), "No matches found.");
         g_ptr_array_unref(res->hits);
+        g_free(res->needle);
         g_free(res);
         return G_SOURCE_REMOVE;
     }
@@ -238,6 +242,19 @@ static gboolean post_results(gpointer data)
 
     gtk_tree_view_expand_all(GTK_TREE_VIEW(s_tree_view));
 
+    /* Feed the same results into the dockable Search Results panel */
+    searchresults_begin(res->needle);
+    for (guint fi = 0; fi < files->len; fi++) {
+        const char *fp    = files->pdata[fi];
+        GPtrArray  *fhits = g_hash_table_lookup(by_file, fp);
+        searchresults_add_file(fp, (int)fhits->len);
+        for (guint hi = 0; hi < fhits->len; hi++) {
+            FifHit *h = fhits->pdata[hi];
+            searchresults_add_hit(fp, h->line, h->text);
+        }
+    }
+    searchresults_end((int)res->hits->len, res->file_count);
+
     /* Free grouping structures */
     for (guint fi = 0; fi < files->len; fi++)
         g_ptr_array_unref(g_hash_table_lookup(by_file, files->pdata[fi]));
@@ -251,6 +268,7 @@ static gboolean post_results(gpointer data)
     gtk_label_set_text(GTK_LABEL(s_status_lbl), status);
 
     g_ptr_array_unref(res->hits);
+    g_free(res->needle);
     g_free(res);
     return G_SOURCE_REMOVE;
 }
