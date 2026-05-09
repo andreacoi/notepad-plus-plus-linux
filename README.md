@@ -135,6 +135,9 @@ Once the project is feature-complete, pre-compiled packages will be produced for
 Features beyond the original Notepad++ scope, specific to this Linux port. These will be tackled only after all upcoming features are complete.
 
 - **Vim mode** — modal editing (Normal / Insert / Visual) with core Vim motions and commands, toggled via Settings → Vim Mode
+- **Terminal panel** — Show a terminal emulator inside the bottom panel with two main functions:
+    - if the file or the workspace folder is local, open the terminal in the `cwd`;
+    - if the file is remote (once will be available nppFTP plugin)  open an SSH terminal on the connected server.
 
 ## Bug fixes
 
