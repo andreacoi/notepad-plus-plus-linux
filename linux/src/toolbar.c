@@ -5,6 +5,7 @@
 #include "toolbar.h"
 #include "editor.h"
 #include "findreplace.h"
+#include "macro.h"
 #include "sci_c.h"
 #include <string.h>
 #include <stdio.h>
@@ -41,6 +42,11 @@ static GtkWidget *s_btn_save         = NULL;
 static GtkWidget *s_tgl_wrap         = NULL;
 static GtkWidget *s_tgl_allchars     = NULL;
 static GtkWidget *s_tgl_indent       = NULL;
+static GtkWidget *s_btn_startrecord  = NULL;
+static GtkWidget *s_btn_stoprecord   = NULL;
+static GtkWidget *s_btn_play         = NULL;
+static GtkWidget *s_btn_playn        = NULL;
+static GtkWidget *s_btn_saverecord   = NULL;
 
 /* ------------------------------------------------------------------ */
 /* Dark mode detection (mirrors NppThemeManager logic)                */
@@ -124,6 +130,14 @@ static GtkToolItem *make_toggle(const char *icon_name, const char *tooltip,
 static GtkToolItem *make_sep(void)
 {
     return gtk_separator_tool_item_new();
+}
+
+/* Placeholder: shows the icon but stays insensitive until the feature is wired. */
+static GtkToolItem *make_placeholder(const char *icon_name, const char *tooltip)
+{
+    GtkToolItem *item = make_btn(icon_name, tooltip, NULL, NULL);
+    gtk_widget_set_sensitive(GTK_WIDGET(item), FALSE);
+    return item;
 }
 
 /* ------------------------------------------------------------------ */
@@ -212,6 +226,40 @@ static void on_indent(GtkToolItem *item, gpointer d)
     editor_send(SCI_SETINDENTATIONGUIDES, on ? SC_IV_LOOKBOTH : SC_IV_NONE, 0);
 }
 
+static void on_macro_start(GtkToolItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    macro_start_recording(doc->sci);
+    toolbar_update_macro_buttons();
+}
+
+static void on_macro_stop(GtkToolItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    macro_stop_recording(doc->sci);
+    toolbar_update_macro_buttons();
+}
+
+static void on_macro_play(GtkToolItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    macro_playback(doc->sci);
+}
+
+static void on_macro_playn(GtkToolItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    macro_playback_n(doc->sci, GTK_WINDOW(s_window));
+}
+
 /* ------------------------------------------------------------------ */
 /* Public API                                                          */
 /* ------------------------------------------------------------------ */
@@ -236,6 +284,7 @@ GtkWidget *toolbar_init(GtkWidget *parent_window)
     ADD(make_btn("saveall",  "Save All",            G_CALLBACK(on_save_all), NULL));
     ADD(make_btn("close",    "Close (Ctrl+W)",      G_CALLBACK(on_close),    NULL));
     ADD(make_btn("closeall", "Close All",           G_CALLBACK(on_close_all),NULL));
+    ADD(make_placeholder("print", "Print"));
     ADD(make_sep());
 
     /* ---- Clipboard group ---- */
@@ -271,11 +320,62 @@ GtkWidget *toolbar_init(GtkWidget *parent_window)
     ADD(GTK_TOOL_ITEM(s_tgl_wrap));
     ADD(GTK_TOOL_ITEM(s_tgl_allchars));
     ADD(GTK_TOOL_ITEM(s_tgl_indent));
+    ADD(make_placeholder("syncH", "Synchronise Horizontal Scrolling"));
+    ADD(make_placeholder("syncV", "Synchronise Vertical Scrolling"));
+    ADD(make_sep());
+
+    /* ---- Macro group ---- */
+    s_btn_startrecord =
+    GTK_WIDGET(make_btn("startrecord", "Start Recording (Ctrl+Shift+R)",
+                        G_CALLBACK(on_macro_start), NULL));
+    s_btn_stoprecord =
+    GTK_WIDGET(make_btn("stoprecord",  "Stop Recording",
+                        G_CALLBACK(on_macro_stop),  NULL));
+    s_btn_play =
+    GTK_WIDGET(make_btn("playrecord",  "Playback (Ctrl+Shift+P)",
+                        G_CALLBACK(on_macro_play),  NULL));
+    s_btn_playn =
+    GTK_WIDGET(make_btn("playrecord_m","Run Macro Multiple Times…",
+                        G_CALLBACK(on_macro_playn), NULL));
+    s_btn_saverecord =
+    GTK_WIDGET(make_placeholder("saverecord", "Save Current Recorded Macro"));
+    ADD(GTK_TOOL_ITEM(s_btn_startrecord));
+    ADD(GTK_TOOL_ITEM(s_btn_stoprecord));
+    ADD(GTK_TOOL_ITEM(s_btn_play));
+    ADD(GTK_TOOL_ITEM(s_btn_playn));
+    ADD(GTK_TOOL_ITEM(s_btn_saverecord));
+    ADD(make_sep());
+
+    /* ---- Panels group ---- */
+    ADD(make_placeholder("docList",     "Document List"));
+    ADD(make_placeholder("docMap",      "Document Map"));
+    ADD(make_placeholder("fileBrowser", "Folder as Workspace"));
+    ADD(make_placeholder("funcList",    "Function List"));
+    ADD(make_placeholder("monitoring",  "File Monitoring"));
+    ADD(make_sep());
+
+    /* ---- Misc ---- */
+    ADD(make_placeholder("udl", "User Defined Languages"));
 
 #undef ADD
 
+    toolbar_update_macro_buttons();
     gtk_widget_show_all(tb);
     return tb;
+}
+
+void toolbar_update_macro_buttons(void)
+{
+    if (!s_btn_startrecord) return;
+    gboolean recording = macro_is_recording();
+    gboolean has_macro = macro_has_macro();
+    gtk_widget_set_sensitive(s_btn_startrecord, !recording);
+    gtk_widget_set_sensitive(s_btn_stoprecord,   recording);
+    gtk_widget_set_sensitive(s_btn_play,         !recording && has_macro);
+    gtk_widget_set_sensitive(s_btn_playn,        !recording && has_macro);
+    /* saverecord: enabled when stopped and a macro exists (placeholder for now) */
+    if (s_btn_saverecord)
+        gtk_widget_set_sensitive(s_btn_saverecord, FALSE);
 }
 
 void toolbar_sync_toggles(GtkWidget *sci)
