@@ -80,7 +80,8 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - **Document List panel** — View → Panels → Document List toggles a dockable side panel listing all open tabs; each row shows a `*` prefix for modified documents; clicking a row switches to that tab; the panel syncs automatically when tabs are opened, closed, renamed or switched; housed in a resizable `GtkPaned` to the left of the editor
 - **Folder as Workspace panel** — View → Panels → Folder as Workspace (or File → Open Folder as Workspace…) opens a directory tree browser; lazy-loaded `GtkTreeView`: directories expand on demand via `g_file_enumerate_children`; entries sorted directories-first then alphabetically; hidden files skipped; folder/file icons from the system icon theme; double-click opens a file in the editor; current root shown in a path label in the panel header
 - **Function List panel** — View → Panels → Function List toggles a dockable right-side panel showing the structure of the current file; per-language regex patterns cover 18 languages (C, C++, ObjC, Python, JavaScript, TypeScript, Java, C#, Go, Rust, PHP, Ruby, Bash, Lua, Swift, Kotlin, Perl, SQL, PowerShell); two-level tree: class/struct nodes at the root, functions as children; ungrouped functions collected under a `(Global)` node; Python uses indentation depth for class membership; brace-depth tracking for all other languages; debounced 600 ms rebuild on each `SCN_MODIFIED`; clicking a row jumps the editor to that line; panel is hidden by default
-- **Document Map** — View → Panels → Document Map toggles a dockable minimap panel on the far right; a secondary `ScintillaWidget` shares the same document as the main editor via `SCI_SETDOCPOINTER` (text and syntax-highlighting tokens are automatically mirrored); zoomed to −10 with all margins, scrollbars, and caret hidden; a semi-transparent blue viewport rectangle is painted on top via `GtkOverlay` + `GtkDrawingArea` + Cairo; the minimap centres on the currently visible range on every `SCN_UPDATEUI` event; clicking anywhere on the minimap scrolls the main editor to that position; panel is hidden by default
+- **Document Map** — View → Panels → Document Map toggles a dockable minimap panel on the far right; a secondary `ScintillaWidget` shares the same document as the main editor via `SCI_SETDOCPOINTER` (text and syntax-highlighting tokens are automatically mirrored); zoomed to −10 with all margins, scrollbars, and caret hidden; a semi-transparent blue viewport rectangle is painted on top via `GtkOverlay` + `GtkDrawingArea` + Cairo; the minimap centres on the currently visible range on every `SCN_UPDATEUI` event; the overlay captures all pointer events so clicking or dragging the minimap scrolls the main editor continuously; no header — the minimap fills the full panel for seamless integration; panel is hidden by default
+- **Search Results panel** — View → Panels → Search Results (also auto-shown after every Find in Files search) toggles a dockable bottom panel; three-level `GtkTreeStore`: search root row ("Search "needle" — N matches in M files") → file rows ("path (N hits)") → hit rows ("line: text"); results accumulate across multiple searches without being cleared; double-clicking a hit row opens the file and jumps to that line; a Clear button wipes all accumulated results; the panel lives in a vertical `GtkPaned` below the main editor area; hidden by default, shown automatically when a Find in Files search returns results
 
 ### Localisation
 - Automatic system locale detection via GLib (`g_get_language_names()`)
@@ -113,7 +114,6 @@ Ordered by implementation effort (low → high).
 > **Note:** All the features with low and medium effort required are marked as completed. No intermediate release are planned. This software will be released when all the points in this list will be successfully completed.
 
 ### High effort
-- **Search Results panel** — accumulated find results with navigation
 - **Spell checker** — inline spell checking with highlight and correction
 - **Plugin system** — dlopen-based plugin loading, menu integration, NPPM message routing
 
@@ -183,6 +183,7 @@ linux/src/doclist.c/h      — Document List panel: GtkListBox synced to noteboo
 linux/src/workspace.c/h    — Folder as Workspace panel: lazy GtkTreeView backed by GFileEnumerator
 linux/src/funclist.c/h     — Function List panel: per-language regex parser, 2-level GtkTreeStore, debounced rebuild
 linux/src/docmap.c/h       — Document Map panel: shared-document minimap ScintillaWidget, viewport Cairo overlay
+linux/src/searchresults.c/h — Search Results panel: 3-level GtkTreeStore, fed from findinfiles, bottom-docked
 linux/src/sci_c.h           — C-safe Scintilla interface
 
 scintilla/                  — vendored editing engine (GTK3 backend used as-is)
