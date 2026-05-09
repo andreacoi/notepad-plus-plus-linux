@@ -31,8 +31,11 @@ gboolean   editor_open_dialog(void);               /* shows GTK open dialog */
 gboolean   editor_open_path(const char *path);     /* open a specific file   */
 gboolean   editor_save(void);                      /* save current doc       */
 gboolean   editor_save_at(int page);               /* save specific page     */
+gboolean   editor_save_all(void);                  /* save all modified docs  */
 gboolean   editor_save_as_dialog(void);            /* shows GTK save dialog  */
+void       editor_reload_current(void);            /* reload current doc from disk */
 gboolean   editor_close_page(int page);            /* -1 = current           */
+gboolean   editor_close_all_but_current(void);
 void       editor_close_all_quit(GApplication *app);
 
 /* Edit operations on current document */
