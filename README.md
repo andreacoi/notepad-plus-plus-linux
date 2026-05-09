@@ -1,6 +1,6 @@
-# Notepad++ for Linux
+# Notetux++
 
-**The first native port of Notepad++ to Linux.** A full port of the original [Notepad++](https://notepad-plus-plus.org) codebase — not a rewrite, not an alternative, not Wine.
+**A native Linux text editor inspired by Notepad++.** Built from scratch for Linux with GTK3 — not a port, not Wine.
 
 <p align="center">
   <img src="https://notepad-plus-plus-mac.org/assets/images/icon-128x128.png" alt="Notepad++ for macOS app icon" width="128" height="128">
@@ -16,14 +16,14 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 
 ### Editing
 - **Auto-completion** — word and keyword completion triggered after N characters (configurable in Preferences → Editor); sources: language keywords (C/C++, Python, JavaScript, TypeScript, SQL, Rust, Bash, Lua, PHP, Ruby, Perl) and all words in the current document; accept with Tab/Enter, cancel with Escape; enabled/min-chars configurable in Settings → Preferences
-- **User-defined languages (UDL)** — custom syntax highlighting via NPP XML definitions in `~/.config/npp/userDefineLangs/` (user) and `RESOURCES_DIR/userDefineLangs/` (bundled); two bundled Markdown UDLs (light and dark); automatically detected from file extension; available in Language → User Defined Languages submenu; full LexUser.cxx (ported from Windows) handles comments, delimiters, keyword groups, fold markers, operators; multi-word tokens (`"hello world"`), per-style colors/fonts, case-insensitivity, fold-of-comments all supported
+- **User-defined languages (UDL)** — custom syntax highlighting via NPP XML definitions in `~/.config/notetux/userDefineLangs/` (user) and `RESOURCES_DIR/userDefineLangs/` (bundled); two bundled Markdown UDLs (light and dark); automatically detected from file extension; available in Language → User Defined Languages submenu; full LexUser.cxx (ported from Windows) handles comments, delimiters, keyword groups, fold markers, operators; multi-word tokens (`"hello world"`), per-style colors/fonts, case-insensitivity, fold-of-comments all supported
 - Multi-tab editing with reorderable tabs and close buttons
 - File operations: New, Open (multi-file), Save, Save As, Close
 - Undo / Redo, Cut / Copy / Paste, Select All
 - Go To Line dialog
 - Modified-document tracking with ask-to-save on close/quit
-- **Session save / restore** — open file set, per-tab caret and scroll positions saved to `~/.config/npp/session.xml` on quit and restored on next launch; skips files that no longer exist on disk; CLI file arguments suppress restore
-- **Auto-backup** — every N seconds (default 60, configurable in Preferences → Backup), any modified unsaved document is written to `~/.config/npp/backup/<basename>`; backup is removed when the file is cleanly saved or the tab is closed; enabled/interval configurable via Settings → Preferences → Backup
+- **Session save / restore** — open file set, per-tab caret and scroll positions saved to `~/.config/notetux/session.xml` on quit and restored on next launch; skips files that no longer exist on disk; CLI file arguments suppress restore
+- **Auto-backup** — every N seconds (default 60, configurable in Preferences → Backup), any modified unsaved document is written to `~/.config/notetux/backup/<basename>`; backup is removed when the file is cleanly saved or the tab is closed; enabled/interval configurable via Settings → Preferences → Backup
 - Command-line file arguments
 
 ### Syntax Highlighting
@@ -35,10 +35,10 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 ### Themes & Style Configurator
 - **Style Configurator** dialog (Settings → Style Configurator)
   - 20 bundled themes: Monokai, Bespin, Obsidian, Solarized, Twilight, DarkModeDefault, and more
-  - User themes from `~/.config/npp/themes/` (place any Notepad++ XML theme file there)
+  - User themes from `~/.config/notetux/themes/` (place any Notepad++ XML theme file there)
   - Per-language, per-style editing: font family, font size, foreground/background color, bold, italic, underline
   - Live preview of each style
-  - Save user overrides to `~/.config/npp/stylers.xml`
+  - Save user overrides to `~/.config/notetux/stylers.xml`
 - System monospace font auto-detected on first run (via GSettings `org.gnome.desktop.interface`)
 
 ### Search
@@ -58,7 +58,7 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - **Bookmarks** — Search menu: Toggle Bookmark (Ctrl+F2), Next Bookmark (F2), Previous Bookmark (Shift+F2), Clear All Bookmarks; Cut/Copy/Delete Bookmarked Lines; click the bookmarks margin to toggle; blue roundrect marker in margin 1; next/prev wraps around
 - **Mark styles** — Search → Mark Styles submenu: 5 color highlight styles (yellow, cyan, blue, orange, magenta) using Scintilla `INDIC_ROUNDBOX` indicators; apply to current selection, clear per-style or all at once, jump to next/previous occurrence of each style
 - **Go to matching brace** — Search → Go to Matching Brace (Ctrl+]): moves caret to the matching `()[]{}` or `<>` brace; live `STYLE_BRACELIGHT` / `STYLE_BRACEBAD` highlight on every cursor move via `SCN_UPDATEUI`
-- **Recent files list** — File → Open Recent submenu: last 10 opened/saved files, persisted to `~/.config/npp/recentfiles.txt`; opens on click; Clear Recent Files at bottom of list
+- **Recent files list** — File → Open Recent submenu: last 10 opened/saved files, persisted to `~/.config/notetux/recentfiles.txt`; opens on click; Clear Recent Files at bottom of list
 - **Show/hide symbols** — View menu check items: Show Whitespace, Show EOL Markers, Show Line Numbers, Show Fold Margin, Show Bookmarks Margin; state is global and applied to all tabs
 - **Edge column** — View menu toggle (Show Edge Column) draws a vertical guide line; "Set Edge Column…" opens a dialog to choose the column (default 80, range 1–512)
 - **Insert date/time** — Edit → Insert Date/Time submenu: Short format (`HH:MM:SS MM/DD/YYYY`) and Long format (`Weekday, Month DD, YYYY HH:MM:SS`); inserts at cursor, replacing any selection
@@ -70,8 +70,8 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - **Comment / Uncomment** — Edit → Comment/Uncomment submenu: Toggle Single Line Comment (Ctrl+K) and Toggle Block Comment (Ctrl+Shift+K); language-aware delimiters for 80+ languages; toggles (adds/removes) based on whether all covered lines are already commented
 - **Whitespace conversions** — Edit → Blank Operations submenu: Convert Spaces to Tabs (replaces leading spaces with tabs respecting the current tab width) and Convert Tabs to Spaces (expands leading tabs to spaces using the current tab width)
 - **Encoding selection** — Encoding top-level menu with 17 encodings across 4 regional groups (Western European, Central European, Cyrillic, East Asian); per-tab encoding stored in `NppDoc.encoding`; auto-detected from BOM (UTF-8/16 LE/BE) or UTF-8 validation on open; file bytes converted to UTF-8 for display and back to the chosen encoding on save; statusbar and radio item sync on tab switch
-- **Keyboard shortcut mapper** — Settings → Shortcut Mapper: dialog listing all 27 configurable commands (File/Edit/Search); double-click to capture a new key combination; Reset Selected / Reset All; persisted to `~/.config/npp/shortcuts.xml`; overrides applied at startup before menus are built
-- **Preferences dialog** — Settings → Preferences: 4-page dialog (Editor / Display / New Document / General) covering tab width/indentation, auto-indent, brace highlighting, caret style, word wrap, EOL mode, default encoding, title format, and copy-line behaviour; persisted to `~/.config/npp/config.xml`; settings applied live without restarting
+- **Keyboard shortcut mapper** — Settings → Shortcut Mapper: dialog listing all 27 configurable commands (File/Edit/Search); double-click to capture a new key combination; Reset Selected / Reset All; persisted to `~/.config/notetux/shortcuts.xml`; overrides applied at startup before menus are built
+- **Preferences dialog** — Settings → Preferences: 4-page dialog (Editor / Display / New Document / General) covering tab width/indentation, auto-indent, brace highlighting, caret style, word wrap, EOL mode, default encoding, title format, and copy-line behaviour; persisted to `~/.config/notetux/config.xml`; settings applied live without restarting
 - **Auto-indent** — three modes selectable in Preferences → Editor: None (disabled), Basic (copies leading whitespace of the previous line on Enter), Advanced (Basic + adds one indent level after lines ending with `{` or `:`, and auto-dedents when a `}` is typed at the start of the new line)
 - **Code folding controls** — View → Folding submenu: Fold All (Ctrl+Alt+F9), Unfold All (Ctrl+Alt+Shift+F9), and Fold / Unfold Level 1–8 (collapses or expands all fold headers at the chosen nesting level)
 - **Macro recording / playback** — Macro menu: Start Recording (Ctrl+Shift+R), Stop Recording, Playback (Ctrl+Shift+P), Run Macro Multiple Times… (dialog with spin button); stores `(msg, wParam, lParam)` triples from `SCN_MACRORECORD`; string-argument messages (REPLACESEL, INSERTTEXT, etc.) are heap-copied for safe replay; each playback wrapped in a single undo action; four toolbar buttons (startrecord / stoprecord / playrecord / playrecord_m) with correct enabled/disabled states
@@ -99,13 +99,13 @@ cmake -B linux/build -S linux
 cmake --build linux/build -j$(nproc)
 ```
 
-Output: `linux/build/notepad++`
+Output: `linux/build/notetux++`
 
 ## Run
 
 ```sh
-./linux/build/notepad++
-./linux/build/notepad++ file1.c file2.h
+./linux/build/notetux++
+./linux/build/notetux++ file1.c file2.h
 ```
 
 ## Upcoming features
@@ -145,23 +145,23 @@ Features beyond the original Notepad++ scope, specific to this Linux port. These
 |---|-----------|-------------|------------|
 | 1 | Style Configurator | Save and Close buttons had no effect on GTK3/Wayland | Replaced `gtk_dialog_run()` loop with `response` signal handler; dialog is now a persistent singleton closed via `gtk_widget_hide()` |
 | 2 | Style Configurator | "Salva" and "Salva e chiudi" actions were swapped — Save closed the dialog, Save and Close kept it open | Corrected response-ID assignment to match translated button labels |
-| 3 | Style store | `~/.config/npp/stylers.xml` triggered a parse warning for entries whose `name` attribute contains `&` (e.g. CaML `BUILTIN FUNC & TYPE`) | XML is pre-processed to escape bare `&` before passing to `GMarkupParser` |
+| 3 | Style store | `~/.config/notetux/stylers.xml` triggered a parse warning for entries whose `name` attribute contains `&` (e.g. CaML `BUILTIN FUNC & TYPE`) | XML is pre-processed to escape bare `&` before passing to `GMarkupParser` |
 | 4 | Margins | Line numbers and fold +/− indicators never appeared | `SCI_SETMARGINWIDTHN` in `sci_c.h` was defined as **2243** (`SCI_GETMARGINWIDTHN`) instead of **2242**; every margin-width call silently returned a value without setting anything, leaving all margins at default width 0 |
 
 ## User configuration
 
-All user data lives in `~/.config/npp/`:
+All user data lives in `~/.config/notetux/`:
 
 | Path | Purpose |
 |------|---------|
-| `~/.config/npp/stylers.xml` | Saved style/color overrides from the Style Configurator |
-| `~/.config/npp/themes/` | User-supplied theme XML files (Notepad++ format) |
-| `~/.config/npp/recentfiles.txt` | Recently opened/saved files (one path per line, max 10) |
-| `~/.config/npp/shortcuts.xml` | User-defined keyboard shortcut overrides (Notepad++ format) |
-| `~/.config/npp/config.xml` | Preferences (tab width, indent, caret, EOL, encoding, display options) |
-| `~/.config/npp/session.xml` | Session state: open file paths, caret and scroll positions, active tab |
-| `~/.config/npp/backup/` | Auto-backup copies of unsaved/modified documents |
-| `~/.config/npp/userDefineLangs/` | User-defined language XML files (NPP UDL format) |
+| `~/.config/notetux/stylers.xml` | Saved style/color overrides from the Style Configurator |
+| `~/.config/notetux/themes/` | User-supplied theme XML files (Notepad++ format) |
+| `~/.config/notetux/recentfiles.txt` | Recently opened/saved files (one path per line, max 10) |
+| `~/.config/notetux/shortcuts.xml` | User-defined keyboard shortcut overrides (Notepad++ format) |
+| `~/.config/notetux/config.xml` | Preferences (tab width, indent, caret, EOL, encoding, display options) |
+| `~/.config/notetux/session.xml` | Session state: open file paths, caret and scroll positions, active tab |
+| `~/.config/notetux/backup/` | Auto-backup copies of unsaved/modified documents |
+| `~/.config/notetux/userDefineLangs/` | User-defined language XML files (NPP UDL format) |
 
 ## Architecture
 
@@ -180,8 +180,8 @@ linux/src/shortcutmap.c/h  — shortcut table, key-capture dialog, Shortcut Mapp
 linux/src/prefs.c/h        — preferences struct, load/save, Preferences dialog
 linux/src/udl.c/h          — User Defined Language manager: XML parse, udl_apply()
 linux/src/gitgutter.c/h    — Git gutter: background diff, unified diff parser, Scintilla margin markers
-linux/src/session.c/h      — Session save/restore: tab set, caret and scroll positions → ~/.config/npp/session.xml
-linux/src/backup.c/h       — Auto-backup: periodic g_timeout writes modified docs to ~/.config/npp/backup/
+linux/src/session.c/h      — Session save/restore: tab set, caret and scroll positions → ~/.config/notetux/session.xml
+linux/src/backup.c/h       — Auto-backup: periodic g_timeout writes modified docs to ~/.config/notetux/backup/
 linux/src/doclist.c/h      — Document List panel: GtkListBox synced to notebook pages
 linux/src/workspace.c/h    — Folder as Workspace panel: lazy GtkTreeView backed by GFileEnumerator
 linux/src/funclist.c/h     — Function List panel: per-language regex parser, 2-level GtkTreeStore, debounced rebuild
@@ -197,9 +197,30 @@ resources/                  — shared with macOS port: themes, stylers.model.xm
 
 The application layer is pure C (C11). Only `lexilla_bridge.cpp` uses C++ to call the Lexilla `CreateLexer()` API via a single `extern "C"` function. Scintilla and Lexilla are compiled as C++ static libraries and accessed exclusively through their C message API (`scintilla_send_message`).
 
-## Original projects
+## A note on the name
 
-- [Notepad++ for macOS](https://github.com/notepadplusplus/notepad-plus-plus-mac)
-- [Scintilla](https://www.scintilla.org)
-- [Lexilla](https://www.scintilla.org/Lexilla.html)
-- [Notepad++ (Windows)](https://notepad-plus-plus.org)
+> This project was renamed from *Notepad++ for Linux* to **Notetux++** after reading that Don Ho — who publicly professes to be in favour of open-source software and explicitly acknowledges the GPL licence as extremely liberal and open to any kind of fork or port — has nonetheless waged a personal crusade against Andrey Letov, whose only offence was creating a native macOS port under the slightly modified name *Notepad++ for Mac*, using a similar icon.
+>
+> As an OSS developer, I will always stand behind the work of people like Andrey, and I genuinely hope that some collaboration between us can emerge one day.
+>
+> Notepad++ as a project has been stagnant for too long. For years — perhaps decades — the community has asked for ports to other platforms. Nothing of the sort has ever materialised. From that inaction Andrey's project was born, and from a fork of Andrey's project, mine was born: **Notetux++**.
+>
+> The application will have its own icon soon, too.
+>
+> Despite everything, full credit goes to Don Ho for Notepad++ and the remarkable work behind it — a project that has genuinely shaped how millions of developers edit text. I disagree completely with the crusade he has been waging, and the justifications offered for it are, frankly, implausible. But the application itself deserves its place in the history of software.
+>
+> <sub>One can't help but wonder: had the energy spent on legal threats been spent on collaboration instead, there might already be an official, cross-platform Notepad++ today — built together by the very people who love the project most. A missed opportunity, perhaps.</sub>
+>
+> <sub>**Further reading:** Don Ho's own account of the dispute — [Notepad++ Trademark Infringement](https://notepad-plus-plus.org/news/npp-trademark-infringement/) and the follow-up [Clarification on Notepad++ Trademark Infringement](https://notepad-plus-plus.org/news/clarify-npp-trademark-infringement/) — are worth reading and forming your own opinion on.</sub>
+
+## Credits
+
+Notetux++ would not exist without the shoulders it stands on.
+
+**[Notepad++ (Windows)](https://notepad-plus-plus.org)** — created by Don Ho. The original application that started it all: a fast, lightweight, extensible text editor that has been a reference point for developers on Windows for over two decades. The feature set, UX conventions, configuration format, and overall vision of Notetux++ are directly inspired by this work.
+
+**[Notepad++ for macOS](https://github.com/notepadplusplus/notepad-plus-plus-mac)** — created by Andrey Letov. The native macOS port that proved the Notepad++ experience could live outside Windows without Wine or emulation. Notetux++ was forked from this project and inherits its architecture, vendored Scintilla/Lexilla integration, and the original C++/Objective-C++ codebase that Andrey built. Without his work, this Linux port would not exist.
+
+**[Scintilla](https://www.scintilla.org)** — the editing engine powering all three projects. Written by Neil Hodgson.
+
+**[Lexilla](https://www.scintilla.org/Lexilla.html)** — the syntax highlighting library, also by Neil Hodgson, shipping ~80 language lexers used unchanged in Notetux++.
