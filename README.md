@@ -109,8 +109,6 @@ Ordered by implementation effort (low → high).
 > **Note:** All the features with low and medium effort required are marked as completed. No intermediate release are planned. This software will be released when all the points in this list will be successfully completed.
 
 ### High effort
-- **File change detection** — detect external modifications and prompt to reload
-- **Macro recording / playback** — record and replay keystroke sequences
 - **Document List panel** — dockable panel listing all open tabs
 - **Folder as Workspace panel** — multi-root file tree browser
 - **Function List panel** — tree view of functions/classes in the current file
