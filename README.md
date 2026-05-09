@@ -111,8 +111,6 @@ Ordered by implementation effort (low → high).
 > **Note:** All the features with low and medium effort required are marked as completed. No intermediate release are planned. This software will be released when all the points in this list will be successfully completed.
 
 ### High effort
-- ~~**Document List panel**~~ — done
-- ~~**Folder as Workspace panel**~~ — done
 - **Function List panel** — tree view of functions/classes in the current file
 - **Document Map** — minimap preview of the full document
 - **Search Results panel** — accumulated find results with navigation
