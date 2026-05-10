@@ -811,6 +811,104 @@ static void cb_import_theme(GtkMenuItem *i, gpointer d)
     gtk_widget_destroy(dlg);
 }
 
+/* ------------------------------------------------------------------ */
+/* Items 59–63: medium-effort implementations                         */
+/* ------------------------------------------------------------------ */
+
+static void cb_save_copy_as(GtkMenuItem *i, gpointer d) { (void)i;(void)d; editor_save_copy_as(); }
+static void cb_rename_file (GtkMenuItem *i, gpointer d) { (void)i;(void)d; editor_rename(); }
+static void cb_incr_search (GtkMenuItem *i, gpointer d) { (void)i;(void)d; editor_incr_search_show(); }
+
+static void cb_toggle_monitoring(GtkCheckMenuItem *item, gpointer d)
+{
+    (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc || !doc->filepath) {
+        /* Can only monitor saved files */
+        gtk_check_menu_item_set_active(item, FALSE);
+        return;
+    }
+    doc->monitoring = gtk_check_menu_item_get_active(item);
+}
+
+/* ---- Print ---- */
+
+typedef struct { char **lines; int n_lines; int lpp; } PrintData;
+
+static void on_print_begin(GtkPrintOperation *op, GtkPrintContext *ctx, gpointer d)
+{
+    (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) { gtk_print_operation_set_n_pages(op, 0); return; }
+
+    sptr_t len  = editor_send(SCI_GETLENGTH, 0, 0);
+    char *text  = g_new(char, len + 1);
+    editor_send(SCI_GETTEXT, (uptr_t)(len + 1), (sptr_t)text);
+
+    double height   = gtk_print_context_get_height(ctx);
+    char **lines    = g_strsplit(text, "\n", -1);
+    g_free(text);
+    int n_lines = (int)g_strv_length(lines);
+    int lpp     = MAX(1, (int)(height / 14.0)); /* 14pt line height */
+    int n_pages = (n_lines + lpp - 1) / lpp;
+
+    PrintData *pd = g_new(PrintData, 1);
+    pd->lines = lines; pd->n_lines = n_lines; pd->lpp = lpp;
+    g_object_set_data(G_OBJECT(op), "pd", pd);
+    gtk_print_operation_set_n_pages(op, MAX(1, n_pages));
+}
+
+static void on_print_draw(GtkPrintOperation *op, GtkPrintContext *ctx,
+                          int page_nr, gpointer d)
+{
+    (void)d;
+    PrintData *pd = g_object_get_data(G_OBJECT(op), "pd");
+    if (!pd) return;
+    cairo_t      *cr  = gtk_print_context_get_cairo_context(ctx);
+    PangoLayout  *lay = gtk_print_context_create_pango_layout(ctx);
+    PangoFontDescription *font = pango_font_description_from_string("Monospace 10");
+    pango_layout_set_font_description(lay, font);
+    pango_font_description_free(font);
+    cairo_set_source_rgb(cr, 0, 0, 0);
+    int start = page_nr * pd->lpp;
+    int end   = MIN(start + pd->lpp, pd->n_lines);
+    for (int i = start; i < end; i++) {
+        cairo_move_to(cr, 0, (i - start) * 14.0);
+        pango_layout_set_text(lay, pd->lines[i] ? pd->lines[i] : "", -1);
+        pango_cairo_show_layout(cr, lay);
+    }
+    g_object_unref(lay);
+}
+
+static void on_print_end(GtkPrintOperation *op, GtkPrintContext *ctx, gpointer d)
+{
+    (void)ctx; (void)d;
+    PrintData *pd = g_object_get_data(G_OBJECT(op), "pd");
+    if (pd) { g_strfreev(pd->lines); g_free(pd); }
+}
+
+static GtkPrintSettings *s_print_settings = NULL;
+
+static void do_print(GtkPrintOperationAction action)
+{
+    GtkPrintOperation *op = gtk_print_operation_new();
+    if (s_print_settings)
+        gtk_print_operation_set_print_settings(op, s_print_settings);
+    g_signal_connect(op, "begin-print", G_CALLBACK(on_print_begin), NULL);
+    g_signal_connect(op, "draw-page",   G_CALLBACK(on_print_draw),  NULL);
+    g_signal_connect(op, "end-print",   G_CALLBACK(on_print_end),   NULL);
+    GtkPrintOperationResult res = gtk_print_operation_run(
+        op, action, GTK_WINDOW(s_main_window), NULL);
+    if (res == GTK_PRINT_OPERATION_RESULT_APPLY) {
+        if (s_print_settings) g_object_unref(s_print_settings);
+        s_print_settings = g_object_ref(gtk_print_operation_get_print_settings(op));
+    }
+    g_object_unref(op);
+}
+
+static void cb_print    (GtkMenuItem *i, gpointer d) { (void)i;(void)d; do_print(GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG); }
+static void cb_print_now(GtkMenuItem *i, gpointer d) { (void)i;(void)d; do_print(GTK_PRINT_OPERATION_ACTION_PRINT); }
+
 static void cb_toggle_spellcheck(GtkCheckMenuItem *item, gpointer d)
 {
     (void)d;
@@ -899,6 +997,9 @@ static int      s_edge_column  = 80;
 
 /* Word wrap menu item — kept as a pointer so on_switch_page can sync it */
 static GtkWidget *s_mi_wrap = NULL;
+
+/* Monitoring (tail -f) check menu item — synced on tab switch */
+static GtkWidget *s_monitoring_mi = NULL;
 
 /* ------------------------------------------------------------------ */
 /* Show/hide symbols                                                  */
@@ -2786,9 +2887,9 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     APPEND(file, sep_item());
     APPEND(file, smi("cmd.save",  TM("cmd.41006", "_Save"),      G_CALLBACK(cb_save),   NULL, accel, GDK_KEY_s, GDK_CONTROL_MASK));
     APPEND(file, smi("cmd.saveas",TM("cmd.41008", "Save _As…"),  G_CALLBACK(cb_save_as),NULL, accel, GDK_KEY_s, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
-    APPEND(file, nyi_item("Save a Copy As…"));
+    APPEND(file, menu_item("Save a Copy As…", G_CALLBACK(cb_save_copy_as), NULL, NULL, 0, 0));
     APPEND(file, smi("cmd.saveall", TM("cmd.saveall", "Save All"), G_CALLBACK(cb_save_all), NULL, accel, GDK_KEY_s, GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK));
-    APPEND(file, nyi_item("Rename…"));
+    APPEND(file, menu_item("Rename…", G_CALLBACK(cb_rename_file), NULL, NULL, 0, 0));
     APPEND(file, sep_item());
     APPEND(file, smi("cmd.close", TM("cmd.41003", "_Close"),     G_CALLBACK(cb_close),  NULL, accel, GDK_KEY_w, GDK_CONTROL_MASK));
     APPEND(file, menu_item("Close All", G_CALLBACK(cb_close_all), NULL, NULL, 0, 0));
@@ -2808,8 +2909,8 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     APPEND(file, menu_item("Load Session…", G_CALLBACK(cb_load_session), NULL, NULL, 0, 0));
     APPEND(file, menu_item("Save Session…", G_CALLBACK(cb_save_session), NULL, NULL, 0, 0));
     APPEND(file, sep_item());
-    APPEND(file, nyi_item("Print…"));
-    APPEND(file, nyi_item("Print Now"));
+    APPEND(file, menu_item("Print…",    G_CALLBACK(cb_print),     NULL, NULL, 0, 0));
+    APPEND(file, menu_item("Print Now", G_CALLBACK(cb_print_now), NULL, NULL, 0, 0));
     APPEND(file, sep_item());
     APPEND(file, smi("cmd.quit",  TM("cmd.41011", "_Quit"),      G_CALLBACK(cb_quit),   app,  accel, GDK_KEY_q, GDK_CONTROL_MASK));
 
@@ -3014,7 +3115,7 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     APPEND(search, smi("cmd.find",       TM("cmd.43001", "_Find…"),          G_CALLBACK(cb_find),         NULL, accel, GDK_KEY_f, GDK_CONTROL_MASK));
     APPEND(search, smi("cmd.replace",    TM("cmd.43003", "_Replace…"),       G_CALLBACK(cb_replace),      NULL, accel, GDK_KEY_h, GDK_CONTROL_MASK));
     APPEND(search, smi("cmd.findinfiles",TM("cmd.findinfiles","Find in _Files…"), G_CALLBACK(cb_find_in_files), NULL, accel, GDK_KEY_f, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
-    APPEND(search, nyi_item("Incremental Search…"));
+    APPEND(search, smi("cmd.incrsearch", "Incremental Search…", G_CALLBACK(cb_incr_search), NULL, accel, GDK_KEY_i, GDK_CONTROL_MASK));
     APPEND(search, sep_item());
     APPEND(search, smi("cmd.findnext",   TM("cmd.findnext",  "Find _Next"),   G_CALLBACK(cb_find_next), NULL, accel, GDK_KEY_F3, 0));
     APPEND(search, smi("cmd.findprev",   TM("cmd.findprev",  "Find _Prev"),   G_CALLBACK(cb_find_prev), NULL, accel, GDK_KEY_F3, GDK_SHIFT_MASK));
@@ -3268,7 +3369,10 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
                 APPEND(pan_menu, mi_sr);
             }
             APPEND(pan_menu, nyi_item("Project Manager"));
-            APPEND(pan_menu, nyi_item("Monitoring (tail -f)"));
+            s_monitoring_mi = gtk_check_menu_item_new_with_label("Monitoring (tail -f)");
+            g_signal_connect(s_monitoring_mi, "toggled",
+                             G_CALLBACK(cb_toggle_monitoring), NULL);
+            APPEND(pan_menu, s_monitoring_mi);
             APPEND(view, pan_item);
         }
 
@@ -3499,6 +3603,9 @@ static void on_switch_page(GtkNotebook *nb, GtkWidget *page,
     funclist_update(doc->sci);
     docmap_update(doc->sci);
     spell_check_document(doc->sci);
+    if (s_monitoring_mi)
+        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_monitoring_mi),
+                                       doc->monitoring);
 }
 
 /* ------------------------------------------------------------------ */
@@ -3508,6 +3615,11 @@ static void on_switch_page(GtkNotebook *nb, GtkWidget *page,
 static gboolean on_key_press(GtkWidget *w, GdkEventKey *ev, gpointer d)
 {
     (void)w; (void)d;
+    if (ev->keyval == GDK_KEY_i &&
+        (ev->state & GDK_CONTROL_MASK) && !(ev->state & (GDK_SHIFT_MASK|GDK_MOD1_MASK))) {
+        editor_incr_search_show();
+        return TRUE;
+    }
     if (ev->keyval != GDK_KEY_Insert) return FALSE;
     NppDoc *doc = editor_current_doc();
     if (!doc) return FALSE;
@@ -3570,12 +3682,12 @@ static void on_activate(GtkApplication *app, gpointer data)
      *   [workspace] | [doclist] | [notebook] | [funclist] | [docmap]
      * Each panel is a pack1/pack2 of its own GtkPaned so it collapses
      * cleanly when hidden.                                            */
-    GtkWidget *notebook  = editor_init(window);
-    g_signal_connect(notebook, "switch-page", G_CALLBACK(on_switch_page), NULL);
+    GtkWidget *editor_container = editor_init(window);
+    g_signal_connect(editor_get_notebook(), "switch-page", G_CALLBACK(on_switch_page), NULL);
 
-    /* notebook | funclist | docmap (left to right) */
+    /* editor_container (notebook + incr-search bar) | funclist | docmap */
     GtkWidget *funclist_paned = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_paned_pack1(GTK_PANED(funclist_paned), notebook,       TRUE,  TRUE);
+    gtk_paned_pack1(GTK_PANED(funclist_paned), editor_container, TRUE,  TRUE);
     gtk_paned_pack2(GTK_PANED(funclist_paned), funclist_init(), FALSE, FALSE);
 
     GtkWidget *right_paned = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
@@ -3617,6 +3729,7 @@ static void on_activate(GtkApplication *app, gpointer data)
     funclist_set_visible(FALSE);
     docmap_set_visible(FALSE);
     searchresults_set_visible(FALSE);
+    editor_incr_search_close(); /* hide the incremental search bar */
 
     /* Restore previous session (only when no files given on CLI) */
     if (s_restore_session)

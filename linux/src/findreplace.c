@@ -11,22 +11,12 @@
 /* ------------------------------------------------------------------ */
 /* SCI constants not yet in sci_c.h                                   */
 /* ------------------------------------------------------------------ */
-#define SCI_GETSELECTIONSTART   2143
-#define SCI_GETSELECTIONEND     2145
-#define SCI_SETSEL              2160
-#define SCI_SCROLLCARET         2169
 #define SCI_GETTARGETSTART      2191
-#define SCI_GETTARGETEND        2193
 #define SCI_SETTARGETRANGE      2686
 #define SCI_REPLACETARGET       2194
 #define SCI_REPLACETARGETRE     2195
-#define SCI_SEARCHINTARGET      2197
-#define SCI_SETSEARCHFLAGS      2198
-#define SCI_BEGINUNDOACTION     2078
-#define SCI_ENDUNDOACTION       2079
 
 #define SCFIND_WHOLEWORD        0x2
-#define SCFIND_MATCHCASE        0x4
 #define SCFIND_REGEXP           0x00200000
 #define SCFIND_POSIX            0x00400000
 

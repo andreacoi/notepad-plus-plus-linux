@@ -218,6 +218,14 @@ typedef struct SCNotification {
 #define SCVS_RECTANGULARSELECTION       1
 #define SCVS_USERACCESSIBLE             2
 
+/* Search in target */
+#define SCI_SETTARGETSTART      2190
+#define SCI_SETTARGETEND        2192
+#define SCI_GETTARGETEND        2193
+#define SCI_SETSEARCHFLAGS      2198
+#define SCI_SEARCHINTARGET      2197
+#define SCFIND_MATCHCASE        4
+
 /* Undo grouping */
 #define SCI_BEGINUNDOACTION             2078
 #define SCI_ENDUNDOACTION               2079

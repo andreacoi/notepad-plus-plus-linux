@@ -25,6 +25,14 @@ static GtkWidget *s_notebook;
 static GtkWidget *s_window;
 static int        s_new_count;
 
+/* Incremental search bar */
+#define INCR_INDICATOR 9
+static GtkWidget    *s_editor_container;
+static GtkWidget    *s_search_bar;
+static GtkWidget    *s_search_entry;
+static GtkWidget    *s_search_case;
+static Sci_Position  s_incr_match_end = -1;
+
 /* ------------------------------------------------------------------ */
 /* Helpers                                                             */
 /* ------------------------------------------------------------------ */
@@ -94,6 +102,12 @@ static void on_file_changed(GFileMonitor *mon, GFile *file, GFile *other,
 
     if (doc->ignore_next_change) {
         doc->ignore_next_change = FALSE;
+        return;
+    }
+
+    /* Monitoring mode: reload silently without prompting */
+    if (doc->monitoring) {
+        reload_doc_from_disk(doc);
         return;
     }
 
@@ -191,6 +205,10 @@ static void setup_sci(GtkWidget *sci)
         sci_msg(sci, SCI_INDICSETFORE,  (uptr_t)k, mark_colors[k]);
         sci_msg(sci, SCI_INDICSETALPHA, (uptr_t)k, 100);
     }
+    /* Indicator 9: incremental search highlight (green) */
+    sci_msg(sci, SCI_INDICSETSTYLE, INCR_INDICATOR, INDIC_ROUNDBOX);
+    sci_msg(sci, SCI_INDICSETFORE,  INCR_INDICATOR, 0x00CC44); /* BGR green */
+    sci_msg(sci, SCI_INDICSETALPHA, INCR_INDICATOR, 130);
     sci_msg(sci, SCI_SETVIRTUALSPACEOPTIONS,
             SCVS_RECTANGULARSELECTION | SCVS_USERACCESSIBLE, 0);
     sci_msg(sci, SCI_SETMULTIPLESELECTION,         1, 0);
@@ -464,6 +482,91 @@ static gboolean ask_save(NppDoc *doc)
 }
 
 /* ------------------------------------------------------------------ */
+/* Incremental search helpers                                          */
+/* ------------------------------------------------------------------ */
+
+static void incr_search_do(void)
+{
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    const char *needle = gtk_entry_get_text(GTK_ENTRY(s_search_entry));
+
+    sptr_t doclen = sci_msg(doc->sci, SCI_GETLENGTH, 0, 0);
+    sci_msg(doc->sci, SCI_SETINDICATORCURRENT, INCR_INDICATOR, 0);
+    sci_msg(doc->sci, SCI_INDICATORCLEARRANGE, 0, doclen);
+    s_incr_match_end = -1;
+
+    if (!needle || !*needle) return;
+
+    gboolean cs = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(s_search_case));
+    sci_msg(doc->sci, SCI_SETSEARCHFLAGS, cs ? SCFIND_MATCHCASE : 0, 0);
+
+    Sci_Position caret = (Sci_Position)sci_msg(doc->sci, SCI_GETCURRENTPOS, 0, 0);
+    Sci_Position first_match      = -1;
+    Sci_Position first_after_caret = -1;
+    Sci_Position first_end         = -1;
+    gsize needle_len = strlen(needle);
+
+    for (Sci_Position pos = 0; pos < doclen; ) {
+        sci_msg(doc->sci, SCI_SETTARGETSTART, (uptr_t)pos, 0);
+        sci_msg(doc->sci, SCI_SETTARGETEND,   (uptr_t)doclen, 0);
+        sptr_t found = sci_msg(doc->sci, SCI_SEARCHINTARGET, (uptr_t)needle_len, (sptr_t)needle);
+        if (found < 0) break;
+        Sci_Position end = (Sci_Position)sci_msg(doc->sci, SCI_GETTARGETEND, 0, 0);
+        sci_msg(doc->sci, SCI_INDICATORFILLRANGE, (uptr_t)found, (sptr_t)(end - found));
+        if (first_match < 0) { first_match = found; first_end = end; }
+        if (first_after_caret < 0 && found >= caret) { first_after_caret = found; first_end = end; }
+        pos = (end > pos) ? end : pos + 1;
+    }
+
+    Sci_Position goto_pos = (first_after_caret >= 0) ? first_after_caret
+                          : (first_match      >= 0) ? first_match : -1;
+    if (goto_pos >= 0) {
+        s_incr_match_end = first_end;
+        sci_msg(doc->sci, SCI_GOTOPOS, (uptr_t)goto_pos, 0);
+        sci_msg(doc->sci, SCI_SCROLLCARET, 0, 0);
+    }
+}
+
+static void incr_search_next(void)
+{
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    const char *needle = gtk_entry_get_text(GTK_ENTRY(s_search_entry));
+    if (!needle || !*needle) return;
+
+    gboolean cs = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(s_search_case));
+    sci_msg(doc->sci, SCI_SETSEARCHFLAGS, cs ? SCFIND_MATCHCASE : 0, 0);
+    sptr_t doclen = sci_msg(doc->sci, SCI_GETLENGTH, 0, 0);
+    gsize needle_len = strlen(needle);
+
+    Sci_Position from = (s_incr_match_end >= 0) ? s_incr_match_end : 0;
+    sci_msg(doc->sci, SCI_SETTARGETSTART, (uptr_t)from, 0);
+    sci_msg(doc->sci, SCI_SETTARGETEND,   (uptr_t)doclen, 0);
+    sptr_t found = sci_msg(doc->sci, SCI_SEARCHINTARGET, (uptr_t)needle_len, (sptr_t)needle);
+    if (found < 0) {
+        /* wrap around */
+        sci_msg(doc->sci, SCI_SETTARGETSTART, 0, 0);
+        sci_msg(doc->sci, SCI_SETTARGETEND,   (uptr_t)doclen, 0);
+        found = sci_msg(doc->sci, SCI_SEARCHINTARGET, (uptr_t)needle_len, (sptr_t)needle);
+    }
+    if (found >= 0) {
+        s_incr_match_end = (Sci_Position)sci_msg(doc->sci, SCI_GETTARGETEND, 0, 0);
+        sci_msg(doc->sci, SCI_GOTOPOS, (uptr_t)found, 0);
+        sci_msg(doc->sci, SCI_SCROLLCARET, 0, 0);
+    }
+}
+
+static gboolean on_search_entry_key(GtkWidget *w, GdkEventKey *ev, gpointer d)
+{
+    (void)w; (void)d;
+    if (ev->keyval == GDK_KEY_Escape) { editor_incr_search_close(); return TRUE; }
+    if (ev->keyval == GDK_KEY_Return || ev->keyval == GDK_KEY_KP_Enter)
+        { incr_search_next(); return TRUE; }
+    return FALSE;
+}
+
+/* ------------------------------------------------------------------ */
 /* Public API                                                         */
 /* ------------------------------------------------------------------ */
 
@@ -476,7 +579,28 @@ GtkWidget *editor_init(GtkWidget *window)
     gtk_notebook_set_show_border(GTK_NOTEBOOK(s_notebook), FALSE);
     g_signal_connect(s_notebook, "switch-page", G_CALLBACK(on_switch_page), NULL);
     editor_new_doc();
-    return s_notebook;
+
+    /* Incremental search bar — hidden by default, shown via Ctrl+I */
+    s_search_bar = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
+    GtkWidget *lbl  = gtk_label_new("Find:");
+    s_search_entry  = gtk_entry_new();
+    gtk_entry_set_width_chars(GTK_ENTRY(s_search_entry), 30);
+    s_search_case   = gtk_check_button_new_with_label("Match case");
+    GtkWidget *close_btn = gtk_button_new_with_label("✕");
+    gtk_widget_set_tooltip_text(close_btn, "Close (Escape)");
+    gtk_box_pack_start(GTK_BOX(s_search_bar), lbl,         FALSE, FALSE, 4);
+    gtk_box_pack_start(GTK_BOX(s_search_bar), s_search_entry, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(s_search_bar), s_search_case,  FALSE, FALSE, 4);
+    gtk_box_pack_end  (GTK_BOX(s_search_bar), close_btn,      FALSE, FALSE, 4);
+    g_signal_connect_swapped(s_search_entry, "changed",        G_CALLBACK(incr_search_do),  NULL);
+    g_signal_connect(        s_search_entry, "key-press-event",G_CALLBACK(on_search_entry_key), NULL);
+    g_signal_connect_swapped(s_search_case,  "toggled",        G_CALLBACK(incr_search_do),  NULL);
+    g_signal_connect_swapped(close_btn,      "clicked",        G_CALLBACK(editor_incr_search_close), NULL);
+
+    s_editor_container = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_box_pack_start(GTK_BOX(s_editor_container), s_notebook,    TRUE,  TRUE,  0);
+    gtk_box_pack_start(GTK_BOX(s_editor_container), s_search_bar,  FALSE, FALSE, 0);
+    return s_editor_container;
 }
 
 GtkWidget *editor_get_notebook(void) { return s_notebook; }
@@ -886,4 +1010,132 @@ void editor_open_and_goto(const char *path, int line)
         sci_msg(doc->sci, SCI_SCROLLCARET, 0, 0);
         gtk_widget_grab_focus(doc->sci);
     }
+}
+
+gboolean editor_save_copy_as(void)
+{
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return FALSE;
+
+    GtkWidget *dlg = gtk_file_chooser_dialog_new(
+        "Save a Copy As", GTK_WINDOW(s_window),
+        GTK_FILE_CHOOSER_ACTION_SAVE,
+        "_Cancel", GTK_RESPONSE_CANCEL,
+        "_Save Copy", GTK_RESPONSE_ACCEPT,
+        NULL);
+    gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dlg), TRUE);
+    if (doc->filepath)
+        gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dlg), doc->filepath);
+
+    gboolean saved = FALSE;
+    if (gtk_dialog_run(GTK_DIALOG(dlg)) == GTK_RESPONSE_ACCEPT) {
+        char *path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dlg));
+        /* Write to path without changing doc->filepath or save-point */
+        sptr_t utf8_len = sci_msg(doc->sci, SCI_GETLENGTH, 0, 0);
+        gchar *utf8 = g_new(gchar, utf8_len + 1);
+        sci_msg(doc->sci, SCI_GETTEXT, (uptr_t)(utf8_len + 1), (sptr_t)utf8);
+        const char *enc = doc->encoding ? doc->encoding : "UTF-8";
+        gsize out_len = 0;
+        guchar *buf = encoding_from_utf8(enc, utf8, (gsize)utf8_len, &out_len);
+        g_free(utf8);
+        GError *err = NULL;
+        if (g_file_set_contents(path, (const gchar *)buf, (gssize)out_len, &err)) {
+            saved = TRUE;
+        } else {
+            GtkWidget *edlg = gtk_message_dialog_new(GTK_WINDOW(s_window),
+                GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+                "Cannot save copy:\n%s", err->message);
+            gtk_dialog_run(GTK_DIALOG(edlg));
+            gtk_widget_destroy(edlg);
+            g_error_free(err);
+        }
+        g_free(buf);
+        g_free(path);
+    }
+    gtk_widget_destroy(dlg);
+    return saved;
+}
+
+gboolean editor_rename(void)
+{
+    NppDoc *doc = editor_current_doc();
+    if (!doc || !doc->filepath) return FALSE;
+
+    char *dir  = g_path_get_dirname(doc->filepath);
+    char *base = g_path_get_basename(doc->filepath);
+
+    GtkWidget *dlg = gtk_dialog_new_with_buttons(
+        "Rename", GTK_WINDOW(s_window),
+        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+        "_Cancel", GTK_RESPONSE_CANCEL,
+        "_Rename", GTK_RESPONSE_ACCEPT,
+        NULL);
+    gtk_dialog_set_default_response(GTK_DIALOG(dlg), GTK_RESPONSE_ACCEPT);
+
+    GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dlg));
+    GtkWidget *hbox    = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 8);
+    gtk_widget_set_margin_start(hbox, 12);
+    gtk_widget_set_margin_end(hbox, 12);
+    gtk_widget_set_margin_top(hbox, 8);
+    gtk_widget_set_margin_bottom(hbox, 8);
+    gtk_box_pack_start(GTK_BOX(content), hbox, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), gtk_label_new("New name:"), FALSE, FALSE, 0);
+
+    GtkWidget *entry = gtk_entry_new();
+    gtk_entry_set_text(GTK_ENTRY(entry), base);
+    gtk_entry_set_width_chars(GTK_ENTRY(entry), 40);
+    gtk_entry_set_activates_default(GTK_ENTRY(entry), TRUE);
+    gtk_box_pack_start(GTK_BOX(hbox), entry, TRUE, TRUE, 0);
+
+    gtk_widget_show_all(dlg);
+
+    gboolean renamed = FALSE;
+    if (gtk_dialog_run(GTK_DIALOG(dlg)) == GTK_RESPONSE_ACCEPT) {
+        const char *new_name = gtk_entry_get_text(GTK_ENTRY(entry));
+        if (new_name && *new_name && g_strcmp0(new_name, base) != 0) {
+            char *new_path = g_build_filename(dir, new_name, NULL);
+            if (rename(doc->filepath, new_path) == 0) {
+                filewatch_stop(doc);
+                g_free(doc->filepath);
+                doc->filepath = new_path;
+                filewatch_start(doc);
+                refresh_tab_label(editor_current_page());
+                update_window_title();
+                main_recent_file_add(new_path);
+                main_doclist_refresh();
+                renamed = TRUE;
+            } else {
+                GtkWidget *edlg = gtk_message_dialog_new(GTK_WINDOW(s_window),
+                    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+                    "Cannot rename file.");
+                gtk_dialog_run(GTK_DIALOG(edlg));
+                gtk_widget_destroy(edlg);
+                g_free(new_path);
+            }
+        }
+    }
+    gtk_widget_destroy(dlg);
+    g_free(dir);
+    g_free(base);
+    return renamed;
+}
+
+void editor_incr_search_show(void)
+{
+    gtk_widget_show(s_search_bar);
+    gtk_widget_grab_focus(s_search_entry);
+    incr_search_do();
+}
+
+void editor_incr_search_close(void)
+{
+    gtk_widget_hide(s_search_bar);
+    NppDoc *doc = editor_current_doc();
+    if (doc) {
+        sptr_t doclen = sci_msg(doc->sci, SCI_GETLENGTH, 0, 0);
+        sci_msg(doc->sci, SCI_SETINDICATORCURRENT, INCR_INDICATOR, 0);
+        sci_msg(doc->sci, SCI_INDICATORCLEARRANGE, 0, doclen);
+        gtk_widget_grab_focus(doc->sci);
+    }
+    s_incr_match_end = -1;
 }

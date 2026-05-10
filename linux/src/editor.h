@@ -13,6 +13,7 @@ typedef struct {
     gboolean      word_wrap;          /* per-tab word wrap state */
     GFileMonitor *file_monitor;       /* watches filepath for external changes */
     gboolean      ignore_next_change; /* suppress the event caused by our own save */
+    gboolean      monitoring;         /* tail-f auto-reload on every external change */
 } NppDoc;
 
 /* Initialise — call once, returns the GtkNotebook to embed in the window */
@@ -33,6 +34,8 @@ gboolean   editor_save(void);                      /* save current doc       */
 gboolean   editor_save_at(int page);               /* save specific page     */
 gboolean   editor_save_all(void);                  /* save all modified docs  */
 gboolean   editor_save_as_dialog(void);            /* shows GTK save dialog  */
+gboolean   editor_save_copy_as(void);             /* save copy to new path, keep current */
+gboolean   editor_rename(void);                   /* rename current file in-place */
 void       editor_reload_current(void);            /* reload current doc from disk */
 gboolean   editor_close_page(int page);            /* -1 = current           */
 gboolean   editor_close_all_but_current(void);
@@ -62,6 +65,10 @@ void main_doclist_refresh(void);              /* rebuild Document List panel */
 
 /* Open a file (or switch to it if already open) then jump to a 1-based line. */
 void   editor_open_and_goto(const char *path, int line);
+
+/* Incremental search bar (Ctrl+I) */
+void editor_incr_search_show(void);
+void editor_incr_search_close(void);
 
 /* Convenience send to current doc */
 sptr_t editor_send(unsigned int msg, uptr_t wp, sptr_t lp);
