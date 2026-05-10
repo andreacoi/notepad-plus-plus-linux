@@ -174,20 +174,20 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 Menu items currently `nyi_item()` placeholders that need straightforward implementation — each is a few lines in `main.c` or a small addition to `editor.c`.
 
-45. **About dialog** — `GtkAboutDialog` with version, copyright, GPL-3.0 licence, website, authors and credits (Don Ho / Andrey Letov / Neil Hodgson); triggered from Help → About Notetux++…
-46. **Debug Info dialog** — `GtkMessageDialog` showing runtime GTK/GLib versions, compile-time Scintilla/Lexilla versions, and build date (`__DATE__`); triggered from Help → Debug Info…
-47. **Project Home Page / Online Documentation** — `gtk_show_uri_on_window` with the GitHub repository URL; two items in Help menu, currently disabled placeholders.
-48. **Open in Default Viewer** — `g_app_info_launch_default_for_uri` on the current file's URI; File → Open in Default Viewer; no-op when no file is open.
-49. **Open Containing Folder → Terminal** — spawn a terminal emulator in the current file's directory; try `x-terminal-emulator` → `gnome-terminal` → `xfce4-terminal` → `konsole` → `xterm` in order; fall back to home dir when no file is open.
-50. **Open Containing Folder → File Manager** — `gtk_show_uri_on_window` with the directory URI; integrates with any XDG-compliant file manager.
-51. **On Selection → Open File / Open Folder** — get selected text via `SCI_GETSELTEXT`; strip whitespace; call `editor_open_path` (Open File) or `workspace_set_folder + workspace_set_visible` (Open Folder); no-op on empty selection.
-52. **On Selection → Google / Wikipedia / Stack Overflow search** — `g_uri_escape_string` on selection, `gtk_show_uri_on_window` with the encoded query URL; three items in Edit → On Selection submenu.
-53. **Read-Only / Clear Read-Only Flag** — `editor_send(SCI_SETREADONLY, 1/0, 0)`; Edit menu items; mark tab label with a lock glyph when active (optional).
-54. **Text Direction RTL / LTR** — `editor_send(SCI_SETBIDIRECTIONAL, SC_BIDIRECTIONAL_R2L/L2R, 0)`; View menu items; add `SCI_SETBIDIRECTIONAL 2709` and `SC_BIDIRECTIONAL_*` constants to `sci_c.h`.
-55. **Close All to the Left / Right / Unchanged** — iterate the `GtkNotebook` pages in reverse relative to the current tab; call `editor_close_page(p)` for each matched page; three items in File → Close Multiple Documents submenu.
-56. **Move to Trash** — `g_file_new_for_path` + `g_file_trash`; on success close the tab via `editor_close_page(-1)`; show error dialog if trash fails; File menu item.
-57. **Import Plugin(s)…** — `GtkFileChooserDialog` filtered to `*.so`; copy the selected file into `~/.config/notetux/plugins/<name>/`; show a restart-required notice; Settings → Import → Import Plugin(s)…
-58. **Import Style Themes(s)…** — `GtkFileChooserDialog` filtered to `*.xml`; copy into `~/.config/notetux/themes/`; notify user to select via Style Configurator; Settings → Import → Import Style Themes(s)…
+45. ~~**About dialog**~~ — done: `GtkAboutDialog`; version, copyright, GPL-3.0, website, authors; `gtk_about_dialog_add_credit_section` for Don Ho / Andrey Letov / Neil Hodgson; Help → About Notetux++…
+46. ~~**Debug Info dialog**~~ — done: `GtkMessageDialog` with runtime GTK/GLib versions, compile-time Scintilla/Lexilla `__DATE__`; Help → Debug Info…
+47. ~~**Project Home Page / Online Documentation**~~ — done: `gtk_show_uri_on_window` to GitHub repository and README URLs; Help menu.
+48. ~~**Open in Default Viewer**~~ — done: `g_filename_to_uri` + `gtk_show_uri_on_window`; File → Open in Default Viewer; no-op when no file is open.
+49. ~~**Open Containing Folder → Terminal**~~ — done: `g_spawn_async` in file's dir; fallback chain `x-terminal-emulator` → `gnome-terminal` → `xfce4-terminal` → `konsole` → `mate-terminal` → `lxterminal` → `xterm`.
+50. ~~**Open Containing Folder → File Manager**~~ — done: `g_filename_to_uri` + `gtk_show_uri_on_window` on the directory; XDG-compliant.
+51. ~~**On Selection → Open File / Open Folder**~~ — done: `SCI_GETSELTEXT` → `g_strstrip` → `editor_open_path` or `workspace_set_folder + workspace_set_visible`; no-op on empty selection.
+52. ~~**On Selection → Google / Wikipedia / Stack Overflow search**~~ — done: `g_uri_escape_string` + `gtk_show_uri_on_window`; three items in Edit → On Selection; URL template passed as callback data.
+53. ~~**Read-Only / Clear Read-Only Flag**~~ — done: `editor_send(SCI_SETREADONLY, 1/0, 0)`; Edit menu; `SCI_GETREADONLY 2088` added to `sci_c.h`.
+54. ~~**Text Direction RTL / LTR**~~ — done: `editor_send(SCI_SETBIDIRECTIONAL, SC_BIDIRECTIONAL_R2L/L2R, 0)`; View menu; `SCI_SETBIDIRECTIONAL 2709` + `SC_BIDIRECTIONAL_*` added to `sci_c.h`.
+55. ~~**Close All to the Left / Right / Unchanged**~~ — done: reverse-order `editor_close_page(p)` iteration; three items in File → Close Multiple Documents.
+56. ~~**Move to Trash**~~ — done: `g_file_new_for_path` + `g_file_trash`; closes tab on success; error dialog on failure; File menu.
+57. ~~**Import Plugin(s)…**~~ — done: `GtkFileChooserDialog` (*.so filter); `g_file_copy` to `~/.config/notetux/plugins/<name>/`; restart notice; Settings → Import.
+58. ~~**Import Style Themes(s)…**~~ — done: `GtkFileChooserDialog` (*.xml filter); `g_file_copy` to `~/.config/notetux/themes/`; notice to select from Style Configurator; Settings → Import.
 
 ### Medium effort
 

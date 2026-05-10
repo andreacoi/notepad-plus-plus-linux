@@ -138,20 +138,20 @@ Ordered by implementation effort (low → high). The core editing experience is 
 
 | # | Feature | Description |
 |---|---------|-------------|
-| 45 | About dialog | `GtkAboutDialog` with version, copyright, GPL-3.0, credits (Don Ho / Andrey Letov / Neil Hodgson) |
-| 46 | Debug Info dialog | Runtime GTK/GLib versions, compile-time Scintilla/Lexilla versions, build date |
-| 47 | Project Home Page / Online Documentation | Open GitHub repository and README in the system browser |
-| 48 | Open in Default Viewer | Open current file with its registered default application |
-| 49 | Open Containing Folder → Terminal | Spawn terminal emulator in current file's directory (tries `x-terminal-emulator`, `gnome-terminal`, `xterm`, etc.) |
-| 50 | Open Containing Folder → File Manager | Open current file's directory in the system file manager |
-| 51 | On Selection → Open File / Open Folder | Treat selected text as a file path or directory and open it |
-| 52 | On Selection → Web searches | Google, Wikipedia, Stack Overflow — URL-encode selection and open in browser |
-| 53 | Read-Only / Clear Read-Only Flag | Toggle `SCI_SETREADONLY` on the active document |
-| 54 | Text Direction RTL / LTR | `SCI_SETBIDIRECTIONAL` for right-to-left and left-to-right editing |
-| 55 | Close All to the Left / Right / Unchanged | Bulk-close tabs relative to the current one, or close all unmodified tabs |
-| 56 | Move to Trash | Send current file to the system trash and close its tab |
-| 57 | Import Plugin(s)… | File chooser to copy a `.so` plugin into `~/.config/notetux/plugins/` |
-| 58 | Import Style Themes(s)… | File chooser to copy an XML theme into `~/.config/notetux/themes/` |
+| ~~45~~ | ~~About dialog~~ | ~~`GtkAboutDialog` with version, copyright, GPL-3.0, credits~~ ✓ |
+| ~~46~~ | ~~Debug Info dialog~~ | ~~Runtime GTK/GLib + compile-time Scintilla/Lexilla versions~~ ✓ |
+| ~~47~~ | ~~Project Home Page / Online Documentation~~ | ~~Open GitHub repository and README in the system browser~~ ✓ |
+| ~~48~~ | ~~Open in Default Viewer~~ | ~~Open current file with its registered default application~~ ✓ |
+| ~~49~~ | ~~Open Containing Folder → Terminal~~ | ~~Spawn terminal emulator in current file's directory~~ ✓ |
+| ~~50~~ | ~~Open Containing Folder → File Manager~~ | ~~Open current file's directory in the system file manager~~ ✓ |
+| ~~51~~ | ~~On Selection → Open File / Open Folder~~ | ~~Treat selected text as a file path or directory and open it~~ ✓ |
+| ~~52~~ | ~~On Selection → Web searches~~ | ~~Google, Wikipedia, Stack Overflow — URL-encode selection and open in browser~~ ✓ |
+| ~~53~~ | ~~Read-Only / Clear Read-Only Flag~~ | ~~Toggle `SCI_SETREADONLY` on the active document~~ ✓ |
+| ~~54~~ | ~~Text Direction RTL / LTR~~ | ~~`SCI_SETBIDIRECTIONAL` for right-to-left and left-to-right editing~~ ✓ |
+| ~~55~~ | ~~Close All to the Left / Right / Unchanged~~ | ~~Bulk-close tabs relative to the current one, or close all unmodified tabs~~ ✓ |
+| ~~56~~ | ~~Move to Trash~~ | ~~Send current file to the system trash and close its tab~~ ✓ |
+| ~~57~~ | ~~Import Plugin(s)…~~ | ~~File chooser to copy a `.so` plugin into `~/.config/notetux/plugins/`~~ ✓ |
+| ~~58~~ | ~~Import Style Themes(s)…~~ | ~~File chooser to copy an XML theme into `~/.config/notetux/themes/`~~ ✓ |
 
 ### Medium effort
 
