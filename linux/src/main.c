@@ -450,25 +450,66 @@ static void cb_macro_play_n(GtkMenuItem *i, gpointer d)
 }
 
 /* View — panels */
+
+/* Panel menu check items — synced when panels are shown/hidden */
+static GtkWidget *s_mi_doclist       = NULL;
+static GtkWidget *s_mi_docmap        = NULL;
+static GtkWidget *s_mi_workspace     = NULL;
+static GtkWidget *s_mi_funclist      = NULL;
+static GtkWidget *s_mi_searchresults = NULL;
+static GtkWidget *s_project_mi       = NULL;
+static GtkWidget *s_cliphistory_mi   = NULL;
+
+/* Macro menu widget — kept for dynamic saved-macro entries */
+static GtkWidget *s_macro_menu = NULL;
+
+/* Sync all panel check menu items and toolbar panel buttons to actual state.
+   Call this whenever any panel's visibility changes for any reason. */
+static void sync_panel_ui(void)
+{
+    struct { GtkWidget **mi; gboolean (*is_vis)(void); } map[] = {
+        { &s_mi_doclist,      doclist_is_visible      },
+        { &s_mi_docmap,       docmap_is_visible        },
+        { &s_mi_workspace,    workspace_is_visible     },
+        { &s_mi_funclist,     funclist_is_visible      },
+        { &s_mi_searchresults,searchresults_is_visible },
+        { &s_project_mi,      project_is_visible       },
+        { &s_cliphistory_mi,  cliphistory_is_visible   },
+    };
+    for (size_t i = 0; i < sizeof(map)/sizeof(map[0]); i++) {
+        GtkWidget *mi = *map[i].mi;
+        if (!mi) continue;
+        gboolean vis = map[i].is_vis();
+        g_signal_handlers_block_by_func(mi, NULL, NULL);
+        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(mi), vis);
+        g_signal_handlers_unblock_by_func(mi, NULL, NULL);
+    }
+    toolbar_sync_panels();
+}
+
+/* Used as a "hide" signal handler on panel widgets so that
+   closing a panel via its own × button also updates menus/toolbar. */
+static void on_panel_hide(GtkWidget *w, gpointer d) { (void)w; (void)d; sync_panel_ui(); }
+
 static void cb_toggle_doclist(GtkCheckMenuItem *item, gpointer d)
 {
     (void)d;
     doclist_set_visible(gtk_check_menu_item_get_active(item));
-    toolbar_sync_panels();
+    sync_panel_ui();
 }
 
 static void cb_toggle_workspace(GtkCheckMenuItem *item, gpointer d)
 {
     (void)d;
     workspace_set_visible(gtk_check_menu_item_get_active(item));
-    toolbar_sync_panels();
+    sync_panel_ui();
 }
 
 static void cb_toggle_funclist(GtkCheckMenuItem *item, gpointer d)
 {
     (void)d;
     funclist_set_visible(gtk_check_menu_item_get_active(item));
-    toolbar_sync_panels();
+    sync_panel_ui();
 }
 
 static void cb_toggle_docmap(GtkCheckMenuItem *item, gpointer d)
@@ -480,14 +521,14 @@ static void cb_toggle_docmap(GtkCheckMenuItem *item, gpointer d)
         NppDoc *doc = editor_current_doc();
         if (doc) docmap_update(doc->sci);
     }
-    toolbar_sync_panels();
+    sync_panel_ui();
 }
 
 static void cb_toggle_searchresults(GtkCheckMenuItem *item, gpointer d)
 {
     (void)d;
     searchresults_set_visible(gtk_check_menu_item_get_active(item));
-    toolbar_sync_panels();
+    sync_panel_ui();
 }
 
 /* ------------------------------------------------------------------ */
@@ -835,11 +876,11 @@ static void cb_toggle_monitoring(GtkCheckMenuItem *item, gpointer d)
     (void)d;
     NppDoc *doc = editor_current_doc();
     if (!doc || !doc->filepath) {
-        /* Can only monitor saved files */
         gtk_check_menu_item_set_active(item, FALSE);
         return;
     }
     doc->monitoring = gtk_check_menu_item_get_active(item);
+    toolbar_sync_panels(); /* sync monitoring toggle button */
 }
 
 /* ---- Print ---- */
@@ -958,8 +999,8 @@ static void cb_toggle_project(GtkCheckMenuItem *item, gpointer d)
 {
     (void)d;
     project_set_visible(gtk_check_menu_item_get_active(item));
+    sync_panel_ui();
 }
-static GtkWidget *s_project_mi = NULL;
 
 /* ------------------------------------------------------------------ */
 /* Item 66 — Macro management                                          */
@@ -1011,11 +1052,11 @@ static void cb_plugins_admin(GtkMenuItem *i, gpointer d)
 /* ------------------------------------------------------------------ */
 /* Item 69 — Clipboard History                                         */
 /* ------------------------------------------------------------------ */
-static GtkWidget *s_cliphistory_mi = NULL;
 static void cb_toggle_cliphistory(GtkCheckMenuItem *item, gpointer d)
 {
     (void)d;
     cliphistory_set_visible(gtk_check_menu_item_get_active(item));
+    sync_panel_ui();
 }
 
 /* ------------------------------------------------------------------ */
@@ -1126,7 +1167,7 @@ static GtkWidget *s_monitoring_mi = NULL;
 static gboolean s_show_whitespace = FALSE;
 static gboolean s_show_eol_marks  = FALSE;
 static gboolean s_show_linenums   = TRUE;
-static gboolean s_show_fold       = TRUE;
+static gboolean s_show_fold       = FALSE;
 static gboolean s_show_bookmarks  = FALSE;
 
 /* Apply current symbol visibility state to a single Scintilla widget. */
@@ -2970,6 +3011,22 @@ static GtkWidget *smi(const char *id, const char *label,
     return item;
 }
 
+/* Called each time the Macro menu is opened: remove stale dynamic entries
+   (everything after the 10 static items) and re-add from saved macros. */
+static void on_macro_menu_show(GtkWidget *menu, gpointer d)
+{
+    (void)d;
+    enum { N_STATIC = 10 }; /* Start,Stop,sep,Play,PlayN,sep,SaveAs,Trim,sep,Manage */
+    GList *children = gtk_container_get_children(GTK_CONTAINER(menu));
+    int idx = 0;
+    for (GList *l = children; l; l = l->next, idx++) {
+        if (idx >= N_STATIC)
+            gtk_widget_destroy(GTK_WIDGET(l->data));
+    }
+    g_list_free(children);
+    macro_populate_saved_menu(menu, NULL);
+}
+
 static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
 {
     GtkAccelGroup *accel = gtk_accel_group_new();
@@ -3456,37 +3513,31 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
             GtkWidget *pan_item = gtk_menu_item_new_with_label("Panels");
             GtkWidget *pan_menu = gtk_menu_new();
             gtk_menu_item_set_submenu(GTK_MENU_ITEM(pan_item), pan_menu);
-            {
-                GtkWidget *mi_doclist = gtk_check_menu_item_new_with_label("Document List");
-                gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(mi_doclist), FALSE);
-                g_signal_connect(mi_doclist, "toggled", G_CALLBACK(cb_toggle_doclist), NULL);
-                APPEND(pan_menu, mi_doclist);
-            }
-            {
-                GtkWidget *mi_dm = gtk_check_menu_item_new_with_label("Document Map");
-                gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(mi_dm), FALSE);
-                g_signal_connect(mi_dm, "toggled", G_CALLBACK(cb_toggle_docmap), NULL);
-                APPEND(pan_menu, mi_dm);
-            }
-            {
-                GtkWidget *mi_fl = gtk_check_menu_item_new_with_label("Function List");
-                gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(mi_fl), FALSE);
-                g_signal_connect(mi_fl, "toggled", G_CALLBACK(cb_toggle_funclist), NULL);
-                APPEND(pan_menu, mi_fl);
-            }
-            {
-                GtkWidget *mi_ws = gtk_check_menu_item_new_with_label("Folder as Workspace");
-                gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(mi_ws), FALSE);
-                g_signal_connect(mi_ws, "toggled", G_CALLBACK(cb_toggle_workspace), NULL);
-                APPEND(pan_menu, mi_ws);
-            }
-            {
-                GtkWidget *mi_sr = gtk_check_menu_item_new_with_label("Search Results");
-                gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(mi_sr), FALSE);
-                g_signal_connect(mi_sr, "toggled",
-                                 G_CALLBACK(cb_toggle_searchresults), NULL);
-                APPEND(pan_menu, mi_sr);
-            }
+            s_mi_doclist = gtk_check_menu_item_new_with_label("Document List");
+            gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_mi_doclist), FALSE);
+            g_signal_connect(s_mi_doclist, "toggled", G_CALLBACK(cb_toggle_doclist), NULL);
+            APPEND(pan_menu, s_mi_doclist);
+
+            s_mi_docmap = gtk_check_menu_item_new_with_label("Document Map");
+            gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_mi_docmap), FALSE);
+            g_signal_connect(s_mi_docmap, "toggled", G_CALLBACK(cb_toggle_docmap), NULL);
+            APPEND(pan_menu, s_mi_docmap);
+
+            s_mi_funclist = gtk_check_menu_item_new_with_label("Function List");
+            gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_mi_funclist), FALSE);
+            g_signal_connect(s_mi_funclist, "toggled", G_CALLBACK(cb_toggle_funclist), NULL);
+            APPEND(pan_menu, s_mi_funclist);
+
+            s_mi_workspace = gtk_check_menu_item_new_with_label("Folder as Workspace");
+            gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_mi_workspace), FALSE);
+            g_signal_connect(s_mi_workspace, "toggled", G_CALLBACK(cb_toggle_workspace), NULL);
+            APPEND(pan_menu, s_mi_workspace);
+
+            s_mi_searchresults = gtk_check_menu_item_new_with_label("Search Results");
+            gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_mi_searchresults), FALSE);
+            g_signal_connect(s_mi_searchresults, "toggled",
+                             G_CALLBACK(cb_toggle_searchresults), NULL);
+            APPEND(pan_menu, s_mi_searchresults);
             {
                 s_project_mi = gtk_check_menu_item_new_with_label("Project Manager");
                 gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_project_mi), FALSE);
@@ -3675,6 +3726,8 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
         APPEND(macro, sep_item());
         APPEND(macro, menu_item("Modify Shortcut / Delete Macro…",
                                 G_CALLBACK(cb_macro_manage), NULL, NULL, 0, 0));
+        s_macro_menu = macro;
+        g_signal_connect(macro, "show", G_CALLBACK(on_macro_menu_show), NULL);
     }
 
     /* ---- Run ---- */
@@ -3826,33 +3879,45 @@ static void on_activate(GtkApplication *app, gpointer data)
     g_signal_connect(editor_get_notebook(), "switch-page", G_CALLBACK(on_switch_page), NULL);
 
     /* editor_container (notebook + incr-search bar) | funclist | docmap */
+    GtkWidget *fl_panel = funclist_init();
+    g_signal_connect(fl_panel, "hide", G_CALLBACK(on_panel_hide), NULL);
     GtkWidget *funclist_paned = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
     gtk_paned_pack1(GTK_PANED(funclist_paned), editor_container, TRUE,  TRUE);
-    gtk_paned_pack2(GTK_PANED(funclist_paned), funclist_init(), FALSE, FALSE);
+    gtk_paned_pack2(GTK_PANED(funclist_paned), fl_panel,         FALSE, FALSE);
 
     GtkWidget *right_paned = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_paned_pack1(GTK_PANED(right_paned), funclist_paned,  TRUE,  TRUE);
-    gtk_paned_pack2(GTK_PANED(right_paned), docmap_init(),   FALSE, FALSE);
+    gtk_paned_pack1(GTK_PANED(right_paned), funclist_paned, TRUE,  TRUE);
+    gtk_paned_pack2(GTK_PANED(right_paned), docmap_init(),  FALSE, FALSE);
 
     /* doclist | (notebook + right panels) */
+    GtkWidget *dl_panel = doclist_init();
+    g_signal_connect(dl_panel, "hide", G_CALLBACK(on_panel_hide), NULL);
     GtkWidget *inner_paned = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_paned_pack1(GTK_PANED(inner_paned), doclist_init(), FALSE, FALSE);
-    gtk_paned_pack2(GTK_PANED(inner_paned), right_paned,    TRUE,  TRUE);
+    gtk_paned_pack1(GTK_PANED(inner_paned), dl_panel,   FALSE, FALSE);
+    gtk_paned_pack2(GTK_PANED(inner_paned), right_paned, TRUE,  TRUE);
 
     /* workspace | rest */
+    GtkWidget *ws_panel = workspace_init(window);
+    g_signal_connect(ws_panel, "hide", G_CALLBACK(on_panel_hide), NULL);
     GtkWidget *outer_paned = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_paned_pack1(GTK_PANED(outer_paned), workspace_init(window), FALSE, FALSE);
-    gtk_paned_pack2(GTK_PANED(outer_paned), inner_paned,            TRUE,  TRUE);
+    gtk_paned_pack1(GTK_PANED(outer_paned), ws_panel,    FALSE, FALSE);
+    gtk_paned_pack2(GTK_PANED(outer_paned), inner_paned, TRUE,  TRUE);
 
     /* project | rest — project is the leftmost panel */
+    GtkWidget *proj_panel = project_init(window);
+    g_signal_connect(proj_panel, "hide", G_CALLBACK(on_panel_hide), NULL);
     GtkWidget *proj_paned = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_paned_pack1(GTK_PANED(proj_paned), project_init(window), FALSE, FALSE);
-    gtk_paned_pack2(GTK_PANED(proj_paned), outer_paned,          TRUE,  TRUE);
+    gtk_paned_pack1(GTK_PANED(proj_paned), proj_panel,  FALSE, FALSE);
+    gtk_paned_pack2(GTK_PANED(proj_paned), outer_paned, TRUE,  TRUE);
 
     /* Bottom: Search Results left, Clipboard History right */
+    GtkWidget *sr_panel = searchresults_init();
+    g_signal_connect(sr_panel, "hide", G_CALLBACK(on_panel_hide), NULL);
+    GtkWidget *ch_panel = cliphistory_init(window);
+    g_signal_connect(ch_panel, "hide", G_CALLBACK(on_panel_hide), NULL);
     GtkWidget *bottom_paned = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_paned_pack1(GTK_PANED(bottom_paned), searchresults_init(),     TRUE,  TRUE);
-    gtk_paned_pack2(GTK_PANED(bottom_paned), cliphistory_init(window), FALSE, FALSE);
+    gtk_paned_pack1(GTK_PANED(bottom_paned), sr_panel, TRUE,  TRUE);
+    gtk_paned_pack2(GTK_PANED(bottom_paned), ch_panel, FALSE, FALSE);
 
     /* Vertical pane: all horizontal panels on top, bottom panels at bottom */
     GtkWidget *content_vpaned = gtk_paned_new(GTK_ORIENTATION_VERTICAL);

@@ -1,4 +1,5 @@
 #include "macro.h"
+#include "editor.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -422,25 +423,27 @@ void macro_trim_and_save(GtkWidget *sci)
 /* Populate saved-macro menu items                                     */
 /* ------------------------------------------------------------------ */
 
-typedef struct { GtkWidget *sci; int idx; } PlayData;
+typedef struct { int idx; } PlayData;
 
 static void on_play_saved(GtkMenuItem *mi, gpointer ud)
 {
     (void)mi;
     PlayData *pd = ud;
-    if (pd->idx < 0 || pd->idx >= s_named_count) return;
+    NppDoc *doc = editor_current_doc();
+    if (!doc || pd->idx < 0 || pd->idx >= s_named_count) return;
     NamedMacro *nm = &s_named[pd->idx];
-    scintilla_send_message(SCINTILLA(pd->sci), SCI_BEGINUNDOACTION, 0, 0);
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_BEGINUNDOACTION, 0, 0);
     for (int i = 0; i < nm->step_count; i++) {
         MacroStep *st = &nm->steps[i];
         sptr_t lp = st->text ? (sptr_t)st->text : st->lp;
-        scintilla_send_message(SCINTILLA(pd->sci), st->msg, st->wp, lp);
+        scintilla_send_message(SCINTILLA(doc->sci), st->msg, st->wp, lp);
     }
-    scintilla_send_message(SCINTILLA(pd->sci), SCI_ENDUNDOACTION, 0, 0);
+    scintilla_send_message(SCINTILLA(doc->sci), SCI_ENDUNDOACTION, 0, 0);
 }
 
 void macro_populate_saved_menu(GtkWidget *menu, GtkWidget *sci)
 {
+    (void)sci; /* sci is always resolved at playback time via editor_current_doc() */
     ensure_loaded();
     if (s_named_count == 0) return;
     GtkWidget *sep = gtk_separator_menu_item_new();
@@ -449,7 +452,6 @@ void macro_populate_saved_menu(GtkWidget *menu, GtkWidget *sci)
     for (int i = 0; i < s_named_count; i++) {
         GtkWidget *mi = gtk_menu_item_new_with_label(s_named[i].name);
         PlayData *pd  = g_new(PlayData, 1);
-        pd->sci = sci;
         pd->idx = i;
         g_signal_connect_data(mi, "activate", G_CALLBACK(on_play_saved), pd,
                               (GClosureNotify)g_free, 0);
