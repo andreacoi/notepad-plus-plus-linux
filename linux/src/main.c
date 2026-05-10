@@ -517,7 +517,7 @@ static void cb_about(GtkMenuItem *i, gpointer d)
     gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(dlg), "© 2026 Andrea Coi");
     gtk_about_dialog_set_license_type(GTK_ABOUT_DIALOG(dlg), GTK_LICENSE_GPL_3_0);
     gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(dlg),
-        "https://github.com/notetux/notetux-plusplus");
+        "https://github.com/notetux-plus-plus/notetux-plus-plus");
     gtk_about_dialog_set_website_label(GTK_ABOUT_DIALOG(dlg), "GitHub repository");
     const char *authors[] = { "Andrea Coi", NULL };
     gtk_about_dialog_set_authors(GTK_ABOUT_DIALOG(dlg), authors);
