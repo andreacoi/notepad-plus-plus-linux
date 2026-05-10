@@ -6,6 +6,10 @@
 #include "editor.h"
 #include "findreplace.h"
 #include "macro.h"
+#include "doclist.h"
+#include "docmap.h"
+#include "workspace.h"
+#include "funclist.h"
 #include "sci_c.h"
 #include <string.h>
 #include <stdio.h>
@@ -47,6 +51,12 @@ static GtkWidget *s_btn_stoprecord   = NULL;
 static GtkWidget *s_btn_play         = NULL;
 static GtkWidget *s_btn_playn        = NULL;
 static GtkWidget *s_btn_saverecord   = NULL;
+/* Panel toggle buttons */
+static GtkWidget *s_tgl_doclist      = NULL;
+static GtkWidget *s_tgl_docmap       = NULL;
+static GtkWidget *s_tgl_workspace    = NULL;
+static GtkWidget *s_tgl_funclist     = NULL;
+static GtkWidget *s_tgl_monitoring   = NULL;
 
 /* ------------------------------------------------------------------ */
 /* Dark mode detection (mirrors NppThemeManager logic)                */
@@ -226,6 +236,70 @@ static void on_indent(GtkToolItem *item, gpointer d)
     editor_send(SCI_SETINDENTATIONGUIDES, on ? SC_IV_LOOKBOTH : SC_IV_NONE, 0);
 }
 
+static void on_print(GtkToolItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    main_do_print();
+}
+
+static void on_saverecord(GtkToolItem *i, gpointer d)
+{
+    (void)i; (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (doc) macro_save_as_dialog(doc->sci, GTK_WINDOW(s_window));
+}
+
+/* ---- Panel toggles ---- */
+static void on_tgl_doclist(GtkToolItem *item, gpointer d)
+{
+    (void)d;
+    gboolean on = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(item));
+    doclist_set_visible(on);
+}
+
+static void on_tgl_docmap(GtkToolItem *item, gpointer d)
+{
+    (void)d;
+    gboolean on = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(item));
+    docmap_set_visible(on);
+    if (on) {
+        NppDoc *doc = editor_current_doc();
+        if (doc) docmap_update(doc->sci);
+    }
+}
+
+static void on_tgl_workspace(GtkToolItem *item, gpointer d)
+{
+    (void)d;
+    gboolean on = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(item));
+    workspace_set_visible(on);
+}
+
+static void on_tgl_funclist(GtkToolItem *item, gpointer d)
+{
+    (void)d;
+    gboolean on = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(item));
+    funclist_set_visible(on);
+}
+
+static void on_tgl_monitoring(GtkToolItem *item, gpointer d)
+{
+    (void)d;
+    NppDoc *doc = editor_current_doc();
+    if (!doc) return;
+    gboolean on = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(item));
+    if (on && !doc->filepath) {
+        /* Can't monitor an unsaved document — revert the button */
+        g_signal_handlers_block_matched(GTK_WIDGET(item), G_SIGNAL_MATCH_FUNC,
+            0, 0, NULL, G_CALLBACK(on_tgl_monitoring), NULL);
+        gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(item), FALSE);
+        g_signal_handlers_unblock_matched(GTK_WIDGET(item), G_SIGNAL_MATCH_FUNC,
+            0, 0, NULL, G_CALLBACK(on_tgl_monitoring), NULL);
+        return;
+    }
+    doc->monitoring = on;
+}
+
 static void on_macro_start(GtkToolItem *i, gpointer d)
 {
     (void)i; (void)d;
@@ -284,7 +358,7 @@ GtkWidget *toolbar_init(GtkWidget *parent_window)
     ADD(make_btn("saveall",  "Save All",            G_CALLBACK(on_save_all), NULL));
     ADD(make_btn("close",    "Close (Ctrl+W)",      G_CALLBACK(on_close),    NULL));
     ADD(make_btn("closeall", "Close All",           G_CALLBACK(on_close_all),NULL));
-    ADD(make_placeholder("print", "Print"));
+    ADD(make_btn("print", "Print… (Ctrl+P)", G_CALLBACK(on_print), NULL));
     ADD(make_sep());
 
     /* ---- Clipboard group ---- */
@@ -320,8 +394,8 @@ GtkWidget *toolbar_init(GtkWidget *parent_window)
     ADD(GTK_TOOL_ITEM(s_tgl_wrap));
     ADD(GTK_TOOL_ITEM(s_tgl_allchars));
     ADD(GTK_TOOL_ITEM(s_tgl_indent));
-    ADD(make_placeholder("syncH", "Synchronise Horizontal Scrolling"));
-    ADD(make_placeholder("syncV", "Synchronise Vertical Scrolling"));
+    ADD(make_placeholder("syncH", "Synchronise Horizontal Scrolling (not supported)"));
+    ADD(make_placeholder("syncV", "Synchronise Vertical Scrolling (not supported)"));
     ADD(make_sep());
 
     /* ---- Macro group ---- */
@@ -338,7 +412,8 @@ GtkWidget *toolbar_init(GtkWidget *parent_window)
     GTK_WIDGET(make_btn("playrecord_m","Run Macro Multiple Times…",
                         G_CALLBACK(on_macro_playn), NULL));
     s_btn_saverecord =
-    GTK_WIDGET(make_placeholder("saverecord", "Save Current Recorded Macro"));
+    GTK_WIDGET(make_btn("saverecord", "Save Current Recorded Macro As…",
+                        G_CALLBACK(on_saverecord), NULL));
     ADD(GTK_TOOL_ITEM(s_btn_startrecord));
     ADD(GTK_TOOL_ITEM(s_btn_stoprecord));
     ADD(GTK_TOOL_ITEM(s_btn_play));
@@ -347,11 +422,21 @@ GtkWidget *toolbar_init(GtkWidget *parent_window)
     ADD(make_sep());
 
     /* ---- Panels group ---- */
-    ADD(make_placeholder("docList",     "Document List"));
-    ADD(make_placeholder("docMap",      "Document Map"));
-    ADD(make_placeholder("fileBrowser", "Folder as Workspace"));
-    ADD(make_placeholder("funcList",    "Function List"));
-    ADD(make_placeholder("monitoring",  "File Monitoring"));
+    s_tgl_doclist =
+    GTK_WIDGET(make_toggle("docList",     "Document List",       G_CALLBACK(on_tgl_doclist),    NULL));
+    s_tgl_docmap =
+    GTK_WIDGET(make_toggle("docMap",      "Document Map",        G_CALLBACK(on_tgl_docmap),     NULL));
+    s_tgl_workspace =
+    GTK_WIDGET(make_toggle("fileBrowser", "Folder as Workspace", G_CALLBACK(on_tgl_workspace),  NULL));
+    s_tgl_funclist =
+    GTK_WIDGET(make_toggle("funcList",    "Function List",       G_CALLBACK(on_tgl_funclist),   NULL));
+    s_tgl_monitoring =
+    GTK_WIDGET(make_toggle("monitoring",  "File Monitoring (tail -f)", G_CALLBACK(on_tgl_monitoring), NULL));
+    ADD(GTK_TOOL_ITEM(s_tgl_doclist));
+    ADD(GTK_TOOL_ITEM(s_tgl_docmap));
+    ADD(GTK_TOOL_ITEM(s_tgl_workspace));
+    ADD(GTK_TOOL_ITEM(s_tgl_funclist));
+    ADD(GTK_TOOL_ITEM(s_tgl_monitoring));
     ADD(make_sep());
 
     /* ---- Misc ---- */
@@ -373,14 +458,39 @@ void toolbar_update_macro_buttons(void)
     gtk_widget_set_sensitive(s_btn_stoprecord,   recording);
     gtk_widget_set_sensitive(s_btn_play,         !recording && has_macro);
     gtk_widget_set_sensitive(s_btn_playn,        !recording && has_macro);
-    /* saverecord: enabled when stopped and a macro exists (placeholder for now) */
     if (s_btn_saverecord)
-        gtk_widget_set_sensitive(s_btn_saverecord, FALSE);
+        gtk_widget_set_sensitive(s_btn_saverecord, !recording && has_macro);
+}
+
+/* Helper: set a GtkToggleToolButton state without firing its callback */
+static void sync_toggle(GtkWidget *btn, GCallback cb, gboolean active)
+{
+    if (!btn) return;
+    g_signal_handlers_block_matched(btn, G_SIGNAL_MATCH_FUNC, 0, 0, NULL, cb, NULL);
+    gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(btn), active);
+    g_signal_handlers_unblock_matched(btn, G_SIGNAL_MATCH_FUNC, 0, 0, NULL, cb, NULL);
+}
+
+void toolbar_sync_panels(void)
+{
+    sync_toggle(s_tgl_doclist,    G_CALLBACK(on_tgl_doclist),    doclist_is_visible());
+    sync_toggle(s_tgl_docmap,     G_CALLBACK(on_tgl_docmap),     docmap_is_visible());
+    sync_toggle(s_tgl_workspace,  G_CALLBACK(on_tgl_workspace),  workspace_is_visible());
+    sync_toggle(s_tgl_funclist,   G_CALLBACK(on_tgl_funclist),   funclist_is_visible());
+
+    NppDoc *doc = editor_current_doc();
+    sync_toggle(s_tgl_monitoring, G_CALLBACK(on_tgl_monitoring),
+                doc ? doc->monitoring : FALSE);
 }
 
 void toolbar_sync_toggles(GtkWidget *sci)
 {
     if (!sci) return;
+
+    /* Monitoring: driven by NppDoc flag, not Scintilla */
+    NppDoc *doc = editor_current_doc();
+    sync_toggle(s_tgl_monitoring, G_CALLBACK(on_tgl_monitoring),
+                doc ? doc->monitoring : FALSE);
 
     /* Block signals while syncing to avoid feedback loop */
     if (s_tgl_wrap) {

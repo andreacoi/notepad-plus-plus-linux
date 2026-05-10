@@ -454,18 +454,21 @@ static void cb_toggle_doclist(GtkCheckMenuItem *item, gpointer d)
 {
     (void)d;
     doclist_set_visible(gtk_check_menu_item_get_active(item));
+    toolbar_sync_panels();
 }
 
 static void cb_toggle_workspace(GtkCheckMenuItem *item, gpointer d)
 {
     (void)d;
     workspace_set_visible(gtk_check_menu_item_get_active(item));
+    toolbar_sync_panels();
 }
 
 static void cb_toggle_funclist(GtkCheckMenuItem *item, gpointer d)
 {
     (void)d;
     funclist_set_visible(gtk_check_menu_item_get_active(item));
+    toolbar_sync_panels();
 }
 
 static void cb_toggle_docmap(GtkCheckMenuItem *item, gpointer d)
@@ -477,12 +480,14 @@ static void cb_toggle_docmap(GtkCheckMenuItem *item, gpointer d)
         NppDoc *doc = editor_current_doc();
         if (doc) docmap_update(doc->sci);
     }
+    toolbar_sync_panels();
 }
 
 static void cb_toggle_searchresults(GtkCheckMenuItem *item, gpointer d)
 {
     (void)d;
     searchresults_set_visible(gtk_check_menu_item_get_active(item));
+    toolbar_sync_panels();
 }
 
 /* ------------------------------------------------------------------ */
@@ -914,6 +919,9 @@ static void do_print(GtkPrintOperationAction action)
 
 static void cb_print    (GtkMenuItem *i, gpointer d) { (void)i;(void)d; do_print(GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG); }
 static void cb_print_now(GtkMenuItem *i, gpointer d) { (void)i;(void)d; do_print(GTK_PRINT_OPERATION_ACTION_PRINT); }
+
+/* Called from toolbar.c */
+void main_do_print(void) { do_print(GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG); }
 
 /* ------------------------------------------------------------------ */
 /* Item 64 — Change History                                            */
@@ -3728,6 +3736,7 @@ static void on_switch_page(GtkNotebook *nb, GtkWidget *page,
     apply_edge(doc->sci);
     wrap_menu_sync(doc->word_wrap);
     toolbar_sync_toggles(doc->sci);
+    toolbar_sync_panels();
     main_sync_encoding_menu(doc->encoding ? doc->encoding : "UTF-8");
     doclist_sync_selection((int)n);
     funclist_update(doc->sci);
