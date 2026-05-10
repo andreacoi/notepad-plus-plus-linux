@@ -89,6 +89,7 @@ add_executable(notetux++
     src/docmap.c
     src/searchresults.c
     src/spell.c
+    src/plugin.c
     src/lexilla_bridge.cpp
 )
 

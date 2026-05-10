@@ -14,6 +14,7 @@
 #include "funclist.h"
 #include "docmap.h"
 #include "spell.h"
+#include "plugin.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -308,6 +309,8 @@ static void on_sci_notify(GtkWidget *sci, gint unused,
     (void)unused; (void)data;
     NppDoc *doc = doc_of_sci(sci);
     if (!doc) return;
+
+    plugin_notify_all(n);
 
     unsigned int code = n->nmhdr.code;
 

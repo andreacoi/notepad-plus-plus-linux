@@ -22,6 +22,7 @@
 #include "docmap.h"
 #include "searchresults.h"
 #include "spell.h"
+#include "plugin.h"
 
 /* Set to TRUE in main() when no file arguments are given; read in on_activate. */
 static gboolean s_restore_session = FALSE;
@@ -3110,6 +3111,10 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     /* ---- Plugins ---- */
     {
         GtkWidget *plugins = submenu(bar, TM("menu.plugins", "_Plugins"));
+        plugin_load_all();
+        plugin_populate_menu(plugins);
+        if (plugin_count() > 0)
+            APPEND(plugins, sep_item());
         APPEND(plugins, nyi_item("Plugins Admin…"));
     }
 
@@ -3207,6 +3212,9 @@ static void on_activate(GtkApplication *app, gpointer data)
 
     GtkWidget *vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_add(GTK_CONTAINER(window), vbox);
+
+    /* Plugin system — must be initialised before the menu is built */
+    plugin_init(window);
 
     /* Menu bar */
     GtkWidget *menubar = build_menubar(GTK_WINDOW(window), G_APPLICATION(app));
