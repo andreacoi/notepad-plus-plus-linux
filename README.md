@@ -157,11 +157,11 @@ Ordered by implementation effort (low → high). The core editing experience is 
 
 | # | Feature | Description |
 |---|---------|-------------|
-| 59 | Save a Copy As… | Save the document to a new path without switching the active filepath |
-| 60 | Rename… | Rename the file on disk and update the tab label, title bar and file monitor |
-| 61 | Monitoring (tail -f) | Auto-reload the current file silently when it changes on disk (no prompt) |
-| 62 | Incremental Search | Live search bar (Ctrl+I) that highlights matches as you type; Enter/Shift+Enter to step through results |
-| 63 | Print… / Print Now | `GtkPrintOperation` with full dialog or immediate print using last settings |
+| ~~59~~ | ~~Save a Copy As…~~ ✓ | Save the document to a new path without switching the active filepath |
+| ~~60~~ | ~~Rename…~~ ✓ | Rename the file on disk and update the tab label, title bar and file monitor |
+| ~~61~~ | ~~Monitoring (tail -f)~~ ✓ | Auto-reload the current file silently when it changes on disk (no prompt) |
+| ~~62~~ | ~~Incremental Search~~ ✓ | Live search bar (Ctrl+I) that highlights matches as you type; Enter to step through results |
+| ~~63~~ | ~~Print… / Print Now~~ ✓ | `GtkPrintOperation` with full dialog or immediate print using last settings |
 
 ### High effort
 

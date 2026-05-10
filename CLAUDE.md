@@ -191,11 +191,11 @@ Menu items currently `nyi_item()` placeholders that need straightforward impleme
 
 ### Medium effort
 
-59. **Save a Copy As…** — `GtkFileChooserDialog`, write doc bytes (with encoding conversion via `encoding_from_utf8`) to the new path without updating `NppDoc.filepath`, save point, or tab label; ~40 lines in `editor.c`.
-60. **Rename…** — `GtkFileChooserDialog` starting in the current file's directory; `g_rename()` on disk; update `NppDoc.filepath`, restart `GFileMonitor`, refresh tab label and window title; ~50 lines in `editor.c`.
-61. **Monitoring (tail -f)** — add `gboolean monitoring` to `NppDoc`; when set, `GFileMonitor` change events auto-reload silently (skip the "do you want to reload?" prompt); toggled from View → Panels → Monitoring (tail -f); `~60` lines across `editor.c` and `main.c`.
-62. **Incremental Search** — live search bar (Ctrl+I) docked at the bottom of the editor area; highlights every match as you type using `SCI_SEARCHINTARGET` + `SCI_INDICATORFILLRANGE`; Enter/Shift+Enter jump to next/previous match; Escape closes; `GtkSearchBar` widget; ~100 lines, could live in `findreplace.c` or a new `incremental.c/h`.
-63. **Print… / Print Now** — `GtkPrintOperation` with a `GtkPrintContext` that renders the document text line-by-line with syntax-colour approximation (or plain text as a first pass); Print… shows the full dialog, Print Now uses last settings; ~80 lines in `main.c`.
+59. ~~**Save a Copy As…**~~ — done: `editor_save_copy_as()` in `editor.c`; `GtkFileChooserDialog`; writes encoded bytes to chosen path via `encoding_from_utf8` + `g_file_set_contents` without touching `NppDoc.filepath`, save point, or tab label.
+60. ~~**Rename…**~~ — done: `editor_rename()` in `editor.c`; dialog pre-filled with current basename; `rename()` syscall; updates `NppDoc.filepath`, restarts `GFileMonitor`, refreshes tab label, window title, recent files, and document list.
+61. ~~**Monitoring (tail -f)**~~ — done: `gboolean monitoring` added to `NppDoc`; `on_file_changed` in `editor.c` skips the reload-prompt and calls `reload_doc_from_disk()` directly when set; toggled from View → Panels → Monitoring (tail -f) (`GtkCheckMenuItem`); check state synced on tab switch in `on_switch_page`.
+62. ~~**Incremental Search**~~ — done: hidden `GtkBox` bar docked below the notebook (returned by `editor_init` as a `GtkVBox` wrapper); Ctrl+I shows it; highlights all matches live with `SCI_SEARCHINTARGET` + `SCI_INDICATORFILLRANGE` (indicator slot 9, green); Enter advances to next match with wrap-around; Escape closes and clears highlights; `editor_incr_search_show/close()` in `editor.c`.
+63. ~~**Print… / Print Now**~~ — done: `GtkPrintOperation` with `begin-print`/`draw-page`/`end-print` signals; text split into lines, rendered with Pango monospace 10pt at 14pt line-height via `pango_cairo_show_layout`; print settings preserved across invocations; Print… uses `GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG`, Print Now uses `GTK_PRINT_OPERATION_ACTION_PRINT`.
 
 ### High effort
 
