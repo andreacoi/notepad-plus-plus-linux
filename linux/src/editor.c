@@ -26,6 +26,18 @@ static GtkWidget *s_notebook;
 static GtkWidget *s_window;
 static int        s_new_count;
 
+/* Persistent file-chooser singletons — never destroyed to avoid GIO-in-background crashes */
+static GtkWidget *s_open_dlg     = NULL;
+static GtkWidget *s_saveas_dlg   = NULL;
+static GtkWidget *s_savecopy_dlg = NULL;
+
+/* TRUE while editor_open_path / reload_doc_from_disk is populating a Scintilla
+ * widget via SCI_SETTEXT.  Suppresses changehistory_on_modified so that the
+ * ~N*2 RedrawSelMargin / InvalidateRect calls emitted for each inserted line
+ * do not overwhelm GTK's damage-region tracking (which causes a blank view on
+ * large files). */
+static gboolean s_loading_file = FALSE;
+
 /* Incremental search bar */
 #define INCR_INDICATOR 9
 static GtkWidget    *s_editor_container;
@@ -77,9 +89,11 @@ static void reload_doc_from_disk(NppDoc *doc)
     doc->encoding = g_strdup(enc_name);
 
     Sci_Position saved_pos = (Sci_Position)sci_msg(doc->sci, SCI_GETCURRENTPOS, 0, 0);
+    s_loading_file = TRUE;
     sci_msg(doc->sci, SCI_SETTEXT, 0, (sptr_t)utf8);
     sci_msg(doc->sci, SCI_SETSAVEPOINT, 0, 0);
     sci_msg(doc->sci, SCI_EMPTYUNDOBUFFER, 0, 0);
+    s_loading_file = FALSE;
     sci_msg(doc->sci, SCI_GOTOPOS, (uptr_t)saved_pos, 0);
     g_free(utf8);
 
@@ -427,11 +441,13 @@ static void on_sci_notify(GtkWidget *sci, gint unused,
         }
     } else if (code == SCN_MODIFIED &&
                (n->modificationType & (SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT))) {
-        Sci_Position mod_line = (Sci_Position)sci_msg(sci, SCI_LINEFROMPOSITION,
-            (uptr_t)n->position, 0);
-        changehistory_on_modified(sci, mod_line, n->linesAdded);
-        if (doc->filepath)
-            gitgutter_update(sci, doc->filepath);
+        if (!s_loading_file) {
+            Sci_Position mod_line = (Sci_Position)sci_msg(sci, SCI_LINEFROMPOSITION,
+                (uptr_t)n->position, 0);
+            changehistory_on_modified(sci, mod_line, n->linesAdded);
+            if (doc->filepath)
+                gitgutter_update(sci, doc->filepath);
+        }
         funclist_schedule_update(sci);
         spell_schedule_check(sci);
     } else if (code == SCN_MACRORECORD) {
@@ -703,6 +719,11 @@ gboolean editor_open_path(const char *path)
         gtk_notebook_append_page(GTK_NOTEBOOK(s_notebook), sci, label);
         gtk_notebook_set_tab_reorderable(GTK_NOTEBOOK(s_notebook), sci, TRUE);
         gtk_widget_show_all(s_notebook);
+        /* Switch to the new tab NOW so the widget is mapped with real dimensions
+         * before SCI_SETTEXT / SCI_GOTOPOS; without this, Scintilla calculates
+         * the first-visible-line against a zero-height viewport and the content
+         * appears blank when the tab is later shown. */
+        gtk_notebook_set_current_page(GTK_NOTEBOOK(s_notebook), page);
         cur = doc;
     }
 
@@ -713,9 +734,11 @@ gboolean editor_open_path(const char *path)
     g_free(cur->encoding);
     cur->encoding = g_strdup(enc_name);
 
+    s_loading_file = TRUE;
     sci_msg(sci, SCI_SETTEXT, 0, (sptr_t)utf8);
     sci_msg(sci, SCI_SETSAVEPOINT, 0, 0);
     sci_msg(sci, SCI_EMPTYUNDOBUFFER, 0, 0);
+    s_loading_file = FALSE;
     sci_msg(sci, SCI_GOTOPOS, 0, 0);
     g_free(utf8);
 
@@ -737,24 +760,42 @@ gboolean editor_open_path(const char *path)
 
 gboolean editor_open_dialog(void)
 {
-    GtkWidget *dlg = gtk_file_chooser_dialog_new(
-        T("cmd.41002", "Open File"), GTK_WINDOW(s_window),
-        GTK_FILE_CHOOSER_ACTION_OPEN,
-        TM("dlg.Find.2",  "_Cancel"), GTK_RESPONSE_CANCEL,
-        TM("cmd.41002",   "_Open"),   GTK_RESPONSE_ACCEPT,
-        NULL);
-    gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dlg), TRUE);
+    if (!s_open_dlg) {
+        s_open_dlg = gtk_file_chooser_dialog_new(
+            T("cmd.41002", "Open File"), GTK_WINDOW(s_window),
+            GTK_FILE_CHOOSER_ACTION_OPEN,
+            TM("dlg.Find.2", "_Cancel"), GTK_RESPONSE_CANCEL,
+            TM("cmd.41002",  "_Open"),   GTK_RESPONSE_ACCEPT,
+            NULL);
+        gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(s_open_dlg), TRUE);
+        g_signal_connect(s_open_dlg, "delete-event",
+                         G_CALLBACK(gtk_widget_hide_on_delete), NULL);
+    }
 
     gboolean opened = FALSE;
-    if (gtk_dialog_run(GTK_DIALOG(dlg)) == GTK_RESPONSE_ACCEPT) {
-        GSList *files = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dlg));
-        for (GSList *f = files; f; f = f->next) {
-            if (editor_open_path((char *)f->data)) opened = TRUE;
-            g_free(f->data);
+    if (gtk_dialog_run(GTK_DIALOG(s_open_dlg)) == GTK_RESPONSE_ACCEPT) {
+        GSList *paths = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(s_open_dlg));
+        if (!paths) {
+            /* Fallback for portal/Wayland: use URI list */
+            GSList *uris = gtk_file_chooser_get_uris(GTK_FILE_CHOOSER(s_open_dlg));
+            for (GSList *u = uris; u; u = u->next) {
+                char *p = g_filename_from_uri((char *)u->data, NULL, NULL);
+                if (p) {
+                    if (editor_open_path(p)) opened = TRUE;
+                    g_free(p);
+                }
+                g_free(u->data);
+            }
+            g_slist_free(uris);
+        } else {
+            for (GSList *f = paths; f; f = f->next) {
+                if (editor_open_path((char *)f->data)) opened = TRUE;
+                g_free(f->data);
+            }
+            g_slist_free(paths);
         }
-        g_slist_free(files);
     }
-    gtk_widget_destroy(dlg);
+    gtk_widget_hide(s_open_dlg);
     return opened;
 }
 
@@ -813,20 +854,25 @@ gboolean editor_save_as_dialog(void)
     NppDoc *doc = editor_current_doc();
     if (!doc) return FALSE;
 
-    GtkWidget *dlg = gtk_file_chooser_dialog_new(
-        T("cmd.41008", "Save File As"), GTK_WINDOW(s_window),
-        GTK_FILE_CHOOSER_ACTION_SAVE,
-        TM("dlg.Find.2",  "_Cancel"), GTK_RESPONSE_CANCEL,
-        TM("cmd.41006",   "_Save"),   GTK_RESPONSE_ACCEPT,
-        NULL);
-    gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dlg), TRUE);
+    if (!s_saveas_dlg) {
+        s_saveas_dlg = gtk_file_chooser_dialog_new(
+            T("cmd.41008", "Save File As"), GTK_WINDOW(s_window),
+            GTK_FILE_CHOOSER_ACTION_SAVE,
+            TM("dlg.Find.2", "_Cancel"), GTK_RESPONSE_CANCEL,
+            TM("cmd.41006",  "_Save"),   GTK_RESPONSE_ACCEPT,
+            NULL);
+        gtk_file_chooser_set_do_overwrite_confirmation(
+            GTK_FILE_CHOOSER(s_saveas_dlg), TRUE);
+        g_signal_connect(s_saveas_dlg, "delete-event",
+                         G_CALLBACK(gtk_widget_hide_on_delete), NULL);
+    }
     if (doc->filepath)
-        gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dlg), doc->filepath);
+        gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(s_saveas_dlg), doc->filepath);
 
     gboolean saved = FALSE;
-    if (gtk_dialog_run(GTK_DIALOG(dlg)) == GTK_RESPONSE_ACCEPT) {
-        char *path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dlg));
-        if (save_doc_to_path(doc, path)) {
+    if (gtk_dialog_run(GTK_DIALOG(s_saveas_dlg)) == GTK_RESPONSE_ACCEPT) {
+        char *path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(s_saveas_dlg));
+        if (path && save_doc_to_path(doc, path)) {
             g_free(doc->filepath);
             doc->filepath  = path;
             doc->new_index = 0;
@@ -840,7 +886,7 @@ gboolean editor_save_as_dialog(void)
             g_free(path);
         }
     }
-    gtk_widget_destroy(dlg);
+    gtk_widget_hide(s_saveas_dlg);
     return saved;
 }
 
@@ -1023,19 +1069,24 @@ gboolean editor_save_copy_as(void)
     NppDoc *doc = editor_current_doc();
     if (!doc) return FALSE;
 
-    GtkWidget *dlg = gtk_file_chooser_dialog_new(
-        "Save a Copy As", GTK_WINDOW(s_window),
-        GTK_FILE_CHOOSER_ACTION_SAVE,
-        "_Cancel", GTK_RESPONSE_CANCEL,
-        "_Save Copy", GTK_RESPONSE_ACCEPT,
-        NULL);
-    gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dlg), TRUE);
+    if (!s_savecopy_dlg) {
+        s_savecopy_dlg = gtk_file_chooser_dialog_new(
+            "Save a Copy As", GTK_WINDOW(s_window),
+            GTK_FILE_CHOOSER_ACTION_SAVE,
+            "_Cancel",     GTK_RESPONSE_CANCEL,
+            "_Save Copy",  GTK_RESPONSE_ACCEPT,
+            NULL);
+        gtk_file_chooser_set_do_overwrite_confirmation(
+            GTK_FILE_CHOOSER(s_savecopy_dlg), TRUE);
+        g_signal_connect(s_savecopy_dlg, "delete-event",
+                         G_CALLBACK(gtk_widget_hide_on_delete), NULL);
+    }
     if (doc->filepath)
-        gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dlg), doc->filepath);
+        gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(s_savecopy_dlg), doc->filepath);
 
     gboolean saved = FALSE;
-    if (gtk_dialog_run(GTK_DIALOG(dlg)) == GTK_RESPONSE_ACCEPT) {
-        char *path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dlg));
+    if (gtk_dialog_run(GTK_DIALOG(s_savecopy_dlg)) == GTK_RESPONSE_ACCEPT) {
+        char *path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(s_savecopy_dlg));
         /* Write to path without changing doc->filepath or save-point */
         sptr_t utf8_len = sci_msg(doc->sci, SCI_GETLENGTH, 0, 0);
         gchar *utf8 = g_new(gchar, utf8_len + 1);
@@ -1058,7 +1109,7 @@ gboolean editor_save_copy_as(void)
         g_free(buf);
         g_free(path);
     }
-    gtk_widget_destroy(dlg);
+    gtk_widget_hide(s_savecopy_dlg);
     return saved;
 }
 

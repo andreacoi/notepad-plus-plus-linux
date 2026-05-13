@@ -246,6 +246,11 @@ static void cb_selall(GtkMenuItem *i, gpointer d)  { (void)i;(void)d; editor_sel
 /* Search */
 static GtkWidget *s_main_window = NULL;
 
+/* Persistent file-chooser singletons for main.c dialogs */
+static GtkWidget *s_workspace_dlg    = NULL;
+static GtkWidget *s_import_plugin_dlg = NULL;
+static GtkWidget *s_import_theme_dlg  = NULL;
+
 static void cb_find(GtkMenuItem *i, gpointer d)
 {
     (void)i;(void)d;
@@ -769,18 +774,22 @@ static void cb_move_to_trash(GtkMenuItem *i, gpointer d)
 static void cb_import_plugin(GtkMenuItem *i, gpointer d)
 {
     (void)i; (void)d;
-    GtkWidget *dlg = gtk_file_chooser_dialog_new(
-        "Import Plugin", GTK_WINDOW(s_main_window),
-        GTK_FILE_CHOOSER_ACTION_OPEN,
-        "_Cancel", GTK_RESPONSE_CANCEL,
-        "_Import", GTK_RESPONSE_ACCEPT, NULL);
-    GtkFileFilter *ff = gtk_file_filter_new();
-    gtk_file_filter_set_name(ff, "Shared Libraries (*.so)");
-    gtk_file_filter_add_pattern(ff, "*.so");
-    gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dlg), ff);
+    if (!s_import_plugin_dlg) {
+        s_import_plugin_dlg = gtk_file_chooser_dialog_new(
+            "Import Plugin", GTK_WINDOW(s_main_window),
+            GTK_FILE_CHOOSER_ACTION_OPEN,
+            "_Cancel", GTK_RESPONSE_CANCEL,
+            "_Import", GTK_RESPONSE_ACCEPT, NULL);
+        GtkFileFilter *ff = gtk_file_filter_new();
+        gtk_file_filter_set_name(ff, "Shared Libraries (*.so)");
+        gtk_file_filter_add_pattern(ff, "*.so");
+        gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(s_import_plugin_dlg), ff);
+        g_signal_connect(s_import_plugin_dlg, "delete-event",
+                         G_CALLBACK(gtk_widget_hide_on_delete), NULL);
+    }
 
-    if (gtk_dialog_run(GTK_DIALOG(dlg)) == GTK_RESPONSE_ACCEPT) {
-        char *src      = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dlg));
+    if (gtk_dialog_run(GTK_DIALOG(s_import_plugin_dlg)) == GTK_RESPONSE_ACCEPT) {
+        char *src      = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(s_import_plugin_dlg));
         char *basename = g_path_get_basename(src);
         char *name     = g_strdup(basename);
         char *dot      = strrchr(name, '.');
@@ -813,25 +822,29 @@ static void cb_import_plugin(GtkMenuItem *i, gpointer d)
         g_free(dest_dir); g_free(dest);
         g_free(name); g_free(basename); g_free(src);
     }
-    gtk_widget_destroy(dlg);
+    gtk_widget_hide(s_import_plugin_dlg);
 }
 
 /* 58 — Import a theme XML into ~/.config/notetux/themes/ */
 static void cb_import_theme(GtkMenuItem *i, gpointer d)
 {
     (void)i; (void)d;
-    GtkWidget *dlg = gtk_file_chooser_dialog_new(
-        "Import Style Theme", GTK_WINDOW(s_main_window),
-        GTK_FILE_CHOOSER_ACTION_OPEN,
-        "_Cancel", GTK_RESPONSE_CANCEL,
-        "_Import", GTK_RESPONSE_ACCEPT, NULL);
-    GtkFileFilter *ff = gtk_file_filter_new();
-    gtk_file_filter_set_name(ff, "Theme files (*.xml)");
-    gtk_file_filter_add_pattern(ff, "*.xml");
-    gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dlg), ff);
+    if (!s_import_theme_dlg) {
+        s_import_theme_dlg = gtk_file_chooser_dialog_new(
+            "Import Style Theme", GTK_WINDOW(s_main_window),
+            GTK_FILE_CHOOSER_ACTION_OPEN,
+            "_Cancel", GTK_RESPONSE_CANCEL,
+            "_Import", GTK_RESPONSE_ACCEPT, NULL);
+        GtkFileFilter *ff = gtk_file_filter_new();
+        gtk_file_filter_set_name(ff, "Theme files (*.xml)");
+        gtk_file_filter_add_pattern(ff, "*.xml");
+        gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(s_import_theme_dlg), ff);
+        g_signal_connect(s_import_theme_dlg, "delete-event",
+                         G_CALLBACK(gtk_widget_hide_on_delete), NULL);
+    }
 
-    if (gtk_dialog_run(GTK_DIALOG(dlg)) == GTK_RESPONSE_ACCEPT) {
-        char *src      = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dlg));
+    if (gtk_dialog_run(GTK_DIALOG(s_import_theme_dlg)) == GTK_RESPONSE_ACCEPT) {
+        char *src      = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(s_import_theme_dlg));
         char *basename = g_path_get_basename(src);
         char *dest_dir = g_build_filename(g_get_home_dir(), ".config", "notetux",
                                           "themes", NULL);
@@ -860,7 +873,7 @@ static void cb_import_theme(GtkMenuItem *i, gpointer d)
         g_free(dest_dir); g_free(dest);
         g_free(basename); g_free(src);
     }
-    gtk_widget_destroy(dlg);
+    gtk_widget_hide(s_import_theme_dlg);
 }
 
 /* ------------------------------------------------------------------ */
@@ -1092,20 +1105,24 @@ static void cb_toggle_spellcheck(GtkCheckMenuItem *item, gpointer d)
 static void cb_open_folder_workspace(GtkMenuItem *i, gpointer d)
 {
     (void)i; (void)d;
-    GtkWidget *dlg = gtk_file_chooser_dialog_new(
-        "Open Folder as Workspace",
-        GTK_WINDOW(s_main_window),
-        GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
-        "_Cancel", GTK_RESPONSE_CANCEL,
-        "_Open",   GTK_RESPONSE_ACCEPT,
-        NULL);
-    if (gtk_dialog_run(GTK_DIALOG(dlg)) == GTK_RESPONSE_ACCEPT) {
-        char *folder = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dlg));
+    if (!s_workspace_dlg) {
+        s_workspace_dlg = gtk_file_chooser_dialog_new(
+            "Open Folder as Workspace",
+            GTK_WINDOW(s_main_window),
+            GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
+            "_Cancel", GTK_RESPONSE_CANCEL,
+            "_Open",   GTK_RESPONSE_ACCEPT,
+            NULL);
+        g_signal_connect(s_workspace_dlg, "delete-event",
+                         G_CALLBACK(gtk_widget_hide_on_delete), NULL);
+    }
+    if (gtk_dialog_run(GTK_DIALOG(s_workspace_dlg)) == GTK_RESPONSE_ACCEPT) {
+        char *folder = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(s_workspace_dlg));
         workspace_set_folder(folder);
         workspace_set_visible(TRUE);
         g_free(folder);
     }
-    gtk_widget_destroy(dlg);
+    gtk_widget_hide(s_workspace_dlg);
 }
 
 /* Settings */
