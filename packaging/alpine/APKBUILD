@@ -1,0 +1,62 @@
+# Contributor: Andrea Coi <acandry90@gmail.com>
+# Maintainer: Andrea Coi <acandry90@gmail.com>
+pkgname="notetux++"
+pkgver="1.0.0"
+pkgrel=0
+pkgdesc="Feature-rich text editor for Linux (GTK3 port of Notepad++)"
+url="https://github.com/andreacos/notetux"
+arch="x86_64"
+license="GPL-3.0-or-later"
+depends="
+    gtk+3.0
+    glib
+    libstdc++
+    libatomic
+"
+makedepends="
+    cmake
+    samurai
+    pkgconf
+    gcc
+    g++
+    gtk+3.0-dev
+    glib-dev
+"
+subpackages="$pkgname-doc"
+source="$pkgname-$pkgver.tar.gz::https://github.com/andreacos/notetux/archive/refs/tags/v$pkgver.tar.gz"
+builddir="$srcdir/notetux-$pkgver"
+
+build() {
+    cmake -B "$builddir/build" -S "$builddir" \
+        -G Ninja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DRESOURCES_DIR=/usr/share/notetux
+    cmake --build "$builddir/build"
+}
+
+check() {
+    :
+}
+
+package() {
+    # Binary
+    install -Dm755 "$builddir/build/notetux++" \
+        "$pkgdir/usr/bin/notetux++"
+
+    # Resources tree
+    install -d "$pkgdir/usr/share/notetux"
+    cp -r "$builddir/resources/." "$pkgdir/usr/share/notetux/"
+
+    # Pixmap icon
+    install -Dm644 "$builddir/resources/icons/standard/icon.png" \
+        "$pkgdir/usr/share/pixmaps/notetux++.png"
+
+    # .desktop file
+    install -Dm644 "$builddir/packaging/notetux++.desktop" \
+        "$pkgdir/usr/share/applications/notetux++.desktop"
+
+    # License (goes into doc subpackage via install -Dm644)
+    install -Dm644 "$builddir/LICENSE" \
+        "$pkgdir/usr/share/doc/$pkgname/LICENSE"
+}

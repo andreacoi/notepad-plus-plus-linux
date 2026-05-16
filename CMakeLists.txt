@@ -107,9 +107,15 @@ target_include_directories(notetux++ PRIVATE
     ${GTK3_INCLUDE_DIRS}
 )
 
+# Allow packaging recipes to override the runtime resources path:
+#   cmake -DRESOURCES_DIR=/usr/share/notetux
+if(NOT DEFINED RESOURCES_DIR)
+    set(RESOURCES_DIR "${CMAKE_SOURCE_DIR}/resources")
+endif()
+
 target_compile_definitions(notetux++ PRIVATE
     GTK
-    RESOURCES_DIR="${CMAKE_SOURCE_DIR}/resources"
+    RESOURCES_DIR="${RESOURCES_DIR}"
 )
 target_compile_options(notetux++ PRIVATE ${GTK3_CFLAGS_OTHER})
 # lexilla_bridge.cpp needs cstdint for the same reason as lexilla

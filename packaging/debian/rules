@@ -1,0 +1,30 @@
+#!/usr/bin/make -f
+export DH_VERBOSE = 1
+
+RESOURCES_INSTALL_DIR = /usr/share/notetux
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DRESOURCES_DIR=$(RESOURCES_INSTALL_DIR)
+
+override_dh_auto_install:
+	dh_auto_install
+	# Resources tree
+	install -d $(CURDIR)/debian/notetux++/usr/share/notetux
+	cp -r resources/. $(CURDIR)/debian/notetux++/usr/share/notetux/
+	# Pixmap icon
+	install -d $(CURDIR)/debian/notetux++/usr/share/pixmaps
+	install -m 0644 resources/icons/standard/icon.png \
+		$(CURDIR)/debian/notetux++/usr/share/pixmaps/notetux++.png
+	# .desktop file
+	install -d $(CURDIR)/debian/notetux++/usr/share/applications
+	install -m 0644 packaging/notetux++.desktop \
+		$(CURDIR)/debian/notetux++/usr/share/applications/notetux++.desktop
+	# Binary — debhelper compat 13 puts the cmake build under obj-<triplet>/
+	install -d $(CURDIR)/debian/notetux++/usr/bin
+	find $(CURDIR) -maxdepth 3 -name 'notetux++' -type f -not -path '*/src/*' \
+		-exec install -m 0755 {} $(CURDIR)/debian/notetux++/usr/bin/notetux++ \;

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=notetux++
+GenericName=Text Editor
+Comment=Feature-rich text editor for Linux
+Exec=notetux++
+Icon=notetux++
+Terminal=false
+StartupNotify=true
+Categories=Utility;TextEditor;
+MimeType=text/plain;text/x-csrc;text/x-chdr;text/x-c++src;text/x-c++hdr;text/x-python;text/x-java;text/x-shellscript;application/x-shellscript;text/x-makefile;text/x-log;
