@@ -122,23 +122,42 @@ static void populate_dir(GtkTreeIter *parent_iter, const char *path)
 }
 
 /* ------------------------------------------------------------------ */
-/* Cell renderer — folder/file icon via icon theme                    */
+/* Cell renderer — per-type icon via GIO content-type detection       */
 /* ------------------------------------------------------------------ */
 
 static void render_icon(GtkTreeViewColumn *col, GtkCellRenderer *cell,
                         GtkTreeModel *model, GtkTreeIter *iter, gpointer d)
 {
-    (void)col; (void)d;
+    (void)d;
     gboolean is_dir;
     char *path = NULL;
     gtk_tree_model_get(model, iter, COL_IS_DIR, &is_dir, COL_PATH, &path, -1);
-    gboolean is_dummy = (path && strcmp(path, DUMMY_PATH) == 0);
-    g_free(path);
-    if (is_dummy) {
-        g_object_set(cell, "icon-name", NULL, NULL);
+
+    if (!path || strcmp(path, DUMMY_PATH) == 0) {
+        g_free(path);
+        g_object_set(cell, "gicon", NULL, NULL);
         return;
     }
-    g_object_set(cell, "icon-name", is_dir ? "folder" : "text-x-generic", NULL);
+
+    GIcon *icon;
+    if (is_dir) {
+        /* Use open-folder icon when the row is currently expanded */
+        GtkTreeView *tv = GTK_TREE_VIEW(gtk_tree_view_column_get_tree_view(col));
+        GtkTreePath *tp = gtk_tree_model_get_path(model, iter);
+        gboolean expanded = gtk_tree_view_row_expanded(tv, tp);
+        gtk_tree_path_free(tp);
+        icon = g_themed_icon_new(expanded ? "folder-open" : "folder");
+    } else {
+        gchar *ctype = g_content_type_guess(path, NULL, 0, NULL);
+        icon = g_content_type_get_icon(ctype);
+        g_free(ctype);
+        if (!icon)
+            icon = g_themed_icon_new("text-x-generic");
+    }
+
+    g_object_set(cell, "gicon", icon, NULL);
+    g_object_unref(icon);
+    g_free(path);
 }
 
 /* ------------------------------------------------------------------ */
@@ -162,6 +181,13 @@ static void on_row_expanded(GtkTreeView *tv, GtkTreeIter *iter,
         populate_dir(iter, dir_path);
         g_free(dir_path);
     }
+}
+
+static void on_row_collapsed(GtkTreeView *tv, GtkTreeIter *iter,
+                              GtkTreePath *tp, gpointer d)
+{
+    (void)iter; (void)tp; (void)d;
+    gtk_widget_queue_draw(GTK_WIDGET(tv));
 }
 
 static void on_row_activated(GtkTreeView *tv, GtkTreePath *tp,
@@ -278,8 +304,9 @@ GtkWidget *workspace_init(GtkWidget *parent_window)
 
     gtk_tree_view_append_column(GTK_TREE_VIEW(s_tree), col);
 
-    g_signal_connect(s_tree, "row-expanded",  G_CALLBACK(on_row_expanded),  NULL);
-    g_signal_connect(s_tree, "row-activated", G_CALLBACK(on_row_activated), NULL);
+    g_signal_connect(s_tree, "row-expanded",   G_CALLBACK(on_row_expanded),   NULL);
+    g_signal_connect(s_tree, "row-collapsed",  G_CALLBACK(on_row_collapsed),  NULL);
+    g_signal_connect(s_tree, "row-activated",  G_CALLBACK(on_row_activated),  NULL);
 
     GtkWidget *scroll = gtk_scrolled_window_new(NULL, NULL);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll),
