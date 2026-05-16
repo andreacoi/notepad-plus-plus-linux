@@ -264,10 +264,13 @@ static const char *lang_to_lexer(const char *lang)
 /* Keyword table (shared with autocomplete)                           */
 /* ------------------------------------------------------------------ */
 
-typedef struct { const char *lang; const char *keywords; } LangKeywords;
+/* slot: the SCI_SETKEYWORDS keyword-list index the lexer reads for primary keywords.
+ * Most lexers use slot 0; phpscript is an exception — its slot 0 is unused and PHP
+ * keywords must go into slot 4 (confirmed in LexHTML.cxx WordListSet). */
+typedef struct { const char *lang; int slot; const char *keywords; } LangKeywords;
 
 static const LangKeywords kKeywords[] = {
-    { "cpp",
+    { "cpp", 0,
       "alignas alignof and and_eq asm auto bitand bitor bool break case catch char "
       "char8_t char16_t char32_t class compl concept const consteval constexpr constinit "
       "const_cast continue co_await co_return co_yield decltype default delete do double "
@@ -277,16 +280,16 @@ static const LangKeywords kKeywords[] = {
       "static_assert static_cast struct switch template this thread_local throw true try "
       "typedef typeid typename union unsigned using virtual void volatile wchar_t while "
       "xor xor_eq" },
-    { "python",
+    { "python", 0,
       "False None True and as assert async await break class continue def del "
       "elif else except finally for from global if import in is lambda nonlocal not or "
       "pass raise return try while with yield" },
-    { "javascript",
+    { "javascript", 0,
       "async await break case catch class const continue debugger default "
       "delete do else export extends false finally for from function if import in "
       "instanceof let new null of return static super switch this throw true try typeof "
       "undefined var void while with yield" },
-    { "sql",
+    { "sql", 0,
       "add all alter and any as asc authorization backup begin between by "
       "cascade case check close clustered coalesce column commit compute constraint "
       "contains containstable continue convert create cross current current_date "
@@ -304,33 +307,36 @@ static const LangKeywords kKeywords[] = {
       "textsize then to top tran transaction trigger truncate try_convert tsequal "
       "union unique unpivot update updatetext use user values varying view waitfor when "
       "where while with within writetext" },
-    { "rust",
+    { "rust", 0,
       "as async await break const continue crate dyn else enum extern false fn for "
       "if impl in let loop match mod move mut pub ref return self Self static struct "
       "super trait true type union unsafe use where while" },
-    { "bash",
+    { "bash", 0,
       "case do done elif else esac fi for function if in select then time until while "
       "alias bg bind break builtin caller cd command compgen complete compopt continue "
       "declare dirs disown echo enable eval exec exit export false fc fg getopts hash "
       "help history jobs kill let local logout mapfile popd printf pushd pwd read "
       "readarray readonly return set shift shopt source suspend test times trap true "
       "type typeset ulimit umask unalias unset wait" },
-    { "lua",
+    { "lua", 0,
       "and break do else elseif end false for function goto if in local nil not or "
       "repeat return then true until while" },
-    { "php",
+    /* phpscript lexer: slots 0-3 are unused; PHP keywords must go into slot 4.
+     * See LexHTML.cxx WordListSet(), case 4 → keywordsPHP. */
+    { "php", 4,
       "abstract and array as break callable case catch class clone const continue "
       "declare default do echo else elseif empty enddeclare endfor endforeach endif "
       "endswitch endwhile enum extends false final finally fn for foreach function "
       "global goto if implements include include_once instanceof insteadof interface "
       "isset list match namespace new null or print private protected public readonly "
       "require require_once return static switch throw trait true try unset use var "
-      "while xor yield" },
-    { "ruby",
+      "while xor yield "
+      "__CLASS__ __DIR__ __FILE__ __FUNCTION__ __LINE__ __METHOD__ __NAMESPACE__ __TRAIT__" },
+    { "ruby", 0,
       "__FILE__ __LINE__ __ENCODING__ begin defined? do end false in module nil "
       "not or raise rescue retry return self super then true undef unless until when "
       "while yield alias and break case class def else elsif ensure for if" },
-    { "perl",
+    { "perl", 0,
       "abs accept alarm and atan2 bind binmode bless caller chdir chmod chomp chop "
       "chown chr chroot close closedir connect continue cos crypt dbmclose dbmopen "
       "defined delete die do dump each else elsif endgrent endhostent endnetent "
@@ -351,17 +357,21 @@ static const LangKeywords kKeywords[] = {
       "sub substr symlink syscall sysopen sysread sysseek system syswrite tell telldir "
       "tie tied time times truncate uc ucfirst umask undef unless unlink unpack unshift "
       "untie use utime values vec wait waitpid wantarray warn while write" },
-    { NULL, NULL }
+    { NULL, 0, NULL }
 };
 
-/* Returns keyword string for lang_name, applying aliases (c→cpp, typescript→javascript).
-   Returns NULL if no keywords are defined for that language. */
+static const char *resolve_kw_lang(const char *lang_name)
+{
+    if (strcmp(lang_name, "c") == 0 || strcmp(lang_name, "objc") == 0) return "cpp";
+    if (strcmp(lang_name, "typescript") == 0) return "javascript";
+    return lang_name;
+}
+
+/* Returns keyword string for lang_name (used by autocomplete). */
 const char *lexer_get_keywords(const char *lang_name)
 {
     if (!lang_name || !*lang_name) return NULL;
-    const char *kw_lang = lang_name;
-    if (strcmp(kw_lang, "c") == 0 || strcmp(kw_lang, "objc") == 0) kw_lang = "cpp";
-    if (strcmp(kw_lang, "typescript") == 0) kw_lang = "javascript";
+    const char *kw_lang = resolve_kw_lang(lang_name);
     for (const LangKeywords *k = kKeywords; k->lang; k++)
         if (strcmp(k->lang, kw_lang) == 0) return k->keywords;
     return NULL;
@@ -369,9 +379,14 @@ const char *lexer_get_keywords(const char *lang_name)
 
 static void apply_keywords(GtkWidget *sci, const char *lang)
 {
-    const char *kw = lexer_get_keywords(lang);
-    if (kw)
-        sci_msg(sci, SCI_SETKEYWORDS, 0, (sptr_t)kw);
+    if (!lang || !*lang) return;
+    const char *kw_lang = resolve_kw_lang(lang);
+    for (const LangKeywords *k = kKeywords; k->lang; k++) {
+        if (strcmp(k->lang, kw_lang) == 0) {
+            sci_msg(sci, SCI_SETKEYWORDS, (uptr_t)k->slot, (sptr_t)k->keywords);
+            return;
+        }
+    }
 }
 
 /* ------------------------------------------------------------------ */
