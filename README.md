@@ -83,7 +83,7 @@ The macOS port and this Linux port share a common foundation: both macOS and Lin
 - **Document Map** — View → Panels → Document Map toggles a dockable minimap panel on the far right; a secondary `ScintillaWidget` shares the same document as the main editor via `SCI_SETDOCPOINTER` (text and syntax-highlighting tokens are automatically mirrored); zoomed to −10 with all margins, scrollbars, and caret hidden; a semi-transparent blue viewport rectangle is painted on top via `GtkOverlay` + `GtkDrawingArea` + Cairo; the minimap centres on the currently visible range on every `SCN_UPDATEUI` event; the overlay captures all pointer events so clicking or dragging the minimap scrolls the main editor continuously; no header — the minimap fills the full panel for seamless integration; panel is hidden by default
 - **Search Results panel** — View → Panels → Search Results (also auto-shown after every Find in Files search) toggles a dockable bottom panel; three-level `GtkTreeStore`: search root row ("Search "needle" — N matches in M files") → file rows ("path (N hits)") → hit rows ("line: text"); results accumulate across multiple searches without being cleared; double-clicking a hit row opens the file and jumps to that line; a Clear button wipes all accumulated results; the panel lives in a vertical `GtkPaned` below the main editor area; hidden by default, shown automatically when a Find in Files search returns results
 - **Spell checker** — Settings → Spell Check enables inline spell checking; `libenchant-2` loaded at runtime via `dlopen` (gracefully disabled if not installed); dictionary selected from system locale (`LC_MESSAGES`) with fallback to base language; misspelled words underlined with a red squiggle (Scintilla indicator 8, `INDIC_SQUIGGLE`); UTF-8-aware word walker skips words under 3 characters and all-uppercase acronyms; full-document pass limited to 200 KB, debounced 1200 ms after each edit; right-clicking a misspelled word shows a context menu with up to 8 suggestions (click to replace), "Ignore Word" (session), and "Add to Dictionary" (permanent)
-- **Plugin system** — plugins are native Linux shared libraries (`.so`) placed in `~/.config/notetux/plugins/<Name>/<Name>.so`; each plugin exports five standard symbols (`getName`, `getFuncsArray`, `beNotified`, `messageProc`, `isUnicode`) plus an optional `setInfo(NppData)` to receive host handles and a host-message callback; the host calls `beNotified` on every Scintilla editor event; plugins query the host via `NppData.hostMsg(NPPM_*, ...)` — supported messages: `NPPM_GETCURRENTSCINTILLA`, `NPPM_GETNBOPENFILES`, `NPPM_GETFULLCURRENTPATH`, `NPPM_GETFILENAME`, `NPPM_GETDIRECTORYPATH`; each plugin's functions appear as a submenu under the Plugins menu; separator items (`"-"`) and checkbox items (`init2Check != 0`) are supported; a minimal example plugin is provided in `linux/example_plugin/HelloPlugin/`
+- **Plugin system** — plugins are native Linux shared libraries (`.so`) placed in `~/.config/notetux/plugins/<Name>/<Name>.so`; each plugin exports five standard symbols (`getName`, `getFuncsArray`, `beNotified`, `messageProc`, `isUnicode`) plus an optional `setInfo(NppData)` to receive host handles and a host-message callback; the host calls `beNotified` on every Scintilla editor event; plugins query the host via `NppData.hostMsg(NPPM_*, ...)` — supported messages: `NPPM_GETCURRENTSCINTILLA`, `NPPM_GETNBOPENFILES`, `NPPM_GETFULLCURRENTPATH`, `NPPM_GETFILENAME`, `NPPM_GETDIRECTORYPATH`; each plugin's functions appear as a submenu under the Plugins menu; separator items (`"-"`) and checkbox items (`init2Check != 0`) are supported; a minimal example plugin is provided in `example_plugin/HelloPlugin/`
 
 ### Localisation
 - Automatic system locale detection via GLib (`g_get_language_names()`)
@@ -96,34 +96,34 @@ Requires CMake 3.20+, GCC or Clang, and GTK3 development headers.
 
 ```sh
 sudo apt-get install libgtk-3-dev cmake build-essential
-cmake -B linux/build -S linux
-cmake --build linux/build -j$(nproc)
+cmake -B build
+cmake --build build -j$(nproc)
 ```
 
-Output: `linux/build/notetux++`
+Output: `build/notetux++`
 
 ## Run
 
 ```sh
-./linux/build/notetux++
-./linux/build/notetux++ file1.c file2.h
+./build/notetux++
+./build/notetux++ file1.c file2.h
 ```
 
 ## Development methodology
 
-### Goal: feature parity with the macOS port
+### Goal: feature parity with Notepad++
 
-The long-term target is to reach the same set of functionalities as the [Notepad++ for macOS](https://github.com/notepadplusplus/notepad-plus-plus-mac) port — or as close to it as the platform allows. Some features are macOS-specific (floating panels, Command Palette, Spotlight integration) and will not be ported; everything else is fair game.
+The long-term target is to reach the same set of functionalities as the original Notepad++ — or as close to it as the platform allows. Some features are Windows/macOS-specific (floating panels, Command Palette, Spotlight integration) and will not be ported; everything else is fair game.
 
 Feature parity is tracked by cross-referencing:
-1. **The macOS source files** (`src/*.mm`) — each panel, dialog and controller is a candidate for porting.
-2. **The Linux menu stubs** — every `nyi_item()` placeholder in `linux/src/main.c` is an unimplemented menu item from the original Notepad++ feature set.
+1. **The original Notepad++ feature set** — each panel, dialog and controller is a candidate.
+2. **The menu stubs** — every `nyi_item()` placeholder in `src/main.c` is an unimplemented menu item.
 
 ### How new features are tackled
 
-Each development session follows the same pattern used to implement items 38–44 (the side panels, spell checker and plugin system):
+Each development session follows the same pattern used to implement items 38–70:
 
-1. **Audit** — compare the macOS source and the Linux `nyi_item()` stubs to find what is missing.
+1. **Audit** — check the `nyi_item()` stubs in `src/main.c` and the Notepad++ feature set to find what is missing.
 2. **Classify by effort** — group items into *low* (trivial callbacks, a few lines), *medium* (new dialogs or editor functions, ~50–100 lines), and *high* (entirely new panels or subsystems, their own `.c/.h` files).
 3. **Implement in effort order** — low-effort items first (they accumulate quickly and keep the app feeling complete), then medium, then high.
 4. **Update docs** — CLAUDE.md and this README are updated when each item is completed, so the lists always reflect the current state.
@@ -205,6 +205,7 @@ Features beyond the original Notepad++ scope, specific to this Linux port. These
 | 2 | Style Configurator | "Salva" and "Salva e chiudi" actions were swapped — Save closed the dialog, Save and Close kept it open | Corrected response-ID assignment to match translated button labels |
 | 3 | Style store | `~/.config/notetux/stylers.xml` triggered a parse warning for entries whose `name` attribute contains `&` (e.g. CaML `BUILTIN FUNC & TYPE`) | XML is pre-processed to escape bare `&` before passing to `GMarkupParser` |
 | 4 | Margins | Line numbers and fold +/− indicators never appeared | `SCI_SETMARGINWIDTHN` in `sci_c.h` was defined as **2243** (`SCI_GETMARGINWIDTHN`) instead of **2242**; every margin-width call silently returned a value without setting anything, leaving all margins at default width 0 |
+| 5 | Syntax highlighting | Keywords not highlighted in PHP (and potentially other languages) | `SCI_SETKEYWORDS` was always called with slot 0; the `phpscript` Lexilla lexer ignores slots 0–3 and reads PHP keywords from slot 4 (`keywordsPHP` in `LexHTML.cxx`). Fixed by adding a `slot` field to the keyword table and routing each language to the correct slot. PHP magic constants (`__DIR__`, `__FILE__`, `__LINE__`, etc.) were also missing from the keyword list and are now included. |
 
 ## User configuration
 
@@ -225,34 +226,35 @@ All user data lives in `~/.config/notetux/`:
 ## Architecture
 
 ```
-linux/src/main.c            — GtkApplication, window, menu bar, keyboard shortcuts
-linux/src/editor.c/h       — tab/document management, file I/O, Scintilla wrappers
-linux/src/statusbar.c/h    — bottom status bar
-linux/src/toolbar.c/h      — GTK3 toolbar
-linux/src/findreplace.c/h  — Find/Replace dialog
-linux/src/lexer.c/h        — language detection, Lexilla integration, keyword tables
-linux/src/lexilla_bridge.cpp — C++ bridge: exposes CreateLexer() to C code
-linux/src/stylestore.c/h   — theme/style parser and Scintilla style applicator
-linux/src/styleeditor.c/h  — Style Configurator dialog
-linux/src/encoding.c/h     — encoding table, BOM detection, UTF-8 conversion helpers
-linux/src/shortcutmap.c/h  — shortcut table, key-capture dialog, Shortcut Mapper
-linux/src/prefs.c/h        — preferences struct, load/save, Preferences dialog
-linux/src/udl.c/h          — User Defined Language manager: XML parse, udl_apply()
-linux/src/gitgutter.c/h    — Git gutter: background diff, unified diff parser, Scintilla margin markers
-linux/src/session.c/h      — Session save/restore: tab set, caret and scroll positions → ~/.config/notetux/session.xml
-linux/src/backup.c/h       — Auto-backup: periodic g_timeout writes modified docs to ~/.config/notetux/backup/
-linux/src/doclist.c/h      — Document List panel: GtkListBox synced to notebook pages
-linux/src/workspace.c/h    — Folder as Workspace panel: lazy GtkTreeView backed by GFileEnumerator
-linux/src/funclist.c/h     — Function List panel: per-language regex parser, 2-level GtkTreeStore, debounced rebuild
-linux/src/docmap.c/h       — Document Map panel: shared-document minimap ScintillaWidget, viewport Cairo overlay
-linux/src/searchresults.c/h — Search Results panel: 3-level GtkTreeStore, fed from findinfiles, bottom-docked
-linux/src/spell.c/h         — Spell checker: dlopen enchant-2, indicator squiggle, right-click suggestions
-linux/src/plugin.c/h        — Plugin system: .so loader, NppData/hostMsg, beNotified broadcast, NPPM routing, menu generation
-linux/src/sci_c.h           — C-safe Scintilla interface
+src/main.c            — GtkApplication, window, menu bar, keyboard shortcuts
+src/editor.c/h        — tab/document management, file I/O, Scintilla wrappers
+src/statusbar.c/h     — bottom status bar
+src/toolbar.c/h       — GTK3 toolbar
+src/findreplace.c/h   — Find/Replace dialog
+src/lexer.c/h         — language detection, Lexilla integration, keyword tables
+src/lexilla_bridge.cpp — C++ bridge: exposes CreateLexer() to C code
+src/stylestore.c/h    — theme/style parser and Scintilla style applicator
+src/styleeditor.c/h   — Style Configurator dialog
+src/encoding.c/h      — encoding table, BOM detection, UTF-8 conversion helpers
+src/shortcutmap.c/h   — shortcut table, key-capture dialog, Shortcut Mapper
+src/prefs.c/h         — preferences struct, load/save, Preferences dialog
+src/udl.c/h           — User Defined Language manager: XML parse, udl_apply()
+src/gitgutter.c/h     — Git gutter: background diff, unified diff parser, Scintilla margin markers
+src/session.c/h       — Session save/restore: tab set, caret and scroll positions → ~/.config/notetux/session.xml
+src/backup.c/h        — Auto-backup: periodic g_timeout writes modified docs to ~/.config/notetux/backup/
+src/doclist.c/h       — Document List panel: GtkListBox synced to notebook pages
+src/workspace.c/h     — Folder as Workspace panel: lazy GtkTreeView backed by GFileEnumerator
+src/funclist.c/h      — Function List panel: per-language regex parser, 2-level GtkTreeStore, debounced rebuild
+src/docmap.c/h        — Document Map panel: shared-document minimap ScintillaWidget, viewport Cairo overlay
+src/searchresults.c/h — Search Results panel: 3-level GtkTreeStore, fed from findinfiles, bottom-docked
+src/spell.c/h         — Spell checker: dlopen enchant-2, indicator squiggle, right-click suggestions
+src/plugin.c/h        — Plugin system: .so loader, NppData/hostMsg, beNotified broadcast, NPPM routing, menu generation
+src/sci_c.h           — C-safe Scintilla interface
 
-scintilla/                  — vendored editing engine (GTK3 backend used as-is)
-lexilla/                    — vendored syntax highlighting (~80 language lexers)
-resources/                  — shared with macOS port: themes, stylers.model.xml, langs.model.xml
+scintilla/            — vendored editing engine (GTK3 backend used as-is)
+lexilla/              — vendored syntax highlighting (~80 language lexers)
+resources/            — themes, stylers.model.xml, langs.model.xml, localization
+example_plugin/       — minimal HelloPlugin example (.so)
 ```
 
 The application layer is pure C (C11). Only `lexilla_bridge.cpp` uses C++ to call the Lexilla `CreateLexer()` API via a single `extern "C"` function. Scintilla and Lexilla are compiled as C++ static libraries and accessed exclusively through their C message API (`scintilla_send_message`).
