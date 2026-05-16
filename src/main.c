@@ -3885,7 +3885,7 @@ static void on_activate(GtkApplication *app, gpointer data)
     GtkWidget *window = gtk_application_window_new(app);
     s_main_window = window;
     gtk_window_set_title(GTK_WINDOW(window), "Notetux++");
-    gtk_window_set_default_size(GTK_WINDOW(window), 1024, 700);
+    gtk_window_maximize (GTK_WINDOW(window));
     g_signal_connect(window, "delete-event",   G_CALLBACK(on_delete_event), app);
     g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press),   NULL);
 
