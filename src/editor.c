@@ -112,8 +112,45 @@ static void on_file_changed(GFileMonitor *mon, GFile *file, GFile *other,
     (void)mon; (void)file; (void)other;
     NppDoc *doc = user_data;
 
-    if (event != G_FILE_MONITOR_EVENT_CHANGED &&
-        event != G_FILE_MONITOR_EVENT_CREATED)
+    /* File deleted: mark as missing, update tab label immediately */
+    if (event == G_FILE_MONITOR_EVENT_DELETED) {
+        if (!doc->missing) {
+            doc->missing = TRUE;
+            int page = gtk_notebook_page_num(GTK_NOTEBOOK(s_notebook), doc->sci);
+            refresh_tab_label(page);
+            update_window_title();
+            main_doclist_refresh();
+        }
+        return;
+    }
+
+    /* File (re)created: clear missing flag and offer to reload */
+    if (event == G_FILE_MONITOR_EVENT_CREATED) {
+        if (doc->missing) {
+            doc->missing = FALSE;
+            int page = gtk_notebook_page_num(GTK_NOTEBOOK(s_notebook), doc->sci);
+            refresh_tab_label(page);
+            update_window_title();
+            main_doclist_refresh();
+        }
+        if (doc->monitoring) {
+            reload_doc_from_disk(doc);
+            return;
+        }
+        const char *basename = g_path_get_basename(doc->filepath);
+        GtkWidget *dlg = gtk_message_dialog_new(GTK_WINDOW(s_window),
+            GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
+            "The file \"%s\" has reappeared on disk.\nReload it?", basename);
+        gtk_dialog_add_button(GTK_DIALOG(dlg), "_Reload", GTK_RESPONSE_YES);
+        gtk_dialog_add_button(GTK_DIALOG(dlg), "_Keep current", GTK_RESPONSE_NO);
+        gtk_dialog_set_default_response(GTK_DIALOG(dlg), GTK_RESPONSE_YES);
+        if (gtk_dialog_run(GTK_DIALOG(dlg)) == GTK_RESPONSE_YES)
+            reload_doc_from_disk(doc);
+        gtk_widget_destroy(dlg);
+        return;
+    }
+
+    if (event != G_FILE_MONITOR_EVENT_CHANGED)
         return;
 
     if (doc->ignore_next_change) {
@@ -121,13 +158,11 @@ static void on_file_changed(GFileMonitor *mon, GFile *file, GFile *other,
         return;
     }
 
-    /* Monitoring mode: reload silently without prompting */
     if (doc->monitoring) {
         reload_doc_from_disk(doc);
         return;
     }
 
-    /* Only prompt when the window is focused or the tab is visible */
     const char *basename = g_path_get_basename(doc->filepath);
     GtkWidget *dlg = gtk_message_dialog_new(GTK_WINDOW(s_window),
         GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
@@ -135,7 +170,6 @@ static void on_file_changed(GFileMonitor *mon, GFile *file, GFile *other,
     gtk_dialog_add_button(GTK_DIALOG(dlg), "_Reload", GTK_RESPONSE_YES);
     gtk_dialog_add_button(GTK_DIALOG(dlg), "_Keep current", GTK_RESPONSE_NO);
     gtk_dialog_set_default_response(GTK_DIALOG(dlg), GTK_RESPONSE_YES);
-
     if (gtk_dialog_run(GTK_DIALOG(dlg)) == GTK_RESPONSE_YES)
         reload_doc_from_disk(doc);
     gtk_widget_destroy(dlg);
@@ -705,6 +739,8 @@ void editor_open_missing(const char *path, const char *content, gsize content_le
         /* Mark as unmodified so the tab doesn't show '*' on open */
         sci_msg(sci, SCI_SETSAVEPOINT, 0, 0);
     }
+
+    filewatch_start(doc);
 
     GtkWidget *label = make_tab_label(doc, sci);
     int page = gtk_notebook_get_n_pages(GTK_NOTEBOOK(s_notebook));
