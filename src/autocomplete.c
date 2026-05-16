@@ -40,17 +40,18 @@ static gboolean collect_word(gpointer key, gpointer val, gpointer data)
 {
     (void)val;
     GString *s = (GString *)data;
-    if (s->len > 0) g_string_append_c(s, ' ');
+    if (s->len > 0) g_string_append_c(s, '\n');
     g_string_append(s, (const char *)key);
     return FALSE;
 }
 
 void autocomplete_setup(GtkWidget *sci)
 {
-    sci_msg(sci, SCI_AUTOCSETAUTOHIDE,       TRUE, 0);
+    sci_msg(sci, SCI_AUTOCSETAUTOHIDE,       TRUE,  0);
     sci_msg(sci, SCI_AUTOCSETDROPRESTOFWORD, FALSE, 0);
-    sci_msg(sci, SCI_AUTOCSETMAXHEIGHT,      8,    0);
-    sci_msg(sci, SCI_AUTOCSETIGNORECASE,     TRUE, 0);
+    sci_msg(sci, SCI_AUTOCSETMAXHEIGHT,      8,     0);
+    sci_msg(sci, SCI_AUTOCSETIGNORECASE,     TRUE,  0);
+    sci_msg(sci, SCI_AUTOCSETSEPARATOR,      '\n',  0);
 }
 
 void autocomplete_on_char_added(GtkWidget *sci, int ch)
