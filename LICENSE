@@ -1,9 +1,13 @@
-COPYING -- Describes the terms under which Notepad++ for macOS is distributed.
+COPYING -- Describes the terms under which Notetux++ is distributed.
 A copy of the GNU GPL is appended to this file.
 
-IMPORTANT NOTEPAD++ for macOS LICENSE TERMS
+NOTETUX++ LICENSE TERMS
 
-Copyright (C)2026 Andrey Letov <aletik@gmail.com>.  This program is free software; you may redistribute and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; Version 3 with the clarifications and exceptions described below. This guarantees your right to use, modify, and redistribute this software under certain conditions.
+Copyright (C) 2026 Andrea Coi <acandry90@gmail.com>.
+Based on Notepad++ for macOS, Copyright (C) 2026 Andrey Letov <aletik@gmail.com>.
+Based on Notepad++ for Windows, Copyright (C) Don Ho.
+
+This program is free software; you may redistribute and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; Version 3 with the clarifications and exceptions described below. This guarantees your right to use, modify, and redistribute this software under certain conditions.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
