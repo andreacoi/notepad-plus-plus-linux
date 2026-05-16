@@ -693,6 +693,7 @@ static void cb_open_selected_folder(GtkMenuItem *i, gpointer d)
     if (g_file_test(sel, G_FILE_TEST_IS_DIR)) {
         workspace_set_folder(sel);
         workspace_set_visible(TRUE);
+        sync_panel_ui();
     }
     g_free(sel);
 }
@@ -1120,6 +1121,7 @@ static void cb_open_folder_workspace(GtkMenuItem *i, gpointer d)
         char *folder = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(s_workspace_dlg));
         workspace_set_folder(folder);
         workspace_set_visible(TRUE);
+        sync_panel_ui();
         g_free(folder);
     }
     gtk_widget_hide(s_workspace_dlg);
