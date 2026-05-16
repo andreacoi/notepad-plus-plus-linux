@@ -305,11 +305,13 @@ static void refresh_tab_label(int page)
     const char *base = doc->filepath
         ? g_path_get_basename(doc->filepath)
         : NULL;
+    const char *mod  = doc->modified ? "*" : "";
+    const char *miss = doc->missing  ? "! " : "";
     char buf[80];
     if (base)
-        snprintf(buf, sizeof(buf), "%s%s", doc->modified ? "*" : "", base);
+        snprintf(buf, sizeof(buf), "%s%s%s", mod, miss, base);
     else
-        snprintf(buf, sizeof(buf), "%snew %d", doc->modified ? "*" : "", doc->new_index);
+        snprintf(buf, sizeof(buf), "%s%snew %d", mod, miss, doc->new_index);
 
     gtk_label_set_text(GTK_LABEL(label), buf);
 }
@@ -670,6 +672,42 @@ void editor_new_doc(void)
     main_doclist_refresh();
 }
 
+void editor_open_missing(const char *path)
+{
+    /* If already open (possibly as a previous missing tab), just switch */
+    int n = gtk_notebook_get_n_pages(GTK_NOTEBOOK(s_notebook));
+    for (int i = 0; i < n; i++) {
+        NppDoc *d = editor_doc_at(i);
+        if (d && d->filepath && strcmp(d->filepath, path) == 0) {
+            gtk_notebook_set_current_page(GTK_NOTEBOOK(s_notebook), i);
+            return;
+        }
+    }
+
+    NppDoc *doc     = g_new0(NppDoc, 1);
+    doc->filepath   = g_strdup(path);
+    doc->encoding   = g_strdup("UTF-8");
+    doc->missing    = TRUE;
+
+    GtkWidget *sci = scintilla_new();
+    doc->sci = sci;
+    g_object_set_data(G_OBJECT(sci), "npp-doc", doc);
+    setup_sci(sci);
+    sci_msg(sci, SCI_SETEOLMODE, (uptr_t)g_prefs.default_eol, 0);
+    g_signal_connect(sci, "sci-notify", G_CALLBACK(on_sci_notify), NULL);
+    lexer_apply_from_path(sci, path);
+
+    GtkWidget *label = make_tab_label(doc, sci);
+    /* make_tab_label sets the plain basename; refresh to add the "! " prefix */
+    int page = gtk_notebook_get_n_pages(GTK_NOTEBOOK(s_notebook));
+    gtk_notebook_append_page(GTK_NOTEBOOK(s_notebook), sci, label);
+    gtk_notebook_set_tab_reorderable(GTK_NOTEBOOK(s_notebook), sci, TRUE);
+    refresh_tab_label(page);
+    gtk_widget_show_all(s_notebook);
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(s_notebook), page);
+    main_doclist_refresh();
+}
+
 gboolean editor_open_path(const char *path)
 {
     /* Check if already open — switch to it */
@@ -843,6 +881,10 @@ static gboolean save_doc_to_path(NppDoc *doc, const char *path)
     }
     g_free(buf);
     sci_msg(doc->sci, SCI_SETSAVEPOINT, 0, 0);
+    if (doc->missing) {
+        doc->missing = FALSE;
+        refresh_tab_label(gtk_notebook_page_num(GTK_NOTEBOOK(s_notebook), doc->sci));
+    }
     gitgutter_update(doc->sci, path);
     return TRUE;
 }

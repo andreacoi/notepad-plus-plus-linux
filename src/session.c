@@ -205,7 +205,13 @@ void session_restore(void)
 
     for (int i = 0; i < st.count; i++) {
         SessionEntry *e = &st.entries[i];
-        if (!g_file_test(e->filepath, G_FILE_TEST_EXISTS)) continue;
+        if (!g_file_test(e->filepath, G_FILE_TEST_EXISTS)) {
+            editor_open_missing(e->filepath);
+            if (restored == st.active_index)
+                last_page = editor_current_page();
+            restored++;
+            continue;
+        }
 
         if (!editor_open_path(e->filepath)) continue;
 
