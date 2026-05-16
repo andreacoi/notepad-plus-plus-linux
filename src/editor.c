@@ -672,7 +672,7 @@ void editor_new_doc(void)
     main_doclist_refresh();
 }
 
-void editor_open_missing(const char *path)
+void editor_open_missing(const char *path, const char *content, gsize content_len)
 {
     /* If already open (possibly as a previous missing tab), just switch */
     int n = gtk_notebook_get_n_pages(GTK_NOTEBOOK(s_notebook));
@@ -697,8 +697,16 @@ void editor_open_missing(const char *path)
     g_signal_connect(sci, "sci-notify", G_CALLBACK(on_sci_notify), NULL);
     lexer_apply_from_path(sci, path);
 
+    if (content && content_len > 0) {
+        /* Load saved content; guard against read-only state */
+        sci_msg(sci, SCI_SETREADONLY, 0, 0);
+        sci_msg(sci, SCI_SETTEXT, 0, (sptr_t)content);
+        sci_msg(sci, SCI_EMPTYUNDOBUFFER, 0, 0);
+        /* Mark as unmodified so the tab doesn't show '*' on open */
+        sci_msg(sci, SCI_SETSAVEPOINT, 0, 0);
+    }
+
     GtkWidget *label = make_tab_label(doc, sci);
-    /* make_tab_label sets the plain basename; refresh to add the "! " prefix */
     int page = gtk_notebook_get_n_pages(GTK_NOTEBOOK(s_notebook));
     gtk_notebook_append_page(GTK_NOTEBOOK(s_notebook), sci, label);
     gtk_notebook_set_tab_reorderable(GTK_NOTEBOOK(s_notebook), sci, TRUE);

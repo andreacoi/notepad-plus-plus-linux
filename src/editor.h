@@ -31,7 +31,7 @@ GtkWidget *editor_get_notebook(void);
 void       editor_new_doc(void);
 gboolean   editor_open_dialog(void);               /* shows GTK open dialog */
 gboolean   editor_open_path(const char *path);     /* open a specific file   */
-void       editor_open_missing(const char *path);  /* ghost tab for gone file */
+void       editor_open_missing(const char *path, const char *content, gsize content_len);
 gboolean   editor_save(void);                      /* save current doc       */
 gboolean   editor_save_at(int page);               /* save specific page     */
 gboolean   editor_save_all(void);                  /* save all modified docs  */
