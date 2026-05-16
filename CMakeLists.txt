@@ -1,56 +1,49 @@
 cmake_minimum_required(VERSION 3.20)
-project(NotepadPlusPlusMac OBJCXX CXX C)
+project(NotepadPlusPlusLinux C CXX)
 
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_OBJCXX_STANDARD 17)
-set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0")
-set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
 
-# Vendored Scintilla + Lexilla (copied from notepad-plus-plus upstream).
-# RTL patches are applied in place; update by re-copying from upstream when needed.
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+
 set(SCI_ROOT "${CMAKE_SOURCE_DIR}/scintilla")
 set(LEX_ROOT "${CMAKE_SOURCE_DIR}/lexilla")
 
 # -----------------------------------------------------------------------------
-# Scintilla core (platform-agnostic)
+# Scintilla — core + GTK3 backend
 # -----------------------------------------------------------------------------
 file(GLOB SCI_CORE_SRCS "${SCI_ROOT}/src/*.cxx")
 
-set(SCI_COCOA_SRCS
-    "${SCI_ROOT}/cocoa/PlatCocoa.mm"
-    "${SCI_ROOT}/cocoa/ScintillaCocoa.mm"
-    "${SCI_ROOT}/cocoa/ScintillaView.mm"
-    "${SCI_ROOT}/cocoa/InfoBar.mm"
+set(SCI_GTK_SRCS
+    "${SCI_ROOT}/gtk/PlatGTK.cxx"
+    "${SCI_ROOT}/gtk/ScintillaGTK.cxx"
+    "${SCI_ROOT}/gtk/ScintillaGTKAccessible.cxx"
+    "${SCI_ROOT}/gtk/scintilla-marshal.c"
 )
 
-add_library(scintilla STATIC ${SCI_CORE_SRCS} ${SCI_COCOA_SRCS})
+add_library(scintilla STATIC ${SCI_CORE_SRCS} ${SCI_GTK_SRCS})
 
 target_include_directories(scintilla PUBLIC
     "${SCI_ROOT}/include"
     "${SCI_ROOT}/src"
-    "${SCI_ROOT}/cocoa"
+    "${SCI_ROOT}/gtk"
+    ${GTK3_INCLUDE_DIRS}
 )
 
-target_compile_definitions(scintilla PRIVATE
-    SCI_NAMESPACE
-    SCINTILLA_QT=0
-)
-
-set_source_files_properties(${SCI_COCOA_SRCS} PROPERTIES
-    COMPILE_FLAGS "-fobjc-arc"
-)
+target_compile_definitions(scintilla PUBLIC GTK SCI_NAMESPACE)
+target_compile_options(scintilla PRIVATE ${GTK3_CFLAGS_OTHER})
+target_link_libraries(scintilla PUBLIC ${GTK3_LIBRARIES})
 
 # -----------------------------------------------------------------------------
-# Lexilla (syntax highlighting)
+# Lexilla — syntax highlighting (platform-agnostic)
 # -----------------------------------------------------------------------------
 file(GLOB LEX_SRCS
     "${LEX_ROOT}/src/*.cxx"
     "${LEX_ROOT}/lexers/*.cxx"
     "${LEX_ROOT}/lexlib/*.cxx"
 )
-# LexUser.cxx: use the macOS-compatible copy (windows.h replaced with standard headers)
-list(FILTER LEX_SRCS EXCLUDE REGEX "LexUser\\.cxx$")
-list(APPEND LEX_SRCS "${CMAKE_SOURCE_DIR}/src/LexUser.cxx")
+# LexUser.cxx is now included (patched for Linux — windows.h removed, _itoa→sprintf)
 
 add_library(lexilla STATIC ${LEX_SRCS})
 
@@ -61,235 +54,71 @@ target_include_directories(lexilla PUBLIC
     "${LEX_ROOT}/access"
     "${SCI_ROOT}/include"
     "${SCI_ROOT}/src"
-    "${CMAKE_SOURCE_DIR}/src"
 )
+
+# GCC 14 no longer pulls intptr_t in via <stddef.h>; Sci_Position.h needs it.
+target_compile_options(lexilla PRIVATE "-include" "cstdint")
 
 # -----------------------------------------------------------------------------
-# Application
+# Application — GTK3 + Scintilla (C + C++ wrapper for Lexilla)
 # -----------------------------------------------------------------------------
-set(APP_SRCS
-    src/main.mm
-    src/NppApplication.mm
-    src/NppThemeManager.mm
-    src/NppCommandLineParams.mm
-    src/ShortcutMapperWindowController.mm
-    src/NppLocalizer.mm
-    src/NppLangsManager.mm
-    src/AppDelegate.mm
-    src/MainWindowController.mm
-    src/EditorView.mm
-    src/TabManager.mm
-    src/NppTabBar.mm
-    src/MenuBuilder.mm
-    src/FindReplacePanel.mm
-    src/ColumnEditorPanel.mm
-    src/PreferencesWindowController.mm
-    # src/FindInFilesPanel.mm — removed, search goes through FindWindow
-    src/SidePanelHost.mm
-    src/PanelFrame.mm
-    src/FloatingPanelWindow.mm
-    src/DocumentListPanel.mm
-    src/ClipboardHistoryPanel.mm
-    src/FunctionListPanel.mm
-    src/DocumentMapPanel.mm
-    src/ProjectPanel.mm
-    src/SearchEngine.mm
-    src/SearchResultsPanel.mm
-    src/FindWindow.mm
-    src/StyleConfiguratorWindowController.mm
-    src/IncrementalSearchBar.mm
-    src/CommandPalettePanel.mm
-    src/GitHelper.mm
-    src/GitPanel.mm
-    src/FolderTreePanel.mm
-    src/CharacterPanel.mm
-    src/UserDefineLangManager.mm
-    src/UserDefineDialog.mm
-    src/UDLStylerDialog.mm
-    src/NppPluginManager.mm
-    src/PluginsAdminWindowController.mm
+add_executable(notetux++
+    src/main.c
+    src/editor.c
+    src/encoding.c
+    src/prefs.c
+    src/shortcutmap.c
+    src/statusbar.c
+    src/findreplace.c
+    src/findinfiles.c
+    src/columneditor.c
+    src/autocomplete.c
+    src/udl.c
+    src/gitgutter.c
+    src/macro.c
+    src/toolbar.c
+    src/stylestore.c
+    src/styleeditor.c
+    src/lexer.c
+    src/i18n.c
+    src/session.c
+    src/backup.c
+    src/doclist.c
+    src/workspace.c
+    src/funclist.c
+    src/docmap.c
+    src/searchresults.c
+    src/spell.c
+    src/plugin.c
+    src/changehistory.c
+    src/project.c
+    src/run.c
+    src/pluginsadmin.c
+    src/cliphistory.c
+    src/charpanel.c
+    src/lexilla_bridge.cpp
 )
 
-set(APP_HEADERS
-    src/NppLocalizer.h
-    src/NppLangsManager.h
-    src/AppDelegate.h
-    src/MainWindowController.h
-    src/EditorView.h
-    src/TabManager.h
-    src/NppTabBar.h
-    src/MenuBuilder.h
-    src/FindReplacePanel.h
-    src/ColumnEditorPanel.h
-    src/PreferencesWindowController.h
-    # src/FindInFilesPanel.h — removed
-    src/SidePanelHost.h
-    src/PanelFrame.h
-    src/FloatingPanelWindow.h
-    src/DocumentListPanel.h
-    src/ClipboardHistoryPanel.h
-    src/FunctionListPanel.h
-    src/DocumentMapPanel.h
-    src/ProjectPanel.h
-    src/SearchEngine.h
-    src/SearchResultsPanel.h
-    src/FindWindow.h
-    src/StyleConfiguratorWindowController.h
-    src/IncrementalSearchBar.h
-    src/CommandPalettePanel.h
-    src/GitHelper.h
-    src/GitPanel.h
-    src/FolderTreePanel.h
-    src/CharacterPanel.h
-    src/UserDefineLangManager.h
-    src/UserDefineDialog.h
-    src/UDLStylerDialog.h
-    src/NppPluginManager.h
-    src/NppPluginInterfaceMac.h
-    src/PluginsAdminWindowController.h
-)
-
-add_executable(NotepadPlusPlusMac MACOSX_BUNDLE ${APP_SRCS} ${APP_HEADERS})
-
-# Copy icons at BUILD time so updated PNGs are picked up on every make, not just cmake re-run
-add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_SOURCE_DIR}/resources/icons"
-        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/icons"
-    COMMENT "Syncing icons into app bundle")
-
-add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
-    # Force-copy so an updated icns is always written (copy_if_different can miss timestamp ties)
-    COMMAND ${CMAKE_COMMAND} -E copy
-        "${CMAKE_SOURCE_DIR}/resources/npp.icns"
-        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/npp.icns"
-    # Touch the bundle so macOS knows the icon changed, then re-register with LaunchServices
-    COMMAND touch "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>"
-    COMMAND /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister
-            -f "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>"
-    COMMENT "Copying app icon and refreshing macOS icon cache")
-
-add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/resources/stylers.model.xml"
-        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/stylers.model.xml"
-    COMMENT "Copying stylers.model.xml into bundle")
-
-# DMG installer background: bundled inside the app so the release DMG can
-# point Finder at Notepad++.app:Contents:Resources:dmg-background.tiff
-# without needing a visible .background/ folder in the DMG root.
-add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/resources/dmg-background.tiff"
-        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/dmg-background.tiff"
-    COMMENT "Copying DMG installer background into bundle")
-
-add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/resources/langs.model.xml"
-        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/langs.model.xml"
-    COMMENT "Copying langs.model.xml into bundle")
-
-add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_SOURCE_DIR}/resources/themes"
-        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/themes"
-    COMMENT "Copying theme XML files into bundle")
-
-# Bundle localization XML files (Windows NPP format, unmodified).
-# These live in resources/localization/ inside this repo.
-# Users can also drop additional XML files into
-#   ~/Library/Application Support/Notepad++/localization/
-# to add languages without touching the app bundle.
-add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_SOURCE_DIR}/resources/localization"
-        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/localization"
-    COMMENT "Copying localization XML files into bundle")
-
-# Function List parser definitions (XML, same format as Windows NPP)
-add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_SOURCE_DIR}/resources/functionList"
-        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/functionList"
-    COMMENT "Copying function list parser XMLs into bundle")
-
-# Pre-installed User Defined Language files
-add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_SOURCE_DIR}/resources/userDefineLangs"
-        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/userDefineLangs"
-    COMMENT "Copying pre-installed UDL files into bundle")
-
-# Default shortcuts.xml (copied to ~/.notepad++/ on first run if missing)
-add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/resources/shortcuts.xml"
-        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/shortcuts.xml"
-    COMMENT "Copying default shortcuts.xml into bundle")
-
-# Default tabContextMenu.xml (copied to ~/.notepad++/ on first run)
-add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/resources/tabContextMenu.xml"
-        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/tabContextMenu.xml"
-    COMMENT "Copying default tabContextMenu.xml into bundle")
-
-# Default contextMenu.xml (copied to ~/.notepad++/ on first run)
-add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/resources/contextMenu.xml"
-        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/contextMenu.xml"
-    COMMENT "Copying default contextMenu.xml into bundle")
-
-# Default toolbarButtonsConf.xml (copied as _example to ~/.notepad++/ on first run)
-add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/resources/toolbarButtonsConf.xml"
-        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/toolbarButtonsConf.xml"
-    COMMENT "Copying default toolbarButtonsConf.xml into bundle")
-
-# Localized display name so Dock shows "Notepad++" not "NotepadPlusPlus"
-add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E make_directory
-        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/en.lproj"
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/resources/en.lproj/InfoPlist.strings"
-        "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>/Contents/Resources/en.lproj/InfoPlist.strings"
-    COMMENT "Copying localized display name")
-
-# Ad-hoc code signing — gives the app a stable identity so macOS can
-# remember TCC permission grants (Downloads, Desktop, Documents) across launches.
-# Strip extended attributes first (resource forks / Finder info break codesign).
-add_custom_command(TARGET NotepadPlusPlusMac POST_BUILD
-    COMMAND xattr -cr "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>"
-    COMMAND codesign --force --deep --sign - "$<TARGET_BUNDLE_DIR:NotepadPlusPlusMac>"
-    COMMENT "Ad-hoc code signing the app bundle")
-
-set_target_properties(NotepadPlusPlusMac PROPERTIES
-    OUTPUT_NAME "Notepad++"
-    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/resources/Info.plist"
-    MACOSX_BUNDLE_BUNDLE_NAME "Notepad++"
-    MACOSX_BUNDLE_GUI_IDENTIFIER "org.notepadplusplus.mac"
-    MACOSX_BUNDLE_BUNDLE_VERSION "1.0.5"
-    MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0.5"
-)
-
-target_include_directories(NotepadPlusPlusMac PRIVATE
-    src
+target_include_directories(notetux++ PRIVATE
     "${SCI_ROOT}/include"
-    "${SCI_ROOT}/cocoa"
+    "${SCI_ROOT}/src"
+    "${SCI_ROOT}/gtk"
     "${LEX_ROOT}/include"
+    ${GTK3_INCLUDE_DIRS}
 )
 
-target_link_libraries(NotepadPlusPlusMac PRIVATE
+target_compile_definitions(notetux++ PRIVATE
+    GTK
+    RESOURCES_DIR="${CMAKE_SOURCE_DIR}/resources"
+)
+target_compile_options(notetux++ PRIVATE ${GTK3_CFLAGS_OTHER})
+# lexilla_bridge.cpp needs cstdint for the same reason as lexilla
+set_source_files_properties(src/lexilla_bridge.cpp PROPERTIES
+    COMPILE_OPTIONS "-include;cstdint")
+
+target_link_libraries(notetux++ PRIVATE
     scintilla
     lexilla
-    "-framework Cocoa"
-    "-framework QuartzCore"
-    "-framework UniformTypeIdentifiers"
-)
-
-set_source_files_properties(${APP_SRCS} PROPERTIES
-    COMPILE_FLAGS "-fobjc-arc"
+    ${GTK3_LIBRARIES}
+    m
 )

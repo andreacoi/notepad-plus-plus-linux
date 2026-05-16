@@ -4,20 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Project Is
 
-A native macOS port of Notepad++ (the Windows text editor), built with C++17 and Objective-C++ (Cocoa). It wraps the vendored Scintilla editing engine and Lexilla syntax-highlighting library in a full Cocoa UI. Despite the repo name, this targets **macOS 11+** (Universal Binary: arm64 + x86_64), not Linux.
+A native Linux port of Notepad++ (the Windows text editor), written in C11 with a thin C++ wrapper for Lexilla. It targets GTK3 and wraps the vendored Scintilla editing engine and Lexilla syntax-highlighting library in a full GTK3 UI.
 
-### Linux port (active development)
-
-There is an **in-progress native GTK3 Linux port** living entirely in `linux/`. It is written in C11 with a thin C++ wrapper for Lexilla. It is a separate CMake project and does not share build infrastructure with the macOS app.
-
-**Build the Linux port:**
+**Build:**
 ```sh
-cd linux
 cmake -B build && cmake --build build
 ./build/notetux++
 ```
 
-**Linux port source files (`linux/src/`):**
+**Source files (`src/`):**
 
 | File | Purpose |
 |------|---------|
@@ -84,23 +79,14 @@ Once all features are shipped, produce pre-compiled packages for all major distr
 
 ## Build
 
-Requires CMake 3.20+ and Xcode toolchain.
+Requires CMake 3.20+ and a C11/C++17 toolchain with GTK3 development headers.
 
 ```sh
 cmake -B build && cmake --build build
+./build/notetux++
 ```
-
-Output: `build/Notepad++.app` — a self-contained app bundle. Post-build steps copy XML resources, bundle localizations, and ad-hoc-sign the binary. No install step is needed; open the `.app` directly.
 
 ## Tests
-
-No automated tests exist for the main application. Two test harnesses are available:
-
-**Plugin load test** — verifies `.dylib` plugins export the required symbols:
-```sh
-cmake -S test_plugins -B test_plugins/build && cmake --build test_plugins/build
-./test_plugins/build/test_plugins [optional_plugins_dir]
-```
 
 **Lexilla unit tests** (C++, makefile-based):
 ```sh
@@ -118,32 +104,27 @@ cd scintilla/test && python3 simpleTests.py
 
 ```
 User code
-  └── Scintilla (vendored, cocoa-specific branch in scintilla/cocoa/)
+  └── Scintilla (vendored GTK3 backend in scintilla/gtk/)
         └── Lexilla (vendored, ~80 language lexers in lexilla/lexers/)
 
-macOS UI (src/*.mm / src/*.h)
-  ├── AppDelegate            – app lifecycle, file open/reopen
-  ├── main.mm                – CLI parsing (--help, -n<line>, -lLanguage, etc.)
-  ├── MainWindowController   – central window, split view, session management (391 KB)
-  ├── EditorView             – Scintilla wrapper + Notepad++ feature layer (264 KB)
-  ├── TabManager / NppTabBar – tabbed editing, tab bar rendering
-  ├── MenuBuilder            – dynamic menu generation from XML configs
-  ├── FindWindow             – search / replace panel
-  ├── NppPluginManager       – .dylib plugin loading via dlopen/dlsym
+GTK3 UI (src/*.c / src/*.h)
+  ├── main.c          – GTK application entry point, menu bar, window setup
+  ├── editor.c/h      – tab notebook, document open/save/close, NppDoc struct
+  ├── lexer.c/h       – Lexilla integration, keyword lists, fold props
+  ├── stylestore.c/h  – stylers.model.xml parser, Scintilla style application
   └── ... (panels, dialogs, helpers — see src/)
 ```
 
 ### Key design points
 
-- **ScintillaView** (from Cocoa Scintilla) is embedded inside **EditorView**, which adds Notepad++ semantics (language detection, fold margin, auto-complete, etc.).
-- **MainWindowController** owns both editor panes for the split-view mode and coordinates everything else. It is the largest single file in the repo.
-- All persistent user config lives in `~/.notepad++/` at runtime; the app bundle ships defaults under `resources/`.
-- XML drives most customisation: `shortcuts.xml`, `contextMenu.xml`, `toolbarButtonsConf.xml`, `langs.model.xml`, `stylers.model.xml`, themes.
-- Localisation uses the Windows Notepad++ XML format (137 languages in `resources/localization/`), loaded by **NppLocalizer**.
+- All UI code is C11; only `src/lexilla_bridge.cpp` is C++ (wraps `CreateLexer()`).
+- All persistent user config lives in `~/.config/notetux/` at runtime; `resources/` ships defaults.
+- XML drives most customisation: `shortcuts.xml`, `contextMenu.xml`, `langs.model.xml`, `stylers.model.xml`, themes.
+- Localisation uses the Windows Notepad++ XML format (`resources/localization/`).
 
 ### Plugin system
 
-Plugins are macOS `.dylib` files placed in `~/.notepad++/plugins/<Name>/<Name>.dylib`. They must export five C symbols: `getName`, `getFuncsArray`, `beNotified`, `messageProc`, and `isUnicode`. Communication happens through NPPM messages passed to Scintilla handles.
+Plugins are Linux `.so` files placed in `~/.config/notetux/plugins/<Name>/<Name>.so`. They must export five C symbols: `getName`, `getFuncsArray`, `beNotified`, `messageProc`, `isUnicode`. An example plugin lives in `example_plugin/HelloPlugin/`.
 
 ### Vendored dependencies
 
@@ -156,7 +137,7 @@ Changes to vendored code should be minimal and clearly marked so they survive up
 
 ---
 
-## Linux port — next steps (priority / effort order)
+## Next steps (priority / effort order)
 
 ### High effort
 
@@ -212,5 +193,5 @@ Menu items currently `nyi_item()` placeholders that need straightforward impleme
 - **Synchronise Scrolling** — requires a split-view mode (not implemented and not planned)
 - **Edit Context Menu…** — context menu editor; low value, complex persistence
 - **Check for Updates** — native distro packages (.deb/.rpm/etc.) handle updates through the system package manager
-- **CommandPalettePanel** — macOS Spotlight metaphor; on Linux, keyboard-shortcut discoverability is the right answer
+- **CommandPalettePanel** — keyboard-shortcut discoverability is the right answer on Linux
 - **Trim Trailing Space and Save** (standalone macro item) — covered by Macro management (item 66) when implemented as part of that group
