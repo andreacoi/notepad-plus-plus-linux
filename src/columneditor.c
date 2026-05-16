@@ -8,6 +8,7 @@
 #include "columneditor.h"
 #include "editor.h"
 #include "sci_c.h"
+#include "i18n.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -154,7 +155,7 @@ static void on_cancel(GtkButton *b, gpointer d)
 static void build_dialog(GtkWidget *parent)
 {
     s_dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(s_dialog), "Column Editor");
+    gtk_window_set_title(GTK_WINDOW(s_dialog), T("dlg.ColumnEditor.title", "Column Editor"));
     gtk_window_set_resizable(GTK_WINDOW(s_dialog), FALSE);
     if (parent)
         gtk_window_set_transient_for(GTK_WINDOW(s_dialog), GTK_WINDOW(parent));
@@ -180,7 +181,7 @@ static void build_dialog(GtkWidget *parent)
         gtk_widget_set_margin_start (page, 8);
         gtk_widget_set_margin_end   (page, 8);
 
-        GtkWidget *lbl = gtk_label_new("Text to insert:");
+        GtkWidget *lbl = gtk_label_new(TM("dlg.ColumnEditor.2023", "Text to insert:"));
         s_text_entry = gtk_entry_new();
         gtk_widget_set_size_request(s_text_entry, 220, -1);
         g_signal_connect(s_text_entry, "activate", G_CALLBACK(on_ok), NULL);
@@ -189,7 +190,7 @@ static void build_dialog(GtkWidget *parent)
         gtk_box_pack_start(GTK_BOX(page), s_text_entry, TRUE,  TRUE,  0);
 
         gtk_notebook_append_page(GTK_NOTEBOOK(s_notebook), page,
-                                 gtk_label_new("Insert Text"));
+                                 gtk_label_new(T("dlg.ColumnEditor.2023", "Insert Text")));
     }
 
     /* Page 1: Insert Number */
@@ -203,12 +204,12 @@ static void build_dialog(GtkWidget *parent)
         gtk_widget_set_margin_end   (page, 8);
 
         /* Initial / Step */
-        GtkWidget *lbl_init = gtk_label_new("Initial:");
+        GtkWidget *lbl_init = gtk_label_new(TM("dlg.ColumnEditor.2030", "Initial:"));
         gtk_widget_set_halign(lbl_init, GTK_ALIGN_END);
         s_spin_init = gtk_spin_button_new_with_range(-1000000, 1000000, 1);
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(s_spin_init), 1);
 
-        GtkWidget *lbl_step = gtk_label_new("Step:");
+        GtkWidget *lbl_step = gtk_label_new(TM("dlg.ColumnEditor.2031", "Step:"));
         gtk_widget_set_halign(lbl_step, GTK_ALIGN_END);
         s_spin_step = gtk_spin_button_new_with_range(-1000000, 1000000, 1);
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(s_spin_step), 1);
@@ -219,13 +220,13 @@ static void build_dialog(GtkWidget *parent)
         gtk_grid_attach(GTK_GRID(page), s_spin_step, 3, 0, 1, 1);
 
         /* Format radios */
-        GtkWidget *lbl_fmt = gtk_label_new("Format:");
+        GtkWidget *lbl_fmt = gtk_label_new(T("dlg.ColumnEditor.2032", "Format:"));
         gtk_widget_set_halign(lbl_fmt, GTK_ALIGN_END);
-        s_radio_dec = gtk_radio_button_new_with_label(NULL, "Decimal");
+        s_radio_dec = gtk_radio_button_new_with_label(NULL, TM("dlg.ColumnEditor.2024", "Decimal"));
         s_radio_hex = gtk_radio_button_new_with_label_from_widget(
-            GTK_RADIO_BUTTON(s_radio_dec), "Hex");
+            GTK_RADIO_BUTTON(s_radio_dec), TM("dlg.ColumnEditor.2026", "Hex"));
         s_radio_oct = gtk_radio_button_new_with_label_from_widget(
-            GTK_RADIO_BUTTON(s_radio_dec), "Octal");
+            GTK_RADIO_BUTTON(s_radio_dec), TM("dlg.ColumnEditor.2025", "Octal"));
 
         GtkWidget *fmt_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
         gtk_box_pack_start(GTK_BOX(fmt_box), s_radio_dec, FALSE, FALSE, 0);
@@ -236,19 +237,19 @@ static void build_dialog(GtkWidget *parent)
         gtk_grid_attach(GTK_GRID(page), fmt_box, 1, 1, 3, 1);
 
         /* Leading zeros */
-        s_chk_leading = gtk_check_button_new_with_label("Leading zeros");
+        s_chk_leading = gtk_check_button_new_with_label(TM("dlg.ColumnEditor.2038", "Leading zeros"));
         gtk_grid_attach(GTK_GRID(page), s_chk_leading, 1, 2, 3, 1);
 
         gtk_notebook_append_page(GTK_NOTEBOOK(s_notebook), page,
-                                 gtk_label_new("Insert Number"));
+                                 gtk_label_new(T("dlg.ColumnEditor.2033", "Insert Number")));
     }
 
     /* ---- Buttons ---- */
     GtkWidget *btn_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 8);
     gtk_box_pack_start(GTK_BOX(outer), btn_box, FALSE, FALSE, 0);
 
-    GtkWidget *btn_ok  = gtk_button_new_with_label("OK");
-    GtkWidget *btn_can = gtk_button_new_with_label("Cancel");
+    GtkWidget *btn_ok  = gtk_button_new_with_label(T("dlg.ColumnEditor.1", "OK"));
+    GtkWidget *btn_can = gtk_button_new_with_label(T("dlg.ColumnEditor.2", "Cancel"));
     gtk_widget_set_size_request(btn_ok,  80, -1);
     gtk_widget_set_size_request(btn_can, 80, -1);
     g_signal_connect(btn_ok,  "clicked", G_CALLBACK(on_ok),     NULL);

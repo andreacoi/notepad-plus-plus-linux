@@ -1,5 +1,6 @@
 #include "cliphistory.h"
 #include "editor.h"
+#include "i18n.h"
 #include <string.h>
 
 #define CLIP_MAX 20
@@ -130,11 +131,11 @@ GtkWidget *cliphistory_init(GtkWidget *window)
 
     /* Header */
     GtkWidget *hdr   = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
-    GtkWidget *title = gtk_label_new("Clipboard History");
+    GtkWidget *title = gtk_label_new(T("dlg.ClipboardHistory.PanelTitle", "Clipboard History"));
     gtk_widget_set_halign(title, GTK_ALIGN_START);
     gtk_box_pack_start(GTK_BOX(hdr), title, TRUE, TRUE, 4);
 
-    GtkWidget *clr_btn = gtk_button_new_with_label("Clear");
+    GtkWidget *clr_btn = gtk_button_new_with_label(T("dlg.MacStrings.90003", "Clear"));
     gtk_button_set_relief(GTK_BUTTON(clr_btn), GTK_RELIEF_NONE);
     g_signal_connect(clr_btn, "clicked", G_CALLBACK(on_clear), NULL);
     gtk_box_pack_start(GTK_BOX(hdr), clr_btn, FALSE, FALSE, 0);

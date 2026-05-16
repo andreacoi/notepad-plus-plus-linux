@@ -179,6 +179,20 @@ static void xml_start(GMarkupParseContext *ctx, const char *elem,
         return;
     }
 
+    /* ---- <Dialog><Elem><Sub name="…"> — named non-Item subchildren ---- */
+    if (strcmp(elem, "Item") != 0 && strcmp(p2, "Dialog") == 0)
+    {
+        const char *name = NULL;
+        for (int i = 0; names[i]; i++) {
+            if (strcmp(names[i], "name") == 0) name = vals[i];
+        }
+        if (name) {
+            char key[256]; snprintf(key, sizeof(key), "dlg.%s.%s", p1, elem);
+            store(key, name);
+        }
+        /* fall through to also capture non-name attrs if applicable */
+    }
+
     /* ---- <MessageBox><Elem attrs…> ---- */
     if (strcmp(elem, "Item") != 0 && strcmp(p1, "MessageBox") == 0)
     {

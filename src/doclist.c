@@ -1,5 +1,6 @@
 #include "doclist.h"
 #include "editor.h"
+#include "i18n.h"
 #include <gtk/gtk.h>
 #include <string.h>
 
@@ -64,7 +65,7 @@ GtkWidget *doclist_init(void)
     GtkWidget *header = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
     gtk_style_context_add_class(gtk_widget_get_style_context(header), "doclist-header");
 
-    GtkWidget *title = gtk_label_new("Document List");
+    GtkWidget *title = gtk_label_new(T("dlg.DocList.PanelTitle", "Document List"));
     gtk_label_set_xalign(GTK_LABEL(title), 0.0f);
     gtk_box_pack_start(GTK_BOX(header), title, TRUE, TRUE, 6);
 

@@ -1,5 +1,6 @@
 #include "searchresults.h"
 #include "editor.h"
+#include "i18n.h"
 #include <gtk/gtk.h>
 #include <string.h>
 #include <stdio.h>
@@ -100,7 +101,7 @@ GtkWidget *searchresults_init(void)
     gtk_widget_set_margin_top(header, 2);
     gtk_widget_set_margin_bottom(header, 2);
 
-    GtkWidget *title = gtk_label_new("Search Results");
+    GtkWidget *title = gtk_label_new(T("dlg.MacStrings.90001", "Search Results"));
     gtk_label_set_xalign(GTK_LABEL(title), 0.0f);
     gtk_box_pack_start(GTK_BOX(header), title, FALSE, FALSE, 0);
 
@@ -110,7 +111,7 @@ GtkWidget *searchresults_init(void)
     gtk_style_context_add_class(ctx, "dim-label");
     gtk_box_pack_start(GTK_BOX(header), s_count_lbl, TRUE, TRUE, 6);
 
-    GtkWidget *clear_btn = gtk_button_new_with_label("Clear");
+    GtkWidget *clear_btn = gtk_button_new_with_label(T("dlg.MacStrings.90003", "Clear"));
     gtk_button_set_relief(GTK_BUTTON(clear_btn), GTK_RELIEF_NONE);
     g_signal_connect(clear_btn, "clicked", G_CALLBACK(on_clear_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(header), clear_btn, FALSE, FALSE, 0);

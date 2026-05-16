@@ -364,7 +364,7 @@ static void on_close(GtkButton *b, gpointer d)
 static void build_dialog(GtkWidget *parent)
 {
     s_dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(s_dialog), "Find in Files");
+    gtk_window_set_title(GTK_WINDOW(s_dialog), T("dlg.Find.titleFindInFiles", "Find in Files"));
     gtk_window_set_default_size(GTK_WINDOW(s_dialog), 720, 540);
     if (parent)
         gtk_window_set_transient_for(GTK_WINDOW(s_dialog), GTK_WINDOW(parent));
@@ -385,7 +385,7 @@ static void build_dialog(GtkWidget *parent)
     gtk_box_pack_start(GTK_BOX(vbox), grid, FALSE, FALSE, 0);
 
     /* Row 0: Find what */
-    GtkWidget *lbl_find = gtk_label_new("Find what:");
+    GtkWidget *lbl_find = gtk_label_new(T("dlg.Find.1620", "Find what:"));
     gtk_widget_set_halign(lbl_find, GTK_ALIGN_END);
     s_find_entry = gtk_entry_new();
     gtk_widget_set_hexpand(s_find_entry, TRUE);
@@ -394,7 +394,7 @@ static void build_dialog(GtkWidget *parent)
     gtk_grid_attach(GTK_GRID(grid), s_find_entry, 1, 0, 2, 1);
 
     /* Row 1: Directory */
-    GtkWidget *lbl_dir = gtk_label_new("Directory:");
+    GtkWidget *lbl_dir = gtk_label_new(T("dlg.Find.1655", "Directory:"));
     gtk_widget_set_halign(lbl_dir, GTK_ALIGN_END);
     s_dir_entry = gtk_entry_new();
     gtk_widget_set_hexpand(s_dir_entry, TRUE);
@@ -405,7 +405,7 @@ static void build_dialog(GtkWidget *parent)
     gtk_grid_attach(GTK_GRID(grid), btn_browse,  2, 1, 1, 1);
 
     /* Row 2: Filters */
-    GtkWidget *lbl_flt = gtk_label_new("Filters:");
+    GtkWidget *lbl_flt = gtk_label_new(T("dlg.Find.1654", "Filters:"));
     gtk_widget_set_halign(lbl_flt, GTK_ALIGN_END);
     s_filter_entry = gtk_entry_new();
     gtk_entry_set_text(GTK_ENTRY(s_filter_entry), "*.*");
@@ -416,9 +416,9 @@ static void build_dialog(GtkWidget *parent)
     /* ---- Options ---- */
     GtkWidget *opts = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 20);
     gtk_box_pack_start(GTK_BOX(vbox), opts, FALSE, FALSE, 0);
-    s_chk_case   = gtk_check_button_new_with_label("Match case");
-    s_chk_word   = gtk_check_button_new_with_label("Whole word");
-    s_chk_subdirs = gtk_check_button_new_with_label("Search in subdirectories");
+    s_chk_case   = gtk_check_button_new_with_label(T("dlg.Find.1604", "Match case"));
+    s_chk_word   = gtk_check_button_new_with_label(T("dlg.Find.1603", "Whole word"));
+    s_chk_subdirs = gtk_check_button_new_with_label(T("dlg.Find.1658", "Search in subdirectories"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(s_chk_subdirs), TRUE);
     gtk_box_pack_start(GTK_BOX(opts), s_chk_case,   FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(opts), s_chk_word,   FALSE, FALSE, 0);
@@ -427,9 +427,9 @@ static void build_dialog(GtkWidget *parent)
     /* ---- Buttons ---- */
     GtkWidget *btns = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start(GTK_BOX(vbox), btns, FALSE, FALSE, 0);
-    s_btn_find         = gtk_button_new_with_label("Find All");
+    s_btn_find         = gtk_button_new_with_label(T("dlg.Find.1656", "Find All"));
     GtkWidget *btn_clr = gtk_button_new_with_label("Clear Results");
-    GtkWidget *btn_cls = gtk_button_new_with_label("Close");
+    GtkWidget *btn_cls = gtk_button_new_with_label(T("dlg.Find.2", "Close"));
     g_signal_connect(s_btn_find, "clicked", G_CALLBACK(on_find_all), NULL);
     g_signal_connect(btn_clr,    "clicked", G_CALLBACK(on_clear),    NULL);
     g_signal_connect(btn_cls,    "clicked", G_CALLBACK(on_close),    NULL);
