@@ -2965,7 +2965,7 @@ static GtkWidget *build_language_menu(GtkWidget *bar)
     int udl_n = udl_count();
     if (udl_n > 0) {
         gtk_menu_shell_append(GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
-        GtkWidget *udl_item = gtk_menu_item_new_with_label("User Defined Languages");
+        GtkWidget *udl_item = gtk_menu_item_new_with_mnemonic(TM("submenu.language-userDefinedLanguage", "User Defined Languages"));
         GtkWidget *udl_menu = gtk_menu_new();
         gtk_menu_item_set_submenu(GTK_MENU_ITEM(udl_item), udl_menu);
         gtk_menu_shell_append(GTK_MENU_SHELL(menu), udl_item);
@@ -3067,7 +3067,7 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     }
     /* Open Containing Folder submenu */
     {
-        GtkWidget *ocf_item = gtk_menu_item_new_with_label("Open Containing Folder");
+        GtkWidget *ocf_item = gtk_menu_item_new_with_mnemonic(TM("submenu.file-openFolder", "Open Containing Folder"));
         GtkWidget *ocf_menu = gtk_menu_new();
         gtk_menu_item_set_submenu(GTK_MENU_ITEM(ocf_item), ocf_menu);
         APPEND(ocf_menu, menu_item("Terminal",     G_CALLBACK(cb_open_in_terminal),    NULL, NULL, 0, 0));
@@ -3089,7 +3089,7 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     APPEND(file, menu_item("Close All", G_CALLBACK(cb_close_all), NULL, NULL, 0, 0));
     /* Close Multiple Documents submenu */
     {
-        GtkWidget *cm_item = gtk_menu_item_new_with_label("Close Multiple Documents");
+        GtkWidget *cm_item = gtk_menu_item_new_with_mnemonic(TM("submenu.file-closeMore", "Close Multiple Documents"));
         GtkWidget *cm_menu = gtk_menu_new();
         gtk_menu_item_set_submenu(GTK_MENU_ITEM(cm_item), cm_menu);
         APPEND(cm_menu, menu_item("Close All But Current",  G_CALLBACK(cb_close_all_but), NULL, NULL, 0, 0));
@@ -3122,7 +3122,7 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     APPEND(edit, sep_item());
     /* Copy to Clipboard submenu */
     {
-        GtkWidget *ctc_item = gtk_menu_item_new_with_label("Copy to Clipboard");
+        GtkWidget *ctc_item = gtk_menu_item_new_with_mnemonic(TM("submenu.edit-copyToClipboard", "Copy to Clipboard"));
         GtkWidget *ctc_menu = gtk_menu_new();
         gtk_menu_item_set_submenu(GTK_MENU_ITEM(ctc_item), ctc_menu);
         APPEND(ctc_menu, menu_item("Full Path",       G_CALLBACK(cb_copy_filepath), NULL, NULL, 0, 0));
@@ -3281,7 +3281,7 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
 
     /* On Selection submenu */
     {
-        GtkWidget *sel_item = gtk_menu_item_new_with_label("On Selection");
+        GtkWidget *sel_item = gtk_menu_item_new_with_mnemonic(TM("submenu.edit-onSelection", "On Selection"));
         GtkWidget *sel_menu = gtk_menu_new();
         gtk_menu_item_set_submenu(GTK_MENU_ITEM(sel_item), sel_menu);
         APPEND(sel_menu, menu_item("Open File",   G_CALLBACK(cb_open_selected_file),   NULL, NULL, 0, 0));
@@ -3310,14 +3310,14 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     APPEND(search, smi("cmd.find",       TM("cmd.43001", "_Find…"),          G_CALLBACK(cb_find),         NULL, accel, GDK_KEY_f, GDK_CONTROL_MASK));
     APPEND(search, smi("cmd.replace",    TM("cmd.43003", "_Replace…"),       G_CALLBACK(cb_replace),      NULL, accel, GDK_KEY_h, GDK_CONTROL_MASK));
     APPEND(search, smi("cmd.findinfiles",TM("cmd.findinfiles","Find in _Files…"), G_CALLBACK(cb_find_in_files), NULL, accel, GDK_KEY_f, GDK_CONTROL_MASK | GDK_SHIFT_MASK));
-    APPEND(search, smi("cmd.incrsearch", "Incremental Search…", G_CALLBACK(cb_incr_search), NULL, accel, GDK_KEY_i, GDK_CONTROL_MASK));
+    APPEND(search, smi("cmd.incrsearch", TM("cmd.43011", "Incremental Search…"), G_CALLBACK(cb_incr_search), NULL, accel, GDK_KEY_i, GDK_CONTROL_MASK));
     APPEND(search, sep_item());
     APPEND(search, smi("cmd.findnext",   TM("cmd.findnext",  "Find _Next"),   G_CALLBACK(cb_find_next), NULL, accel, GDK_KEY_F3, 0));
     APPEND(search, smi("cmd.findprev",   TM("cmd.findprev",  "Find _Prev"),   G_CALLBACK(cb_find_prev), NULL, accel, GDK_KEY_F3, GDK_SHIFT_MASK));
     APPEND(search, sep_item());
     /* Change History submenu */
     {
-        GtkWidget *ch_item = gtk_menu_item_new_with_label("Change History");
+        GtkWidget *ch_item = gtk_menu_item_new_with_mnemonic(TM("submenu.search-changeHistory", "Change History"));
         GtkWidget *ch_menu = gtk_menu_new();
         gtk_menu_item_set_submenu(GTK_MENU_ITEM(ch_item), ch_menu);
         APPEND(ch_menu, menu_item("Next Change",         G_CALLBACK(cb_ch_next),   NULL, NULL, 0, 0));
@@ -3496,7 +3496,7 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
 
         /* Tab navigation submenu */
         {
-            GtkWidget *tab_item = gtk_menu_item_new_with_label("Tab");
+            GtkWidget *tab_item = gtk_menu_item_new_with_mnemonic(TM("submenu.view-tab", "Tab"));
             GtkWidget *tab_menu = gtk_menu_new();
             gtk_menu_item_set_submenu(GTK_MENU_ITEM(tab_item), tab_menu);
             APPEND(tab_menu, smi("cmd.tab.next",  "Next Tab",           G_CALLBACK(cb_next_tab),  NULL, accel, GDK_KEY_Tab,       GDK_CONTROL_MASK));
@@ -3529,47 +3529,47 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
 
         /* Panels submenu (placeholders) */
         {
-            GtkWidget *pan_item = gtk_menu_item_new_with_label("Panels");
+            GtkWidget *pan_item = gtk_menu_item_new_with_mnemonic(TM("submenu.view-panels", "Panels"));
             GtkWidget *pan_menu = gtk_menu_new();
             gtk_menu_item_set_submenu(GTK_MENU_ITEM(pan_item), pan_menu);
-            s_mi_doclist = gtk_check_menu_item_new_with_label("Document List");
+            s_mi_doclist = gtk_check_menu_item_new_with_label(T("cmd.44070", "Document List"));
             gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_mi_doclist), FALSE);
             g_signal_connect(s_mi_doclist, "toggled", G_CALLBACK(cb_toggle_doclist), NULL);
             APPEND(pan_menu, s_mi_doclist);
 
-            s_mi_docmap = gtk_check_menu_item_new_with_label("Document Map");
+            s_mi_docmap = gtk_check_menu_item_new_with_label(T("cmd.44086", "Document Map"));
             gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_mi_docmap), FALSE);
             g_signal_connect(s_mi_docmap, "toggled", G_CALLBACK(cb_toggle_docmap), NULL);
             APPEND(pan_menu, s_mi_docmap);
 
-            s_mi_funclist = gtk_check_menu_item_new_with_label("Function List");
+            s_mi_funclist = gtk_check_menu_item_new_with_label(T("cmd.44084", "Function List"));
             gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_mi_funclist), FALSE);
             g_signal_connect(s_mi_funclist, "toggled", G_CALLBACK(cb_toggle_funclist), NULL);
             APPEND(pan_menu, s_mi_funclist);
 
-            s_mi_workspace = gtk_check_menu_item_new_with_label("Folder as Workspace");
+            s_mi_workspace = gtk_check_menu_item_new_with_label(T("cmd.44088", "Folder as Workspace"));
             gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_mi_workspace), FALSE);
             g_signal_connect(s_mi_workspace, "toggled", G_CALLBACK(cb_toggle_workspace), NULL);
             APPEND(pan_menu, s_mi_workspace);
 
-            s_mi_searchresults = gtk_check_menu_item_new_with_label("Search Results");
+            s_mi_searchresults = gtk_check_menu_item_new_with_label(T("cmd.43045", "Search Results"));
             gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_mi_searchresults), FALSE);
             g_signal_connect(s_mi_searchresults, "toggled",
                              G_CALLBACK(cb_toggle_searchresults), NULL);
             APPEND(pan_menu, s_mi_searchresults);
             {
-                s_project_mi = gtk_check_menu_item_new_with_label("Project Manager");
+                s_project_mi = gtk_check_menu_item_new_with_label(T("cmd.44090", "Project Manager"));
                 gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_project_mi), FALSE);
                 g_signal_connect(s_project_mi, "toggled",
                                  G_CALLBACK(cb_toggle_project), NULL);
                 APPEND(pan_menu, s_project_mi);
             }
-            s_monitoring_mi = gtk_check_menu_item_new_with_label("Monitoring (tail -f)");
+            s_monitoring_mi = gtk_check_menu_item_new_with_label(T("cmd.44091", "Monitoring (tail -f)"));
             g_signal_connect(s_monitoring_mi, "toggled",
                              G_CALLBACK(cb_toggle_monitoring), NULL);
             APPEND(pan_menu, s_monitoring_mi);
             {
-                s_cliphistory_mi = gtk_check_menu_item_new_with_label("Clipboard History");
+                s_cliphistory_mi = gtk_check_menu_item_new_with_label(T("cmd.42052", "Clipboard History"));
                 gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s_cliphistory_mi), FALSE);
                 g_signal_connect(s_cliphistory_mi, "toggled",
                                  G_CALLBACK(cb_toggle_cliphistory), NULL);
@@ -3582,7 +3582,7 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
 
         /* Synchronise submenu */
         {
-            GtkWidget *sync_item = gtk_menu_item_new_with_label("Synchronise");
+            GtkWidget *sync_item = gtk_menu_item_new_with_mnemonic(TM("submenu.view-synchronise", "Synchronise"));
             GtkWidget *sync_menu = gtk_menu_new();
             gtk_menu_item_set_submenu(GTK_MENU_ITEM(sync_item), sync_menu);
             APPEND(sync_menu, nyi_item("Synchronise Horizontal Scrolling"));
@@ -3625,25 +3625,25 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
         }
 
         /* Western European */
-        GtkWidget *we_item = gtk_menu_item_new_with_label("Western European");
+        GtkWidget *we_item = gtk_menu_item_new_with_mnemonic(TM("submenu.encoding-westernEuropean", "Western European"));
         GtkWidget *we_menu = gtk_menu_new();
         gtk_menu_item_set_submenu(GTK_MENU_ITEM(we_item), we_menu);
         APPEND(enc_menu, we_item);
 
         /* Central European */
-        GtkWidget *ce_item = gtk_menu_item_new_with_label("Central European");
+        GtkWidget *ce_item = gtk_menu_item_new_with_mnemonic(TM("submenu.encoding-centralEuropean", "Central European"));
         GtkWidget *ce_menu = gtk_menu_new();
         gtk_menu_item_set_submenu(GTK_MENU_ITEM(ce_item), ce_menu);
         APPEND(enc_menu, ce_item);
 
         /* Cyrillic */
-        GtkWidget *cy_item = gtk_menu_item_new_with_label("Cyrillic");
+        GtkWidget *cy_item = gtk_menu_item_new_with_mnemonic(TM("submenu.encoding-cyrillic", "Cyrillic"));
         GtkWidget *cy_menu = gtk_menu_new();
         gtk_menu_item_set_submenu(GTK_MENU_ITEM(cy_item), cy_menu);
         APPEND(enc_menu, cy_item);
 
         /* East Asian */
-        GtkWidget *ea_item = gtk_menu_item_new_with_label("East Asian");
+        GtkWidget *ea_item = gtk_menu_item_new_with_mnemonic(TM("submenu.encoding-eastAsian", "East Asian"));
         GtkWidget *ea_menu = gtk_menu_new();
         gtk_menu_item_set_submenu(GTK_MENU_ITEM(ea_item), ea_menu);
         APPEND(enc_menu, ea_item);
@@ -3689,7 +3689,7 @@ static GtkWidget *build_menubar(GtkWindow *window, GApplication *app)
     APPEND(settings, sep_item());
     /* Import submenu */
     {
-        GtkWidget *imp_item = gtk_menu_item_new_with_label("Import");
+        GtkWidget *imp_item = gtk_menu_item_new_with_mnemonic(TM("submenu.settings-import", "Import"));
         GtkWidget *imp_menu = gtk_menu_new();
         gtk_menu_item_set_submenu(GTK_MENU_ITEM(imp_item), imp_menu);
         APPEND(imp_menu, menu_item("Import Plugin(s)…",       G_CALLBACK(cb_import_plugin), NULL, NULL, 0, 0));

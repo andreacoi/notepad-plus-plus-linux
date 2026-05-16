@@ -1,6 +1,7 @@
 #include "funclist.h"
 #include "editor.h"
 #include "sci_c.h"
+#include "i18n.h"
 #include <gtk/gtk.h>
 #include <string.h>
 
@@ -423,7 +424,7 @@ GtkWidget *funclist_init(void)
     /* Header */
     GtkWidget *header = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 2);
 
-    GtkWidget *title = gtk_label_new("Function List");
+    GtkWidget *title = gtk_label_new(T("dlg.FunctionList.PanelTitle", "Function List"));
     gtk_label_set_xalign(GTK_LABEL(title), 0.0f);
     gtk_box_pack_start(GTK_BOX(header), title, TRUE, TRUE, 6);
 

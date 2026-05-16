@@ -1,5 +1,6 @@
 #include "workspace.h"
 #include "editor.h"
+#include "i18n.h"
 #include <gtk/gtk.h>
 #include <gio/gio.h>
 #include <string.h>
@@ -217,7 +218,7 @@ static void on_open_folder_clicked(GtkButton *btn, gpointer d)
 {
     (void)btn; (void)d;
     GtkWidget *dlg = gtk_file_chooser_dialog_new(
-        "Open Folder as Workspace",
+        T("dlg.FolderAsWorkspace.SelectFolderFromBrowserString", "Open Folder as Workspace"),
         s_window ? GTK_WINDOW(s_window) : NULL,
         GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
         "_Cancel", GTK_RESPONSE_CANCEL,
@@ -249,7 +250,7 @@ GtkWidget *workspace_init(GtkWidget *parent_window)
     /* Header row */
     GtkWidget *header = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 2);
 
-    GtkWidget *title = gtk_label_new("Folder as Workspace");
+    GtkWidget *title = gtk_label_new(T("dlg.FolderAsWorkspace.PanelTitle", "Folder as Workspace"));
     gtk_label_set_xalign(GTK_LABEL(title), 0.0f);
     gtk_box_pack_start(GTK_BOX(header), title, TRUE, TRUE, 6);
 

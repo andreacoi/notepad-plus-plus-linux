@@ -1,5 +1,6 @@
 #include "charpanel.h"
 #include "editor.h"
+#include "i18n.h"
 #include <string.h>
 #include <stdio.h>
 

@@ -1,5 +1,6 @@
 #include "macro.h"
 #include "editor.h"
+#include "i18n.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -100,18 +101,18 @@ void macro_playback_n(GtkWidget *sci, GtkWindow *parent)
     if (s_recording || s_count == 0) return;
 
     GtkWidget *dlg = gtk_dialog_new_with_buttons(
-        "Run Macro Multiple Times",
+        T("dlg.MultiMacro.title", "Run Macro Multiple Times"),
         parent,
         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-        "_Cancel", GTK_RESPONSE_CANCEL,
-        "_Run",    GTK_RESPONSE_OK,
+        TM("dlg.MultiMacro.2", "_Cancel"), GTK_RESPONSE_CANCEL,
+        TM("dlg.MultiMacro.1", "_Run"),    GTK_RESPONSE_OK,
         NULL);
     gtk_dialog_set_default_response(GTK_DIALOG(dlg), GTK_RESPONSE_OK);
 
     GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dlg));
     GtkWidget *hbox    = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 8);
     gtk_container_set_border_width(GTK_CONTAINER(hbox), 12);
-    GtkWidget *label   = gtk_label_new("Number of times:");
+    GtkWidget *label   = gtk_label_new(T("dlg.MultiMacro.8005", "Number of times:"));
     GtkWidget *spin    = gtk_spin_button_new_with_range(1, 10000, 1);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin), 1);
     gtk_entry_set_activates_default(GTK_ENTRY(spin), TRUE);
@@ -342,9 +343,9 @@ void macro_manage_dialog(GtkWidget *sci, GtkWindow *parent)
 {
     (void)sci;
     ensure_loaded();
-    GtkWidget *dlg = gtk_dialog_new_with_buttons("Modify / Delete Macros", parent,
+    GtkWidget *dlg = gtk_dialog_new_with_buttons(T("dlg.MultiMacro.title", "Modify / Delete Macros"), parent,
         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-        "_Close", GTK_RESPONSE_CLOSE, NULL);
+        T("dlg.Find.2", "_Close"), GTK_RESPONSE_CLOSE, NULL);
     gtk_window_set_default_size(GTK_WINDOW(dlg), 380, 280);
     GtkWidget *box = gtk_dialog_get_content_area(GTK_DIALOG(dlg));
 
@@ -369,7 +370,7 @@ void macro_manage_dialog(GtkWidget *sci, GtkWindow *parent)
 
     GtkWidget *btn_bar = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
     gtk_container_set_border_width(GTK_CONTAINER(btn_bar), 4);
-    GtkWidget *del_btn = gtk_button_new_with_label("Delete");
+    GtkWidget *del_btn = gtk_button_new_with_label(T("dlg.ShortcutMapper.2603", "Delete"));
     gtk_box_pack_end(GTK_BOX(btn_bar), del_btn, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(box), btn_bar, FALSE, FALSE, 0);
 
