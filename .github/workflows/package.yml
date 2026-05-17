@@ -1,0 +1,221 @@
+name: Package
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+
+# Only the release job needs write access; build jobs are read-only.
+jobs:
+
+  # ── Debian / Ubuntu (.deb) ──────────────────────────────────────────────────
+  deb:
+    name: .deb  (debian:bookworm)
+    runs-on: ubuntu-latest
+    container: debian:bookworm
+    steps:
+      - name: Install build dependencies
+        run: |
+          apt-get update -qq
+          apt-get install -y --no-install-recommends \
+            git debhelper cmake pkg-config \
+            libgtk-3-dev libglib2.0-dev libstdc++-12-dev
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build .deb
+        run: |
+          # debian -> packaging/debian symlink is committed at the repo root.
+          # dpkg-buildpackage reads it and places the .deb one level up.
+          dpkg-buildpackage -b -us -uc
+          mkdir dist
+          mv ../notetux++_*.deb dist/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deb
+          path: dist/*.deb
+          if-no-files-found: error
+
+  # ── Fedora / RHEL (.rpm) ────────────────────────────────────────────────────
+  rpm:
+    name: .rpm  (fedora:latest)
+    runs-on: ubuntu-latest
+    container: fedora:latest
+    steps:
+      - name: Install build dependencies
+        run: |
+          dnf install -y \
+            git cmake gcc gcc-c++ pkgconfig \
+            gtk3-devel glib2-devel rpm-build desktop-file-utils
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build .rpm
+        run: |
+          # Derive version from git tag (strips leading v) or fall back to the
+          # hardcoded version already present in the spec file.
+          VER=$(git describe --tags --abbrev=0 2>/dev/null \
+                | sed 's/^v//' \
+                || awk '/^Version:/{print $2; exit}' packaging/notetux++.spec)
+
+          mkdir -p ~/rpmbuild/{SOURCES,SPECS}
+
+          # rpmbuild needs a source tarball; create it from the current tree.
+          git archive --format=tar.gz --prefix=notetux++-${VER}/ HEAD \
+              > ~/rpmbuild/SOURCES/notetux++-${VER}.tar.gz
+
+          # Patch the version line so the spec matches the tree being built.
+          sed "s/^Version:.*/Version:        ${VER}/" packaging/notetux++.spec \
+              > ~/rpmbuild/SPECS/notetux++.spec
+
+          rpmbuild -bb ~/rpmbuild/SPECS/notetux++.spec
+
+          mkdir dist
+          find ~/rpmbuild/RPMS -name '*.rpm' -exec cp {} dist/ \;
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rpm
+          path: dist/*.rpm
+          if-no-files-found: error
+
+  # ── Alpine (.apk) ───────────────────────────────────────────────────────────
+  apk:
+    name: .apk  (alpine:latest)
+    runs-on: ubuntu-latest
+    container: alpine:latest
+    steps:
+      - name: Install build dependencies
+        run: |
+          apk add --no-cache \
+            git alpine-sdk cmake gtk+3.0-dev glib-dev samurai sudo
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build .apk
+        run: |
+          VER=$(git describe --tags --abbrev=0 2>/dev/null \
+                | sed 's/^v//' \
+                || grep '^pkgver=' packaging/alpine/APKBUILD \
+                   | cut -d= -f2 | tr -d '"')
+
+          # abuild refuses to run as root; set up a builder user.
+          adduser -D builder
+          addgroup builder abuild
+          echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+          # Generate a throw-away signing key for this CI run.
+          su builder -c "abuild-keygen -a -n"
+
+          BLDDIR=/home/builder/aport
+          mkdir -p "$BLDDIR"
+
+          # Create a local source tarball. The prefix must match APKBUILD's
+          # builddir ("$srcdir/notetux-$pkgver"), so use notetux-${VER}/.
+          git archive --format=tar.gz --prefix=notetux-${VER}/ HEAD \
+              > "$BLDDIR/notetux++-${VER}.tar.gz"
+
+          # Patch the APKBUILD: update version and point source at the local
+          # tarball (no URL needed in CI — abuild finds it by filename).
+          sed \
+              -e "s/^pkgver=.*/pkgver=\"${VER}\"/" \
+              -e 's|^source=.*|source="${pkgname}-${pkgver}.tar.gz"|' \
+              packaging/alpine/APKBUILD > "$BLDDIR/APKBUILD"
+
+          chown -R builder:builder "$BLDDIR"
+
+          su builder -c "cd '$BLDDIR' && abuild checksum && abuild -r"
+
+          mkdir dist
+          # Exclude the APKINDEX meta-file; keep only the actual package.
+          find /home/builder/packages -name '*.apk' \
+              ! -name 'APKINDEX.tar.gz' \
+              -exec cp {} dist/ \;
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apk
+          path: dist/*.apk
+          if-no-files-found: error
+
+  # ── Arch Linux (.pkg.tar.zst) ───────────────────────────────────────────────
+  arch:
+    name: .pkg.tar.zst  (archlinux:latest)
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - name: Install build dependencies
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm --needed git base-devel cmake gtk3 glib2
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build .pkg.tar.zst
+        run: |
+          VER=$(git describe --tags --abbrev=0 2>/dev/null \
+                | sed 's/^v//' \
+                || grep '^pkgver=' packaging/PKGBUILD | cut -d= -f2)
+
+          # makepkg refuses to run as root.
+          useradd -m builder
+          echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+          BLDDIR=/home/builder/build
+          mkdir -p "$BLDDIR"
+
+          # Local source tarball. Prefix notetux-${VER}/ matches _srcdir in
+          # the PKGBUILD ("notetux-${pkgver}"), so the prepare() fallback
+          # path is never taken.
+          git archive --format=tar.gz --prefix=notetux-${VER}/ HEAD \
+              > "$BLDDIR/notetux++-${VER}.tar.gz"
+
+          # Patch version, source array, and checksum to use the local file.
+          sed \
+              -e "s/^pkgver=.*/pkgver=${VER}/" \
+              -e "s|^source=.*|source=(\"notetux++-\${pkgver}.tar.gz\")|" \
+              -e "s/^sha256sums=.*/sha256sums=('SKIP')/" \
+              packaging/PKGBUILD > "$BLDDIR/PKGBUILD"
+
+          chown -R builder:builder "$BLDDIR"
+
+          su builder -c "cd '$BLDDIR' && makepkg -s --noconfirm --skippgpcheck"
+
+          mkdir dist
+          find "$BLDDIR" -name '*.pkg.tar.zst' -exec cp {} dist/ \;
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: arch
+          path: dist/*.pkg.tar.zst
+          if-no-files-found: error
+
+  # ── Attach packages to GitHub Release ──────────────────────────────────────
+  release:
+    name: GitHub Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [deb, rpm, apk, arch]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all package artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Attach packages to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/**
+          fail_on_unmatched_files: true
