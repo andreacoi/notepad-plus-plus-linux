@@ -20,6 +20,8 @@ jobs:
           apt-get install -y --no-install-recommends \
             git debhelper cmake pkg-config \
             libgtk-3-dev libglib2.0-dev libstdc++-12-dev
+          # Container users differ from the runner; mark all paths safe.
+          git config --global --add safe.directory '*'
 
       - uses: actions/checkout@v4
         with:
@@ -50,6 +52,7 @@ jobs:
           dnf install -y \
             git cmake gcc gcc-c++ pkgconfig \
             gtk3-devel glib2-devel rpm-build desktop-file-utils
+          git config --global --add safe.directory '*'
 
       - uses: actions/checkout@v4
         with:
@@ -94,6 +97,7 @@ jobs:
         run: |
           apk add --no-cache \
             git alpine-sdk cmake gtk+3.0-dev glib-dev samurai sudo
+          git config --global --add safe.directory '*'
 
       - uses: actions/checkout@v4
         with:
@@ -155,6 +159,7 @@ jobs:
         run: |
           pacman -Syu --noconfirm
           pacman -S --noconfirm --needed git base-devel cmake gtk3 glib2
+          git config --global --add safe.directory '*'
 
       - uses: actions/checkout@v4
         with:
