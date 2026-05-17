@@ -108,7 +108,7 @@ jobs:
           VER=$(git describe --tags --abbrev=0 2>/dev/null \
                 | sed 's/^v//' \
                 || grep '^pkgver=' packaging/alpine/APKBUILD \
-                   | cut -d= -f2 | tr -d '"')
+                   | cut -d= -f2 | sed 's/"//g')
 
           # abuild refuses to run as root; set up a builder user.
           adduser -D builder
