@@ -18,7 +18,7 @@ jobs:
         run: |
           apt-get update -qq
           apt-get install -y --no-install-recommends \
-            git debhelper cmake pkg-config \
+            ca-certificates git debhelper cmake pkg-config \
             libgtk-3-dev libglib2.0-dev libstdc++-12-dev
           # Container users differ from the runner; mark all paths safe.
           git config --global --add safe.directory '*'
@@ -60,11 +60,14 @@ jobs:
 
       - name: Build .rpm
         run: |
-          # Derive version from git tag (strips leading v) or fall back to the
-          # hardcoded version already present in the spec file.
-          VER=$(git describe --tags --abbrev=0 2>/dev/null \
-                | sed 's/^v//' \
-                || awk '/^Version:/{print $2; exit}' packaging/notetux++.spec)
+          # On a tag push GITHUB_REF_NAME is the tag (e.g. v1.0.1); strip the
+          # leading v.  On a branch push fall back to the version baked into the
+          # spec so the CI still produces a testable package.
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+              VER="${GITHUB_REF_NAME#v}"
+          else
+              VER=$(awk '/^Version:/{print $2; exit}' packaging/notetux++.spec)
+          fi
 
           mkdir -p ~/rpmbuild/{SOURCES,SPECS}
 
@@ -105,10 +108,12 @@ jobs:
 
       - name: Build .apk
         run: |
-          VER=$(git describe --tags --abbrev=0 2>/dev/null \
-                | sed 's/^v//' \
-                || grep '^pkgver=' packaging/alpine/APKBUILD \
-                   | cut -d= -f2 | sed 's/"//g')
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+              VER="${GITHUB_REF_NAME#v}"
+          else
+              VER=$(grep '^pkgver=' packaging/alpine/APKBUILD \
+                    | cut -d= -f2 | tr -d '"')
+          fi
 
           # abuild refuses to run as root; set up a builder user.
           adduser -D builder
@@ -128,8 +133,11 @@ jobs:
 
           # Patch the APKBUILD: update version and point source at the local
           # tarball (no URL needed in CI — abuild finds it by filename).
+          # Write pkgver unquoted (pkgver=1.0.1) — abuild is fine with either
+          # form, but quoted values can be misread when sed and shell quoting
+          # interact inside a here-doc or nested substitution.
           sed \
-              -e "s/^pkgver=.*/pkgver=\"${VER}\"/" \
+              -e "s/^pkgver=.*/pkgver=${VER}/" \
               -e 's|^source=.*|source="${pkgname}-${pkgver}.tar.gz"|' \
               packaging/alpine/APKBUILD > "$BLDDIR/APKBUILD"
 
@@ -167,9 +175,11 @@ jobs:
 
       - name: Build .pkg.tar.zst
         run: |
-          VER=$(git describe --tags --abbrev=0 2>/dev/null \
-                | sed 's/^v//' \
-                || grep '^pkgver=' packaging/PKGBUILD | cut -d= -f2)
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+              VER="${GITHUB_REF_NAME#v}"
+          else
+              VER=$(grep '^pkgver=' packaging/PKGBUILD | cut -d= -f2)
+          fi
 
           # makepkg refuses to run as root.
           useradd -m builder
